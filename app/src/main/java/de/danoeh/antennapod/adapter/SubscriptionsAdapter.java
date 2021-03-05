@@ -23,6 +23,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import jp.shts.android.library.TriangleLabelView;
 
@@ -132,6 +133,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
             Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
             mainActivityRef.get().loadChildFragment(fragment);
+        } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+            Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
+            mainActivityRef.get().loadChildFragment(fragment);
         }
     }
 
@@ -145,7 +149,5 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         int getCount();
 
         NavDrawerData.DrawerItem getItem(int position);
-
-        int getFeedCounter(long feedId);
     }
 }

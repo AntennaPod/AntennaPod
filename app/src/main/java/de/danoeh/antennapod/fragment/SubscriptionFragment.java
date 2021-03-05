@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -69,6 +70,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
     private static final String KEY_UP_ARROW = "up_arrow";
+    private static final String ARGUMENT_FOLDER = "folder";
 
     private static final int MIN_NUM_COLUMNS = 2;
     private static final int[] COLUMN_CHECKBOX_IDS = {
@@ -78,13 +80,14 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
             R.id.subscription_num_columns_5};
 
     private GridView subscriptionGridLayout;
-    private NavDrawerData navDrawerData;
+    private List<NavDrawerData.DrawerItem> listItems;
     private SubscriptionsAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
+    private String displayedFolder = null;
 
     private Feed selectedFeed = null;
     private boolean isUpdatingFeeds = false;
@@ -92,6 +95,14 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
     private Disposable disposable;
     private SharedPreferences prefs;
+
+    public static SubscriptionFragment newInstance(String folderTitle) {
+        SubscriptionFragment fragment = new SubscriptionFragment();
+        Bundle args = new Bundle();
+        args.putString(ARGUMENT_FOLDER, folderTitle);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,6 +130,13 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                     .setTitle(String.format(Locale.getDefault(), "%d", i + MIN_NUM_COLUMNS));
         }
         refreshToolbarState();
+
+        if (getArguments() != null) {
+            displayedFolder = getArguments().getString(ARGUMENT_FOLDER, null);
+            if (displayedFolder != null) {
+                toolbar.setTitle(displayedFolder);
+            }
+        }
 
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
@@ -232,12 +250,23 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
             disposable.dispose();
         }
         emptyView.hide();
-        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+        disposable = Observable.fromCallable(
+                () -> {
+                    NavDrawerData data = DBReader.getNavDrawerData();
+                    List<NavDrawerData.DrawerItem> items = data.items;
+                    for (NavDrawerData.DrawerItem item : items) {
+                        if (item.type == NavDrawerData.DrawerItem.Type.FOLDER
+                                && item.getTitle().equals(displayedFolder)) {
+                            return ((NavDrawerData.FolderDrawerItem) item).children;
+                        }
+                    }
+                    return items;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
-                        navDrawerData = result;
+                        listItems = result;
                         subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
                         progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
@@ -347,8 +376,8 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            if (navDrawerData != null) {
-                return navDrawerData.items.size();
+            if (listItems != null) {
+                return listItems.size();
             } else {
                 return 0;
             }
@@ -356,16 +385,11 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
         @Override
         public NavDrawerData.DrawerItem getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.items.size()) {
-                return navDrawerData.items.get(position);
+            if (listItems != null && 0 <= position && position < listItems.size()) {
+                return listItems.get(position);
             } else {
                 return null;
             }
-        }
-
-        @Override
-        public int getFeedCounter(long feedId) {
-            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
     };
 }
