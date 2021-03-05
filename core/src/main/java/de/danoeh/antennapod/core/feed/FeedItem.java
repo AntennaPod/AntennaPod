@@ -13,19 +13,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
  * Item (episode) within a feed.
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, Serializable {
+public class FeedItem extends FeedComponent implements Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -350,16 +347,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Serial
 
     private boolean isPlaying() {
         return media != null && media.isPlaying();
-    }
-
-    @Override
-    public Callable<String> loadShownotes() {
-        return () -> {
-            if (description == null) {
-                DBReader.loadDescriptionOfFeedItem(FeedItem.this);
-            }
-            return description;
-        };
     }
 
     public String getImageLocation() {

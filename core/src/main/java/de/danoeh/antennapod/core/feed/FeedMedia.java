@@ -14,7 +14,6 @@ import android.support.v4.media.MediaDescriptionCompat;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -286,6 +285,14 @@ public class FeedMedia extends FeedFile implements Playable {
         this.size = size;
     }
 
+    @Override
+    public String getDescription() {
+        if (item != null) {
+            return item.getDescription();
+        }
+        return null;
+    }
+
     /**
      * Indicates we asked the service what the size was, but didn't
      * get a valid answer and we shoudln't check using the network again.
@@ -527,16 +534,6 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item != null) {
             item.setChapters(chapters);
         }
-    }
-
-    @Override
-    public Callable<String> loadShownotes() {
-        return () -> {
-            if (item == null) {
-                item = DBReader.getFeedItem(itemID);
-            }
-            return item.loadShownotes().call();
-        };
     }
 
     public static final Parcelable.Creator<FeedMedia> CREATOR = new Parcelable.Creator<FeedMedia>() {

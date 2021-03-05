@@ -439,7 +439,9 @@ public class ItemFragment extends Fragment {
         FeedItem feedItem = DBReader.getFeedItem(itemId);
         Context context = getContext();
         if (feedItem != null && context != null) {
-            Timeline t = new Timeline(context, feedItem);
+            int duration = feedItem.getMedia() != null ? feedItem.getMedia().getDuration() : Integer.MAX_VALUE;
+            DBReader.loadDescriptionOfFeedItem(feedItem);
+            Timeline t = new Timeline(context, feedItem.getDescription(), duration);
             webviewData = t.processShownotes();
         }
         return feedItem;

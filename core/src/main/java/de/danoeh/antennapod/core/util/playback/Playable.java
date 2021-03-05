@@ -7,14 +7,13 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ShownotesProvider;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Interface for objects that can be played by the PlaybackService.
  */
-public interface Playable extends Parcelable, ShownotesProvider {
+public interface Playable extends Parcelable {
     public static final int INVALID_TIME = -1;
 
     /**
@@ -81,6 +80,13 @@ public interface Playable extends Parcelable, ShownotesProvider {
      * if last played time is unknown.
      */
     long getLastPlayedTime();
+
+    /**
+     * Returns the description of the item, if available.
+     * For FeedItems, the description needs to be loaded from the database first.
+     */
+    @Nullable
+    String getDescription();
 
     /**
      * Returns the type of media. This method should return the correct value

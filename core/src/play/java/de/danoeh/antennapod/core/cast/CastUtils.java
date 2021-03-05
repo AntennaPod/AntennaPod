@@ -130,18 +130,12 @@ public class CastUtils {
             if (!TextUtils.isEmpty(feedItem.getLink())) {
                 metadata.putString(KEY_EPISODE_LINK, feedItem.getLink());
             }
-        }
-        String notes = null;
-        try {
-            notes = media.loadShownotes().call();
-        } catch (Exception e) {
-            Log.e(TAG, "Unable to load FeedMedia notes", e);
-        }
-        if (notes != null) {
-            if (notes.length() > EPISODE_NOTES_MAX_LENGTH) {
-                notes = notes.substring(0, EPISODE_NOTES_MAX_LENGTH);
+            try {
+                DBReader.loadDescriptionOfFeedItem(feedItem);
+                metadata.putString(KEY_EPISODE_NOTES, feedItem.getDescription());
+            } catch (Exception e) {
+                Log.e(TAG, "Unable to load FeedMedia notes", e);
             }
-            metadata.putString(KEY_EPISODE_NOTES, notes);
         }
         // This field only identifies the id on the device that has the original version.
         // Idea is to perhaps, on a first approach, check if the version on the local DB with the
