@@ -891,12 +891,15 @@ public final class DBReader {
                 } else {
                     folder = new NavDrawerData.FolderDrawerItem(tag);
                     folders.put(tag, folder);
-                    items.add(folder);
                 }
                 drawerItem.id |= folder.id;
                 folder.children.add(drawerItem);
             }
         }
+        List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
+        Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        items.addAll(foldersSorted);
+
         NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
