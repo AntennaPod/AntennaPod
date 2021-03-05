@@ -86,7 +86,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
 
-    private int mPosition = -1;
+    private Feed selectedFeed = null;
     private boolean isUpdatingFeeds = false;
     private boolean displayUpArrow;
 
@@ -265,37 +265,24 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
 
-        Object selectedObject = subscriptionAdapter.getItem(position);
-        if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
-            mPosition = position;
-            return;
+        NavDrawerData.DrawerItem selectedObject = (NavDrawerData.DrawerItem) subscriptionAdapter.getItem(position);
+
+        if (selectedObject.type == NavDrawerData.DrawerItem.Type.FEED) {
+            MenuInflater inflater = requireActivity().getMenuInflater();
+            inflater.inflate(R.menu.nav_feed_context, menu);
+            selectedFeed = ((NavDrawerData.FeedDrawerItem) selectedObject).feed;
         }
-
-        Feed feed = (Feed) selectedObject;
-
-        MenuInflater inflater = requireActivity().getMenuInflater();
-        inflater.inflate(R.menu.nav_feed_context, menu);
-
-        menu.setHeaderTitle(feed.getTitle());
-
-        mPosition = position;
+        menu.setHeaderTitle(selectedObject.getTitle());
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        final int position = mPosition;
-        mPosition = -1; // reset
-        if (position < 0) {
+        if (selectedFeed == null) {
             return false;
         }
 
-        Object selectedObject = subscriptionAdapter.getItem(position);
-        if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
-            // this is the add object, do nothing
-            return false;
-        }
-
-        Feed feed = (Feed) selectedObject;
+        Feed feed = selectedFeed;
+        selectedFeed = null;
         switch (item.getItemId()) {
             case R.id.remove_all_new_flags_item:
                 displayConfirmationDialog(

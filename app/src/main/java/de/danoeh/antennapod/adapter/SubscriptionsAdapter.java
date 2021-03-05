@@ -30,10 +30,6 @@ import jp.shts.android.library.TriangleLabelView;
  * Adapter for subscriptions
  */
 public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
-
-    /** placeholder object that indicates item should be added */
-    public static final Object ADD_ITEM_OBJ = new Object();
-
     /** the position in the view that holds the add item; 0 is the first, -1 is the last position */
     private static final String TAG = "SubscriptionsAdapter";
 
