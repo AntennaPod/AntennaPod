@@ -307,7 +307,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.count.setVisibility(View.GONE);
         }
         holder.title.setText(item.getTitle());
-        holder.itemView.setPadding(item.getLayer() * 50, 0, 0, 0); // TODO
+        int padding = (int) (activity.get().getResources().getDimension(R.dimen.thumbnail_length_navlist) / 2);
+        holder.itemView.setPadding(item.getLayer() * padding, 0, 0, 0);
     }
 
     private void bindFeedView(NavDrawerData.FeedDrawerItem drawerItem, FeedHolder holder) {
