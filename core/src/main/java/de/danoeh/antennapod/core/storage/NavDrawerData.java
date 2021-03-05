@@ -61,7 +61,7 @@ public class NavDrawerData {
         public boolean isOpen;
 
         public FolderDrawerItem(String name) {
-            super(DrawerItem.Type.FOLDER, name.hashCode() & ~0xFFF); // Drop lower 12 bits for item ids
+            super(DrawerItem.Type.FOLDER, (long) name.hashCode() << 32);
             this.name = name;
         }
 
