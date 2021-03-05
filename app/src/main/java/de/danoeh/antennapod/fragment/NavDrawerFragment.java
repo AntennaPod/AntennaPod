@@ -122,12 +122,13 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        if (contextPressedItem.type != NavDrawerData.DrawerItem.Type.FEED) {
+            return; // Should actually never happen because the context menu is not set up for other items
+        }
+
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
-
-        if (contextPressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed.getTitle());
-        }
+        menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed.getTitle());
         // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
     }
 
@@ -177,12 +178,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    private void showMainActivity(String tag) {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, tag);
-        startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -266,7 +261,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         public boolean isSelected(int position) {
             String lastNavFragment = getLastNavFragment(getContext());
             if (position < navAdapter.getSubscriptionOffset()) {
-                return navAdapter.getTags().get(position).equals(lastNavFragment);
+                return navAdapter.getFragmentTags().get(position).equals(lastNavFragment);
             } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
                 long feedId = Long.parseLong(lastNavFragment);
                 if (navDrawerData != null) {
@@ -318,28 +313,18 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             int viewType = navAdapter.getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
                 if (position < navAdapter.getSubscriptionOffset()) {
-                    String tag = navAdapter.getTags().get(position);
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).loadFragment(tag, null);
-                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    } else {
-                        showMainActivity(tag);
-                    }
+                    String tag = navAdapter.getFragmentTags().get(position);
+                    ((MainActivity) getActivity()).loadFragment(tag, null);
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else {
                     int pos = position - navAdapter.getSubscriptionOffset();
                     NavDrawerData.DrawerItem clickedItem = flatItemList.get(pos);
 
                     if (clickedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                         long feedId = ((NavDrawerData.FeedDrawerItem) clickedItem).feed.getId();
-                        if (getActivity() instanceof MainActivity) {
-                            ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
-                            ((MainActivity) getActivity()).getBottomSheet()
-                                    .setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        } else {
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
-                            startActivity(intent);
-                        }
+                        ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                        ((MainActivity) getActivity()).getBottomSheet()
+                                .setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
                         NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) clickedItem);
                         if (openFolders.contains(folder.name)) {
@@ -371,7 +356,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
         @Override
         public boolean onItemLongClick(int position) {
-            if (position < navAdapter.getTags().size()) {
+            if (position < navAdapter.getFragmentTags().size()) {
                 showDrawerPreferencesDialog();
                 return true;
             } else {

@@ -135,13 +135,13 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             default:
                 return null;
         }
-        TypedArray ta = context.obtainStyledAttributes(new int[] { icon } );
+        TypedArray ta = context.obtainStyledAttributes(new int[] { icon });
         Drawable result = ta.getDrawable(0);
         ta.recycle();
         return result;
     }
 
-    public List<String> getTags() {
+    public List<String> getFragmentTags() {
         return Collections.unmodifiableList(fragmentTags);
     }
 
@@ -160,7 +160,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (viewType == VIEW_TYPE_SUBSCRIPTION) {
             return itemAccess.getItem(position - getSubscriptionOffset()).id;
         } else {
-            return -position - 1; //TODO
+            return -position - 1; // IDs are >0
         }
     }
 
@@ -215,13 +215,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();
 
-            if (itemAccess.isSelected(position)) {
-                activity.get().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
-                holder.itemView.setBackgroundResource(typedValue.resourceId);
-            } else {
-                activity.get().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
-                holder.itemView.setBackgroundResource(typedValue.resourceId);
-            }
+            activity.get().getTheme().resolveAttribute(itemAccess.isSelected(position)
+                    ? R.attr.drawer_activated_color : android.R.attr.windowBackground, typedValue, true);
+            holder.itemView.setBackgroundResource(typedValue.resourceId);
 
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
@@ -230,7 +226,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private void bindNavView(String title, int position, NavHolder holder) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return;
         }
         holder.title.setText(title);
@@ -258,21 +254,21 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 holder.count.setText(NumberFormat.getInstance().format(sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+        } else if (tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
-            int spaceUsed = itemAccess.getNumberOfDownloadedItems() -
-                    itemAccess.getReclaimableItems();
+            int spaceUsed = itemAccess.getNumberOfDownloadedItems()
+                    - itemAccess.getReclaimableItems();
 
             if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setOnClickListener(v ->
-                    new AlertDialog.Builder(context)
+                        new AlertDialog.Builder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> { })
                             .show()
                 );
             }
@@ -283,7 +279,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private void bindSectionDivider(DividerHolder holder) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return;
         }
 
