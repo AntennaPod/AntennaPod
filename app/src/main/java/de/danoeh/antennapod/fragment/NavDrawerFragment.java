@@ -56,6 +56,7 @@ import java.util.Set;
 public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @VisibleForTesting
     public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
+    private static final String PREF_OPEN_FOLDERS = "prefOpenFolders";
     @VisibleForTesting
     public static final String PREF_NAME = "NavDrawerPrefs";
     public static final String TAG = "NavDrawerFragment";
@@ -84,6 +85,9 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
 
+        SharedPreferences preferences = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        openFolders = new HashSet<>(preferences.getStringSet(PREF_OPEN_FOLDERS, new HashSet<>())); // Must not modify
+
         progressBar = root.findViewById(R.id.progressBar);
         RecyclerView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
@@ -93,8 +97,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
         root.findViewById(R.id.nav_settings).setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), PreferenceActivity.class)));
-        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .registerOnSharedPreferenceChangeListener(this);
+
+        preferences.registerOnSharedPreferenceChangeListener(this);
         return root;
     }
 
@@ -343,6 +347,11 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         } else {
                             openFolders.add(folder.name);
                         }
+
+                        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                                .edit()
+                                .putStringSet(PREF_OPEN_FOLDERS, openFolders)
+                                .apply();
 
                         disposable = Observable.fromCallable(() -> makeFlatDrawerData(navDrawerData.items, 0))
                                 .subscribeOn(Schedulers.computation())
