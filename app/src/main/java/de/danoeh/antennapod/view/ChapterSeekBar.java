@@ -17,7 +17,6 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private float[] dividerPos;
     private final Paint paintBackground = new Paint();
     private final Paint paintProgressPrimary = new Paint();
-    private final Paint paintProgressSecondary = new Paint();
 
     public ChapterSeekBar(Context context) {
         super(context);
@@ -43,8 +42,6 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         paintBackground.setAlpha(128);
         paintProgressPrimary.setColor(ThemeUtils.getColorFromAttr(getContext(),
                 de.danoeh.antennapod.core.R.attr.colorPrimary));
-        paintProgressSecondary.setColor(ThemeUtils.getColorFromAttr(getContext(),
-                de.danoeh.antennapod.core.R.attr.seek_background));
     }
 
     /**
@@ -82,7 +79,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         final int saveCount = canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
         canvas.drawRect(0, top, width, bottom, paintBackground);
-        canvas.drawRect(0, top, progressSecondary, bottom, paintProgressSecondary);
+        canvas.drawRect(0, top, progressSecondary, bottom, paintBackground);
         canvas.drawRect(0, top, progressPrimary, bottom, paintProgressPrimary);
         canvas.restoreToCount(saveCount);
     }
@@ -112,7 +109,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
                 canvas.drawRect(leftCurr, topExpanded, progressPrimary, bottomExpanded, paintProgressPrimary);
             } else {
                 if (progressSecondary > leftCurr) {
-                    canvas.drawRect(leftCurr, top, progressSecondary, bottom, paintProgressSecondary);
+                    canvas.drawRect(leftCurr, top, progressSecondary, bottom, paintBackground);
                 }
                 canvas.drawRect(leftCurr, top, progressPrimary, bottom, paintProgressPrimary);
             }
