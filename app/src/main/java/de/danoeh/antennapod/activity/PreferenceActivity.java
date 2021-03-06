@@ -136,8 +136,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.feed_settings_label);
             builder.setMessage(R.string.pref_feed_settings_dialog_msg);
-            builder.setPositiveButton(R.string.pref_ok_label, (dialogInterface, i) -> {
-            });
+            builder.setPositiveButton(android.R.string.ok, null);
             builder.show();
         } else {
             PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
