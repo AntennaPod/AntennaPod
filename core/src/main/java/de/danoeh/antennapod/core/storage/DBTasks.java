@@ -222,7 +222,7 @@ public final class DBTasks {
             }).start();
         }
         if (!normalFeeds.isEmpty()) {
-            DownloadRequester.getInstance().downloadFeeds(context, feeds, loadAllPages, force, initiatedByUser);
+            DownloadRequester.getInstance().downloadFeeds(context, normalFeeds, loadAllPages, force, initiatedByUser);
         }
     }
 
