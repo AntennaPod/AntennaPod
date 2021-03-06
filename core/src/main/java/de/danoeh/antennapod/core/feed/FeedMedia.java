@@ -19,13 +19,11 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.model.EpisodeAction;
-import de.danoeh.antennapod.core.util.playback.PlayableException;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -384,13 +382,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
-        if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(itemID);
-        }
-    }
-
-    @Override
     public String getEpisodeTitle() {
         if (item == null) {
             return null;
@@ -442,14 +433,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public String getPaymentLink() {
-        if (item == null) {
-            return null;
-        }
-        return item.getPaymentLink();
-    }
-
-    @Override
     public Date getPubDate() {
         if (item == null) {
             return null;
@@ -464,11 +447,6 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public boolean localFileAvailable() {
         return isDownloaded() && file_url != null;
-    }
-
-    @Override
-    public boolean streamAvailable() {
-        return download_url != null;
     }
 
     public long getItemId() {

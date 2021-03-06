@@ -10,7 +10,6 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
-import de.danoeh.antennapod.core.util.playback.PlayableException;
 import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import java.util.Calendar;
 import java.util.List;
@@ -78,23 +77,18 @@ public class CastUtils {
     /**
      * Converts {@link FeedMedia} objects into a format suitable for sending to a Cast Device.
      * Before using this method, one should make sure {@link #isCastable(Playable)} returns
-     * {@code true}.
-     *
-     * Unless media.{@link FeedMedia#loadMetadata() loadMetadata()} has already been called,
-     * this method should not run on the main thread.
+     * {@code true}. This method should not run on the main thread.
      *
      * @param media The {@link FeedMedia} object to be converted.
      * @return {@link MediaInfo} object in a format proper for casting.
      */
     public static MediaInfo convertFromFeedMedia(FeedMedia media){
-        if(media == null) {
+        if (media == null) {
             return null;
         }
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
-        try{
-            media.loadMetadata();
-        } catch (PlayableException e) {
-            Log.e(TAG, "Unable to load FeedMedia metadata", e);
+        if (media.getItem() == null) {
+            media.setItem(DBReader.getFeedItem(media.getItemId()));
         }
         FeedItem feedItem = media.getItem();
         if (feedItem != null) {
@@ -188,16 +182,11 @@ public class CastUtils {
             if (mediaId > 0) {
                 FeedMedia fMedia = DBReader.getFeedMedia(mediaId);
                 if (fMedia != null) {
-                    try {
-                        fMedia.loadMetadata();
-                        if (matches(media, fMedia)) {
-                            result = fMedia;
-                            Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);
-                        } else {
-                            Log.d(TAG, "FeedMedia object obtained does NOT match the MediaInfo provided. id=" + mediaId);
-                        }
-                    } catch (PlayableException e) {
-                        Log.e(TAG, "Unable to load FeedMedia metadata to compare with MediaInfo", e);
+                    if (matches(media, fMedia)) {
+                        result = fMedia;
+                        Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);
+                    } else {
+                        Log.d(TAG, "FeedMedia object obtained does NOT match the MediaInfo provided. id=" + mediaId);
                     }
                 } else {
                     Log.d(TAG, "Unable to find in database a FeedMedia with id=" + mediaId);
