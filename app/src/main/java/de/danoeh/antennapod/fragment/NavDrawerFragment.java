@@ -134,8 +134,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (contextPressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed, item);
+        NavDrawerData.DrawerItem pressedItem = contextPressedItem;
+        contextPressedItem = null;
+        if (pressedItem != null && pressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) pressedItem).feed, item);
         }
         return false;
     }
