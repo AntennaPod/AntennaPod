@@ -385,7 +385,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
-        if(!isVisible()) {
+        if (!isVisible() || recyclerAdapter == null) {
             return false;
         }
         FeedItem selectedItem = recyclerAdapter.getSelectedItem();
@@ -464,7 +464,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
                     Log.d(TAG, "move(" + from + ", " + to + ") in memory");
-                    if (from >= queue.size() || to >= queue.size()) {
+                    if (from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
                         return false;
                     }
                     queue.add(to, queue.remove(from));
