@@ -372,7 +372,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     };
 
     private void loadData() {
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(
                 () -> {
                     NavDrawerData data = DBReader.getNavDrawerData();
