@@ -544,6 +544,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 playableLoaded -> {
+                                    if (!playable.getIdentifier().equals(
+                                            PlaybackPreferences.getCurrentlyPlayingFeedMediaId())) {
+                                        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+                                    }
                                     mediaPlayer.playMediaObject(playableLoaded, stream, startWhenPrepared,
                                             prepareImmediately);
                                     addPlayableToQueue(playableLoaded);
