@@ -196,10 +196,17 @@ public class DBWriter {
             if (queue.remove(item)) {
                 removedFromQueue.add(item);
             }
-            if (item.getMedia() != null && item.getMedia().isDownloaded()) {
-                deleteFeedMediaSynchronous(context, item.getMedia());
-            } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
-                requester.cancelDownload(context, item.getMedia());
+            if (item.getMedia() != null) {
+                if (item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                    // Applies to both downloaded and streamed media
+                    PlaybackPreferences.writeNoMediaPlaying();
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                }
+                if (item.getMedia().isDownloaded()) {
+                    deleteFeedMediaSynchronous(context, item.getMedia());
+                } else if (requester.isDownloadingFile(item.getMedia())) {
+                    requester.cancelDownload(context, item.getMedia());
+                }
             }
         }
 
