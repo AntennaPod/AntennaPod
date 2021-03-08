@@ -28,6 +28,7 @@
   <string name="download_statistics_label">Descargas</string>
   <string name="notification_pref_fragment">Notificaciones</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">no encontrado</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de episodios:</string>
   <string name="statistics_details_dialog">%1$d episodios iniciados de %2$d.\n\nReproducidos %3$s de %4$s.</string>
@@ -227,14 +228,19 @@
   <string name="download_running">Descarga en curso</string>
   <string name="download_error_details">Detalles</string>
   <string name="download_error_details_message">%1$s \n\nURL de archivo:\n%2$s</string>
+  <string name="download_error_tap_for_details">Seleccione para ver detalles.</string>
   <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
+  <string name="download_error_insufficient_space">no hay espacio disponible en su dispositivo</string>
   <string name="download_error_http_data_error">Error de datos HTTP</string>
   <string name="download_error_error_unknown">Error desconocido</string>
   <string name="download_error_unsupported_type">Tipo de canal no admitido</string>
   <string name="download_error_connection_error">Error de conexión</string>
+  <string name="download_error_unknown_host">Servidor no encontrado. Verifique su conexión de red y que la dirección este escrita correctamente. </string>
   <string name="download_error_unauthorized">Error de autenticación</string>
   <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
+  <string name="download_error_wrong_size">Descarga incompleta por perdida de conexión con el servidor.</string>
+  <string name="download_error_blocked">Descargada bloqueada por otra aplicación en su dispositivo.</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó la <i>descarga automática</i> en este elemento</string>
   <string name="download_report_title">Descargas completadas con error(es)</string>
   <string name="auto_download_report_title">Descargas automáticas completadas</string>
@@ -247,6 +253,7 @@
     <item quantity="one">Queda %d descarga</item>
     <item quantity="other">Quedan %d descargas</item>
   </plurals>
+  <string name="service_shutting_down">Apagando servicio</string>
   <string name="download_notification_title">Descargando datos del pódcast</string>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
@@ -613,6 +620,7 @@
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_title">Iniciar sesión</string>
   <string name="gpodnetauth_login_butLabel">Iniciar sesión</string>
+  <string name="gpodnetauth_encryption_warning">Clave de acceso y data no encriptadas.</string>
   <string name="create_account">Crear cuenta</string>
   <string name="username_label">Usuario</string>
   <string name="password_label">Contraseña</string>

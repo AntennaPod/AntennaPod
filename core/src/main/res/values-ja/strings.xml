@@ -18,6 +18,7 @@
   <string name="downloads_log_label">ログ</string>
   <string name="subscriptions_label">購読</string>
   <string name="subscriptions_list_label">購読リスト</string>
+  <string name="cancel_download_label">ダウンロードをキャンセル</string>
   <string name="playback_history_label">再生履歴</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net ログイン</string>
@@ -25,11 +26,14 @@
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
   <string name="playback_statistics_label">再生</string>
   <string name="download_statistics_label">ダウンロード</string>
+  <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">%1$sが見つかりません</string>
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
   <string name="statistics_mode">統計情報モード</string>
   <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
+  <string name="statistics_mode_count_all">再生済みとマークされたすべてのポッドキャストを集計する</string>
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <string name="statistics_reset_data">統計情報のデータをリセット</string>
   <string name="statistics_reset_data_msg">これにより、すべてのエピソードを再生した期間の履歴が消去されます。 続行しますか?</string>
@@ -99,7 +103,16 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">完了 %d 日後</item>
   </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="other">%d選択された</item>
+  </plurals>
+  <plurals name="num_episodes">
+    <item quantity="other">%dエピソード</item>
+  </plurals>
   <string name="loading_more">さらに読み込んでいます…</string>
+  <plurals name="new_episode_notification_title">
+    <item quantity="other">新エピソード</item>
+  </plurals>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">すべて再生済としてマーク</string>
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
@@ -114,6 +127,8 @@
   <string name="feed_settings_label">ポッドキャスト設定</string>
   <string name="rename_feed_label">ポッドキャストの名前を変更</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
+  <string name="share_label">共有</string>
+  <string name="share_label_with_ellipses">共有…</string>
   <string name="share_file_label">ファイルを共有</string>
   <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">ポッドキャストを削除しています</string>
@@ -211,6 +226,7 @@
   <string name="confirm_mobile_download_dialog_message">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
   <string name="confirm_mobile_streaming_notification_title">モバイルストリーミングの確認</string>
   <string name="confirm_mobile_streaming_notification_message">モバイルデータ接続を介したストリーミングは設定で無効になっています。 タップするととにかくストリーミングします。</string>
+  <string name="confirm_mobile_streaming_button_always">常に</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">キューに追加するだけ</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">一時的に有効にする</string>
   <!--Mediaplayer messages-->
@@ -283,6 +299,7 @@
   <string name="storage_pref">ストレージ</string>
   <string name="storage_sum">エピソードの自動削除、インポート、エクスポート</string>
   <string name="project_pref">プロジェクト</string>
+  <string name="synchronization_pref">同期</string>
   <string name="automation">自動</string>
   <string name="download_pref_details">詳細</string>
   <string name="import_export_pref">インポート/エクスポート</string>

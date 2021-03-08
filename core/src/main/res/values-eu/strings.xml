@@ -165,6 +165,7 @@
   <string name="hide_not_queued_episodes_label">Ez dago ilaran</string>
   <string name="hide_has_media_label">Media du</string>
   <string name="filtered_label">Iragaziak</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Errorea azken eguneraketan. Sakatu xehetasunak ikusteko.</string>
   <string name="open_podcast">Ireki podcasta</string>
   <string name="please_wait_for_data">Mesedez, itxaron datuak kargatu arte</string>
   <!--actions on feeditems-->
@@ -228,14 +229,24 @@
   <string name="download_running">Deskarga abian</string>
   <string name="download_error_details">Xehetasunak</string>
   <string name="download_error_details_message">%1$s \n\nartxibategiaren URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">Sakatu xehetasunak ikusteko.</string>
   <string name="download_error_device_not_found">Ez da biltegiratze gailurik aurkitu</string>
+  <string name="download_error_insufficient_space">Ez dago nahikoa lekurik zure gailan.</string>
   <string name="download_error_http_data_error">HTTP datuen errorea</string>
   <string name="download_error_error_unknown">Errore ezezaguna</string>
+  <string name="download_error_parser_exception">Podcast ostalariaren zerbitzariak hautsitako podcast iturria bidali du.</string>
   <string name="download_error_unsupported_type">Kanal mota ez onartua</string>
+  <string name="download_error_unsupported_type_html">Podcast ostalariaren zerbitzariak webgune bat bidali du, ez podcast bat.</string>
+  <string name="download_error_not_found">Podcast ostalariaren zerbitzariak ez daki non aurkitu fitxategia. Baliteke ezabatu izana.</string>
   <string name="download_error_connection_error">Konexio errorea</string>
+  <string name="download_error_unknown_host">Ezin da zerbitzaria aurkitu. Egiaztatu helbidea ondo idatzita dagoen eta lan egiten duen sareko konexiorik baduzun.</string>
   <string name="download_error_unauthorized">Egiaztatze errorea</string>
   <string name="download_error_file_type_type">Artxibategi motaren errorea</string>
+  <string name="download_error_forbidden">Podcast ostalariaren zerbitzariak ez du erantzun nahi.</string>
   <string name="download_canceled_msg">Deskarga ezeztatua</string>
+  <string name="download_error_wrong_size">Zerbitzariaren konexioa galdu egin da deskarga amaitu aurretik</string>
+  <string name="download_error_blocked">Deskarga zure gailuko beste aplikazio batek blokeatu du.</string>
+  <string name="download_error_certificate">Ezin da konexio segururik ezarri. Horrek esan nahi du zure gailuko beste aplikazio batek deskarga blokeatu duela edo zerbitzariaren ziurtagiriekin zerbait gaizki dagoela.</string>
   <string name="download_canceled_autodownload_enabled_msg">Deskarga ezeztatua\aktibatu da <i>Auto deskarga</i> elementu honetan</string>
   <string name="download_report_title">Deskarga(k) osatu d(ir)a errorea(k) d(it)uela</string>
   <string name="auto_download_report_title">Deskargatu automatikoak osatuta</string>
@@ -248,6 +259,7 @@
     <item quantity="one">%d deskarga zain</item>
     <item quantity="other">%d deskarga zain</item>
   </plurals>
+  <string name="service_shutting_down">Zerbitzua itzaltzen</string>
   <string name="download_notification_title">Podcastaren datuak deskargatzen</string>
   <string name="download_log_title_unknown">Izenburu ezezaguna</string>
   <string name="download_type_feed">Kanala</string>
@@ -617,6 +629,7 @@
   <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="gpodnetauth_login_title">Hasi saioa</string>
   <string name="gpodnetauth_login_butLabel">Hasi saioa</string>
+  <string name="gpodnetauth_encryption_warning">Pasahitza eta datuak ez daude enkriptaturik!</string>
   <string name="create_account">Kontua sortu</string>
   <string name="username_label">Erabioltzailea</string>
   <string name="password_label">Pasahitza</string>

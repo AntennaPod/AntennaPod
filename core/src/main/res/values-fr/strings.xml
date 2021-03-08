@@ -83,7 +83,7 @@
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="chapter_duration">Durée : %1$s</string>
-  <string name="description_label">Description</string>
+  <string name="description_label">Notes</string>
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="processing_label">Traitement en cours</string>
   <string name="close_label">Fermer</string>
@@ -105,7 +105,7 @@
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>
   <string name="episode_cleanup_queue_removal">Quand pas dans la liste de lecture</string>
-  <string name="episode_cleanup_after_listening">Après avoir terminé</string>
+  <string name="episode_cleanup_after_listening">Après avoir été écouté</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 heure après avoir été écouté</item>
     <item quantity="other">%d heures après avoir été écouté</item>
@@ -165,6 +165,7 @@
   <string name="hide_not_queued_episodes_label">Pas dans la liste de lecture</string>
   <string name="hide_has_media_label">Avec média</string>
   <string name="filtered_label">Filtré</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échoué. Taper pour plus de détails.</string>
   <string name="open_podcast">Ouvrir le podcast</string>
   <string name="please_wait_for_data">Merci d\'attendre la fin du téléchargement des données</string>
   <!--actions on feeditems-->
@@ -228,14 +229,24 @@
   <string name="download_running">Téléchargement en cours</string>
   <string name="download_error_details">Détails</string>
   <string name="download_error_details_message">%1$s \n\nLien du fichier :\n%2$s</string>
+  <string name="download_error_tap_for_details">Taper pour plus de détails.</string>
   <string name="download_error_device_not_found">Volume de stockage non trouvé</string>
+  <string name="download_error_insufficient_space">Espace insuffisant sur l\'appareil.</string>
   <string name="download_error_http_data_error">Erreur de données HTTP</string>
   <string name="download_error_error_unknown">Erreur inconnue</string>
+  <string name="download_error_parser_exception">Le serveur du podcast a retourné un flux ne fonctionnant pas.</string>
   <string name="download_error_unsupported_type">Type de flux non géré</string>
+  <string name="download_error_unsupported_type_html">Le serveur du podcast retourne un site web au lieu d\'un podcast.</string>
+  <string name="download_error_not_found">Le serveur du podcast ne trouve pas le fichier. Il est possible qu\'il ne soit plus disponible.</string>
   <string name="download_error_connection_error">Erreur de connexion</string>
+  <string name="download_error_unknown_host">Serveur introuvable. Vérifier que l\'adresse soit correcte et que la connexion fonctionne.</string>
   <string name="download_error_unauthorized">Erreur d\'authentification</string>
   <string name="download_error_file_type_type">Erreur format de fichier</string>
+  <string name="download_error_forbidden">Le serveur du podcast refuse de répondre.</string>
   <string name="download_canceled_msg">Téléchargement annulé</string>
+  <string name="download_error_wrong_size">La connexion au serveur a été coupée avant la fin du téléchargement</string>
+  <string name="download_error_blocked">Le téléchargement a été bloqué par une application sur l\'appareil.</string>
+  <string name="download_error_certificate">Impossible d\'établir une connexion sécurisée. Une application sur l\'appareil bloque peut-être le téléchargement ou le certificat du serveur peut avoir un problème.</string>
   <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
   <string name="download_report_title">Téléchargements terminés avec des erreurs</string>
   <string name="auto_download_report_title">Téléchargement automatique terminé</string>
@@ -248,7 +259,8 @@
     <item quantity="one">%d téléchargement restant</item>
     <item quantity="other">%d téléchargements restants</item>
   </plurals>
-  <string name="download_notification_title">Téléchargement des données du podcast</string>
+  <string name="service_shutting_down">Service en cours de fermeture</string>
+  <string name="download_notification_title">Téléchargement podcasts</string>
   <string name="download_log_title_unknown">Titre inconnu</string>
   <string name="download_type_feed">Flux</string>
   <string name="download_type_media">Fichier média</string>
@@ -348,7 +360,7 @@
   <string name="external_elements">Eléments externes</string>
   <string name="interruptions">Interruptions</string>
   <string name="playback_control">Contrôle de lecture</string>
-  <string name="reassign_hardware_buttons">Réaffectation des boutons</string>
+  <string name="reassign_hardware_buttons">Paramétrage des boutons</string>
   <string name="preference_search_hint">Chercher...</string>
   <string name="preference_search_no_results">Aucun résultat</string>
   <string name="preference_search_clear_history">Effacer l\'historique</string>
@@ -358,15 +370,15 @@
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture quand les écouteurs ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand des écouteurs sont branchés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
-  <string name="pref_hardware_forward_button_title">Bouton Episode Suivant</string>
-  <string name="pref_hardware_forward_button_summary">Définir le comportement du bouton \"épisode suivant\"</string>
-  <string name="pref_hardware_previous_button_title">Bouton Episode Précédent</string>
-  <string name="pref_hardware_previous_button_summary">Définir le comportement du bouton \"épisode précédent\"</string>
+  <string name="pref_hardware_forward_button_title">Bouton Saut Avant</string>
+  <string name="pref_hardware_forward_button_summary">Définir le comportement du bouton \"saut avant\"</string>
+  <string name="pref_hardware_previous_button_title">Bouton Saut Arrière</string>
+  <string name="pref_hardware_previous_button_summary">Définir le comportement du bouton \"saut arrière\"</string>
   <string name="button_action_fast_forward">Saut Avant</string>
   <string name="button_action_rewind">Saut Arrière</string>
-  <string name="button_action_skip_episode">Sauter l\'épisode</string>
+  <string name="button_action_skip_episode">Passer l\'épisode</string>
   <string name="button_action_restart_episode">Redémarrer l\'épisode</string>
-  <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
+  <string name="pref_followQueue_sum">Après la fin d\'un épisode, lire le suivant dans la liste de lecture</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
   <string name="pref_smart_mark_as_played_sum">Les épisodes seront marqués comme lus même s\'il reste quelques secondes pour les finir</string>
@@ -423,9 +435,9 @@
   <string name="pref_episode_cache_title">Nombre d\'épisodes stockés</string>
   <string name="pref_episode_cache_summary">Nombre maximum d\'épisodes stockés sur l\'appareil. Le téléchargement automatique sera suspendu si ce nombre est atteint.</string>
   <string name="pref_episode_cover_title">Image des épisodes</string>
-  <string name="pref_episode_cover_summary">Lorsqu\'elles existent, utiliser pour les listes les images propres aux épisodes au lieu de celle du podcast. Sinon l\'image du podcast sera toujours utilisé.</string>
+  <string name="pref_episode_cover_summary">Utiliser dans les listes les images des épisodes. Sinon l\'image du podcast sera utilisée.</string>
   <string name="pref_show_remain_time_title">Afficher la durée restante</string>
-  <string name="pref_show_remain_time_summary">Pour les épisodes, montrer la durée restant à lire à la place de la durée totale.</string>
+  <string name="pref_show_remain_time_summary">Montrer la durée restant à lire des épisodes au lieu de la durée totale.</string>
   <string name="pref_theme_title_use_system">Thème du système</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
@@ -478,7 +490,7 @@
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
   <string name="pref_image_cache_size_sum">Taille de l’espace de stockage temporaire des images.</string>
-  <string name="documentation_support">Documentation &amp; Support</string>
+  <string name="documentation_support">Documentation et support</string>
   <string name="visit_user_forum">Forum des utilisateurs</string>
   <string name="bug_report_title">Signaler un bug</string>
   <string name="open_bug_tracker">Ouvrir le suivi des bugs</string>
@@ -615,6 +627,7 @@
   <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="gpodnetauth_login_title">Se connecter</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
+  <string name="gpodnetauth_encryption_warning">Le mot de passe et les données ne sont pas cryptés !</string>
   <string name="create_account">Créer un compte</string>
   <string name="username_label">Identifiant</string>
   <string name="password_label">Mot de passe</string>
@@ -823,7 +836,7 @@
   <string name="notification_channel_user_action">Action requise</string>
   <string name="notification_channel_user_action_description">S\'affiche si une action est requise. Par exemple, un mot de passe à saisir.</string>
   <string name="notification_channel_downloading">Téléchargement en cours</string>
-  <string name="notification_channel_downloading_description">S\'affiche lorsqu\'un téléchargement est en cours.</string>
+  <string name="notification_channel_downloading_description">S\'affiche lors du téléchargement d\'épisodes ou des données des podcasts.</string>
   <string name="notification_channel_playing">Lecture en cours</string>
   <string name="notification_channel_playing_description">Permet de contrôler la lecture. C\'est la notification principale pendant la lecture d\'un podcast.</string>
   <string name="notification_channel_download_error">Erreur de téléchargement</string>
@@ -833,7 +846,7 @@
   <string name="notification_channel_auto_download">Fin du téléchargement automatique</string>
   <string name="notification_channel_episode_auto_download">S\'affiche lorsque des épisodes ont été téléchargés automatiquement.</string>
   <string name="notification_channel_new_episode">Nouveaux épisodes</string>
-  <string name="notification_channel_new_episode_description">S\'affiche quand de nouveaux épisodes sont disponible et que les notifications ont été activées</string>
+  <string name="notification_channel_new_episode_description">S\'affiche quand de nouveaux épisodes sont disponible pour les podcasts dont la notification a été activée</string>
   <!--Widget settings-->
   <string name="widget_settings">Préférences des widgets</string>
   <string name="widget_create_button">Créer un widget</string>
