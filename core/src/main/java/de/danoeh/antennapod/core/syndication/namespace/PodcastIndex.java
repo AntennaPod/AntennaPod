@@ -3,6 +3,9 @@ package de.danoeh.antennapod.core.syndication.namespace;
 import org.jsoup.helper.StringUtil;
 import org.xml.sax.Attributes;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
@@ -14,13 +17,16 @@ public class PodcastIndex extends Namespace {
     private static final String URL = "url";
 
     private static final String FUNDING = "funding";
+    private static Feed.Funding funding;
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
         if (FUNDING.equals(localName)) {
             String href = attributes.getValue(URL);
-            state.getFeed().setPaymentLink(href, Feed.PaymentType.PODCAST_PAYMENT);
+            if (funding == null) {
+               funding = new Feed.Funding(href, "");
+            }
         }
         return new SyndElement(localName, this);
     }
@@ -31,8 +37,10 @@ public class PodcastIndex extends Namespace {
             return;
         }
         String content = state.getContentBuf().toString();
-        if (FUNDING.equals(localName) && !StringUtil.isBlank(content)) {
-            state.getFeed().setPaymentText(content, Feed.PaymentType.PODCAST_PAYMENT);
+        if (FUNDING.equals(localName) && !StringUtil.isBlank(content) && funding != null) {
+            funding.setContent(content);
+            funding.setType(Feed.FundingType.PODCAST2_FUNDING)
+            state.getFeed().addPayment(funding);
         }
     }
 }

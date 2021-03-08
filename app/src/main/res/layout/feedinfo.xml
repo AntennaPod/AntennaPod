@@ -102,24 +102,11 @@
                 tools:background="@android:color/holo_red_light" />
 
             <TextView
-                android:id="@+id/txtvPaymentUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:maxLines="4"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:linksClickable="true"
-                android:autoLink="web"
-                tools:background="@android:color/holo_green_dark"
-                tools:text="example.com" />
-
-            <TextView
                 android:id="@+id/txtvFundingUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
-                android:maxLines="4"
+                android:maxLines="8"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:linksClickable="true"

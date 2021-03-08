@@ -138,7 +138,10 @@ public class NSAtom extends Namespace {
                         //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
-                    state.getFeed().setPaymentLink(href, Feed.PaymentType.ATOM_PAYMENT);
+                    // TTTODO
+                    state.getFeed().addPayment(new Feed.Funding(href,
+                            "Support this podcast",
+                            Feed.FundingType.ATOM_PAYMENT));
                 } else if (LINK_REL_NEXT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaged(true);
                     state.getFeed().setNextPageLink(href);

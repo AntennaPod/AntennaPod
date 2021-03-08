@@ -34,6 +34,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.StringUtil;
 
 import de.danoeh.antennapod.R;
@@ -61,6 +62,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,7 +85,6 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     private TextView txtvPodcastTime;
     private TextView txtvPodcastSpace;
     private TextView txtvPodcastEpisodeCount;
-    private TextView txtvPaymentUrl;
     private TextView txtvFundingUrl;
     private TextView lblSupport;
     private Button btnvOpenStatistics;
@@ -162,7 +163,6 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         btnvOpenStatistics = root.findViewById(R.id.btnvOpenStatistics);
         txtvUrl = root.findViewById(R.id.txtvUrl);
         lblSupport = root.findViewById(R.id.lblSupport);
-        txtvPaymentUrl = root.findViewById(R.id.txtvPaymentUrl);
         txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
@@ -242,35 +242,19 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
 
-        if (StringUtil.isBlank(feed.getPaymentLinks())) {
+        if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
             lblSupport.setVisibility(View.GONE);
-            txtvPaymentUrl.setVisibility(View.GONE);
             txtvFundingUrl.setVisibility(View.GONE);
         } else {
             lblSupport.setVisibility(View.VISIBLE);
-            if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))) {
-                txtvPaymentUrl.setVisibility(View.GONE);
-            } else {
-                txtvPaymentUrl.setVisibility(View.VISIBLE);
-                txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
+            ArrayList<Feed.Funding> fundingList = feed.getPaymentLinks();
+            String str = "";
+            for (Feed.Funding funding : fundingList ) {
+                str += funding.content + " " + funding.url;
+                str += "\n";
             }
-            if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT))) {
-                txtvFundingUrl.setVisibility(View.GONE);
-            } else {
-                if (! StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))
-                        && feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT)
-                        .compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
-                    txtvPaymentUrl.setVisibility(View.GONE);
-                }
-                txtvFundingUrl.setVisibility(View.VISIBLE);
-                txtvFundingUrl.setText(
-                        (StringUtil.isBlank(feed.getPaymentText(Feed.PaymentType.PODCAST_PAYMENT))
-                                ?
-                                "" :
-                                (feed.getPaymentText(Feed.PaymentType.PODCAST_PAYMENT)
-                                        + " "))
-                                + feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT));
-            }
+            str = StringUtils.trim(str);
+            txtvFundingUrl.setText(str);
         }
 
         Iconify.addIcons(txtvUrl);
