@@ -81,14 +81,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
-            if (Build.VERSION.SDK_INT >= 26) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-                startActivity(intent);
-            } else {
-                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
-            }
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
