@@ -208,7 +208,9 @@ public abstract class PlaybackController {
                 handleStatus();
             } else {
                 Log.w(TAG, "Couldn't receive status update: playbackService was null");
-                bindToService();
+                if (PlaybackService.isRunning) {
+                    bindToService();
+                }
             }
         }
     };
@@ -232,7 +234,7 @@ public abstract class PlaybackController {
                     onBufferUpdate(progress);
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-                    if (playbackService == null) {
+                    if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
                         return;
                     }
