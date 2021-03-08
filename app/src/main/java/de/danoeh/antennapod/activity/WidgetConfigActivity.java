@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterJobService;
 
 public class WidgetConfigActivity extends AppCompatActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -127,7 +127,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
-        PlayerWidgetJobService.updateWidget(this);
+        WidgetUpdaterJobService.performBackgroundUpdate(this);
     }
 
     private int getColorWithAlpha(int color, int opacity) {

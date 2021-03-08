@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.core.feed;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FeedFilter {
+public class FeedFilter implements Serializable {
 
     private static final String TAG = "FeedFilter";
 

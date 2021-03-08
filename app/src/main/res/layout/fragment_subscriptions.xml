@@ -12,6 +12,7 @@
             android:theme="?attr/actionBarTheme"
             android:layout_alignParentTop="true"
             app:title="@string/subscriptions_label"
+            app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
     <TextView

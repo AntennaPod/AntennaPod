@@ -66,7 +66,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
             StatisticsHolder holder = (StatisticsHolder) h;
             StatisticsItem statsItem = statisticsData.get(position - 1);
             Glide.with(context)
-                    .load(statsItem.feed.getImageLocation())
+                    .load(statsItem.feed.getImageUrl())
                     .apply(new RequestOptions()
                             .placeholder(R.color.light_gray)
                             .error(R.color.light_gray)

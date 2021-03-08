@@ -13,10 +13,7 @@ import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
- * SAX-Parser for reading RSS-Feeds
- *
- * @author daniel
- *
+ * SAX-Parser for reading RSS-Feeds.
  */
 public class NSRSS20 extends Namespace {
 
@@ -83,8 +80,7 @@ public class NSRSS20 extends Namespace {
             if (state.getCurrentItem() != null) {
                 FeedItem currentItem = state.getCurrentItem();
                 // the title tag is optional in RSS 2.0. The description is used
-                // as a
-                // title if the item has no title-tag.
+                // as a title if the item has no title-tag.
                 if (currentItem.getTitle() == null) {
                     currentItem.setTitle(currentItem.getDescription());
                 }
@@ -138,7 +134,7 @@ public class NSRSS20 extends Namespace {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
                     state.getFeed().setDescription(content);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setDescription(content);
+                    state.getCurrentItem().setDescriptionIfLonger(content);
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase());

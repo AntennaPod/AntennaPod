@@ -96,6 +96,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_entries">
+        <item>@string/episode_cleanup_except_favorite_removal</item>
         <item>@string/episode_cleanup_queue_removal</item>
         <item>0</item>
         <item>1</item>
@@ -103,6 +104,20 @@
         <item>5</item>
         <item>7</item>
         <item>@string/episode_cleanup_never</item>
+    </string-array>
+
+    <string-array name="button_action_options">
+        <item>@string/button_action_fast_forward</item>
+        <item>@string/button_action_rewind</item>
+        <item>@string/button_action_skip_episode</item>
+        <item>@string/button_action_restart_episode</item>
+    </string-array>
+
+    <string-array name="button_action_values">
+        <item>@string/keycode_media_fast_forward</item>
+        <item>@string/keycode_media_rewind</item>
+        <item>@string/keycode_media_next</item>
+        <item>@string/keycode_media_previous</item>
     </string-array>
 
     <string-array name="enqueue_location_options">
@@ -119,6 +134,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_values">
+        <item>-3</item>
         <item>-1</item>
         <item>0</item>
         <item>12</item>

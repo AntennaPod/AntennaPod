@@ -15,6 +15,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.core.storage.mapper.FeedItemFilterQuery;
 import org.apache.commons.io.FileUtils;
@@ -51,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2020000;
+    public static final int VERSION = 2030000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -83,7 +84,6 @@ public class PodDBAdapter {
     public static final String KEY_FEEDFILETYPE = "feedfile_type";
     public static final String KEY_COMPLETION_DATE = "completion_date";
     public static final String KEY_FEEDITEM = "feeditem";
-    public static final String KEY_CONTENT_ENCODED = "content_encoded";
     public static final String KEY_PAYMENT_LINK = "payment_link";
     public static final String KEY_START = "start";
     public static final String KEY_LANGUAGE = "language";
@@ -115,6 +115,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
+    public static final String KEY_FEED_TAGS = "tags";
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
 
     // Table names
@@ -152,14 +153,15 @@ public class PodDBAdapter {
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_TAGS + " TEXT,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
-            + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
-            + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
+            + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY
+            + KEY_TITLE + " TEXT," + KEY_PUBDATE + " INTEGER,"
+            + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
@@ -255,6 +257,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
             TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
@@ -310,8 +313,7 @@ public class PodDBAdapter {
 
     private static final String SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION =
             "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA + ", "
-                    + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + ", "
-                    + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED
+                    + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION
             + " FROM " + TABLE_NAME_FEED_ITEMS
             + JOIN_FEED_ITEM_AND_MEDIA;
     private static final String SELECT_FEED_ITEMS_AND_MEDIA =
@@ -372,6 +374,7 @@ public class PodDBAdapter {
      * For more information see
      * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public static void tearDownTests() {
         getInstance().dbHelper.close();
         instance = null;
@@ -447,6 +450,7 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
+        values.put(KEY_FEED_TAGS, prefs.getTagsAsString());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
@@ -624,9 +628,6 @@ public class PodDBAdapter {
         values.put(KEY_LINK, item.getLink());
         if (item.getDescription() != null) {
             values.put(KEY_DESCRIPTION, item.getDescription());
-        }
-        if (item.getContentEncoded() != null) {
-            values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
         values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
@@ -949,9 +950,12 @@ public class PodDBAdapter {
      * @param feed The feed you want to get the FeedItems from.
      * @return The cursor of the query
      */
-    public final Cursor getAllItemsOfFeedCursor(final Feed feed) {
+    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId();
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId()
+                + whereClauseAnd;
         return db.rawQuery(query, null);
     }
 
@@ -959,7 +963,7 @@ public class PodDBAdapter {
      * Return the description and content_encoded of item
      */
     public final Cursor getDescriptionOfItem(final FeedItem item) {
-        final String query = "SELECT " + KEY_DESCRIPTION + ", " + KEY_CONTENT_ENCODED
+        final String query = "SELECT " + KEY_DESCRIPTION
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " WHERE " + KEY_ID + "=" + item.getId();
         return db.rawQuery(query, null);
@@ -1312,8 +1316,6 @@ public class PodDBAdapter {
                     .append("(")
                     .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
                     .append("%' OR ")
-                    .append(KEY_CONTENT_ENCODED).append(" LIKE '%").append(queryWords[i])
-                    .append("%' OR ")
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
                     .append("%') ");
 
@@ -1379,7 +1381,16 @@ public class PodDBAdapter {
     }
 
     /**
-     * Called when a database corruption happens
+     * Insert raw data to the database.     *
+     * Call method only for unit tests.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void insertTestData(@NonNull String table, @NonNull ContentValues values) {
+        db.insert(table, null, values);
+    }
+
+    /**
+     * Called when a database corruption happens.
      */
     public static class PodDbErrorHandler implements DatabaseErrorHandler {
         @Override

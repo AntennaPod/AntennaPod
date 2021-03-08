@@ -6,6 +6,7 @@
   <string name="statistics_label">آمار</string>
   <string name="add_feed_label">افزودن پادکست</string>
   <string name="episodes_label">قسمت‌ها</string>
+  <string name="queue_label">صف</string>
   <string name="all_episodes_short_label">همه</string>
   <string name="new_episodes_label">جدید</string>
   <string name="favorite_episodes_label">محبوب‌ها</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">گزارش</string>
   <string name="subscriptions_label">اشتراک‌ها</string>
   <string name="subscriptions_list_label">فهرست اشتراک‌ها</string>
-  <string name="cancel_download_label">لغو\nبارگیری</string>
   <string name="playback_history_label">تاریخچه پخش</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net ورود</string>
@@ -26,6 +26,7 @@
   <string name="playback_statistics_label">پخش</string>
   <string name="download_statistics_label">بارگیری‌ها</string>
   <string name="notification_pref_fragment">اعلان ها</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">مجموع زمان پادکست‌های پخش‌شده:</string>
   <string name="statistics_details_dialog">%1$d از %2$d قسمت‌ها شروع شده است.\n\n%3$s از %4$s پخش.</string>
@@ -81,7 +82,6 @@
   <string name="description_label">شرح</string>
   <string name="episodes_suffix">\u0020قسمت</string>
   <string name="processing_label">در حال پردازش</string>
-  <string name="save_username_password_label">ذخیرهٔ نام کاربری و رمز عبور</string>
   <string name="close_label">بستن</string>
   <string name="retry_label">تلاش مجدد</string>
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
@@ -93,7 +93,6 @@
   <string name="feed_volume_reduction_off">خاموش</string>
   <string name="feed_volume_reduction_light">سبک</string>
   <string name="feed_volume_reduction_heavy">سنگین</string>
-  <string name="parallel_downloads_suffix">\u0020بارگیری هم‌زمان</string>
   <string name="feed_auto_download_global">پیش‌فرض جهانی</string>
   <string name="feed_auto_download_always">همیشه</string>
   <string name="feed_auto_download_never">هیچگاه</string>
@@ -145,7 +144,6 @@
   <string name="hide_not_queued_episodes_label">خارج از صف</string>
   <string name="hide_has_media_label">دارای رسانه</string>
   <string name="filtered_label">فیلتر شده</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} آخرین تازه‌سازی ناموفق بود</string>
   <string name="open_podcast">باز کردن پادکست</string>
   <string name="please_wait_for_data">لطفا تا زمان دریافت اطلاعات منتظر بمانید</string>
   <!--actions on feeditems-->
@@ -206,16 +204,12 @@
   <string name="download_error_details">جزئیات</string>
   <string name="download_error_details_message">%1$s\n\nنشانی پرونده:\n%2$s</string>
   <string name="download_error_device_not_found">حافظهٔ خارجی یافت نشد</string>
-  <string name="download_error_insufficient_space">فضای ناکافی</string>
   <string name="download_error_http_data_error">خطای HTTP Data </string>
   <string name="download_error_error_unknown">خطای ناشناخته</string>
-  <string name="download_error_parser_exception">خطای تجزیه</string>
   <string name="download_error_unsupported_type"> عدم  پشتیبانی از این نوع خوراک</string>
   <string name="download_error_connection_error">خطای اتصال</string>
-  <string name="download_error_unknown_host">میزبان ناشناس</string>
   <string name="download_error_unauthorized">خطای احراز هویت</string>
   <string name="download_error_file_type_type">خطای نوع پرونده</string>
-  <string name="download_error_forbidden">ممنوع</string>
   <string name="download_canceled_msg">بارگیری لغو شد</string>
   <string name="download_canceled_autodownload_enabled_msg">بارگیری لغو شد\nغیر فعال  کردن <i>بارگیری خودکار</i> برای این مورد </string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
@@ -229,7 +223,6 @@
     <item quantity="one">%d بارگیری باقی مانده است</item>
     <item quantity="other">%d بارگیری باقی مانده است</item>
   </plurals>
-  <string name="downloads_processing">پردازش بارگیری‌ها</string>
   <string name="download_notification_title">بارگیری داده پادکست</string>
   <string name="download_log_title_unknown">عنوان ناشناخته</string>
   <string name="download_type_feed">خوراک</string>
@@ -319,7 +312,6 @@
   <string name="storage_pref">حافظه</string>
   <string name="storage_sum">حذف خودکار قسمت، درون‌ریزی، برون‌ریزی</string>
   <string name="project_pref">پروژه</string>
-  <string name="queue_label">صف</string>
   <string name="synchronization_pref">هم‌گام‌سازی</string>
   <string name="synchronization_sum">با کمک gpodder.net با دستگاه‌های دیگر هم‌گام کنید</string>
   <string name="automation">اتوماسیون</string>
@@ -335,14 +327,9 @@
   <string name="preference_search_clear_history">پاک کردن تاریخچه</string>
   <string name="media_player">پخش‌کننده رسانه</string>
   <string name="pref_episode_cleanup_title">پاک‌سازی قسمت</string>
-  <string name="pref_episode_cleanup_summary">قسمت‌هایی که در صف موجود نیستند و در مورد علاقه هم نیستند باید واجد شرایط برای حذف باشد اگر بارگیری خودکار فضای بیشتری برای قسمت‌ها جدید می‌خواهد</string>
   <string name="pref_pauseOnDisconnect_sum">متوقف‌سازی پخش هنگامی که هدفن‌ها یا بلوتوث قطع شود</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش وقتی که هدفن‌ها دوباره متصل شود</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">ادامه پخش هنگامی که بلوتوث دوباره متصل شود</string>
-  <string name="pref_hardwareForwardButtonSkips_title">دکمه پرش‌های به جلو</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">هنگام فشار دادن دکمه جلو بر روی دستگاه متصل به بلوتوث ، به جای فوروارد ، به قسمت بعدی بروید</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">دکمه «قبلی» دوباره راه اندازی شد</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">هنگام فشار دادن دکمه فیزیکی «قبلی» ، قسمت فعلی را دوباره شروع کنید بجای عقب رفتن</string>
   <string name="pref_followQueue_sum">پس از پایان پخش ، به مورد صف بعدی بروید</string>
   <string name="pref_auto_delete_sum">با پایان پخش ، قسمت حذف شود</string>
   <string name="pref_auto_delete_title">حذف خودکار</string>
@@ -362,7 +349,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">از کار انداختن</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">تنظیم بازه</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">تنظیم زمان روز</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">هر %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">در %1$s</string>
   <string name="pref_followQueue_title">پخش مداوم</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">قطع اتصال هدفون یا بلوتوث</string>
@@ -397,7 +383,6 @@
   <string name="pref_episode_cache_title">قسمت های ذخیره شده</string>
   <string name="pref_episode_cache_summary">تعداد کل قسمتهای قابل بارگیری در ذخیره گاه دستگاه. در صورت رسیدن به این تعداد بارگیری خودکار به حالت تعلیق در می آید.</string>
   <string name="pref_episode_cover_title">استفاده از عکس قسمت</string>
-  <string name="pref_episode_cover_summary">هر زمان که جلد مخصوص قسمت در دسترس بود از آن استفاده کن. در صورت لغو انتخاب ، برنامه همیشه از تصویر جلد پادکست استفاده می کند.</string>
   <string name="pref_theme_title_use_system">از طرح زمینه سیستم استفاده کنید</string>
   <string name="pref_theme_title_light">روشن</string>
   <string name="pref_theme_title_dark">تاریک</string>
@@ -417,8 +402,6 @@
   <string name="pref_gpodnet_full_sync_title">همگام سازی کامل را اجبار کن</string>
   <string name="pref_gpodnet_full_sync_sum">همه اشتراک ها و حالت های قسمت را با gpodder.net همگام سازی کنید.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[وارد شد به عنوان <i>%1$s</i> با وسیله <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">همگام سازی انجام نشد</string>
-  <string name="pref_gpodnet_notifications_sum">این تنظیمات در مورد خطاهای احراز هویت اعمال نمی شود.</string>
   <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
   <string name="pref_feed_playback_speed_sum">سرعت شروع  بازپخش صدا برای قسمت های این پادکست</string>
   <string name="pref_feed_skip">پرش خودکار</string>
@@ -433,8 +416,6 @@
   <string name="pref_fast_forward_sum">با کلیک بر روی دکمه سریع جلو ، تعداد ثانیه ها را برای پرش به جلو تنظیم کنید</string>
   <string name="pref_rewind">زمان پرش برای عقب رفتن سریع</string>
   <string name="pref_rewind_sum">با کلیک روی دکمه برگشت تعداد ثانیه ها را برای پرش به عقب تنظیم کنید</string>
-  <string name="pref_gpodnet_sethostname_title">تنظیم نام میزبان</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">استفاده از میزبان پیش فرض</string>
   <string name="pref_expandNotify_title">اعلان با الویت بالا</string>
   <string name="pref_expandNotify_sum">این معمولاً اعلان را برای نمایش دکمه های پخش گسترش می دهد.</string>
   <string name="pref_persistNotify_title">کنترلهای پخش مداوم</string>
@@ -445,10 +426,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">شما فقط می توانید حداکثر %1$d مورد را انتخاب کنید.</string>
   <string name="pref_lockscreen_background_title">تنظیم پس‌زمینه صفحهٔ قفل</string>
   <string name="pref_lockscreen_background_sum">پس زمینه صفحه قفل را روی تصویر جلد قسمت فعلی تنظیم کن. به عنوان اثر جانبی ، این تصویر در برنامه های شخص ثالث نیز نشان داده خواهد شد.</string>
-  <string name="pref_showDownloadReport_title">دانلود ناموفق</string>
-  <string name="pref_showDownloadReport_sum">در صورت شکست در بارگیری، گزارشی تولید شود که جزئیات شکست را نشان دهد.</string>
-  <string name="pref_showAutoDownloadReport_title">بارگیری خودکار انجام شد</string>
-  <string name="pref_showAutoDownloadReport_sum">اعلانی را برای قسمتهای بارگیری خودکار نشان دهید.</string>
   <string name="pref_expand_notify_unsupport_toast">اندرویدهای قدیمی‌تر از نسخه ۴٫۱ از اعلان‌های بسط‌یافته پشتیبانی نمی‌کنند.</string>
   <string name="pref_enqueue_location_title">مکان را از صف در آور</string>
   <string name="pref_enqueue_location_sum">قسمتها را به اضافه کنید به : %1$s</string>
@@ -469,14 +446,12 @@
   <string name="pref_current_value">مقدار فعلی: %1$s</string>
   <string name="pref_proxy_title">پروکسی</string>
   <string name="pref_proxy_sum">تنظیم پروکسی شبکه</string>
-  <string name="pref_faq">سوالات متداول</string>
   <string name="pref_no_browser_found">مرورگر وب پیدا نشد.</string>
   <string name="pref_cast_title">پشتیبانی از کروم‌کست</string>
   <string name="pref_cast_message_play_flavor">پشتیبانی از پخش از راه دور رسانه را در دستگاه های Cast فعال کنید (مانند Chromecast ، بلندگوهای صوتی یا Android TV)</string>
   <string name="pref_cast_message_free_flavor">کروم‌کست نیازمند کتاب‌خانه‌های غیرآزاد است که در این نسخه از AntennaPod غیر فعال هستند</string>
   <string name="pref_enqueue_downloaded_title">در صف نهادن بارگیری‌شده‌ها</string>
   <string name="pref_enqueue_downloaded_summary">قسمتهای بارگیری شده را به صف اضافه کنید</string>
-  <string name="media_player_builtin">پخش‌کننده پیش‌فرض اندروید</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (توصیه می شود)</string>
   <string name="media_player_switch_to_exoplayer">به ExoPlayer بروید</string>
   <string name="media_player_switched_to_exoplayer">به ExoPlayer تغییر وضعیت داده شد.</string>
@@ -592,22 +567,12 @@
   <string name="gpodnet_suggestions_header">پیشنهادها</string>
   <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
   <string name="gpodnetauth_login_title">ورود</string>
-  <string name="gpodnetauth_login_descr">به فرایند ورود gpodder.net خوش آمدید. نحست اطّلاعات ورودتان را بنویسید:</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
-  <string name="gpodnetauth_login_register">اگر هنوز حسابی ندارید، می‌توانید این‌جا یکی بسازید:\https://gpodder.net/register/n</string>
   <string name="username_label">نام کاربری</string>
   <string name="password_label">گذرواژه</string>
-  <string name="gpodnetauth_device_title">گزینش افزاره</string>
   <string name="gpodnetauth_device_descr">برای استفادهٔ حساب gpodder,netتان حسابی جدید ساخته یا حسابی موجود را برگزینید:</string>
-  <string name="gpodnetauth_device_deviceID">شناسهٔ افزاره:\u0020</string>
-  <string name="gpodnetauth_device_caption">عنوان</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">ایجاد افزارهٔ جدید</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">گزینش موجود</string>
-  <string name="gpodnetauth_device_errorEmpty">شناسهٔ افزاره نباید خلی باشد</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">شناسهٔ افزاره از پیش در حال استفاده است</string>
   <string name="gpodnetauth_device_caption_errorEmpty">عنوان نباید خالی باشد</string>
   <string name="gpodnetauth_device_butChoose">گزینش</string>
-  <string name="gpodnetauth_finish_title">ورود موفق!</string>
   <string name="gpodnetauth_finish_descr">تبریک می گویم! حساب gpodder.net شما اکنون با دستگاه شما پیوند داده شده است. آنتن پاد از این پس اشتراک های دستگاه شما را با حساب gpodder.net خود به طور خودکار همگام سازی می کند.</string>
   <string name="gpodnetauth_finish_butsyncnow">شروع همگام‌سازی</string>
   <string name="gpodnetauth_finish_butgomainscreen">رفتن به صفحهٔ اصلی</string>
@@ -801,11 +766,7 @@
   <string name="notification_channel_downloading_description">هنگام بارگیری نشان داده می شود.</string>
   <string name="notification_channel_playing">در حال اجرا</string>
   <string name="notification_channel_playing_description">امکان کنترل پخش را فراهم می کند. این اعلان اصلی است که هنگام پخش پادکست مشاهده می کنید.</string>
-  <string name="notification_channel_error">خطاها</string>
-  <string name="notification_channel_error_description">اگر مشکلی پیش آمد ، به عنوان مثال اگر در بارگیری یا به روزرسانی خبره مشکلی پیش آمد ، نشان داده می شود.</string>
-  <string name="notification_channel_sync_error">خطاهای همگام سازی</string>
   <string name="notification_channel_sync_error_description">هنگامی که همگام سازی gpodder انجام نشد نشان داده می شود.</string>
-  <string name="notification_channel_auto_download">بارگیری‌های خودکار</string>
   <string name="notification_channel_episode_auto_download">وقتی قسمتها به طور خودکار بارگیری می شوند ، نشان داده می شوند.</string>
   <!--Widget settings-->
   <string name="widget_settings">تنظیمات ویجت</string>

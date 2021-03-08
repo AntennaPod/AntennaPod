@@ -11,10 +11,8 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -124,16 +122,6 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
-        //Already loaded
-    }
-
-    @Override
-    public void loadChapterMarks(Context context) {
-        setChapters(ChapterUtils.loadChaptersFromStreamUrl(this, context));
-    }
-
-    @Override
     public String getEpisodeTitle() {
         return episodeTitle;
     }
@@ -150,11 +138,6 @@ public class RemoteMedia implements Playable {
         } else {
             return feedUrl;
         }
-    }
-
-    @Override
-    public String getPaymentLink() {
-        return null;
     }
 
     @Override
@@ -200,11 +183,6 @@ public class RemoteMedia implements Playable {
     @Override
     public boolean localFileAvailable() {
         return false;
-    }
-
-    @Override
-    public boolean streamAvailable() {
-        return true;
     }
 
     @Override
@@ -266,8 +244,8 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public Callable<String> loadShownotes() {
-        return () -> (notes != null) ? notes : "";
+    public String getDescription() {
+        return notes;
     }
 
     @Override

@@ -97,7 +97,6 @@ public class CoverFragment extends Fragment {
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                media.loadChapterMarks(getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -188,13 +187,7 @@ public class CoverFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 CoverFragment.this.loadMediaInfo();
             }
         };
@@ -236,12 +229,12 @@ public class CoverFragment extends Fragment {
                 .transforms(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
-        RequestBuilder<Drawable> cover = Glide.with(this)
-                .load(ImageResourceUtils.getImageLocation(media))
-                .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options))
-                .apply(options);
+            RequestBuilder<Drawable> cover = Glide.with(this)
+                    .load(media.getImageLocation())
+                    .error(Glide.with(this)
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(options))
+                    .apply(options);
 
         if (displayedChapterIndex == -1 || media == null || media.getChapters() == null
                 || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
@@ -289,7 +282,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
         } else {
-            double percentageHeight = ratio * 0.8;
+            double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);

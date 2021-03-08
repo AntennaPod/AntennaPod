@@ -2,6 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
@@ -91,6 +92,17 @@ public class PreferenceUpgrader {
         }
         if (oldVersion < 1080100) {
             prefs.edit().putString(UserPreferences.PREF_VIDEO_BEHAVIOR, "pip").apply();
+        }
+        if (oldVersion < 2010300) {
+            // Migrate hardware button preferences
+            if (prefs.getBoolean("prefHardwareForwardButtonSkips", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_FORWARD_BUTTON,
+                        String.valueOf(KeyEvent.KEYCODE_MEDIA_NEXT)).apply();
+            }
+            if (prefs.getBoolean("prefHardwarePreviousButtonRestarts", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON,
+                        String.valueOf(KeyEvent.KEYCODE_MEDIA_PREVIOUS)).apply();
+            }
         }
     }
 }

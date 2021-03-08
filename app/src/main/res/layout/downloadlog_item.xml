@@ -83,6 +83,14 @@
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="@string/design_time_downloaded_log_failure_reason"/>
 
+        <TextView
+                android:id="@+id/txtvTapForDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:text="@string/download_error_tap_for_details"/>
+
     </LinearLayout>
 
     <include layout="@layout/secondary_action"/>

@@ -108,7 +108,12 @@ public class PlaybackTest {
     }
 
     private void setupPlaybackController() {
-        controller = new PlaybackController(activityTestRule.getActivity());
+        controller = new PlaybackController(activityTestRule.getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
     }
 

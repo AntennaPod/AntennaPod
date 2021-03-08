@@ -9,7 +9,7 @@ import androidx.appcompat.widget.SearchView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.fragment.SearchFragment;
 
 import java.util.HashMap;

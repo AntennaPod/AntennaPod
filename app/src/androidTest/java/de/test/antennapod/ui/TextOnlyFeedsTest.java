@@ -18,9 +18,10 @@ import java.io.IOException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
@@ -61,7 +62,8 @@ public class TextOnlyFeedsTest {
         uiTestUtils.addLocalFeedData(false);
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
-        onDrawerItem(withText(feed.getTitle())).perform(scrollTo(), click());
+        onView(withId(R.id.nav_list)).perform(swipeUp());
+        onDrawerItem(withText(feed.getTitle())).perform(click());
         onView(withText(feed.getItemAtIndex(0).getTitle())).perform(click());
         onView(isRoot()).perform(waitForView(withText(R.string.mark_read_no_media_label), 3000));
         onView(withText(R.string.mark_read_no_media_label)).perform(click());
