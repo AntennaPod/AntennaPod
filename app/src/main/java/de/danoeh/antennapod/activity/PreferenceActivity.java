@@ -1,10 +1,14 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -105,8 +109,17 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
 
     public PreferenceFragmentCompat openScreen(int screen) {
         PreferenceFragmentCompat fragment = getPreferenceScreen(screen);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment)
-                .addToBackStack(getString(getTitleOfPage(screen))).commit();
+        if (screen == R.xml.preferences_notifications && Build.VERSION.SDK_INT >= 26) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment)
+                    .addToBackStack(getString(getTitleOfPage(screen))).commit();
+        }
+
+
         return fragment;
     }
 
@@ -138,6 +151,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             builder.setMessage(R.string.pref_feed_settings_dialog_msg);
             builder.setPositiveButton(android.R.string.ok, null);
             builder.show();
+        } else if (screen == R.xml.preferences_notifications) {
+            openScreen(screen);
         } else {
             PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
             result.highlight(fragment);
