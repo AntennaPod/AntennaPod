@@ -109,11 +109,11 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
 
     public PreferenceFragmentCompat openScreen(int screen) {
         PreferenceFragmentCompat fragment = getPreferenceScreen(screen);
-        if(screen == R.xml.preferences_notifications && Build.VERSION.SDK_INT >= 26) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                startActivity(intent);
+        if (screen == R.xml.preferences_notifications && Build.VERSION.SDK_INT >= 26) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment)
                     .addToBackStack(getString(getTitleOfPage(screen))).commit();
@@ -151,7 +151,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             builder.setMessage(R.string.pref_feed_settings_dialog_msg);
             builder.setPositiveButton(android.R.string.ok, null);
             builder.show();
-        } else if(screen == R.xml.preferences_notifications) {
+        } else if (screen == R.xml.preferences_notifications) {
             openScreen(screen);
         } else {
             PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
