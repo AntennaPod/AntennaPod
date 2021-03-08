@@ -21,8 +21,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2020001
-        versionName "2.2.0-beta1"
+        versionCode 2020002
+        versionName "2.2.0-beta2"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
