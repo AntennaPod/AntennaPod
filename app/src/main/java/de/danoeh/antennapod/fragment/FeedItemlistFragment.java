@@ -458,7 +458,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             txtvFailure.setVisibility(View.GONE);
         }
-        if(!feed.getPreferences().getKeepUpdated()) {
+        if (!feed.getPreferences().getKeepUpdated()) {
             txtvUpdatesDisabled.setText("{md-pause-circle-outline} " + this.getString(R.string.updates_disabled_label));
             Iconify.addIcons(txtvUpdatesDisabled);
             txtvUpdatesDisabled.setVisibility(View.VISIBLE);
