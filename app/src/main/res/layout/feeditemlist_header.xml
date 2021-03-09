@@ -117,4 +117,15 @@
             android:gravity="center"
             tools:visibility="visible"
             tools:text="(i) Information"/>
+
+    <TextView
+        android:id="@+id/txtvUpdatesDisabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:background="?android:attr/windowBackground"
+        android:visibility="gone"
+        android:gravity="center"
+        tools:visibility="visible"
+        tools:text="Updates disabled"/>
 </LinearLayout>

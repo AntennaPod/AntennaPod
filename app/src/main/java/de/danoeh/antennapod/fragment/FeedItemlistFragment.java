@@ -100,6 +100,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private ImageView imgvCover;
     private TextView txtvInformation;
     private TextView txtvAuthor;
+    private TextView txtvUpdatesDisabled;
     private ImageButton butShowInfo;
     private ImageButton butShowSettings;
     private View header;
@@ -166,6 +167,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         butShowSettings = root.findViewById(R.id.butShowSettings);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         txtvFailure = root.findViewById(R.id.txtvFailure);
+        txtvUpdatesDisabled = root.findViewById(R.id.txtvUpdatesDisabled);
         header = root.findViewById(R.id.headerContainer);
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
@@ -455,6 +457,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             txtvFailure.setVisibility(View.VISIBLE);
         } else {
             txtvFailure.setVisibility(View.GONE);
+        }
+        if(!feed.getPreferences().getKeepUpdated()) {
+            txtvUpdatesDisabled.setText("{md-pause-circle-outline} " + this.getString(R.string.updates_disabled_label));
+            Iconify.addIcons(txtvUpdatesDisabled);
+            txtvUpdatesDisabled.setVisibility(View.VISIBLE);
+        } else {
+            txtvUpdatesDisabled.setVisibility(View.GONE);
         }
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
