@@ -182,6 +182,7 @@
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open Podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
+    <string name="updates_disabled_label">Updates disabled</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
