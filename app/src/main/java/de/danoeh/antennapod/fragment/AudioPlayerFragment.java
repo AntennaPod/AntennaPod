@@ -499,7 +499,7 @@ public class AudioPlayerFragment extends Fragment implements
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * controller.getDuration()));
             int newChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), position);
-            if (hasChapters) {
+            if (newChapterIndex > -1) {
                 if (!sbPosition.isPressed() && currentChapterIndex != newChapterIndex) {
                     currentChapterIndex = newChapterIndex;
                     controller.seekToChapter(controller.getMedia().getChapters().get(currentChapterIndex));
