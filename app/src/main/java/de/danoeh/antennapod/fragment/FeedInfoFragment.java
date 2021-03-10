@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -43,6 +42,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.core.util.ClipboardUtil;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -102,10 +102,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         public void onClick(View v) {
             if (feed != null && feed.getDownload_url() != null) {
                 String url = feed.getDownload_url();
-                ClipData clipData = ClipData.newPlainText(url, url);
-                android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(clipData);
+                ClipboardUtil.copyToClipboard(getContext(), url, url);
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg, Snackbar.LENGTH_SHORT);
             }
         }

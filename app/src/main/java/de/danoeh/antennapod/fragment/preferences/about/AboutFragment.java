@@ -1,14 +1,14 @@
 package de.danoeh.antennapod.fragment.preferences.about;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
+
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.util.ClipboardUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class AboutFragment extends PreferenceFragmentCompat {
@@ -17,13 +17,13 @@ public class AboutFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_about);
 
-        findPreference("about_version").setSummary(String.format(
+        final Preference aboutVersion = findPreference("about_version");
+
+        aboutVersion.setSummary(String.format(
                 "%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.COMMIT_HASH));
-        findPreference("about_version").setOnPreferenceClickListener((preference) -> {
-            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
-                    findPreference("about_version").getSummary());
-            clipboard.setPrimaryClip(clip);
+        aboutVersion.setOnPreferenceClickListener(preference -> {
+            ClipboardUtil.copyToClipboard(
+                    getContext(), getString(R.string.bug_report_title), aboutVersion.getSummary());
             Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
             return true;
         });

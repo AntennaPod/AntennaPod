@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.view;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +18,7 @@ import androidx.core.util.Consumer;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.ClipboardUtil;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -112,10 +112,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
                 ShareUtils.shareLink(getContext(), selectedUrl);
                 break;
             case R.id.copy_url_item:
-                ClipData clipData = ClipData.newPlainText(selectedUrl, selectedUrl);
-                android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(clipData);
+                ClipboardUtil.copyToClipboard(getContext(), selectedUrl, selectedUrl);
                 Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
                 ViewCompat.setElevation(s.getView(), 100);
                 s.show();

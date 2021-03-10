@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +30,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.ClipboardUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -132,9 +130,7 @@ public class DownloadLogFragment extends ListFragment {
         builder.setMessage(messageFull);
         builder.setPositiveButton(android.R.string.ok, null);
         builder.setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
-            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getString(R.string.download_error_details), messageFull);
-            clipboard.setPrimaryClip(clip);
+            ClipboardUtil.copyToClipboard(getContext(), getString(R.string.download_error_details), messageFull);
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
         });
         Dialog dialog = builder.show();
