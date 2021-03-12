@@ -4,10 +4,11 @@
         xmlns:search="http://schemas.android.com/apk/res-auto">
 
     <com.bytehamster.lib.preferencesearch.SearchPreference
-            android:key="searchPreference"
-            search:textHint="@string/preference_search_hint"
-            search:textNoResults="@string/preference_search_no_results"
-            search:textClearHistory="@string/preference_search_clear_history" />
+        android:id="@+id/searchPref"
+        android:key="searchPreference"
+        search:textClearHistory="@string/preference_search_clear_history"
+        search:textHint="@string/preference_search_hint"
+        search:textNoResults="@string/preference_search_no_results" />
 
     <Preference
             android:key="prefScreenInterface"

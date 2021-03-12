@@ -1,10 +1,15 @@
 package de.test.antennapod.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.preference.PreferenceManager;
 import androidx.annotation.StringRes;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
@@ -21,6 +26,9 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.StringContains;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,21 +37,25 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBackUnconditionally;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
@@ -65,6 +77,26 @@ public class PreferencesTest {
 
         res = mActivityRule.getActivity().getResources();
         UserPreferences.init(mActivityRule.getActivity());
+    }
+
+    @Test
+    public void testHideKeyboardWhenNavigatingBack() {
+        // TODO: 3/11/2021 Possibly refactor to make cleaner
+        InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        onView(withId(R.id.recycler_view)).perform(
+                RecyclerViewActions.actionOnItem(
+                        allOf(hasDescendant(withHint(R.string.preference_search_hint))),
+                        click()));
+        try {
+            Thread.sleep(2000);
+            onView(withClassName(new IsEqual<>(AppCompatImageButton.class.getName()))).perform(click());
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertFalse(imm.isAcceptingText());
+
     }
 
     @Test

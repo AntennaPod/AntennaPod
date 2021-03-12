@@ -11,8 +11,11 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.Toolbar;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
@@ -135,6 +138,10 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 finish();
             } else {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                if (imm.isActive()) {
+//                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+//                }
                 getSupportFragmentManager().popBackStack();
             }
             return true;
@@ -158,4 +165,5 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             result.highlight(fragment);
         }
     }
+
 }
