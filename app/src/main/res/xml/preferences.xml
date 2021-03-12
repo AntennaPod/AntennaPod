@@ -61,6 +61,10 @@
             android:title="@string/visit_user_forum"
             android:icon="?attr/ic_chat" />
         <Preference
+            android:key="prefContribute"
+            android:title="Contribute"
+            android:icon="?attr/ic_contribute" />
+        <Preference
             android:key="prefSendBugReport"
             android:title="@string/bug_report_title"
             android:icon="?attr/ic_bug" />
