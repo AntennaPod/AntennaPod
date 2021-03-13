@@ -62,7 +62,7 @@
             android:icon="?attr/ic_chat" />
         <Preference
             android:key="prefContribute"
-            android:title="Contribute"
+            android:title="@string/pref_contribute"
             android:icon="?attr/ic_contribute" />
         <Preference
             android:key="prefSendBugReport"
