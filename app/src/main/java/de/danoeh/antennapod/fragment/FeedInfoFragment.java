@@ -222,6 +222,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 .into(imgvBackground);
 
         txtvTitle.setText(feed.getTitle());
+        txtvTitle.setMaxLines(6);
 
         String description = HtmlToPlainText.getPlainText(feed.getDescription());
 
