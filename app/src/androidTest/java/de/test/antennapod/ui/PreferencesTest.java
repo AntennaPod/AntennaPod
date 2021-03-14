@@ -9,12 +9,23 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.preference.PreferenceManager;
-import androidx.annotation.StringRes;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+
+import org.awaitility.Awaitility;
+import org.hamcrest.core.IsEqual;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -28,19 +39,8 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
-import org.awaitility.Awaitility;
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.StringContains;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBackUnconditionally;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
