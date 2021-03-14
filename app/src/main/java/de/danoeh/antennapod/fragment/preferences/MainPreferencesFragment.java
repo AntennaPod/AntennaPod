@@ -116,8 +116,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
-
-
     }
 
     private void setupSearch() {
