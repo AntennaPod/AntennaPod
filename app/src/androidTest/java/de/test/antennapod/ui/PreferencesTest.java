@@ -1,9 +1,12 @@
 package de.test.antennapod.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Rect;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -67,20 +70,22 @@ public class PreferencesTest {
     @Rule
     public ActivityTestRule<PreferenceActivity> mActivityRule = new ActivityTestRule<>(PreferenceActivity.class, false, false);
 
+    Activity activity;
     @Before
     public void setUp() {
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.clearPreferences();
         mActivityRule.launchActivity(new Intent());
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
+        activity = mActivityRule.getActivity();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
 
         res = mActivityRule.getActivity().getResources();
-        UserPreferences.init(mActivityRule.getActivity());
+        UserPreferences.init(activity);
     }
 
     @Test
-    public void testHideKeyboardWhenNavigatingBack() {
+    public void testHideKeyboardWhenNavigatingUp() {
         // TODO: 3/11/2021 Possibly refactor to make cleaner
         InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         onView(withId(R.id.recycler_view)).perform(
@@ -94,8 +99,10 @@ public class PreferencesTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Assert.assertFalse(imm.isAcceptingText());
+        View root = activity.findViewById(android.R.id.content);
+        Rect visbileBounds = new Rect();
+        root.getWindowVisibleDisplayFrame(visbileBounds);
+        Assert.assertFalse(root.getHeight() - visbileBounds.height() > 200);
 
     }
 
