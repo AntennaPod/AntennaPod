@@ -202,9 +202,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             return;
         }
         if (UserPreferences.shouldShowRemainingTime()) {
-
-            duration.setText(((remainingTime > 0) ? "-" : "") +
-                    Converter.getDurationStringLong(remainingTime));
+            duration.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
             duration.setText(Converter.getDurationStringLong(timeDuration));
         }
