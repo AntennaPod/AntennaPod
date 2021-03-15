@@ -6,6 +6,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -66,10 +67,9 @@ public class Rss2Generator implements FeedGenerator {
             xml.endTag(null, "image");
         }
 
-        if (feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) != null) {
-            GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT), true);
-        } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null) {
-            GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT), true);
+        ArrayList<Feed.Funding> funding = feed.getPaymentLinks();
+        if (funding != null) {
+            GeneratorUtil.addPaymentLink(xml, funding.get(0).url, true);
         }
 
         // Write FeedItem data
@@ -109,10 +109,8 @@ public class Rss2Generator implements FeedGenerator {
                     xml.attribute(null, "type", item.getMedia().getMime_type());
                     xml.endTag(null, "enclosure");
                 }
-                if (feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) != null) {
-                    GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT), true);
-                } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null) {
-                    GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT), true);
+                if (funding != null) {
+                    GeneratorUtil.addPaymentLink(xml, funding.get(0).url, true);
                 }
 
                 xml.endTag(null, "item");
