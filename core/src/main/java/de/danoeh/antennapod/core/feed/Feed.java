@@ -502,8 +502,8 @@ public class Feed extends FeedFile implements ImageResource {
             return null;
         }
         for (Funding fund : fundingList) {
-          result += fund.url + SUPPORT_INTERNAL_EQUAL + fund.content;
-          result += SUPPORT_INTERNAL_SPLIT;
+            result += fund.url + SUPPORT_INTERNAL_EQUAL + fund.content;
+            result += SUPPORT_INTERNAL_SPLIT;
         }
         result = StringUtils.removeEnd(result, SUPPORT_INTERNAL_SPLIT);
         return result;

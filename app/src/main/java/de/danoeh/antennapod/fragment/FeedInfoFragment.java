@@ -248,7 +248,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             lblSupport.setVisibility(View.VISIBLE);
             ArrayList<Feed.Funding> fundingList = feed.getPaymentLinks();
             String str = "";
-            for (Feed.Funding funding : fundingList ) {
+            for (Feed.Funding funding : fundingList) {
                 str += funding.content + " " + funding.url;
                 str += "\n";
             }

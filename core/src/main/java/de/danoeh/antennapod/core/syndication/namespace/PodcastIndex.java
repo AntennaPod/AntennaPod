@@ -21,7 +21,7 @@ public class PodcastIndex extends Namespace {
         if (FUNDING.equals(localName)) {
             String href = attributes.getValue(URL);
             if (funding == null) {
-               funding = new Feed.Funding(href, "");
+                funding = new Feed.Funding(href, "");
             }
         }
         return new SyndElement(localName, this);
