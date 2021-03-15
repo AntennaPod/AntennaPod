@@ -66,11 +66,12 @@ import static org.junit.Assert.assertTrue;
 @LargeTest
 public class PreferencesTest {
     private Resources res;
+    private Activity activity;
 
     @Rule
     public ActivityTestRule<PreferenceActivity> mActivityRule = new ActivityTestRule<>(PreferenceActivity.class, false, false);
 
-    Activity activity;
+
     @Before
     public void setUp() {
         EspressoTestUtils.clearDatabase();
@@ -87,7 +88,8 @@ public class PreferencesTest {
     @Test
     public void testHideKeyboardWhenNavigatingUp() {
         // TODO: 3/11/2021 Possibly refactor to make cleaner
-        InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
         onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItem(
                         allOf(hasDescendant(withHint(R.string.preference_search_hint))),
