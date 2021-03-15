@@ -37,6 +37,18 @@ Submit a pull request
 - Please follow our code style. You can use Checkstyle within Android Studio using our [coniguration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
 - Please only change the English string resources. Translations are handled on [Transifex](https://www.transifex.com/antennapod/antennapod/).
 
+Building From Source
+--------------------------
+1. Clone this repository
+
+(For example:)
+`git clone https://github.com/AntennaPod/AntennaPod.git`
+
+1. Download Android Studio
+1. In Android Studio
+   1. File » New » Project from version control
+   2. Wait for a loong time until all progress bars go away
+   3. Press the Play button
 
 Testing and Verifying
 --------------------------
