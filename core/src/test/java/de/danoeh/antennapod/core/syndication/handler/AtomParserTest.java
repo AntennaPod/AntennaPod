@@ -30,7 +30,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
+        assertEquals("http://example.com/payment", feed.getPaymentLinks().get(0).url);
         assertEquals("http://example.com/picture", feed.getImageUrl());
         assertEquals(10, feed.getItems().size());
         for (int i = 0; i < feed.getItems().size(); i++) {
@@ -63,7 +63,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
+        assertEquals("http://example.com/payment", feed.getPaymentLinks().get(0).url);
         assertEquals("https://example.com/image.png", feed.getImageUrl());
         assertEquals(0, feed.getItems().size());
     }
