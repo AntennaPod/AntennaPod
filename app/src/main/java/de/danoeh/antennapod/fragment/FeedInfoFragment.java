@@ -35,7 +35,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.helper.StringUtil;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;

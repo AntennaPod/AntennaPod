@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.StringUtil;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,11 +32,6 @@ public class Feed extends FeedFile implements ImageResource {
     public static final String SUPPORT_INTERNAL_SPLIT = "\n";
     public static final String SUPPORT_INTERNAL_EQUAL = "\t";
     public static final String TAG = "Feed.java";
-
-    public enum FundingType {
-        ATOM_PAYMENT,
-        PODCAST2_FUNDING
-    }
 
     /* title as defined by the feed */
     private String feedTitle;
@@ -69,12 +63,10 @@ public class Feed extends FeedFile implements ImageResource {
     public static class Funding {
         public String url;
         public String content;
-        public FundingType type;
 
-        public Funding(String url, String content, FundingType type) {
+        public Funding(String url, String content) {
             this.url = url;
             this.content = content;
-            this.type = type;
         }
 
         public void setContent(String content) {
@@ -83,10 +75,6 @@ public class Feed extends FeedFile implements ImageResource {
 
         public void setUrl(String url) {
             this.url = url;
-        }
-
-        public void setType(FundingType type) {
-            this.type = type;
         }
     }
 
@@ -484,8 +472,7 @@ public class Feed extends FeedFile implements ImageResource {
         // old format before we started storing the urls as pay= and fund=
         fundingList = new ArrayList<Funding>();
         if (!payLinks.contains(SUPPORT_INTERNAL_SPLIT) && !payLinks.contains(SUPPORT_INTERNAL_EQUAL)) {
-            // TTTODO
-            fundingList.add(new Funding(payLinks, "Support this podcast"));
+            fundingList.add(new Funding(payLinks, "Support this Podcast"));
             return fundingList;
         }
         String [] list = payLinks.split(SUPPORT_INTERNAL_SPLIT);
