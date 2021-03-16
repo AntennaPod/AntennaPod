@@ -70,7 +70,21 @@ public class LocalFeedUpdater {
         Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
             String mime = file.getType();
-            if (mime != null && (mime.startsWith("audio/") || mime.startsWith("video/"))) {
+            if (mime == null) {
+                continue;
+            }
+
+            MediaType mediaType = MediaType.fromMimeType(mime);
+            if (mediaType == MediaType.UNKNOWN) {
+                String path = file.getUri().toString();
+                int i = path.lastIndexOf('.');
+                if (i >= 0) {
+                    String suffixWithoutDot = path.substring(i + 1);
+                    mediaType = MediaType.fromSuffix(suffixWithoutDot);
+                }
+            }
+
+            if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
                 mediaFiles.add(file);
                 mediaFileNames.add(file.getName());
             }
