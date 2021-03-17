@@ -505,7 +505,8 @@ public class AudioPlayerFragment extends Fragment implements
                     controller.seekToChapter(controller.getMedia().getChapters().get(currentChapterIndex));
                     updateUi(controller.getMedia());
                 }
-                txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle());
+                txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
+                                + "\n" + Converter.getDurationStringLong(position));
             } else {
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
