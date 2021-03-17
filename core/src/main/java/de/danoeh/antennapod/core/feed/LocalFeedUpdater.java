@@ -77,10 +77,10 @@ public class LocalFeedUpdater {
             MediaType mediaType = MediaType.fromMimeType(mime);
             if (mediaType == MediaType.UNKNOWN) {
                 String path = file.getUri().toString();
-                int i = path.lastIndexOf('.');
-                if (i >= 0) {
-                    String suffixWithoutDot = path.substring(i + 1);
-                    mediaType = MediaType.fromSuffix(suffixWithoutDot);
+                int fileExtensionPosition = path.lastIndexOf('.');
+                if (fileExtensionPosition >= 0) {
+                    String extensionWithoutDot = path.substring(fileExtensionPosition + 1);
+                    mediaType = MediaType.fromFileExtension(extensionWithoutDot);
                 }
             }
 

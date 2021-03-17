@@ -16,12 +16,12 @@ public enum MediaType {
     ));
 
     // based on https://developer.android.com/guide/topics/media/media-formats
-    static final Set<String> AUDIO_SUFFIXES = new HashSet<>(Arrays.asList(
+    static final Set<String> AUDIO_FILE_EXTENSIONS = new HashSet<>(Arrays.asList(
             "3gp", "aac", "amr", "flac", "imy", "m4a", "mid", "mkv", "mp3", "mp4", "mxmf", "oga",
             "ogg", "ogx", "opus", "ota", "rtttl", "rtx", "wav", "xmf"
     ));
 
-    static final Set<String> VIDEO_SUFFIXES = new HashSet<>(Arrays.asList(
+    static final Set<String> VIDEO_FILE_EXTENSIONS = new HashSet<>(Arrays.asList(
             "3gp", "mkv", "mp4", "ogg", "ogv", "ogx", "webm"
     ));
 
@@ -39,16 +39,16 @@ public enum MediaType {
     }
 
     /**
-     * @param suffixWithoutDot the file suffix (extension) without the dot
-     * @return the {@link MediaType} that likely corresponds to the suffix. However, since the
-     *         suffix is not always enough to determine whether a file is an audio or video (3gp
+     * @param extensionWithoutDot the file extension (suffix) without the dot
+     * @return the {@link MediaType} that likely corresponds to the extension. However, since the
+     *         extension is not always enough to determine whether a file is an audio or video (3gp
      *         can be both, for example), this may not be correct. As a result, where possible,
      *         {@link #fromMimeType(String) fromMimeType} should always be tried first.
      */
-    public static MediaType fromSuffix(String suffixWithoutDot) {
-        if (AUDIO_SUFFIXES.contains(suffixWithoutDot)) {
+    public static MediaType fromFileExtension(String extensionWithoutDot) {
+        if (AUDIO_FILE_EXTENSIONS.contains(extensionWithoutDot)) {
             return MediaType.AUDIO;
-        } else if (VIDEO_SUFFIXES.contains(suffixWithoutDot)) {
+        } else if (VIDEO_FILE_EXTENSIONS.contains(extensionWithoutDot)) {
             return MediaType.VIDEO;
         }
         return MediaType.UNKNOWN;
