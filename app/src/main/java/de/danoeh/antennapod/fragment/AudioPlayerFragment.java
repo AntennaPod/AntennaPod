@@ -29,12 +29,14 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
@@ -46,6 +48,7 @@ import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.view.ChapterSeekBar;
 import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -63,7 +66,7 @@ import java.util.List;
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
+        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
@@ -77,7 +80,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ViewPager2 pager;
     private TextView txtvPosition;
     private TextView txtvLength;
-    private SeekBar sbPosition;
+    private ChapterSeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
     private ImageButton butPlay;
@@ -101,7 +104,6 @@ public class AudioPlayerFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.audioplayer_fragment, container, false);
-        root.setOnTouchListener((v, event) -> true); // Avoid clicks going through player to fragments below
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v ->
@@ -173,10 +175,31 @@ public class AudioPlayerFragment extends Fragment implements
         return root;
     }
 
-    public void setHasChapters(boolean hasChapters) {
+    private void setHasChapters(boolean hasChapters) {
         this.hasChapters = hasChapters;
         tabLayoutMediator.detach();
         tabLayoutMediator.attach();
+    }
+
+    private void setChapterDividers(Playable media) {
+
+        if (media == null) {
+            return;
+        }
+
+        float[] dividerPos = null;
+
+        if (hasChapters) {
+            List<Chapter> chapters = media.getChapters();
+            dividerPos = new float[chapters.size()];
+            float duration = media.getDuration();
+
+            for (int i = 0; i < chapters.size(); i++) {
+                dividerPos[i] = chapters.get(i).getStart() / duration;
+            }
+        }
+        
+        sbPosition.setDividerPos(dividerPos);
     }
 
     public View getExternalPlayerHolder() {
@@ -299,16 +322,17 @@ public class AudioPlayerFragment extends Fragment implements
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)),
-                        () -> updateUi(null));
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> updateUi((Playable) media),
+                error -> Log.e(TAG, Log.getStackTraceString(error)),
+                () -> updateUi(null));
     }
 
     private PlaybackController newPlaybackController() {
@@ -390,8 +414,15 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null) {
             return;
         }
+
+        if (media != null && media.getChapters() != null) {
+            setHasChapters(media.getChapters().size() > 0);
+        } else {
+            setHasChapters(false);
+        }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
+        setChapterDividers(media);
         setupOptionsMenu(media);
     }
 
@@ -433,7 +464,7 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(event.getDuration() - event.getPosition());
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -442,7 +473,7 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
