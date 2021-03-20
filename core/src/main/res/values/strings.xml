@@ -88,7 +88,7 @@
     <string name="author_label">Author(s)</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
-    <string name="cover_label">Picture</string>
+    <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="needs_storage_permission">Storage permission is needed for this operation</string>
