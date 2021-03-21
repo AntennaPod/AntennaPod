@@ -39,15 +39,12 @@ Submit a pull request
 
 Building From Source
 --------------------------
-1. Clone this repository
-
-(For example:)
-`git clone https://github.com/AntennaPod/AntennaPod.git`
-
+1. Fork this repository
 1. Download Android Studio
 1. In Android Studio
    1. File » New » Project from version control
-   2. Wait for a loong time until all progress bars go away
+   2. Enter the remote url of the forked repo
+   2. Wait for a long time until all progress bars go away
    3. Press the Play button
 
 Testing and Verifying
