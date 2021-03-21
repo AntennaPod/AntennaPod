@@ -13,8 +13,6 @@ import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
-import de.danoeh.antennapod.core.util.SortOrder;
-
 /**
  * Data Object for a whole feed
  *
