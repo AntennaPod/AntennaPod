@@ -1,13 +1,14 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.database.Cursor;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -440,7 +441,7 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     public ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
-        if (StringUtil.isBlank(payLinks)) {
+        if (StringUtils.isBlank(payLinks)) {
             return null;
         }
         // old format before we started storing the urls as pay= and fund=
@@ -457,12 +458,12 @@ public class Feed extends FeedFile implements ImageResource {
 
         for (String str : list) {
             String [] linkContent = str.split(FeedFunding.SUPPORT_INTERNAL_EQUAL);
-            if (StringUtil.isBlank(linkContent[0])) {
+            if (StringUtils.isBlank(linkContent[0])) {
                continue;
             }
             String url = linkContent[0];
             String title = "";
-            if (linkContent.length > 1 && ! StringUtil.isBlank(linkContent[1])) {
+            if (linkContent.length > 1 && ! StringUtils.isBlank(linkContent[1])) {
                 title = linkContent[1];
             }
             fundingList.add(new FeedFunding(url, title));
