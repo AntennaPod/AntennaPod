@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.syndication.namespace;
 
 import org.jsoup.helper.StringUtil;
 import org.xml.sax.Attributes;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 

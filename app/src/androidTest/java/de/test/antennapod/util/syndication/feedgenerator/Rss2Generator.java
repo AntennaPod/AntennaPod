@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.util.DateUtils;
 
@@ -67,7 +68,7 @@ public class Rss2Generator implements FeedGenerator {
             xml.endTag(null, "image");
         }
 
-        ArrayList<Feed.Funding> funding = feed.getPaymentLinks();
+        ArrayList<FeedFunding> funding = feed.getPaymentLinks();
         if (funding != null) {
             GeneratorUtil.addPaymentLink(xml, funding.get(0).url, true);
         }

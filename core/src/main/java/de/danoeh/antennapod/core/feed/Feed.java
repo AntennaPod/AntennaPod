@@ -2,17 +2,12 @@ package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.StringUtil;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;

@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.syndication.namespace.atom;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
