@@ -8,9 +8,11 @@ import org.jsoup.helper.StringUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+
 import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
