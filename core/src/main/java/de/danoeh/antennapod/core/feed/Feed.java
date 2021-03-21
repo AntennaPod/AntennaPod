@@ -29,8 +29,6 @@ public class Feed extends FeedFile implements ImageResource {
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
-    public static final String SUPPORT_INTERNAL_SPLIT = "\n";
-    public static final String SUPPORT_INTERNAL_EQUAL = "\t";
     public static final String TAG = "Feed.java";
 
     /* title as defined by the feed */
@@ -60,25 +58,7 @@ public class Feed extends FeedFile implements ImageResource {
      */
     private String lastUpdate;
 
-    public static class Funding {
-        public String url;
-        public String content;
-
-        public Funding(String url, String content) {
-            this.url = url;
-            this.content = content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
-
-    private ArrayList<Funding> fundingList;
+    private ArrayList<FeedFunding> fundingList;
 
     /**
      * Feed type, for example RSS 2 or Atom
@@ -364,7 +344,6 @@ public class Feed extends FeedFile implements ImageResource {
                 return true;
             }
         }
-        // TTTODO : Payment
         if (other.isPaged() && !this.isPaged()) {
             return true;
         }
@@ -465,34 +444,38 @@ public class Feed extends FeedFile implements ImageResource {
         this.feedIdentifier = feedIdentifier;
     }
 
-    public ArrayList<Funding> extractPaymentLinks(String payLinks) {
+    public ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
         if (StringUtil.isBlank(payLinks)) {
             return null;
         }
         // old format before we started storing the urls as pay= and fund=
-        fundingList = new ArrayList<Funding>();
-        if (!payLinks.contains(SUPPORT_INTERNAL_SPLIT) && !payLinks.contains(SUPPORT_INTERNAL_EQUAL)) {
-            fundingList.add(new Funding(payLinks, "Support this Podcast"));
+        fundingList = new ArrayList<FeedFunding>();
+        if (!payLinks.contains(FeedFunding.SUPPORT_INTERNAL_SPLIT) &&
+                !payLinks.contains(FeedFunding.SUPPORT_INTERNAL_EQUAL)) {
+            fundingList.add(new FeedFunding(payLinks, ""));
             return fundingList;
         }
-        String [] list = payLinks.split(SUPPORT_INTERNAL_SPLIT);
+        String [] list = payLinks.split(FeedFunding.SUPPORT_INTERNAL_SPLIT);
         if (list.length == 0) {
             return null;
         }
 
         for (String str : list) {
-            try {
-                String [] linkContent = str.split(SUPPORT_INTERNAL_EQUAL);
-                fundingList.add(new Funding(linkContent[0], linkContent[1]));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Log.d(TAG, "Payment link in the wrong format" + payLinks);
+            String [] linkContent = str.split(FeedFunding.SUPPORT_INTERNAL_EQUAL);
+            if (StringUtil.isBlank(linkContent[0])) {
+               continue;
             }
-
+            String url = linkContent[0];
+            String title = "";
+            if (linkContent.length > 1 && ! StringUtil.isBlank(linkContent[1])) {
+                title = linkContent[1];
+            }
+            fundingList.add(new FeedFunding(url, title));
         }
         return fundingList;
     }
 
-    public ArrayList<Funding> getPaymentLinks() {
+    public ArrayList<FeedFunding> getPaymentLinks() {
         return fundingList;
     }
 
@@ -501,17 +484,17 @@ public class Feed extends FeedFile implements ImageResource {
         if (fundingList == null) {
             return null;
         }
-        for (Funding fund : fundingList) {
-            result += fund.url + SUPPORT_INTERNAL_EQUAL + fund.content;
-            result += SUPPORT_INTERNAL_SPLIT;
+        for (FeedFunding fund : fundingList) {
+            result += fund.url + FeedFunding.SUPPORT_INTERNAL_EQUAL + fund.content;
+            result += FeedFunding.SUPPORT_INTERNAL_SPLIT;
         }
-        result = StringUtils.removeEnd(result, SUPPORT_INTERNAL_SPLIT);
+        result = StringUtils.removeEnd(result, FeedFunding.SUPPORT_INTERNAL_SPLIT);
         return result;
     }
 
-    public void addPayment(Funding funding) {
+    public void addPayment(FeedFunding funding) {
         if (fundingList == null) {
-            fundingList = new ArrayList<Funding>();
+            fundingList = new ArrayList<FeedFunding>();
         }
         fundingList.add(funding);
     }

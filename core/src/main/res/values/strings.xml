@@ -89,6 +89,7 @@
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
     <string name="support_label">Support</string>
+    <string name="support_podcast">Support this Podcast</string>
     <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>

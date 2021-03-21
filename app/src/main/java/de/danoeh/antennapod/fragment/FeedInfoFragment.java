@@ -40,6 +40,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -246,10 +247,18 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             txtvFundingUrl.setVisibility(View.GONE);
         } else {
             lblSupport.setVisibility(View.VISIBLE);
-            ArrayList<Feed.Funding> fundingList = feed.getPaymentLinks();
+            ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
             String str = "";
-            for (Feed.Funding funding : fundingList) {
-                str += funding.content + " " + funding.url;
+            ArrayList<String> seen = new ArrayList<String>();
+            for (FeedFunding funding : fundingList) {
+                if (seen.indexOf(funding.url) >= 0) {
+                   continue;
+                }
+                seen.add(funding.url);
+                str += (funding.content.isEmpty() ?
+                        getContext().getResources().getString(R.string.support_podcast) :
+                        funding.content) +
+                        " " + funding.url;
                 str += "\n";
             }
             str = StringUtils.trim(str);
