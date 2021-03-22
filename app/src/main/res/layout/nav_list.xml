@@ -57,7 +57,7 @@
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nav_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

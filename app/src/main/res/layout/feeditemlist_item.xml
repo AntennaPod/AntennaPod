@@ -145,6 +145,7 @@
                         android:layout_marginRight="4dp"
                         android:layout_marginEnd="4dp"
                         android:text="·"
+                        android:importantForAccessibility="no"
                         tools:background="@android:color/holo_blue_light"/>
 
                 <TextView
@@ -163,6 +164,7 @@
                         android:layout_marginRight="4dp"
                         android:layout_marginEnd="4dp"
                         android:text="·"
+                        android:importantForAccessibility="no"
                         tools:background="@android:color/holo_blue_light"/>
 
                 <TextView

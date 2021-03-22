@@ -169,7 +169,7 @@ public class LocalFeedUpdater {
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
-            item.setDescription(e.getMessage());
+            item.setDescriptionIfLonger(e.getMessage());
         }
 
         return item;

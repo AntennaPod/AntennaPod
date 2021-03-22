@@ -64,12 +64,4 @@
     <attr name="ic_notifications" format="reference"/>
     <attr name="seek_background" format="color" />
     <attr name="ic_share" format="reference"/>
-
-    <declare-styleable name="SquareImageView">
-        <attr name="direction" format="enum">
-            <enum name="width" value="0"/>
-            <enum name="height" value="1"/>
-            <enum name="minimum" value="2"/>
-        </attr>
-    </declare-styleable>
 </resources>

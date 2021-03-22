@@ -3,25 +3,18 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
-import androidx.preference.PreferenceManager;
-import android.util.Log;
+
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.ShownotesProvider;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Interface for objects that can be played by the PlaybackService.
  */
-public interface Playable extends Parcelable,
-        ShownotesProvider, ImageResource {
-    public static final int INVALID_TIME = -1;
+public interface Playable extends Parcelable {
+    int INVALID_TIME = -1;
 
     /**
      * Save information about the playable in a preference so that it can be
@@ -30,21 +23,6 @@ public interface Playable extends Parcelable,
      * to the preferences file.
      */
     void writeToPreferences(SharedPreferences.Editor prefEditor);
-
-    /**
-     * This method is called from a separate thread by the PlaybackService.
-     * Playable objects should load their metadata in this method. This method
-     * should execute as quickly as possible and NOT load chapter marks if no
-     * local file is available.
-     */
-    void loadMetadata() throws PlayableException;
-
-    /**
-     * This method is called from a separate thread by the PlaybackService.
-     * Playable objects should load their chapter marks in this method if no
-     * local file was available when loadMetadata() was called.
-     */
-    void loadChapterMarks(Context context);
 
     /**
      * Returns the title of the episode that this playable represents
@@ -60,8 +38,6 @@ public interface Playable extends Parcelable,
      * Returns a link to a website that is meant to be shown in a browser
      */
     String getWebsiteLink();
-
-    String getPaymentLink();
 
     /**
      * Returns the title of the feed this Playable belongs to.
@@ -96,8 +72,14 @@ public interface Playable extends Parcelable,
     long getLastPlayedTime();
 
     /**
-     * Returns the type of media. This method should return the correct value
-     * BEFORE loadMetadata() is called.
+     * Returns the description of the item, if available.
+     * For FeedItems, the description needs to be loaded from the database first.
+     */
+    @Nullable
+    String getDescription();
+
+    /**
+     * Returns the type of media.
      */
     MediaType getMediaType();
 
@@ -118,12 +100,6 @@ public interface Playable extends Parcelable,
      * MUST return a non-null string if this method returns true.
      */
     boolean localFileAvailable();
-
-    /**
-     * Returns true if a streamable file is available. getStreamUrl MUST return
-     * a non-null string if this method returns true.
-     */
-    boolean streamAvailable();
 
     /**
      * Saves the current position of this object. Implementations can use the
@@ -178,99 +154,11 @@ public interface Playable extends Parcelable,
     void setChapters(List<Chapter> chapters);
 
     /**
-     * Provides utility methods for Playable objects.
+     * Returns the location of the image or null if no image is available.
+     * This can be the feed item image URL, the local embedded media image path, the feed image URL,
+     * or the remote media image URL, depending on what's available.
      */
-    class PlayableUtils {
-        private PlayableUtils(){}
+    @Nullable
+    String getImageLocation();
 
-        private static final String TAG = "PlayableUtils";
-
-        /**
-         * Restores a playable object from a sharedPreferences file. This method might load data from the database,
-         * depending on the type of playable that was restored.
-         *
-         * @return The restored Playable object
-         */
-        @Nullable
-        public static Playable createInstanceFromPreferences(Context context) {
-            long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMediaType();
-            if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                return PlayableUtils.createInstanceFromPreferences(context,
-                        (int) currentlyPlayingMedia, prefs);
-            }
-            return null;
-        }
-
-        /**
-         * Restores a playable object from a sharedPreferences file. This method might load data from the database,
-         * depending on the type of playable that was restored.
-         *
-         * @param type An integer that represents the type of the Playable object
-         *             that is restored.
-         * @param pref The SharedPreferences file from which the Playable object
-         *             is restored
-         * @return The restored Playable object
-         */
-        public static Playable createInstanceFromPreferences(Context context, int type,
-                                                             SharedPreferences pref) {
-            Playable result = null;
-            // ADD new Playable types here:
-            switch (type) {
-                case FeedMedia.PLAYABLE_TYPE_FEEDMEDIA:
-                    result = createFeedMediaInstance(pref);
-                    break;
-                case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
-                    result = createExternalMediaInstance(pref);
-                    break;
-            }
-            if (result == null) {
-                Log.e(TAG, "Could not restore Playable object from preferences");
-            }
-            return result;
-        }
-
-        private static Playable createFeedMediaInstance(SharedPreferences pref) {
-            Playable result = null;
-            long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
-            if (mediaId != -1) {
-                result =  DBReader.getFeedMedia(mediaId);
-            }
-            return result;
-        }
-
-        private static Playable createExternalMediaInstance(SharedPreferences pref) {
-            Playable result = null;
-            String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
-            String mediaType = pref.getString(ExternalMedia.PREF_MEDIA_TYPE, null);
-            if (source != null && mediaType != null) {
-                int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
-                long lastPlayedTime = pref.getLong(ExternalMedia.PREF_LAST_PLAYED_TIME, 0);
-                result = new ExternalMedia(source, MediaType.valueOf(mediaType),
-                        position, lastPlayedTime);
-            }
-            return result;
-        }
-    }
-
-    class PlayableException extends Exception {
-        private static final long serialVersionUID = 1L;
-
-        public PlayableException() {
-            super();
-        }
-
-        public PlayableException(String detailMessage, Throwable throwable) {
-            super(detailMessage, throwable);
-        }
-
-        public PlayableException(String detailMessage) {
-            super(detailMessage);
-        }
-
-        public PlayableException(Throwable throwable) {
-            super(throwable);
-        }
-
-    }
 }

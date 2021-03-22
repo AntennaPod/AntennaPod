@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         holder.title.setText(item.getTitle());
         holder.pubDate.setText(DateUtils.formatAbbrev(getContext(), item.getPubDate()));
         if (item.getDescription() != null) {
-            String description = item.getDescription()
+            String description = HtmlToPlainText.getPlainText(item.getDescription())
                     .replaceAll("\n", " ")
                     .replaceAll("\\s+", " ")
                     .trim();

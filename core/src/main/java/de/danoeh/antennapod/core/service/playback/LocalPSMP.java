@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import androidx.media.AudioAttributesCompat;
 import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
+import de.danoeh.antennapod.core.storage.DBReader;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -258,7 +259,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         LocalPSMP.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
-            media.loadMetadata();
+            if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
+                ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
+            }
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
@@ -288,7 +291,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
+        } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }

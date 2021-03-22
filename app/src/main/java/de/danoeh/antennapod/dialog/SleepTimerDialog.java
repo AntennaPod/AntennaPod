@@ -47,12 +47,12 @@ public class SleepTimerDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void setupGUI() {
+            public void onSleepTimerUpdate() {
                 updateTime();
             }
 
             @Override
-            public void onSleepTimerUpdate() {
+            public void loadMediaInfo() {
                 updateTime();
             }
         };

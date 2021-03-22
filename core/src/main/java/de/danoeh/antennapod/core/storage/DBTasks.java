@@ -16,10 +16,10 @@ import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -121,7 +122,18 @@ public final class DBTasks {
             throw new IllegalStateException("DBTasks.refreshAllFeeds() must not be called from the main thread.");
         }
 
-        refreshFeeds(context, DBReader.getFeedList(), initiatedByUser);
+        List<Feed> feeds = DBReader.getFeedList();
+        ListIterator<Feed> iterator = feeds.listIterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().getPreferences().getKeepUpdated()) {
+                iterator.remove();
+            }
+        }
+        try {
+            refreshFeeds(context, feeds, false, false, false);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+        }
         isRefreshing.set(false);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -135,38 +147,6 @@ public final class DBTasks {
     }
 
     /**
-     * @param context
-     * @param feedList the list of feeds to refresh
-     * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
-     */
-    private static void refreshFeeds(final Context context,
-                                     final List<Feed> feedList,
-                                     boolean initiatedByUser) {
-
-        for (Feed feed : feedList) {
-            FeedPreferences prefs = feed.getPreferences();
-            // feeds with !getKeepUpdated can only be refreshed
-            // directly from the FeedActivity
-            if (prefs.getKeepUpdated()) {
-                try {
-                    refreshFeed(context, feed);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    DBWriter.addDownloadStatus(
-                            new DownloadStatus(feed,
-                                               feed.getHumanReadableIdentifier(),
-                                               DownloadError.ERROR_REQUEST_ERROR,
-                                               false,
-                                               e.getMessage(),
-                                               initiatedByUser)
-                    );
-                }
-            }
-        }
-
-    }
-
-    /**
      * Downloads all pages of the given feed even if feed has not been modified since last refresh
      *
      * @param context Used for requesting the download.
@@ -174,7 +154,7 @@ public final class DBTasks {
      */
     public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
         try {
-            refreshFeed(context, feed, true, true, false);
+            refreshFeeds(context, Collections.singletonList(feed), true, true, false);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
@@ -210,19 +190,6 @@ public final class DBTasks {
     }
 
     /**
-     * Refresh a specific Feed. The refresh may get canceled if the feed does not seem to be modified
-     * and the last update was only few days ago.
-     *
-     * @param context Used for requesting the download.
-     * @param feed    The Feed object.
-     */
-    private static void refreshFeed(Context context, Feed feed)
-            throws DownloadRequestException {
-        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
-        refreshFeed(context, feed, false, false, false);
-    }
-
-    /**
      * Refresh a specific feed even if feed has not been modified since last refresh
      *
      * @param context Used for requesting the download.
@@ -230,26 +197,32 @@ public final class DBTasks {
      */
     public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)
             throws DownloadRequestException {
-        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
-        refreshFeed(context, feed, false, true, initiatedByUser);
+        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() + ")");
+        refreshFeeds(context, Collections.singletonList(feed), false, true, initiatedByUser);
     }
 
-    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages, boolean force, boolean initiatedByUser)
-            throws DownloadRequestException {
-        Feed f;
-        String lastUpdate = feed.hasLastUpdateFailed() ? null : feed.getLastUpdate();
-        if (feed.getPreferences() == null) {
-            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle());
-        } else {
-            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle(),
-                    feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
-        }
-        f.setId(feed.getId());
+    private static void refreshFeeds(Context context, List<Feed> feeds, boolean loadAllPages,
+                                    boolean force, boolean initiatedByUser) throws DownloadRequestException {
+        List<Feed> localFeeds = new ArrayList<>();
+        List<Feed> normalFeeds = new ArrayList<>();
 
-        if (f.isLocalFeed()) {
-            new Thread(() -> LocalFeedUpdater.updateFeed(f, context)).start();
-        } else {
-            DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
+        for (Feed feed : feeds) {
+            if (feed.isLocalFeed()) {
+                localFeeds.add(feed);
+            } else {
+                normalFeeds.add(feed);
+            }
+        }
+
+        if (!localFeeds.isEmpty()) {
+            new Thread(() -> {
+                for (Feed feed : localFeeds) {
+                    LocalFeedUpdater.updateFeed(feed, context);
+                }
+            }).start();
+        }
+        if (!normalFeeds.isEmpty()) {
+            DownloadRequester.getInstance().downloadFeeds(context, feeds, loadAllPages, force, initiatedByUser);
         }
     }
 
@@ -347,7 +320,7 @@ public final class DBTasks {
     private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(feed.getId(), adapter);
+            return DBReader.getFeed(feed.getId());
         } else {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
@@ -544,7 +517,7 @@ public final class DBTasks {
                 List<Feed> items = new ArrayList<>();
                 if (cursor.moveToFirst()) {
                     do {
-                        items.add(Feed.fromCursor(cursor));
+                        items.add(FeedCursorMapper.convert(cursor));
                     } while (cursor.moveToNext());
                 }
                 setResult(items);

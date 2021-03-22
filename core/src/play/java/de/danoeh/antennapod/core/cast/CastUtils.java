@@ -18,7 +18,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -52,7 +51,7 @@ public class CastUtils {
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
     public static boolean isCastable(Playable media) {
-        if (media == null || media instanceof ExternalMedia) {
+        if (media == null) {
             return false;
         }
         if (media instanceof FeedMedia || media instanceof RemoteMedia) {
@@ -78,23 +77,18 @@ public class CastUtils {
     /**
      * Converts {@link FeedMedia} objects into a format suitable for sending to a Cast Device.
      * Before using this method, one should make sure {@link #isCastable(Playable)} returns
-     * {@code true}.
-     *
-     * Unless media.{@link FeedMedia#loadMetadata() loadMetadata()} has already been called,
-     * this method should not run on the main thread.
+     * {@code true}. This method should not run on the main thread.
      *
      * @param media The {@link FeedMedia} object to be converted.
      * @return {@link MediaInfo} object in a format proper for casting.
      */
     public static MediaInfo convertFromFeedMedia(FeedMedia media){
-        if(media == null) {
+        if (media == null) {
             return null;
         }
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
-        try{
-            media.loadMetadata();
-        } catch (Playable.PlayableException e) {
-            Log.e(TAG, "Unable to load FeedMedia metadata", e);
+        if (media.getItem() == null) {
+            media.setItem(DBReader.getFeedItem(media.getItemId()));
         }
         FeedItem feedItem = media.getItem();
         if (feedItem != null) {
@@ -130,18 +124,12 @@ public class CastUtils {
             if (!TextUtils.isEmpty(feedItem.getLink())) {
                 metadata.putString(KEY_EPISODE_LINK, feedItem.getLink());
             }
-        }
-        String notes = null;
-        try {
-            notes = media.loadShownotes().call();
-        } catch (Exception e) {
-            Log.e(TAG, "Unable to load FeedMedia notes", e);
-        }
-        if (notes != null) {
-            if (notes.length() > EPISODE_NOTES_MAX_LENGTH) {
-                notes = notes.substring(0, EPISODE_NOTES_MAX_LENGTH);
+            try {
+                DBReader.loadDescriptionOfFeedItem(feedItem);
+                metadata.putString(KEY_EPISODE_NOTES, feedItem.getDescription());
+            } catch (Exception e) {
+                Log.e(TAG, "Unable to load FeedMedia notes", e);
             }
-            metadata.putString(KEY_EPISODE_NOTES, notes);
         }
         // This field only identifies the id on the device that has the original version.
         // Idea is to perhaps, on a first approach, check if the version on the local DB with the
@@ -194,16 +182,11 @@ public class CastUtils {
             if (mediaId > 0) {
                 FeedMedia fMedia = DBReader.getFeedMedia(mediaId);
                 if (fMedia != null) {
-                    try {
-                        fMedia.loadMetadata();
-                        if (matches(media, fMedia)) {
-                            result = fMedia;
-                            Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);
-                        } else {
-                            Log.d(TAG, "FeedMedia object obtained does NOT match the MediaInfo provided. id=" + mediaId);
-                        }
-                    } catch (Playable.PlayableException e) {
-                        Log.e(TAG, "Unable to load FeedMedia metadata to compare with MediaInfo", e);
+                    if (matches(media, fMedia)) {
+                        result = fMedia;
+                        Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);
+                    } else {
+                        Log.d(TAG, "FeedMedia object obtained does NOT match the MediaInfo provided. id=" + mediaId);
                     }
                 } else {
                     Log.d(TAG, "Unable to find in database a FeedMedia with id=" + mediaId);

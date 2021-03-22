@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
 import org.awaitility.Awaitility;
@@ -71,8 +72,13 @@ public class SpeedChangeTest {
         UserPreferences.setPlaybackSpeedArray(Arrays.asList(1.0f, 2.0f, 3.0f));
 
         EspressoTestUtils.tryKillPlaybackService();
-        activityRule.launchActivity(new Intent().putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
-        controller = new PlaybackController(activityRule.getActivity());
+        activityRule.launchActivity(new Intent().putExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, true));
+        controller = new PlaybackController(activityRule.getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
         controller.getMedia(); // To load media
     }
