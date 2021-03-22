@@ -19,4 +19,20 @@ public class FeedFunding {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! obj.getClass().equals(FeedFunding.class)) {
+           return false;
+        }
+
+        FeedFunding funding = (FeedFunding) obj;
+        if (url == null && funding.url == null && content == null && funding.content == null) {
+            return true;
+        }
+        if (url != null && url.equals(funding.url) && content != null && content.equals(funding.content)) {
+            return true;
+        }
+        return true;
+    }
 }
