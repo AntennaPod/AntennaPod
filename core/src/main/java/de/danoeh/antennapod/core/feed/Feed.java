@@ -105,8 +105,9 @@ public class Feed extends FeedFile {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLinks,
-                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
+                String description, String paymentLinks, String author, String language,
+                String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
