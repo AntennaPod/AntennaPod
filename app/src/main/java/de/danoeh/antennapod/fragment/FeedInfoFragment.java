@@ -253,12 +253,12 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             ArrayList<String> seen = new ArrayList<String>();
             for (FeedFunding funding : fundingList) {
                 if (seen.indexOf(funding.url) >= 0) {
-                   continue;
+                    continue;
                 }
                 seen.add(funding.url);
-                str += (funding.content.isEmpty() ?
-                        getContext().getResources().getString(R.string.support_podcast) :
-                        funding.content) +
+                str += (funding.content.isEmpty()
+                        ? getContext().getResources().getString(R.string.support_podcast)
+                        : funding.content) +
                         " " + funding.url;
                 str += "\n";
             }
