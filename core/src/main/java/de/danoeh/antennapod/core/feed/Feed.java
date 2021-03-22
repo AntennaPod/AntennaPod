@@ -1,36 +1,38 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.util.SortOrder;
 
-import org.apache.commons.lang3.StringUtils;
-import de.danoeh.antennapod.core.asynctask.ImageResource;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
 /**
- * Data Object for a whole feed
+ * Data Object for a whole feed.
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements ImageResource {
+public class Feed extends FeedFile {
 
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
-    public static final String TAG = "Feed.java";
 
-    /* title as defined by the feed */
+    /**
+     * title as defined by the feed.
+     */
     private String feedTitle;
-    /* custom title set by the user */
+
+    /**
+     * custom title set by the user.
+     */
     private String customTitle;
 
     /**
@@ -44,26 +46,25 @@ public class Feed extends FeedFile implements ImageResource {
     private String description;
     private String language;
     /**
-     * Name of the author
+     * Name of the author.
      */
     private String author;
     private String imageUrl;
     private List<FeedItem> items;
 
     /**
-     * String that identifies the last update (adopted from Last-Modified or ETag header)
+     * String that identifies the last update (adopted from Last-Modified or ETag header).
      */
     private String lastUpdate;
 
     private ArrayList<FeedFunding> fundingList;
-
     /**
-     * Feed type, for example RSS 2 or Atom
+     * Feed type, for example RSS 2 or Atom.
      */
     private String type;
 
     /**
-     * Feed preferences
+     * Feed preferences.
      */
     private FeedPreferences preferences;
 
@@ -105,9 +106,8 @@ public class Feed extends FeedFile implements ImageResource {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
-                String description, String paymentLinks, String author, String language,
-                String type, String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLinks,
+                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
@@ -126,7 +126,7 @@ public class Feed extends FeedFile implements ImageResource {
         this.paged = paged;
         this.nextPageLink = nextPageLink;
         this.items = new ArrayList<>();
-        if(filter != null) {
+        if (filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
             this.itemfilter = new FeedItemFilter(new String[0]);
@@ -136,16 +136,13 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     /**
-     * This constructor is used for test purposes
+     * This constructor is used for test purposes.
      */
-    public Feed(long id, String lastUpdate, String title, String link, String description,
-                String paymentLinks, String author, String language, String type,
-                String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
+                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLinks, author,
-                language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, false, null,
-                null, null, false);
+        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
+                fileUrl, downloadUrl, downloaded, false, null, null, null, false);
     }
 
     /**
@@ -180,56 +177,6 @@ public class Feed extends FeedFile implements ImageResource {
     public Feed(String url, String lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
         preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password);
-    }
-
-    public static Feed fromCursor(Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexLastUpdate = cursor.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE);
-        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
-        int indexCustomTitle = cursor.getColumnIndex(PodDBAdapter.KEY_CUSTOM_TITLE);
-        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
-        int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
-        int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
-        int indexAuthor = cursor.getColumnIndex(PodDBAdapter.KEY_AUTHOR);
-        int indexLanguage = cursor.getColumnIndex(PodDBAdapter.KEY_LANGUAGE);
-        int indexType = cursor.getColumnIndex(PodDBAdapter.KEY_TYPE);
-        int indexFeedIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_IDENTIFIER);
-        int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
-        int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
-        int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
-        int indexIsPaged = cursor.getColumnIndex(PodDBAdapter.KEY_IS_PAGED);
-        int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
-        int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
-        int indexSortOrder = cursor.getColumnIndex(PodDBAdapter.KEY_SORT_ORDER);
-        int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
-        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
-
-        Feed feed = new Feed(
-                cursor.getLong(indexId),
-                cursor.getString(indexLastUpdate),
-                cursor.getString(indexTitle),
-                cursor.getString(indexCustomTitle),
-                cursor.getString(indexLink),
-                cursor.getString(indexDescription),
-                cursor.getString(indexPaymentLink),
-                cursor.getString(indexAuthor),
-                cursor.getString(indexLanguage),
-                cursor.getString(indexType),
-                cursor.getString(indexFeedIdentifier),
-                cursor.getString(indexImageUrl),
-                cursor.getString(indexFileUrl),
-                cursor.getString(indexDownloadUrl),
-                cursor.getInt(indexDownloaded) > 0,
-                cursor.getInt(indexIsPaged) > 0,
-                cursor.getString(indexNextPageLink),
-                cursor.getString(indexHide),
-                SortOrder.fromCodeString(cursor.getString(indexSortOrder)),
-                cursor.getInt(indexLastUpdateFailed) > 0
-        );
-
-        FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
-        feed.setPreferences(preferences);
-        return feed;
     }
 
     /**
@@ -341,6 +288,11 @@ public class Feed extends FeedFile implements ImageResource {
                 return true;
             }
         }
+        if (other.fundingList != null) {
+            if (fundingList == null || !fundingList.equals(other.fundingList)) {
+                return true;
+            }
+        }
         if (other.isPaged() && !this.isPaged()) {
             return true;
         }
@@ -386,7 +338,7 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     public void setCustomTitle(String customTitle) {
-        if(customTitle == null || customTitle.equals(feedTitle)) {
+        if (customTitle == null || customTitle.equals(feedTitle)) {
             this.customTitle = null;
         } else {
             this.customTitle = customTitle;
@@ -460,7 +412,7 @@ public class Feed extends FeedFile implements ImageResource {
         for (String str : list) {
             String [] linkContent = str.split(FeedFunding.SUPPORT_INTERNAL_EQUAL);
             if (StringUtils.isBlank(linkContent[0])) {
-               continue;
+                continue;
             }
             String url = linkContent[0];
             String title = "";
@@ -469,10 +421,6 @@ public class Feed extends FeedFile implements ImageResource {
             }
             fundingList.add(new FeedFunding(url, title));
         }
-        return fundingList;
-    }
-
-    public ArrayList<FeedFunding> getPaymentLinks() {
         return fundingList;
     }
 
@@ -494,6 +442,10 @@ public class Feed extends FeedFile implements ImageResource {
             fundingList = new ArrayList<FeedFunding>();
         }
         fundingList.add(funding);
+    }
+
+    public ArrayList<FeedFunding> getPaymentLinks() {
+        return fundingList;
     }
 
     public String getLanguage() {
@@ -528,21 +480,12 @@ public class Feed extends FeedFile implements ImageResource {
         return preferences;
     }
 
-    public void savePreferences() {
-        DBWriter.setFeedPreferences(preferences);
-    }
-
     @Override
     public void setId(long id) {
         super.setId(id);
         if (preferences != null) {
             preferences.setFeedID(id);
         }
-    }
-
-    @Override
-    public String getImageLocation() {
-        return imageUrl;
     }
 
     public int getPageNr() {
