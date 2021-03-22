@@ -23,7 +23,7 @@ public class FeedFunding {
     @Override
     public boolean equals(Object obj) {
         if (! obj.getClass().equals(FeedFunding.class)) {
-           return false;
+            return false;
         }
 
         FeedFunding funding = (FeedFunding) obj;

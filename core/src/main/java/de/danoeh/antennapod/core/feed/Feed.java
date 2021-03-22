@@ -399,8 +399,8 @@ public class Feed extends FeedFile {
         }
         // old format before we started storing the urls as pay= and fund=
         ArrayList<FeedFunding> funding = new ArrayList<FeedFunding>();
-        if (!payLinks.contains(FeedFunding.SUPPORT_INTERNAL_SPLIT) &&
-                !payLinks.contains(FeedFunding.SUPPORT_INTERNAL_EQUAL)) {
+        if (!payLinks.contains(FeedFunding.SUPPORT_INTERNAL_SPLIT)
+                && !payLinks.contains(FeedFunding.SUPPORT_INTERNAL_EQUAL)) {
             funding.add(new FeedFunding(payLinks, ""));
             return funding;
         }
