@@ -397,11 +397,11 @@ public class Feed extends FeedFile {
             return null;
         }
         // old format before we started storing the urls as pay= and fund=
-        fundingList = new ArrayList<FeedFunding>();
+        ArrayList<FeedFunding> funding = new ArrayList<FeedFunding>();
         if (!payLinks.contains(FeedFunding.SUPPORT_INTERNAL_SPLIT) &&
                 !payLinks.contains(FeedFunding.SUPPORT_INTERNAL_EQUAL)) {
-            fundingList.add(new FeedFunding(payLinks, ""));
-            return fundingList;
+            funding.add(new FeedFunding(payLinks, ""));
+            return funding;
         }
         String [] list = payLinks.split(FeedFunding.SUPPORT_INTERNAL_SPLIT);
         if (list.length == 0) {
@@ -418,9 +418,9 @@ public class Feed extends FeedFile {
             if (linkContent.length > 1 && ! StringUtils.isBlank(linkContent[1])) {
                 title = linkContent[1];
             }
-            fundingList.add(new FeedFunding(url, title));
+            funding.add(new FeedFunding(url, title));
         }
-        return fundingList;
+        return funding;
     }
 
     public String getPaymentLinksAsString() {
