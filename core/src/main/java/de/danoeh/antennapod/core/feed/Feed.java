@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
