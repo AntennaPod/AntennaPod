@@ -258,8 +258,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 seen.add(funding.url);
                 str += (funding.content.isEmpty()
                         ? getContext().getResources().getString(R.string.support_podcast)
-                        : funding.content) +
-                        " " + funding.url;
+                        : funding.content)
+                        + " " + funding.url;
                 str += "\n";
             }
             str = StringUtils.trim(str);
