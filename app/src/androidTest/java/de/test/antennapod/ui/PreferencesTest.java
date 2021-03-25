@@ -87,25 +87,20 @@ public class PreferencesTest {
 
     @Test
     public void testHideKeyboardWhenNavigatingUp() {
-        // TODO: 3/11/2021 Possibly refactor to make cleaner
         InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItem(
                         allOf(hasDescendant(withHint(R.string.preference_search_hint))),
                         click()));
-        try {
-            Thread.sleep(2000);
-            onView(withClassName(new IsEqual<>(AppCompatImageButton.class.getName()))).perform(click());
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        View root = activity.findViewById(android.R.id.content);
-        Rect visbileBounds = new Rect();
-        root.getWindowVisibleDisplayFrame(visbileBounds);
-        Assert.assertFalse(root.getHeight() - visbileBounds.height() > 200);
-
+        onView(withClassName(new IsEqual<>(AppCompatImageButton.class.getName()))).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(()-> {
+                    View root = activity.findViewById(android.R.id.content);
+                    Rect visbileBounds = new Rect();
+                    root.getWindowVisibleDisplayFrame(visbileBounds);
+                    return root.getHeight() - visbileBounds.height() < 200;
+                });
     }
 
     @Test
