@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -82,9 +83,15 @@ public class ItemDescriptionFragment extends Fragment {
             webViewLoader.dispose();
         }
         webViewLoader = Maybe.<String>create(emitter -> {
-            Timeline timeline = new Timeline(getActivity(), controller.getMedia());
-            emitter.onSuccess(timeline.processShownotes());
-        }).subscribeOn(Schedulers.io())
+            Playable media = controller.getMedia();
+            if (media != null) {
+                Timeline timeline = new Timeline(getActivity(), media);
+                emitter.onSuccess(timeline.processShownotes());
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
