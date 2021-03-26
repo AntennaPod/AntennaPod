@@ -23,7 +23,6 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
@@ -94,7 +93,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getPubDate());
         txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
                 + "\u00A0"
                 + "・"
