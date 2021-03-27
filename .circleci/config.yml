@@ -90,3 +90,12 @@ workflows:
             - run:
                 name: Lint
                 command: ./gradlew lintPlayRelease
+      - build:
+          name: SpotBugs
+          build-steps:
+            - run:
+                name: SpotBugs (Modules with Play flavour)
+                command: ./gradlew spotbugsPlayDebug | grep "\[SpotBugs\]"
+            - run:
+                name: SpotBugs (Modules without Play flavour)
+                command: ./gradlew spotbugsDebug | grep "\[SpotBugs\]"

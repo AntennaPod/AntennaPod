@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="v   WEAK_MESSAGE_DIGEST_MD5"/>
+    </Match>
+    <Match>
+        <Bug pattern="v  LI_LAZY_INIT_UPDATE_STATIC"/>
+    </Match>
+    <Match>
+        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+        <Class name="de.danoeh.antennapod.menuhandler.MenuItemUtils"/>
+    </Match>
+</FindBugsFilter>
