@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.discovery;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import de.danoeh.antennapod.R;
@@ -24,8 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class ItunesTopListLoader {
     private static final String TAG = "ITunesTopListLoader";
     private final Context context;
@@ -36,13 +33,6 @@ public class ItunesTopListLoader {
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
-    }
-
-    public Single<List<PodcastSearchResult>> loadToplist() {
-        String defaultCountry = Locale.getDefault().getCountry();
-        SharedPreferences prefs = context.getSharedPreferences(PREFS, MODE_PRIVATE);
-        String countryCode = prefs.getString(PREF_KEY_COUNTRY_CODE, COUNTRY_CODE_UNSET);
-        return this.loadToplist(countryCode, 25);
     }
 
     public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {

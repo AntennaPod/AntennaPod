@@ -43,7 +43,7 @@ public abstract class Chapter extends FeedComponent {
         String imageUrl = cursor.getString(indexImage);
         int chapterType = cursor.getInt(indexChapterType);
 
-        Chapter chapter = null;
+        Chapter chapter;
         switch (chapterType) {
             case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
                 chapter = new SimpleChapter(start, title, link, imageUrl);
@@ -54,6 +54,8 @@ public abstract class Chapter extends FeedComponent {
             case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
                 chapter = new VorbisCommentChapter(start, title, link, imageUrl);
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown chapter type");
         }
         chapter.setId(id);
         return chapter;

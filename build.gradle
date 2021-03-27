@@ -31,7 +31,7 @@ allprojects {
 
     spotbugs {
         effort = 'max'
-        reportLevel = 'high' // for now
+        reportLevel = 'medium'
         excludeFilter = rootProject.file('config/spotbugs/exclude.xml')
         ignoreFailures = true // Handled by printing task
     }

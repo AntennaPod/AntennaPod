@@ -5,7 +5,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -37,9 +36,6 @@ public class DocumentFileExportWorker {
             OutputStreamWriter writer = null;
             try {
                 Uri uri = output.getUri();
-                if (uri == null) {
-                    throw new FileNotFoundException("Export file not found.");
-                }
                 outputStream = context.getContentResolver().openOutputStream(uri);
                 if (outputStream == null) {
                     throw new IOException();
