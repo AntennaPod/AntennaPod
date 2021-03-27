@@ -27,7 +27,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

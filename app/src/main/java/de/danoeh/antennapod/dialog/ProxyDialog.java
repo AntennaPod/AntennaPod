@@ -206,7 +206,7 @@ public class ProxyDialog {
 
     private boolean checkPort() {
         int port = getPort();
-        if(port < 0 && port > 65535) {
+        if (port < 0 || port > 65535) {
             etPort.setError(context.getString(R.string.proxy_port_invalid_error));
             return false;
         }

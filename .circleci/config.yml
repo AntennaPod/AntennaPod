@@ -94,8 +94,5 @@ workflows:
           name: SpotBugs
           build-steps:
             - run:
-                name: SpotBugs (Modules with Play flavour)
-                command: ./gradlew spotbugsPlayDebug | grep "\[SpotBugs\]"
-            - run:
-                name: SpotBugs (Modules without Play flavour)
-                command: ./gradlew spotbugsDebug | grep "\[SpotBugs\]"
+                name: SpotBugs
+                command: ./gradlew spotbugsPlayDebug spotbugsDebug 2>&1 | grep -i "spotbugs"

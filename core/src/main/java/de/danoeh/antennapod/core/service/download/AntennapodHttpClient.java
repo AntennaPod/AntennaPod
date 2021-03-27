@@ -120,7 +120,7 @@ public class AntennapodHttpClient {
             SocketAddress address = InetSocketAddress.createUnresolved(config.host, port);
             Proxy proxy = new Proxy(config.type, address);
             builder.proxy(proxy);
-            if (!TextUtils.isEmpty(config.username)) {
+            if (!TextUtils.isEmpty(config.username) && config.password != null) {
                 String credentials = Credentials.basic(config.username, config.password);
                 builder.interceptors().add(chain -> {
                     Request request = chain.request().newBuilder()

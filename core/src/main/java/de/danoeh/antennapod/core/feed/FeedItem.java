@@ -43,7 +43,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private Date pubDate;
     private FeedMedia media;
 
-    private Feed feed;
+    private transient Feed feed;
     private long feedId;
 
     private int state;

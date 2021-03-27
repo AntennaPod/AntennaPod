@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
     <Match>
-        <Bug pattern="v   WEAK_MESSAGE_DIGEST_MD5"/>
+        <Bug pattern="DM_DEFAULT_ENCODING"/>
+        <Class name="de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentReader"/>
     </Match>
     <Match>
-        <Bug pattern="v  LI_LAZY_INIT_UPDATE_STATIC"/>
+        <Bug pattern="MS_MUTABLE_ARRAY"/>
+        <Class name="de.danoeh.antennapod.fragment.NavDrawerFragment"/>
+    </Match>
+    <Match>
+        <Bug pattern="MS_SHOULD_BE_FINAL"/>
+        <Class name="de.danoeh.antennapod.core.ClientConfig"/>
     </Match>
     <Match>
         <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
         <Class name="de.danoeh.antennapod.menuhandler.MenuItemUtils"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+        <Class name="de.danoeh.antennapod.activity.MainActivity"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+        <Class name="de.danoeh.antennapod.activity.MainActivity"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+        <Class name="de.danoeh.antennapod.core.feed.FeedMedia"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+        <Class name="de.danoeh.antennapod.dialog.PlaybackControlsDialog"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_PARAM_DEREF"/>
+        <Class name="de.danoeh.antennapod.core.feed.FeedMedia"/>
     </Match>
 </FindBugsFilter>
