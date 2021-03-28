@@ -62,7 +62,7 @@ public class NavDrawerData {
 
         public FolderDrawerItem(String name) {
             // Keep IDs >0 but make room for many feeds
-            super(DrawerItem.Type.FOLDER, (long) Math.abs(name.hashCode()) << 20);
+            super(DrawerItem.Type.FOLDER, Math.abs((long) name.hashCode()) << 20);
             this.name = name;
         }
 

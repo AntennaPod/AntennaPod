@@ -160,7 +160,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (viewType == VIEW_TYPE_SUBSCRIPTION) {
             return itemAccess.getItem(position - getSubscriptionOffset()).id;
         } else if (viewType == VIEW_TYPE_NAV) {
-            return -Math.abs(fragmentTags.get(position).hashCode()) - 1; // Folder IDs are >0
+            return -Math.abs((long) fragmentTags.get(position).hashCode()) - 1; // Folder IDs are >0
         } else {
             return 0;
         }
