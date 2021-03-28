@@ -91,7 +91,10 @@ public class DatabaseExporter {
             db.close();
 
             File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-            currentDB.delete();
+            boolean success = currentDB.delete();
+            if (!success) {
+                throw new IOException("Unable to delete old database");
+            }
             FileUtils.moveFile(tempDB, currentDB);
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));

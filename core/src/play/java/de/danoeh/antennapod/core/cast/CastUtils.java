@@ -35,7 +35,6 @@ public class CastUtils {
     public static final String KEY_FEED_URL = "de.danoeh.antennapod.core.cast.FeedUrl";
     public static final String KEY_FEED_WEBSITE = "de.danoeh.antennapod.core.cast.FeedWebsite";
     public static final String KEY_EPISODE_NOTES = "de.danoeh.antennapod.core.cast.EpisodeNotes";
-    public static final int EPISODE_NOTES_MAX_LENGTH = Integer.MAX_VALUE;
 
     /**
      * The field <code>AntennaPod.FormatVersion</code> specifies which version of MediaMetaData

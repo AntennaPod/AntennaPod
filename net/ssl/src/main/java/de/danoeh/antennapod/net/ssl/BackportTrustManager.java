@@ -6,10 +6,12 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class BackportTrustManager {
             managers.add(getSystemTrustManager(keystore));
             managers.add(getSystemTrustManager(null));
             return new CompositeX509TrustManager(managers);
-        } catch (Exception e) {
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }

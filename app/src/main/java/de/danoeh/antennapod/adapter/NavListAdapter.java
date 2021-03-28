@@ -58,9 +58,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
      */
     public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
 
-    private static List<String> fragmentTags;
-    private static String[] titles;
-
+    private final List<String> fragmentTags = new ArrayList<>();
+    private final String[] titles;
     private final ItemAccess itemAccess;
     private final WeakReference<Activity> activity;
     public boolean showSubscriptionList = true;
@@ -98,7 +97,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             showSubscriptionList = false;
         }
 
-        fragmentTags = newTags;
+        fragmentTags.clear();
+        fragmentTags.addAll(newTags);
         notifyDataSetChanged();
     }
 

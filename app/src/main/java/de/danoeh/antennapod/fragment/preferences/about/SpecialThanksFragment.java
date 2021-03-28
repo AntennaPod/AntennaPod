@@ -29,7 +29,7 @@ public class SpecialThanksFragment extends ListFragment {
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("special_thanks.csv")));
+                    getContext().getAssets().open("special_thanks.csv"), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");

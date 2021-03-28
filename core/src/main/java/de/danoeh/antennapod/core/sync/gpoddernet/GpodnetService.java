@@ -667,11 +667,11 @@ public class GpodnetService implements ISyncService {
             while ((count = in.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, count);
             }
+            return outputStream.toString("UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-        return outputStream.toString();
     }
 
     private void checkStatusCode(@NonNull Response response) throws GpodnetServiceException {

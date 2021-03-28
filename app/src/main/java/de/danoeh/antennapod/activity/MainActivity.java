@@ -188,7 +188,9 @@ public class MainActivity extends CastEnabledActivity {
 
     public void setupToolbarToggle(@NonNull Toolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
-            drawerLayout.removeDrawerListener(drawerToggle);
+            if (drawerToggle != null) {
+                drawerLayout.removeDrawerListener(drawerToggle);
+            }
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                     R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);
