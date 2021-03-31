@@ -101,6 +101,7 @@ public class CoverFragment extends Fragment {
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        txtvPodcastTitle.setOnClickListener(v -> startActivity(MainActivity.getIntentToOpenFeed(getContext(), media.getItem().getFeedId())));
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
