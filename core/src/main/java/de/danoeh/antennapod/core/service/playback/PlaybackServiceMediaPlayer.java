@@ -338,9 +338,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
     public boolean isAudioChannelInUse() {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int mode = audioManager.getMode();
-
-        return (mode != AudioManager.MODE_NORMAL);
+        return (audioManager.getMode() != AudioManager.MODE_NORMAL || audioManager.isMusicActive());
     }
 
     /**
