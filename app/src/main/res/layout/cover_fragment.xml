@@ -37,24 +37,30 @@
             android:id="@+id/txtvPodcastTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:textSize="@dimen/text_size_small"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:textColor="?android:attr/textColorSecondary"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_small"
             tools:text="Podcast" />
 
         <TextView
             android:id="@+id/txtvEpisodeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_small"
             android:maxLines="2"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
     </LinearLayout>
 
