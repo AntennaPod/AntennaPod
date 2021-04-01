@@ -100,8 +100,15 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        txtvPodcastTitle.setOnClickListener(v -> startActivity(MainActivity.getIntentToOpenFeed(getContext(), media.getItem().getFeedId())));
+        txtvEpisodeTitle.setOnClickListener(v -> {
+            FeedItem feedItem = ((FeedMedia) media).getItem();
+            if (feedItem != null) {
+                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
+                shareDialog.show(getActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
+            }
+        });
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
