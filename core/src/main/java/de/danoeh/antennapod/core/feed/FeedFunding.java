@@ -40,7 +40,7 @@ public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
         return true;
     }
 
-    static public ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
+    public static ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
         if (StringUtils.isBlank(payLinks)) {
             return null;
         }
@@ -71,7 +71,7 @@ public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
         return funding;
     }
 
-    static public String getPaymentLinksAsString(ArrayList<FeedFunding> fundingList) {
+    public static String getPaymentLinksAsString(ArrayList<FeedFunding> fundingList) {
         String result = "";
         if (fundingList == null) {
             return null;
