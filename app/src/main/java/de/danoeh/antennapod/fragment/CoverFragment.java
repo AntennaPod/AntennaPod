@@ -100,6 +100,7 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        Intent openFeed = MainActivity.getIntentToOpenFeed(getContext(), ((FeedMedia) media).getItem().getFeedId());
         txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         txtvEpisodeTitle.setOnClickListener(v -> {
