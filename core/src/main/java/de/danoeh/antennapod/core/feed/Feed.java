@@ -416,7 +416,7 @@ public class Feed extends FeedFile {
             }
             String url = linkContent[0];
             String title = "";
-            if (linkContent.length > 1 && ! StringUtils.isBlank(linkContent[1])) {
+            if (linkContent.length > 1 && !StringUtils.isBlank(linkContent[1])) {
                 title = linkContent[1];
             }
             funding.add(new FeedFunding(url, title));
