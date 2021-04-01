@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.syndication.namespace.PodcastIndex;
 import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
@@ -112,8 +113,14 @@ public class Rss2Generator implements FeedGenerator {
                     xml.attribute(null, "type", item.getMedia().getMime_type());
                     xml.endTag(null, "enclosure");
                 }
-                if (funding != null) {
-                    GeneratorUtil.addPaymentLink(xml, funding.get(0).url, true);
+                if (fundingList != null) {
+                    for (FeedFunding funding: fundingList) {
+                        xml.startTag(PodcastIndex.NSTAG, "funding");
+                        xml.attribute(PodcastIndex.NSTAG, "url", funding.url);
+                        xml.text(funding.content);
+                        GeneratorUtil.addPaymentLink(xml, funding.url, true);
+                        xml.endTag(PodcastIndex.NSTAG, "funding");
+                    }
                 }
 
                 xml.endTag(null, "item");
