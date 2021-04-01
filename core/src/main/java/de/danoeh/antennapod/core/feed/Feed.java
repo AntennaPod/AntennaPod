@@ -117,7 +117,7 @@ public class Feed extends FeedFile {
         this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
-        this.fundingList = extractPaymentLinks(paymentLinks);
+        this.fundingList = FeedFunding.extractPaymentLinks(paymentLinks);
         this.author = author;
         this.language = language;
         this.type = type;
@@ -391,50 +391,6 @@ public class Feed extends FeedFile {
 
     public void setFeedIdentifier(String feedIdentifier) {
         this.feedIdentifier = feedIdentifier;
-    }
-
-    public ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
-        if (StringUtils.isBlank(payLinks)) {
-            return null;
-        }
-        // old format before we started storing the urls as pay= and fund=
-        ArrayList<FeedFunding> funding = new ArrayList<FeedFunding>();
-        if (!payLinks.contains(FeedFunding.SUPPORT_INTERNAL_SPLIT)
-                && !payLinks.contains(FeedFunding.SUPPORT_INTERNAL_EQUAL)) {
-            funding.add(new FeedFunding(payLinks, ""));
-            return funding;
-        }
-        String [] list = payLinks.split(FeedFunding.SUPPORT_INTERNAL_SPLIT);
-        if (list.length == 0) {
-            return null;
-        }
-
-        for (String str : list) {
-            String [] linkContent = str.split(FeedFunding.SUPPORT_INTERNAL_EQUAL);
-            if (StringUtils.isBlank(linkContent[0])) {
-                continue;
-            }
-            String url = linkContent[0];
-            String title = "";
-            if (linkContent.length > 1 && ! StringUtils.isBlank(linkContent[1])) {
-                title = linkContent[1];
-            }
-            funding.add(new FeedFunding(url, title));
-        }
-        return funding;
-    }
-
-    public String getPaymentLinksAsString() {
-        String result = "";
-        if (fundingList == null) {
-            return null;
-        }
-        for (FeedFunding fund : fundingList) {
-            result += fund.url + FeedFunding.SUPPORT_INTERNAL_EQUAL + fund.content;
-            result += FeedFunding.SUPPORT_INTERNAL_SPLIT;
-        }
-        result = StringUtils.removeEnd(result, FeedFunding.SUPPORT_INTERNAL_SPLIT);
-        return result;
     }
 
     public void addPayment(FeedFunding funding) {

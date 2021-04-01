@@ -63,6 +63,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -249,21 +250,20 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         } else {
             lblSupport.setVisibility(View.VISIBLE);
             ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
-            String str = "";
-            ArrayList<String> seen = new ArrayList<String>();
+            StringBuilder str = new StringBuilder();
+            HashSet<String> seen = new HashSet<String>();
             for (FeedFunding funding : fundingList) {
-                if (seen.indexOf(funding.url) >= 0) {
+                if (seen.contains(funding.url)) {
                     continue;
                 }
                 seen.add(funding.url);
-                str += (funding.content.isEmpty()
+                str.append(funding.content.isEmpty()
                         ? getContext().getResources().getString(R.string.support_podcast)
-                        : funding.content)
-                        + " " + funding.url;
-                str += "\n";
+                        : funding.content).append(" ").append(funding.url);
+                str.append("\n");
             }
-            str = StringUtils.trim(str);
-            txtvFundingUrl.setText(str);
+            str = new StringBuilder(StringUtils.trim(str.toString()));
+            txtvFundingUrl.setText(str.toString());
         }
 
         Iconify.addIcons(txtvUrl);

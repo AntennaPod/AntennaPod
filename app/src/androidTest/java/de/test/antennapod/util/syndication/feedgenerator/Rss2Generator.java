@@ -68,9 +68,11 @@ public class Rss2Generator implements FeedGenerator {
             xml.endTag(null, "image");
         }
 
-        ArrayList<FeedFunding> funding = feed.getPaymentLinks();
-        if (funding != null) {
-            GeneratorUtil.addPaymentLink(xml, funding.get(0).url, true);
+        ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
+        if (fundingList != null) {
+            for (FeedFunding funding: fundingList) {
+                GeneratorUtil.addPaymentLink(xml, funding.url, true);
+            }
         }
 
         // Write FeedItem data

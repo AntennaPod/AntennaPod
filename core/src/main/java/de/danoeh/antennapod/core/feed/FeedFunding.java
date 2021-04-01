@@ -1,8 +1,12 @@
 package de.danoeh.antennapod.core.feed;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+
 public class FeedFunding {
-    public static final String SUPPORT_INTERNAL_SPLIT = "\u001e";
-    public static final String SUPPORT_INTERNAL_EQUAL = "\u001f";
+public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
+    public static final String FUNDING_TITLE_SEPARATOR = "\u001f";
 
     public String url;
     public String content;
@@ -35,4 +39,49 @@ public class FeedFunding {
         }
         return true;
     }
+
+    static public ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
+        if (StringUtils.isBlank(payLinks)) {
+            return null;
+        }
+        // old format before we started with PodcastIndex funding tag
+        ArrayList<FeedFunding> funding = new ArrayList<FeedFunding>();
+        if (!payLinks.contains(FeedFunding.FUNDING_ENTRIES_SEPARATOR)
+                && !payLinks.contains(FeedFunding.FUNDING_TITLE_SEPARATOR)) {
+            funding.add(new FeedFunding(payLinks, ""));
+            return funding;
+        }
+        String [] list = payLinks.split(FeedFunding.FUNDING_ENTRIES_SEPARATOR);
+        if (list.length == 0) {
+            return null;
+        }
+
+        for (String str : list) {
+            String [] linkContent = str.split(FeedFunding.FUNDING_TITLE_SEPARATOR);
+            if (StringUtils.isBlank(linkContent[0])) {
+                continue;
+            }
+            String url = linkContent[0];
+            String title = "";
+            if (linkContent.length > 1 && ! StringUtils.isBlank(linkContent[1])) {
+                title = linkContent[1];
+            }
+            funding.add(new FeedFunding(url, title));
+        }
+        return funding;
+    }
+
+    static public String getPaymentLinksAsString(ArrayList<FeedFunding> fundingList) {
+        String result = "";
+        if (fundingList == null) {
+            return null;
+        }
+        for (FeedFunding fund : fundingList) {
+            result += fund.url + FeedFunding.FUNDING_TITLE_SEPARATOR + fund.content;
+            result += FeedFunding.FUNDING_ENTRIES_SEPARATOR;
+        }
+        result = StringUtils.removeEnd(result, FeedFunding.FUNDING_ENTRIES_SEPARATOR);
+        return result;
+    }
+
 }

@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="4dp"
-                    android:text="@string/support_label"
+                    android:text="@string/support_funding_label"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="18sp"
                     tools:background="@android:color/holo_red_light" />
