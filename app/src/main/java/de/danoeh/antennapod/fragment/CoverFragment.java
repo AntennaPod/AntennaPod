@@ -110,17 +110,7 @@ public class CoverFragment extends Fragment {
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
-        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
-        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        txtvEpisodeTitle.setOnClickListener(v -> {
-            FeedItem feedItem = ((FeedMedia) media).getItem();
-            if (feedItem != null) {
-                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
-                shareDialog.show(requireActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
-            }
-        });
-        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
@@ -248,12 +238,4 @@ public class CoverFragment extends Fragment {
         controller.playPause();
     }
 
-    private boolean copyText(String text) {
-        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
-        }
-        Toast.makeText(requireContext(), getResources().getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
-        return true;
-    }
 }
