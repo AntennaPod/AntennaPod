@@ -66,10 +66,9 @@ public class AudioPlayerFragment extends Fragment implements
         SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_COVER = 0;
-    private static final int POS_DESCR = 1;
+    private static final int POS_SHOWNOTES = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
-    public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
@@ -156,8 +155,8 @@ public class AudioPlayerFragment extends Fragment implements
                 case POS_COVER:
                     tab.setText(R.string.cover_label);
                     break;
-                case POS_DESCR:
-                    tab.setText(R.string.description_label);
+                case POS_SHOWNOTES:
+                    tab.setText(R.string.shownotes_label);
                     break;
                 case POS_CHAPTERS:
                     tab.setText(R.string.chapters_label);
@@ -561,7 +560,7 @@ public class AudioPlayerFragment extends Fragment implements
             switch (position) {
                 case POS_COVER:
                     return new CoverFragment();
-                case POS_DESCR:
+                case POS_SHOWNOTES:
                     return new ItemDescriptionFragment();
                 default:
                 case POS_CHAPTERS:
