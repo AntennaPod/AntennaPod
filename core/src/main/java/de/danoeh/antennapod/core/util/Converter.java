@@ -23,8 +23,12 @@ public final class Converter {
      * Converts milliseconds to a string containing hours, minutes and seconds.
      */
     public static String getDurationStringLong(int duration) {
-        int[] hms = millisecondsToHms(duration);
-        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hms[0], hms[1], hms[2]);
+        if (duration <= 0) {
+            return "00:00:00";
+        } else {
+            int[] hms = millisecondsToHms(duration);
+            return String.format(Locale.getDefault(), "%02d:%02d:%02d", hms[0], hms[1], hms[2]);
+        }
     }
 
     private static int[] millisecondsToHms(long duration) {
