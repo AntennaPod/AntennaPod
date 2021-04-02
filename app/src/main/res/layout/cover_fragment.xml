@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,9 +40,9 @@
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textIsSelectable="true"
             tools:text="Podcast" />
 
         <TextView
@@ -52,10 +51,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="none"
             android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_small"
             android:maxLines="2"
             android:textColor="?android:attr/textColorPrimary"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/text_size_small"
+            android:textIsSelectable="true"
             tools:text="Episode" />
     </LinearLayout>
 

@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,11 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -28,9 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -39,7 +31,6 @@ import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.ShareDialog;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -109,7 +100,6 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
@@ -237,5 +227,4 @@ public class CoverFragment extends Fragment {
         }
         controller.playPause();
     }
-
 }
