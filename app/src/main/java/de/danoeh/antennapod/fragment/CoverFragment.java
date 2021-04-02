@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -52,6 +56,8 @@ public class CoverFragment extends Fragment {
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
+    private ImageButton openDescription;
+    private ImageButton counterweight;
     private PlaybackController controller;
     private Disposable disposable;
     private int displayedChapterIndex = -2;
@@ -66,6 +72,10 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
+        openDescription = root.findViewById(R.id.openDescription);
+        counterweight = root.findViewById(R.id.counterweight);
+        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
+        openDescription.setOnClickListener(v -> vp.setCurrentItem(EpisodeFragment.POS_DESCR));
         return root;
     }
 
@@ -209,6 +219,10 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
+            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
+            descrParams.weight = 1;
+            openDescription.setLayoutParams(descrParams);
+            counterweight.setVisibility(View.INVISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -218,6 +232,10 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
+            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
+            descrParams.weight = 0;
+            openDescription.setLayoutParams(descrParams);
+            counterweight.setVisibility(View.GONE);
         }
     }
 

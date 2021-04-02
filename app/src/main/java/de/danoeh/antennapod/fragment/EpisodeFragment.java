@@ -19,7 +19,7 @@ public class EpisodeFragment extends Fragment {
 
     private static final String TAG = "EpisodeFragment";
     private static final int POS_COVER = 0;
-    private static final int POS_DESCR = 1;
+    public static final int POS_DESCR = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
 
     @Override
