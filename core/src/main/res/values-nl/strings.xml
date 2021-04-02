@@ -75,7 +75,6 @@
   <string name="author_label">Maker(s)</string>
   <string name="language_label">Taal</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Beeld</string>
   <string name="error_label">Fout</string>
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
   <string name="needs_storage_permission">Recht vereist voor gebruik van opslag</string>
@@ -165,6 +164,7 @@
   <string name="hide_not_queued_episodes_label">Niet in de wachtrij</string>
   <string name="hide_has_media_label">Bevat media</string>
   <string name="filtered_label">Gefilterd</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Vorige verversing mislukt - druk voor meer informatie.</string>
   <string name="open_podcast">Podcast openen</string>
   <string name="please_wait_for_data">Wacht tot de gegevens geladen zijn</string>
   <!--actions on feeditems-->
@@ -228,14 +228,24 @@
   <string name="download_running">Bezig met downloaden</string>
   <string name="download_error_details">Details</string>
   <string name="download_error_details_message">%1$s \n\nURL van bestand:\n%2$s</string>
+  <string name="download_error_tap_for_details">Druk voor meer informatie.</string>
   <string name="download_error_device_not_found">Opslagmedium niet aangetroffen</string>
+  <string name="download_error_insufficient_space">Er is onvoldoende ruimte op je apparaat.</string>
   <string name="download_error_http_data_error">HTTP-gegevensfout</string>
   <string name="download_error_error_unknown">Onbekende fout</string>
+  <string name="download_error_parser_exception">De hostserver heeft een beschadigde podcastfeed doorgegeven.</string>
   <string name="download_error_unsupported_type">Niet-ondersteunde feedsoort</string>
+  <string name="download_error_unsupported_type_html">De hostserver heeft een website doorgegeven.</string>
+  <string name="download_error_not_found">De hostserver kan het bestand niet vinden - mogelijk is het verwijderd.</string>
   <string name="download_error_connection_error">Verbindingsfout</string>
+  <string name="download_error_unknown_host">De server kan niet worden bereikt. Controleer het adres en je internetverbinding.</string>
   <string name="download_error_unauthorized">Authenticatiefout</string>
   <string name="download_error_file_type_type">Bestandssoortfout</string>
+  <string name="download_error_forbidden">De hostserver reageert niet.</string>
   <string name="download_canceled_msg">Download afgebroken</string>
+  <string name="download_error_wrong_size">De serververbinding werd verbroken voordat de download kon worden afgerond</string>
+  <string name="download_error_blocked">Het downloaden is geblokkeerd door een andere app.</string>
+  <string name="download_error_certificate">Er kan geen beveiligde verbinding worden opgezet. Mogelijk blokkeert een andere app de download of is er een probleem met de servercertificaten.</string>
   <string name="download_canceled_autodownload_enabled_msg">Download afgebroken\n<i>Automatisch downloaden</i> uitgeschakeld voor deze aflevering</string>
   <string name="download_report_title">Downloads afgerond, maar met fout(en)</string>
   <string name="auto_download_report_title">Automatisch downloaden afgerond</string>
@@ -248,6 +258,7 @@
     <item quantity="one">Nog %d download</item>
     <item quantity="other">Nog %d downloads</item>
   </plurals>
+  <string name="service_shutting_down">De dienst wordt afgesloten</string>
   <string name="download_notification_title">Bezig met downloaden van podcastgegevens</string>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
@@ -615,6 +626,7 @@
   <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
   <string name="gpodnetauth_login_title">Inloggen</string>
   <string name="gpodnetauth_login_butLabel">Inloggen</string>
+  <string name="gpodnetauth_encryption_warning">Het wachtwoord en de gegevens zijn onversleuteld!</string>
   <string name="create_account">Account aanmaken</string>
   <string name="username_label">Gebruikersnaam</string>
   <string name="password_label">Wachtwoord</string>

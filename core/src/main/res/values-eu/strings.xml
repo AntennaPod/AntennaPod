@@ -75,7 +75,6 @@
   <string name="author_label">Egilea(k)</string>
   <string name="language_label">Hizkuntza</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Irudia</string>
   <string name="error_label">Errorea</string>
   <string name="error_msg_prefix">Errorea gertatu da:</string>
   <string name="needs_storage_permission">Biltegiratze baimenak behar dira hori egiteko</string>

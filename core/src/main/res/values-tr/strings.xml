@@ -75,7 +75,6 @@
   <string name="author_label">Yazar(lar)</string>
   <string name="language_label">Dil</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Resim</string>
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
   <string name="needs_storage_permission">Bu işlem için depolama izni gerekli</string>

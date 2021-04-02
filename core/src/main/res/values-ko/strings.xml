@@ -75,7 +75,6 @@
   <string name="author_label">저자</string>
   <string name="language_label">언어</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">사진</string>
   <string name="error_label">오류</string>
   <string name="error_msg_prefix">오류가 발생했습니다:</string>
   <string name="needs_storage_permission">이 동작에 대해 저장소 권한이 필요합니다</string>

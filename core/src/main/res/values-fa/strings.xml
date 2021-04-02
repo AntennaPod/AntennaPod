@@ -71,7 +71,6 @@
   <string name="author_label">مؤلف(ها)</string>
   <string name="language_label">زبان</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">تصویر</string>
   <string name="error_label">خطا</string>
   <string name="error_msg_prefix">یک خطا رخ داد:</string>
   <string name="needs_storage_permission">دسترسی حافظه برای انجام این عملیات مورد نیاز است</string>

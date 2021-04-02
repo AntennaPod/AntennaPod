@@ -69,7 +69,6 @@
   <string name="author_label">作者</string>
   <string name="language_label">言語</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">映像</string>
   <string name="error_label">エラー</string>
   <string name="error_msg_prefix">エラーが発生しました。</string>
   <string name="needs_storage_permission">この操作にはストレージのアクセス許可が必要です</string>

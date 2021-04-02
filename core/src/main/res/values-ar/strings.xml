@@ -71,7 +71,6 @@
   <string name="author_label">الناشر(ون)</string>
   <string name="language_label">لغة</string>
   <string name="url_label">عنوان الموقع</string>
-  <string name="cover_label">صورة</string>
   <string name="error_label">خطأ</string>
   <string name="error_msg_prefix">حدث خطأ:</string>
   <string name="needs_storage_permission">هذه العلملية تحتاج السماح للوصول لمساحة التخزين</string>

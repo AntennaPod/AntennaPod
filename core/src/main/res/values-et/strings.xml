@@ -75,7 +75,6 @@
   <string name="author_label">Autor(id)</string>
   <string name="language_label">Keel</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Pilt</string>
   <string name="error_label">Viga</string>
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="needs_storage_permission">Selle tegevuse jaoks tuleb lubada salvestusruumi kasutamine</string>

@@ -74,7 +74,6 @@
   <string name="author_label">作者</string>
   <string name="language_label">語言</string>
   <string name="url_label">網址</string>
-  <string name="cover_label">圖片</string>
   <string name="error_label">錯誤</string>
   <string name="error_msg_prefix">發生錯誤：</string>
   <string name="needs_storage_permission">此操作需要儲存空間權限</string>

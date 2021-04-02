@@ -74,7 +74,6 @@
   <string name="author_label">Autor(i)</string>
   <string name="language_label">Jazyk</string>
   <string name="url_label">Odkaz</string>
-  <string name="cover_label">Obrázok</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Vyskytla sa chyba:</string>
   <string name="needs_storage_permission">Pre túto operáciu je potrebné povolenie prístupu k úložisku</string>

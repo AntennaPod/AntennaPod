@@ -75,7 +75,6 @@
   <string name="author_label">Auteur(s)</string>
   <string name="language_label">Langue</string>
   <string name="url_label">Lien</string>
-  <string name="cover_label">Image</string>
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="needs_storage_permission">L\'autorisation d\'utiliser le stockage est requis pour cette opération</string>
@@ -260,7 +259,7 @@
     <item quantity="other">%d téléchargements restants</item>
   </plurals>
   <string name="service_shutting_down">Service en cours de fermeture</string>
-  <string name="download_notification_title">Téléchargement podcasts</string>
+  <string name="download_notification_title">Téléchargement des podcasts</string>
   <string name="download_log_title_unknown">Titre inconnu</string>
   <string name="download_type_feed">Flux</string>
   <string name="download_type_media">Fichier média</string>
@@ -327,7 +326,7 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Aucun épisode dans la liste de lecture</string>
   <string name="no_items_label">Pour ajouter un épisode, téléchargez le ou faites une pression longue dessus et taper sur \"Ajouter à la liste de lecture\".</string>
-  <string name="no_shownotes_label">Aucune notes pour cet épisode.</string>
+  <string name="no_shownotes_label">Aucune note ou description pour cet épisode.</string>
   <string name="no_run_downloads_head_label">Aucun téléchargement en cours</string>
   <string name="no_run_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
   <string name="no_comp_downloads_head_label">Aucun épisode téléchargé</string>

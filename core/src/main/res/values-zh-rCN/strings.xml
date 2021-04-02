@@ -75,7 +75,6 @@
   <string name="author_label">作者(们)</string>
   <string name="language_label">语言</string>
   <string name="url_label">链接地址</string>
-  <string name="cover_label">图片</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="needs_storage_permission">此操作需要存储权限。</string>

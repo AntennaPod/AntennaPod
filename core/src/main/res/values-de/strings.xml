@@ -75,7 +75,7 @@
   <string name="author_label">Autor(en)</string>
   <string name="language_label">Sprache</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Bild</string>
+  <string name="cover_label">Cover</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
   <string name="needs_storage_permission">Für diese Funktion wird die Speicher-Berechtigung benötigt</string>
@@ -84,6 +84,7 @@
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="description_label">Beschreibung</string>
+  <string name="shownotes_label">Shownotes</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="processing_label">Verarbeite</string>
   <string name="close_label">Schließen</string>
@@ -246,7 +247,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="download_error_forbidden">Der Podcast-Server lehnt eine Antwort ab.</string>
   <string name="download_canceled_msg">Download abgebrochen</string>
   <string name="download_error_wrong_size">Die Serververbindung wurde unterbrochen bevor der Download fertiggestellt wurde</string>
-  <string name="download_error_blocked">Der Download wurde von einer andere App auf deinem Gerät blockiert.</string>
+  <string name="download_error_blocked">Der Download wurde von einer anderen App auf deinem Gerät blockiert.</string>
   <string name="download_error_certificate">Es kann keine sichere Verbindung hergestellt werden. Dies kann bedeuten, dass eine andere App auf deinem Gerät den Download blockiert oder dass etwas mit dem Zertifikat des Servers nicht stimmt.</string>
   <string name="download_canceled_autodownload_enabled_msg">Download abgebrochen\n<i>Automatischen Download</i> für diese Episode deaktiviert</string>
   <string name="download_report_title">Downloads endeten mit Fehler(n)</string>

@@ -75,7 +75,6 @@
   <string name="author_label">יוצרים</string>
   <string name="language_label">שפה</string>
   <string name="url_label">כתובת</string>
-  <string name="cover_label">תמונה</string>
   <string name="error_label">שגיאה</string>
   <string name="error_msg_prefix">אירעה שגיאה:</string>
   <string name="needs_storage_permission">נדרשת הרשאה לאחסון כדי לבצע פעולה זו</string>
@@ -177,6 +176,7 @@
   <string name="hide_not_queued_episodes_label">לא בתור</string>
   <string name="hide_has_media_label">יש מדיה</string>
   <string name="filtered_label">מסונן</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} הרענון האחרון נכשל. נגיעה לפרטים נוספים.</string>
   <string name="open_podcast">פתיחת פודקאסט</string>
   <string name="please_wait_for_data">נא להמתין לסיום טעינת הנתונים</string>
   <!--actions on feeditems-->
@@ -252,14 +252,24 @@
   <string name="download_running">הורדה מתבצעת</string>
   <string name="download_error_details">פרטים</string>
   <string name="download_error_details_message">%1$s \n\nכתובת הקובץ:\n%2$s</string>
+  <string name="download_error_tap_for_details">יש לגעת כדי להציג עוד פרטים.</string>
   <string name="download_error_device_not_found">התקן האחסון לא נמצא</string>
+  <string name="download_error_insufficient_space">לא נשאר מספיק מקום במכשיר שלך.</string>
   <string name="download_error_http_data_error">שגיאת נתוני HTTP</string>
   <string name="download_error_error_unknown">שגיאה לא ידועה</string>
+  <string name="download_error_parser_exception">השרת של מארח הפודקאסטים שלח הזנת פודקאסטים פגומה.</string>
   <string name="download_error_unsupported_type">סוג ההזנה אינו נתמך</string>
+  <string name="download_error_unsupported_type_html">השרת של מארח הפודקאסטים שלח אתר במקום פודקאסט.</string>
+  <string name="download_error_not_found">השרת של מארח הפודקאסטים לא יודע איפה למצוא את הקובץ. יכול להיות שהוא נמחק.</string>
   <string name="download_error_connection_error">שגיאת חיבור</string>
+  <string name="download_error_unknown_host">לא ניתן לאתר את השרת. יש לבדוק אם הכתובת הוקלדה כראוי ושחיבור הרשת שלך תקין.</string>
   <string name="download_error_unauthorized">שגיאת אימות</string>
   <string name="download_error_file_type_type">שגיאת סוג קובץ</string>
+  <string name="download_error_forbidden">השרת של מארח הפודקאסט מסרב להגיב.</string>
   <string name="download_canceled_msg">הורדה בוטלה</string>
+  <string name="download_error_wrong_size">החיבור לשרת אבד לפני השלמת ההורדה</string>
+  <string name="download_error_blocked">ההורדה נחסמה על ידי יישומון אחר במכשיר שלך.</string>
+  <string name="download_error_certificate">לא ניתן ליצור חיבור מאובטח. יכול להיות שיישומון אחר במכשיר שלך חסם את ההורדה או שמשהו השתבש באישורי השרת.</string>
   <string name="download_canceled_autodownload_enabled_msg">ההורדה בוטלה\nה<i>הורדה האוטומטית</i> הושבתה עבור פריט זה</string>
   <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
   <string name="auto_download_report_title">ההורדות האוטומטיות הושלמו</string>
@@ -274,6 +284,7 @@
     <item quantity="many">נותרו %d הורדות</item>
     <item quantity="other">נותרו %d הורדות</item>
   </plurals>
+  <string name="service_shutting_down">השירות נכבה</string>
   <string name="download_notification_title">נתוני הפודקאסט מתקבלים</string>
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
   <string name="download_type_feed">הזנה</string>
@@ -649,6 +660,7 @@
   <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
   <string name="gpodnetauth_login_title">כניסה</string>
   <string name="gpodnetauth_login_butLabel">כניסה</string>
+  <string name="gpodnetauth_encryption_warning">הססמה והנתונים אינם מוצפנים!</string>
   <string name="create_account">יצירת חשבון</string>
   <string name="username_label">שם משתמש</string>
   <string name="password_label">ססמה</string>

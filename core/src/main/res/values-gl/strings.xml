@@ -75,7 +75,6 @@
   <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Imaxe</string>
   <string name="error_label">Fallo</string>
   <string name="error_msg_prefix">Produciuse un fallo:</string>
   <string name="needs_storage_permission">Precísase o permiso de almacenamento para esta operación</string>
