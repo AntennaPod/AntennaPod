@@ -68,10 +68,9 @@ import java.util.List;
 public class AudioPlayerFragment extends Fragment implements
         ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
-    private static final int POS_COVER = 0;
-    private static final int POS_DESCR = 1;
-    private static final int POS_CHAPTERS = 2;
-    private static final int NUM_CONTENT_FRAGMENTS = 3;
+    private static final int POS_EPISODE = 0;
+    private static final int POS_CHAPTERS = 1;
+    private static final int NUM_CONTENT_FRAGMENTS = 2;
     public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
@@ -155,11 +154,8 @@ public class AudioPlayerFragment extends Fragment implements
         tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
             tab.view.setAlpha(1.0f);
             switch (position) {
-                case POS_COVER:
-                    tab.setText(R.string.cover_label);
-                    break;
-                case POS_DESCR:
-                    tab.setText(R.string.description_label);
+                case POS_EPISODE:
+                    tab.setText(R.string.episode_label);
                     break;
                 case POS_CHAPTERS:
                     tab.setText(R.string.chapters_label);
@@ -590,10 +586,8 @@ public class AudioPlayerFragment extends Fragment implements
         public Fragment createFragment(int position) {
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
-                case POS_COVER:
-                    return new CoverFragment();
-                case POS_DESCR:
-                    return new ItemDescriptionFragment();
+                case POS_EPISODE:
+                    return new EpisodeFragment();
                 default:
                 case POS_CHAPTERS:
                     return new ChaptersFragment();

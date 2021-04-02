@@ -95,6 +95,7 @@
     <string name="refresh_label">Refresh</string>
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
+    <string name="episode_label">Episode</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="episodes_suffix">\u0020episodes</string>
