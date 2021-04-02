@@ -210,6 +210,9 @@ public abstract class PlaybackController {
                 Log.w(TAG, "Couldn't receive status update: playbackService was null");
                 if (PlaybackService.isRunning) {
                     bindToService();
+                } else {
+                    status = PlayerStatus.STOPPED;
+                    handleStatus();
                 }
             }
         }
@@ -359,6 +362,7 @@ public abstract class PlaybackController {
                 }
                 break;
             case STOPPED:
+                updatePlayButtonAppearance(playResource, playText);
                 break;
             case PREPARED:
                 checkMediaInfoLoaded();
