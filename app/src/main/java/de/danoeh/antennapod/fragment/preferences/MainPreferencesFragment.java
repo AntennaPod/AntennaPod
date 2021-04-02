@@ -31,6 +31,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
+    private static final String PREF_CONTRIBUTE = "prefContribute";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -105,6 +106,10 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {
             IntentUtils.openInBrowser(getContext(), "https://forum.antennapod.org/");
+            return true;
+        });
+        findPreference(PREF_CONTRIBUTE).setOnPreferenceClickListener(preference -> {
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/contribute/");
             return true;
         });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
