@@ -330,7 +330,7 @@ public class PodDBAdapter {
         PodDBAdapter.context = context.getApplicationContext();
     }
 
-    public static PodDBAdapter getInstance() {
+    public static synchronized PodDBAdapter getInstance() {
         if (instance == null) {
             instance = new PodDBAdapter();
         }
