@@ -1921,11 +1921,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
 
-
         @Override
         public void onSeekTo(long pos) {
             Log.d(TAG, "onSeekTo()");
             seekTo((int) pos);
+        }
+
+        @Override
+        public void onSetPlaybackSpeed(float speed) {
+            Log.d(TAG, "onSetPlaybackSpeed()");
+            setSpeed(speed);
         }
 
         @Override

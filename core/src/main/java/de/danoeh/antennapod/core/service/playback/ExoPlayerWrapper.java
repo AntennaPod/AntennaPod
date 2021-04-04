@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import androidx.annotation.NonNull;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
@@ -28,7 +30,6 @@ import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -41,6 +42,7 @@ import org.antennapod.audio.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -81,12 +83,12 @@ public class ExoPlayerWrapper implements IPlayer {
         trackSelector = new DefaultTrackSelector(context);
         exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
-                .setLoadControl(loadControl.createDefaultLoadControl())
+                .setLoadControl(loadControl.build())
                 .build();
         exoPlayer.setSeekParameters(SeekParameters.EXACT);
         exoPlayer.addListener(new Player.EventListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackStateChanged(int playbackState) {
                 if (audioCompletionListener != null && playbackState == Player.STATE_ENDED) {
                     audioCompletionListener.onCompletion(null);
                 } else if (infoListener != null && playbackState == Player.STATE_BUFFERING) {
@@ -97,15 +99,15 @@ public class ExoPlayerWrapper implements IPlayer {
             }
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) {
+            public void onPlayerError(@NonNull ExoPlaybackException error) {
                 if (audioErrorListener != null) {
                     audioErrorListener.onError(null, error.type + ERROR_CODE_OFFSET, 0);
                 }
             }
 
             @Override
-            public void onSeekProcessed() {
-                if (audioSeekCompleteListener != null) {
+            public void onPositionDiscontinuity(@Player.DiscontinuityReason int reason) {
+                if (audioSeekCompleteListener != null && reason == Player.DISCONTINUITY_REASON_SEEK) {
                     audioSeekCompleteListener.onSeekComplete(null);
                 }
             }
@@ -152,7 +154,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void prepare() throws IllegalStateException {
-        exoPlayer.prepare(mediaSource, false, true);
+        exoPlayer.setMediaSource(mediaSource, false);
     }
 
     @Override
@@ -188,30 +190,28 @@ public class ExoPlayerWrapper implements IPlayer {
         b.setContentType(i);
         b.setFlags(a.flags);
         b.setUsage(a.usage);
-        exoPlayer.setAudioAttributes(b.build());
+        exoPlayer.setAudioAttributes(b.build(), false);
     }
 
     public void setDataSource(String s, String user, String password)
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
-        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
-                ClientConfig.USER_AGENT, null,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                true);
+        DefaultHttpDataSource.Factory httpDataSourceFactory = new DefaultHttpDataSource.Factory();
+        httpDataSourceFactory.setUserAgent(ClientConfig.USER_AGENT);
+        httpDataSourceFactory.setAllowCrossProtocolRedirects(true);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
-            httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
-                    HttpDownloader.encodeCredentials(
-                            user,
-                            password,
-                            "ISO-8859-1"));
+            HashMap<String, String> requestProperties = new HashMap<>();
+            requestProperties.put("Authorization", HttpDownloader.encodeCredentials(user, password, "ISO-8859-1"));
+            httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
-        mediaSource = f.createMediaSource(Uri.parse(s));
+        MediaItem.Builder mediaItemBuilder = new MediaItem.Builder();
+        mediaItemBuilder.setUri(Uri.parse(s));
+        mediaSource = f.createMediaSource(mediaItemBuilder.build());
     }
 
     @Override
@@ -226,8 +226,9 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
-        playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch, skipSilence);
+        playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch);
         exoPlayer.setPlaybackParameters(playbackParameters);
+        exoPlayer.setSkipSilenceEnabled(skipSilence);
     }
 
     @Override
@@ -311,8 +312,8 @@ public class ExoPlayerWrapper implements IPlayer {
             if (track == null) {
                 continue;
             }
-            if (availableFormats.contains(track.getSelectedFormat())) {
-                return availableFormats.indexOf(track.getSelectedFormat());
+            if (availableFormats.contains(track.getFormat(0))) {
+                return availableFormats.indexOf(track.getFormat(0));
             }
         }
         return -1;

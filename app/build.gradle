@@ -189,7 +189,7 @@ dependencies {
     implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:3.1.1'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
-    implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
+    implementation 'com.github.ByteHamster:SearchPreference:v2.1.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
 
     // Non-free dependencies:
@@ -197,7 +197,7 @@ dependencies {
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
+    androidTestImplementation 'com.nanohttpd:nanohttpd:2.2.0'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
