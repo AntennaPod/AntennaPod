@@ -87,14 +87,16 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
-                    getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.settingsContainer, new AboutFragment())
                             .addToBackStack(getString(R.string.about_pref)).commit();
                     return true;
                 }
         );
         findPreference(STATISTICS).setOnPreferenceClickListener(
                 preference -> {
-                    getParentFragmentManager().beginTransaction().replace(R.id.content, new StatisticsFragment())
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.settingsContainer, new StatisticsFragment())
                             .addToBackStack(getString(R.string.statistics_label)).commit();
                     return true;
                 }
@@ -117,7 +119,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         SearchPreference searchPreference = findPreference("searchPreference");
         SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
-        config.setFragmentContainerViewId(R.id.content);
+        config.setFragmentContainerViewId(R.id.settingsContainer);
         config.setBreadcrumbsEnabled(true);
 
         config.index(R.xml.preferences_user_interface)
