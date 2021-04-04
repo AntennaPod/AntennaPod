@@ -65,7 +65,6 @@
   <string name="author_label">Tekijä(t)</string>
   <string name="language_label">Kieli</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Kuva</string>
   <string name="error_label">Virhe</string>
   <string name="error_msg_prefix">Tapahtui virhe:</string>
   <string name="needs_storage_permission">Tallennustilan valtuutus tarvitaan tähän operaatioon.</string>
@@ -529,7 +528,7 @@
   <string name="load_next_page_label">Lataa seuraava sivu</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autentikaatio</string>
-  <string name="authentication_descr">Vaihda käyttäjätunnut ja salasana tälle podcastille ja sen jaksoille.</string>
+  <string name="authentication_descr">Vaihda käyttäjätunnus ja salasana tälle podcastille ja sen jaksoille.</string>
   <string name="auto_download_settings_label">Automaattisen latauksen asetukset</string>
   <string name="episode_filters_label">Jakson filtterit</string>
   <string name="episode_filters_description">Lista termeistä joilla valitaan jakso automaattiseen lataukseen</string>

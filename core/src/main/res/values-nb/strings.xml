@@ -71,7 +71,6 @@
   <string name="author_label">Forfatter(e)</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Bilde</string>
   <string name="error_label">Feil</string>
   <string name="error_msg_prefix">Det oppsto en feil:</string>
   <string name="needs_storage_permission">Lagringstillatelse er nødvendig for denne operasjonen</string>

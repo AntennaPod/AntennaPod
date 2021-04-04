@@ -105,7 +105,9 @@ public class ExoPlayerWrapper implements IPlayer {
 
             @Override
             public void onSeekProcessed() {
-                audioSeekCompleteListener.onSeekComplete(null);
+                if (audioSeekCompleteListener != null) {
+                    audioSeekCompleteListener.onSeekComplete(null);
+                }
             }
         });
     }
@@ -174,7 +176,9 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void seekTo(int i) throws IllegalStateException {
         exoPlayer.seekTo(i);
-        audioSeekCompleteListener.onSeekComplete(null);
+        if (audioSeekCompleteListener != null) {
+            audioSeekCompleteListener.onSeekComplete(null);
+        }
     }
 
     @Override

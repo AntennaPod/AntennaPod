@@ -53,6 +53,10 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
     @Override
     public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
         Chapter sc = getItem(position);
+        if (sc == null) {
+            holder.title.setText("Error");
+            return;
+        }
         holder.title.setText(sc.getTitle());
         holder.start.setText(Converter.getDurationStringLong((int) sc
                 .getStart()));

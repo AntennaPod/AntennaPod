@@ -75,7 +75,6 @@
   <string name="author_label">Autor(id)</string>
   <string name="language_label">Keel</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Pilt</string>
   <string name="error_label">Viga</string>
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="needs_storage_permission">Selle tegevuse jaoks tuleb lubada salvestusruumi kasutamine</string>
@@ -125,10 +124,15 @@
   <string name="loading_more">Laadimine…</string>
   <string name="episode_notification">Saadete teavitused</string>
   <string name="episode_notification_summary">Teate kuvamine, kui avaldatakse uus saade.</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="one">%2$s jaoks on uus saadet</item>
+    <item quantity="other">%2$s jaoks on %1$d uut saadet</item>
+  </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Uus saade</item>
     <item quantity="other">Uued saated</item>
   </plurals>
+  <string name="new_episode_notification_group_text">Sinu tellitud kanalitel on uusi saateid.</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated kuulatuks</string>
@@ -160,6 +164,7 @@
   <string name="hide_not_queued_episodes_label">Pole järjekorras</string>
   <string name="hide_has_media_label">On meediafaile</string>
   <string name="filtered_label">Filtreeritud</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimane värskendamine ebaõnnestus. Puuduta üksikasjade jaoks.</string>
   <string name="open_podcast">Ava taskuhääling</string>
   <string name="please_wait_for_data">Palun oota andmete laadimist</string>
   <!--actions on feeditems-->
@@ -174,6 +179,10 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">%d saade valitud, %d allalaadimine kustutatud.</item>
+    <item quantity="other">%d saadet valitud, %d allalaadimist kustutatud.</item>
+  </plurals>
   <string name="remove_new_flag_label">Eemalda silt \"uus\"</string>
   <string name="removed_new_flag_label">Eemaldati silt \"uus\"</string>
   <string name="mark_read_label">Märgi kuulatuks</string>
@@ -219,14 +228,24 @@
   <string name="download_running">Allalaadimine on käimas</string>
   <string name="download_error_details">Üksikasjad</string>
   <string name="download_error_details_message">%1$s \n\nFaili URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">Vajuta üksikasjade nägemiseks.</string>
   <string name="download_error_device_not_found">Salvestuskohta ei leitud</string>
+  <string name="download_error_insufficient_space">Sinu seadmes pole piisavalt ruumi.</string>
   <string name="download_error_http_data_error">HTTP andmete viga</string>
   <string name="download_error_error_unknown">Tundmatu tõrge</string>
+  <string name="download_error_parser_exception">Taskuhäälingut hostiv server saatis vigase voo.</string>
   <string name="download_error_unsupported_type">Toetamata uudisvoo tüüp</string>
+  <string name="download_error_unsupported_type_html">Taskuhäälingut hostiv server saatis veebilehe, mitte taskuhäälingu</string>
+  <string name="download_error_not_found">Taskuhäälingut hostiv server ei leia faili. See võib olla kustutatud.</string>
   <string name="download_error_connection_error">Ühenduse viga</string>
+  <string name="download_error_unknown_host">Serverit ei leitud. Kontroll, kas aadress on kirjutatud õigesti ning kas internetiühendus töötab.</string>
   <string name="download_error_unauthorized">Autentimise viga</string>
   <string name="download_error_file_type_type">Failitüübi viga</string>
+  <string name="download_error_forbidden">Taskuhäälingut hostiv server keeldub vastamast.</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
+  <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
+  <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis.</string>
+  <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
   <string name="download_canceled_autodownload_enabled_msg">Allalaadimine tühistati\nKeelati selle saate <i>automaatne allalaadimine</i></string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
   <string name="auto_download_report_title">Automaatsed allalaadimised lõpetatud</string>
@@ -239,6 +258,7 @@
     <item quantity="one">%d allalaadimine jäänud</item>
     <item quantity="other">%d allalaadimist jäänud</item>
   </plurals>
+  <string name="service_shutting_down">Seade lülitub välja</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
@@ -272,6 +292,7 @@
   <string name="player_go_to_picture_in_picture">Pilt-pildis režiim</string>
   <string name="unknown_media_key">AntennaPod - Tundmatu meedia võti: %1$d</string>
   <string name="error_file_not_found">Faili ei leitud</string>
+  <string name="no_media_label">Element ei sisalda meediafaili</string>
   <!--Queue operations-->
   <string name="lock_queue">Lukusta järjekord</string>
   <string name="unlock_queue">Eemalda järjekorra lukustus</string>
@@ -338,14 +359,24 @@
   <string name="external_elements">Välised elemendid</string>
   <string name="interruptions">Katkestused</string>
   <string name="playback_control">Esituse nupud</string>
+  <string name="reassign_hardware_buttons">Muuda riistvara nuppude tegevus</string>
   <string name="preference_search_hint">Otsing...</string>
   <string name="preference_search_no_results">Tulemusi pole</string>
   <string name="preference_search_clear_history">Puhasta ajalugu</string>
   <string name="media_player">Meediaesitaja</string>
   <string name="pref_episode_cleanup_title">Saadete kustutamine</string>
+  <string name="pref_episode_cleanup_summary">Saated, mida tohib kustutada, kui automaatne allalaadimine vajab ruumi uute saadete jaoks</string>
   <string name="pref_pauseOnDisconnect_sum">Esitus pausitakse, kui kõrvaklapid või bluetooth eemaldatakse</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Esitus jätkub, kui kõrvaklapid uuesti ühendatakse</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Esitus jätkub kui bluetooth uuesti ühendub</string>
+  <string name="pref_hardware_forward_button_title">Edasi nupp</string>
+  <string name="pref_hardware_forward_button_summary">Muuda edasi nupu tegevust</string>
+  <string name="pref_hardware_previous_button_title">Tagasi nupp</string>
+  <string name="pref_hardware_previous_button_summary">Muuda tagasi nupu tegevust</string>
+  <string name="button_action_fast_forward">Keri edasi</string>
+  <string name="button_action_rewind">Keri tagasi</string>
+  <string name="button_action_skip_episode">Jäta saade vahele</string>
+  <string name="button_action_restart_episode">Alusta saadet algusest</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
   <string name="pref_auto_delete_sum">Kustuta saated, kui need on kuulatud</string>
   <string name="pref_auto_delete_title">Automaatne kustutamine</string>
@@ -366,6 +397,10 @@
   <string name="pref_autoUpdateIntervallOrTime_Interval">Määra intervall</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Määra aeg päevades</string>
   <string name="pref_autoUpdateIntervallOrTime_at">kell %1$s</string>
+  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <item quantity="one">Üks kord tunnis</item>
+    <item quantity="other">Iga %d tunni tagant</item>
+  </plurals>
   <string name="pref_followQueue_title">Pidev esitamine</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Peakomplekti või Bluetoothi lahti ühendamisel</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kõrvaklappide uuesti ühendamine</string>
@@ -399,6 +434,9 @@
   <string name="pref_episode_cache_title">Saadete vahemälu</string>
   <string name="pref_episode_cache_summary">Seadme puhvrisse allalaaditud saadete koguarv. Automaatne allalaadimine peatub, kui selle numbrini jõutakse.</string>
   <string name="pref_episode_cover_title">Kasuta saate kaanepilti</string>
+  <string name="pref_episode_cover_summary">Kui võimalik, kasutatakse nimekirjades saate kaanepilti. Kui märkimata, kasutab rakendus alati taskuhäälingu kaanepilti.</string>
+  <string name="pref_show_remain_time_title">Näita allesjäänud aega</string>
+  <string name="pref_show_remain_time_summary">Kui märgitud, kuvatakse saate alles jäänud aega. Kui märkimata, näidatakse saadete kogupikkust.</string>
   <string name="pref_theme_title_use_system">Kasuta süsteemi kujundust</string>
   <string name="pref_theme_title_light">Hele</string>
   <string name="pref_theme_title_dark">Tume</string>
@@ -451,6 +489,7 @@
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
   <string name="pref_image_cache_size_title">Piltide vahemälu suurus</string>
   <string name="pref_image_cache_size_sum">Piltide jaoks kasutatava vahemälu suurus</string>
+  <string name="documentation_support">Dokumentatsioon &amp; tugi</string>
   <string name="visit_user_forum">Kasutajate foorum</string>
   <string name="bug_report_title">Raporteeri veast</string>
   <string name="open_bug_tracker">Ava vigade loetelu</string>
@@ -468,6 +507,8 @@
   <string name="pref_cast_message_free_flavor">Chromecast vajab kolmanda osapoole omanduslikke teeke, mis on selles AntennaPodi versioonis välja lülitatud</string>
   <string name="pref_enqueue_downloaded_title">Järjekord allalaaditud</string>
   <string name="pref_enqueue_downloaded_summary">Allalaaditud saadete lisamine järjekorda</string>
+  <string name="media_player_builtin">Sisseehitatud Androidi esitaja (aegunud)</string>
+  <string name="media_player_sonic">Sonic meediaesitaja (aegunud)</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (soovitatud)</string>
   <string name="media_player_switch_to_exoplayer">Vaheta ExoPlayerile</string>
   <string name="media_player_switched_to_exoplayer">Vahetati ExoPlayerile.</string>
@@ -556,6 +597,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Määra unetaimer</string>
   <string name="disable_sleeptimer_label">Keela unetaimer</string>
+  <string name="extend_sleep_timer_label">+%d min</string>
   <string name="sleep_timer_label">Unetaimer</string>
   <string name="time_dialog_invalid_input">Vigane sisend, aeg peab olema täisarv</string>
   <string name="shake_to_reset_label">Raputa uuesti alustamiseks</string>
@@ -584,10 +626,21 @@
   <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="gpodnetauth_login_title">Logi sisse</string>
   <string name="gpodnetauth_login_butLabel">Logi sisse</string>
+  <string name="gpodnetauth_encryption_warning">Parool ja andmed ei ole krüpteeritud!</string>
+  <string name="create_account">Loo konto</string>
   <string name="username_label">Kasutajanimi</string>
   <string name="password_label">Parool</string>
+  <string name="gpodnet_description">Gpodder.net on avatud lähtekoodiga sünkroniseerimise teenus, mis on sõltumatu AntennaPod projektist.</string>
+  <string name="gpodnetauth_server_official">Ametlik gpodder.net server</string>
+  <string name="gpodnetauth_server_custom">Muu server</string>
+  <string name="gpodnetauth_host">Hostinimi</string>
+  <string name="gpodnetauth_select_server">Vali server</string>
   <string name="gpodnetauth_device_descr">Loo oma gpodder.net konto jaoks uus seade või vali olemasolev:</string>
+  <string name="gpodnetauth_device_name">Seadme nimi</string>
+  <string name="gpodnetauth_device_name_default">AntennaPod %1$s seadmel</string>
   <string name="gpodnetauth_device_caption_errorEmpty">Pealkiri ei tohi olla tühi</string>
+  <string name="gpodnetauth_existing_devices">Olemasolevad seadmed</string>
+  <string name="gpodnetauth_create_device">Loo uus seade</string>
   <string name="gpodnetauth_device_butChoose">Vali</string>
   <string name="gpodnetauth_finish_descr">Palju õnne! Sinu gpodder.net konto on nüüd lingitud sinu seadmega. AntennaPod süngib nüüdsest tellimused sinu seadmes gpodder.net-i kontoga.</string>
   <string name="gpodnetauth_finish_butsyncnow">Alusta kohe sünkroonimist</string>
@@ -642,6 +695,7 @@
   <string name="switch_pages">Vaheta lehti</string>
   <string name="position">Asukoht: %1$s</string>
   <string name="apply_action">Vii ellu</string>
+  <string name="play_chapter">Esita peatükk</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autentimine</string>
   <string name="authentication_descr">Muuda kasutajanime ja parooli selle taskuhäälingu ja saadete jaoks.</string>
@@ -776,14 +830,22 @@
   <string name="cast_failed_receiver_player_error">Vastuvõtval esitajal esines tõsine viga</string>
   <string name="cast_failed_media_error_skipping">Tõrge meedia esitamisel. Jääb vahele...</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">Vead</string>
+  <string name="notification_group_news">Uudised</string>
   <string name="notification_channel_user_action">Vajalik on tegevus</string>
   <string name="notification_channel_user_action_description">Näidatakse, kui mingi tegevus on vajalik, näiteks tuleb sisestada parool.</string>
   <string name="notification_channel_downloading">Allalaadimine</string>
   <string name="notification_channel_downloading_description">Näidatakse allalaadimise ajal.</string>
   <string name="notification_channel_playing">Praegu esitatakse</string>
   <string name="notification_channel_playing_description">Võimaldab esitust juhtida. See on saate kuulamise ajal peamine teade.</string>
+  <string name="notification_channel_download_error">Allalaadimine ebaõnnestus</string>
+  <string name="notification_channel_download_error_description">Näita, kui allalaadimine või uudivoo uuendamine ebaõnnestus.</string>
+  <string name="notification_channel_sync_error">Sünkroonimine nurjus</string>
   <string name="notification_channel_sync_error_description">Näidatakse, kui gpodder sünkroniseerimine ebaõnnestub.</string>
+  <string name="notification_channel_auto_download">Automaatne allalaadimine lõpetatud</string>
   <string name="notification_channel_episode_auto_download">Näita, kui saateid laaditi automaatselt alla.</string>
+  <string name="notification_channel_new_episode">Uus saade</string>
+  <string name="notification_channel_new_episode_description">Näita, kui leiti uus saade, kui teated on lubatud</string>
   <!--Widget settings-->
   <string name="widget_settings">Vidina seaded</string>
   <string name="widget_create_button">Lisa vidin</string>

@@ -75,7 +75,6 @@
   <string name="author_label">作者(们)</string>
   <string name="language_label">语言</string>
   <string name="url_label">链接地址</string>
-  <string name="cover_label">图片</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="needs_storage_permission">此操作需要存储权限。</string>
@@ -159,6 +158,7 @@
   <string name="hide_not_queued_episodes_label">不在播放列表中</string>
   <string name="hide_has_media_label">包含媒体文件</string>
   <string name="filtered_label">已过滤的</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败了。轻按查看详情</string>
   <string name="open_podcast">打开播客</string>
   <string name="please_wait_for_data">请等待数据加载完成</string>
   <!--actions on feeditems-->
@@ -216,14 +216,24 @@
   <string name="download_running">下载中</string>
   <string name="download_error_details">详细信息</string>
   <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">轻按查看详情</string>
   <string name="download_error_device_not_found">没有找到存储设备</string>
+  <string name="download_error_insufficient_space">你的设备上剩余空间不足</string>
   <string name="download_error_http_data_error">HTTP 数据错误</string>
   <string name="download_error_error_unknown">未知错误</string>
+  <string name="download_error_parser_exception">播客主机的服务器发送了一个损坏的播客源。</string>
   <string name="download_error_unsupported_type">未提供的订阅类型</string>
+  <string name="download_error_unsupported_type_html">播客主机的服务器发送的是一个网站，不是播客。</string>
+  <string name="download_error_not_found">播客主机的服务器不知道去哪里找到文件。它可能被删除了。</string>
   <string name="download_error_connection_error">链接错误</string>
+  <string name="download_error_unknown_host">找不到服务器。检查地址是否输入正确，以及网络连接是否正常。</string>
   <string name="download_error_unauthorized">认证错误</string>
   <string name="download_error_file_type_type">文件类型错误</string>
+  <string name="download_error_forbidden">播客主机的服务器拒绝响应。</string>
   <string name="download_canceled_msg">已取消下载</string>
+  <string name="download_error_wrong_size">在完成下载之前，服务器连接丢失</string>
+  <string name="download_error_blocked">下载被你设备上的另一个应用程序阻止了。</string>
+  <string name="download_error_certificate">无法建立安全连接。这可能意味着你设备上的另一个应用程序阻止了下载，或者服务器证书有问题。 </string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
   <string name="download_report_title">下载完成</string>
   <string name="auto_download_report_title">自动下载完成</string>
@@ -235,6 +245,7 @@
   <plurals name="downloads_left">
     <item quantity="other">剩余%d个下载项</item>
   </plurals>
+  <string name="service_shutting_down">服务关闭 </string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_log_title_unknown">未知标题</string>
   <string name="download_type_feed">订阅</string>
@@ -599,6 +610,7 @@
   <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="gpodnetauth_login_title">登录</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
+  <string name="gpodnetauth_encryption_warning">密码和数据没有加密！</string>
   <string name="create_account">创建账户</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>

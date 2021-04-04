@@ -69,10 +69,9 @@ public class AudioPlayerFragment extends Fragment implements
         ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_COVER = 0;
-    private static final int POS_DESCR = 1;
+    private static final int POS_SHOWNOTES = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
-    public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
@@ -104,6 +103,7 @@ public class AudioPlayerFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.audioplayer_fragment, container, false);
+        root.setOnTouchListener((v, event) -> true); // Avoid clicks going through player to fragments below
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v ->
@@ -158,8 +158,8 @@ public class AudioPlayerFragment extends Fragment implements
                 case POS_COVER:
                     tab.setText(R.string.cover_label);
                     break;
-                case POS_DESCR:
-                    tab.setText(R.string.description_label);
+                case POS_SHOWNOTES:
+                    tab.setText(R.string.shownotes_label);
                     break;
                 case POS_CHAPTERS:
                     tab.setText(R.string.chapters_label);
@@ -464,7 +464,7 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(event.getDuration() - event.getPosition());
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -473,7 +473,7 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
@@ -592,7 +592,7 @@ public class AudioPlayerFragment extends Fragment implements
             switch (position) {
                 case POS_COVER:
                     return new CoverFragment();
-                case POS_DESCR:
+                case POS_SHOWNOTES:
                     return new ItemDescriptionFragment();
                 default:
                 case POS_CHAPTERS:
