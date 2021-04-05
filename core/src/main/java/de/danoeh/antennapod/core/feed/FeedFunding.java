@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 public class FeedFunding {
-public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
+    public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
     public static final String FUNDING_TITLE_SEPARATOR = "\u001f";
 
     public String url;
