@@ -75,7 +75,7 @@
   <string name="author_label">Autor(en)</string>
   <string name="language_label">Sprache</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Bild</string>
+  <string name="cover_label">Cover</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
   <string name="needs_storage_permission">Für diese Funktion wird die Speicher-Berechtigung benötigt</string>
@@ -84,6 +84,7 @@
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="description_label">Beschreibung</string>
+  <string name="shownotes_label">Shownotes</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="processing_label">Verarbeite</string>
   <string name="close_label">Schließen</string>
@@ -93,7 +94,7 @@
   <string name="auto_download_apply_to_items_message">Die neue <i>Auto-Download</i>-Einstellung wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf schon veröffentlichte Episoden anwenden?</string>
   <string name="auto_delete_label">Episode automatisch löschen</string>
   <string name="feed_volume_reduction">Lautstärke reduzieren</string>
-  <string name="feed_volume_reduction_summary">Lautstärke reduzieren für Episoden aus diesem Podcast: %1$s</string>
+  <string name="feed_volume_reduction_summary">Lautstärke verringern für Episoden aus diesem Podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Aus</string>
   <string name="feed_volume_reduction_light">Schwach</string>
   <string name="feed_volume_reduction_heavy">Stark</string>
@@ -103,6 +104,7 @@
   <string name="feed_auto_download_never">Nie</string>
   <string name="send_label">Senden…</string>
   <string name="episode_cleanup_never">Nie</string>
+  <string name="episode_cleanup_except_favorite_removal">Wenn nicht favorisiert</string>
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Warteschlange</string>
   <string name="episode_cleanup_after_listening">Wenn fertig gespielt</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -164,6 +166,8 @@
   <string name="hide_not_queued_episodes_label">Nicht in Warteschlange</string>
   <string name="hide_has_media_label">Hat Medien</string>
   <string name="filtered_label">Gefiltert</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Letzte Aktualisierung fehlgeschlagen.
+Tippen, um Details anzuzeigen.</string>
   <string name="open_podcast">Podcast öffnen</string>
   <string name="please_wait_for_data">Bitte warte, bis die Daten geladen sind</string>
   <!--actions on feeditems-->
@@ -227,14 +231,24 @@
   <string name="download_running">Download läuft</string>
   <string name="download_error_details">Details</string>
   <string name="download_error_details_message">%1$s \n\nDatei-URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">Tippen, um Details anzuzeigen.</string>
   <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
+  <string name="download_error_insufficient_space">Der Speicherplatz auf deinem Gerät reicht nicht aus.</string>
   <string name="download_error_http_data_error">HTTP Datenfehler</string>
   <string name="download_error_error_unknown">Unbekannter Fehler</string>
+  <string name="download_error_parser_exception">Der vom Podcast-Server übermittelte Feed ist defekt.</string>
   <string name="download_error_unsupported_type">Nicht unterstützter Feed-Typ</string>
+  <string name="download_error_unsupported_type_html">Der Podcast-Server hat eine Webseite statt eines Podcasts gesendet.</string>
+  <string name="download_error_not_found">Datei auf Podcast-Server nicht vorhanden. Sie könnte gelöscht worden sein.</string>
   <string name="download_error_connection_error">Verbindungsfehler</string>
+  <string name="download_error_unknown_host">Konnte den Server nicht finden. Prüfe ob die Adresse richtig geschrieben ist und Du mit dem Netzwerk verbunden bist.</string>
   <string name="download_error_unauthorized">Authentifizierungsfehler</string>
   <string name="download_error_file_type_type">Dateityp-Fehler</string>
+  <string name="download_error_forbidden">Der Podcast-Server lehnt eine Antwort ab.</string>
   <string name="download_canceled_msg">Download abgebrochen</string>
+  <string name="download_error_wrong_size">Die Serververbindung wurde unterbrochen bevor der Download fertiggestellt wurde</string>
+  <string name="download_error_blocked">Der Download wurde von einer anderen App auf deinem Gerät blockiert.</string>
+  <string name="download_error_certificate">Es kann keine sichere Verbindung hergestellt werden. Dies kann bedeuten, dass eine andere App auf deinem Gerät den Download blockiert oder dass etwas mit dem Zertifikat des Servers nicht stimmt.</string>
   <string name="download_canceled_autodownload_enabled_msg">Download abgebrochen\n<i>Automatischen Download</i> für diese Episode deaktiviert</string>
   <string name="download_report_title">Downloads endeten mit Fehler(n)</string>
   <string name="auto_download_report_title">Automatisches Herunterladen abgeschlossen</string>
@@ -247,6 +261,7 @@
     <item quantity="one">%d Download übrig</item>
     <item quantity="other">%d Downloads übrig</item>
   </plurals>
+  <string name="service_shutting_down">Dienst wird herunter gefahren</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_log_title_unknown">Unbekannter Titel</string>
   <string name="download_type_feed">Feed</string>
@@ -280,6 +295,7 @@
   <string name="player_go_to_picture_in_picture">Bild-in-Bild-Modus</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <string name="error_file_not_found">Datei nicht gefunden</string>
+  <string name="no_media_label">Element enthält keine Mediendatei</string>
   <!--Queue operations-->
   <string name="lock_queue">Warteschlange sperren</string>
   <string name="unlock_queue">Warteschlange entsperren</string>
@@ -346,6 +362,7 @@
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
   <string name="playback_control">Wiedergabesteuerung</string>
+  <string name="reassign_hardware_buttons">Hardware-Tasten neu zuweisen</string>
   <string name="preference_search_hint">Suchen…</string>
   <string name="preference_search_no_results">Keine Ergebnisse</string>
   <string name="preference_search_clear_history">Verlauf leeren</string>
@@ -355,6 +372,10 @@
   <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
+  <string name="pref_hardware_forward_button_title">Vorwärtstaste</string>
+  <string name="pref_hardware_forward_button_summary">Verhalten der Vorwärtstaste anpassen</string>
+  <string name="pref_hardware_previous_button_title">Zurücktaste</string>
+  <string name="pref_hardware_previous_button_summary">Verhalten der Zurücktaste anpassen</string>
   <string name="button_action_fast_forward">Vorspulen</string>
   <string name="button_action_rewind">Zurückspulen</string>
   <string name="button_action_skip_episode">Episode überspringen</string>
@@ -608,6 +629,7 @@
   <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="gpodnetauth_login_title">Anmeldung</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
+  <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
   <string name="create_account">Konto anlegen</string>
   <string name="username_label">Benutzername</string>
   <string name="password_label">Passwort</string>
@@ -820,11 +842,13 @@
   <string name="notification_channel_playing">Jetzt spielt</string>
   <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
   <string name="notification_channel_download_error">Download fehlgeschlagen</string>
+  <string name="notification_channel_download_error_description">Wird angezeigt, wenn der Download oder die Feed-Aktualisierung fehlschlägt.</string>
   <string name="notification_channel_sync_error">Synchronisation fehlgeschlagen</string>
   <string name="notification_channel_sync_error_description">Wird angezeigt, wenn die gpodder-Synchronisierung fehlschlägt.</string>
   <string name="notification_channel_auto_download">Automatischer Download abgeschlossen</string>
   <string name="notification_channel_episode_auto_download">Wird angezeigt, wenn Episoden automatisch heruntergeladen worden sind.</string>
   <string name="notification_channel_new_episode">Neue Episode</string>
+  <string name="notification_channel_new_episode_description">Wird angezeigt, wenn eine neue Episode eines Podcasts gefunden wurde, bei dem Benachrichtigungen aktiviert sind</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget-Einstellungen</string>
   <string name="widget_create_button">Widget erstellen</string>

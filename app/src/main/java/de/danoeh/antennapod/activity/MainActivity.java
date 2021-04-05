@@ -166,10 +166,15 @@ public class MainActivity extends CastEnabledActivity {
         outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
     }
 
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
             new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View view, int state) {
+            if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                onSlide(view, 0.0f);
+            } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                onSlide(view, 1.0f);
+            }
         }
 
         @Override
@@ -188,7 +193,9 @@ public class MainActivity extends CastEnabledActivity {
 
     public void setupToolbarToggle(@NonNull Toolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
-            drawerLayout.removeDrawerListener(drawerToggle);
+            if (drawerToggle != null) {
+                drawerLayout.removeDrawerListener(drawerToggle);
+            }
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                     R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);

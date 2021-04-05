@@ -643,8 +643,10 @@ public class DownloadService extends Service {
         if (notificationUpdater != null) {
             notificationUpdater.run();
         }
-        cancelNotificationUpdater();
-        stopForeground(true);
-        stopSelf();
+        handler.post(() -> {
+            cancelNotificationUpdater();
+            stopForeground(true);
+            stopSelf();
+        });
     }
 }

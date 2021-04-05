@@ -35,7 +35,6 @@ public class CastUtils {
     public static final String KEY_FEED_URL = "de.danoeh.antennapod.core.cast.FeedUrl";
     public static final String KEY_FEED_WEBSITE = "de.danoeh.antennapod.core.cast.FeedWebsite";
     public static final String KEY_EPISODE_NOTES = "de.danoeh.antennapod.core.cast.EpisodeNotes";
-    public static final int EPISODE_NOTES_MAX_LENGTH = Integer.MAX_VALUE;
 
     /**
      * The field <code>AntennaPod.FormatVersion</code> specifies which version of MediaMetaData
@@ -207,6 +206,7 @@ public class CastUtils {
             if (!imageList.isEmpty()) {
                 imageUrl = imageList.get(0).getUrl().toString();
             }
+            String notes = metadata.getString(KEY_EPISODE_NOTES);
             result = new RemoteMedia(media.getContentId(),
                     metadata.getString(KEY_EPISODE_IDENTIFIER),
                     metadata.getString(KEY_FEED_URL),
@@ -217,11 +217,8 @@ public class CastUtils {
                     imageUrl,
                     metadata.getString(KEY_FEED_WEBSITE),
                     media.getContentType(),
-                    metadata.getDate(MediaMetadata.KEY_RELEASE_DATE).getTime());
-            String notes = metadata.getString(KEY_EPISODE_NOTES);
-            if (!TextUtils.isEmpty(notes)) {
-                ((RemoteMedia) result).setNotes(notes);
-            }
+                    metadata.getDate(MediaMetadata.KEY_RELEASE_DATE).getTime(),
+                    notes);
             Log.d(TAG, "Converted MediaInfo into RemoteMedia");
         }
         if (result.getDuration() == 0 && media.getStreamDuration() > 0) {

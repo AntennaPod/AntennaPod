@@ -75,7 +75,6 @@
   <string name="author_label">Författare</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Bild</string>
   <string name="error_label">Fel</string>
   <string name="error_msg_prefix">Ett fel inträffade:</string>
   <string name="needs_storage_permission">Lagringtillstånd behövs för denna åtgärd</string>
@@ -133,6 +132,7 @@
     <item quantity="one">Nya Episoder</item>
     <item quantity="other">Nya Episoder</item>
   </plurals>
+  <string name="new_episode_notification_group_text">Dina prenumerationer har nya episoder.</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som spelade</string>
   <string name="mark_all_read_msg">Markera alla episoder som spelade</string>
@@ -164,6 +164,7 @@
   <string name="hide_not_queued_episodes_label">Inte köade</string>
   <string name="hide_has_media_label">Har media</string>
   <string name="filtered_label">Filtrerad</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Senaste uppdateringen misslyckades. Tryck för att visa detaljer.</string>
   <string name="open_podcast">Öppna podcast</string>
   <string name="please_wait_for_data">Vänta tills datan laddats</string>
   <!--actions on feeditems-->
@@ -227,14 +228,24 @@
   <string name="download_running">Nedladdning pågår</string>
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">Tryck för att visa detaljer.</string>
   <string name="download_error_device_not_found">Hittade ingen lagringsenhet</string>
+  <string name="download_error_insufficient_space">Det finns inte tillräckligt med utrymme kvar på enheten.</string>
   <string name="download_error_http_data_error">HTTP data fel</string>
   <string name="download_error_error_unknown">Okänt fel</string>
+  <string name="download_error_parser_exception">Podcastens server svarade med ett trasigt flöde.</string>
   <string name="download_error_unsupported_type">Flödestypen stöds inte</string>
+  <string name="download_error_unsupported_type_html">Podcastens server svarade med en webbplats, inte en podcast.</string>
+  <string name="download_error_not_found">Podcastens server kunde inte hitta filen. Den kan ha tagits bort.</string>
   <string name="download_error_connection_error">Anslutningsfel</string>
+  <string name="download_error_unknown_host">Kunde inte hitta servern. Kontrollera att adressen är korrekt och att nätverksanslutningen fungerar.</string>
   <string name="download_error_unauthorized">Autentiseringsfel</string>
   <string name="download_error_file_type_type">Filtypsfel</string>
+  <string name="download_error_forbidden">Podcastens server svarade inte.</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
+  <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar.</string>
+  <string name="download_error_blocked">Nedladdningen blockerades av en annan app på enheten.</string>
+  <string name="download_error_certificate">Kunde inte etablera en säker anslutning. Detta kan betyda att en annan app på din enhet har blockerat nedladdningen eller att något är fel på serverns certifikat.</string>
   <string name="download_canceled_autodownload_enabled_msg">Nedladdning avbruten\nStängde av <i>Automatisk nedladdning</i> för detta föremål</string>
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="auto_download_report_title">Automatiska nedladdningar klara</string>
@@ -247,6 +258,7 @@
     <item quantity="one">%d nedladdning kvar</item>
     <item quantity="other">%d nedladdningar kvar</item>
   </plurals>
+  <string name="service_shutting_down">Tjänsten avslutas</string>
   <string name="download_notification_title">Laddar ner podcastdata</string>
   <string name="download_log_title_unknown">Okänd titel</string>
   <string name="download_type_feed">Flöde</string>
@@ -614,6 +626,7 @@
   <string name="gpodnet_search_hint">Sök på gpodder.net</string>
   <string name="gpodnetauth_login_title">Inloggning</string>
   <string name="gpodnetauth_login_butLabel">Logga in</string>
+  <string name="gpodnetauth_encryption_warning">Lösenord och data är inte krypterade!</string>
   <string name="create_account">Skapa konto</string>
   <string name="username_label">Användarnamn</string>
   <string name="password_label">Lösenord</string>

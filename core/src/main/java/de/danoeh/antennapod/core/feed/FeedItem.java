@@ -43,7 +43,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private Date pubDate;
     private FeedMedia media;
 
-    private Feed feed;
+    private transient Feed feed;
     private long feedId;
 
     private int state;
@@ -65,7 +65,7 @@ public class FeedItem extends FeedComponent implements Serializable {
      * The list of chapters of this item. This might be null even if there are chapters of this item
      * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
      * */
-    private List<Chapter> chapters;
+    private transient List<Chapter> chapters;
     private String imageUrl;
 
     /*

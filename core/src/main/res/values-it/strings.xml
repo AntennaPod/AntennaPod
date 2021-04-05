@@ -75,7 +75,6 @@
   <string name="author_label">Autore(i)</string>
   <string name="language_label">Lingua</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Immagine</string>
   <string name="error_label">Errore</string>
   <string name="error_msg_prefix">È stato rilevato un errore:</string>
   <string name="needs_storage_permission">Questa operazione richiede l\'accesso alla memoria</string>

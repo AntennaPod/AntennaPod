@@ -39,9 +39,6 @@ public class MediaInfoCreator {
         }
         String notes = media.getNotes();
         if (notes != null) {
-            if (notes.length() > CastUtils.EPISODE_NOTES_MAX_LENGTH) {
-                notes = notes.substring(0, CastUtils.EPISODE_NOTES_MAX_LENGTH);
-            }
             metadata.putString(CastUtils.KEY_EPISODE_NOTES, notes);
         }
         // Default id value

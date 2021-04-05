@@ -65,7 +65,6 @@
   <string name="author_label">Autorius (-iai)</string>
   <string name="language_label">Kalba</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Paveikslėlis</string>
   <string name="error_label">Klaida</string>
   <string name="error_msg_prefix">Įvyko klaida:</string>
   <string name="needs_storage_permission">Šiam veiksmui atlikti reikalingas laikmenos prieigos leidimas</string>

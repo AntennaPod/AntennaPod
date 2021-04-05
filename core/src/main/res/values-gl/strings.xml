@@ -75,7 +75,6 @@
   <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Imaxe</string>
   <string name="error_label">Fallo</string>
   <string name="error_msg_prefix">Produciuse un fallo:</string>
   <string name="needs_storage_permission">Precísase o permiso de almacenamento para esta operación</string>
@@ -165,6 +164,7 @@
   <string name="hide_not_queued_episodes_label">Fora da cola</string>
   <string name="hide_has_media_label">Ten multimedia</string>
   <string name="filtered_label">Filtrado</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} A última Actualización fallou. Toca para ver detalles.</string>
   <string name="open_podcast">Abrir podcast</string>
   <string name="please_wait_for_data">Agarda ata que se carguen os datos</string>
   <!--actions on feeditems-->
@@ -228,14 +228,24 @@
   <string name="download_running">Descarga en proceso</string>
   <string name="download_error_details">Detalles</string>
   <string name="download_error_details_message">%1$s\n\nURL do ficheiro:\n %2$s </string>
+  <string name="download_error_tap_for_details">Toca para ver detalles.</string>
   <string name="download_error_device_not_found">Non se atopou dispositivo de almacenamento</string>
+  <string name="download_error_insufficient_space">Non queda espazo abondo no teu dispositivo.</string>
   <string name="download_error_http_data_error">Fallo de datos HTTP</string>
   <string name="download_error_error_unknown">Fallo descoñecido</string>
+  <string name="download_error_parser_exception">O servidor que hospeda o podcast enviou unha fonte do podcast incompleta.</string>
   <string name="download_error_unsupported_type">Tipo de fonte non admitida</string>
+  <string name="download_error_unsupported_type_html">O servidor que hospeda o podcast é un sitio web, non un podcast.</string>
+  <string name="download_error_not_found">O servidor que hospeda o podcast non sabe onde se atopa o ficheiro. Pode que fose eliminado.</string>
   <string name="download_error_connection_error">Fallo na conexión</string>
+  <string name="download_error_unknown_host">Non se atopa o servidor. Comproba que o enderezo é correcto e que tes conexión á rede.</string>
   <string name="download_error_unauthorized">Fallo na autenticación</string>
   <string name="download_error_file_type_type">Fallo no tipo de ficheiro</string>
+  <string name="download_error_forbidden">O servidor que hospeda o podcast non responde.</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
+  <string name="download_error_wrong_size">Perdeuse a conexión co servidor antes de completar a descarga</string>
+  <string name="download_error_blocked">A descarga foi bloqueada por outra app no teu dispositivo.</string>
+  <string name="download_error_certificate">Non se estableceu unha conexión segura. Pode significar que outra app no teu dispositivo bloqueou a descarga, ou que algo non é correcto nos certificados do servidor.</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nDesactivouse a <i>Descarga Automática</i> para este elemento</string>
   <string name="download_report_title">Descargas completadas con erro(s)</string>
   <string name="auto_download_report_title">Descarga automática completada</string>
@@ -248,6 +258,7 @@
     <item quantity="one">%d descarga restante</item>
     <item quantity="other">%d descargas restantes</item>
   </plurals>
+  <string name="service_shutting_down">Apagando o servizo</string>
   <string name="download_notification_title">Descargando datos do podcast</string>
   <string name="download_log_title_unknown">Título descoñecido</string>
   <string name="download_type_feed">Fonte</string>
@@ -615,6 +626,7 @@
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_title">Conexión</string>
   <string name="gpodnetauth_login_butLabel">Conexión</string>
+  <string name="gpodnetauth_encryption_warning">O contrasinal e os datos non están cifrados!</string>
   <string name="create_account">Crear conta</string>
   <string name="username_label">Nome de usuaria</string>
   <string name="password_label">Contrasinal</string>

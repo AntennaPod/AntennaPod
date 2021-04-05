@@ -71,7 +71,6 @@
   <string name="author_label">Szerző(k)</string>
   <string name="language_label">Nyelv</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Kép</string>
   <string name="error_label">Hiba</string>
   <string name="error_msg_prefix">Hiba történt:</string>
   <string name="needs_storage_permission">A művelethez tároló jogosultság szükséges</string>

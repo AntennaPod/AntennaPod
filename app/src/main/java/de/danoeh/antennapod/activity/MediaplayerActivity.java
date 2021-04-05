@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -479,7 +478,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         cardViewSeek = findViewById(R.id.cardViewSeek);
         txtvSeek = findViewById(R.id.txtvSeek);
 
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         Log.d("timeleft", showTimeLeft ? "true" : "false");
         txtvLength = findViewById(R.id.txtvLength);

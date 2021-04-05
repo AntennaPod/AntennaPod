@@ -17,11 +17,13 @@
   <string name="downloads_log_label">Журнал</string>
   <string name="subscriptions_label">Підписки</string>
   <string name="subscriptions_list_label">Перелік підписок</string>
+  <string name="cancel_download_label">Відмінити завантаження</string>
   <string name="playback_history_label">Історія</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Автентифікуватися на gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
+  <string name="notification_pref_fragment">Сповіщення</string>
   <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
@@ -31,6 +33,7 @@
   <string name="statistics_reset_data">Cкинути статистику</string>
   <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Загальний розмір епізодів на пристрої:</string>
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -62,7 +65,6 @@
   <string name="author_label">Автор(и)</string>
   <string name="language_label">Мова</string>
   <string name="url_label">Посилання</string>
-  <string name="cover_label">Зображення</string>
   <string name="error_label">Помилка</string>
   <string name="error_msg_prefix">Трапилась помілка:</string>
   <string name="needs_storage_permission">Для цієї операції потрібен дозвіл на доступ до пам’яті</string>
@@ -109,6 +111,7 @@
   <string name="feed_settings_label">Налаштування подкасту</string>
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
+  <string name="share_label">Поділитися</string>
   <string name="share_file_label">Поділитися файлом</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
   <string name="feed_remover_msg">Видалення подкасту</string>
@@ -622,4 +625,5 @@
   <string name="widget_create_button">Створити віджет</string>
   <string name="widget_opacity">Непрозорість</string>
   <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Налаштування успішно оновлено.</string>
 </resources>
