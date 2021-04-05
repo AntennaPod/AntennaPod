@@ -26,7 +26,7 @@ public class FeedFunding {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || ! obj.getClass().equals(FeedFunding.class)) {
+        if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
 
@@ -37,7 +37,12 @@ public class FeedFunding {
         if (url != null && url.equals(funding.url) && content != null && content.equals(funding.content)) {
             return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (url + FUNDING_TITLE_SEPARATOR + content).hashCode();
     }
 
     public static ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
@@ -72,16 +77,15 @@ public class FeedFunding {
     }
 
     public static String getPaymentLinksAsString(ArrayList<FeedFunding> fundingList) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         if (fundingList == null) {
             return null;
         }
         for (FeedFunding fund : fundingList) {
-            result.concat(fund.url + FeedFunding.FUNDING_TITLE_SEPARATOR + fund.content);
-            result.concat(FeedFunding.FUNDING_ENTRIES_SEPARATOR);
+            result.append(fund.url).append(FeedFunding.FUNDING_TITLE_SEPARATOR).append(fund.content);
+            result.append(FeedFunding.FUNDING_ENTRIES_SEPARATOR);
         }
-        result = StringUtils.removeEnd(result, FeedFunding.FUNDING_ENTRIES_SEPARATOR);
-        return result;
+        return StringUtils.removeEnd(result.toString(), FeedFunding.FUNDING_ENTRIES_SEPARATOR);
     }
 
 }
