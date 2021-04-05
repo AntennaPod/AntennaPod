@@ -96,8 +96,8 @@ project.ext {
     okhttpVersion = "3.12.10"
     okioVersion = "1.17.5"
     eventbusVersion = "3.2.0"
-    rxAndroidVersion = "2.1.1"
-    rxJavaVersion = "2.2.2"
+    rxAndroidVersion = "3.0.0"
+    rxJavaVersion = "3.0.11"
     iconifyVersion = "2.2.2"
     audioPlayerVersion = "v2.0.0"
 

@@ -5,10 +5,10 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleOnSubscribe;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;

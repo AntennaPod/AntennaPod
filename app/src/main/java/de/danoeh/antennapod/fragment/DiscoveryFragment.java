@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
 import de.danoeh.antennapod.R;
@@ -26,7 +27,6 @@ import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
-import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

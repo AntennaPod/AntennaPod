@@ -2,6 +2,7 @@ package de.test.antennapod.util.event;
 
 import androidx.annotation.NonNull;
 
+import io.reactivex.rxjava3.functions.Consumer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import io.reactivex.functions.Consumer;
 
 /**
  * Test helpers to listen {@link FeedItemEvent} and handle them accordingly
@@ -29,6 +29,8 @@ public class FeedItemEventListener {
         try {
             EventBus.getDefault().register(feedItemEventListener);
             consumer.accept(feedItemEventListener);
+        } catch (Throwable throwable) {
+            throw new Exception(throwable);
         } finally {
             EventBus.getDefault().unregister(feedItemEventListener);
         }

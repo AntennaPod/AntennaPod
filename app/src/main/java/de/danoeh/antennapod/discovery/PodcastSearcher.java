@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.discovery;
 
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 import java.util.List;
 
 public interface PodcastSearcher {

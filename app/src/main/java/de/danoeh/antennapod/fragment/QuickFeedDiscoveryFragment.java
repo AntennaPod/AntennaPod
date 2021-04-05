@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,7 +29,6 @@ import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
 import de.danoeh.antennapod.core.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
-import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;

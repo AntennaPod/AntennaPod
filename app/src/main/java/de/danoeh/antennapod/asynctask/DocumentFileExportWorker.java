@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Writes an OPML file into the user selected export directory in the background.

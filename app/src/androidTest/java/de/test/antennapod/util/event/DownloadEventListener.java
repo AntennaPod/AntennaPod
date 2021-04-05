@@ -3,7 +3,7 @@ package de.test.antennapod.util.event;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -25,6 +25,8 @@ public class DownloadEventListener {
         try {
             EventBus.getDefault().register(feedItemEventListener);
             consumer.accept(feedItemEventListener);
+        } catch (Throwable throwable) {
+            throw new Exception(throwable);
         } finally {
             EventBus.getDefault().unregister(feedItemEventListener);
         }

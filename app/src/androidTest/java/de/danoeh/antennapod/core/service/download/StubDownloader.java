@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.service.download;
 
 import androidx.annotation.NonNull;
-import androidx.core.util.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class StubDownloader extends Downloader {
 
@@ -23,7 +23,11 @@ public class StubDownloader extends Downloader {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        onDownloadComplete.accept(result);
+        try {
+            onDownloadComplete.accept(result);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     @NonNull

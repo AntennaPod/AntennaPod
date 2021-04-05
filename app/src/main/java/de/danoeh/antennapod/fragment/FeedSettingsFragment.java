@@ -31,11 +31,11 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.MaybeOnSubscribe;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;

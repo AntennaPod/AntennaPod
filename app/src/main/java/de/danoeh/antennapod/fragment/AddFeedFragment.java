@@ -36,9 +36,9 @@ import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.discovery.PodcastIndexPodcastSearcher;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
 

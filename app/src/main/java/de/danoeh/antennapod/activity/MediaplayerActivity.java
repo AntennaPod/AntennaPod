@@ -17,6 +17,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,10 +56,6 @@ import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Provides general features which are both needed for playing audio and video
