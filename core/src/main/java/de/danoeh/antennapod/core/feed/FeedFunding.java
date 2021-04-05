@@ -26,7 +26,7 @@ public class FeedFunding {
 
     @Override
     public boolean equals(Object obj) {
-        if (! obj.getClass().equals(FeedFunding.class)) {
+        if (obj == null || ! obj.getClass().equals(FeedFunding.class)) {
             return false;
         }
 
@@ -77,8 +77,8 @@ public class FeedFunding {
             return null;
         }
         for (FeedFunding fund : fundingList) {
-            result += fund.url + FeedFunding.FUNDING_TITLE_SEPARATOR + fund.content;
-            result += FeedFunding.FUNDING_ENTRIES_SEPARATOR;
+            result.concat(fund.url + FeedFunding.FUNDING_TITLE_SEPARATOR + fund.content);
+            result.concat(FeedFunding.FUNDING_ENTRIES_SEPARATOR);
         }
         result = StringUtils.removeEnd(result, FeedFunding.FUNDING_ENTRIES_SEPARATOR);
         return result;
