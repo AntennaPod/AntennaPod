@@ -105,14 +105,12 @@
                     android:id="@+id/txtvFundingUrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
                     android:maxLines="8"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
                     android:linksClickable="true"
                     android:autoLink="web"
-                    tools:background="@android:color/holo_green_dark"
-                    tools:text="" />
+                    tools:background="@android:color/holo_green_dark" />
 
             <TextView
                     android:layout_width="wrap_content"
