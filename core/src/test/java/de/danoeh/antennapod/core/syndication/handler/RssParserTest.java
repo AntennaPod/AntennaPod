@@ -82,4 +82,15 @@ public class RssParserTest {
         assertEquals(MediaType.VIDEO, feedItem.getMedia().getMediaType());
         assertEquals("https://www.example.com/file.mp4", feedItem.getMedia().getDownload_url());
     }
+
+    @Test
+    public void testMultipleFundingTags() throws Exception {
+        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testMediaContentMime.xml");
+        Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
+        assertEquals(2, feed.getPaymentLinks().size());
+        assertEquals("Text 1", feed.getPaymentLinks().get(0).content);
+        assertEquals("https://example.com/funding1", feed.getPaymentLinks().get(0).url);
+        assertEquals("Text 2", feed.getPaymentLinks().get(1).content);
+        assertEquals("https://example.com/funding2", feed.getPaymentLinks().get(1).url);
+    }
 }
