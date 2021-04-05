@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.text.TextUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -85,12 +86,14 @@ public class RssParserTest {
 
     @Test
     public void testMultipleFundingTags() throws Exception {
-        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testMediaContentMime.xml");
+        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testMultipleFundingTags.xml");
         Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
-        assertEquals(2, feed.getPaymentLinks().size());
+        assertEquals(3, feed.getPaymentLinks().size());
         assertEquals("Text 1", feed.getPaymentLinks().get(0).content);
         assertEquals("https://example.com/funding1", feed.getPaymentLinks().get(0).url);
         assertEquals("Text 2", feed.getPaymentLinks().get(1).content);
         assertEquals("https://example.com/funding2", feed.getPaymentLinks().get(1).url);
+        assertTrue(TextUtils.isEmpty(feed.getPaymentLinks().get(2).content));
+        assertEquals("https://example.com/funding3", feed.getPaymentLinks().get(2).url);
     }
 }
