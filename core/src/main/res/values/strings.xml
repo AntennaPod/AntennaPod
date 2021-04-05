@@ -91,6 +91,7 @@
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this Podcast</string>
     <string name="cover_label">Picture</string>
+    <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="needs_storage_permission">Storage permission is needed for this operation</string>
@@ -99,6 +100,7 @@
     <string name="chapters_label">Chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
+    <string name="shownotes_label">Shownotes</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
     <string name="close_label">Close</string>
@@ -566,6 +568,7 @@
     <string name="kept_updated">Kept updated</string>
     <string name="not_kept_updated">Not kept updated</string>
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
+    <string name="pref_contribute">Contribute</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
