@@ -276,10 +276,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                             .setMessage(R.string.episode_cache_full_message)
                             .setPositiveButton(R.string.open_autodownload_settings, (dialog, which) -> {
                                 Intent intent = new Intent(context, PreferenceActivity.class);
-                                intent.putExtra(OPEN_AUTO_DOWNLOAD_SETTINGS,true);
+                                intent.putExtra(OPEN_AUTO_DOWNLOAD_SETTINGS, true);
                                 context.startActivity(intent);
                             })
-                            .setNegativeButton(R.string.cancel_label,null)
+                            .setNegativeButton(R.string.cancel_label, null)
                             .show()
                 );
             }
