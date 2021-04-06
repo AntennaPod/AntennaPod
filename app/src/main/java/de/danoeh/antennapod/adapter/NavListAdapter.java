@@ -54,8 +54,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     private static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
-
-
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not
      * This tag doesn't correspond to any specific activity.
