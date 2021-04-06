@@ -55,7 +55,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                     .commit();
         }
         Intent intent = getIntent();
-        if(intent.getBooleanExtra(NavListAdapter.OPEN_AUTO_DOWNLOAD_SETTINGS,false)) {
+        if (intent.getBooleanExtra(NavListAdapter.OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
             openScreen(R.xml.preferences_autodownload);
         }
     }
