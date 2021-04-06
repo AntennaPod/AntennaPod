@@ -34,6 +34,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
  */
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
+    public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.settingsContainer, new MainPreferencesFragment(), FRAGMENT_TAG)
                     .commit();
+        }
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra(OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
+            openScreen(R.xml.preferences_autodownload);
         }
     }
 

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -21,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -270,7 +272,12 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                         new AlertDialog.Builder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> { })
+                            .setPositiveButton(android.R.string.ok, null)
+                            .setNeutralButton(R.string.open_autodownload_settings, (dialog, which) -> {
+                                Intent intent = new Intent(context, PreferenceActivity.class);
+                                intent.putExtra(PreferenceActivity.OPEN_AUTO_DOWNLOAD_SETTINGS, true);
+                                context.startActivity(intent);
+                            })
                             .show()
                 );
             }
