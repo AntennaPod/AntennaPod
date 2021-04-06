@@ -33,10 +33,14 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFunding;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -58,6 +62,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -80,6 +86,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     private TextView txtvPodcastTime;
     private TextView txtvPodcastSpace;
     private TextView txtvPodcastEpisodeCount;
+    private TextView txtvFundingUrl;
+    private TextView lblSupport;
     private Button btnvOpenStatistics;
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
@@ -155,6 +163,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         txtvPodcastTime = root.findViewById(R.id.txtvPodcastTime);
         btnvOpenStatistics = root.findViewById(R.id.btnvOpenStatistics);
         txtvUrl = root.findViewById(R.id.txtvUrl);
+        lblSupport = root.findViewById(R.id.lblSupport);
+        txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
@@ -233,6 +243,29 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         }
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+
+        if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
+            lblSupport.setVisibility(View.GONE);
+            txtvFundingUrl.setVisibility(View.GONE);
+        } else {
+            lblSupport.setVisibility(View.VISIBLE);
+            ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
+            StringBuilder str = new StringBuilder();
+            HashSet<String> seen = new HashSet<String>();
+            for (FeedFunding funding : fundingList) {
+                if (seen.contains(funding.url)) {
+                    continue;
+                }
+                seen.add(funding.url);
+                str.append(funding.content.isEmpty()
+                        ? getContext().getResources().getString(R.string.support_podcast)
+                        : funding.content).append(" ").append(funding.url);
+                str.append("\n");
+            }
+            str = new StringBuilder(StringUtils.trim(str.toString()));
+            txtvFundingUrl.setText(str.toString());
+        }
+
         Iconify.addIcons(txtvUrl);
         refreshToolbarState();
     }

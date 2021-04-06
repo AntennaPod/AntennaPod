@@ -48,7 +48,7 @@ public class FeedCursorMapperTest {
             assertEquals("feed custom title", feed.getCustomTitle());
             assertEquals("feed link", feed.getLink());
             assertEquals("feed description", feed.getDescription());
-            assertEquals("feed payment link", feed.getPaymentLink());
+            assertEquals("feed payment link", feed.getPaymentLinks().get(0).url);
             assertEquals("feed author", feed.getAuthor());
             assertEquals("feed language", feed.getLanguage());
             assertEquals("feed image url", feed.getImageUrl());

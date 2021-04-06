@@ -54,7 +54,7 @@ public class Feed extends FeedFile {
      */
     private String lastUpdate;
 
-    private String paymentLink;
+    private ArrayList<FeedFunding> fundingList;
     /**
      * Feed type, for example RSS 2 or Atom.
      */
@@ -103,8 +103,9 @@ public class Feed extends FeedFile {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
-                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
+                String description, String paymentLinks, String author, String language,
+                String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
@@ -114,7 +115,7 @@ public class Feed extends FeedFile {
         this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
-        this.paymentLink = paymentLink;
+        this.fundingList = FeedFunding.extractPaymentLinks(paymentLinks);
         this.author = author;
         this.language = language;
         this.type = type;
@@ -237,8 +238,8 @@ public class Feed extends FeedFile {
         if (other.author != null) {
             author = other.author;
         }
-        if (other.paymentLink != null) {
-            paymentLink = other.paymentLink;
+        if (other.fundingList != null) {
+            fundingList = other.fundingList;
         }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
@@ -285,8 +286,8 @@ public class Feed extends FeedFile {
                 return true;
             }
         }
-        if (other.paymentLink != null) {
-            if (paymentLink == null || !paymentLink.equals(other.paymentLink)) {
+        if (other.fundingList != null) {
+            if (fundingList == null || !fundingList.equals(other.fundingList)) {
                 return true;
             }
         }
@@ -390,12 +391,15 @@ public class Feed extends FeedFile {
         this.feedIdentifier = feedIdentifier;
     }
 
-    public String getPaymentLink() {
-        return paymentLink;
+    public void addPayment(FeedFunding funding) {
+        if (fundingList == null) {
+            fundingList = new ArrayList<FeedFunding>();
+        }
+        fundingList.add(funding);
     }
 
-    public void setPaymentLink(String paymentLink) {
-        this.paymentLink = paymentLink;
+    public ArrayList<FeedFunding> getPaymentLinks() {
+        return fundingList;
     }
 
     public String getLanguage() {
