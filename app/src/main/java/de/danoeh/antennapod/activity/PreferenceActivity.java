@@ -16,7 +16,6 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
@@ -35,6 +34,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
  */
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
+    public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                     .commit();
         }
         Intent intent = getIntent();
-        if (intent.getBooleanExtra(NavListAdapter.OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
+        if (intent.getBooleanExtra(OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
             openScreen(R.xml.preferences_autodownload);
         }
     }
