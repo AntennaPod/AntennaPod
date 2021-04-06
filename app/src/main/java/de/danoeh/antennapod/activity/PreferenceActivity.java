@@ -16,6 +16,7 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
@@ -52,6 +53,10 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.settingsContainer, new MainPreferencesFragment(), FRAGMENT_TAG)
                     .commit();
+        }
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra(NavListAdapter.OPEN_AUTO_DOWNLOAD_SETTINGS,false)) {
+            openScreen(R.xml.preferences_autodownload);
         }
     }
 
