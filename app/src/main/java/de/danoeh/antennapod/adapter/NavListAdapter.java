@@ -54,7 +54,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     private static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
-    public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
+
 
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not
@@ -274,12 +274,12 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                         new AlertDialog.Builder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
-                            .setPositiveButton(R.string.open_autodownload_settings, (dialog, which) -> {
+                            .setPositiveButton(android.R.string.ok, null)
+                            .setNeutralButton(R.string.open_autodownload_settings, (dialog, which) -> {
                                 Intent intent = new Intent(context, PreferenceActivity.class);
-                                intent.putExtra(OPEN_AUTO_DOWNLOAD_SETTINGS,true);
+                                intent.putExtra(PreferenceActivity.OPEN_AUTO_DOWNLOAD_SETTINGS,true);
                                 context.startActivity(intent);
                             })
-                            .setNegativeButton(R.string.cancel_label,null)
                             .show()
                 );
             }
