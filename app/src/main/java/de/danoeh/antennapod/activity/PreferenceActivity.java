@@ -136,10 +136,10 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 finish();
             } else {
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (imm.isActive()) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-                }
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                if (imm.isActive()) {
+//                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+//                }
                 getSupportFragmentManager().popBackStack();
             }
             return true;

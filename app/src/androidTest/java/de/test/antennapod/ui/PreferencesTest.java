@@ -17,6 +17,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import org.awaitility.Awaitility;
+import org.awaitility.core.ConditionFactory;
 import org.hamcrest.core.IsEqual;
 import org.junit.Before;
 import org.junit.Rule;
@@ -92,14 +93,33 @@ public class PreferencesTest {
                 RecyclerViewActions.actionOnItem(
                         allOf(hasDescendant(withHint(R.string.preference_search_hint))),
                         click()));
-        onView(withClassName(new IsEqual<>(AppCompatImageButton.class.getName()))).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(()-> {
-                    View root = activity.findViewById(android.R.id.content);
-                    Rect visbileBounds = new Rect();
-                    root.getWindowVisibleDisplayFrame(visbileBounds);
-                    return root.getHeight() - visbileBounds.height() < 200;
-                });
+
+
+        final View[] root = {null};
+        ConditionFactory await = Awaitility.await();
+        await.pollDelay(50, MILLISECONDS).pollInterval(50, MILLISECONDS).atMost(2000, MILLISECONDS)
+                .conditionEvaluationListener(condition -> {
+                    Object object = condition.getValue();
+                    if(((boolean)object) == (true)) {
+                        await.then().atMost(1000, MILLISECONDS).until(()-> {
+                            Rect visbileBounds = new Rect();
+                            root[0].getWindowVisibleDisplayFrame(visbileBounds);
+                            return root[0].getHeight() - visbileBounds.height() > 200;
+                        });
+                    }
+                }).until(() -> {
+            root[0] = activity.findViewById(android.R.id.content);
+            Rect visbileBounds = new Rect();
+            root[0].getWindowVisibleDisplayFrame(visbileBounds);
+            return root[0].getHeight() - visbileBounds.height() > 100;
+//            return true;
+        });
+
+
+
+
+
+
     }
 
     @Test
