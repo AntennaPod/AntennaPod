@@ -567,6 +567,8 @@
     <string name="not_auto_downloaded">Not auto downloaded</string>
     <string name="kept_updated">Kept updated</string>
     <string name="not_kept_updated">Not kept updated</string>
+    <string name="new_episode_notification_enabled">Notification enabled</string>
+    <string name="new_episode_notification_disabled">Notification disabled</string>
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
 
