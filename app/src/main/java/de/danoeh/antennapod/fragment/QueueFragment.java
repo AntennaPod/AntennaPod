@@ -242,7 +242,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private void refreshToolbarState() {
         MenuItemUtils.refreshLockItem(getActivity(), toolbar.getMenu());
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
 
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
