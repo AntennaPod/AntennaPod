@@ -92,7 +92,7 @@ public class SubscriptionsFilter {
 
             if (showEpisodeNotificationEnabled && !itemPreferences.getShowEpisodeNotification()) {
                 continue;
-            }else if (showEpisodeNotificationDisabled && itemPreferences.getShowEpisodeNotification()) {
+            } else if (showEpisodeNotificationDisabled && itemPreferences.getShowEpisodeNotification()) {
                 continue;
             }
 
