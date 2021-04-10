@@ -6,24 +6,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
+    <!--
+        While the same visuals could be achieved without this nested layout,
+        RelativeLayout invalidates all its direct children when the playback
+        position is updated. This causes flickering of the tabs every second.
+    -->
+    <LinearLayout
+            android:id="@+id/pagerContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             android:layout_alignParentTop="true"
-            app:navigationIcon="?homeAsUpIndicator"
-            android:id="@+id/toolbar"/>
+            android:layout_above="@id/playtime_layout"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
 
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="?android:attr/windowBackground"
-            app:tabBackground="?attr/selectableItemBackground"
-            app:tabMode="fixed"
-            app:tabGravity="fill"/>
+        <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:navigationIcon="?homeAsUpIndicator"
+                android:id="@+id/toolbar"/>
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/sliding_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/windowBackground"
+                app:tabBackground="?attr/selectableItemBackground"
+                app:tabMode="fixed"
+                app:tabGravity="fill"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:foreground="?android:windowContentOverlay"/>
+    </LinearLayout>
 
     <FrameLayout
             android:id="@+id/playerFragment"
@@ -34,19 +54,10 @@
             tools:layout_height="@dimen/external_player_height"
             android:elevation="8dp"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@id/playtime_layout"
-            android:layout_below="@id/sliding_tabs"
-            android:foreground="?android:windowContentOverlay"
-            android:layout_marginBottom="12dp"/>
-
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:layout_alignBottom="@id/pager"
+            android:layout_alignBottom="@id/pagerContainer"
             android:src="@drawable/bg_gradient"
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
@@ -56,7 +67,7 @@
             android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/pager"
+            android:layout_alignBottom="@+id/pagerContainer"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="8dp"
