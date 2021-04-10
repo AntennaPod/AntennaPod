@@ -8,7 +8,8 @@ public enum SubscriptionsFilterGroup {
             new ItemProperties(R.string.not_auto_downloaded, "disabled_auto_download")),
     UPDATED(new ItemProperties(R.string.kept_updated, "enabled_updates"),
             new ItemProperties(R.string.not_kept_updated, "disabled_updates")),
-    NEW_EPISODE_NOTIFICATION(new ItemProperties(R.string.new_episode_notification_enabled, "episode_notification_enabled"),
+    NEW_EPISODE_NOTIFICATION(new ItemProperties(R.string.new_episode_notification_enabled,
+                                                           "episode_notification_enabled"),
             new ItemProperties(R.string.new_episode_notification_disabled, "episode_notification_disabled"));
 
 
