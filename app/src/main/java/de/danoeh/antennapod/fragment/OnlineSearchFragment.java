@@ -23,7 +23,6 @@ import de.danoeh.antennapod.discovery.PodcastSearcher;
 import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
 import io.reactivex.disposables.Disposable;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
