@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -47,6 +48,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.FeedsApplyActionFragment;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
@@ -181,6 +183,16 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                 return true;
             case R.id.subscriptions_sort:
                 FeedSortDialog.showDialog(requireContext());
+                return true;
+            case R.id.feed_actions:
+                List<Feed> feeds = new ArrayList<>();
+                for (NavDrawerData.DrawerItem di : listItems) {
+                    NavDrawerData.FeedDrawerItem feedDrawerItem = (NavDrawerData.FeedDrawerItem) di;
+                    feeds.add(feedDrawerItem.feed);
+                }
+                FeedsApplyActionFragment fragment = FeedsApplyActionFragment.newInstance(feeds, FeedsApplyActionFragment.ACTION_TEST);
+
+
                 return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);

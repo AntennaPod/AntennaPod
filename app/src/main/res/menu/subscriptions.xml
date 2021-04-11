@@ -19,6 +19,12 @@
             android:title="@string/sort"
             custom:showAsAction="never" />
     <item
+        android:id="@+id/feed_actions"
+        android:menuCategory="container"
+        android:icon="?attr/checkbox_multiple"
+        android:title="@string/multi_select"
+        custom:showAsAction="collapseActionView"/>
+    <item
             android:id="@+id/subscription_num_columns"
             android:title="@string/subscription_num_columns"
             custom:showAsAction="never">
