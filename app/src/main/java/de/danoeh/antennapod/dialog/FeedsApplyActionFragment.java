@@ -12,12 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
@@ -77,6 +79,26 @@ public class FeedsApplyActionFragment extends Fragment implements Toolbar.OnMenu
         mAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
+
+        // Init action UI (via a FAB Speed Dial)
+        mSpeedDialView = view.findViewById(R.id.fabSD);
+        mSpeedDialView.inflate(R.menu.feeds_apply_action_speeddial);
+
+        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+//                if (open && checkedIds.size() == 0) {
+//                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+//                            Snackbar.LENGTH_SHORT);
+//                    mSpeedDialView.close();
+//                }
+            }
+        });
         return view;
     }
 

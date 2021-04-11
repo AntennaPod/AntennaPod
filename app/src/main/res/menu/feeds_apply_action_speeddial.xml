@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- the order is opposite of the typical menu:
+         catered to FAB speed dial, which somehow shows the item in reverse.
+         E.g., item @id/delete_batch is the first in the xml,
+         visually it will be shown at the bottom of the list of actions.
+      -->
+
+    <item android:id="@+id/remove_new_flag_batch"
+        android:icon="?attr/av_download"
+        android:title="@string/remove_all_new_flags_label"
+        />
+    <item
+        android:id="@+id/mark_all_read_batch"
+        android:icon="?attr/navigation_accept"
+        android:title="@string/mark_read_label"
+        />
+    <item android:id="@+id/rename_batch"
+        android:icon="?attr/content_remove_from_queue"
+        android:title="@string/rename_feed_label"
+        />
+    <item android:id="@+id/delete_batch"
+        android:icon="?attr/ic_delete"
+        android:title="@string/remove_feed_label"
+        />
+</menu>
