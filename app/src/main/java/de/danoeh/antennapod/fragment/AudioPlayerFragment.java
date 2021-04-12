@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -96,6 +98,7 @@ public class AudioPlayerFragment extends Fragment implements
     private Disposable disposable;
     private boolean showTimeLeft;
     private boolean hasChapters = false;
+    private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
     private TabLayoutMediator tabLayoutMediator;
 
@@ -502,8 +505,18 @@ public class AudioPlayerFragment extends Fragment implements
             if (newChapterIndex > -1) {
                 if (!sbPosition.isPressed() && currentChapterIndex != newChapterIndex) {
                     currentChapterIndex = newChapterIndex;
-                    controller.seekToChapter(controller.getMedia().getChapters().get(currentChapterIndex));
+                    position = (int) controller.getMedia().getChapters().get(currentChapterIndex).getStart();
+                    seekedToChapterStart = true;
+                    sbPosition.setIsEnabled(true);
+                    controller.seekTo(position);
                     updateUi(controller.getMedia());
+
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sbPosition.setIsEnabled(false);
+                        }
+                    }, 5000);
                 }
                 txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
                                 + "\n" + Converter.getDurationStringLong(position));
@@ -528,8 +541,12 @@ public class AudioPlayerFragment extends Fragment implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
-            float prog = seekBar.getProgress() / ((float) seekBar.getMax());
-            controller.seekTo((int) (prog * controller.getDuration()));
+            if (seekedToChapterStart) {
+                seekedToChapterStart = false;
+            } else {
+                float prog = seekBar.getProgress() / ((float) seekBar.getMax());
+                controller.seekTo((int) (prog * controller.getDuration()));
+            }
         }
         cardViewSeek.setScaleX(1f);
         cardViewSeek.setScaleY(1f);
