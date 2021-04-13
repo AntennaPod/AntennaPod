@@ -24,6 +24,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.view.PlayButton;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -40,7 +41,7 @@ public class ExternalPlayerFragment extends Fragment {
 
     private ImageView imgvCover;
     private TextView txtvTitle;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private TextView feedName;
     private ProgressBar progressBar;
     private PlaybackController controller;
@@ -103,8 +104,8 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
