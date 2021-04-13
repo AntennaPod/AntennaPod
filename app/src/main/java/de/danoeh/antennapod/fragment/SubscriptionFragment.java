@@ -190,7 +190,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                     NavDrawerData.FeedDrawerItem feedDrawerItem = (NavDrawerData.FeedDrawerItem) di;
                     feeds.add(feedDrawerItem.feed);
                 }
-                FeedsApplyActionFragment fragment = FeedsApplyActionFragment.newInstance(feeds, FeedsApplyActionFragment.ACTION_TEST);
+                FeedsApplyActionFragment fragment = FeedsApplyActionFragment.newInstance(feeds, 0);
                 ((MainActivity) getActivity()).loadChildFragment(fragment);
 
 
