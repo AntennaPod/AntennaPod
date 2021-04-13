@@ -261,7 +261,7 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">%d Download übrig</item>
     <item quantity="other">%d Downloads übrig</item>
   </plurals>
-  <string name="service_shutting_down">Dienst wird herunter gefahren</string>
+  <string name="service_shutting_down">Dienst wird gestoppt</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_log_title_unknown">Unbekannter Titel</string>
   <string name="download_type_feed">Feed</string>

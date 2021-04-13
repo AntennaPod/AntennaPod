@@ -75,6 +75,7 @@
   <string name="author_label">Автор(ы)</string>
   <string name="language_label">Язык</string>
   <string name="url_label">Ссылка</string>
+  <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="needs_storage_permission">Для выполнения этой операции нужно разрешить доступ к хранилищу</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">Главы</string>
   <string name="chapter_duration">Длительность: %1$s</string>
   <string name="description_label">Описание</string>
+  <string name="shownotes_label">Примечания к выпуску</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
   <string name="processing_label">Обработка</string>
   <string name="close_label">Закрыть</string>
