@@ -32,12 +32,19 @@
         android:layout_below="@id/info_bar"
         android:background="?android:attr/listDivider"/>
 
-    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-        android:layout_below="@id/divider" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/divider">
+
+        <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progLoading"
