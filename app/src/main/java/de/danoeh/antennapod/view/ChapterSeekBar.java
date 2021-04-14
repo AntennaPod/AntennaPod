@@ -17,7 +17,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private float progressPrimary;
     private float progressSecondary;
     private float[] dividerPos;
-    private boolean isEnabled = false;
+    private boolean isHighlighted = false;
     private final Paint paintBackground = new Paint();
     private final Paint paintProgressPrimary = new Paint();
 
@@ -63,11 +63,11 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     }
 
     public void highlightCurrentChapter() {
-        isEnabled = true;
+        isHighlighted = true;
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                isEnabled = false;
+                isHighlighted = false;
                 invalidate();
             }
         }, 1000);
@@ -118,7 +118,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
             if (right < progressPrimary) {
                 currChapter = i + 1;
                 canvas.drawRect(left, top, right, bottom, paintProgressPrimary);
-            } else if (isEnabled || isPressed()) {
+            } else if (isHighlighted || isPressed()) {
                 canvas.drawRect(leftCurr, topExpanded, rightCurr, bottomExpanded, paintBackground);
                 canvas.drawRect(leftCurr, topExpanded, progressPrimary, bottomExpanded, paintProgressPrimary);
             } else {
