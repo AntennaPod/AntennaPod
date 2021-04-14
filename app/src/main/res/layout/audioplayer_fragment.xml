@@ -56,6 +56,8 @@
             android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_alignBottom="@+id/pager"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="12dp"
@@ -74,7 +76,7 @@
                 android:paddingRight="24dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="1:06:29" />
 
     </androidx.cardview.widget.CardView>

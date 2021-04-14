@@ -95,6 +95,8 @@ public class AudioPlayerFragment extends Fragment implements
     private Disposable disposable;
     private boolean showTimeLeft;
     private boolean hasChapters = false;
+    private boolean seekedToChapterStart = false;
+    private int currentChapterIndex = -1;
     private TabLayoutMediator tabLayoutMediator;
 
     @Override
@@ -417,8 +419,10 @@ public class AudioPlayerFragment extends Fragment implements
 
         if (media != null && media.getChapters() != null) {
             setHasChapters(media.getChapters().size() > 0);
+            currentChapterIndex = ChapterUtils.getCurrentChapterIndex(media, controller.getPosition());
         } else {
             setHasChapters(false);
+            currentChapterIndex = -1;
         }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
@@ -495,7 +499,21 @@ public class AudioPlayerFragment extends Fragment implements
             float prog = progress / ((float) seekBar.getMax());
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * controller.getDuration()));
-            txtvSeek.setText(Converter.getDurationStringLong(position));
+            int newChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), position);
+            if (newChapterIndex > -1) {
+                if (!sbPosition.isPressed() && currentChapterIndex != newChapterIndex) {
+                    currentChapterIndex = newChapterIndex;
+                    position = (int) controller.getMedia().getChapters().get(currentChapterIndex).getStart();
+                    seekedToChapterStart = true;
+                    controller.seekTo(position);
+                    updateUi(controller.getMedia());
+                    sbPosition.highlightCurrentChapter();
+                }
+                txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
+                                + "\n" + Converter.getDurationStringLong(position));
+            } else {
+                txtvSeek.setText(Converter.getDurationStringLong(position));
+            }
         }
     }
 
@@ -514,8 +532,12 @@ public class AudioPlayerFragment extends Fragment implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
-            float prog = seekBar.getProgress() / ((float) seekBar.getMax());
-            controller.seekTo((int) (prog * controller.getDuration()));
+            if (seekedToChapterStart) {
+                seekedToChapterStart = false;
+            } else {
+                float prog = seekBar.getProgress() / ((float) seekBar.getMax());
+                controller.seekTo((int) (prog * controller.getDuration()));
+            }
         }
         cardViewSeek.setScaleX(1f);
         cardViewSeek.setScaleY(1f);

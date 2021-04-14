@@ -3,6 +3,8 @@ package de.danoeh.antennapod.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 
@@ -15,6 +17,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private float progressPrimary;
     private float progressSecondary;
     private float[] dividerPos;
+    private boolean isHighlighted = false;
     private final Paint paintBackground = new Paint();
     private final Paint paintProgressPrimary = new Paint();
 
@@ -59,6 +62,17 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         }
     }
 
+    public void highlightCurrentChapter() {
+        isHighlighted = true;
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isHighlighted = false;
+                invalidate();
+            }
+        }, 1000);
+    }
+
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         top = getTop() + density * 7.5f;
@@ -87,7 +101,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private void drawProgressChapters(Canvas canvas) {
         final int saveCount = canvas.save();
         int currChapter = 1;
-        float chapterMargin = density * 0.6f;
+        float chapterMargin = density * 1.2f;
         float topExpanded = getTop() + density * 7;
         float bottomExpanded = getBottom() - density * 7;
 
@@ -95,16 +109,16 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
         for (int i = 1; i < dividerPos.length; i++) {
             float right = dividerPos[i] * width - chapterMargin;
-            float left = dividerPos[i - 1] * width + chapterMargin;
+            float left = dividerPos[i - 1] * width;
             float rightCurr = dividerPos[currChapter] * width - chapterMargin;
-            float leftCurr = dividerPos[currChapter - 1] * width + chapterMargin;
+            float leftCurr = dividerPos[currChapter - 1] * width;
 
             canvas.drawRect(left, top, right, bottom, paintBackground);
 
             if (right < progressPrimary) {
                 currChapter = i + 1;
                 canvas.drawRect(left, top, right, bottom, paintProgressPrimary);
-            } else if (isPressed()) {
+            } else if (isHighlighted || isPressed()) {
                 canvas.drawRect(leftCurr, topExpanded, rightCurr, bottomExpanded, paintBackground);
                 canvas.drawRect(leftCurr, topExpanded, progressPrimary, bottomExpanded, paintProgressPrimary);
             } else {
