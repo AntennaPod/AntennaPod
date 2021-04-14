@@ -3,6 +3,8 @@ package de.danoeh.antennapod.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 
@@ -60,8 +62,15 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         }
     }
 
-    public void setIsEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
+    public void highlightCurrentChapter() {
+        isEnabled = true;
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isEnabled = false;
+                invalidate();
+            }
+        }, 1000);
     }
 
     @Override

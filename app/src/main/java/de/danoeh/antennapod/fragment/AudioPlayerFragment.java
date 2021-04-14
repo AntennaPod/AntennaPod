@@ -2,8 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -507,16 +505,9 @@ public class AudioPlayerFragment extends Fragment implements
                     currentChapterIndex = newChapterIndex;
                     position = (int) controller.getMedia().getChapters().get(currentChapterIndex).getStart();
                     seekedToChapterStart = true;
-                    sbPosition.setIsEnabled(true);
                     controller.seekTo(position);
                     updateUi(controller.getMedia());
-
-                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            sbPosition.setIsEnabled(false);
-                        }
-                    }, 5000);
+                    sbPosition.highlightCurrentChapter();
                 }
                 txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
                                 + "\n" + Converter.getDurationStringLong(position));
