@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_alignBottom="@id/pager"
-            android:src="@drawable/bg_gradient"
+            app:srcCompat="@drawable/bg_gradient"
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
 

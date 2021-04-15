@@ -35,7 +35,7 @@
                     android:layout_height="match_parent"
                     android:importantForAccessibility="no"
                     android:scaleType="fitCenter"
-                    android:src="?attr/dragview_background"
+                    app:srcCompat="?attr/dragview_background"
                     android:paddingStart="0dp"
                     android:paddingLeft="0dp"
                     android:paddingEnd="4dp"

@@ -2,15 +2,12 @@ package de.danoeh.antennapod.view;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import androidx.annotation.AttrRes;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;
@@ -52,10 +50,7 @@ public class EmptyViewHandler {
     }
 
     public void setIcon(@AttrRes int iconAttr) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(iconAttr, typedValue, true);
-        Drawable d = ContextCompat.getDrawable(context, typedValue.resourceId);
-        ivIcon.setImageDrawable(d);
+        ivIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, iconAttr));
         ivIcon.setVisibility(View.VISIBLE);
     }
 

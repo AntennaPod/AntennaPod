@@ -3,10 +3,9 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
@@ -109,10 +108,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         return titles[index];
     }
 
-    private Drawable getDrawable(String tag) {
+    private @DrawableRes int getDrawable(String tag) {
         Activity context = activity.get();
         if (context == null) {
-            return null;
+            return 0;
         }
         int icon;
         switch (tag) {
@@ -135,12 +134,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 icon = R.attr.content_new;
                 break;
             default:
-                return null;
+                return 0;
         }
-        TypedArray ta = context.obtainStyledAttributes(new int[] { icon });
-        Drawable result = ta.getDrawable(0);
-        ta.recycle();
-        return result;
+        return ThemeUtils.getDrawableFromAttr(context, icon);
     }
 
     public List<String> getFragmentTags() {
@@ -283,7 +279,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             }
         }
 
-        holder.image.setImageDrawable(getDrawable(fragmentTags.get(position)));
+        holder.image.setImageResource(getDrawable(fragmentTags.get(position)));
     }
 
     private void bindSectionDivider(DividerHolder holder) {

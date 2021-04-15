@@ -8,6 +8,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         multiDexEnabled false
+        vectorDrawables.useSupportLibrary true
+        vectorDrawables.generatedDensities = []
 
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
