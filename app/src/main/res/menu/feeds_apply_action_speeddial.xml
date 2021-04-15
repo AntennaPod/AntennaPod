@@ -15,12 +15,8 @@
         android:icon="?attr/navigation_accept"
         android:title="@string/mark_read_label"
         />
-    <item android:id="@+id/rename_batch"
-        android:icon="?attr/content_remove_from_queue"
-        android:title="@string/rename_feed_label"
-        />
-    <item android:id="@+id/delete_batch"
-        android:icon="?attr/ic_delete"
-        android:title="@string/remove_feed_label"
-        />
+<!--    <item android:id="@+id/delete_batch"-->
+<!--        android:icon="?attr/ic_delete"-->
+<!--        android:title="@string/remove_feed_label"-->
+<!--        />-->
 </menu>

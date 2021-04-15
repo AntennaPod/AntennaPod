@@ -33,6 +33,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -67,7 +68,7 @@ public class FeedsApplyActionFragment extends Fragment implements Toolbar.OnMenu
     }
 
     private final List<? extends ActionBinding> actionBindings;
-    private final Map<Long, FeedItem> idMap = new ArrayMap<>();
+    private final Map<Long, Feed> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
     private int actions;
     private final List<String> titles = new ArrayList<>();
@@ -84,17 +85,9 @@ public class FeedsApplyActionFragment extends Fragment implements Toolbar.OnMenu
     public FeedsApplyActionFragment() {
         actionBindings = Arrays.asList(
                 new ActionBinding(ACTION_REMOVE_NEW_FLAGS,
-                        R.id.add_to_queue_batch, this::removeNewFlags)
-//                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
-//                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
-//                new ActionBinding(ACTION_MARK_PLAYED,
-//                        R.id.mark_read_batch, this::markedCheckedPlayed),
-//                new ActionBinding(ACTION_MARK_UNPLAYED,
-//                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
-//                new ActionBinding(ACTION_DOWNLOAD,
-//                        R.id.download_batch, this::downloadChecked),
-//                new ActionBinding(ACTION_DELETE,
-//                        R.id.delete_batch, this::deleteChecked)
+                        R.id.add_to_queue_batch, this::removeNewFlags),
+                new ActionBinding(ACTION_REMOVE_NEW_FLAGS,
+                        R.id.add_to_queue_batch, this::markAsPlayed)
         );
     }
 
@@ -102,9 +95,9 @@ public class FeedsApplyActionFragment extends Fragment implements Toolbar.OnMenu
         FeedsApplyActionFragment f = new FeedsApplyActionFragment();
         f.feeds.addAll(feeds);
         for (Feed feed : feeds) {
-
+            f.idMap.put(feed.getId(), feed);
         }
-
+        f.actions = actions;
         return f;
     }
 
@@ -152,14 +145,52 @@ public class FeedsApplyActionFragment extends Fragment implements Toolbar.OnMenu
 
             @Override
             public void onToggleChanged(boolean open) {
-//                if (open && checkedIds.size() == 0) {
-//                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-//                            Snackbar.LENGTH_SHORT);
-//                    mSpeedDialView.close();
-//                }
+                if (open && checkedIds.size() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    mSpeedDialView.close();
+                }
             }
         });
+        mSpeedDialView.setOnActionSelectedListener(actionItem -> {
+            ActionBinding selectedBinding = null;
+            for (ActionBinding binding : actionBindings) {
+                if (actionItem.getId() == binding.actionItemId) {
+                    selectedBinding = binding;
+                    break;
+                }
+            }
+            if (selectedBinding != null) {
+                selectedBinding.action.run();
+            } else {
+                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+            }
+            return true;
+        });
+        refreshCheckboxes();
         return view;
+    }
+
+    private void refreshCheckboxes() {
+        for (int i = 0; i < episodes.size(); i++) {
+            FeedItem episode = episodes.get(i);
+            boolean checked = checkedIds.contains(episode.getId());
+            mListView.setItemChecked(i, checked);
+        }
+        refreshToolbarState();
+        toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
+                checkedIds.size(), checkedIds.size()));
+    }
+
+    public void refreshToolbarState() {
+        MenuItem selectAllItem = toolbar.getMenu().findItem(R.id.select_toggle);
+        if (checkedIds.size() == episodes.size()) {
+            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getContext(), R.attr.ic_select_none));
+            selectAllItem.setTitle(R.string.deselect_all_label);
+        } else {
+            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getContext(), R.attr.ic_select_all));
+            selectAllItem.setTitle(R.string.select_all_label);
+        }
     }
 
     private void removeNewFlags() {
