@@ -122,14 +122,14 @@ public abstract class WidgetUpdater {
             }
 
             if (widgetState.status == PlayerStatus.PLAYING) {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause);
                 views.setContentDescription(R.id.butPlay, context.getString(R.string.pause_label));
-                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_pause_white_48dp);
+                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_pause);
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.pause_label));
             } else {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_48dp);
                 views.setContentDescription(R.id.butPlay, context.getString(R.string.play_label));
-                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
+                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_play_48dp);
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
@@ -152,8 +152,8 @@ public abstract class WidgetUpdater {
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
             views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
-            views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
-            views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
+            views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_48dp);
+            views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_play_48dp);
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {

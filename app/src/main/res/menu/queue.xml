@@ -14,11 +14,11 @@
         android:title="@string/refresh_label"
         android:menuCategory="container"
         custom:showAsAction="always"
-        android:icon="?attr/navigation_refresh"/>
+        android:icon="@drawable/ic_refresh"/>
 
     <item
         android:id="@+id/action_search"
-        android:icon="?attr/action_search"
+        android:icon="@drawable/ic_search"
         custom:showAsAction="collapseActionView|ifRoom"
         custom:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search_label"/>
@@ -114,7 +114,7 @@
         android:id="@+id/clear_queue"
         android:title="@string/clear_queue_label"
         custom:showAsAction="collapseActionView"
-        android:icon="?attr/navigation_accept"/>
+        android:icon="@drawable/ic_check"/>
 
     <item
         android:id="@+id/episode_actions"

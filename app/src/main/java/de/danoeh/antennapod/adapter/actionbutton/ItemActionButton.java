@@ -2,7 +2,7 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 import android.widget.ImageView;
-import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.view.View;
@@ -11,7 +11,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public abstract class ItemActionButton {
     FeedItem item;
@@ -23,7 +22,7 @@ public abstract class ItemActionButton {
     @StringRes
     public abstract int getLabel();
 
-    @AttrRes
+    @DrawableRes
     public abstract int getDrawable();
 
     public abstract void onClick(Context context);
@@ -62,6 +61,6 @@ public abstract class ItemActionButton {
         button.setVisibility(getVisibility());
         button.setContentDescription(context.getString(getLabel()));
         button.setOnClickListener((view) -> onClick(context));
-        icon.setImageResource(ThemeUtils.getDrawableFromAttr(context, getDrawable()));
+        icon.setImageResource(getDrawable());
     }
 }

@@ -24,10 +24,10 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         final MenuItem queueLock = menu.findItem(R.id.queue_lock);
         if (UserPreferences.isQueueLocked()) {
             queueLock.setTitle(de.danoeh.antennapod.R.string.unlock_queue);
-            queueLock.setIcon(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_lock_open));
+            queueLock.setIcon(R.drawable.ic_lock_open);
         } else {
             queueLock.setTitle(de.danoeh.antennapod.R.string.lock_queue);
-            queueLock.setIcon(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_lock_closed));
+            queueLock.setIcon(R.drawable.ic_lock_closed);
         }
     }
 

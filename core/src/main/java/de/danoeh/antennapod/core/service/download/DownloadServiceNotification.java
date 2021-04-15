@@ -205,7 +205,7 @@ public class DownloadServiceNotification {
                 .setContentText(context.getText(R.string.authentication_notification_msg))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getText(R.string.authentication_notification_msg)
                         + ": " + resourceTitle))
-                .setSmallIcon(R.drawable.ic_key_white)
+                .setSmallIcon(R.drawable.ic_key)
                 .setAutoCancel(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(context, downloadRequest));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

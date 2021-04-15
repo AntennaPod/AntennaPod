@@ -33,7 +33,7 @@
         <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="?attr/content_new"
+                app:srcCompat="@drawable/ic_add"
                 android:contentDescription="@string/new_label"
                 android:id="@+id/newTagButton"/>
     </LinearLayout>

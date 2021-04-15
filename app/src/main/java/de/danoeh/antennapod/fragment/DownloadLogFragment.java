@@ -81,7 +81,7 @@ public class DownloadLogFragment extends ListFragment {
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.av_download);
+        emptyView.setIcon(R.drawable.ic_download);
         emptyView.setTitle(R.string.no_log_downloads_head_label);
         emptyView.setMessage(R.string.no_log_downloads_label);
         emptyView.attachToListView(getListView());

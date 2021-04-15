@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
-import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;
@@ -23,7 +22,6 @@ public class EmptyViewHandler {
     private ListAdapter listAdapter;
     private RecyclerView.Adapter<?> recyclerAdapter;
 
-    private final Context context;
     private final View emptyView;
     private final TextView tvTitle;
     private final TextView tvMessage;
@@ -31,7 +29,6 @@ public class EmptyViewHandler {
 
     public EmptyViewHandler(Context context) {
         emptyView = View.inflate(context, R.layout.empty_view_layout, null);
-        this.context = context;
         tvTitle = emptyView.findViewById(R.id.emptyViewTitle);
         tvMessage = emptyView.findViewById(R.id.emptyViewMessage);
         ivIcon = emptyView.findViewById(R.id.emptyViewIcon);
@@ -49,8 +46,8 @@ public class EmptyViewHandler {
         tvMessage.setText(message);
     }
 
-    public void setIcon(@AttrRes int iconAttr) {
-        ivIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, iconAttr));
+    public void setIcon(@DrawableRes int icon) {
+        ivIcon.setImageResource(icon);
         ivIcon.setVisibility(View.VISIBLE);
     }
 

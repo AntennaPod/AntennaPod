@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/sort"
-        android:icon="?attr/ic_sort"
+        android:icon="@drawable/ic_sort"
         android:title="@string/sort"
         app:showAsAction="always">
         <menu>
@@ -25,7 +25,7 @@
 
     <item
         android:id="@+id/select_options"
-        android:icon="?attr/ic_filter"
+        android:icon="@drawable/ic_filter"
         android:title="@string/filter"
         app:showAsAction="always">
 

@@ -24,7 +24,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:scaleType="fitCenter"
             android:padding="8dp"
-            app:srcCompat="@drawable/ic_av_play_white_24dp" />
+            app:srcCompat="@drawable/ic_play_24dp" />
 
         <LinearLayout
             android:id="@+id/layout_left"
@@ -99,7 +99,7 @@
                         android:layout_marginRight="2dp"
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"/>
+                        app:srcCompat="@drawable/ic_fast_rewind"/>
 
                     <ImageButton
                         android:id="@+id/butPlayExtended"
@@ -110,7 +110,7 @@
                         android:layout_marginRight="2dp"
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/ic_av_play_white_48dp"/>
+                        app:srcCompat="@drawable/ic_play_48dp"/>
 
                     <ImageButton
                         android:id="@+id/butFastForward"
@@ -121,7 +121,7 @@
                         android:layout_marginRight="2dp"
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/ic_av_fast_forward_white_48dp"/>
+                        app:srcCompat="@drawable/ic_fast_forward"/>
 
                     <ImageButton
                         android:id="@+id/butSkip"
@@ -132,7 +132,7 @@
                         android:layout_marginRight="2dp"
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/ic_av_skip_white_24dp"/>
+                        app:srcCompat="@drawable/ic_skip_24dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

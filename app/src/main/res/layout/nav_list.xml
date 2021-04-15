@@ -30,7 +30,7 @@
             android:cropToPadding="true"
             android:padding="8dp"
             android:scaleType="centerCrop"
-            app:srcCompat="?attr/ic_settings"
+            app:srcCompat="@drawable/ic_settings"
             tools:background="@android:color/holo_orange_dark"
             tools:src="@android:drawable/sym_def_app_icon" />
 

@@ -64,7 +64,7 @@
 
     <item
         android:id="@+id/visit_website_item"
-        android:icon="?attr/location_web_site"
+        android:icon="@drawable/ic_web"
         custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label">
     </item>
