@@ -50,6 +50,7 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.ChapterSeekBar;
 import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
+import de.danoeh.antennapod.view.PlayButton;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -82,7 +83,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ChapterSeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
@@ -381,8 +382,8 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
