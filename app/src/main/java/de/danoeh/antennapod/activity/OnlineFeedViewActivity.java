@@ -476,7 +476,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             for (String url : alternateFeedUrls.keySet()) {
                 alternateUrlsTitleList.add(alternateFeedUrls.get(url));
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.alternate_urls_item, alternateUrlsTitleList);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    R.layout.alternate_urls_item, alternateUrlsTitleList);
             adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
             viewBinding.alternateUrlsSpinner.setAdapter(adapter);
             viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
