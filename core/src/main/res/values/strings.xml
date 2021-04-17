@@ -820,6 +820,9 @@
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
 
+    <!-- Feeds apply actions -->
+    <string name="selected_all_feeds_label">Selected all Subscriptions</string>
+
     <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>
     <string name="sort_title_z_a">Title (Z \u2192 A)</string>

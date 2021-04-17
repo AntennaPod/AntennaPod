@@ -48,6 +48,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FeedsApplyActionFragment;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
@@ -190,7 +191,8 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                     NavDrawerData.FeedDrawerItem feedDrawerItem = (NavDrawerData.FeedDrawerItem) di;
                     feeds.add(feedDrawerItem.feed);
                 }
-                FeedsApplyActionFragment fragment = FeedsApplyActionFragment.newInstance(feeds, 0);
+                int actions = FeedsApplyActionFragment.ACTION_ALL;
+                FeedsApplyActionFragment fragment = FeedsApplyActionFragment.newInstance(feeds, actions);
                 ((MainActivity) getActivity()).loadChildFragment(fragment);
 
 
