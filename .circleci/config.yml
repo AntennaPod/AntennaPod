@@ -89,7 +89,7 @@ workflows:
           build-steps:
             - run:
                 name: Lint
-                command: ./gradlew lintPlayRelease
+                command: ./gradlew lintPlayRelease lintRelease
       - build:
           name: SpotBugs
           build-steps:
