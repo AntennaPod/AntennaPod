@@ -60,7 +60,7 @@ public class ChaptersFragment extends Fragment {
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        //emptyView.setIcon(R.attr.ic_bookmark); TODO
+        emptyView.setIcon(R.drawable.ic_bookmark);
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
 
