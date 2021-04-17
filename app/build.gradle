@@ -31,12 +31,17 @@ android {
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        def commit = "Unknown commit"
+        def commit = ""
         try {
-            commit = "git rev-parse --short HEAD".execute().text.trim()
+            def hashStdOut = new ByteArrayOutputStream()
+            exec {
+                commandLine "git", "rev-parse", "--short", "HEAD"
+                standardOutput = hashStdOut
+            }
+            commit = hashStdOut.toString().trim()
         } catch (Exception ignore) {
         }
-        buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
+        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
 
         if (project.hasProperty("podcastindexApiKey")) {
             buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
