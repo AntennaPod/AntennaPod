@@ -126,7 +126,9 @@ android {
                 'StaticFieldLeak', 'UseCompoundDrawables', 'NestedWeights', 'Overdraw', 'UselessParent', 'TextFields',
                 'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
                 'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
-                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter'
+                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter', 'VectorPath',
+                'InvalidPeriodicWorkRequestInterval', 'VectorDrawableCompat'
+        checkDependencies true
         warningsAsErrors true
         abortOnError true
     }
