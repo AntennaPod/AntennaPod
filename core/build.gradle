@@ -64,7 +64,7 @@ android {
                 "GradleDependency", "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity",
                 "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
                 "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates", "CheckResult"
-
+        checkDependencies true
         warningsAsErrors true
         abortOnError true
     }

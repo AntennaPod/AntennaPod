@@ -1,8 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -52,7 +56,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     public final EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new EpisodeItemViewHolder(mainActivityRef.get(), parent);
     }
-
+    final ActionMode[] actionMode = {null};
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         // Reset state of recycled views
@@ -63,19 +67,55 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
         FeedItem item = episodes.get(pos);
         holder.bind(item);
-        holder.itemView.setOnLongClickListener(v -> {
-            selectedItem = item;
-            return false;
-        });
+//        holder.itemView.setOnLongClickListener(v -> {
+//            selectedItem = item;
+//            return false;
+//        });
+
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
-            if (activity != null) {
+
+            if (activity != null && actionMode[0] == null) {
                 long[] ids = FeedItemUtil.getIds(episodes);
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+            } else {
+                Log.d("onClickListener", "position: " + pos);
             }
         });
-        holder.itemView.setOnCreateContextMenuListener(this);
+//        holder.itemView.setOnCreateContextMenuListener(this);
+        holder.itemView.setOnLongClickListener(
+
+                v -> {
+                    selectedItem = item;
+//            return false;
+                    actionMode[0] = getActivity().startActionMode(new ActionMode.Callback() {
+
+                        @Override
+                        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                            MenuInflater inflater = mode.getMenuInflater();
+                            inflater.inflate(R.menu.subscriptions, menu);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                            return false;
+                        }
+
+                        @Override
+                        public void onDestroyActionMode(ActionMode mode) {
+                            actionMode[0] = null;
+                        }
+                    });
+                    return true;
+                }
+        );
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
     }
