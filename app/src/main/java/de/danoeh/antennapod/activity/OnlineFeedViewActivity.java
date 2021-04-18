@@ -15,6 +15,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -476,8 +477,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             for (String url : alternateFeedUrls.keySet()) {
                 alternateUrlsTitleList.add(alternateFeedUrls.get(url));
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    R.layout.alternate_urls_item, alternateUrlsTitleList) {
+                @Override
+                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    // reusing the old view causes a visual bug on Android <= 10
+                    return super.getDropDownView(position, null, parent);
+                }
+            };
+
+            adapter.setDropDownViewResource(R.layout.alternate_urls_dropdown_item);
             viewBinding.alternateUrlsSpinner.setAdapter(adapter);
             viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
