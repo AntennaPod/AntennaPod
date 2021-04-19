@@ -1,3 +1,5 @@
+gradle.ext.projectRoot = settingsDir
+
 include ':app'
 include ':core'
 include ':net:ssl'

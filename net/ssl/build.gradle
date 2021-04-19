@@ -1,32 +1,6 @@
-apply plugin: "com.android.library"
+apply from: "$gradle.ext.projectRoot/common_library_config.gradle"
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-
-        multiDexEnabled false
-
-        testApplicationId "de.danoeh.antennapod.core.tests"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt")
-        }
-        debug {
-            // debug build has method count over 64k single-dex threshold.
-            // For building debug build to use on Android < 21 (pre-Android 5) devices,
-            // you need to manually change class
-            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication .
-            // See Issue #2813
-            multiDexEnabled true
-        }
-    }
-
     flavorDimensions "market"
     productFlavors {
         free {
@@ -35,24 +9,6 @@ android {
         play {
             dimension "market"
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
-    lintOptions {
-        disable 'GradleDependency'
-        checkDependencies true
-        warningsAsErrors true
-        abortOnError true
     }
 }
 
