@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -49,7 +50,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -137,9 +137,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.location_web_site));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_web));
                 toolbar.getMenu().findItem(R.id.share_parent)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_share));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_share));
             }
         };
         iconTintManager.updateTint();

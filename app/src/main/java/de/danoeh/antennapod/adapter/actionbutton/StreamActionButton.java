@@ -2,7 +2,7 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 
-import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
 import de.danoeh.antennapod.R;
@@ -28,9 +28,9 @@ public class StreamActionButton extends ItemActionButton {
     }
 
     @Override
-    @AttrRes
+    @DrawableRes
     public int getDrawable() {
-        return R.attr.action_stream;
+        return R.drawable.ic_stream;
     }
 
     @Override

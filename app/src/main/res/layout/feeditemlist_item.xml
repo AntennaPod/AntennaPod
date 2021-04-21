@@ -35,7 +35,7 @@
                     android:layout_height="match_parent"
                     android:importantForAccessibility="no"
                     android:scaleType="fitCenter"
-                    android:src="?attr/dragview_background"
+                    app:srcCompat="?attr/dragview_background"
                     android:paddingStart="0dp"
                     android:paddingLeft="0dp"
                     android:paddingEnd="4dp"
@@ -114,24 +114,21 @@
                 <ImageView
                         android:layout_width="14sp"
                         android:layout_height="14sp"
-                        app:srcCompat="?attr/type_video"
-                        tools:srcCompat="@drawable/ic_videocam_black_24dp"
+                        app:srcCompat="@drawable/ic_videocam"
                         android:contentDescription="@string/media_type_video_label"
                         android:id="@+id/ivIsVideo"/>
 
                 <ImageView
                         android:layout_width="14sp"
                         android:layout_height="14sp"
-                        app:srcCompat="?attr/ic_unfav"
-                        tools:srcCompat="@drawable/ic_star_black"
+                        app:srcCompat="@drawable/ic_star"
                         android:contentDescription="@string/is_favorite_label"
                         android:id="@+id/isFavorite"/>
 
                 <ImageView
                         android:layout_width="14sp"
                         android:layout_height="14sp"
-                        app:srcCompat="?attr/stat_playlist"
-                        tools:srcCompat="@drawable/ic_playlist_black"
+                        app:srcCompat="@drawable/ic_playlist"
                         android:contentDescription="@string/in_queue_label"
                         android:id="@+id/ivInPlaylist"/>
 
