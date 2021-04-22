@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.model.feed.FeedItem;
+
 import java.util.Date;
 
 import static de.danoeh.antennapod.core.feed.FeedMother.anyFeed;

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
@@ -9,11 +9,12 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.model.playback.RemoteMedia;
 
 import java.util.Date;
 import java.util.List;
-
-import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
@@ -475,7 +476,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (o == null) {
             return false;
         }
-        if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
+        if (o instanceof RemoteMedia) {
             return o.equals(this);
         }
         return super.equals(o);

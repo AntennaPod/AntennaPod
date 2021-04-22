@@ -8,7 +8,7 @@ import android.widget.RadioButton;
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedFilter;
+import de.danoeh.antennapod.model.feed.FeedFilter;
 
 /**
  * Displays a dialog with a text box for filtering episodes and two radio buttons for exclusion/inclusion

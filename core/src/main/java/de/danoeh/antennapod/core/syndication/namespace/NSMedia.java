@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.syndication.namespace.atom.AtomText;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;

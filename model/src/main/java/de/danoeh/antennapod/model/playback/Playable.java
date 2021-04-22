@@ -1,12 +1,12 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.Chapter;
+
 import java.util.Date;
 import java.util.List;
 

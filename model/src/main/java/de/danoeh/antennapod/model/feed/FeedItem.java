@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

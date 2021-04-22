@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.storage.mapper;
 
 import android.database.Cursor;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;

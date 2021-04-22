@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.util.DateUtils;
 
 /** Writes OPML documents. */
