@@ -14,13 +14,10 @@ import android.support.v4.media.MediaDescriptionCompat;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -373,6 +370,10 @@ public class FeedMedia extends FeedFile implements Playable {
         return download_url;
     }
 
+    public int getStartPosition() {
+        return startPosition;
+    }
+
     @Override
     public Date getPubDate() {
         if (item == null) {
@@ -419,28 +420,12 @@ public class FeedMedia extends FeedFile implements Playable {
             played_duration = playedDurationWhenStarted + position - startPosition;
             playedDurationWhenStarted = played_duration;
         }
-        postPlaybackTasks(context, false);
         startPosition = position;
     }
 
     @Override
     public void onPlaybackCompleted(Context context) {
-        postPlaybackTasks(context, true);
         startPosition = -1;
-    }
-
-    private void postPlaybackTasks(Context context, boolean completed) {
-        if (item != null) {
-            if (startPosition >= 0 && (completed || startPosition < position) && GpodnetPreferences.loggedIn()) {
-                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
-                        .currentTimestamp()
-                        .started(startPosition / 1000)
-                        .position((completed ? duration : position) / 1000)
-                        .total(duration / 1000)
-                        .build();
-                SyncService.enqueueEpisodeAction(context, action);
-            }
-        }
     }
 
     @Override
