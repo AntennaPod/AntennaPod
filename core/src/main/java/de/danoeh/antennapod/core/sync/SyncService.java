@@ -172,6 +172,25 @@ public class SyncService extends Worker {
         });
     }
 
+    public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        if (media.getItem() == null) {
+            return;
+        }
+        if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
+            return;
+        }
+        EpisodeAction action = new EpisodeAction.Builder(media.getItem(), EpisodeAction.PLAY)
+                .currentTimestamp()
+                .started(media.getStartPosition() / 1000)
+                .position((completed ? media.getDuration() : media.getPosition()) / 1000)
+                .total(media.getDuration() / 1000)
+                .build();
+        SyncService.enqueueEpisodeAction(context, action);
+    }
+
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);

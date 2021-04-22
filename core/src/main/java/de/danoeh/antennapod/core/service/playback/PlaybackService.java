@@ -73,6 +73,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -974,6 +975,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
+                if (playable instanceof FeedMedia) {
+                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, true);
+                }
                 playable.onPlaybackPause(getApplicationContext());
             }
         }
@@ -1107,8 +1111,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || smartMarkAsPlayed) {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 
