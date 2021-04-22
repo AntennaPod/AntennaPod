@@ -1450,10 +1450,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
-            playable.saveCurrentPosition(
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()),
-                    position,
-                    System.currentTimeMillis());
+            PlayableUtils.saveCurrentPosition(playable, position, System.currentTimeMillis());
         }
     }
 

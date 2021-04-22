@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.support.v4.media.MediaDescriptionCompat;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
@@ -169,6 +167,10 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public int getPlayedDuration() {
         return played_duration;
+    }
+
+    public int getPlayedDurationWhenStarted() {
+        return playedDurationWhenStarted;
     }
 
     public void setPlayedDuration(int played_duration) {
@@ -371,19 +373,6 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public long getItemId() {
         return itemID;
-    }
-
-    @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
-        if(item != null && item.isNew()) {
-            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-        }
-        setPosition(newPosition);
-        setLastPlayedTime(timeStamp);
-        if(startPosition>=0 && position > startPosition) {
-            setPlayedDuration(playedDurationWhenStarted + position - startPosition);
-        }
-        DBWriter.setFeedMediaPlaybackInformation(this);
     }
 
     @Override

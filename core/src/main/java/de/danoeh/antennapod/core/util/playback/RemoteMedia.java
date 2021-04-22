@@ -189,13 +189,6 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
-        //we're not saving playback information for this kind of items on preferences
-        setPosition(newPosition);
-        setLastPlayedTime(timestamp);
-    }
-
-    @Override
     public void setPosition(int newPosition) {
         position = newPosition;
     }
