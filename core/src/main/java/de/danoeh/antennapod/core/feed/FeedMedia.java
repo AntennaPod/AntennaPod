@@ -15,13 +15,10 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
-    private static final String TAG = "FeedMedia";
-
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
     public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
@@ -160,15 +157,6 @@ public class FeedMedia extends FeedFile implements Playable {
     public boolean isPlaying() {
         return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
                 && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
-    }
-
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played and the current player status is playing.
-     */
-    public boolean isCurrentlyPlaying() {
-        return isPlaying() && PlaybackService.isRunning &&
-                ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
     }
 
     @Override
