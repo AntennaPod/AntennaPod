@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -223,11 +222,6 @@ public class FeedMedia extends FeedFile implements Playable {
     public boolean isCurrentlyPlaying() {
         return isPlaying() && PlaybackService.isRunning &&
                 ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
-    }
-
-    public boolean hasAlmostEnded() {
-        int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
-        return this.duration > 0 && this.position >= this.duration - smartMarkAsPlayedSecs * 1000;
     }
 
     @Override
