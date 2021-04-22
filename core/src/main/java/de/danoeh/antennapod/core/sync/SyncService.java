@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -465,7 +466,7 @@ public class SyncService extends Worker {
             if (playItem != null) {
                 FeedMedia media = playItem.getMedia();
                 media.setPosition(action.getPosition() * 1000);
-                if (playItem.getMedia().hasAlmostEnded()) {
+                if (FeedItemUtil.hasAlmostEnded(playItem.getMedia())) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
                     queueToBeRemoved.add(playItem.getId());

@@ -3,8 +3,6 @@ package de.danoeh.antennapod.core.feed;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -150,16 +148,8 @@ public class FeedPreferences implements Serializable {
         this.volumeAdaptionSetting = volumeAdaptionSetting;
     }
 
-    public boolean getCurrentAutoDelete() {
-        switch (autoDeleteAction) {
-            case GLOBAL:
-                return UserPreferences.isAutoDelete();
-            case YES:
-                return true;
-            case NO:
-            default: // fall-through
-                return false;
-        }
+    public AutoDeleteAction getCurrentAutoDelete() {
+        return autoDeleteAction;
     }
 
     public String getUsername() {
