@@ -172,7 +172,7 @@ public class DbTasksTest {
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
-        assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
+        assertTrue(feedItemFromDB.isNew());
     }
 
     @Test

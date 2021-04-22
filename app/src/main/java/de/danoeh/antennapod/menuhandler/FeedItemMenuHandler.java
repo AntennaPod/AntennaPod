@@ -49,7 +49,7 @@ public class FeedItemMenuHandler {
             return false;
         }
         final boolean hasMedia = selectedItem.getMedia() != null;
-        final boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
+        final boolean isPlaying = hasMedia && FeedItemUtil.isPlaying(selectedItem.getMedia());
         final boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
         final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
         final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);

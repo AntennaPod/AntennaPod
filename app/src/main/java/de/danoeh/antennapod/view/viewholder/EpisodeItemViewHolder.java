@@ -153,7 +153,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         duration.setText(Converter.getDurationStringLong(media.getDuration()));
         duration.setContentDescription(activity.getString(R.string.chapter_duration,
                 Converter.getDurationStringLocalized(activity, media.getDuration())));
-        if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
+        if (FeedItemUtil.isPlaying(item.getMedia()) || item.isInProgress()) {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
             int remainingTime = Math.max(media.getDuration() - media.getPosition(), 0);
             progressBar.setProgress(progress);

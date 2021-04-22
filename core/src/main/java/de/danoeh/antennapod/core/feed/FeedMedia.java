@@ -14,7 +14,6 @@ import android.support.v4.media.MediaDescriptionCompat;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -148,15 +147,6 @@ public class FeedMedia extends FeedFile implements Playable {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played.
-     */
-    public boolean isPlaying() {
-        return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
     }
 
     @Override

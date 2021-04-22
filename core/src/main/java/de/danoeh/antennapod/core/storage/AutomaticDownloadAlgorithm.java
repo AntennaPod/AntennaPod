@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
 
@@ -64,7 +65,8 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable() || item.getFeed().isLocalFeed()) {
+                    if (!item.isAutoDownloadable() || FeedItemUtil.isPlaying(item.getMedia())
+                            || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }
                 }
