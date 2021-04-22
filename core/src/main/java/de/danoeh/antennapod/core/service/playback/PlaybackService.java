@@ -73,6 +73,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -1095,7 +1096,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedMedia media = (FeedMedia) playable;
         FeedItem item = media.getItem();
-        boolean smartMarkAsPlayed = media.hasAlmostEnded();
+        boolean smartMarkAsPlayed = FeedItemUtil.hasAlmostEnded(media);
         if (!ended && smartMarkAsPlayed) {
             Log.d(TAG, "smart mark as played");
         }
@@ -1121,8 +1122,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()
-                        && (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                FeedPreferences.AutoDeleteAction action =
+                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
+                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
+                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }

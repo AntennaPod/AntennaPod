@@ -2,6 +2,8 @@ package de.danoeh.antennapod.core.util;
 
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -65,5 +67,10 @@ public class FeedItemUtil {
             return item.getFeed().getLink();
         }
         return null;
+    }
+
+    public static boolean hasAlmostEnded(FeedMedia media) {
+        int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
+        return media.getDuration() > 0 && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
     }
 }
