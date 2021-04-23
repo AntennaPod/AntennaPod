@@ -243,7 +243,7 @@ public class CoverFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        vp.setCurrentItem(EpisodeFragment.POS_DESCR);
+        vp.setCurrentItem(EpisodeFragment.POS_COVER);
     }
 
     void onPlayPause() {
