@@ -1,136 +1,153 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Displays the cover and the title of a FeedItem.
+ * Displays the description of a Playable object in a Webview.
  */
-public class CoverFragment extends Fragment {
+public class ItemDescriptionFragment extends Fragment {
+    private static final String TAG = "ItemDescriptionFragment";
 
-    private static final String TAG = "CoverFragment";
-    static final double SIXTEEN_BY_NINE = 1.7;
+    private static final String PREF = "ItemDescriptionFragmentPrefs";
+    private static final String PREF_SCROLL_Y = "prefScrollY";
+    private static final String PREF_PLAYABLE_ID = "prefPlayableId";
 
-    private View root;
-    private TextView txtvPodcastTitle;
-    private TextView txtvEpisodeTitle;
-    private ImageView imgvCover;
-    private ImageButton openDescription;
-    private ImageButton counterweight;
+    private ShownotesWebView webvDescription;
+    private Disposable webViewLoader;
     private PlaybackController controller;
-    private Disposable disposable;
-    private int displayedChapterIndex = -2;
-    private Playable media;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        setRetainInstance(true);
-        root = inflater.inflate(R.layout.cover_fragment, container, false);
-        txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
-        txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
-        imgvCover = root.findViewById(R.id.imgvCover);
-        openDescription = root.findViewById(R.id.openDescription);
-        counterweight = root.findViewById(R.id.counterweight);
-        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
-        openDescription.setOnClickListener(v -> vp.setCurrentItem(EpisodeFragment.POS_DESCR));
-        return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        configureForOrientation(getResources().getConfiguration());
-    }
-
-    private void loadMediaInfo() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        disposable = Maybe.<Playable>create(emitter -> {
-            Playable media = controller.getMedia();
-            if (media != null) {
-                emitter.onSuccess(media);
-            } else {
-                emitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> {
-                    this.media = media;
-                    displayMediaInfo(media);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    private void displayMediaInfo(@NonNull Playable media) {
-        String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
-        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
-                + "\u00A0"
-                + "・"
-                + "\u00A0"
-                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
-        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
-        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
-        txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        txtvEpisodeTitle.setOnClickListener(v -> {
-            FeedItem feedItem = ((FeedMedia) media).getItem();
-            if (feedItem != null) {
-                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
-                shareDialog.show(requireActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "Creating view");
+        View root = inflater.inflate(R.layout.item_description_fragment, container, false);
+        webvDescription = root.findViewById(R.id.webview);
+        webvDescription.setTimecodeSelectedListener(time -> {
+            if (controller != null) {
+                controller.seekTo(time);
             }
         });
-        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
-        imgvCover.setOnClickListener(v -> startActivity(openFeed));
-        displayedChapterIndex = -2; // Force refresh
-        displayCoverImage(media.getPosition());
+        webvDescription.setPageFinishedListener(() -> {
+            // Restoring the scroll position might not always work
+            webvDescription.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
+        });
+
+        root.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right,
+                    int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (root.getMeasuredHeight() != webvDescription.getMinimumHeight()) {
+                    webvDescription.setMinimumHeight(root.getMeasuredHeight());
+                }
+                root.removeOnLayoutChangeListener(this);
+            }
+        });
+        registerForContextMenu(webvDescription);
+        return root;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // prevent memory leaks
-        root = null;
+        Log.d(TAG, "Fragment destroyed");
+        if (webvDescription != null) {
+            webvDescription.removeAllViews();
+            webvDescription.destroy();
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return webvDescription.onContextItemSelected(item);
+    }
+
+    private void load() {
+        Log.d(TAG, "load()");
+        if (webViewLoader != null) {
+            webViewLoader.dispose();
+        }
+        webViewLoader = Maybe.<String>create(emitter -> {
+            Playable media = controller.getMedia();
+            if (media instanceof FeedMedia) {
+                FeedMedia feedMedia = ((FeedMedia) media);
+                if (feedMedia.getItem() == null) {
+                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+                }
+                DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
+            }
+            Timeline timeline = new Timeline(getActivity(), media.getDescription(), media.getDuration());
+            emitter.onSuccess(timeline.processShownotes());
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
+                            "utf-8", "about:blank");
+                    Log.d(TAG, "Webview loaded");
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        savePreference();
+        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
+        vp.setCurrentItem(EpisodeFragment.POS_COVER);
+    }
+
+    private void savePreference() {
+        Log.d(TAG, "Saving preferences");
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (controller != null && controller.getMedia() != null && webvDescription != null) {
+            Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
+            editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
+            editor.putString(PREF_PLAYABLE_ID, controller.getMedia().getIdentifier()
+                    .toString());
+        } else {
+            Log.d(TAG, "savePreferences was called while media or webview was null");
+            editor.putInt(PREF_SCROLL_Y, -1);
+            editor.putString(PREF_PLAYABLE_ID, "");
+        }
+        editor.apply();
+    }
+
+    private boolean restoreFromPreference() {
+        Log.d(TAG, "Restoring from preferences");
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences prefs = activity.getSharedPreferences(PREF, Activity.MODE_PRIVATE);
+            String id = prefs.getString(PREF_PLAYABLE_ID, "");
+            int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
+            if (controller != null && scrollY != -1 && controller.getMedia() != null
+                    && id.equals(controller.getMedia().getIdentifier().toString())
+                    && webvDescription != null) {
+                Log.d(TAG, "Restored scroll Position: " + scrollY);
+                webvDescription.scrollTo(webvDescription.getScrollX(),
+                        scrollY);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -139,121 +156,21 @@ public class CoverFragment extends Fragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
+                load();
             }
         };
         controller.init();
-        loadMediaInfo();
-        EventBus.getDefault().register(this);
+        load();
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        if (disposable != null) {
-            disposable.dispose();
+        if (webViewLoader != null) {
+            webViewLoader.dispose();
         }
         controller.release();
         controller = null;
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) {
-        if (media == null) {
-            return;
-        }
-        displayCoverImage(event.getPosition());
-    }
-
-    private void displayCoverImage(int position) {
-        int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
-        if (chapter != displayedChapterIndex) {
-            displayedChapterIndex = chapter;
-
-            RequestOptions options = new RequestOptions()
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .dontAnimate()
-                    .transforms(new FitCenter(),
-                            new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
-
-            RequestBuilder<Drawable> cover = Glide.with(this)
-                    .load(media.getImageLocation())
-                    .error(Glide.with(this)
-                            .load(ImageResourceUtils.getFallbackImageLocation(media))
-                            .apply(options))
-                    .apply(options);
-
-            if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
-                cover.into(imgvCover);
-            } else {
-                Glide.with(this)
-                        .load(EmbeddedChapterImage.getModelFor(media, chapter))
-                        .apply(options)
-                        .thumbnail(cover)
-                        .error(cover)
-                        .into(imgvCover);
-            }
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        configureForOrientation(newConfig);
-    }
-
-    public float convertDpToPixel(float dp) {
-        Context context = this.getActivity().getApplicationContext();
-        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
-
-    private void configureForOrientation(Configuration newConfig) {
-        LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
-        LinearLayout textContainer = getView().findViewById(R.id.cover_fragment_text_container);
-
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
-        LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
-        double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
-
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            double percentageWidth = 0.8;
-            if (ratio <= SIXTEEN_BY_NINE) {
-                percentageWidth = (ratio / SIXTEEN_BY_NINE) * percentageWidth * 0.8;
-            }
-            mainContainer.setOrientation(LinearLayout.VERTICAL);
-            if (newConfig.screenWidthDp > 0) {
-                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * percentageWidth);
-                params.height = params.width;
-                textParams.weight = 0;
-                imgvCover.setLayoutParams(params);
-            }
-            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
-            descrParams.weight = 1;
-            openDescription.setLayoutParams(descrParams);
-            counterweight.setVisibility(View.INVISIBLE);
-        } else {
-            double percentageHeight = ratio * 0.6;
-            mainContainer.setOrientation(LinearLayout.HORIZONTAL);
-            if (newConfig.screenHeightDp > 0) {
-                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
-                params.width = params.height;
-                textParams.weight = 1;
-                imgvCover.setLayoutParams(params);
-            }
-            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
-            descrParams.weight = 0;
-            openDescription.setLayoutParams(descrParams);
-            counterweight.setVisibility(View.GONE);
-        }
-    }
-
-    void onPlayPause() {
-        if (controller == null) {
-            return;
-        }
-        controller.playPause();
     }
 }
