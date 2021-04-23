@@ -412,6 +412,7 @@ public class AudioPlayerFragment extends Fragment implements
         }
 
         tabs.clear();
+        tabLayout.setVisibility(View.VISIBLE);
         tabs.add(POS_EPISODE);
         Log.d(TAG, "updateUi: media.getChapters()"+media.getChapters());
         if (media != null && media.getChapters() != null && media.getChapters().size() > 0) {
