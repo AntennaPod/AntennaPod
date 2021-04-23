@@ -5,14 +5,14 @@
         android:id="@+id/episode_actions"
         android:menuCategory="container"
         android:title="@string/multi_select"
-        android:icon="?attr/checkbox_multiple"
+        android:icon="@drawable/ic_check_multiple"
         android:visible="false"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/clear_logs_item"
         android:menuCategory="container"
         android:title="@string/clear_history_label"
-        android:icon="?attr/ic_delete"
+        android:icon="@drawable/ic_delete"
         android:visible="false"
         app:showAsAction="ifRoom" />
     <item
@@ -20,5 +20,5 @@
         android:title="@string/refresh_label"
         android:menuCategory="container"
         app:showAsAction="ifRoom"
-        android:icon="?attr/navigation_refresh"/>
+        android:icon="@drawable/ic_refresh"/>
 </menu>

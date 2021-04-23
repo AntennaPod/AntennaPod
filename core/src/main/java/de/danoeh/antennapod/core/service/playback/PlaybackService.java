@@ -73,6 +73,8 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -613,17 +615,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 NotificationUtils.CHANNEL_ID_USER_ACTION)
-                .setSmallIcon(R.drawable.ic_stream_white)
+                .setSmallIcon(R.drawable.ic_notification_stream)
                 .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
                 .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_stream_white,
+                .addAction(R.drawable.ic_notification_stream,
                         getString(R.string.confirm_mobile_streaming_button_once),
                         pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_stream_white,
+                .addAction(R.drawable.ic_notification_stream,
                         getString(R.string.confirm_mobile_streaming_button_always),
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
@@ -974,6 +976,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
+                if (playable instanceof FeedMedia) {
+                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, true);
+                }
                 playable.onPlaybackPause(getApplicationContext());
             }
         }
@@ -1095,7 +1100,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedMedia media = (FeedMedia) playable;
         FeedItem item = media.getItem();
-        boolean smartMarkAsPlayed = media.hasAlmostEnded();
+        boolean smartMarkAsPlayed = FeedItemUtil.hasAlmostEnded(media);
         if (!ended && smartMarkAsPlayed) {
             Log.d(TAG, "smart mark as played");
         }
@@ -1107,8 +1112,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || smartMarkAsPlayed) {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 
@@ -1121,8 +1128,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()
-                        && (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                FeedPreferences.AutoDeleteAction action =
+                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
+                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
+                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }

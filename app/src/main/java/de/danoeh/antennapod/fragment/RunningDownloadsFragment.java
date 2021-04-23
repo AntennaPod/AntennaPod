@@ -61,7 +61,7 @@ public class RunningDownloadsFragment extends ListFragment {
         setListAdapter(adapter);
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.av_download);
+        emptyView.setIcon(R.drawable.ic_download);
         emptyView.setTitle(R.string.no_run_downloads_head_label);
         emptyView.setMessage(R.string.no_run_downloads_label);
         emptyView.attachToListView(getListView());

@@ -126,7 +126,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    tools:src="@drawable/ic_settings_black" />
+                    tools:src="@drawable/ic_settings" />
 
                 <TextView
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -154,7 +154,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    tools:src="@drawable/ic_settings_black" />
+                    tools:src="@drawable/ic_settings" />
 
                 <TextView
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"

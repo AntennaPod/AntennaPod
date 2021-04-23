@@ -3,10 +3,9 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
@@ -34,7 +33,6 @@ import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -109,38 +107,23 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         return titles[index];
     }
 
-    private Drawable getDrawable(String tag) {
-        Activity context = activity.get();
-        if (context == null) {
-            return null;
-        }
-        int icon;
+    private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
             case QueueFragment.TAG:
-                icon = R.attr.stat_playlist;
-                break;
+                return R.drawable.ic_playlist;
             case EpisodesFragment.TAG:
-                icon = R.attr.feed;
-                break;
+                return R.drawable.ic_feed;
             case DownloadsFragment.TAG:
-                icon = R.attr.av_download;
-                break;
+                return R.drawable.ic_download;
             case PlaybackHistoryFragment.TAG:
-                icon = R.attr.ic_history;
-                break;
+                return R.drawable.ic_history;
             case SubscriptionFragment.TAG:
-                icon = R.attr.ic_folder;
-                break;
+                return R.drawable.ic_folder;
             case AddFeedFragment.TAG:
-                icon = R.attr.content_new;
-                break;
+                return R.drawable.ic_add;
             default:
-                return null;
+                return 0;
         }
-        TypedArray ta = context.obtainStyledAttributes(new int[] { icon });
-        Drawable result = ta.getDrawable(0);
-        ta.recycle();
-        return result;
     }
 
     public List<String> getFragmentTags() {
@@ -283,7 +266,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             }
         }
 
-        holder.image.setImageDrawable(getDrawable(fragmentTags.get(position)));
+        holder.image.setImageResource(getDrawable(fragmentTags.get(position)));
     }
 
     private void bindSectionDivider(DividerHolder holder) {
@@ -353,7 +336,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.count.setVisibility(View.GONE);
         }
         Glide.with(context).clear(holder.image);
-        holder.image.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_folder));
+        holder.image.setImageResource(R.drawable.ic_folder);
         holder.failure.setVisibility(View.GONE);
     }
 

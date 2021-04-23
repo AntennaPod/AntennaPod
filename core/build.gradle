@@ -8,6 +8,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         multiDexEnabled false
+        vectorDrawables.useSupportLibrary true
+        vectorDrawables.generatedDensities = []
 
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -74,6 +76,7 @@ dependencies {
     implementation project(':net:ssl')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:png-icons')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

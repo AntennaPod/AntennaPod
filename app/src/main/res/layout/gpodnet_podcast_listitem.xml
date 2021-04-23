@@ -65,7 +65,7 @@
             <ImageView
                     android:layout_width="14sp"
                     android:layout_height="14sp"
-                    app:srcCompat="?attr/feed"/>
+                    app:srcCompat="@drawable/ic_feed"/>
             <TextView
                     android:id="@+id/txtvSubscribers"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"

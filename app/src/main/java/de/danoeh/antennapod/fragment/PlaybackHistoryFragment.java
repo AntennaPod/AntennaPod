@@ -81,7 +81,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         progressBar = root.findViewById(R.id.progLoading);
 
         emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.ic_history);
+        emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
         emptyView.attachToRecyclerView(recyclerView);
