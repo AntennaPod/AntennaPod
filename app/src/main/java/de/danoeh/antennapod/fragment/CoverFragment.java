@@ -71,7 +71,6 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
-        imgvCover.setOnClickListener(v -> onPlayPause());
         openDescription = root.findViewById(R.id.openDescription);
         counterweight = root.findViewById(R.id.counterweight);
         ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
@@ -110,7 +109,17 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        Intent openFeed = MainActivity.getIntentToOpenFeed(getContext(), ((FeedMedia) media).getItem().getFeedId());
+        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+        imgvCover.setOnClickListener(v -> startActivity(openFeed));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        txtvEpisodeTitle.setOnClickListener(v -> {
+            FeedItem feedItem = ((FeedMedia) media).getItem();
+            if (feedItem != null) {
+                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
+                shareDialog.show(getActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
+            }
+        });
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
