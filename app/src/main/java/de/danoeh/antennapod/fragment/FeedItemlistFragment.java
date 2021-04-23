@@ -26,8 +26,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
-
-import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +67,6 @@ import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
@@ -248,13 +245,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_sort));
+                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
                 toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_filter));
+                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
                 toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_refresh));
+                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
                 toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_search));
+                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
             }
         };
         iconTintManager.updateTint();

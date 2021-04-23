@@ -62,6 +62,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         return new EpisodeItemViewHolder(mainActivityRef.get(), parent);
     }
     final ActionMode[] actionMode = {null};
+    final private  Integer selectColor = Color.LTGRAY;
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         // Reset state of recycled views
@@ -76,7 +77,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         if (actionMode[0] == null || !checkedItems.contains(item)) {
             holder.itemView.setBackgroundColor(Color.WHITE);
         } else {
-            holder.itemView.setBackgroundColor(Color.MAGENTA);
+            holder.itemView.setBackgroundColor(selectColor);
         }
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
@@ -92,7 +93,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else {
                    checkedItems.add(item);
-                   holder.itemView.setBackgroundColor(Color.LTGRAY);
+                   holder.itemView.setBackgroundColor(selectColor);
                 }
             }
         });
@@ -107,7 +108,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
                         } else {
                             checkedItems.add(item);
-                            holder.itemView.setBackgroundColor(Color.MAGENTA);
+                            holder.itemView.setBackgroundColor(selectColor);
                         }
 
                         actionMode[0] = getActivity().startActionMode(new ActionMode.Callback() {
