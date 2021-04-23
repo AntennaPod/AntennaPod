@@ -397,14 +397,13 @@
     <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
     <string name="network_pref">Network</string>
     <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
-    <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the podcasts automatically</string>
-    <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small></string>
-    <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
-    <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
-    <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
-    <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <string name="feed_refresh_title">Refresh podcasts</string>
+    <string name="feed_refresh_sum">Specify an interval or a specific time to look for new episodes automatically</string>
+    <string name="feed_refresh_interval">Interval</string>
+    <string name="feed_refresh_time">Time</string>
+    <string name="feed_refresh_never">Never</string>
+    <string name="feed_refresh_interval_at">at %1$s</string>
+    <plurals name="feed_refresh_every_x_hours">
         <item quantity="one">Every hour</item>
         <item quantity="other">Every %d hours</item>
     </plurals>
@@ -449,9 +448,6 @@
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
-    <string name="pref_update_interval_hours_plural">hours</string>
-    <string name="pref_update_interval_hours_singular">hour</string>
-    <string name="pref_update_interval_hours_manual">Manual</string>
     <string name="pref_gpodnet_authenticate_title">Login</string>
     <string name="pref_gpodnet_authenticate_sum">Login with your gpodder.net account in order to sync your subscriptions.</string>
     <string name="pref_gpodnet_logout_title">Logout</string>
