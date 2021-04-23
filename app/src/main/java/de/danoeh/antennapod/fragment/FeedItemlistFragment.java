@@ -21,8 +21,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +35,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -59,6 +65,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
@@ -80,6 +87,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -109,6 +118,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
+    // fab speed dial
+
+    /**
+     * Specify an action (defined by #flag) 's UI bindings.
+     *
+     * Includes: the menu / action item and the actual logic
+     */
+    public static class ActionBinding {
+        int flag;
+        @IdRes
+        final int actionItemId;
+        @NonNull
+        final Runnable action;
+
+        ActionBinding(int flag, @IdRes int actionItemId, @NonNull Runnable action) {
+            this.flag = flag;
+            this.actionItemId = actionItemId;
+            this.action = action;
+        }
+    }
+    private final List<? extends ActionBinding> actionBindings;
+
+    private SpeedDialView mSpeedDialView;
+    private int actions;
+    private  LongList checkedIds = new LongList();
+
     private boolean displayUpArrow;
 
     private long feedID;
@@ -116,6 +151,36 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private boolean isUpdatingFeed;
     private Disposable disposable;
+
+
+    public static final int ACTION_ADD_TO_QUEUE = 1;
+    public static final int ACTION_REMOVE_FROM_QUEUE = 2;
+    private static final int ACTION_MARK_PLAYED = 4;
+    private static final int ACTION_MARK_UNPLAYED = 8;
+    public static final int ACTION_DOWNLOAD = 16;
+    public static final int ACTION_DELETE = 32;
+    public static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
+            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
+
+    public FeedItemlistFragment() {
+        actionBindings = Arrays.asList(
+                new ActionBinding(ACTION_ADD_TO_QUEUE,
+                        R.id.add_to_queue_batch, this::queueChecked),
+                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
+                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
+                new ActionBinding(ACTION_MARK_PLAYED,
+                        R.id.mark_read_batch, this::markedCheckedPlayed),
+                new ActionBinding(ACTION_MARK_UNPLAYED,
+                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
+                new ActionBinding(ACTION_DOWNLOAD,
+                        R.id.download_batch, this::downloadChecked),
+                new ActionBinding(ACTION_DELETE,
+                        R.id.delete_batch, this::deleteChecked)
+        );
+    }
+
+    private void action() {
+    }
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -127,6 +192,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public static FeedItemlistFragment newInstance(long feedId) {
         FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
+        i.actions = ACTION_ALL;
         b.putLong(ARGUMENT_FEED_ID, feedId);
         i.setArguments(b);
         return i;
@@ -226,6 +292,56 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         loadItems();
+
+        // Speed dial
+        // Init action UI (via a FAB Speed Dial)
+        mSpeedDialView = root.findViewById(R.id.fabSD);
+        mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+
+        // show only specified actions, and bind speed dial UIs to the actual logic
+        for (ActionBinding binding : actionBindings) {
+            if ((actions & binding.flag) == 0) {
+                mSpeedDialView.removeActionItemById(binding.actionItemId);
+            }
+        }
+
+        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && (adapter.getCheckedItems().size() == 0)) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    mSpeedDialView.close();
+                }
+            }
+        });
+        mSpeedDialView.setOnActionSelectedListener(actionItem -> {
+            checkedIds = new LongList();
+            for (FeedItem episode : getCheckedItems()) {
+                checkedIds.add(episode.getId());
+            }
+            ActionBinding selectedBinding = null;
+            for (ActionBinding binding : actionBindings) {
+                if (actionItem.getId() == binding.actionItemId) {
+                    selectedBinding = binding;
+                    break;
+                }
+            }
+            if (selectedBinding != null) {
+                selectedBinding.action.run();
+                mSpeedDialView.close();
+                adapter.close();
+
+            } else {
+                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+            }
+            return true;
+        });
         return root;
     }
 
@@ -397,6 +513,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+
+    private Set<FeedItem> getCheckedItems() {
+        return ((FeedItemListAdapter) recyclerView.getAdapter()).getCheckedItems();
+    }
     private void updateUi() {
         loadItems();
         updateSyncProgressBarVisibility();
@@ -588,7 +708,74 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         return feed;
     }
 
-    private static class FeedItemListAdapter extends EpisodeItemListAdapter {
+    private void queueChecked() {
+        // Check if an episode actually contains any media files before adding it to queue
+        LongList toQueue = new LongList(checkedIds.size());
+        for (FeedItem episode : getCheckedItems()) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+                toQueue.add(episode.getId());
+            }
+        }
+        DBWriter.addQueueItem(getActivity(), true, toQueue.toArray());
+        close(R.plurals.added_to_queue_batch_label, toQueue.size());
+    }
+
+    private void removeFromQueueChecked() {
+//        LongList removeQueue = new LongList(checkedIds.size());
+//        for (FeedItem episode : getCheckedItems()) {
+//            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+//                removeQueue.add(episode.getId());
+//            }
+//        }
+        DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
+        close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
+    }
+
+    private void markedCheckedPlayed() {
+        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds.toArray());
+        close(R.plurals.marked_read_batch_label, checkedIds.size());
+    }
+
+    private void markedCheckedUnplayed() {
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds.toArray());
+        close(R.plurals.marked_unread_batch_label, checkedIds.size());
+    }
+
+    private void downloadChecked() {
+        // download the check episodes in the same order as they are currently displayed
+        List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
+        List<FeedItem> episodes = (List<FeedItem>) recyclerView.getAdapter();;
+        for (FeedItem episode : episodes) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
+                toDownload.add(episode);
+            }
+        }
+        try {
+            DownloadRequester.getInstance().downloadMedia(getActivity(), true, toDownload.toArray(new FeedItem[0]));
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
+        }
+        close(R.plurals.downloading_batch_label, toDownload.size());
+    }
+
+    private void deleteChecked() {
+        int countHasMedia = 0;
+        int countNoMedia = 0;
+        List<FeedItem> episodes = (List<FeedItem>) recyclerView.getAdapter();
+        for (FeedItem feedItem : episodes) {
+            checkedIds.contains(feedItem.getId());
+            if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
+                countHasMedia++;
+                DBWriter.deleteFeedMediaOfItem(getActivity(), feedItem.getMedia().getId());
+            } else {
+                countNoMedia++;
+            }
+        }
+        closeMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
+    }
+
+    private class FeedItemListAdapter extends EpisodeItemListAdapter {
         public FeedItemListAdapter(MainActivity mainActivity) {
             super(mainActivity);
         }
@@ -597,5 +784,31 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
         }
+
+        @Override
+        public void onCreateActionMode() {
+            mSpeedDialView.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onDestroyActionMode_() {
+            mSpeedDialView.setVisibility(View.GONE);
+        }
+    }
+
+    private void close(@PluralsRes int msgId, int numItems) {
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
+
+    private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId,
+                        (countHasMedia + countNoMedia),
+                        (countHasMedia + countNoMedia), countHasMedia),
+                Snackbar.LENGTH_LONG);
+//        getActivity().getSupportFragmentManager().popBackStack();
+//        frag
     }
 }

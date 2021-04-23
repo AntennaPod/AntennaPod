@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -16,6 +17,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -23,7 +25,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * List adapter for the list of new episodes.
@@ -34,6 +38,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
     private FeedItem selectedItem;
+    protected Set<FeedItem> checkedItems = new HashSet<>();
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super();
@@ -67,11 +72,12 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
         FeedItem item = episodes.get(pos);
         holder.bind(item);
-//        holder.itemView.setOnLongClickListener(v -> {
-//            selectedItem = item;
-//            return false;
-//        });
 
+        if (actionMode[0] == null || !checkedItems.contains(item)) {
+            holder.itemView.setBackgroundColor(Color.WHITE);
+        } else {
+            holder.itemView.setBackgroundColor(Color.MAGENTA);
+        }
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
 
@@ -81,38 +87,58 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
                 Log.d("onClickListener", "position: " + pos);
+                if (checkedItems.contains(item)) {
+                    checkedItems.remove(item);
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else {
+                   checkedItems.add(item);
+                   holder.itemView.setBackgroundColor(Color.LTGRAY);
+                }
             }
         });
-//        holder.itemView.setOnCreateContextMenuListener(this);
+
         holder.itemView.setOnLongClickListener(
-
                 v -> {
-                    selectedItem = item;
-//            return false;
-                    actionMode[0] = getActivity().startActionMode(new ActionMode.Callback() {
+                    if (actionMode[0] == null) {
+                        onCreateActionMode();
+                        if (checkedItems.contains(item)) {
+                            checkedItems.remove(item);
+                            holder.itemView.setBackgroundColor(Color.WHITE);
 
-                        @Override
-                        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                            MenuInflater inflater = mode.getMenuInflater();
-                            inflater.inflate(R.menu.subscriptions, menu);
-                            return true;
+                        } else {
+                            checkedItems.add(item);
+                            holder.itemView.setBackgroundColor(Color.MAGENTA);
                         }
 
-                        @Override
-                        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                            return false;
-                        }
+                        actionMode[0] = getActivity().startActionMode(new ActionMode.Callback() {
 
-                        @Override
-                        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                            return false;
-                        }
+                            @Override
+                            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                                MenuInflater inflater = mode.getMenuInflater();
+                                inflater.inflate(R.menu.episodes_apply_action_options, menu);
+                                return true;
+                            }
 
-                        @Override
-                        public void onDestroyActionMode(ActionMode mode) {
-                            actionMode[0] = null;
-                        }
-                    });
+                            @Override
+                            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                                return false;
+                            }
+
+                            @Override
+                            public void onDestroyActionMode(ActionMode mode) {
+                                onDestroyActionMode_();
+                                actionMode[0] = null;
+                                checkedItems.clear();
+                                notifyDataSetChanged();
+
+                            }
+                        });
+                    }
                     return true;
                 }
         );
@@ -182,5 +208,24 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         inflater.inflate(R.menu.feeditemlist_context, menu);
         menu.setHeaderTitle(selectedItem.getTitle());
         FeedItemMenuHandler.onPrepareMenu(menu, selectedItem, R.id.skip_episode_item);
+    }
+
+
+    public void onCreateActionMode() {
+
+    }
+
+    public void onDestroyActionMode_() {
+
+    }
+
+    public Set<FeedItem> getCheckedItems() {
+        return checkedItems;
+    }
+
+    public void close() {
+        if (actionMode[0] != null) {
+            actionMode[0].finish();
+        }
     }
 }
