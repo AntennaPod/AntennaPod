@@ -62,7 +62,6 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -2;
     private Playable media;
-    ViewPager2 vp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +74,7 @@ public class CoverFragment extends Fragment {
         imgvCover.setOnClickListener(v -> onPlayPause());
         openDescription = root.findViewById(R.id.openDescription);
         counterweight = root.findViewById(R.id.counterweight);
-        vp = requireActivity().findViewById(R.id.verticalpager);
+        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
         openDescription.setOnClickListener(v -> vp.setCurrentItem(EpisodeFragment.POS_DESCR));
         return root;
     }
@@ -238,12 +237,6 @@ public class CoverFragment extends Fragment {
             openDescription.setLayoutParams(descrParams);
             counterweight.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        vp.setCurrentItem(EpisodeFragment.POS_COVER);
     }
 
     void onPlayPause() {
