@@ -108,6 +108,8 @@ public class ItemDescriptionFragment extends Fragment {
     public void onPause() {
         super.onPause();
         savePreference();
+        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
+        vp.setCurrentItem(EpisodeFragment.POS_COVER);
     }
 
     private void savePreference() {
