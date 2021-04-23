@@ -25,18 +25,18 @@ public class RemoteMedia implements Playable {
 
     public static final int PLAYABLE_TYPE_REMOTE_MEDIA = 3;
 
-    private String downloadUrl;
-    private String itemIdentifier;
-    private String feedUrl;
-    private String feedTitle;
-    private String episodeTitle;
-    private String episodeLink;
-    private String feedAuthor;
-    private String imageUrl;
-    private String feedLink;
-    private String mimeType;
-    private Date pubDate;
-    private String notes;
+    private final String downloadUrl;
+    private final String itemIdentifier;
+    private final String feedUrl;
+    private final String feedTitle;
+    private final String episodeTitle;
+    private final String episodeLink;
+    private final String feedAuthor;
+    private final String imageUrl;
+    private final String feedLink;
+    private final String mimeType;
+    private final Date pubDate;
+    private final String notes;
     private List<Chapter> chapters;
     private int duration;
     private int position;
@@ -44,7 +44,8 @@ public class RemoteMedia implements Playable {
 
     public RemoteMedia(String downloadUrl, String itemId, String feedUrl, String feedTitle,
                        String episodeTitle, String episodeLink, String feedAuthor,
-                       String imageUrl, String feedLink, String mimeType, Date pubDate) {
+                       String imageUrl, String feedLink, String mimeType, Date pubDate,
+                       String notes) {
         this.downloadUrl = downloadUrl;
         this.itemIdentifier = itemId;
         this.feedUrl = feedUrl;
@@ -56,6 +57,7 @@ public class RemoteMedia implements Playable {
         this.feedLink = feedLink;
         this.mimeType = mimeType;
         this.pubDate = pubDate;
+        this.notes = notes;
     }
 
     public RemoteMedia(FeedItem item) {
@@ -66,14 +68,15 @@ public class RemoteMedia implements Playable {
         this.episodeTitle = item.getTitle();
         this.episodeLink = item.getLink();
         this.feedAuthor = item.getFeed().getAuthor();
-        this.imageUrl = item.getImageUrl();
+        if (!TextUtils.isEmpty(item.getImageUrl())) {
+            this.imageUrl = item.getImageUrl();
+        } else {
+            this.imageUrl = item.getFeed().getImageUrl();
+        }
         this.feedLink = item.getFeed().getLink();
         this.mimeType = item.getMedia().getMime_type();
         this.pubDate = item.getPubDate();
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+        this.notes = item.getDescription();
     }
 
     public String getEpisodeIdentifier() {
@@ -272,8 +275,7 @@ public class RemoteMedia implements Playable {
         public RemoteMedia createFromParcel(Parcel in) {
             RemoteMedia result = new RemoteMedia(in.readString(), in.readString(), in.readString(),
                     in.readString(), in.readString(), in.readString(), in.readString(), in.readString(),
-                    in.readString(), in.readString(), new Date(in.readLong()));
-            result.setNotes(in.readString());
+                    in.readString(), in.readString(), new Date(in.readLong()), in.readString());
             result.setDuration(in.readInt());
             result.setPosition(in.readInt());
             result.setLastPlayedTime(in.readLong());

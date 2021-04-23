@@ -146,7 +146,7 @@ public class CompletedDownloadsFragment extends Fragment {
 
     private void addEmptyView() {
         emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.av_download);
+        emptyView.setIcon(R.drawable.ic_download);
         emptyView.setTitle(R.string.no_comp_downloads_head_label);
         emptyView.setMessage(R.string.no_comp_downloads_label);
         emptyView.attachToRecyclerView(recyclerView);

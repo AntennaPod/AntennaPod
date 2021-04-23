@@ -47,7 +47,7 @@
             android:id="@+id/fabSD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:sdMainFabClosedSrc="?attr/batch_edit_fab_icon"
+            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
             app:sdOverlayLayout="@id/fabSDOverlay"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"

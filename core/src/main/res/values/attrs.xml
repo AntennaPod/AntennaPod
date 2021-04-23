@@ -1,67 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="action_about" format="reference"/>
-    <attr name="action_search" format="reference"/>
-    <attr name="action_stream" format="reference"/>
-    <attr name="av_download" format="reference"/>
-    <attr name="av_fast_forward" format="reference"/>
-    <attr name="av_pause" format="reference"/>
-    <attr name="av_play" format="reference"/>
-    <attr name="av_replay" format="reference"/>
-    <attr name="av_skip" format="reference"/>
-    <attr name="av_rewind" format="reference"/>
-    <attr name="ic_delete" format="reference"/>
-    <attr name="content_new" format="reference"/>
-    <attr name="content_remove_from_queue" format="reference"/>
-    <attr name="storage" format="reference"/>
-    <attr name="statistics" format="reference"/>
-    <attr name="feed" format="reference"/>
-    <attr name="location_web_site" format="reference"/>
-    <attr name="navigation_accept" format="reference"/>
-    <attr name="navigation_cancel" format="reference"/>
-    <attr name="ic_load_more" format="reference"/>
-    <attr name="navigation_refresh" format="reference"/>
     <attr name="navigation_up" format="reference"/>
-    <attr name="stat_playlist" format="reference"/>
-    <attr name="ic_folder" format="reference"/>
-    <attr name="type_video" format="reference"/>
     <attr name="dragview_background" format="reference"/>
-    <attr name="ic_history" format="reference"/>
-    <attr name="ic_sliders" format="reference"/>
-    <attr name="ic_settings_playback" format="reference"/>
-    <attr name="ic_settings" format="reference"/>
-    <attr name="ic_lock_open" format="reference"/>
-    <attr name="ic_lock_closed" format="reference"/>
-    <attr name="ic_filter" format="reference"/>
     <attr name="progressBarTheme" format="reference"/>
-    <attr name="ic_fav" format="reference"/>
-    <attr name="ic_unfav" format="reference"/>
-    <attr name="ic_sleep" format="reference"/>
-    <attr name="ic_sleep_off" format="reference"/>
-    <attr name="checkbox_multiple" format="reference"/>
-    <attr name="ic_select_all" format="reference"/>
-    <attr name="ic_select_none" format="reference"/>
-    <attr name="ic_sort" format="reference"/>
-    <attr name="ic_key" format="reference"/>
-    <attr name="ic_volume_adaption" format="reference"/>
-    <attr name="ic_network" format="reference"/>
-    <attr name="ic_appearance" format="reference"/>
-    <attr name="ic_questionmark" format="reference" />
-    <attr name="ic_chat" format="reference"/>
-    <attr name="ic_bug" format="reference" />
     <attr name="master_switch_background" format="color"/>
     <attr name="currently_playing_background" format="color"/>
-    <attr name="ic_bookmark" format="reference"/>
-    <attr name="ic_settings_speed" format="reference" />
-    <attr name="ic_settings_skip" format="reference" />
     <attr name="drawer_activated_color" format="color"/>
-    <attr name="batch_edit_fab_icon" format="reference"/>
     <attr name="action_icon_color" format="color"/>
     <attr name="scrollbar_thumb" format="reference"/>
     <attr name="background_elevated" format="color"/>
     <attr name="filter_dialog_clear" format="color"/>
     <attr name="filter_dialog_button_background" format="reference"/>
-    <attr name="ic_notifications" format="reference"/>
     <attr name="seek_background" format="color" />
-    <attr name="ic_share" format="reference"/>
 </resources>

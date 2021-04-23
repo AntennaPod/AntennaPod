@@ -4,21 +4,21 @@
 
     <item
         android:id="@+id/sort_items"
-        android:icon="?attr/ic_sort"
+        android:icon="@drawable/ic_sort"
         android:menuCategory="container"
         android:title="@string/sort"
         custom:showAsAction="always">
     </item>
     <item
         android:id="@+id/filter_items"
-        android:icon="?attr/ic_filter"
+        android:icon="@drawable/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
         custom:showAsAction="always">
     </item>
     <item
         android:id="@+id/refresh_item"
-        android:icon="?attr/navigation_refresh"
+        android:icon="@drawable/ic_refresh"
         android:menuCategory="container"
         android:title="@string/refresh_label"
         custom:showAsAction="always">
@@ -32,7 +32,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="?attr/action_search"
+        android:icon="@drawable/ic_search"
         custom:showAsAction="always|collapseActionView"
         custom:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search_label"/>
@@ -40,13 +40,13 @@
     <item
         android:id="@+id/episode_actions"
         android:menuCategory="container"
-        android:icon="?attr/checkbox_multiple"
+        android:icon="@drawable/ic_check_multiple"
         android:title="@string/multi_select"
         custom:showAsAction="collapseActionView">
     </item>
     <item
         android:id="@+id/visit_website_item"
-        android:icon="?attr/location_web_site"
+        android:icon="@drawable/ic_web"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:title="@string/visit_website_label"
@@ -79,7 +79,7 @@
 
     <item
         android:id="@+id/remove_item"
-        android:icon="?attr/ic_delete"
+        android:icon="@drawable/ic_delete"
         android:menuCategory="container"
         android:title="@string/remove_feed_label"
         android:visible="true"

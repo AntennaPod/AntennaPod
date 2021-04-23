@@ -14,6 +14,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
@@ -112,6 +119,18 @@ public class ItemDescriptionFragment extends Fragment {
         savePreference();
         ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
         vp.setCurrentItem(EpisodeFragment.POS_COVER);
+  }
+
+    private void displayMediaInfo(@NonNull Playable media) {
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getPubDate());
+        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                + "\u00A0"
+                + "・"
+                + "\u00A0"
+                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        displayedChapterIndex = -2; // Force refresh
+        displayCoverImage(media.getPosition());
     }
 
     private void savePreference() {

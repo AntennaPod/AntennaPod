@@ -91,6 +91,28 @@
                     tools:text="http://www.example.com/feed" />
 
             <TextView
+                    android:id="@+id/lblSupport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/support_funding_label"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp"
+                    tools:background="@android:color/holo_red_light" />
+
+            <TextView
+                    android:id="@+id/txtvFundingUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="8"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    tools:background="@android:color/holo_green_dark" />
+
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"

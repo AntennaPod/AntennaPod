@@ -39,7 +39,7 @@ public class FeedSyncTask {
         if (loadAllPages && feed.getNextPageLink() != null) {
             try {
                 feed.setId(savedFeed.getId());
-                DBTasks.loadNextPageOfFeed(context, savedFeed, true);
+                DBTasks.loadNextPageOfFeed(context, feed, true);
             } catch (DownloadRequestException e) {
                 Log.e(TAG, "Error trying to load next page", e);
             }

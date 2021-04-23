@@ -65,5 +65,5 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/add_feed_label"
-            app:srcCompat="@drawable/ic_add_white"/>
+            app:srcCompat="@drawable/ic_add"/>
 </RelativeLayout>

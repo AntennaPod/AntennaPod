@@ -2,21 +2,17 @@
 <resources>
 
     <dimen name="widget_margin">0dp</dimen>
-    <dimen name="thumbnail_length">70dp</dimen>
     <dimen name="external_player_height">64dp</dimen>
-    <dimen name="enc_icons_size">20dp</dimen>
     <dimen name="text_size_micro">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_navdrawer">16sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
-	<dimen name="thumbnail_length_itemlist">56dp</dimen>
+    <dimen name="thumbnail_length_itemlist">56dp</dimen>
     <dimen name="thumbnail_length_queue_item">56dp</dimen>
-    <dimen name="thumbnail_length_downloaded_item">64dp</dimen>
     <dimen name="thumbnail_length_onlinefeedview">100dp</dimen>
     <dimen name="feeditemlist_header_height">132dp</dimen>
     <dimen name="thumbnail_length_navlist">40dp</dimen>
-    <dimen name="listview_secondary_button_width">48dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
     <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>
 
@@ -27,7 +23,6 @@
 
     <dimen name="list_vertical_padding">8dp</dimen>
     <dimen name="listitem_icon_leftpadding">16dp</dimen>
-    <dimen name="listitem_icon_rightpadding">16dp</dimen>
 
     <dimen name="audioplayer_playercontrols_length">48dp</dimen>
     <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>

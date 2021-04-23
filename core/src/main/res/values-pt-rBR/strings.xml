@@ -73,7 +73,6 @@
   <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Capa</string>
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Um erro ocorreu:</string>
   <string name="needs_storage_permission">Permissão de armazenamento necessária para essa operação</string>

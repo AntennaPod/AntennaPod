@@ -98,7 +98,7 @@ public class VariableSpeedDialog extends DialogFragment {
 
         addCurrentSpeedChip = root.findViewById(R.id.add_current_speed_chip);
         addCurrentSpeedChip.setCloseIconVisible(true);
-        addCurrentSpeedChip.setCloseIconResource(R.drawable.ic_add_black);
+        addCurrentSpeedChip.setCloseIconResource(R.drawable.ic_add);
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
@@ -126,7 +126,7 @@ public class VariableSpeedDialog extends DialogFragment {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
             chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_delete_black);
+            chip.setCloseIconResource(R.drawable.ic_delete);
             return new ViewHolder(chip);
         }
 

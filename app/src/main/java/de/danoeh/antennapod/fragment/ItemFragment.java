@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -357,15 +356,12 @@ public class ItemFragment extends Fragment {
 
         butAction1Text.setText(actionButton1.getLabel());
         butAction1Text.setTransformationMethod(null);
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(actionButton1.getDrawable(), typedValue, true);
-        butAction1Icon.setImageResource(typedValue.resourceId);
+        butAction1Icon.setImageResource(actionButton1.getDrawable());
         butAction1.setVisibility(actionButton1.getVisibility());
 
         butAction2Text.setText(actionButton2.getLabel());
         butAction2Text.setTransformationMethod(null);
-        getContext().getTheme().resolveAttribute(actionButton2.getDrawable(), typedValue, true);
-        butAction2Icon.setImageResource(typedValue.resourceId);
+        butAction2Icon.setImageResource(actionButton2.getDrawable());
         butAction2.setVisibility(actionButton2.getVisibility());
     }
 
