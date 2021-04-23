@@ -109,17 +109,19 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        Intent openFeed = MainActivity.getIntentToOpenFeed(getContext(), ((FeedMedia) media).getItem().getFeedId());
+        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
         txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
-        imgvCover.setOnClickListener(v -> startActivity(openFeed));
+        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         txtvEpisodeTitle.setOnClickListener(v -> {
             FeedItem feedItem = ((FeedMedia) media).getItem();
             if (feedItem != null) {
                 ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
-                shareDialog.show(getActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
+                shareDialog.show(requireActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
             }
         });
+        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
+        imgvCover.setOnClickListener(v -> startActivity(openFeed));
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
