@@ -60,6 +60,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,7 +71,8 @@ public class AudioPlayerFragment extends Fragment implements
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_EPISODE = 0;
     private static final int POS_CHAPTERS = 1;
-    private static final int NUM_CONTENT_FRAGMENTS = 2;
+    private int NUM_CONTENT_FRAGMENTS() { return tabs.size(); }
+    public ArrayList<Integer> tabs = new ArrayList();
     public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
@@ -94,7 +96,6 @@ public class AudioPlayerFragment extends Fragment implements
     private PlaybackController controller;
     private Disposable disposable;
     private boolean showTimeLeft;
-    private boolean hasChapters = false;
     private TabLayoutMediator tabLayoutMediator;
 
     @Override
@@ -137,7 +138,7 @@ public class AudioPlayerFragment extends Fragment implements
         pager = root.findViewById(R.id.pager);
         pager.setAdapter(new AudioPlayerPagerAdapter(this));
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
-        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS);
+        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS());
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -153,15 +154,12 @@ public class AudioPlayerFragment extends Fragment implements
         TabLayout tabLayout = root.findViewById(R.id.sliding_tabs);
         tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
             tab.view.setAlpha(1.0f);
-            switch (position) {
+            switch (tabs.get(position)) {
                 case POS_EPISODE:
                     tab.setText(R.string.episode_label);
                     break;
                 case POS_CHAPTERS:
                     tab.setText(R.string.chapters_label);
-                    if (!hasChapters) {
-                        tab.view.setAlpha(0.5f);
-                    }
                     break;
                 default:
                     break;
@@ -171,8 +169,7 @@ public class AudioPlayerFragment extends Fragment implements
         return root;
     }
 
-    private void setHasChapters(boolean hasChapters) {
-        this.hasChapters = hasChapters;
+    private void reattachTabLayout() {
         tabLayoutMediator.detach();
         tabLayoutMediator.attach();
     }
@@ -185,7 +182,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         float[] dividerPos = null;
 
-        if (hasChapters) {
+        if (media.getChapters() != null) {
             List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size()];
             float duration = media.getDuration();
@@ -411,11 +408,13 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
 
+        tabs.clear();
+        tabs.add(POS_EPISODE);
         if (media != null && media.getChapters() != null) {
-            setHasChapters(media.getChapters().size() > 0);
-        } else {
-            setHasChapters(false);
+            tabs.add(POS_CHAPTERS);
         }
+        reattachTabLayout();
+        
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
         setChapterDividers(media);
@@ -574,7 +573,7 @@ public class AudioPlayerFragment extends Fragment implements
         return false;
     }
 
-    private static class AudioPlayerPagerAdapter extends FragmentStateAdapter {
+    private class AudioPlayerPagerAdapter extends FragmentStateAdapter {
         private static final String TAG = "AudioPlayerPagerAdapter";
 
         public AudioPlayerPagerAdapter(@NonNull Fragment fragment) {
@@ -585,7 +584,7 @@ public class AudioPlayerFragment extends Fragment implements
         @Override
         public Fragment createFragment(int position) {
             Log.d(TAG, "getItem(" + position + ")");
-            switch (position) {
+            switch (tabs.get(position)) {
                 case POS_EPISODE:
                     return new EpisodeFragment();
                 default:
@@ -596,7 +595,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         @Override
         public int getItemCount() {
-            return NUM_CONTENT_FRAGMENTS;
+            return NUM_CONTENT_FRAGMENTS();
         }
     }
 }
