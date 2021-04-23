@@ -1,12 +1,12 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static de.danoeh.antennapod.core.util.SortOrder.Scope.INTER_FEED;
-import static de.danoeh.antennapod.core.util.SortOrder.Scope.INTRA_FEED;
+import static de.danoeh.antennapod.model.feed.SortOrder.Scope.INTER_FEED;
+import static de.danoeh.antennapod.model.feed.SortOrder.Scope.INTRA_FEED;
 
 /**
  * Provides sort orders to sort a list of episodes.

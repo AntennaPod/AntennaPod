@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
 
@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Data Object for a whole feed.

@@ -2,8 +2,8 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 import java.util.Collections;
 import java.util.List;

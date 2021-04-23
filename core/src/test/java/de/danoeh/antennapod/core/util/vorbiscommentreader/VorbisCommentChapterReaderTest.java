@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
 
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import org.junit.Test;
 
 import java.io.IOException;

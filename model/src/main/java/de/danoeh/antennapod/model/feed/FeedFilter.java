@@ -1,15 +1,13 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FeedFilter implements Serializable {
-
-    private static final String TAG = "FeedFilter";
-
     private final String includeFilter;
     private final String excludeFilter;
 
@@ -36,8 +34,9 @@ public class FeedFilter implements Serializable {
         // from http://stackoverflow.com/questions/7804335/split-string-on-spaces-in-java-except-if-between-quotes-i-e-treat-hello-wor
         List<String> list = new ArrayList<>();
         Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(filter);
-        while (m.find())
+        while (m.find()) {
             list.add(m.group(1).replace("\"", ""));
+        }
         return list;
     }
 
@@ -56,18 +55,18 @@ public class FeedFilter implements Serializable {
         }
 
         // check using lowercase so the users don't have to worry about case.
-        String title = item.getTitle().toLowerCase();
+        String title = item.getTitle().toLowerCase(Locale.getDefault());
 
         // if it's explicitly excluded, it shouldn't be autodownloaded
         // even if it has include terms
         for (String term : excludeTerms) {
-            if (title.contains(term.trim().toLowerCase())) {
+            if (title.contains(term.trim().toLowerCase(Locale.getDefault()))) {
                 return false;
             }
         }
 
         for (String term : includeTerms) {
-            if (title.contains(term.trim().toLowerCase())) {
+            if (title.contains(term.trim().toLowerCase(Locale.getDefault()))) {
                 return true;
             }
         }
@@ -86,7 +85,9 @@ public class FeedFilter implements Serializable {
         return includeFilter;
     }
 
-    public String getExcludeFilter() { return excludeFilter; }
+    public String getExcludeFilter() {
+        return excludeFilter;
+    }
 
     /**
      * @return true if only include is set

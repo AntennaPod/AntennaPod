@@ -3,9 +3,9 @@ package de.danoeh.antennapod.core.storage.mapper;
 import android.database.Cursor;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.feed.FeedFilter;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.model.feed.FeedFilter;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import java.util.Arrays;

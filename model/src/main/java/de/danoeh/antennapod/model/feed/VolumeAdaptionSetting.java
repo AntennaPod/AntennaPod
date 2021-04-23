@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 public enum VolumeAdaptionSetting {
     OFF(0, 1.0f),

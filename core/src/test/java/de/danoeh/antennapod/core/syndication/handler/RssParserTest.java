@@ -8,10 +8,10 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.File;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

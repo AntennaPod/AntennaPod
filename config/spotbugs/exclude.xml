@@ -38,11 +38,11 @@
     </Match>
     <Match>
         <Bug pattern="NP_NULL_ON_SOME_PATH"/>
-        <Class name="de.danoeh.antennapod.core.feed.FeedMedia"/>
+        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
     </Match>
     <Match>
         <Bug pattern="NP_NULL_PARAM_DEREF"/>
-        <Class name="de.danoeh.antennapod.core.feed.FeedMedia"/>
+        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
     </Match>
     <Match>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>

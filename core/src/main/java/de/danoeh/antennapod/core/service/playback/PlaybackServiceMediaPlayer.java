@@ -11,8 +11,8 @@ import android.view.SurfaceHolder;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
 
 
 /*

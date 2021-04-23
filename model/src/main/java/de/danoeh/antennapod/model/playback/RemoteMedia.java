@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,18 +6,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Playable implementation for media for which a local version of
- * {@link de.danoeh.antennapod.core.feed.FeedMedia} hasn't been found.
+ * {@link FeedMedia} hasn't been found.
  * Used for Casting and for previewing unsubscribed feeds.
  */
 public class RemoteMedia implements Playable {
@@ -186,13 +187,6 @@ public class RemoteMedia implements Playable {
     @Override
     public boolean localFileAvailable() {
         return false;
-    }
-
-    @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
-        //we're not saving playback information for this kind of items on preferences
-        setPosition(newPosition);
-        setLastPlayedTime(timestamp);
     }
 
     @Override

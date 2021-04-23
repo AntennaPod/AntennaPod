@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 import android.view.View;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 public class MarkAsPlayedActionButton extends ItemActionButton {

@@ -1,7 +1,6 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -10,18 +9,14 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.model.playback.RemoteMedia;
 
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-
 public class FeedMedia extends FeedFile implements Playable {
-    private static final String TAG = "FeedMedia";
-
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
     public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
@@ -153,24 +148,6 @@ public class FeedMedia extends FeedFile implements Playable {
         return false;
     }
 
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played.
-     */
-    public boolean isPlaying() {
-        return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
-    }
-
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played and the current player status is playing.
-     */
-    public boolean isCurrentlyPlaying() {
-        return isPlaying() && PlaybackService.isRunning &&
-                ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
-    }
-
     @Override
     public int getTypeAsInt() {
         return FEEDFILETYPE_FEEDMEDIA;
@@ -191,6 +168,10 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public int getPlayedDuration() {
         return played_duration;
+    }
+
+    public int getPlayedDurationWhenStarted() {
+        return playedDurationWhenStarted;
     }
 
     public void setPlayedDuration(int played_duration) {
@@ -396,19 +377,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
-        if(item != null && item.isNew()) {
-            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-        }
-        setPosition(newPosition);
-        setLastPlayedTime(timeStamp);
-        if(startPosition>=0 && position > startPosition) {
-            setPlayedDuration(playedDurationWhenStarted + position - startPosition);
-        }
-        DBWriter.setFeedMediaPlaybackInformation(this);
-    }
-
-    @Override
     public void onPlaybackStart() {
         startPosition = Math.max(position, 0);
         playedDurationWhenStarted = played_duration;
@@ -508,7 +476,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (o == null) {
             return false;
         }
-        if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
+        if (o instanceof RemoteMedia) {
             return o.equals(this);
         }
         return super.equals(o);

@@ -1,12 +1,12 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.Chapter;
+
 import java.util.Date;
 import java.util.List;
 
@@ -100,17 +100,6 @@ public interface Playable extends Parcelable {
      * MUST return a non-null string if this method returns true.
      */
     boolean localFileAvailable();
-
-    /**
-     * Saves the current position of this object. Implementations can use the
-     * provided SharedPreference to save this information and retrieve it later
-     * via PlayableUtils.createInstanceFromPreferences.
-     *
-     * @param pref  shared prefs that might be used to store this object
-     * @param newPosition  new playback position in ms
-     * @param timestamp  current time in ms
-     */
-    void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp);
 
     void setPosition(int newPosition);
 

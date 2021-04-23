@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -265,7 +265,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         }
     }
 
-    private boolean isInProgress() {
+    public boolean isInProgress() {
         return (media != null && media.isInProgress());
     }
 
@@ -312,10 +312,6 @@ public class FeedItem extends FeedComponent implements Serializable {
         return media != null;
     }
 
-    private boolean isPlaying() {
-        return media != null && media.isPlaying();
-    }
-
     public String getImageLocation() {
         if (imageUrl != null) {
             return imageUrl;
@@ -330,18 +326,6 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public enum State {
         UNREAD, IN_PROGRESS, READ, PLAYING
-    }
-
-    public State getState() {
-        if (hasMedia()) {
-            if (isPlaying()) {
-                return State.PLAYING;
-            }
-            if (isInProgress()) {
-                return State.IN_PROGRESS;
-            }
-        }
-        return (isPlayed() ? State.READ : State.UNREAD);
     }
 
     public long getFeedId() {
@@ -394,7 +378,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public boolean isAutoDownloadable() {
-        if (media == null || media.isPlaying() || media.isDownloaded() || autoDownload == 0) {
+        if (media == null || media.isDownloaded() || autoDownload == 0) {
             return false;
         }
         if (autoDownload == 1) {

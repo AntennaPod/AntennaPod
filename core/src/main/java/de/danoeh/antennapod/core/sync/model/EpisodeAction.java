@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.util.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;

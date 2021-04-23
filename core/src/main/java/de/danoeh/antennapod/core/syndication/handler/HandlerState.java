@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Stack;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedFunding;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
 

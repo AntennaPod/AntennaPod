@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.syndication.namespace;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.util.DateUtils;
 

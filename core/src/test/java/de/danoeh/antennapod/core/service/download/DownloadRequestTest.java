@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.FeedFile;
 
 import static org.junit.Assert.assertEquals;
 

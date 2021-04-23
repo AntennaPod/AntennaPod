@@ -6,8 +6,8 @@ import android.util.Log;
 import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
