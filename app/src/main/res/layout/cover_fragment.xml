@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +10,14 @@
     android:id="@+id/cover_fragment"
     android:padding="8dp"
     android:gravity="center">
+
+    <ImageButton
+        android:id="@+id/counterweight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="?attr/action_about"
+        android:layout_weight="1"
+        android:padding="2dp"/>
 
     <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
@@ -37,31 +46,33 @@
             android:id="@+id/txtvPodcastTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textIsSelectable="true"
             tools:text="Podcast" />
 
         <TextView
             android:id="@+id/txtvEpisodeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
-            android:maxLines="2"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="true"
             tools:text="Episode" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/openDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="?attr/action_about"
+        android:padding="2dp"/>
 
 </LinearLayout>

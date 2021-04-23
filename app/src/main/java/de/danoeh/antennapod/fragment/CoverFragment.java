@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,24 +10,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -39,7 +35,6 @@ import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.ShareDialog;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -61,6 +56,8 @@ public class CoverFragment extends Fragment {
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
+    private ImageButton openDescription;
+    private ImageButton counterweight;
     private PlaybackController controller;
     private Disposable disposable;
     private int displayedChapterIndex = -2;
@@ -75,6 +72,10 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
+        openDescription = root.findViewById(R.id.openDescription);
+        counterweight = root.findViewById(R.id.counterweight);
+        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
+        openDescription.setOnClickListener(v -> vp.setCurrentItem(EpisodeFragment.POS_DESCR));
         return root;
     }
 
@@ -109,18 +110,7 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
-        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
-        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        txtvEpisodeTitle.setOnClickListener(v -> {
-            FeedItem feedItem = ((FeedMedia) media).getItem();
-            if (feedItem != null) {
-                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
-                shareDialog.show(requireActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
-            }
-        });
-        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
@@ -229,6 +219,10 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
+            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
+            descrParams.weight = 1;
+            openDescription.setLayoutParams(descrParams);
+            counterweight.setVisibility(View.INVISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -238,6 +232,10 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
+            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescription.getLayoutParams();
+            descrParams.weight = 0;
+            openDescription.setLayoutParams(descrParams);
+            counterweight.setVisibility(View.GONE);
         }
     }
 
@@ -246,14 +244,5 @@ public class CoverFragment extends Fragment {
             return;
         }
         controller.playPause();
-    }
-
-    private boolean copyText(String text) {
-        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
-        if (clipboardManager != null) {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
-        }
-        Toast.makeText(requireContext(), getResources().getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
-        return true;
     }
 }
