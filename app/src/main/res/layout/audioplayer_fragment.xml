@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_alignBottom="@id/pager"
-            android:src="@drawable/bg_gradient"
+            app:srcCompat="@drawable/bg_gradient"
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
 
@@ -56,6 +56,8 @@
             android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_alignBottom="@+id/pager"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="12dp"
@@ -74,7 +76,7 @@
                 android:paddingRight="24dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="1:06:29" />
 
     </androidx.cardview.widget.CardView>
@@ -84,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:clickable="true"
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
@@ -139,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp">
 
-            <ImageButton
+            <de.danoeh.antennapod.view.PlayButton
                     android:id="@+id/butPlay"
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"
@@ -152,9 +153,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/pause_label"
-                    app:srcCompat="?attr/av_play"
+                    app:srcCompat="@drawable/ic_play_48dp"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_play_white_24dp"/>
+                    tools:srcCompat="@drawable/ic_play_48dp"/>
 
             <de.danoeh.antennapod.ui.common.CircularProgressBar
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
@@ -187,9 +188,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/rewind_label"
-                    app:srcCompat="?attr/av_rewind"
+                    app:srcCompat="@drawable/ic_fast_rewind"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_fast_rewind"/>
 
             <TextView
                     android:id="@+id/txtvRev"
@@ -215,7 +216,7 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/playback_speed"
-                    tools:srcCompat="@drawable/ic_playback_speed_white"
+                    tools:srcCompat="@drawable/ic_playback_speed"
                     app:foregroundColor="?attr/action_icon_color"/>
 
             <TextView
@@ -244,9 +245,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/fast_forward_label"
-                    app:srcCompat="?attr/av_fast_forward"
+                    app:srcCompat="@drawable/ic_fast_forward"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_forward_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_fast_forward"/>
 
             <TextView
                     android:id="@+id/txtvFF"
@@ -272,9 +273,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="fitCenter"
-                    app:srcCompat="?attr/av_skip"
+                    app:srcCompat="@drawable/ic_skip_48dp"
                     android:contentDescription="@string/skip_episode_label"
-                    tools:srcCompat="@drawable/ic_av_skip_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_skip_48dp"/>
         </RelativeLayout>
 
     </LinearLayout>

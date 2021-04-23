@@ -14,6 +14,7 @@ import de.danoeh.antennapod.core.syndication.namespace.NSMedia;
 import de.danoeh.antennapod.core.syndication.namespace.NSRSS20;
 import de.danoeh.antennapod.core.syndication.namespace.NSSimpleChapters;
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
+import de.danoeh.antennapod.core.syndication.namespace.PodcastIndex;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
 
@@ -107,9 +108,13 @@ class SyndHandler extends DefaultHandler {
                     && prefix.equals(NSDublinCore.NSTAG)) {
                 state.namespaces.put(uri, new NSDublinCore());
                 Log.d(TAG, "Recognized DublinCore namespace");
+            } else if (uri.equals(PodcastIndex.NSURI) || uri.equals(PodcastIndex.NSURI2)
+                    && prefix.equals(PodcastIndex.NSTAG)) {
+                state.namespaces.put(uri, new PodcastIndex());
+                Log.d(TAG, "Recognized PodcastIndex namespace");
             }
-		}
-	}
+        }
+    }
 
 	private Namespace getHandlingNamespace(String uri, String qName) {
 		Namespace handler = state.namespaces.get(uri);

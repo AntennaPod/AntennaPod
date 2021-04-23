@@ -133,7 +133,7 @@ public class SearchFragment extends Fragment {
 
         emptyViewHandler = new EmptyViewHandler(getContext());
         emptyViewHandler.attachToRecyclerView(recyclerView);
-        emptyViewHandler.setIcon(R.attr.action_search);
+        emptyViewHandler.setIcon(R.drawable.ic_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
 

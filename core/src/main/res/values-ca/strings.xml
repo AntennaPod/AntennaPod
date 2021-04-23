@@ -65,7 +65,6 @@
   <string name="author_label">Autor/s</string>
   <string name="language_label">Llengua</string>
   <string name="url_label">Adreça web</string>
-  <string name="cover_label">Imatge</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">S\'ha produït un error:</string>
   <string name="needs_storage_permission">Calen permisos d\'emmagatzematge per a aquesta operació</string>

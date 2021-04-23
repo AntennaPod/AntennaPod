@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.view.PlayButton;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -72,7 +73,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     SeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
@@ -123,8 +124,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
@@ -513,6 +514,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         }
         butPlay = findViewById(R.id.butPlay);
+        butPlay.setIsVideoScreen(true);
         butFF = findViewById(R.id.butFF);
         txtvFF = findViewById(R.id.txtvFF);
         if (txtvFF != null) {

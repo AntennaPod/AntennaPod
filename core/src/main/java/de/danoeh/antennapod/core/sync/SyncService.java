@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -170,6 +171,25 @@ public class SyncService extends Worker {
             }
             sync(context);
         });
+    }
+
+    public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        if (media.getItem() == null) {
+            return;
+        }
+        if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
+            return;
+        }
+        EpisodeAction action = new EpisodeAction.Builder(media.getItem(), EpisodeAction.PLAY)
+                .currentTimestamp()
+                .started(media.getStartPosition() / 1000)
+                .position((completed ? media.getDuration() : media.getPosition()) / 1000)
+                .total(media.getDuration() / 1000)
+                .build();
+        SyncService.enqueueEpisodeAction(context, action);
     }
 
     public static void sync(Context context) {
@@ -465,7 +485,7 @@ public class SyncService extends Worker {
             if (playItem != null) {
                 FeedMedia media = playItem.getMedia();
                 media.setPosition(action.getPosition() * 1000);
-                if (playItem.getMedia().hasAlmostEnded()) {
+                if (FeedItemUtil.hasAlmostEnded(playItem.getMedia())) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
                     queueToBeRemoved.add(playItem.getId());

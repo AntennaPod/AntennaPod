@@ -167,10 +167,15 @@ public class MainActivity extends CastEnabledActivity {
         outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
     }
 
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
             new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View view, int state) {
+            if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                onSlide(view, 0.0f);
+            } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+                onSlide(view, 1.0f);
+            }
         }
 
         @Override
