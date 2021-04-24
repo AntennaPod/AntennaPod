@@ -5,94 +5,101 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:baselineAligned="false"
+        android:orientation="vertical"
         android:descendantFocusability="blocksDescendants">
 
-    <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/txtvIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
-            android:layout_marginStart="@dimen/listitem_threeline_textleftpadding"
-            android:textSize="40dp"
-            android:gravity="center"
-            tools:text="X"
-            tools:ignore="SpUsage"/>
-
     <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
 
         <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/status"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+                android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+                android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
+                android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <com.joanzapata.iconify.widget.IconTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:padding="2dp"
+                        android:id="@+id/txtvIcon"
+                        android:textSize="16sp"
+                        android:gravity="center"/>
+
+                <TextView
+                        android:id="@+id/txtvType"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Media file"/>
+                <TextView
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        android:text="·"
+                        tools:background="@android:color/holo_blue_light"/>
+                <TextView
+                        android:id="@+id/txtvDate"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="January 23"/>
+
+            </LinearLayout>
+            <TextView
+                    android:id="@+id/txtvTitle"
+                    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@sample/episodes.json/data/title"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:background="@android:color/holo_blue_light"/>
 
             <TextView
-                    android:id="@+id/txtvType"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtvReason"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Media file"/>
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="@string/design_time_downloaded_log_failure_reason"/>
+
             <TextView
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtvTapForDetails"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:text="·"
-                    tools:background="@android:color/holo_blue_light"/>
-            <TextView
-                    android:id="@+id/txtvDate"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="January 23"/>
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:text="@string/download_error_tap_for_details"/>
 
         </LinearLayout>
-        <TextView
-                android:id="@+id/txtvTitle"
-                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@sample/episodes.json/data/title"
-                android:ellipsize="end"
-                tools:background="@android:color/holo_blue_light"/>
 
-        <TextView
-                android:id="@+id/txtvReason"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="@string/design_time_downloaded_log_failure_reason"/>
-
-        <TextView
-                android:id="@+id/txtvTapForDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:text="@string/download_error_tap_for_details"/>
-
+        <include layout="@layout/secondary_action"/>
     </LinearLayout>
 
-    <include layout="@layout/secondary_action"/>
-
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical"/>
 </LinearLayout>

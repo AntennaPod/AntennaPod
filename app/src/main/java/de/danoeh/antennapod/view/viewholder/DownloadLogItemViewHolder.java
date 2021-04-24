@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 
-public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
+public class DownloadLogItemViewHolder extends RecyclerView.ViewHolder {
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
     public final IconTextView icon;
@@ -22,7 +22,7 @@ public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
     public final TextView reason;
     public final TextView tapForDetails;
 
-    public DownloadItemViewHolder(Context context, ViewGroup parent) {
+    public DownloadLogItemViewHolder(Context context, ViewGroup parent) {
         super(LayoutInflater.from(context).inflate(R.layout.downloadlog_item, parent, false));
         date = itemView.findViewById(R.id.txtvDate);
         type = itemView.findViewById(R.id.txtvType);
