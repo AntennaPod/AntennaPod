@@ -1,20 +1,18 @@
-package de.danoeh.antennapod.core.sync.gpoddernet;
+package de.danoeh.antennapod.net.sync.gpoddernet;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
-import de.danoeh.antennapod.core.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.core.sync.model.ISyncService;
-import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetUploadChangesResponse;
-import de.danoeh.antennapod.core.sync.model.SyncServiceException;
-import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.model.ISyncService;
+import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
+import de.danoeh.antennapod.net.sync.model.SyncServiceException;
+import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,7 +34,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,17 +52,24 @@ public class GpodnetService implements ISyncService {
     private static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private String baseScheme;
-    private String baseHost;
     private int basePort;
+    private final String baseHost;
+    private final String deviceId;
+    private String username;
+    private String password;
+    private boolean loggedIn = false;
 
     private final OkHttpClient httpClient;
-    private String username = null;
 
     // split into schema, host and port - missing parts are null
     private static Pattern urlsplit_regex = Pattern.compile("(?:(https?)://)?([^:]+)(?::(\\d+))?");
 
-    public GpodnetService(OkHttpClient httpClient, String baseHosturl)  {
+    public GpodnetService(OkHttpClient httpClient, String baseHosturl,
+                          String deviceId, String username, String password)  {
         this.httpClient = httpClient;
+        this.deviceId = deviceId;
+        this.username = username;
+        this.password = password;
 
         Matcher m = urlsplit_regex.matcher(baseHosturl);
         if (m.matches()) {
@@ -97,7 +101,7 @@ public class GpodnetService implements ISyncService {
     }
 
     private void requireLoggedIn() {
-        if (username == null) {
+        if (!loggedIn) {
             throw new IllegalStateException("Not logged in");
         }
     }
@@ -454,7 +458,6 @@ public class GpodnetService implements ISyncService {
      * <p/>
      * This method requires authentication.
      *
-     * @param deviceId The ID of the device whose subscriptions should be updated.
      * @param added    Collection of feed URLs of added feeds. This Collection MUST NOT contain any duplicates
      * @param removed  Collection of feed URLs of removed feeds. This Collection MUST NOT contain any duplicates
      * @return a GpodnetUploadChangesResponse. See {@link GpodnetUploadChangesResponse}
@@ -462,8 +465,9 @@ public class GpodnetService implements ISyncService {
      * @throws GpodnetServiceException            if added or removed contain duplicates or if there
      *                                            is an authentication error.
      */
-    public GpodnetUploadChangesResponse uploadChanges(@NonNull String deviceId, @NonNull Collection<String> added,
-            @NonNull Collection<String> removed) throws GpodnetServiceException {
+    @Override
+    public UploadChangesResponse uploadSubscriptionChanges(List<String> added, List<String> removed)
+            throws GpodnetServiceException {
         requireLoggedIn();
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort,
@@ -490,14 +494,12 @@ public class GpodnetService implements ISyncService {
      * <p/>
      * This method requires authentication.
      *
-     * @param deviceId  The ID of the device whose subscription changes should be
-     *                  downloaded.
      * @param timestamp A timestamp that can be used to receive all changes since a
      *                  specific point in time.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public SubscriptionChanges getSubscriptionChanges(@NonNull String deviceId, long timestamp)
-            throws GpodnetServiceException {
+    @Override
+    public SubscriptionChanges getSubscriptionChanges(long timestamp) throws GpodnetServiceException {
         requireLoggedIn();
         String params = String.format(Locale.US, "since=%d", timestamp);
         String path = String.format("/api/2/subscriptions/%s/%s.json", username, deviceId);
@@ -552,7 +554,7 @@ public class GpodnetService implements ISyncService {
                 EpisodeAction episodeAction = episodeActions.get(i);
                 JSONObject obj = episodeAction.writeToJsonObject();
                 if (obj != null) {
-                    obj.put("device", GpodnetPreferences.getDeviceID());
+                    obj.put("device", deviceId);
                     list.put(obj);
                 }
             }
@@ -606,7 +608,8 @@ public class GpodnetService implements ISyncService {
      *
      * @throws IllegalArgumentException If username or password is null.
      */
-    public void authenticate(@NonNull String username, @NonNull String password) throws GpodnetServiceException {
+    @Override
+    public void login() throws GpodnetServiceException {
         URL url;
         try {
             url = new URI(baseScheme, null, baseHost, basePort,
@@ -623,7 +626,7 @@ public class GpodnetService implements ISyncService {
             Response response = httpClient.newCall(authRequest).execute();
             checkStatusCode(response);
             response.body().close();
-            this.username = username;
+            this.loggedIn = true;
         } catch (Exception e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
@@ -804,23 +807,12 @@ public class GpodnetService implements ISyncService {
     }
 
     @Override
-    public void login() throws GpodnetServiceException {
-        authenticate(GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
-    }
-
-    @Override
-    public SubscriptionChanges getSubscriptionChanges(long lastSync) throws GpodnetServiceException {
-        return getSubscriptionChanges(GpodnetPreferences.getDeviceID(), lastSync);
-    }
-
-    @Override
-    public UploadChangesResponse uploadSubscriptionChanges(List<String> addedFeeds, List<String> removedFeeds)
-            throws GpodnetServiceException {
-        return uploadChanges(GpodnetPreferences.getDeviceID(), addedFeeds, removedFeeds);
-    }
-
-    @Override
     public void logout() {
 
+    }
+
+    public void setCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }

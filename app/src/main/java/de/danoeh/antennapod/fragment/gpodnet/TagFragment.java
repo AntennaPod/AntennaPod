@@ -5,10 +5,10 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
 
 /**
  * Shows all podcasts from gpodder.net that belong to a specific tag.
