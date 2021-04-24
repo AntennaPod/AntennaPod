@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.sync.model;
+package de.danoeh.antennapod.net.sync.model;
 
 import java.util.List;
 

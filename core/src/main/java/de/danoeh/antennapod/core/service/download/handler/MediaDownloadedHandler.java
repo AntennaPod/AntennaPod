@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 /**

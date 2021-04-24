@@ -1,6 +1,8 @@
-package de.danoeh.antennapod.core.sync.gpoddernet.model;
+package de.danoeh.antennapod.net.sync.gpoddernet.model;
 
 import androidx.annotation.NonNull;
+
+import java.util.Locale;
 
 public class GpodnetDevice {
 
@@ -49,7 +51,7 @@ public class GpodnetDevice {
 
         @Override
         public String toString() {
-            return super.toString().toLowerCase();
+            return super.toString().toLowerCase(Locale.US);
         }
 
     }

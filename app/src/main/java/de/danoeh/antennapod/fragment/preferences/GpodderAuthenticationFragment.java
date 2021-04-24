@@ -25,8 +25,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import io.reactivex.Completable;
@@ -96,7 +96,9 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             } else {
                 GpodnetPreferences.setHosturl(GpodnetService.DEFAULT_BASE_HOST);
             }
-            service = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHosturl());
+            service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                    GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                    GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
             getDialog().setTitle(GpodnetPreferences.getHosturl());
             advance();
         });
@@ -138,7 +140,8 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             inputManager.hideSoftInputFromWindow(login.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
             Completable.fromAction(() -> {
-                service.authenticate(usernameStr, passwordStr);
+                service.setCredentials(usernameStr, passwordStr);
+                service.login();
                 devices = service.getDevices();
                 GpodderAuthenticationFragment.this.username = usernameStr;
                 GpodderAuthenticationFragment.this.password = passwordStr;

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.sync.model;
+package de.danoeh.antennapod.net.sync.model;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -6,10 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.util.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -17,6 +17,7 @@ import java.util.TimeZone;
 
 public class EpisodeAction {
     private static final String TAG = "EpisodeAction";
+    private static final String PATTERN_ISO_DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     public static final Action NEW = Action.NEW;
     public static final Action DOWNLOAD = Action.DOWNLOAD;
     public static final Action PLAY = Action.PLAY;
@@ -56,14 +57,20 @@ public class EpisodeAction {
         }
         EpisodeAction.Action action;
         try {
-            action = EpisodeAction.Action.valueOf(actionString.toUpperCase());
+            action = EpisodeAction.Action.valueOf(actionString.toUpperCase(Locale.US));
         } catch (IllegalArgumentException e) {
             return null;
         }
         EpisodeAction.Builder builder = new EpisodeAction.Builder(podcast, episode, action);
         String utcTimestamp = object.optString("timestamp", null);
         if (!TextUtils.isEmpty(utcTimestamp)) {
-            builder.timestamp(DateUtils.parse(utcTimestamp));
+            try {
+                SimpleDateFormat parser = new SimpleDateFormat(PATTERN_ISO_DATEFORMAT, Locale.US);
+                parser.setTimeZone(TimeZone.getTimeZone("UTC"));
+                builder.timestamp(parser.parse(utcTimestamp));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         if (action == EpisodeAction.Action.PLAY) {
             int started = object.optInt("started", -1);
@@ -92,7 +99,7 @@ public class EpisodeAction {
     }
 
     private String getActionString() {
-        return this.action.name().toLowerCase();
+        return this.action.name().toLowerCase(Locale.US);
     }
 
     public Date getTimestamp() {
