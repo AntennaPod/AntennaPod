@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -442,6 +439,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+
+        // if multi select
+        if (item.getItemId() == R.id.episode_actions) {
+            adapter.startActionMode(selectedItem);
+            refreshToolbarState();
+            return true;
+        }
+
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
@@ -808,7 +813,5 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         (countHasMedia + countNoMedia),
                         (countHasMedia + countNoMedia), countHasMedia),
                 Snackbar.LENGTH_LONG);
-//        getActivity().getSupportFragmentManager().popBackStack();
-//        frag
     }
 }

@@ -53,7 +53,7 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
      *
      * Includes: the menu / action item and the actual logic
      */
-    public static class ActionBinding {
+    private static class ActionBinding {
         int flag;
         @IdRes
         final int actionItemId;
@@ -68,7 +68,6 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
     }
 
     private final List<? extends ActionBinding> actionBindings;
-
     private final Map<Long, FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
     private int actions;
@@ -226,12 +225,12 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
     private static final Map<Integer, SortOrder> menuItemIdToSortOrder;
     static {
         Map<Integer, SortOrder> map = new ArrayMap<>();
-//        map.put(R.id.sort_title_a_z, SortOrder.EPISODE_TITLE_A_Z);
-//        map.put(R.id.sort_title_z_a, SortOrder.EPISODE_TITLE_Z_A);
-//        map.put(R.id.sort_date_new_old, SortOrder.DATE_NEW_OLD);
-//        map.put(R.id.sort_date_old_new, SortOrder.DATE_OLD_NEW);
-//        map.put(R.id.sort_duration_long_short, SortOrder.DURATION_LONG_SHORT);
-//        map.put(R.id.sort_duration_short_long, SortOrder.DURATION_SHORT_LONG);
+        map.put(R.id.sort_title_a_z, SortOrder.EPISODE_TITLE_A_Z);
+        map.put(R.id.sort_title_z_a, SortOrder.EPISODE_TITLE_Z_A);
+        map.put(R.id.sort_date_new_old, SortOrder.DATE_NEW_OLD);
+        map.put(R.id.sort_date_old_new, SortOrder.DATE_OLD_NEW);
+        map.put(R.id.sort_duration_long_short, SortOrder.DURATION_LONG_SHORT);
+        map.put(R.id.sort_duration_short_long, SortOrder.DURATION_SHORT_LONG);
         menuItemIdToSortOrder = Collections.unmodifiableMap(map);
     }
 
@@ -239,51 +238,51 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
     public boolean onMenuItemClick(MenuItem item) {
         @StringRes int resId = 0;
         switch (item.getItemId()) {
-//            case R.id.select_options:
-//                return true;
-//            case R.id.select_toggle:
-//                if (checkedIds.size() == episodes.size()) {
-//                    checkNone();
-//                } else {
-//                    checkAll();
-//                }
-//                return true;
-//            case R.id.check_all:
-//                checkAll();
-//                resId = R.string.selected_all_label;
-//                break;
-//            case R.id.check_none:
-//                checkNone();
-//                resId = R.string.deselected_all_label;
-//                break;
-//            case R.id.check_played:
-//                checkPlayed(true);
-//                resId = R.string.selected_played_label;
-//                break;
-//            case R.id.check_unplayed:
-//                checkPlayed(false);
-//                resId = R.string.selected_unplayed_label;
-//                break;
-//            case R.id.check_downloaded:
-//                checkDownloaded(true);
-//                resId = R.string.selected_downloaded_label;
-//                break;
-//            case R.id.check_not_downloaded:
-//                checkDownloaded(false);
-//                resId = R.string.selected_not_downloaded_label;
-//                break;
-//            case R.id.check_queued:
-//                checkQueued(true);
-//                resId = R.string.selected_queued_label;
-//                break;
-//            case R.id.check_not_queued:
-//                checkQueued(false);
-//                resId = R.string.selected_not_queued_label;
-//                break;
-//            case R.id.check_has_media:
-//                checkWithMedia();
-//                resId = R.string.selected_has_media_label;
-//                break;
+            case R.id.select_options:
+                return true;
+            case R.id.select_toggle:
+                if (checkedIds.size() == episodes.size()) {
+                    checkNone();
+                } else {
+                    checkAll();
+                }
+                return true;
+            case R.id.check_all:
+                checkAll();
+                resId = R.string.selected_all_label;
+                break;
+            case R.id.check_none:
+                checkNone();
+                resId = R.string.deselected_all_label;
+                break;
+            case R.id.check_played:
+                checkPlayed(true);
+                resId = R.string.selected_played_label;
+                break;
+            case R.id.check_unplayed:
+                checkPlayed(false);
+                resId = R.string.selected_unplayed_label;
+                break;
+            case R.id.check_downloaded:
+                checkDownloaded(true);
+                resId = R.string.selected_downloaded_label;
+                break;
+            case R.id.check_not_downloaded:
+                checkDownloaded(false);
+                resId = R.string.selected_not_downloaded_label;
+                break;
+            case R.id.check_queued:
+                checkQueued(true);
+                resId = R.string.selected_queued_label;
+                break;
+            case R.id.check_not_queued:
+                checkQueued(false);
+                resId = R.string.selected_not_queued_label;
+                break;
+            case R.id.check_has_media:
+                checkWithMedia();
+                resId = R.string.selected_has_media_label;
+                break;
             default: // handle various sort options
                 SortOrder sortOrder = menuItemIdToSortOrder.get(item.getItemId());
                 if (sortOrder != null) {
