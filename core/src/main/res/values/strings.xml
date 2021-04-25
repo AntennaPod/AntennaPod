@@ -19,7 +19,6 @@
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open Settings</string>
-    <string name="downloads_running_label">Running</string>
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
     <string name="subscriptions_label">Subscriptions</string>

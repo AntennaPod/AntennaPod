@@ -145,10 +145,12 @@ public class DownloadLogFragment extends ListFragment {
             builder.setMessage(messageFull);
             builder.setPositiveButton(android.R.string.ok, null);
             builder.setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
-                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getContext()
+                        .getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText(getString(R.string.download_error_details), messageFull);
                 clipboard.setPrimaryClip(clip);
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                        R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
             });
             Dialog dialog = builder.show();
             ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
