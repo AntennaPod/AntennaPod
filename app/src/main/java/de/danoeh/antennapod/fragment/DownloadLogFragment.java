@@ -165,7 +165,7 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         menu.findItem(R.id.episode_actions).setVisible(false);
-        menu.findItem(R.id.clear_logs_item).setVisible(true);
+        menu.findItem(R.id.clear_logs_item).setVisible(!downloadLog.isEmpty());
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
@@ -213,6 +213,7 @@ public class DownloadLogFragment extends ListFragment {
                     if (result != null) {
                         downloadLog = result;
                         adapter.setDownloadLog(downloadLog);
+                        ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
