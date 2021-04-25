@@ -30,7 +30,6 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/status"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
@@ -40,8 +39,28 @@
                         android:layout_marginEnd="4dp"
                         android:padding="2dp"
                         android:id="@+id/txtvIcon"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:gravity="center"/>
+
+
+                <TextView
+                        android:id="@+id/txtvTitle"
+                        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="@sample/episodes.json/data/title"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        tools:background="@android:color/holo_blue_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                 <TextView
                         android:id="@+id/txtvType"
@@ -67,22 +86,13 @@
                         tools:text="January 23"/>
 
             </LinearLayout>
-            <TextView
-                    android:id="@+id/txtvTitle"
-                    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="@sample/episodes.json/data/title"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:background="@android:color/holo_blue_light"/>
 
             <TextView
                     android:id="@+id/txtvReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/download_failed_red"
                     tools:text="@string/design_time_downloaded_log_failure_reason"/>
 
             <TextView
@@ -97,9 +107,4 @@
 
         <include layout="@layout/secondary_action"/>
     </LinearLayout>
-
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/dividerVertical"/>
 </LinearLayout>
