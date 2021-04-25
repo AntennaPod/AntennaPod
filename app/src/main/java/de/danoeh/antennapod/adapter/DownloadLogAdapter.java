@@ -23,9 +23,8 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.view.viewholder.DownloadHeadingViewHolder;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.viewholder.DownloadLogItemViewHolder;
-import de.danoeh.antennapod.view.viewholder.RunningDownloadViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +34,6 @@ import java.util.List;
  */
 public class DownloadLogAdapter extends BaseAdapter {
     private static final String TAG = "DownloadLogAdapter";
-
-    private static final String ITEM_RUNNING_HEADER = "RunningHeader";
-    private static final String ITEM_LOGS_HEADER = "LogsHeader";
-    public static final int TYPE_HEADER = 0;
-    public static final int TYPE_LOG = 1;
-    public static final int TYPE_RUNNING = 2;
 
     private final Activity context;
     private final ListFragment listFragment;
@@ -65,56 +58,40 @@ public class DownloadLogAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Object item = getItem(position);
-        int viewType = getItemViewType(position);
-
-        if (viewType == TYPE_LOG) {
-            DownloadLogItemViewHolder holder;
-            if (convertView == null || !(convertView.getTag() instanceof DownloadLogItemViewHolder)) {
-                holder = new DownloadLogItemViewHolder(context, parent);
-                holder.itemView.setTag(holder);
-            } else {
-                holder = (DownloadLogItemViewHolder) convertView.getTag();
-            }
-            bind(holder, (DownloadStatus) item, position);
-            return holder.itemView;
-        } else if (viewType == TYPE_RUNNING) {
-            RunningDownloadViewHolder holder;
-            if (convertView == null || !(convertView.getTag() instanceof RunningDownloadViewHolder)) {
-                holder = new RunningDownloadViewHolder(context, parent);
-                holder.itemView.setTag(holder);
-            } else {
-                holder = (RunningDownloadViewHolder) convertView.getTag();
-            }
-            bind(holder, (Downloader) item, position);
-            return holder.itemView;
+        DownloadLogItemViewHolder holder;
+        if (convertView == null) {
+            holder = new DownloadLogItemViewHolder(context, parent);
+            holder.itemView.setTag(holder);
         } else {
-            DownloadHeadingViewHolder holder;
-            if (convertView == null || !(convertView.getTag() instanceof DownloadHeadingViewHolder)) {
-                holder = new DownloadHeadingViewHolder(context, parent);
-                holder.itemView.setTag(holder);
-            } else {
-                holder = (DownloadHeadingViewHolder) convertView.getTag();
-            }
-            bind(holder, item);
-            return holder.itemView;
+            holder = (DownloadLogItemViewHolder) convertView.getTag();
         }
+
+        Object item = getItem(position);
+        if (item instanceof DownloadStatus) {
+            bind(holder, (DownloadStatus) item, position);
+        } else if (item instanceof Downloader) {
+            bind(holder, (Downloader) item, position);
+        }
+        return holder.itemView;
     }
 
     private void bind(DownloadLogItemViewHolder holder, DownloadStatus status, int position) {
+        String statusText = "";
         if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-            holder.type.setText(R.string.download_type_feed);
+            statusText += context.getString(R.string.download_type_feed);
         } else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-            holder.type.setText(R.string.download_type_media);
+            statusText += context.getString(R.string.download_type_media);
         }
+        statusText += " · ";
+        statusText += DateUtils.getRelativeTimeSpanString(status.getCompletionDate().getTime(),
+                System.currentTimeMillis(), 0, 0);
+        holder.status.setText(statusText);
 
         if (status.getTitle() != null) {
             holder.title.setText(status.getTitle());
         } else {
             holder.title.setText(R.string.download_log_title_unknown);
         }
-        holder.date.setText(DateUtils.getRelativeTimeSpanString(status.getCompletionDate().getTime(),
-                System.currentTimeMillis(), 0, 0));
 
         if (status.isSuccessful()) {
             holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_success_green));
@@ -176,14 +153,20 @@ public class DownloadLogAdapter extends BaseAdapter {
         }
     }
 
-    private void bind(RunningDownloadViewHolder holder, Downloader downloader, int position) {
+    private void bind(DownloadLogItemViewHolder holder, Downloader downloader, int position) {
         DownloadRequest request = downloader.getDownloadRequest();
         holder.title.setText(request.getTitle());
         holder.secondaryActionIcon.setImageResource(R.drawable.ic_cancel);
         holder.secondaryActionButton.setContentDescription(context.getString(R.string.cancel_download_label));
+        holder.secondaryActionButton.setVisibility(View.VISIBLE);
         holder.secondaryActionButton.setTag(downloader);
         holder.secondaryActionButton.setOnClickListener(v ->
                 listFragment.onListItemClick(null, holder.itemView, position, 0));
+        holder.reason.setVisibility(View.GONE);
+        holder.tapForDetails.setVisibility(View.GONE);
+        holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.colorPrimary));
+        holder.icon.setText("{fa-arrow-circle-down}");
+        holder.icon.setContentDescription(context.getString(R.string.status_downloading_label));
 
         boolean percentageWasSet = false;
         String status = "";
@@ -210,18 +193,6 @@ public class DownloadLogAdapter extends BaseAdapter {
         holder.status.setText(status);
     }
 
-    private void bind(DownloadHeadingViewHolder holder, Object item) {
-        if (item == ITEM_RUNNING_HEADER) {
-            holder.heading.setText(R.string.downloads_running_label_detailed);
-            holder.noItems.setText(R.string.no_run_downloads_label);
-            holder.noItems.setVisibility(runningDownloads.isEmpty() ? View.VISIBLE : View.GONE);
-        } else {
-            holder.heading.setText(R.string.downloads_log_label_detailed);
-            holder.noItems.setText(R.string.no_log_downloads_label);
-            holder.noItems.setVisibility(downloadLog.isEmpty() ? View.VISIBLE : View.GONE);
-        }
-    }
-
     private boolean newerWasSuccessful(int downloadStatusIndex, int feedTypeId, long id) {
         for (int i = 0; i < downloadStatusIndex; i++) {
             DownloadStatus status = downloadLog.get(i);
@@ -234,32 +205,17 @@ public class DownloadLogAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return downloadLog.size() + runningDownloads.size() + 2;
+        return downloadLog.size() + runningDownloads.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if (position == 0) {
-            return ITEM_RUNNING_HEADER;
-        } else if (position - 1 < runningDownloads.size()) {
-            return runningDownloads.get(position - 1);
-        } else if (position - 1 - runningDownloads.size() == 0) {
-            return ITEM_LOGS_HEADER;
-        } else if (position - 2 - runningDownloads.size() < downloadLog.size()) {
-            return downloadLog.get(position - 2 - runningDownloads.size());
+        if (position < runningDownloads.size()) {
+            return runningDownloads.get(position);
+        } else if (position - runningDownloads.size() < downloadLog.size()) {
+            return downloadLog.get(position - runningDownloads.size());
         }
-        return ITEM_LOGS_HEADER; // Error
-    }
-
-    public int getItemViewType(int position) {
-        Object item = getItem(position);
-        if (item == ITEM_RUNNING_HEADER || item == ITEM_LOGS_HEADER) {
-            return TYPE_HEADER;
-        } else if (item instanceof Downloader) {
-            return TYPE_RUNNING;
-        } else {
-            return TYPE_LOG;
-        }
+        return null;
     }
 
     @Override

@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -84,6 +85,12 @@ public class DownloadLogFragment extends ListFragment {
         lv.setPadding(0, vertPadding, 0, vertPadding);
         setListShown(true);
 
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setIcon(R.drawable.ic_download);
+        emptyView.setTitle(R.string.no_log_downloads_head_label);
+        emptyView.setMessage(R.string.no_log_downloads_label);
+        emptyView.attachToListView(getListView());
+
         adapter = new DownloadLogAdapter(getActivity(), this);
         setListAdapter(adapter);
         EventBus.getDefault().register(this);
@@ -99,9 +106,9 @@ public class DownloadLogFragment extends ListFragment {
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        int viewType = adapter.getItemViewType(position);
-        if (viewType == DownloadLogAdapter.TYPE_RUNNING) {
-            DownloadRequest downloadRequest = ((Downloader) adapter.getItem(position)).getDownloadRequest();
+        Object item = adapter.getItem(position);
+        if (item instanceof Downloader) {
+            DownloadRequest downloadRequest = ((Downloader) item).getDownloadRequest();
             DownloadRequester.getInstance().cancelDownload(getActivity(), downloadRequest.getSource());
 
             if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -112,8 +119,8 @@ public class DownloadLogFragment extends ListFragment {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                         R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_SHORT);
             }
-        } else if (viewType == DownloadLogAdapter.TYPE_LOG) {
-            DownloadStatus status = (DownloadStatus) adapter.getItem(position);
+        } else if (item instanceof DownloadStatus) {
+            DownloadStatus status = (DownloadStatus) item;
             String url = "unknown";
             String message = getString(R.string.download_successful);
             if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {

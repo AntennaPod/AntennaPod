@@ -20,10 +20,8 @@
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open Settings</string>
     <string name="downloads_running_label">Running</string>
-    <string name="downloads_running_label_detailed">Running Downloads</string>
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
-    <string name="downloads_log_label_detailed">Download Log</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions List</string>
     <string name="cancel_download_label">Cancel Download</string>
@@ -335,10 +333,10 @@
     <string name="no_items_header_label">No queued episodes</string>
     <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
-    <string name="no_run_downloads_label">No running downloads. You can download episodes on the podcast details screen.</string>
     <string name="no_comp_downloads_head_label">No downloaded episodes</string>
     <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>
-    <string name="no_log_downloads_label">No download logs. When downloading an episode, you will find a log entry here.</string>
+    <string name="no_log_downloads_head_label">No download log</string>
+    <string name="no_log_downloads_label">Download logs will appear here when available.</string>
     <string name="no_history_head_label">No History</string>
     <string name="no_history_label">After you listen to an episode, it will appear here.</string>
     <string name="no_all_episodes_head_label">No Episodes</string>
