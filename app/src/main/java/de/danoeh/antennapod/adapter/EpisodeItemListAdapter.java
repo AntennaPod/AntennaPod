@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -39,12 +42,23 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     private FeedItem selectedItem;
     protected Set<FeedItem> checkedItems = new HashSet<>();
     final ActionMode[] actionMode = {null};
-    final private  Integer selectColor = Color.LTGRAY;
-
+    protected Integer selectedItemBgColor = Color.LTGRAY;
+    protected Integer unSelectedItemBgColor;
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
+        int[] attrsArray = new int[] {
+                android.R.attr.windowBackground,
+                R.attr.colorAccent
+        };
+
+        AttributeSet attrs = null;
+        TypedArray ta = getActivity().obtainStyledAttributes(null, attrsArray);
+        Resources res =  getActivity().getResources();
+        unSelectedItemBgColor = res.getColor(ta.getResourceId(0, Color.LTGRAY));
+        selectedItemBgColor = res.getColor(ta.getResourceId(1, Color.WHITE));
+
     }
 
     @Override
@@ -70,9 +84,9 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         holder.bind(item);
 
         if (actionMode[0] == null || !checkedItems.contains(item)) {
-            holder.itemView.setBackgroundColor(Color.WHITE);
+            holder.itemView.setBackgroundColor(unSelectedItemBgColor);
         } else {
-            holder.itemView.setBackgroundColor(selectColor);
+            holder.itemView.setBackgroundColor(selectedItemBgColor);
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
         }
 
@@ -89,10 +103,10 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
             } else {
                 if (checkedItems.contains(item)) {
                     checkedItems.remove(item);
-                    holder.itemView.setBackgroundColor(Color.WHITE);
+                    holder.itemView.setBackgroundColor(unSelectedItemBgColor);
                 } else {
                    checkedItems.add(item);
-                   holder.itemView.setBackgroundColor(selectColor);
+                   holder.itemView.setBackgroundColor(selectedItemBgColor);
                 }
                 actionMode[0].setTitle(getTitle());
             }
@@ -203,8 +217,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 mode.setTitle(getTitle());
                 selectAllItem = menu.findItem(R.id.select_toggle);
-                selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getActivity(), R.attr.ic_select_all));
-                selectAllItem.setTitle(R.string.select_all_label);
+                selectAllItem.setIcon(R.drawable.ic_select_all);
                 toggleSelectAllIcon(selectAllItem,false);
                 return false;
             }
@@ -271,10 +284,10 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
     protected void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
         if (toggle) {
-            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getActivity(), R.attr.ic_select_none));
+            selectAllItem.setIcon(R.drawable.ic_select_none);
             selectAllItem.setTitle(R.string.deselect_all_label);
         } else {
-            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getActivity(), R.attr.ic_select_all));
+            selectAllItem.setIcon(R.drawable.ic_select_all);
             selectAllItem.setTitle(R.string.select_all_label);
 
         }

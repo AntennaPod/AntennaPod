@@ -20,6 +20,7 @@
     <item
         android:id="@+id/filter_items"
         android:icon="@drawable/ic_filter"
+        android:iconTint="?action_icon_color"
         android:menuCategory="container"
         android:title="@string/filter"
         android:visible="false"

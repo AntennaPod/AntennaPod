@@ -242,13 +242,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
+                        .setIcon(R.drawable.ic_sort);
                 toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
+                        .setIcon(R.drawable.ic_filter);
                 toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
+                        .setIcon(R.drawable.ic_refresh);
                 toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
+                        .setIcon(R.drawable.ic_search);
+//                toolbar.getMenu().findItem(R.id.sort_items)
+//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
+//                toolbar.getMenu().findItem(R.id.filter_items)
+//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
+//                toolbar.getMenu().findItem(R.id.refresh_item)
+//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
+//                toolbar.getMenu().findItem(R.id.action_search)
+//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
             }
         };
         iconTintManager.updateTint();

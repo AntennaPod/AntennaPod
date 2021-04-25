@@ -59,7 +59,7 @@
     <item
         android:id="@+id/episode_actions"
         android:menuCategory="container"
-        android:icon="?attr/checkbox_multiple"
+        android:icon="@drawable/ic_check_multiple"
         android:title="@string/multi_select">
     </item>
 

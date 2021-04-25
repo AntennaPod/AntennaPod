@@ -52,7 +52,7 @@
             android:layout_marginBottom="16dp"
             android:accessibilityTraversalBefore="@android:id/list"
             android:contentDescription="@string/apply_action"
-            app:sdMainFabClosedSrc="?attr/batch_edit_fab_icon"
+            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
             app:sdOverlayLayout="@id/fabSDOverlay" />
     </ScrollView>
 
