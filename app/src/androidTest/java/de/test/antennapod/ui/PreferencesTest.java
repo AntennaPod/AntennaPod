@@ -86,43 +86,6 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testHideKeyboardWhenNavigatingUp() {
-        InputMethodManager imm = (InputMethodManager) mActivityRule.getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItem(
-                        allOf(hasDescendant(withHint(R.string.preference_search_hint))),
-                        click()));
-
-
-        final View[] root = {null};
-        ConditionFactory await = Awaitility.await();
-        await.pollDelay(50, MILLISECONDS).pollInterval(50, MILLISECONDS).atMost(2000, MILLISECONDS)
-                .conditionEvaluationListener(condition -> {
-                    Object object = condition.getValue();
-                    if(((boolean)object) == (true)) {
-                        await.then().atMost(1000, MILLISECONDS).until(()-> {
-                            Rect visbileBounds = new Rect();
-                            root[0].getWindowVisibleDisplayFrame(visbileBounds);
-                            return root[0].getHeight() - visbileBounds.height() > 200;
-                        });
-                    }
-                }).until(() -> {
-            root[0] = activity.findViewById(android.R.id.content);
-            Rect visbileBounds = new Rect();
-            root[0].getWindowVisibleDisplayFrame(visbileBounds);
-            return root[0].getHeight() - visbileBounds.height() > 100;
-//            return true;
-        });
-
-
-
-
-
-
-    }
-
-    @Test
     public void testSwitchTheme() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
