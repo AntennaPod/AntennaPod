@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:search="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:search="http://schemas.android.com/apk/res-auto">
 
     <com.bytehamster.lib.preferencesearch.SearchPreference
-            android:key="searchPreference"
-            search:textClearHistory="@string/preference_search_clear_history"
-            search:textHint="@string/preference_search_hint"
-            search:textNoResults="@string/preference_search_no_results" />
+        android:key="searchPreference"
+        search:textHint="@string/preference_search_hint"
+        search:textNoResults="@string/preference_search_no_results"
+        search:textClearHistory="@string/preference_search_clear_history" />
 
     <Preference
-            android:key="prefScreenInterface"
-            android:title="@string/user_interface_label"
-            android:summary="@string/user_interface_sum"
-            android:icon="?attr/ic_appearance" />
+        android:key="prefScreenInterface"
+        android:title="@string/user_interface_label"
+        android:summary="@string/user_interface_sum"
+        android:icon="?attr/ic_appearance" />
 
     <Preference
-            android:key="prefScreenPlayback"
-            android:title="@string/playback_pref"
-            android:summary="@string/playback_pref_sum"
-            android:icon="?attr/ic_settings_playback" />
+        android:key="prefScreenPlayback"
+        android:title="@string/playback_pref"
+        android:summary="@string/playback_pref_sum"
+        android:icon="?attr/ic_settings_playback" />
 
     <Preference
-            android:key="prefScreenNetwork"
-            android:title="@string/network_pref"
-            android:summary="@string/network_pref_sum"
-            android:icon="?attr/ic_network" />
+        android:key="prefScreenNetwork"
+        android:title="@string/network_pref"
+        android:summary="@string/network_pref_sum"
+        android:icon="?attr/ic_network" />
 
     <Preference
-            android:key="prefScreenGpodder"
-            android:title="@string/synchronization_pref"
-            android:summary="@string/synchronization_sum"
-            android:icon="?attr/ic_unfav" />
+        android:key="prefScreenGpodder"
+        android:title="@string/synchronization_pref"
+        android:summary="@string/synchronization_sum"
+        android:icon="?attr/ic_unfav" />
 
     <Preference
-            android:key="prefScreenStorage"
-            android:title="@string/storage_pref"
-            android:summary="@string/storage_sum"
-            android:icon="?attr/storage" />
+        android:key="prefScreenStorage"
+        android:title="@string/storage_pref"
+        android:summary="@string/storage_sum"
+        android:icon="?attr/storage" />
 
     <Preference
-            android:key="notifications"
-            android:title="@string/notification_pref_fragment"
-            android:icon="?attr/ic_notifications"/>
+        android:key="notifications"
+        android:title="@string/notification_pref_fragment"
+        android:icon="?attr/ic_notifications"/>
 
     <Preference
-            android:key="statistics"
-            android:title="@string/statistics_label"
-            android:icon="?attr/statistics" />
+        android:key="statistics"
+        android:title="@string/statistics_label"
+        android:icon="?attr/statistics" />
 
     <PreferenceCategory
-            android:key="project"
-            android:title="@string/project_pref">
+        android:key="project"
+        android:title="@string/project_pref">
         <Preference
             android:key="prefDocumentation"
             android:title="@string/documentation_support"
