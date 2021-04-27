@@ -2,8 +2,10 @@
 <de.danoeh.antennapod.view.NestedScrollableHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadingEdge="none"
+    android:fillViewport="true"
     android:nestedScrollingEnabled="true"
-    android:fillViewport="true">
+    android:overScrollMode="never">
 
     <de.danoeh.antennapod.view.ShownotesWebView
         android:id="@+id/webview"

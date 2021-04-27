@@ -73,8 +73,8 @@ public class CoverFragment extends Fragment {
         imgvCover.setOnClickListener(v -> onPlayPause());
         openDescription = root.findViewById(R.id.openDescription);
         counterweight = root.findViewById(R.id.counterweight);
-        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
-        openDescription.setOnClickListener(v -> vp.setCurrentItem(EpisodeFragment.POS_DESCR));
+        ViewPager2 vp = requireActivity().findViewById(R.id.pager);
+        openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
         return root;
     }
 

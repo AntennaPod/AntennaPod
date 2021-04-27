@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -113,8 +115,8 @@ public class ItemDescriptionFragment extends Fragment {
     public void onPause() {
         super.onPause();
         savePreference();
-        ViewPager2 vp = requireActivity().findViewById(R.id.verticalpager);
-        vp.setCurrentItem(EpisodeFragment.POS_COVER);
+        ViewPager2 vp = requireActivity().findViewById(R.id.pager);
+        vp.setCurrentItem(AudioPlayerFragment.POS_COVER);
     }
 
     private void savePreference() {

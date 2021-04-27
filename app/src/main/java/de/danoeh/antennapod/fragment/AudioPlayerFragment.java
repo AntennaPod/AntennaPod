@@ -70,10 +70,9 @@ import java.util.List;
 public class AudioPlayerFragment extends Fragment implements
         ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
-    private static final int POS_EPISODE = 0;
-    private static final int POS_CHAPTERS = 1;
-    private int NUM_CONTENT_FRAGMENTS() { return tabs.size(); }
-    public ArrayList<Integer> tabs = new ArrayList();
+    public static final int POS_COVER = 0;
+    public static final int POS_TABS = 1;
+    private static final int NUM_CONTENT_FRAGMENTS = 2;
     public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
@@ -99,8 +98,7 @@ public class AudioPlayerFragment extends Fragment implements
     private boolean showTimeLeft;
     private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
-    private TabLayoutMediator tabLayoutMediator;
-    private TabLayout tabLayout;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -140,12 +138,10 @@ public class AudioPlayerFragment extends Fragment implements
         setupPlaybackSpeedButton();
         sbPosition.setOnSeekBarChangeListener(this);
 
-        tabs.add(POS_EPISODE);
-
         pager = root.findViewById(R.id.pager);
         pager.setAdapter(new AudioPlayerPagerAdapter(this));
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
-        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS());
+        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -158,27 +154,7 @@ public class AudioPlayerFragment extends Fragment implements
             }
         });
 
-        tabLayout = root.findViewById(R.id.sliding_tabs);
-        tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
-            tab.view.setAlpha(1.0f);
-            switch (tabs.get(position)) {
-                case POS_EPISODE:
-                    tab.setText(R.string.episode_label);
-                    break;
-                case POS_CHAPTERS:
-                    tab.setText(R.string.chapters_label);
-                    break;
-                default:
-                    break;
-            }
-        });
-        tabLayoutMediator.attach();
         return root;
-    }
-
-    private void reattachTabLayout() {
-        tabLayoutMediator.detach();
-        tabLayoutMediator.attach();
     }
 
     private void setChapterDividers(Playable media) {
@@ -415,17 +391,6 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
 
-        tabs.clear();
-        tabLayout.setVisibility(View.VISIBLE);
-        tabs.add(POS_EPISODE);
-        Log.d(TAG, "updateUi: media.getChapters()"+media.getChapters());
-        if (media != null && media.getChapters() != null && media.getChapters().size() > 0) {
-            tabs.add(POS_CHAPTERS);
-        } else {
-            tabLayout.setVisibility(View.GONE);
-        }
-        reattachTabLayout();
-
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
         setChapterDividers(media);
@@ -614,18 +579,18 @@ public class AudioPlayerFragment extends Fragment implements
         public Fragment createFragment(int position) {
             Log.d(TAG, "getItem(" + position + ")");
 
-            switch (tabs.get(position)) {
-                case POS_EPISODE:
-                    return new EpisodeFragment();
+            switch (position) {
+                case POS_COVER:
+                    return new CoverFragment();
                 default:
-                case POS_CHAPTERS:
-                    return new ChaptersFragment();
+                case POS_TABS:
+                    return new EpisodeFragment();
             }
         }
 
         @Override
         public int getItemCount() {
-            return NUM_CONTENT_FRAGMENTS();
+            return NUM_CONTENT_FRAGMENTS;
         }
     }
 }

@@ -15,16 +15,6 @@
             app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="?android:attr/windowBackground"
-            app:tabBackground="?attr/selectableItemBackground"
-            app:tabMode="fixed"
-            app:tabGravity="fill"/>
-
     <FrameLayout
             android:id="@+id/playerFragment"
             android:layout_width="match_parent"
@@ -35,13 +25,14 @@
             android:elevation="8dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@id/playtime_layout"
-            android:layout_below="@id/sliding_tabs"
-            android:foreground="?android:windowContentOverlay"
-            android:layout_marginBottom="12dp"/>
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/playtime_layout"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="12dp"
+        android:foreground="?android:windowContentOverlay"
+        android:orientation="vertical" />
 
     <ImageView
             android:layout_width="match_parent"
