@@ -60,30 +60,30 @@ import androidx.viewpager2.widget.ViewPager2;
  * This solution has limitations when using multiple levels of nested scrollable elements
  * (e.g. a horizontal RecyclerView in a vertical RecyclerView in a horizontal ViewPager2).
  */ // KhaledAlharthi/NestedScrollableHost.java
-public class NestedScrollableHost extends FrameLayout {
+public class VerticalNestedScrollableHost extends FrameLayout {
 
     private ViewPager2 parentViewPager;
     private int touchSlop = 0;
     private float initialX = 0f;
     private float initialY = 0f;
 
-    public NestedScrollableHost(@NonNull Context context) {
+    public VerticalNestedScrollableHost(@NonNull Context context) {
         super(context);
         init(context);
     }
 
-    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }

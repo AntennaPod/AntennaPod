@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.danoeh.antennapod.view.NestedScrollableHost xmlns:android="http://schemas.android.com/apk/res/android"
+<de.danoeh.antennapod.view.VerticalNestedScrollableHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -10,4 +10,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</de.danoeh.antennapod.view.NestedScrollableHost>
+</de.danoeh.antennapod.view.VerticalNestedScrollableHost>

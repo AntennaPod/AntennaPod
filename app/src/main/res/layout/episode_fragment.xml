@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/sliding_tabs"
@@ -11,9 +11,6 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="?attr/selectableItemBackground"
         app:tabGravity="fill"
         app:tabMode="fixed" />
@@ -24,9 +21,6 @@
         android:layout_height="match_parent"
         android:foreground="?android:windowContentOverlay"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sliding_tabs" />
+        android:layout_below="@id/sliding_tabs" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

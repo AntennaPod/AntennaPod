@@ -72,7 +72,7 @@ public class EpisodeFragment extends Fragment {
             tab.view.setAlpha(1.0f);
             switch (tabs.get(position)) {
                 case POS_DESCR:
-                    tab.setText(R.string.episode_label);
+                    tab.setText(R.string.description_label);
                     break;
                 case POS_TRANSC:
                     //TODO
@@ -100,9 +100,13 @@ public class EpisodeFragment extends Fragment {
     private void updateUi(Playable media) {
         tabs.clear();
         tabs.add(POS_DESCR);
+
         /*if (media != null && media.getTranscript()) {
             tabs.add(POS_TRANSC);
+        } else if (userNotes) {
+            tabs.add(POS_NOTES);
         }*/
+
         reattachTabLayout();
     }
 
