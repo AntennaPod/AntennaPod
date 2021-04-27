@@ -15,7 +15,7 @@
         android:id="@+id/counterweight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="?attr/action_about"
+        app:srcCompat="@drawable/ic_info_white"
         android:layout_weight="1"
         android:padding="2dp"/>
 
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="?attr/action_about"
-        android:padding="2dp"/>
+        android:padding="2dp"
+        app:srcCompat="@drawable/ic_info" />
 
 </LinearLayout>

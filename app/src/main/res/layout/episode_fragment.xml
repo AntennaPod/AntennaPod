@@ -24,7 +24,6 @@
         android:layout_height="match_parent"
         android:foreground="?android:windowContentOverlay"
         android:orientation="horizontal"
-        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

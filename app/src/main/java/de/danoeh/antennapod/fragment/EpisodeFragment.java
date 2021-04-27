@@ -48,6 +48,9 @@ public class EpisodeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.episode_fragment, container, false);
+
+        tabs.add(POS_DESCR);
+
         ViewPager2 pager = root.findViewById(R.id.horizontalpager);
         pager.setAdapter(new EpisodeFragment.EpisodePagerAdapter(this));
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
@@ -63,8 +66,6 @@ public class EpisodeFragment extends Fragment {
                 });
             }
         });
-
-        tabs.add(POS_DESCR);
 
         tabLayout = root.findViewById(R.id.sliding_tabs);
         tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
@@ -161,7 +162,6 @@ public class EpisodeFragment extends Fragment {
         };
         controller.init();
         loadMediaInfo();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -173,7 +173,6 @@ public class EpisodeFragment extends Fragment {
         }
         controller.release();
         controller = null;
-        EventBus.getDefault().unregister(this);
     }
 }
 

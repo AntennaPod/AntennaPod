@@ -182,18 +182,12 @@
 
     </LinearLayout>
 
-    <de.danoeh.antennapod.view.NestedScrollableHost
+    <de.danoeh.antennapod.view.ShownotesWebView
         android:layout_below="@id/header"
+        android:id="@+id/webvDescription"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <de.danoeh.antennapod.view.ShownotesWebView
-            android:id="@+id/webvDescription"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:foreground="?android:windowContentOverlay" />
-
-    </de.danoeh.antennapod.view.NestedScrollableHost>
+        android:layout_height="match_parent"
+        android:foreground="?android:windowContentOverlay" />
 
     <FrameLayout
         android:layout_width="match_parent"
