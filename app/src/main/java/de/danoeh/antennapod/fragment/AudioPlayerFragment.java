@@ -593,4 +593,18 @@ public class AudioPlayerFragment extends Fragment implements
             return NUM_CONTENT_FRAGMENTS;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backToCover(false);
+    }
+
+    public void backToCover(Boolean smoothScroll) {
+        if (pager == null) {
+            return;
+        }
+
+        pager.setCurrentItem(AudioPlayerFragment.POS_COVER, smoothScroll);
+    }
 }
