@@ -113,13 +113,6 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
         txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        txtvEpisodeTitle.setOnClickListener(v -> {
-            FeedItem feedItem = ((FeedMedia) media).getItem();
-            if (feedItem != null) {
-                ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
-                shareDialog.show(requireActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
-            }
-        });
         txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
