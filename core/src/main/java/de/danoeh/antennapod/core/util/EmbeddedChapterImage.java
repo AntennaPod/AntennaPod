@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.text.TextUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

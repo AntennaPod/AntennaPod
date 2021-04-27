@@ -13,9 +13,9 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -222,7 +222,7 @@ public final class DBTasks {
             }).start();
         }
         if (!normalFeeds.isEmpty()) {
-            DownloadRequester.getInstance().downloadFeeds(context, feeds, loadAllPages, force, initiatedByUser);
+            DownloadRequester.getInstance().downloadFeeds(context, normalFeeds, loadAllPages, force, initiatedByUser);
         }
     }
 

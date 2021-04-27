@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="VectorPath">
+        <ignore path="res/drawable/ic_settings.xml" />
+        <ignore path="res/drawable/ic_settings_white.xml" />
+    </issue>
+    
+    <issue id="MissingDefaultResource">
+        <ignore path="**/values-**/strings.xml" />
+    </issue>
+</lint>

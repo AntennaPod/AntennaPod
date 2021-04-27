@@ -40,7 +40,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
@@ -222,10 +222,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) skipAnimationView.getLayoutParams();
         if (isForward) {
-            skipAnimationView.setImageResource(R.drawable.ic_av_fast_forward_white_80dp);
+            skipAnimationView.setImageResource(R.drawable.ic_fast_forward_video_white);
             params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         } else {
-            skipAnimationView.setImageResource(R.drawable.ic_av_fast_rewind_white_80dp);
+            skipAnimationView.setImageResource(R.drawable.ic_fast_rewind_video_white);
             params.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
         }
 
@@ -421,7 +421,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
-        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders_white);
+        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         return true;
     }
 

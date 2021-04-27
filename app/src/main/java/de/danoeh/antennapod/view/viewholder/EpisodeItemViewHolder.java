@@ -19,9 +19,9 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
@@ -133,7 +134,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.GONE);
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
 
-        if (media.isCurrentlyPlaying()) {
+        if (FeedItemUtil.isCurrentlyPlaying(media)) {
             itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
         } else {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
@@ -152,8 +153,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         duration.setText(Converter.getDurationStringLong(media.getDuration()));
         duration.setContentDescription(activity.getString(R.string.chapter_duration,
                 Converter.getDurationStringLocalized(activity, media.getDuration())));
-        if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
+        if (FeedItemUtil.isPlaying(item.getMedia()) || item.isInProgress()) {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+            int remainingTime = Math.max(media.getDuration() - media.getPosition(), 0);
             progressBar.setProgress(progress);
             position.setText(Converter.getDurationStringLong(media.getPosition()));
             position.setContentDescription(activity.getString(R.string.position,
@@ -161,7 +163,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
             if (UserPreferences.shouldShowRemainingTime()) {
-                duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
+                duration.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
                 duration.setContentDescription(activity.getString(R.string.chapter_duration,
                         Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
             }
@@ -194,14 +196,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private void updateDuration(PlaybackPositionEvent event) {
         int currentPosition = event.getPosition();
         int timeDuration = event.getDuration();
-        int remainingTime = event.getDuration() - event.getPosition();
+        int remainingTime = Math.max(timeDuration - currentPosition, 0);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || timeDuration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
         if (UserPreferences.shouldShowRemainingTime()) {
-            duration.setText("-" + Converter.getDurationStringLong(remainingTime));
+            duration.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
             duration.setText(Converter.getDurationStringLong(timeDuration));
         }
@@ -212,7 +214,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public boolean isCurrentlyPlayingItem() {
-        return item.getMedia() != null && item.getMedia().isCurrentlyPlaying();
+        return item.getMedia() != null && FeedItemUtil.isCurrentlyPlaying(item.getMedia());
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {

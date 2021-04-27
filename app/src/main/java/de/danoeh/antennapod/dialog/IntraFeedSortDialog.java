@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.model.feed.SortOrder;
 
 public abstract class IntraFeedSortDialog {
 

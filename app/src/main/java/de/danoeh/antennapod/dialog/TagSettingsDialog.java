@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
 import de.danoeh.antennapod.view.ItemOffsetDecoration;
@@ -81,7 +81,7 @@ public class TagSettingsDialog extends DialogFragment {
         public TagSelectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
             chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_delete_black);
+            chip.setCloseIconResource(R.drawable.ic_delete);
             return new TagSelectionAdapter.ViewHolder(chip);
         }
 

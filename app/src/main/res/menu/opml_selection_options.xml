@@ -4,14 +4,14 @@
 
     <item
         android:id="@id/select_all_item"
-        android:icon="?attr/ic_select_all"
+        android:icon="@drawable/ic_select_all"
         android:title="@string/select_all_label"
         custom:showAsAction="ifRoom">
     </item>
 
     <item
         android:id="@id/deselect_all_item"
-        android:icon="?attr/ic_select_none"
+        android:icon="@drawable/ic_select_none"
         android:title="@string/deselect_all_label"
         custom:showAsAction="ifRoom">
     </item>

@@ -22,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -61,7 +61,7 @@ public class RunningDownloadsFragment extends ListFragment {
         setListAdapter(adapter);
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.av_download);
+        emptyView.setIcon(R.drawable.ic_download);
         emptyView.setTitle(R.string.no_run_downloads_head_label);
         emptyView.setMessage(R.string.no_run_downloads_label);
         emptyView.attachToListView(getListView());

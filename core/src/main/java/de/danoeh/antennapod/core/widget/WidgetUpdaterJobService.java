@@ -7,7 +7,7 @@ import androidx.core.app.SafeJobIntentService;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 
 public class WidgetUpdaterJobService extends SafeJobIntentService {

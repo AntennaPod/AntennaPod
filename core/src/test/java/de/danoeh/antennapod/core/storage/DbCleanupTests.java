@@ -15,9 +15,9 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.test.filters.MediumTest;
 
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.test.antennapod.EspressoTestUtils;
 import junit.framework.AssertionFailedError;
 
@@ -19,15 +19,15 @@ import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.test.antennapod.util.service.download.HTTPBin;
 import org.junit.After;
 import org.junit.Before;

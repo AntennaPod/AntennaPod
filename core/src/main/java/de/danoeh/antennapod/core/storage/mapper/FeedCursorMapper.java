@@ -4,10 +4,10 @@ import android.database.Cursor;
 
 import androidx.annotation.NonNull;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.model.feed.SortOrder;
 
 /**
  * Converts a {@link Cursor} to a {@link Feed} object.
@@ -63,7 +63,7 @@ public abstract class FeedCursorMapper {
                 cursor.getInt(indexLastUpdateFailed) > 0
         );
 
-        FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
+        FeedPreferences preferences = FeedPreferencesCursorMapper.convert(cursor);
         feed.setPreferences(preferences);
         return feed;
     }

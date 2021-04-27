@@ -57,12 +57,12 @@ import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -73,10 +73,12 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
@@ -91,7 +93,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -540,6 +542,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 playableLoaded -> {
+                                    if (!playable.getIdentifier().equals(
+                                            PlaybackPreferences.getCurrentlyPlayingFeedMediaId())) {
+                                        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
+                                    }
                                     mediaPlayer.playMediaObject(playableLoaded, stream, startWhenPrepared,
                                             prepareImmediately);
                                     addPlayableToQueue(playableLoaded);
@@ -609,17 +615,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 NotificationUtils.CHANNEL_ID_USER_ACTION)
-                .setSmallIcon(R.drawable.ic_stream_white)
+                .setSmallIcon(R.drawable.ic_notification_stream)
                 .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
                 .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_stream_white,
+                .addAction(R.drawable.ic_notification_stream,
                         getString(R.string.confirm_mobile_streaming_button_once),
                         pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_stream_white,
+                .addAction(R.drawable.ic_notification_stream,
                         getString(R.string.confirm_mobile_streaming_button_always),
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
@@ -970,6 +976,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
+                if (playable instanceof FeedMedia) {
+                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, true);
+                }
                 playable.onPlaybackPause(getApplicationContext());
             }
         }
@@ -1041,6 +1050,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackPreferences.writeNoMediaPlaying();
             if (!isCasting) {
                 stateManager.stopForeground(true);
+                stateManager.stopService();
             }
         }
         if (mediaType == null) {
@@ -1090,7 +1100,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedMedia media = (FeedMedia) playable;
         FeedItem item = media.getItem();
-        boolean smartMarkAsPlayed = media.hasAlmostEnded();
+        boolean smartMarkAsPlayed = FeedItemUtil.hasAlmostEnded(media);
         if (!ended && smartMarkAsPlayed) {
             Log.d(TAG, "smart mark as played");
         }
@@ -1102,8 +1112,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || smartMarkAsPlayed) {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
+            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 
@@ -1116,8 +1128,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()
-                        && (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                FeedPreferences.AutoDeleteAction action =
+                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
+                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
+                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }
@@ -1434,10 +1450,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
-            playable.saveCurrentPosition(
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()),
-                    position,
-                    System.currentTimeMillis());
+            PlayableUtils.saveCurrentPosition(playable, position, System.currentTimeMillis());
         }
     }
 

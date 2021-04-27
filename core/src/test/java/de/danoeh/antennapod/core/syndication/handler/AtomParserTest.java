@@ -7,9 +7,9 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.File;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -30,7 +30,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLinks().get(0).url);
         assertEquals("http://example.com/picture", feed.getImageUrl());
         assertEquals(10, feed.getItems().size());
         for (int i = 0; i < feed.getItems().size(); i++) {
@@ -62,7 +62,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLinks().get(0).url);
         assertEquals("https://example.com/image.png", feed.getImageUrl());
         assertEquals(0, feed.getItems().size());
     }

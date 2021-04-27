@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 public class StreamingConfirmationDialog {

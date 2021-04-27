@@ -74,7 +74,6 @@
   <string name="author_label">Forfatter(e)</string>
   <string name="language_label">Sprog</string>
   <string name="url_label">Webadresse</string>
-  <string name="cover_label">Billede</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
   <string name="needs_storage_permission">Tilladelse til lageradgang kræves for denne handling</string>
@@ -92,7 +91,7 @@
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk overførsel</i>-indstilling vil automatisk blive anvendt på nye udsendelser.\nVil du også anvende den på tidligere udsendelser?</string>
   <string name="auto_delete_label">Slet udsendelser automatisk</string>
   <string name="feed_volume_reduction">Lydstyrkereduktion</string>
-  <string name="feed_volume_reduction_summary">Skrug lyd ned for episoder i dette feed</string>
+  <string name="feed_volume_reduction_summary">Skrug lyd ned for episoder i dette feed: %1$s</string>
   <string name="feed_volume_reduction_off">Fra</string>
   <string name="feed_volume_reduction_light">Lidt</string>
   <string name="feed_volume_reduction_heavy">Meget</string>

@@ -4,14 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -33,9 +33,9 @@ public class DownloadActionButton extends ItemActionButton {
     }
 
     @Override
-    @AttrRes
+    @DrawableRes
     public int getDrawable() {
-        return R.attr.av_download;
+        return R.drawable.ic_download;
     }
 
     @Override

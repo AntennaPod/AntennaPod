@@ -27,7 +27,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 

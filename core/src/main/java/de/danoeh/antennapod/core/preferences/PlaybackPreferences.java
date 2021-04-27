@@ -6,13 +6,13 @@ import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import org.greenrobot.eventbus.EventBus;
 
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Provides access to preferences set by the playback service. A private

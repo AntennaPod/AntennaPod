@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import androidx.annotation.NonNull;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.FeedFile;
 
 /**
  * Allow callers to query the states of downloads, but not affect them.

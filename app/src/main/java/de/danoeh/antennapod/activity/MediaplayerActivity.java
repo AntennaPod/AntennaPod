@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.view.PlayButton;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,8 +33,8 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -46,7 +47,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
@@ -72,7 +73,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     SeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
@@ -123,8 +124,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
@@ -513,6 +514,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         }
         butPlay = findViewById(R.id.butPlay);
+        butPlay.setIsVideoScreen(true);
         butFF = findViewById(R.id.butFF);
         txtvFF = findViewById(R.id.txtvFF);
         if (txtvFF != null) {

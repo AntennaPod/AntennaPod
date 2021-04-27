@@ -18,6 +18,7 @@
   <string name="downloads_log_label">日誌</string>
   <string name="subscriptions_label">訂閱</string>
   <string name="subscriptions_list_label">訂閱列表</string>
+  <string name="cancel_download_label">取消下載</string>
   <string name="playback_history_label">播放歷史</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">登入 gpodder.net</string>
@@ -54,6 +55,8 @@
   <string name="drawer_feed_counter_none">沒有</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">找不到相容的 App</string>
+  <string name="export_logs_menu_title">匯出詳細記錄</string>
+  <string name="confirm_export_log_dialog_message">詳細記錄中可能包含您的隱私資訊，例如訂閱列表等等</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">在瀏覽器中打開</string>
   <string name="copy_url_label">複製網址</string>
@@ -71,7 +74,6 @@
   <string name="author_label">作者</string>
   <string name="language_label">語言</string>
   <string name="url_label">網址</string>
-  <string name="cover_label">圖片</string>
   <string name="error_label">錯誤</string>
   <string name="error_msg_prefix">發生錯誤：</string>
   <string name="needs_storage_permission">此操作需要儲存空間權限</string>
@@ -93,11 +95,13 @@
   <string name="feed_volume_reduction_off">關閉</string>
   <string name="feed_volume_reduction_light">輕</string>
   <string name="feed_volume_reduction_heavy">重</string>
+  <string name="parallel_downloads">同時一次下載 %1$d 集</string>
   <string name="feed_auto_download_global">預設值</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
   <string name="send_label">發送中…</string>
   <string name="episode_cleanup_never">不予刪除</string>
+  <string name="episode_cleanup_except_favorite_removal">若未標記為最愛</string>
   <string name="episode_cleanup_queue_removal">若未列入待播清單</string>
   <string name="episode_cleanup_after_listening">聽完後</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -110,6 +114,15 @@
     <item quantity="other">選取了 %d 集</item>
   </plurals>
   <string name="loading_more">載入更多…</string>
+  <string name="episode_notification">單集通知</string>
+  <string name="episode_notification_summary">當新單集推出時顯示通知訊息</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="other">%2$s 發表了 %1$d 則新單集</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="other">新單集</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">您訂閱的 Podcast 推出新單集了。</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部標記為已播放</string>
   <string name="mark_all_read_msg">全部標記為已播放</string>
@@ -141,6 +154,7 @@
   <string name="hide_not_queued_episodes_label">未列入待播清單</string>
   <string name="hide_has_media_label">包含媒體</string>
   <string name="filtered_label">已過濾</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} 前次更新失敗，點擊查閱詳情。</string>
   <string name="open_podcast">打開 Podcast</string>
   <string name="please_wait_for_data">資料載入中，請稍候</string>
   <!--actions on feeditems-->
@@ -195,9 +209,12 @@
   <string name="download_running">下載中</string>
   <string name="download_error_details">詳情</string>
   <string name="download_error_details_message">%1$s \n\n檔案網址：\n%2$s</string>
+  <string name="download_error_tap_for_details">點擊查閱詳情。</string>
   <string name="download_error_device_not_found">沒找到儲存空間</string>
+  <string name="download_error_insufficient_space">您設備的儲存空間不夠了。</string>
   <string name="download_error_http_data_error">HTTP 資料有誤</string>
   <string name="download_error_error_unknown">位置錯誤</string>
+  <string name="download_error_parser_exception">Podcast 主機傳了錯誤的資料過來。</string>
   <string name="download_error_unsupported_type">不支援此來源類型</string>
   <string name="download_error_connection_error">連接錯誤</string>
   <string name="download_error_unauthorized">驗證失敗</string>
@@ -313,6 +330,7 @@
   <string name="external_elements">外部元素</string>
   <string name="interruptions">中斷</string>
   <string name="playback_control">播放控制</string>
+  <string name="reassign_hardware_buttons">設定硬體按鈕功能</string>
   <string name="preference_search_hint">搜尋…</string>
   <string name="preference_search_no_results">無結果</string>
   <string name="preference_search_clear_history">清除歷史紀錄</string>
@@ -321,6 +339,14 @@
   <string name="pref_pauseOnDisconnect_sum">耳機或藍牙斷開連接時暫停播放</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
+  <string name="pref_hardware_forward_button_title">快轉鈕</string>
+  <string name="pref_hardware_forward_button_summary">自訂快轉鈕的功能</string>
+  <string name="pref_hardware_previous_button_title">倒轉鈕</string>
+  <string name="pref_hardware_previous_button_summary">自訂倒轉鈕的功能</string>
+  <string name="button_action_fast_forward">快轉</string>
+  <string name="button_action_rewind">倒轉</string>
+  <string name="button_action_skip_episode">跳過這集</string>
+  <string name="button_action_restart_episode">重新播放</string>
   <string name="pref_followQueue_sum">當播放完畢時自動跳至待播清單中的下一集</string>
   <string name="pref_auto_delete_sum">播放完畢後刪除該集</string>
   <string name="pref_auto_delete_title">自動刪除</string>
@@ -341,6 +367,9 @@
   <string name="pref_autoUpdateIntervallOrTime_Interval">設定週期</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">設定每日定時</string>
   <string name="pref_autoUpdateIntervallOrTime_at">於 %1$s</string>
+  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <item quantity="other">每 %d 時</item>
+  </plurals>
   <string name="pref_followQueue_title">連續播放</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳機或藍牙裝置拔除時</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">接上耳機時繼續播放</string>
@@ -374,6 +403,9 @@
   <string name="pref_episode_cache_title">暫存集數</string>
   <string name="pref_episode_cache_summary">在本機中可以暫存的集數，若達上限則將停止自動下載。</string>
   <string name="pref_episode_cover_title">使用單集的封面圖</string>
+  <string name="pref_episode_cover_summary">在單集有專屬封面的情況下使用該封面圖。如果取消，則一律使用 Podcast 的封面圖</string>
+  <string name="pref_show_remain_time_title">顯示剩餘時間</string>
+  <string name="pref_show_remain_time_summary">勾選時顯示剩餘播放時間，不勾選時顯示單集的總時間。</string>
   <string name="pref_theme_title_use_system">依據系統設定</string>
   <string name="pref_theme_title_light">淡色</string>
   <string name="pref_theme_title_dark">深色</string>
@@ -426,6 +458,7 @@
   <string name="pref_smart_mark_as_played_disabled">停用</string>
   <string name="pref_image_cache_size_title">圖片快取容量</string>
   <string name="pref_image_cache_size_sum">設定圖片的快取容量</string>
+  <string name="documentation_support">文件與支援資訊</string>
   <string name="visit_user_forum">使用者論壇</string>
   <string name="bug_report_title">回報錯誤</string>
   <string name="open_bug_tracker">開啟錯誤追蹤</string>
@@ -443,6 +476,8 @@
   <string name="pref_cast_message_free_flavor">Chromecast 相關支援需要其他第三方的私權軟體，所以在此版 AntennaPod 中停用。</string>
   <string name="pref_enqueue_downloaded_title">下載後加入待播清單</string>
   <string name="pref_enqueue_downloaded_summary">下載單集以後自動加入待播清單</string>
+  <string name="media_player_builtin">內建 Android 播放器 (已棄用)</string>
+  <string name="media_player_sonic">Sonic Media Player (已棄用) </string>
   <string name="media_player_exoplayer_recommended">ExoPlayer（推薦使用）</string>
   <string name="media_player_switch_to_exoplayer">切換至 ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">已切換至 ExoPlayer</string>
@@ -531,6 +566,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">設定睡眠定時</string>
   <string name="disable_sleeptimer_label">停用睡眠定時</string>
+  <string name="extend_sleep_timer_label">+%d 分鐘</string>
   <string name="sleep_timer_label">睡眠定時</string>
   <string name="time_dialog_invalid_input">輸入無效，請輸入數值</string>
   <string name="shake_to_reset_label">晃動手機以重置計時</string>
@@ -556,10 +592,20 @@
   <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
   <string name="gpodnetauth_login_title">登入</string>
   <string name="gpodnetauth_login_butLabel">登入</string>
+  <string name="gpodnetauth_encryption_warning">密碼與資料都沒有加密！</string>
+  <string name="create_account">建立帳號</string>
   <string name="username_label">帳號</string>
   <string name="password_label">密碼</string>
+  <string name="gpodnet_description">Gpodder.net 是開放源碼的 Podcast 同步服務，並非 AntennaPod 專案的一部分。</string>
+  <string name="gpodnetauth_server_official">gpodder.net 官方主機</string>
+  <string name="gpodnetauth_server_custom">自訂主機</string>
+  <string name="gpodnetauth_host">主機名稱</string>
+  <string name="gpodnetauth_select_server">選擇主機</string>
   <string name="gpodnetauth_device_descr">為您的 gpodder.net 帳號建立新設備或選取既有設備：</string>
+  <string name="gpodnetauth_device_name">裝置名稱</string>
   <string name="gpodnetauth_device_caption_errorEmpty">標題不能留白</string>
+  <string name="gpodnetauth_existing_devices">現存裝置</string>
+  <string name="gpodnetauth_create_device">新增裝置</string>
   <string name="gpodnetauth_device_butChoose">選擇</string>
   <string name="gpodnetauth_finish_descr">恭喜，您的 gpodder.net 帳號已經成功連結到當前的設備！AntennaPod 今後將自動與 gpodder.net 同步此設備的訂閱清單。</string>
   <string name="gpodnetauth_finish_butsyncnow">現在開始同步</string>
@@ -614,6 +660,7 @@
   <string name="switch_pages">切換不同頁面</string>
   <string name="position">播放進度：%1$s</string>
   <string name="apply_action">套用</string>
+  <string name="play_chapter">播放章節</string>
   <!--Feed information screen-->
   <string name="authentication_label">驗證</string>
   <string name="authentication_descr">修改此 Podcast 的帳號與密碼。</string>
@@ -748,14 +795,22 @@
   <string name="cast_failed_receiver_player_error">Cast 播放器發生錯誤</string>
   <string name="cast_failed_media_error_skipping">播放錯誤，跳過此項…</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">錯誤</string>
+  <string name="notification_group_news">新單集到</string>
   <string name="notification_channel_user_action">需要介入</string>
   <string name="notification_channel_user_action_description">需要您有進一步行動（比方說輸入密碼）時顯示。</string>
   <string name="notification_channel_downloading">下載資訊</string>
   <string name="notification_channel_downloading_description">下載時顯示</string>
   <string name="notification_channel_playing">現正播放</string>
   <string name="notification_channel_playing_description">允許播放控制。這是您在播放 Podcast 時會看到的主要通知。</string>
+  <string name="notification_channel_download_error">下載失敗</string>
+  <string name="notification_channel_download_error_description">當下載或更新出錯時顯示。</string>
+  <string name="notification_channel_sync_error">同步失敗</string>
   <string name="notification_channel_sync_error_description">在 gpodder 同步發生錯誤時顯示</string>
+  <string name="notification_channel_auto_download">自動下載完畢</string>
   <string name="notification_channel_episode_auto_download">自動下載後顯示</string>
+  <string name="notification_channel_new_episode">新單集</string>
+  <string name="notification_channel_new_episode_description">啟用通知的情形下，有新單集上架時顯示通知訊息</string>
   <!--Widget settings-->
   <string name="widget_settings">小工具設定</string>
   <string name="widget_create_button">建立小工具</string>
