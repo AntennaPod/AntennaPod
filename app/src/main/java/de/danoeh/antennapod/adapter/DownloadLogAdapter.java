@@ -108,7 +108,7 @@ public class DownloadLogAdapter extends BaseAdapter {
             holder.reason.setVisibility(View.VISIBLE);
             holder.tapForDetails.setVisibility(View.VISIBLE);
 
-            if (newerWasSuccessful(position - 2 - runningDownloads.size(),
+            if (newerWasSuccessful(position - runningDownloads.size(),
                     status.getFeedfileType(), status.getFeedfileId())) {
                 holder.secondaryActionButton.setVisibility(View.INVISIBLE);
                 holder.secondaryActionButton.setOnClickListener(null);
