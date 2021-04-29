@@ -84,7 +84,7 @@ public class DownloadLogAdapter extends BaseAdapter {
         }
         statusText += " · ";
         statusText += DateUtils.getRelativeTimeSpanString(status.getCompletionDate().getTime(),
-                System.currentTimeMillis(), 0, 0);
+                System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, 0);
         holder.status.setText(statusText);
 
         if (status.getTitle() != null) {
