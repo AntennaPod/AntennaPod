@@ -19,7 +19,6 @@
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open Settings</string>
-    <string name="downloads_running_label">Running</string>
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
     <string name="subscriptions_label">Subscriptions</string>
@@ -333,8 +332,6 @@
     <string name="no_items_header_label">No queued episodes</string>
     <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
-    <string name="no_run_downloads_head_label">No downloads running</string>
-    <string name="no_run_downloads_label">You can download episodes on the podcast details screen.</string>
     <string name="no_comp_downloads_head_label">No downloaded episodes</string>
     <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>
     <string name="no_log_downloads_head_label">No download log</string>
