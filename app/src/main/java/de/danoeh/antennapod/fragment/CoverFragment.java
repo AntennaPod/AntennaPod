@@ -30,8 +30,8 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
@@ -246,7 +246,7 @@ public class CoverFragment extends Fragment {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
-        Toast.makeText(requireContext(), getResources().getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(getResources().getString(R.string.copied_to_clipboard), Snackbar.LENGTH_SHORT);
         return true;
     }
 }
