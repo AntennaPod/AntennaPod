@@ -1,28 +1,16 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.util.AttributeSet;
-import android.view.ActionMode;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.fragment.ItemPagerFragment;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -31,34 +19,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.fragment.ItemPagerFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+
 /**
  * List adapter for the list of new episodes.
  */
-public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemViewHolder>
+public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHolder>
         implements View.OnCreateContextMenuListener {
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
+    private Set<FeedItem> selectedItems = new HashSet<>();
     private FeedItem selectedItem;
-    protected Set<FeedItem> checkedItems = new HashSet<>();
-    final ActionMode[] actionMode = {null};
-    protected Integer selectedItemBgColor = Color.LTGRAY;
-    protected Integer unSelectedItemBgColor;
+    int selectedPosition = 0; // used to init actionMode
+
     public EpisodeItemListAdapter(MainActivity mainActivity) {
-        super();
+        super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
-        int[] attrsArray = new int[] {
-                android.R.attr.windowBackground,
-                R.attr.colorAccent
-        };
-
-        AttributeSet attrs = null;
-        TypedArray ta = getActivity().obtainStyledAttributes(null, attrsArray);
-        Resources res =  getActivity().getResources();
-        unSelectedItemBgColor = res.getColor(ta.getResourceId(0, Color.LTGRAY));
-        selectedItemBgColor = res.getColor(ta.getResourceId(1, Color.WHITE));
-
     }
 
     @Override
@@ -83,45 +67,29 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         FeedItem item = episodes.get(pos);
         holder.bind(item);
 
-        if (actionMode[0] == null || !checkedItems.contains(item)) {
-            holder.itemView.setBackgroundColor(unSelectedItemBgColor);
-        } else {
-            holder.itemView.setBackgroundColor(selectedItemBgColor);
-            holder.secondaryActionButton.setVisibility(View.INVISIBLE);
-        }
-
-        if (actionMode[0] != null) {
-            holder.secondaryActionButton.setVisibility(View.INVISIBLE);
-        }
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
-
-            if (activity != null && actionMode[0] == null) {
+            if (activity != null && !inActionMode()) {
                 long[] ids = FeedItemUtil.getIds(episodes);
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-                if (checkedItems.contains(item)) {
-                    checkedItems.remove(item);
-                    holder.itemView.setBackgroundColor(unSelectedItemBgColor);
-                } else {
-                   checkedItems.add(item);
-                   holder.itemView.setBackgroundColor(selectedItemBgColor);
-                }
-                actionMode[0].setTitle(getTitle());
+               selectHandler(pos);
             }
-
         });
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
             selectedItem = item;
+            selectedPosition = pos;
             return false;
         });
 
+
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
-    }
+        super.onBindViewHolder(holder, pos);
 
+    }
 
     @Override
     public void onViewRecycled(@NonNull EpisodeItemViewHolder holder) {
@@ -167,7 +135,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (actionMode[0] == null) {
+        if (!inActionMode()) {
             MenuInflater inflater = mainActivityRef.get().getMenuInflater();
             inflater.inflate(R.menu.feeditemlist_context, menu);
             menu.setHeaderTitle(selectedItem.getTitle());
@@ -175,86 +143,20 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         }
     }
 
+    @Override
+    public void onSelectChanged(int pos, boolean selected) {
+        super.onSelectChanged(pos, selected);
+        FeedItem item = episodes.get(pos);
+        if (selected) {
+            selectedItems.add(item);
+        } else {
+            selectedItems.remove(item);
+        }
+    }
+
     public void updateItems(List<FeedItem> items) {
         episodes = items;
         notifyDataSetChanged();
-    }
-
-    /**
-     * Callbacks called by subclasses for custom behavior when starting action mode
-     */
-    public void onCreateActionMode() {}
-
-    /**
-     * Callbacks called by subclasses for custom behavior when ending action mode
-     */
-    public void onDestroyActionMode_() {}
-
-    public Set<FeedItem> getCheckedItems() {
-        return checkedItems;
-    }
-
-
-    public void startActionMode(FeedItem selectedItem) {
-        onCreateActionMode();
-         notifyDataSetChanged();
-        if (checkedItems.contains(selectedItem)) {
-        checkedItems.remove(selectedItem);
-        } else {
-            checkedItems.add(selectedItem);
-        }
-        notifyDataSetChanged();
-        actionMode[0] = getActivity().startActionMode(new ActionMode.Callback() {
-            private MenuItem selectAllItem = null;
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.multi_select_options, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                mode.setTitle(getTitle());
-                selectAllItem = menu.findItem(R.id.select_toggle);
-                selectAllItem.setIcon(R.drawable.ic_select_all);
-                toggleSelectAllIcon(selectAllItem,false);
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                if (item.getItemId() == R.id.select_toggle) {
-                    if (checkedItems.size() == episodes.size()) {
-                        checkNone();
-                        toggleSelectAll(selectAllItem, false);
-                    } else {
-                        checkAll();
-                        toggleSelectAll(selectAllItem, true);
-                    }
-                    mode.setTitle(getTitle());
-                }
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                onDestroyActionMode_();
-                actionMode[0] = null;
-                checkedItems.clear();
-                notifyDataSetChanged();
-
-            }
-        });
-    }
-
-    /**
-     * Closes action mode
-     */
-    public void close() {
-        if (actionMode[0] != null) {
-            actionMode[0].finish();
-        }
     }
 
     protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
@@ -270,43 +172,11 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         return mainActivityRef.get();
     }
 
-
-    protected void toggleSelectAll(MenuItem selectAllItem, boolean toggle) {
-        if (toggle) {
-            checkAll();
-            toggleSelectAllIcon(selectAllItem, toggle);
-        } else {
-            checkNone();
-            toggleSelectAllIcon(selectAllItem, toggle);
-
-        }
+    public int getSelectedPosition() {
+        return selectedPosition;
     }
 
-    protected void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
-        if (toggle) {
-            selectAllItem.setIcon(R.drawable.ic_select_none);
-            selectAllItem.setTitle(R.string.deselect_all_label);
-        } else {
-            selectAllItem.setIcon(R.drawable.ic_select_all);
-            selectAllItem.setTitle(R.string.select_all_label);
-
-        }
-    }
-    protected void checkAll() {
-        for (FeedItem episode : episodes) {
-            if (!checkedItems.contains(episode.getId())) {
-                checkedItems.add(episode);
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-    protected void checkNone() {
-        checkedItems.clear();
-        notifyDataSetChanged();
-    }
-
-    protected String getTitle() {
-        return checkedItems.size() + " / " + episodes.size() + " selected";
+    public Set<FeedItem> getSelectedItems() {
+        return selectedItems;
     }
 }

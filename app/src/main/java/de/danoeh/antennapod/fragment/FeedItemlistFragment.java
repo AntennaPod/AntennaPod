@@ -115,6 +115,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
+
     // fab speed dial
 
     /**
@@ -135,7 +136,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             this.action = action;
         }
     }
-    private final List<? extends ActionBinding> actionBindings;
+//    private final List<? extends ActionBinding> actionBindings;
 
     private SpeedDialView mSpeedDialView;
     private int actions;
@@ -160,20 +161,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
 
     public FeedItemlistFragment() {
-        actionBindings = Arrays.asList(
-                new ActionBinding(ACTION_ADD_TO_QUEUE,
-                        R.id.add_to_queue_batch, this::queueChecked),
-                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
-                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
-                new ActionBinding(ACTION_MARK_PLAYED,
-                        R.id.mark_read_batch, this::markedCheckedPlayed),
-                new ActionBinding(ACTION_MARK_UNPLAYED,
-                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
-                new ActionBinding(ACTION_DOWNLOAD,
-                        R.id.download_batch, this::downloadChecked),
-                new ActionBinding(ACTION_DELETE,
-                        R.id.delete_batch, this::deleteChecked)
-        );
+//        actionBindings = Arrays.asList(
+//                new ActionBinding(ACTION_ADD_TO_QUEUE,
+//                        R.id.add_to_queue_batch, this::queueChecked),
+//                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
+//                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
+//                new ActionBinding(ACTION_MARK_PLAYED,
+//                        R.id.mark_read_batch, this::markedCheckedPlayed),
+//                new ActionBinding(ACTION_MARK_UNPLAYED,
+//                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
+//                new ActionBinding(ACTION_DOWNLOAD,
+//                        R.id.download_batch, this::downloadChecked),
+//                new ActionBinding(ACTION_DELETE,
+//                        R.id.delete_batch, this::deleteChecked)
+//        );
     }
 
     private void action() {
@@ -304,11 +305,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
 
         // show only specified actions, and bind speed dial UIs to the actual logic
-        for (ActionBinding binding : actionBindings) {
-            if ((actions & binding.flag) == 0) {
-                mSpeedDialView.removeActionItemById(binding.actionItemId);
-            }
-        }
+//        for (ActionBinding binding : actionBindings) {
+//            if ((actions & binding.flag) == 0) {
+//                mSpeedDialView.removeActionItemById(binding.actionItemId);
+//            }
+//        }
 
         mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
@@ -318,7 +319,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onToggleChanged(boolean open) {
-                if (open && (adapter.getCheckedItems().size() == 0)) {
+                if (open && adapter.getSelectedItems().size() == 0) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                             Snackbar.LENGTH_SHORT);
                     mSpeedDialView.close();
@@ -330,21 +331,74 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             for (FeedItem episode : getCheckedItems()) {
                 checkedIds.add(episode.getId());
             }
-            ActionBinding selectedBinding = null;
-            for (ActionBinding binding : actionBindings) {
-                if (actionItem.getId() == binding.actionItemId) {
-                    selectedBinding = binding;
-                    break;
-                }
-            }
-            if (selectedBinding != null) {
-                selectedBinding.action.run();
-                mSpeedDialView.close();
-                adapter.close();
+//            ActionBinding selectedBinding = null;
+//            for (ActionBinding binding : actionBindings) {
+//                if (actionItem.getId() == binding.actionItemId) {
+//                    selectedBinding = binding;
+//                    break;
+//                }
+//            }
+//            new ActionBinding(ACTION_ADD_TO_QUEUE,
+//                    R.id.add_to_queue_batch, this::queueChecked),
+//                    new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
+//                            R.id.remove_from_queue_batch, this::removeFromQueueChecked),
+//                    new ActionBinding(ACTION_MARK_PLAYED,
+//                            R.id.mark_read_batch, this::markedCheckedPlayed),
+//                    new ActionBinding(ACTION_MARK_UNPLAYED,
+//                            R.id.mark_unread_batch, this::markedCheckedUnplayed),
+//                    new ActionBinding(ACTION_DOWNLOAD,
+//                            R.id.download_batch, this::downloadChecked),
+//                    new ActionBinding(ACTION_DELETE,
+//                            R.id.delete_batch, this::deleteChecked)
 
-            } else {
-                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+
+            /**
+             * NOTE: I would like to suggest we use this rather than ActionBinding
+             * as none of the other code uses it.
+             * If we need to resuse the logic, we should create a base fragment.
+             * If we do, then we can not only reuse this logic but also other
+             * UI based logic like the speeddialer.
+             *
+             * Most of the shared logic is UI related anyway. If don't use a base fragment
+             * and just abstract out to an ActionBing class, then we would still have a lot of
+             * duplicate UI logic.
+             *
+             */
+            switch (actionItem.getId()) {
+                case R.id.add_to_queue_batch:
+                    queueChecked();
+                    break;
+                case R.id.remove_from_queue_batch:
+                    removeFromQueueChecked();
+                    break;
+                case R.id.mark_read_batch:
+                    markedCheckedPlayed();
+                    break;
+                case R.id.mark_unread_batch:
+                    markedCheckedUnplayed();
+                    break;
+                case R.id.download_batch:
+                    downloadChecked();
+                    break;
+                case R.id.delete_batch:
+                    deleteChecked();
+                    break;
+                default:
+                    Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
             }
+
+            mSpeedDialView.close();
+            mSpeedDialView.setVisibility(View.GONE);
+            adapter.finish();
+
+//            if (selectedBinding != null) {
+//                selectedBinding.action.run();
+//                mSpeedDialView.close();
+//                adapter.close();
+//
+//            } else {
+//                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+//            }
             return true;
         });
         return root;
@@ -450,7 +504,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // if multi select
         if (item.getItemId() == R.id.episode_actions) {
-            adapter.startActionMode(selectedItem);
+            adapter.startActionMode(adapter.getSelectedPosition());
+            if (feed.isLocalFeed()) {
+                mSpeedDialView.removeActionItemById(R.id.download_batch);
+                mSpeedDialView.removeActionItemById(R.id.delete_batch);
+            }
+            mSpeedDialView.setVisibility(View.VISIBLE);
             refreshToolbarState();
             return true;
         }
@@ -528,7 +587,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
 
     private Set<FeedItem> getCheckedItems() {
-        return ((FeedItemListAdapter) recyclerView.getAdapter()).getCheckedItems();
+        return adapter.getSelectedItems();
     }
     private void updateUi() {
         loadItems();
@@ -757,7 +816,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
-        List<FeedItem> episodes = (List<FeedItem>) recyclerView.getAdapter();;
+        Set<FeedItem> episodes = adapter.getSelectedItems();
         for (FeedItem episode : episodes) {
             if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
@@ -775,7 +834,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void deleteChecked() {
         int countHasMedia = 0;
         int countNoMedia = 0;
-        List<FeedItem> episodes = (List<FeedItem>) recyclerView.getAdapter();
+        Set<FeedItem> episodes = adapter.getSelectedItems();
         for (FeedItem feedItem : episodes) {
             checkedIds.contains(feedItem.getId());
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
@@ -797,22 +856,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
         }
-
-        @Override
-        public void onCreateActionMode() {
-            mSpeedDialView.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onDestroyActionMode_() {
-            mSpeedDialView.setVisibility(View.GONE);
-        }
     }
 
     private void close(@PluralsRes int msgId, int numItems) {
         ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                 getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-        getActivity().getSupportFragmentManager().popBackStack();
+//        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {

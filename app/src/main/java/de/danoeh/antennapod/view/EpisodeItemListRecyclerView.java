@@ -5,15 +5,13 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
+
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Set;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import io.reactivex.annotations.Nullable;
 
 public class EpisodeItemListRecyclerView extends RecyclerView {
@@ -21,11 +19,6 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
     private static final String PREF_PREFIX_SCROLL_POSITION = "scroll_position_";
     private static final String PREF_PREFIX_SCROLL_OFFSET = "scroll_offset_";
     private LinearLayoutManager layoutManager;
-    private Set<FeedItem> selectedItems;
-
-    interface OnItemSelectedListener {
-        void itemSelected(int id);
-    }
 
     public EpisodeItemListRecyclerView(Context context) {
         super(new ContextThemeWrapper(context, R.style.FastScrollRecyclerView));
@@ -89,15 +82,4 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
         return (totalEpisodeCount - visibleEpisodeCount) <= (firstVisibleEpisode + 3);
     }
-
-    public void setOnItemSelectedListener() {
-
-    }
-
-    public void setChoiceMode() {
-        Adapter adapter = getAdapter();
-//        adapt
-    }
-
-
 }
