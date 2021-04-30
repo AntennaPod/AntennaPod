@@ -28,8 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class ChaptersFragment extends Fragment {
-    private static final String TAG = "ChaptersFragment";
+public class ChaptersFragment extends DialogFragment {
+    public static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
