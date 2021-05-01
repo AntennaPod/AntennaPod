@@ -20,6 +20,7 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,6 +52,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
 
+import de.danoeh.antennapod.R;
+
 
 /**
  * Layout to wrap a scrollable component inside a ViewPager2. Provided as a solution to the problem
@@ -60,32 +63,50 @@ import androidx.viewpager2.widget.ViewPager2;
  * This solution has limitations when using multiple levels of nested scrollable elements
  * (e.g. a horizontal RecyclerView in a vertical RecyclerView in a horizontal ViewPager2).
  */ // KhaledAlharthi/NestedScrollableHost.java
-public class VerticalNestedScrollableHost extends FrameLayout {
+public class NestedScrollableHost extends FrameLayout {
 
     private ViewPager2 parentViewPager;
     private int touchSlop = 0;
     private float initialX = 0f;
     private float initialY = 0f;
+    private int scrollDirection = 0;
 
-    public VerticalNestedScrollableHost(@NonNull Context context) {
+    public NestedScrollableHost(@NonNull Context context) {
         super(context);
         init(context);
     }
 
-    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
+        setAttributes(context, attrs);
     }
 
-    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+        setAttributes(context, attrs);
+    }
+
+    private void setAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.NestedScrollableHost,
+                0, 0);
+
+        try {
+            scrollDirection = a.getInteger(R.styleable.NestedScrollableHost_scrollDirection, 0);
+        } finally {
+            a.recycle();
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public VerticalNestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
+        setAttributes(context, attrs);
     }
 
     private void init(Context context){
@@ -96,7 +117,7 @@ public class VerticalNestedScrollableHost extends FrameLayout {
             @Override
             public boolean onPreDraw() {
                 View v = (View) getParent();
-                while (v!=null && !(v instanceof ViewPager2) || ((v instanceof ViewPager2) && ((ViewPager2)v).getOrientation() != ORIENTATION_VERTICAL)){
+                while (v!=null && !(v instanceof ViewPager2) || isntSameDirection(v)){
                     v = (View) v.getParent();
                 }
                 parentViewPager = (ViewPager2) v;
@@ -105,6 +126,21 @@ public class VerticalNestedScrollableHost extends FrameLayout {
                 return false;
             }
         });
+    }
+
+    private Boolean isntSameDirection(View v) {
+        int orientation = 0;
+        switch (scrollDirection) {
+            case 0:
+                return false;
+            case 1:
+                orientation = ORIENTATION_VERTICAL;
+                break;
+            case 2:
+                orientation = ORIENTATION_HORIZONTAL;
+                break;
+        }
+        return ((v instanceof ViewPager2) && ((ViewPager2)v).getOrientation() != orientation);
     }
 
 
@@ -150,7 +186,7 @@ public class VerticalNestedScrollableHost extends FrameLayout {
             float scaledDx = Math.abs(dx) * (isVpHorizontal ?  .5f : 1f);
             float scaledDy = Math.abs(dy) * (isVpHorizontal ? 1f : .5f);
             if (scaledDx > touchSlop || scaledDy > touchSlop) {
-                if (isVpHorizontal == (scaledDy > scaledDx)) {
+                if (isVpHorizontal == (scaledDy*scaledDy > scaledDx)) { //make it a little bit less volatile for vertical scrolling
                     // Gesture is perpendicular, allow all parents to intercept
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {
