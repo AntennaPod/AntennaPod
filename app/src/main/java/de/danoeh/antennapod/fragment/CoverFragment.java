@@ -125,6 +125,7 @@ public class CoverFragment extends Fragment {
 
     private void refreshChapterData(int chapterIndex) {
         if (chapterIndex > -1) {
+            chapterControl.setVisibility(View.VISIBLE);
             if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
                 displayedChapterIndex = media.getChapters().size() - 1;
                 butNextChapter.setVisibility(View.INVISIBLE);
@@ -136,6 +137,8 @@ public class CoverFragment extends Fragment {
             if (getCurrentChapter() != null) {
                 txtvChapterTitle.setText(getCurrentChapter().getTitle());
             }
+        } else {
+            chapterControl.setVisibility(View.GONE);
         }
 
         displayCoverImage();
@@ -212,14 +215,8 @@ public class CoverFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         int newChapterIndex = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
-        if (newChapterIndex > -1) {
-            if (chapterControl.getVisibility() == View.GONE) {
-                chapterControl.setVisibility(View.VISIBLE);
-            }
-
-            if (newChapterIndex != displayedChapterIndex) {
-                refreshChapterData(newChapterIndex);
-            }
+        if (newChapterIndex > -1 && newChapterIndex != displayedChapterIndex) {
+            refreshChapterData(newChapterIndex);
         }
     }
 
