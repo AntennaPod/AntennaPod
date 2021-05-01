@@ -86,13 +86,14 @@ public class CoverFragment extends Fragment {
 
         openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
         txtvShownotesLabel.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
+        openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvShownotesLabel.getCurrentTextColor(), BlendModeCompat.SRC_IN));
+
         return root;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         configureForOrientation(getResources().getConfiguration());
-        openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvShownotesLabel.getCurrentTextColor(), BlendModeCompat.SRC_IN));
     }
 
     private void loadMediaInfo() {
