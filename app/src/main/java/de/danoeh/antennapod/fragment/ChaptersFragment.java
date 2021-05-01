@@ -28,8 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class ChaptersFragment extends Fragment {
-    private static final String TAG = "ChaptersFragment";
+public class ChaptersFragment extends DialogFragment {
+    public static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
@@ -63,6 +63,9 @@ public class ChaptersFragment extends Fragment {
         emptyView.setIcon(R.attr.ic_bookmark);
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
+        
+        RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        recyclerView.setLayoutParams(wrapHeight);
 
         return root;
     }
