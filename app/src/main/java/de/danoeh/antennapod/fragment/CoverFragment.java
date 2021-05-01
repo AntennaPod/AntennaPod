@@ -78,7 +78,8 @@ public class CoverFragment extends Fragment {
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
-        txtvChapterTitle.setOnClickListener(v -> new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
+        txtvChapterTitle.setOnClickListener(v ->
+                new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 

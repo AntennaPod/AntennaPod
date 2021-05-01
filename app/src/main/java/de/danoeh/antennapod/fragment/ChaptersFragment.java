@@ -65,7 +65,8 @@ public class ChaptersFragment extends DialogFragment {
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
         
-        RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         recyclerView.setLayoutParams(wrapHeight);
 
         return root;
