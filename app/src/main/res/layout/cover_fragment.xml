@@ -67,12 +67,34 @@
             tools:text="Episode" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/openDescription"
+    <LinearLayout
+        android:id="@+id/openDescriptionLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="2dp"
-        app:srcCompat="@drawable/ic_info" />
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/openDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/shownotes_contentdescription"
+            android:padding="2dp"
+            app:srcCompat="@drawable/ic_info" />
+
+        <TextView
+            android:id="@+id/shownotes_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:paddingLeft="2dp"
+            android:text="@string/shownotes_label"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_navdrawer" />
+    </LinearLayout>
 
 </LinearLayout>
