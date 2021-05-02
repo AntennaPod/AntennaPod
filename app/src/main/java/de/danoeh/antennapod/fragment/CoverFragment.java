@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,15 +37,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -64,11 +64,11 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private ImageButton openDescription;
     private LinearLayout openDescriptionLayout;
-    private TextView txtvShownotesLabel;
-    private ImageButton counterweight;
-    private TextView txtvChapterTitle;
+    private FrameLayout counterweight;
+    private FrameLayout spacer;
     private ImageButton butPrevChapter;
     private ImageButton butNextChapter;
+    private LinearLayout episodeDetails;
     private RelativeLayout chapterControl;
     private PlaybackController controller;
     private Disposable disposable;
@@ -83,22 +83,24 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
-        chapterControl = root.findViewById(R.id.chapter_control);
-        txtvChapterTitle = root.findViewById(R.id.txtvChapterTitle);
+        episodeDetails = root.findViewById(R.id.episode_details);
+        chapterControl = root.findViewById(R.id.chapterButton);
         butPrevChapter = root.findViewById(R.id.butPrevChapter);
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
-        openDescriptionLayout = root.findViewById(R.id.openDescriptionLayout);
+        openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
-        txtvShownotesLabel = root.findViewById(R.id.shownotes_label);
         counterweight = root.findViewById(R.id.counterweight);
+        spacer = root.findViewById(R.id.details_spacer);
         ViewPager2 vp = requireActivity().findViewById(R.id.pager);
-
         openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
-        txtvShownotesLabel.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
-        openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvShownotesLabel.getCurrentTextColor(), BlendModeCompat.SRC_IN));
-        txtvChapterTitle.setOnClickListener(v ->
+        openDescriptionLayout.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
+        openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
+        butNextChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
+        butPrevChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
+        //txtvChapterTitle.setOnClickListener(v -> new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
+        chapterControl.setOnClickListener(v ->
                 new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
@@ -144,6 +146,8 @@ public class CoverFragment extends Fragment {
     }
 
     private void refreshChapterData(int chapterIndex) {
+        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+
         if (chapterIndex > -1) {
             chapterControl.setVisibility(View.VISIBLE);
             if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
@@ -153,13 +157,14 @@ public class CoverFragment extends Fragment {
                 displayedChapterIndex = chapterIndex;
                 butNextChapter.setVisibility(View.VISIBLE);
             }
-
-            if (getCurrentChapter() != null) {
-                txtvChapterTitle.setText(getCurrentChapter().getTitle());
-            }
         } else {
             chapterControl.setVisibility(View.GONE);
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
+
+        LinearLayout.LayoutParams wrapHeight = new LinearLayout.LayoutParams(detailsWidth
+                , ViewGroup.LayoutParams.WRAP_CONTENT);
+        episodeDetails.setLayoutParams(wrapHeight);
 
         displayCoverImage();
     }
@@ -302,8 +307,6 @@ public class CoverFragment extends Fragment {
             LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescriptionLayout.getLayoutParams();
             descrParams.weight = 1;
             openDescriptionLayout.setLayoutParams(descrParams);
-            txtvShownotesLabel.setVisibility(View.VISIBLE);
-            counterweight.setVisibility(View.INVISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -316,9 +319,13 @@ public class CoverFragment extends Fragment {
             LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescriptionLayout.getLayoutParams();
             descrParams.weight = 0;
             openDescriptionLayout.setLayoutParams(descrParams);
-            txtvShownotesLabel.setVisibility(View.GONE);
-            counterweight.setVisibility(View.GONE);
         }
+
+        /*ViewGroup.LayoutParams spacerparams = counterweight.getLayoutParams();
+        spacerparams.height -= spacer.getHeight();
+        spacerparams.height %= 2;
+        spacer.setLayoutParams(spacerparams);
+        counterweight.setLayoutParams(spacerparams);*/
     }
 
     void onPlayPause() {

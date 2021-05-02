@@ -11,13 +11,11 @@
     android:padding="8dp"
     android:gravity="center">
 
-    <ImageButton
+    <FrameLayout
         android:id="@+id/counterweight"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_info_white"
-        android:layout_weight="1"
-        android:padding="2dp"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
@@ -38,9 +36,10 @@
         android:id="@+id/cover_fragment_text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtvPodcastTitle"
@@ -49,9 +48,9 @@
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:textSize="@dimen/text_size_small"
             android:textColor="?android:attr/textColorSecondary"
             android:textIsSelectable="true"
+            android:textSize="@dimen/text_size_small"
             tools:text="Podcast" />
 
         <TextView
@@ -60,97 +59,118 @@
             android:layout_height="wrap_content"
             android:ellipsize="none"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_small"
             android:maxLines="2"
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="true"
+            android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
 
-        <RelativeLayout
-            android:id="@+id/chapter_control"
+        <FrameLayout
+            android:id="@+id/details_spacer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <LinearLayout
+            android:id="@+id/episode_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp">
+            android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/butPrevChapter"
-                android:layout_width="36dp"
+            <LinearLayout
+                android:id="@+id/openDescriptionButton"
+                android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/prev_chapter"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_chapter_prev" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/grey_border"
+                android:clickable="true"
+                android:gravity="center"
+                android:minWidth="150dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtvChapterTitle"
+                <ImageButton
+                    android:id="@+id/openDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/shownotes_contentdescription"
+                    android:padding="2dp"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <TextView
+                    android:id="@+id/shownotes_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:paddingLeft="2dp"
+                    android:text="@string/shownotes_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="@dimen/text_size_navdrawer" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/chapterButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@+id/butNextChapter"
-                android:layout_toLeftOf="@+id/butNextChapter"
-                android:layout_toEndOf="@+id/butPrevChapter"
-                android:layout_toRightOf="@+id/butPrevChapter"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/grey_border"
+                android:clickable="true"
                 android:gravity="center"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textIsSelectable="false"
-                android:textSize="@dimen/text_size_small"
-                tools:text="Chapter" />
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <ImageButton
-                android:id="@+id/butNextChapter"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/next_chapter"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_chapter_next" />
+                <ImageButton
+                    android:id="@+id/butPrevChapter"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/prev_chapter"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_chapter_prev" />
 
+                <TextView
+                    android:id="@+id/chapters_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="false"
+                    android:layout_alignParentBottom="false"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@string/chapters_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="@dimen/text_size_navdrawer" />
 
-        </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/butNextChapter"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/next_chapter"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_chapter_next" />
+            </RelativeLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/openDescriptionLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/openDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/shownotes_contentdescription"
-            android:padding="2dp"
-            app:srcCompat="@drawable/ic_info" />
-
-        <TextView
-            android:id="@+id/shownotes_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="none"
-            android:gravity="center_horizontal"
-            android:maxLines="2"
-            android:paddingLeft="2dp"
-            android:text="@string/shownotes_label"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="@dimen/text_size_navdrawer" />
     </LinearLayout>
 
 </LinearLayout>

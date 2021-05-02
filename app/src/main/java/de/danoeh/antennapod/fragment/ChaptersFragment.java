@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ChaptersFragment extends DialogFragment {
+public class ChaptersFragment extends AppCompatDialogFragment {
     public static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
@@ -40,10 +43,20 @@ public class ChaptersFragment extends DialogFragment {
     private Playable media;
     private LinearLayoutManager layoutManager;
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.chapters_label))
+                .setView(onCreateView(getLayoutInflater()))
+                .setNegativeButton(getString(R.string.cancel_label), (dialog, which) -> {dismiss();} )
+                .create();
+
+    }
+
+
+    public View onCreateView(@NonNull LayoutInflater inflater) {
+        View root = inflater.inflate(R.layout.simple_list_fragment, null, false);
         root.findViewById(R.id.toolbar).setVisibility(View.GONE);
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
