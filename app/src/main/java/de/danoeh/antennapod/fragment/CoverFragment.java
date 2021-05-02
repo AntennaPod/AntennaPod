@@ -142,7 +142,7 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
 
-        openDescriptionLayout.setVisibility(StringUtils.isEmpty(media.getDescription()) ? View.GONE : View.VISIBLE);
+        openDescriptionLayout.setVisibility(StringUtils.isEmpty(media.getDescription()) ? View.INVISIBLE : View.VISIBLE);
     }
 
     private void refreshChapterData(int chapterIndex) {

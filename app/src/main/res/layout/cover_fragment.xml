@@ -87,6 +87,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/grey_border"
                 android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:minWidth="150dp"
                 android:orientation="horizontal">
@@ -124,6 +125,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/grey_border"
                 android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
