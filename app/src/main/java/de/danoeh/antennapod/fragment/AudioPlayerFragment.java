@@ -482,8 +482,11 @@ public class AudioPlayerFragment extends Fragment implements
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
-        float progress = ((float) event.getPosition()) / event.getDuration();
-        sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+
+        if (!sbPosition.isPressed()) {
+            float progress = ((float) event.getPosition()) / event.getDuration();
+            sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
