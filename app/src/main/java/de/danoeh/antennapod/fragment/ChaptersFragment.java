@@ -5,10 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +31,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ChaptersFragment extends Fragment {
-    private static final String TAG = "ChaptersFragment";
+public class ChaptersFragment extends DialogFragment {
+    public static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
@@ -66,6 +66,10 @@ public class ChaptersFragment extends Fragment {
         emptyView.setIcon(R.drawable.ic_bookmark);
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
+        
+        RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        recyclerView.setLayoutParams(wrapHeight);
 
         return root;
     }

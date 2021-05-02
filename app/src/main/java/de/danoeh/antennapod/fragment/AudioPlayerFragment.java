@@ -175,7 +175,7 @@ public class AudioPlayerFragment extends Fragment implements
                 dividerPos[i] = chapters.get(i).getStart() / duration;
             }
         }
-        
+
         sbPosition.setDividerPos(dividerPos);
     }
 
