@@ -185,7 +185,10 @@ public class MainActivity extends CastEnabledActivity {
             if (audioPlayer == null) {
                 return;
             }
-            audioPlayer.backToCover(true);
+
+            if (slideOffset == 0.0f) { //STATE_COLLAPSED
+                audioPlayer.backToCover();
+            }
 
             float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
             audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);

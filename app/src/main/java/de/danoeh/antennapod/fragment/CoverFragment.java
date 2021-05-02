@@ -64,7 +64,6 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private ImageButton openDescription;
     private LinearLayout openDescriptionLayout;
-    private FrameLayout counterweight;
     private FrameLayout spacer;
     private ImageButton butPrevChapter;
     private ImageButton butNextChapter;
@@ -91,17 +90,17 @@ public class CoverFragment extends Fragment {
         imgvCover.setOnClickListener(v -> onPlayPause());
         openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
-        counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
         ViewPager2 vp = requireActivity().findViewById(R.id.pager);
-        openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
-        openDescriptionLayout.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_TABS));
+        openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_DESC));
+        openDescriptionLayout.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_DESC));
         openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
         butNextChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
         butPrevChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
         //txtvChapterTitle.setOnClickListener(v -> new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
+        ChaptersFragment chaptersFragment = new ChaptersFragment();
         chapterControl.setOnClickListener(v ->
-                new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
+                chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
@@ -141,8 +140,9 @@ public class CoverFragment extends Fragment {
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
-        chapterControl.setVisibility(View.GONE);
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
+
+        openDescriptionLayout.setVisibility(StringUtils.isEmpty(media.getDescription()) ? View.GONE : View.VISIBLE);
     }
 
     private void refreshChapterData(int chapterIndex) {
@@ -304,9 +304,7 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
-            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescriptionLayout.getLayoutParams();
-            descrParams.weight = 1;
-            openDescriptionLayout.setLayoutParams(descrParams);
+            spacer.setVisibility(View.VISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -316,16 +314,8 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
-            LinearLayout.LayoutParams descrParams = (LinearLayout.LayoutParams) openDescriptionLayout.getLayoutParams();
-            descrParams.weight = 0;
-            openDescriptionLayout.setLayoutParams(descrParams);
+            spacer.setVisibility(View.GONE);
         }
-
-        /*ViewGroup.LayoutParams spacerparams = counterweight.getLayoutParams();
-        spacerparams.height -= spacer.getHeight();
-        spacerparams.height %= 2;
-        spacer.setLayoutParams(spacerparams);
-        counterweight.setLayoutParams(spacerparams);*/
     }
 
     void onPlayPause() {

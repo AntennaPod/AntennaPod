@@ -72,7 +72,7 @@ public class AudioPlayerFragment extends Fragment implements
         ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
-    public static final int POS_TABS = 1;
+    public static final int POS_DESC = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
     public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
@@ -413,7 +413,7 @@ public class AudioPlayerFragment extends Fragment implements
         EventBus.getDefault().register(this);
         txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
-        backToCover(false);
+        backToCover();
     }
 
     @Override
@@ -585,8 +585,8 @@ public class AudioPlayerFragment extends Fragment implements
                 case POS_COVER:
                     return new CoverFragment();
                 default:
-                case POS_TABS:
-                    return new EpisodeFragment();
+                case POS_DESC:
+                    return new ItemDescriptionFragment();
             }
         }
 
@@ -596,11 +596,11 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
-    public void backToCover(Boolean smoothScroll) {
+    public void backToCover() {
         if (pager == null) {
             return;
         }
 
-        pager.setCurrentItem(AudioPlayerFragment.POS_COVER, smoothScroll);
+        pager.setCurrentItem(AudioPlayerFragment.POS_COVER, false);
     }
 }
