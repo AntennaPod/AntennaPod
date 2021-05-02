@@ -91,13 +91,12 @@ public class CoverFragment extends Fragment {
         openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
         spacer = root.findViewById(R.id.details_spacer);
-        ViewPager2 vp = requireActivity().findViewById(R.id.pager);
-        openDescription.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_DESC));
-        openDescriptionLayout.setOnClickListener(v -> vp.setCurrentItem(AudioPlayerFragment.POS_DESC));
+        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESC);
+        openDescription.setOnClickListener(scrollToDesc);
+        openDescriptionLayout.setOnClickListener(scrollToDesc);
         openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
         butNextChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
         butPrevChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
-        //txtvChapterTitle.setOnClickListener(v -> new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         ChaptersFragment chaptersFragment = new ChaptersFragment();
         chapterControl.setOnClickListener(v ->
                 chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));

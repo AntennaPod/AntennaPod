@@ -413,7 +413,7 @@ public class AudioPlayerFragment extends Fragment implements
         EventBus.getDefault().register(this);
         txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
-        backToCover();
+        scrollToPage(AudioPlayerFragment.POS_COVER);
     }
 
     @Override
@@ -596,11 +596,11 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
-    public void backToCover() {
+    public void scrollToPage(int page) {
         if (pager == null) {
             return;
         }
 
-        pager.setCurrentItem(AudioPlayerFragment.POS_COVER, false);
+        pager.setCurrentItem(page, false);
     }
 }
