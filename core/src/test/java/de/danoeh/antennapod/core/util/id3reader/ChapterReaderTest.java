@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;

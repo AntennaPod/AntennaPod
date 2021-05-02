@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.model.feed.FeedItem;
 import org.junit.Before;
 import org.junit.Test;
 

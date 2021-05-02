@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
 
 public class VorbisCommentChapterReader extends VorbisCommentReader {

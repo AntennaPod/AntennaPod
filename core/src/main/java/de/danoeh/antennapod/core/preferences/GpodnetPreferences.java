@@ -6,7 +6,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 
 /**
  * Manages preferences for accessing gpodder.net service

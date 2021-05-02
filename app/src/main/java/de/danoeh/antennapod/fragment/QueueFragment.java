@@ -35,7 +35,7 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -44,7 +44,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -490,19 +490,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     final int position = viewHolder.getAdapterPosition();
                     Log.d(TAG, "remove(" + position + ")");
                     final FeedItem item = queue.get(position);
-                    final boolean isRead = item.isPlayed();
-                    DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), true, item);
 
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            item.hasMedia() ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label,
+                            getResources().getQuantityString(R.plurals.removed_from_queue_batch_label, 1, 1),
                             Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo), v -> {
-                                DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
-                                if (!isRead) {
-                                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                                }
-                            });
+                            .setAction(getString(R.string.undo), v ->
+                                    DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false));
                 }
 
                 @Override

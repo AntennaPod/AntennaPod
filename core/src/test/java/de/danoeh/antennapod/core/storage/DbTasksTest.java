@@ -19,9 +19,9 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
@@ -172,7 +172,7 @@ public class DbTasksTest {
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
-        assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
+        assertTrue(feedItemFromDB.isNew());
     }
 
     @Test

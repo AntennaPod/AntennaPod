@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.test.antennapod.EspressoTestUtils;
 

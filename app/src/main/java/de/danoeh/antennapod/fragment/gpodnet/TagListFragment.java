@@ -10,8 +10,8 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.gpodnet.TagListAdapter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -51,7 +51,8 @@ public class TagListFragment extends ListFragment {
         disposable = Observable.fromCallable(
             () -> {
                 GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        GpodnetPreferences.getHosturl());
+                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
                 return service.getTopTags(COUNT);
             })
                 .subscribeOn(Schedulers.io())

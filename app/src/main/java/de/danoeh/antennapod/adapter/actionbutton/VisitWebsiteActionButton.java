@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class VisitWebsiteActionButton extends ItemActionButton {

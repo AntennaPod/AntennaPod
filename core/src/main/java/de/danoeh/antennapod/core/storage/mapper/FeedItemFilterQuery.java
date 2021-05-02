@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage.mapper;
 
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import java.util.ArrayList;
