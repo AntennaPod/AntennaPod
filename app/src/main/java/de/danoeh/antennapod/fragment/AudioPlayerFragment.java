@@ -596,11 +596,15 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
-    public void scrollToPage(int page) {
+    public void scrollToPage(int page, boolean smoothScroll) {
         if (pager == null) {
             return;
         }
 
-        pager.setCurrentItem(page, false);
+        pager.setCurrentItem(page, smoothScroll);
+    }
+
+    public void scrollToPage(int page) {
+        scrollToPage(page, false);
     }
 }

@@ -91,7 +91,7 @@ public class CoverFragment extends Fragment {
         openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
         spacer = root.findViewById(R.id.details_spacer);
-        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESC);
+        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESC, true);
         openDescription.setOnClickListener(scrollToDesc);
         openDescriptionLayout.setOnClickListener(scrollToDesc);
         openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
