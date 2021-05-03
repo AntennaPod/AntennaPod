@@ -156,6 +156,7 @@ public class CoverFragment extends Fragment {
                 displayedChapterIndex = chapterIndex;
                 butNextChapter.setVisibility(View.VISIBLE);
             }
+            ((AudioPlayerFragment) requireParentFragment()).notifyChapterChanged(displayedChapterIndex);
         } else {
             chapterControl.setVisibility(View.GONE);
             detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;

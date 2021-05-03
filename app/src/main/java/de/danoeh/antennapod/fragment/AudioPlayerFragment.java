@@ -158,6 +158,10 @@ public class AudioPlayerFragment extends Fragment implements
         return root;
     }
 
+    public void notifyChapterChanged(int chapterIndex) {
+        currentChapterIndex = chapterIndex;
+    }
+
     private void setChapterDividers(Playable media) {
 
         if (media == null) {
