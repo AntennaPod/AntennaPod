@@ -121,7 +121,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
             if (progressSecondary > 0) {
                 if (right < progressSecondary) {
                     canvas.drawRect(left, top, right, bottom, paintBackground);
-                } else if (progressSecondary > left){
+                } else if (progressSecondary > left) {
                     canvas.drawRect(left, top, progressSecondary, bottom, paintBackground);
                 }
             }
