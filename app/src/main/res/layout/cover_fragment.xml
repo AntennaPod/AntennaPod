@@ -13,7 +13,7 @@
 
     <FrameLayout
         android:id="@+id/counterweight"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
@@ -65,113 +65,114 @@
             android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
 
-        <FrameLayout
-            android:id="@+id/details_spacer"
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/details_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/episode_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/episode_details"
+            android:id="@+id/openDescriptionButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:minWidth="150dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/openDescriptionButton"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/grey_border"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:minWidth="150dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/openDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/shownotes_contentdescription"
-                    android:padding="2dp"
-                    app:srcCompat="@drawable/ic_info" />
-
-                <TextView
-                    android:id="@+id/shownotes_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="none"
-                    android:gravity="center_horizontal"
-                    android:maxLines="2"
-                    android:paddingLeft="2dp"
-                    android:text="@string/shownotes_label"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="@dimen/text_size_navdrawer" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/chapterButton"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/openDescription"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/grey_border"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/shownotes_contentdescription"
+                android:padding="2dp"
+                app:srcCompat="@drawable/ic_info" />
 
-                <ImageButton
-                    android:id="@+id/butPrevChapter"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/prev_chapter"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_chapter_prev" />
-
-                <TextView
-                    android:id="@+id/chapters_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentTop="false"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="false"
-                    android:layout_alignParentBottom="false"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@string/chapters_label"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="@dimen/text_size_navdrawer" />
-
-                <ImageButton
-                    android:id="@+id/butNextChapter"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/next_chapter"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_chapter_next" />
-            </RelativeLayout>
-
+            <TextView
+                android:id="@+id/shownotes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="none"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:paddingLeft="2dp"
+                android:text="@string/shownotes_label"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size_navdrawer" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/chapterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/butPrevChapter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/prev_chapter"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_chapter_prev" />
+
+            <TextView
+                android:id="@+id/chapters_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentBottom="false"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/chapters_label"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size_navdrawer" />
+
+            <ImageButton
+                android:id="@+id/butNextChapter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/next_chapter"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_chapter_next" />
+        </RelativeLayout>
 
     </LinearLayout>
 

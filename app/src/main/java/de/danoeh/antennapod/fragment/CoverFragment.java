@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -64,6 +63,7 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private ImageButton openDescription;
     private LinearLayout openDescriptionLayout;
+    private FrameLayout counterweight;
     private FrameLayout spacer;
     private ImageButton butPrevChapter;
     private ImageButton butNextChapter;
@@ -90,6 +90,7 @@ public class CoverFragment extends Fragment {
         imgvCover.setOnClickListener(v -> onPlayPause());
         openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
+        counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
         View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESC, true);
         openDescription.setOnClickListener(scrollToDesc);
