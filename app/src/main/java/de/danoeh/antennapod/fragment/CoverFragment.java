@@ -288,11 +288,15 @@ public class CoverFragment extends Fragment {
     private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
         LinearLayout textContainer = getView().findViewById(R.id.cover_fragment_text_container);
-        LinearLayout details = getView().findViewById(R.id.episode_details);
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
         LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
         double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
+
+        LinearLayout details = getView().findViewById(R.id.episode_details);
+        int spacerVisibility = View.VISIBLE;
+        int detailsOrientation = LinearLayout.HORIZONTAL;
+        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             double percentageWidth = 0.8;
@@ -306,7 +310,6 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
-            counterweight.setVisibility(View.VISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -316,10 +319,17 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
-            counterweight.setVisibility(View.GONE);
-            spacer.setVisibility(View.GONE);
-            details.setOrientation(LinearLayout.VERTICAL);
+
+            spacerVisibility = View.GONE;
+            detailsOrientation = LinearLayout.VERTICAL;
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
+
+        spacer.setVisibility(spacerVisibility);
+        counterweight.setVisibility(spacerVisibility);
+        details.setOrientation(detailsOrientation);
+        LinearLayout.LayoutParams detailsParams = new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        details.setLayoutParams(detailsParams);
     }
 
     void onPlayPause() {
