@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -287,6 +288,7 @@ public class CoverFragment extends Fragment {
     private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
         LinearLayout textContainer = getView().findViewById(R.id.cover_fragment_text_container);
+        LinearLayout details = getView().findViewById(R.id.episode_details);
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
         LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
@@ -304,7 +306,7 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
-            spacer.setVisibility(View.VISIBLE);
+            counterweight.setVisibility(View.VISIBLE);
         } else {
             double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
@@ -314,7 +316,9 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
+            counterweight.setVisibility(View.GONE);
             spacer.setVisibility(View.GONE);
+            details.setOrientation(LinearLayout.VERTICAL);
         }
     }
 
