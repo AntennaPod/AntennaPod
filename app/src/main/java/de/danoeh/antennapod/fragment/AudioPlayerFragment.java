@@ -195,7 +195,7 @@ public class AudioPlayerFragment extends Fragment implements
         if (hasChapters) {
             List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size()];
-            float duration = media.getDuration();
+            float duration = controller.getDuration();
 
             for (int i = 0; i < chapters.size(); i++) {
                 dividerPos[i] = chapters.get(i).getStart() / duration;
@@ -496,6 +496,7 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null || txtvLength == null) {
             return;
         }
+
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
@@ -515,6 +516,8 @@ public class AudioPlayerFragment extends Fragment implements
             } else {
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
+        } else if (controller.getDuration() != controller.getMedia().getDuration()) {
+            updateUi(controller.getMedia());
         }
     }
 
