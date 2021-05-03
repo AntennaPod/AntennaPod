@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -69,7 +67,7 @@ public class CoverFragment extends Fragment {
     private ImageButton butPrevChapter;
     private ImageButton butNextChapter;
     private LinearLayout episodeDetails;
-    private RelativeLayout chapterControl;
+    private LinearLayout chapterControl;
     private PlaybackController controller;
     private Disposable disposable;
     private int displayedChapterIndex = -1;
@@ -294,7 +292,7 @@ public class CoverFragment extends Fragment {
         double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
 
         LinearLayout details = getView().findViewById(R.id.episode_details);
-        int spacerVisibility = View.VISIBLE;
+        boolean spacerVisible = true;
         int detailsOrientation = LinearLayout.HORIZONTAL;
         int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -320,13 +318,14 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
 
-            spacerVisibility = View.GONE;
+            spacerVisible = false;
             detailsOrientation = LinearLayout.VERTICAL;
             detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
 
-        spacer.setVisibility(spacerVisibility);
-        counterweight.setVisibility(spacerVisibility);
+        spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
+        counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
+        ((View)getView().findViewById(R.id.vertical_divider)).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
         details.setOrientation(detailsOrientation);
         LinearLayout.LayoutParams detailsParams = new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         details.setLayoutParams(detailsParams);
