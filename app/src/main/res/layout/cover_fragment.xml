@@ -69,7 +69,7 @@
             android:id="@+id/vertical_divider"
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -81,14 +81,20 @@
 
     <LinearLayout
         android:id="@+id/episode_details"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_weight="0"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:weightSum="2">
+        android:paddingRight="8dp">
+
+        <FrameLayout
+            android:id="@+id/left_divider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/openDescriptionButton"
@@ -98,12 +104,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_weight="1"
             android:background="@drawable/grey_border"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:minWidth="150dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageButton
@@ -136,6 +142,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:minWidth="150dp"
             android:layout_weight="1"
             android:background="@drawable/grey_border"
             android:clickable="true"
@@ -172,6 +179,13 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_chapter_next" />
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/right_divider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

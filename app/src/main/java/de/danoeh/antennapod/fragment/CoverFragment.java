@@ -323,7 +323,9 @@ public class CoverFragment extends Fragment {
 
         spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
         counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
-        getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
+        getView().findViewById(R.id.right_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
+        getView().findViewById(R.id.left_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
+        getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
 
         if (episodeDetails.getParent() != detailsParent) {
             ((ViewGroup)episodeDetails.getParent()).removeView(episodeDetails);
