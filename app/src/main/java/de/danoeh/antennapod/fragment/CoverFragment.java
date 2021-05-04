@@ -293,8 +293,7 @@ public class CoverFragment extends Fragment {
 
         LinearLayout details = getView().findViewById(R.id.episode_details);
         boolean spacerVisible = true;
-        int detailsOrientation = LinearLayout.HORIZONTAL;
-        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+        ViewGroup detailsParent = (ViewGroup) getView();
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             double percentageWidth = 0.8;
@@ -319,16 +318,17 @@ public class CoverFragment extends Fragment {
             }
 
             spacerVisible = false;
-            detailsOrientation = LinearLayout.VERTICAL;
-            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+            detailsParent = textContainer;
         }
 
         spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
         counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
-        ((View)getView().findViewById(R.id.vertical_divider)).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
-        details.setOrientation(detailsOrientation);
-        LinearLayout.LayoutParams detailsParams = new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-        details.setLayoutParams(detailsParams);
+        getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
+
+        if (episodeDetails.getParent() != detailsParent) {
+            ((ViewGroup)episodeDetails.getParent()).removeView(episodeDetails);
+            detailsParent.addView(episodeDetails);
+        }
     }
 
     void onPlayPause() {

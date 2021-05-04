@@ -65,6 +65,12 @@
             android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
 
+        <FrameLayout
+            android:id="@+id/vertical_divider"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
     <FrameLayout
@@ -76,17 +82,18 @@
     <LinearLayout
         android:id="@+id/episode_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_weight="0"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:baselineAligned="false">
+        android:weightSum="2">
 
         <LinearLayout
             android:id="@+id/openDescriptionButton"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
@@ -102,7 +109,7 @@
             <ImageButton
                 android:id="@+id/openDescription"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/shownotes_contentdescription"
                 android:padding="2dp"
@@ -121,12 +128,6 @@
                 android:textSize="@dimen/text_size_navdrawer" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/vertical_divider"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:visibility="gone"/>
-
         <LinearLayout
             android:id="@+id/chapterButton"
             android:layout_width="match_parent"
@@ -136,11 +137,11 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:background="@drawable/grey_border"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:orientation="horizontal"
             android:visibility="visible">
 
             <ImageButton
@@ -156,9 +157,9 @@
                 android:id="@+id/chapters_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/chapters_label"
-                android:layout_weight="1"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size_navdrawer" />
 
