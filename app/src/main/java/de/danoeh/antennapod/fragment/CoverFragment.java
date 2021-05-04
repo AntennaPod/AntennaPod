@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -141,14 +142,22 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
 
-        openDescriptionLayout.setVisibility(StringUtils.isEmpty(media.getDescription()) ? View.INVISIBLE : View.VISIBLE);
+        if (media.getDescription() != null) {
+            boolean hasShownotes = !media.getDescription().isEmpty();
+            int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
+            if (openDescriptionLayout.getVisibility() != newVisibility) {
+                openDescriptionLayout.setVisibility(hasShownotes ? View.VISIBLE : View.INVISIBLE);
+                ObjectAnimator.ofFloat(openDescriptionLayout, "alpha", hasShownotes ? 0 : 1, hasShownotes ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+            }
+        }
     }
 
     private void refreshChapterData(int chapterIndex) {
         int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
 
+        boolean chapterControlVisible = true;
+
         if (chapterIndex > -1) {
-            chapterControl.setVisibility(View.VISIBLE);
             if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
                 displayedChapterIndex = media.getChapters().size() - 1;
                 butNextChapter.setVisibility(View.INVISIBLE);
@@ -157,8 +166,14 @@ public class CoverFragment extends Fragment {
                 butNextChapter.setVisibility(View.VISIBLE);
             }
         } else {
-            chapterControl.setVisibility(View.GONE);
+            chapterControlVisible = false;
             detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
+        if (chapterControl.getVisibility() != newVisibility) {
+            chapterControl.setVisibility(chapterControlVisible ? View.VISIBLE : View.GONE);
+            ObjectAnimator.ofFloat(chapterControl, "alpha", chapterControlVisible ? 0 : 1, chapterControlVisible ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
         }
 
         LinearLayout.LayoutParams wrapHeight = new LinearLayout.LayoutParams(detailsWidth
