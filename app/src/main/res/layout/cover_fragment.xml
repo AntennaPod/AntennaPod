@@ -89,13 +89,6 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
-        <FrameLayout
-            android:id="@+id/left_divider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"/>
-
         <LinearLayout
             android:id="@+id/openDescriptionButton"
             android:layout_width="match_parent"
@@ -179,13 +172,6 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_chapter_next" />
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/right_divider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"/>
 
     </LinearLayout>
 

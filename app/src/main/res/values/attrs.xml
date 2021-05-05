@@ -6,5 +6,7 @@
             <enum name="vertical" value="1"/>
             <enum name="horizontal" value="2"/>
         </attr>
+        <attr name="preferHorizontal" format="integer"/>
+        <attr name="preferVertical" format="integer"/>
     </declare-styleable>
 </resources>

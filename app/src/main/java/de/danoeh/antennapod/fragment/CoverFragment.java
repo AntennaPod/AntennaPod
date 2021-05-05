@@ -153,8 +153,6 @@ public class CoverFragment extends Fragment {
     }
 
     private void refreshChapterData(int chapterIndex) {
-        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
-
         boolean chapterControlVisible = true;
 
         if (chapterIndex > -1) {
@@ -167,7 +165,6 @@ public class CoverFragment extends Fragment {
             }
         } else {
             chapterControlVisible = false;
-            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
 
         int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
@@ -175,10 +172,6 @@ public class CoverFragment extends Fragment {
             chapterControl.setVisibility(chapterControlVisible ? View.VISIBLE : View.GONE);
             ObjectAnimator.ofFloat(chapterControl, "alpha", chapterControlVisible ? 0 : 1, chapterControlVisible ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
         }
-
-        LinearLayout.LayoutParams wrapHeight = new LinearLayout.LayoutParams(detailsWidth
-                , ViewGroup.LayoutParams.WRAP_CONTENT);
-        episodeDetails.setLayoutParams(wrapHeight);
 
         displayCoverImage();
     }
@@ -306,9 +299,9 @@ public class CoverFragment extends Fragment {
         LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
         double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
 
-        LinearLayout details = getView().findViewById(R.id.episode_details);
         boolean spacerVisible = true;
         ViewGroup detailsParent = (ViewGroup) getView();
+        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             double percentageWidth = 0.8;
@@ -334,12 +327,17 @@ public class CoverFragment extends Fragment {
 
             spacerVisible = false;
             detailsParent = textContainer;
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        if (displayedChapterIndex == -1) {
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
 
         spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
         counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
-        getView().findViewById(R.id.right_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE); //only in landscape
-        getView().findViewById(R.id.left_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
+        LinearLayout.LayoutParams wrapHeight = new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        episodeDetails.setLayoutParams(wrapHeight);
         getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
 
         if (episodeDetails.getParent() != detailsParent) {

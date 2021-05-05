@@ -569,7 +569,7 @@ public class AudioPlayerFragment extends Fragment implements
         return false;
     }
 
-    private class AudioPlayerPagerAdapter extends FragmentStateAdapter {
+    private static class AudioPlayerPagerAdapter extends FragmentStateAdapter {
         private static final String TAG = "AudioPlayerPagerAdapter";
 
         public AudioPlayerPagerAdapter(@NonNull Fragment fragment) {
