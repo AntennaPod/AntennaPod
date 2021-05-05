@@ -168,7 +168,7 @@ public class NestedScrollableHost extends FrameLayout {
             initialY = e.getY();
             getParent().requestDisallowInterceptTouchEvent(true);
         } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
-            float dx = e.getX()- initialX;
+            float dx = e.getX() - initialX;
             float dy = e.getY() - initialY;
             boolean isVpHorizontal = orientation == ViewPager2.ORIENTATION_HORIZONTAL;
 

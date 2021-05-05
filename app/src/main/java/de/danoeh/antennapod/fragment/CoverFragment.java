@@ -142,13 +142,11 @@ public class CoverFragment extends Fragment {
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
 
-        if (media.getDescription() != null) {
-            boolean hasShownotes = !media.getDescription().isEmpty();
-            int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
-            if (openDescriptionLayout.getVisibility() != newVisibility) {
-                openDescriptionLayout.setVisibility(hasShownotes ? View.VISIBLE : View.INVISIBLE);
-                ObjectAnimator.ofFloat(openDescriptionLayout, "alpha", hasShownotes ? 0 : 1, hasShownotes ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
-            }
+        boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
+        int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
+        if (openDescriptionLayout.getVisibility() != newVisibility) {
+            openDescriptionLayout.setVisibility(hasShownotes ? View.VISIBLE : View.INVISIBLE);
+            ObjectAnimator.ofFloat(openDescriptionLayout, "alpha", hasShownotes ? 0 : 1, hasShownotes ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
         }
     }
 
