@@ -153,6 +153,10 @@ public class CoverFragment extends Fragment {
     }
 
     private void refreshChapterData(int chapterIndex) {
+        if (media == null || media.getChapters() == null) {
+            return;
+        }
+
         boolean chapterControlVisible = true;
 
         if (chapterIndex > -1) {
