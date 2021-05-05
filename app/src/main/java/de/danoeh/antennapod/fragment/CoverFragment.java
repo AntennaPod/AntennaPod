@@ -141,7 +141,10 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
+        toggleDescriptionButton();
+    }
 
+    private void toggleDescriptionButton() {
         if (media.getDescription() != null) {
             boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
@@ -153,7 +156,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void refreshChapterData(int chapterIndex) {
-        if (media == null || media.getChapters() == null) {
+        if (media.getChapters() == null) {
             return;
         }
 
