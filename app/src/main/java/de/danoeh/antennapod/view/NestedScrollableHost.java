@@ -155,9 +155,10 @@ public class NestedScrollableHost extends FrameLayout {
     private void handleInterceptTouchEvent(MotionEvent e) {
         if (parentViewPager == null) return;
         int orientation = parentViewPager.getOrientation();
+        boolean preferedDirection = preferHorizontal + preferVertical > 2;
 
         // Early return if child can't scroll in same direction as parent and theres no prefered scroll direction
-        if (!canChildScroll(orientation, -1f) && !canChildScroll(orientation, 1f) && (preferHorizontal + preferVertical == 2)) {
+        if (!canChildScroll(orientation, -1f) && !canChildScroll(orientation, 1f) && !preferedDirection) {
             return;
         }
 
@@ -177,7 +178,7 @@ public class NestedScrollableHost extends FrameLayout {
             if (scaledDx > touchSlop || scaledDy > touchSlop) {
                 if (isVpHorizontal == (scaledDy > scaledDx)) {
                     // Gesture is perpendicular, allow all parents to intercept
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    getParent().requestDisallowInterceptTouchEvent(preferedDirection);
                 } else {
                     // Gesture is parallel, query child if movement in that direction is possible
                     if (canChildScroll(orientation, isVpHorizontal ? dx : dy)) {

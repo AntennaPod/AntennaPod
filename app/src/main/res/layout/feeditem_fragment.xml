@@ -187,7 +187,7 @@
         android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:preferVertical="10">
+        app:preferVertical="3">
 
         <de.danoeh.antennapod.view.ShownotesWebView
             android:id="@+id/webvDescription"
