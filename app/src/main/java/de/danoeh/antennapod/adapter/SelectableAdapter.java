@@ -25,7 +25,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
  * @param <T>
  */
 class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T>{
-    private int selectedCount = 1;
+    private int selectedCount;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -60,7 +60,10 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         if (inActionMode()) {
             finish();
         }
-        onStartActionMode();
+
+        selectedCount = 1;
+        selectedItemPositions.clear();
+
         AttributeSet attrs = null;
         int[] attrsArray = new int[] {
                 android.R.attr.windowBackground,
@@ -70,9 +73,10 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         Resources res =  activity.getResources();
         unSelectedItemBgColor = res.getColor(ta.getResourceId(0, Color.LTGRAY));
         selectedItemBgColor = res.getColor(ta.getResourceId(1, Color.WHITE));
-        onStartActionMode();
         selectedItemPositions.append(pos, true);
+        onSelectChanged(pos, true);
         notifyItemChanged(pos);
+        onStartActionMode();
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
             private MenuItem selectAllItem = null;
@@ -160,22 +164,21 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         return actionMode != null;
     }
 
-    protected boolean isSelected(int pos) {
-        return selectedItemPositions.get(pos, false);
+    public int getSelectedCount() {
+        return selectedCount;
     }
 
+    /**
+     * Allows subclasses to be notified when a selection change has occurred
+     * @param pos the position that was changed
+     * @param selected the new state of the selection, true if selected, otherwise false
+     */
     public void onSelectChanged(int pos, boolean selected) {
 
     }
-    private void toggleSelectAll(MenuItem selectAllItem, boolean toggle) {
-        if (toggle) {
-            selectAll();
-            toggleSelectAllIcon(selectAllItem, toggle);
-        } else {
-            selectNone();
-            toggleSelectAllIcon(selectAllItem, toggle);
 
-        }
+    public boolean isSelected(int pos) {
+        return selectedItemPositions.get(pos, false);
     }
 
     private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
@@ -189,25 +192,35 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         }
     }
 
-
     private String getTitle() {
         return selectedCount + " / " + getItemCount() + " selected";
     }
 
 
+    /**
+     * Selects all items and notifies subclasses of selected items
+     */
     private void selectAll() {
         for(int i = 0; i < getItemCount(); ++i) {
-            selectedItemPositions.put(i, true);
-            ++selectedCount;
-            onSelectChanged(i, true);
+            boolean isSelected = selectedItemPositions.get(i);
+            if (!isSelected) {
+                selectedItemPositions.put(i, true);
+                onSelectChanged(i, true);
+            }
         }
+        selectedCount = getItemCount();
         notifyDataSetChanged();
     }
-
+    /**
+     * Un-selects all items and notifies subclasses of un-selected items
+     */
     private void selectNone() {
         selectedItemPositions.clear();
         for(int i = 0; i < getItemCount(); ++i) {
-            onSelectChanged(i, false);
+            boolean isSelected = selectedItemPositions.get(i);
+            if (isSelected) {
+                onSelectChanged(i, false);
+            }
         }
         selectedCount = 0;
         notifyDataSetChanged();

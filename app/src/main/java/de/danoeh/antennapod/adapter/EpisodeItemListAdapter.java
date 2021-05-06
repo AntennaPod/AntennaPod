@@ -35,7 +35,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
-    private Set<FeedItem> selectedItems = new HashSet<>();
+    private Set<Long> selectedIds = new HashSet<>();
+    private List<FeedItem> selectedItems = new ArrayList<>();
     private FeedItem selectedItem;
     int selectedPosition = 0; // used to init actionMode
 
@@ -74,7 +75,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-               selectHandler(pos);
+                selectHandler(pos);
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
@@ -111,6 +112,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
      * Instead, we tell the adapter to use partial binding by calling {@link #notifyItemChanged(int, Object)}.
      * We actually ignore the payload and always do a full bind but calling the partial bind method ensures
      * that ViewHolders are always re-used.
+     *
      * @param position Position of the item that has changed
      */
     public void notifyItemChangedCompat(int position) {
@@ -147,9 +149,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void onSelectChanged(int pos, boolean selected) {
         super.onSelectChanged(pos, selected);
         FeedItem item = episodes.get(pos);
-        if (selected) {
+        if (selected && !selectedIds.contains(item.getId())) {
+            selectedIds.add(item.getId());
             selectedItems.add(item);
-        } else {
+        } else if(!selected){
+            selectedIds.remove(item.getId());
             selectedItems.remove(item);
         }
     }
@@ -164,6 +168,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
     }
+
     protected FeedItem getItem(int index) {
         return episodes.get(index);
     }
@@ -176,7 +181,13 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return selectedPosition;
     }
 
-    public Set<FeedItem> getSelectedItems() {
+    public List<FeedItem> getSelectedItems() {
         return selectedItems;
+    }
+
+    @Override
+    public void onEndActionMode() {
+        super.onEndActionMode();
+        selectedItems.clear();
     }
 }

@@ -23,6 +23,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -243,21 +244,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(R.drawable.ic_sort);
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_sort));
                 toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(R.drawable.ic_filter);
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_filter));
                 toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(R.drawable.ic_refresh);
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_refresh));
                 toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(R.drawable.ic_search);
-//                toolbar.getMenu().findItem(R.id.sort_items)
-//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
-//                toolbar.getMenu().findItem(R.id.filter_items)
-//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
-//                toolbar.getMenu().findItem(R.id.refresh_item)
-//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
-//                toolbar.getMenu().findItem(R.id.action_search)
-//                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_search));
             }
         };
         iconTintManager.updateTint();
@@ -303,14 +296,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         // Init action UI (via a FAB Speed Dial)
         mSpeedDialView = root.findViewById(R.id.fabSD);
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-
-        // show only specified actions, and bind speed dial UIs to the actual logic
-//        for (ActionBinding binding : actionBindings) {
-//            if ((actions & binding.flag) == 0) {
-//                mSpeedDialView.removeActionItemById(binding.actionItemId);
-//            }
-//        }
-
         mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
@@ -319,7 +304,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void onToggleChanged(boolean open) {
-                if (open && adapter.getSelectedItems().size() == 0) {
+                if (open && adapter.getSelectedCount() == 0) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                             Snackbar.LENGTH_SHORT);
                     mSpeedDialView.close();
@@ -331,39 +316,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             for (FeedItem episode : getCheckedItems()) {
                 checkedIds.add(episode.getId());
             }
-//            ActionBinding selectedBinding = null;
-//            for (ActionBinding binding : actionBindings) {
-//                if (actionItem.getId() == binding.actionItemId) {
-//                    selectedBinding = binding;
-//                    break;
-//                }
-//            }
-//            new ActionBinding(ACTION_ADD_TO_QUEUE,
-//                    R.id.add_to_queue_batch, this::queueChecked),
-//                    new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
-//                            R.id.remove_from_queue_batch, this::removeFromQueueChecked),
-//                    new ActionBinding(ACTION_MARK_PLAYED,
-//                            R.id.mark_read_batch, this::markedCheckedPlayed),
-//                    new ActionBinding(ACTION_MARK_UNPLAYED,
-//                            R.id.mark_unread_batch, this::markedCheckedUnplayed),
-//                    new ActionBinding(ACTION_DOWNLOAD,
-//                            R.id.download_batch, this::downloadChecked),
-//                    new ActionBinding(ACTION_DELETE,
-//                            R.id.delete_batch, this::deleteChecked)
 
-
-            /**
-             * NOTE: I would like to suggest we use this rather than ActionBinding
-             * as none of the other code uses it.
-             * If we need to resuse the logic, we should create a base fragment.
-             * If we do, then we can not only reuse this logic but also other
-             * UI based logic like the speeddialer.
-             *
-             * Most of the shared logic is UI related anyway. If don't use a base fragment
-             * and just abstract out to an ActionBing class, then we would still have a lot of
-             * duplicate UI logic.
-             *
-             */
             switch (actionItem.getId()) {
                 case R.id.add_to_queue_batch:
                     queueChecked();
@@ -390,15 +343,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             mSpeedDialView.close();
             mSpeedDialView.setVisibility(View.GONE);
             adapter.finish();
-
-//            if (selectedBinding != null) {
-//                selectedBinding.action.run();
-//                mSpeedDialView.close();
-//                adapter.close();
-//
-//            } else {
-//                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
-//            }
             return true;
         });
         return root;
@@ -586,7 +530,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
 
-    private Set<FeedItem> getCheckedItems() {
+    private List<FeedItem> getCheckedItems() {
         return adapter.getSelectedItems();
     }
     private void updateUi() {
@@ -816,7 +760,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
-        Set<FeedItem> episodes = adapter.getSelectedItems();
+        List<FeedItem> episodes = adapter.getSelectedItems();
         for (FeedItem episode : episodes) {
             if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
@@ -834,7 +778,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void deleteChecked() {
         int countHasMedia = 0;
         int countNoMedia = 0;
-        Set<FeedItem> episodes = adapter.getSelectedItems();
+        List<FeedItem> episodes = adapter.getSelectedItems();
         for (FeedItem feedItem : episodes) {
             checkedIds.contains(feedItem.getId());
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
