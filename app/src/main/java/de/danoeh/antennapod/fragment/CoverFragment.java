@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -153,14 +154,38 @@ public class CoverFragment extends Fragment {
             boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
             if (openDescriptionLayout.getVisibility() != newVisibility) {
-                openDescriptionLayout.setVisibility(newVisibility);
-                ObjectAnimator.ofFloat(
+                ObjectAnimator oa = ObjectAnimator.ofFloat(
                         openDescriptionLayout,
                         "alpha",
                         hasShownotes ? 0 : 1,
                         hasShownotes ? 1 : 0)
-                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
-                        .start();
+                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+                oa.addListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
+                                if (newVisibility == View.VISIBLE) {
+                                    openDescriptionLayout.setVisibility(newVisibility);
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                if (newVisibility == View.INVISIBLE) {
+                                    openDescriptionLayout.setVisibility(newVisibility);
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
+
+                            }
+                        });
+                oa.start();
             }
         }
 
