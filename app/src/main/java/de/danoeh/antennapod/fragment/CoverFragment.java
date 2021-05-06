@@ -364,7 +364,7 @@ public class CoverFragment extends Fragment {
         getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
 
         if (episodeDetails.getParent() != detailsParent) {
-            ((ViewGroup)episodeDetails.getParent()).removeView(episodeDetails);
+            ((ViewGroup) episodeDetails.getParent()).removeView(episodeDetails);
             detailsParent.addView(episodeDetails);
         }
     }

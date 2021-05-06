@@ -9,14 +9,6 @@
               android:paddingRight="40dp"
               xmlns:tools="http://schemas.android.com/tools">
 
-    <ProgressBar
-        android:id="@+id/empty_loading"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="32dp"
-        android:visibility="gone" />
-
     <ImageView
             android:id="@+id/emptyViewIcon"
             android:layout_width="32dp"

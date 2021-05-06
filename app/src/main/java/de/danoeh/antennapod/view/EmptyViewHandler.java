@@ -27,14 +27,12 @@ public class EmptyViewHandler {
     private final TextView tvTitle;
     private final TextView tvMessage;
     private final ImageView ivIcon;
-    private final ProgressBar pgLoading;
 
     public EmptyViewHandler(Context context) {
         emptyView = View.inflate(context, R.layout.empty_view_layout, null);
         tvTitle = emptyView.findViewById(R.id.emptyViewTitle);
         tvMessage = emptyView.findViewById(R.id.emptyViewMessage);
         ivIcon = emptyView.findViewById(R.id.emptyViewIcon);
-        pgLoading = emptyView.findViewById(R.id.empty_loading);
     }
 
     public void setTitle(int title) {
@@ -52,13 +50,6 @@ public class EmptyViewHandler {
     public void setIcon(@DrawableRes int icon) {
         ivIcon.setImageResource(icon);
         ivIcon.setVisibility(View.VISIBLE);
-    }
-
-    public void setLoading() {
-        pgLoading.setVisibility(View.VISIBLE);
-        tvTitle.setVisibility(View.GONE);
-        tvMessage.setVisibility(View.GONE);
-        ivIcon.setVisibility(View.GONE);
     }
 
     public void hide() {

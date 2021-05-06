@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,6 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -42,6 +42,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     private int focusedChapter = -1;
     private Playable media;
     private LinearLayoutManager layoutManager;
+    private ProgressBar progressBar;
 
     @NonNull
     @Override
@@ -58,6 +59,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         View root = inflater.inflate(R.layout.simple_list_fragment, null, false);
         root.findViewById(R.id.toolbar).setVisibility(View.GONE);
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+        progressBar = root.findViewById(R.id.progLoading);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
@@ -73,9 +75,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         });
         recyclerView.setAdapter(adapter);
 
-        EmptyViewHandler emptyView = new EmptyViewHandler(getContext());
-        emptyView.attachToRecyclerView(recyclerView);
-        emptyView.setLoading();
+        progressBar.setVisibility(View.VISIBLE);
         
         RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -152,6 +152,11 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         focusedChapter = -1;
         if (adapter == null) {
             return;
+        }
+        if (media != null && media.getChapters() != null && media.getChapters().size() <= 0) {
+            dismiss();
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
         adapter.setMedia(media);
         int positionOfCurrentChapter = getCurrentChapter(media);
