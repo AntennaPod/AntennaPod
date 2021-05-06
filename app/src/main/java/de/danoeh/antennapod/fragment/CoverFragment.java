@@ -144,7 +144,7 @@ public class CoverFragment extends Fragment {
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
-        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
+        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //handles displayCoverImage
         updateDescriptionButtonVisibility();
     }
 
@@ -167,6 +167,7 @@ public class CoverFragment extends Fragment {
 
     private void refreshChapterData(int chapterIndex) {
         if (media.getChapters() == null) {
+            displayCoverImage();
             return;
         }
 
