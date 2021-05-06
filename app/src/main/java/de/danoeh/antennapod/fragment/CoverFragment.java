@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -35,6 +37,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -150,6 +157,8 @@ public class CoverFragment extends Fragment {
     }
 
     private void updateDetailsButtonsVisibility() {
+        ArrayList<Animator> anims = new ArrayList<>();
+
         if (media.getDescription() != null) {
             boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
@@ -158,34 +167,25 @@ public class CoverFragment extends Fragment {
                         openDescriptionLayout,
                         "alpha",
                         hasShownotes ? 0 : 1,
-                        hasShownotes ? 1 : 0)
-                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
-                oa.addListener(new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animator) {
-                                if (newVisibility == View.VISIBLE) {
-                                    openDescriptionLayout.setVisibility(newVisibility);
-                                }
-                            }
+                        hasShownotes ? 1 : 0);
+                oa.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        if (newVisibility == View.VISIBLE) {
+                            openDescriptionLayout.setVisibility(newVisibility);
+                        }
+                    }
 
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-                                if (newVisibility == View.INVISIBLE) {
-                                    openDescriptionLayout.setVisibility(newVisibility);
-                                }
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animator) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animator) {
-
-                            }
-                        });
-                oa.start();
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (newVisibility == View.INVISIBLE) {
+                            openDescriptionLayout.setVisibility(newVisibility);
+                        }
+                    }
+                });
+                anims.add(oa);
             }
         }
 
@@ -194,13 +194,19 @@ public class CoverFragment extends Fragment {
             int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
             if (chapterControl.getVisibility() != newVisibility) {
                 chapterControl.setVisibility(newVisibility);
-                ObjectAnimator.ofFloat(chapterControl,
+                ObjectAnimator oa = ObjectAnimator.ofFloat(chapterControl,
                         "alpha",
                         chapterControlVisible ? 0 : 1,
-                        chapterControlVisible ? 1 : 0)
-                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
-                        .start();
+                        chapterControlVisible ? 1 : 0);
+                anims.add(oa);
             }
+        }
+
+        if (anims.size() > 0) {
+            AnimatorSet set = new AnimatorSet();
+            set.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+            set.playTogether(anims);
+            set.start();
         }
     }
 
