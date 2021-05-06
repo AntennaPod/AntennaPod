@@ -75,9 +75,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        emptyView.setIcon(R.drawable.ic_bookmark);
-        emptyView.setTitle(R.string.no_chapters_head_label);
-        emptyView.setMessage(R.string.no_chapters_label);
+        emptyView.setLoading();
         
         RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
