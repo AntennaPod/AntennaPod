@@ -359,7 +359,8 @@ public class CoverFragment extends Fragment {
 
         spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
         counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
-        LinearLayout.LayoutParams wrapHeight = new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams wrapHeight =
+                new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         episodeDetails.setLayoutParams(wrapHeight);
         getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
 
