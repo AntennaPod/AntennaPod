@@ -106,7 +106,7 @@ public class NestedScrollableHost extends FrameLayout {
             @Override
             public boolean onPreDraw() {
                 View v = (View) getParent();
-                while (v!=null && !(v instanceof ViewPager2) || isntSameDirection(v)){
+                while (v != null && !(v instanceof ViewPager2) || isntSameDirection(v)) {
                     v = (View) v.getParent();
                 }
                 parentViewPager = (ViewPager2) v;
@@ -120,6 +120,7 @@ public class NestedScrollableHost extends FrameLayout {
     private Boolean isntSameDirection(View v) {
         int orientation = 0;
         switch (scrollDirection) {
+            default:
             case 0:
                 return false;
             case 1:
@@ -129,7 +130,7 @@ public class NestedScrollableHost extends FrameLayout {
                 orientation = ORIENTATION_HORIZONTAL;
                 break;
         }
-        return ((v instanceof ViewPager2) && ((ViewPager2)v).getOrientation() != orientation);
+        return ((v instanceof ViewPager2) && ((ViewPager2)v) .getOrientation() != orientation);
     }
 
 
@@ -191,6 +192,6 @@ public class NestedScrollableHost extends FrameLayout {
                 }
             }
 
-
         }
-    }}
+    }
+}

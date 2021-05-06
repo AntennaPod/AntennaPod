@@ -115,7 +115,7 @@ public class ItemDescriptionFragment extends Fragment {
     public void onPause() {
         super.onPause();
         savePreference();
-        webvDescription.scrollTo(0,0);
+        webvDescription.scrollTo(0, 0);
     }
 
     private void savePreference() {

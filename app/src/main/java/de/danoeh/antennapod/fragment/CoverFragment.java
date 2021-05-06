@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -92,12 +93,15 @@ public class CoverFragment extends Fragment {
         openDescription = root.findViewById(R.id.openDescription);
         counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
-        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true);
+        View.OnClickListener scrollToDesc = view ->
+                ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true);
         openDescription.setOnClickListener(scrollToDesc);
         openDescriptionLayout.setOnClickListener(scrollToDesc);
-        openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
-        butNextChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
-        butPrevChapter.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
+        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN);
+        openDescription.setColorFilter(colorFilter);
+        butNextChapter.setColorFilter(colorFilter);
+        butPrevChapter.setColorFilter(colorFilter);
         ChaptersFragment chaptersFragment = new ChaptersFragment();
         chapterControl.setOnClickListener(v ->
                 chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));
@@ -150,7 +154,13 @@ public class CoverFragment extends Fragment {
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
             if (openDescriptionLayout.getVisibility() != newVisibility) {
                 openDescriptionLayout.setVisibility(newVisibility);
-                ObjectAnimator.ofFloat(openDescriptionLayout, "alpha", hasShownotes ? 0 : 1, hasShownotes ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+                ObjectAnimator.ofFloat(
+                        openDescriptionLayout,
+                        "alpha",
+                        hasShownotes ? 0 : 1,
+                        hasShownotes ? 1 : 0)
+                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
+                        .start();
             }
         }
     }
@@ -177,7 +187,12 @@ public class CoverFragment extends Fragment {
         int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
         if (chapterControl.getVisibility() != newVisibility) {
             chapterControl.setVisibility(newVisibility);
-            ObjectAnimator.ofFloat(chapterControl, "alpha", chapterControlVisible ? 0 : 1, chapterControlVisible ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+            ObjectAnimator.ofFloat(chapterControl,
+                    "alpha",
+                    chapterControlVisible ? 0 : 1,
+                    chapterControlVisible ? 1 : 0)
+                    .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
+                    .start();
         }
 
         displayCoverImage();
@@ -348,7 +363,7 @@ public class CoverFragment extends Fragment {
         getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
 
         if (episodeDetails.getParent() != detailsParent) {
-            ((ViewGroup)episodeDetails.getParent()).removeView(episodeDetails);
+            ((ViewGroup)episodeDetails.getParent()) .removeView(episodeDetails);
             detailsParent.addView(episodeDetails);
         }
     }
