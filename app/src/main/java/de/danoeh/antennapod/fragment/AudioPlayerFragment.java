@@ -517,6 +517,7 @@ public class AudioPlayerFragment extends Fragment implements
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
         } else if (controller.getDuration() != controller.getMedia().getDuration()) {
+            controller.getMedia().setDuration(controller.getDuration());
             updateUi(controller.getMedia());
         }
     }
