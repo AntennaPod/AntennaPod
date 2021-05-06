@@ -49,9 +49,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         return new AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
-                .setNegativeButton(getString(R.string.cancel_label), (dialog, which) -> {dismiss();} )
+                .setNegativeButton(getString(R.string.cancel_label), null) //dismisses
                 .create();
-
     }
 
 

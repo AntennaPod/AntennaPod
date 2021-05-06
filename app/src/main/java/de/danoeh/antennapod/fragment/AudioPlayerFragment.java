@@ -72,7 +72,7 @@ public class AudioPlayerFragment extends Fragment implements
         ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
-    public static final int POS_DESC = 1;
+    public static final int POS_DESCRIPTION = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
     public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
@@ -585,7 +585,7 @@ public class AudioPlayerFragment extends Fragment implements
                 case POS_COVER:
                     return new CoverFragment();
                 default:
-                case POS_DESC:
+                case POS_DESCRIPTION:
                     return new ItemDescriptionFragment();
             }
         }

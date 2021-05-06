@@ -11,10 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -63,8 +63,8 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private ImageButton openDescription;
     private LinearLayout openDescriptionLayout;
-    private FrameLayout counterweight;
-    private FrameLayout spacer;
+    private Space counterweight;
+    private Space spacer;
     private ImageButton butPrevChapter;
     private ImageButton butNextChapter;
     private LinearLayout episodeDetails;
@@ -92,7 +92,7 @@ public class CoverFragment extends Fragment {
         openDescription = root.findViewById(R.id.openDescription);
         counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
-        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESC, true);
+        View.OnClickListener scrollToDesc = view -> ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true);
         openDescription.setOnClickListener(scrollToDesc);
         openDescriptionLayout.setOnClickListener(scrollToDesc);
         openDescription.setColorFilter(BlendModeColorFilterCompat.createBlendModeColorFilterCompat(txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN));
@@ -141,15 +141,15 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
-        toggleDescriptionButton();
+        updateDescriptionButtonVisibility();
     }
 
-    private void toggleDescriptionButton() {
+    private void updateDescriptionButtonVisibility() {
         if (media.getDescription() != null) {
             boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
             if (openDescriptionLayout.getVisibility() != newVisibility) {
-                openDescriptionLayout.setVisibility(hasShownotes ? View.VISIBLE : View.INVISIBLE);
+                openDescriptionLayout.setVisibility(newVisibility);
                 ObjectAnimator.ofFloat(openDescriptionLayout, "alpha", hasShownotes ? 0 : 1, hasShownotes ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
             }
         }
@@ -176,7 +176,7 @@ public class CoverFragment extends Fragment {
 
         int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
         if (chapterControl.getVisibility() != newVisibility) {
-            chapterControl.setVisibility(chapterControlVisible ? View.VISIBLE : View.GONE);
+            chapterControl.setVisibility(newVisibility);
             ObjectAnimator.ofFloat(chapterControl, "alpha", chapterControlVisible ? 0 : 1, chapterControlVisible ? 1 : 0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
         }
 

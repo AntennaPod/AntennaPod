@@ -11,7 +11,7 @@
     android:padding="8dp"
     android:gravity="center">
 
-    <FrameLayout
+    <Space
         android:id="@+id/counterweight"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,7 +65,7 @@
             android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
 
-        <FrameLayout
+        <Space
             android:id="@+id/vertical_divider"
             android:layout_width="match_parent"
             android:layout_height="8dp"
@@ -73,7 +73,7 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <Space
         android:id="@+id/details_spacer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
