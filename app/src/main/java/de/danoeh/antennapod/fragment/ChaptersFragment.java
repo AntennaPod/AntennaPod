@@ -153,7 +153,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         if (adapter == null) {
             return;
         }
-        if (media != null && media.getChapters() != null && media.getChapters().size() <= 0) {
+        if (media.getChapters() != null && media.getChapters().size() <= 0) {
             dismiss();
         } else {
             progressBar.setVisibility(View.GONE);

@@ -92,7 +92,8 @@ public class NestedScrollableHost extends FrameLayout {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs,
+                                int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
         setAttributes(context, attrs);
@@ -154,7 +155,9 @@ public class NestedScrollableHost extends FrameLayout {
     }
 
     private void handleInterceptTouchEvent(MotionEvent e) {
-        if (parentViewPager == null) { return; }
+        if (parentViewPager == null) {
+            return;
+        }
         int orientation = parentViewPager.getOrientation();
         boolean preferedDirection = preferHorizontal + preferVertical > 2;
 
