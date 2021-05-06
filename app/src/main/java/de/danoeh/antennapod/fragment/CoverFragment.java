@@ -144,11 +144,11 @@ public class CoverFragment extends Fragment {
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
-        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //handles displayCoverImage
-        updateDescriptionButtonVisibility();
+        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
+        updateDetailsButtonsVisibility();
     }
 
-    private void updateDescriptionButtonVisibility() {
+    private void updateDetailsButtonsVisibility() {
         if (media.getDescription() != null) {
             boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
             int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
@@ -163,16 +163,23 @@ public class CoverFragment extends Fragment {
                         .start();
             }
         }
+
+        if (media.getChapters() != null) {
+            boolean chapterControlVisible = media.getChapters().size() > 0;
+            int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
+            if (chapterControl.getVisibility() != newVisibility) {
+                chapterControl.setVisibility(newVisibility);
+                ObjectAnimator.ofFloat(chapterControl,
+                        "alpha",
+                        chapterControlVisible ? 0 : 1,
+                        chapterControlVisible ? 1 : 0)
+                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
+                        .start();
+            }
+        }
     }
 
     private void refreshChapterData(int chapterIndex) {
-        if (media.getChapters() == null) {
-            displayCoverImage();
-            return;
-        }
-
-        boolean chapterControlVisible = true;
-
         if (chapterIndex > -1) {
             if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
                 displayedChapterIndex = media.getChapters().size() - 1;
@@ -181,19 +188,6 @@ public class CoverFragment extends Fragment {
                 displayedChapterIndex = chapterIndex;
                 butNextChapter.setVisibility(View.VISIBLE);
             }
-        } else {
-            chapterControlVisible = false;
-        }
-
-        int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
-        if (chapterControl.getVisibility() != newVisibility) {
-            chapterControl.setVisibility(newVisibility);
-            ObjectAnimator.ofFloat(chapterControl,
-                    "alpha",
-                    chapterControlVisible ? 0 : 1,
-                    chapterControlVisible ? 1 : 0)
-                    .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
-                    .start();
         }
 
         displayCoverImage();
