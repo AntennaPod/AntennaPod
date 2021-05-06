@@ -130,7 +130,7 @@ public class NestedScrollableHost extends FrameLayout {
                 orientation = ORIENTATION_HORIZONTAL;
                 break;
         }
-        return ((v instanceof ViewPager2) && ((ViewPager2)v) .getOrientation() != orientation);
+        return ((v instanceof ViewPager2) && ((ViewPager2)v).getOrientation() != orientation);
     }
 
 
