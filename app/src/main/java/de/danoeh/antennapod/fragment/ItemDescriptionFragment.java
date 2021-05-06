@@ -146,8 +146,7 @@ public class ItemDescriptionFragment extends Fragment {
                     && id.equals(controller.getMedia().getIdentifier().toString())
                     && webvDescription != null) {
                 Log.d(TAG, "Restored scroll Position: " + scrollY);
-                webvDescription.scrollTo(webvDescription.getScrollX(),
-                        scrollY);
+                //webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
                 return true;
             }
         }

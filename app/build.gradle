@@ -168,7 +168,6 @@ dependencies {
     implementation project(':net:sync:model')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

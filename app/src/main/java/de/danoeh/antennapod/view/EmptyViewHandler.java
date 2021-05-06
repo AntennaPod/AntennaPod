@@ -3,17 +3,16 @@ package de.danoeh.antennapod.view;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import androidx.annotation.DrawableRes;
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 

@@ -22,9 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_weight="0"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:importantForAccessibility="no"
@@ -36,8 +34,7 @@
         android:id="@+id/cover_fragment_text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginVertical="8dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -93,10 +90,7 @@
             android:id="@+id/openDescriptionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginHorizontal="8dp"
             android:background="@drawable/grey_border"
             android:clickable="true"
             android:focusable="true"
@@ -114,6 +108,10 @@
                 android:padding="2dp"
                 app:srcCompat="@drawable/ic_info" />
 
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/shownotes_label"
                 android:layout_width="wrap_content"
@@ -121,20 +119,16 @@
                 android:ellipsize="none"
                 android:gravity="center_horizontal"
                 android:maxLines="2"
-                android:paddingLeft="2dp"
                 android:text="@string/shownotes_label"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size_navdrawer" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/chapterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginHorizontal="8dp"
             android:minWidth="150dp"
             android:layout_weight="1"
             android:background="@drawable/grey_border"
