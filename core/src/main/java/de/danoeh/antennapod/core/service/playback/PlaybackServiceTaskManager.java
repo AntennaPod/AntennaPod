@@ -167,7 +167,7 @@ public class PlaybackServiceTaskManager {
      * Starts the position saver task. If the position saver is already active, nothing will happen.
      */
     public synchronized void startPositionSaver() {
-        if (!isPositionSaverActive() && !schedExecutor.isShutdown()) {
+        if (!isPositionSaverActive()) {
             Runnable positionSaver = callback::positionSaverTick;
             positionSaver = useMainThreadIfNecessary(positionSaver);
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
