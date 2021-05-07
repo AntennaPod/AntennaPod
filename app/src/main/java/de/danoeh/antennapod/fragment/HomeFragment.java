@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,14 +48,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.inflateMenu(R.menu.episodes);
         toolbar.setOnMenuItemClickListener(this);
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
+        Menu menu = toolbar.getMenu();
+        menu.findItem(R.id.mark_all_read_item).setVisible(true);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
+        menu.findItem(R.id.add_podcast_item).setVisible(true);
+        menu.findItem(R.id.refresh_item).setVisible(false);
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
-
-        AllEpisodesFragment allEpisodesFragment = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
-        allEpisodesFragment.onPrepareOptionsMenu(toolbar.getMenu());
 
         return rootView;
     }
@@ -68,7 +71,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Fragment child = getChildFragmentManager().getFragments().get(0);
-        if (child != null) {
+        if (item.getItemId() == R.id.add_podcast_item) {
+            ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
+            return true;
+        } else if (child != null) {
             return child.onOptionsItemSelected(item);
         }
         return false;

@@ -18,6 +18,14 @@
         android:icon="@drawable/ic_refresh"/>
 
     <item
+        android:id="@+id/add_podcast_item"
+        android:title="@string/add_feed_label"
+        android:menuCategory="container"
+        custom:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/ic_add"/>
+
+    <item
         android:id="@+id/filter_items"
         android:icon="@drawable/ic_filter"
         android:menuCategory="container"
