@@ -25,13 +25,7 @@ public class EpisodesFragment extends PagedToolbarFragment {
     public static final String TAG = "EpisodesFragment";
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
     private static final String KEY_UP_ARROW = "up_arrow";
-
-    private static final int POS_NEW_EPISODES = 0;
-    private static final int POS_ALL_EPISODES = 1;
-    private static final int POS_FAV_EPISODES = 2;
-    private static final int TOTAL_COUNT = 3;
-
-    private TabLayout tabLayout;
+    
     private boolean displayUpArrow;
 
     public void onCreate(Bundle savedInstanceState) {
