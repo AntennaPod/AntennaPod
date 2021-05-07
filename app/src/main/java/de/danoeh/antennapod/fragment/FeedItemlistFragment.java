@@ -94,7 +94,7 @@ import java.util.Set;
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener {
+        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnEndSelectModeListener {
     private static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -116,6 +116,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
+
 
     // fab speed dial
 
@@ -340,8 +341,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
             }
 
-            mSpeedDialView.close();
-            mSpeedDialView.setVisibility(View.GONE);
+            onEndSelectMode();
             adapter.finish();
             return true;
         });
@@ -529,6 +529,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Override
+    public void onEndSelectMode() {
+        mSpeedDialView.close();
+        mSpeedDialView.setVisibility(View.GONE);
+    }
 
     private List<FeedItem> getCheckedItems() {
         return adapter.getSelectedItems();
@@ -573,6 +578,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (adapter == null) {
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
+            adapter.setOnEndSelectModeListener(this);
             recyclerView.setAdapter(adapter);
         }
         recyclerView.setVisibility(View.VISIBLE);
@@ -728,33 +734,27 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         // Check if an episode actually contains any media files before adding it to queue
         LongList toQueue = new LongList(checkedIds.size());
         for (FeedItem episode : getCheckedItems()) {
-            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+            if (episode.hasMedia()) {
                 toQueue.add(episode.getId());
             }
         }
         DBWriter.addQueueItem(getActivity(), true, toQueue.toArray());
-        close(R.plurals.added_to_queue_batch_label, toQueue.size());
+        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
     private void removeFromQueueChecked() {
-//        LongList removeQueue = new LongList(checkedIds.size());
-//        for (FeedItem episode : getCheckedItems()) {
-//            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
-//                removeQueue.add(episode.getId());
-//            }
-//        }
         DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
-        close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
+        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.size());
     }
 
     private void markedCheckedPlayed() {
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds.toArray());
-        close(R.plurals.marked_read_batch_label, checkedIds.size());
+        showMessage(R.plurals.marked_read_batch_label, checkedIds.size());
     }
 
     private void markedCheckedUnplayed() {
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds.toArray());
-        close(R.plurals.marked_unread_batch_label, checkedIds.size());
+        showMessage(R.plurals.marked_unread_batch_label, checkedIds.size());
     }
 
     private void downloadChecked() {
@@ -772,7 +772,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close(R.plurals.downloading_batch_label, toDownload.size());
+        showMessage(R.plurals.downloading_batch_label, toDownload.size());
     }
 
     private void deleteChecked() {
@@ -788,7 +788,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 countNoMedia++;
             }
         }
-        closeMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
+        showMessageMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
     }
 
     private class FeedItemListAdapter extends EpisodeItemListAdapter {
@@ -802,13 +802,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private void close(@PluralsRes int msgId, int numItems) {
+    private void showMessage(@PluralsRes int msgId, int numItems) {
         ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                 getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-//        getActivity().getSupportFragmentManager().popBackStack();
     }
 
-    private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
+    private void showMessageMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
         ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                 getResources().getQuantityString(msgId,
                         (countHasMedia + countNoMedia),

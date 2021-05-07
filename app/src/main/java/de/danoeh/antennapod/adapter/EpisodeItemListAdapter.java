@@ -39,6 +39,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     private List<FeedItem> selectedItems = new ArrayList<>();
     private FeedItem selectedItem;
     int selectedPosition = 0; // used to init actionMode
+    private OnEndSelectModeListener onEndSelectModeListener;
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -163,6 +164,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         notifyDataSetChanged();
     }
 
+    public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
+       this.onEndSelectModeListener = onEndSelectModeListener;
+    }
+
     protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
     }
 
@@ -186,8 +191,15 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     @Override
-    public void onEndActionMode() {
+    protected void onEndActionMode() {
         super.onEndActionMode();
         selectedItems.clear();
+        selectedIds.clear();
+        if(onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();
     }
+
+    public interface OnEndSelectModeListener {
+        public void onEndSelectMode();
+    }
+
 }

@@ -132,8 +132,8 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
      */
     public void finish() {
         if (inActionMode()) {
-            actionMode.finish();
             onEndActionMode();
+            actionMode.finish();
         }
     }
     public void selectHandler(int pos) {
@@ -156,7 +156,7 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
 
     }
 
-    public void onEndActionMode() {
+    protected void onEndActionMode() {
 
     }
 
@@ -180,6 +180,7 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
     public boolean isSelected(int pos) {
         return selectedItemPositions.get(pos, false);
     }
+
 
     private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
         if (toggle) {
