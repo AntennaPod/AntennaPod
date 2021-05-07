@@ -15,10 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
 
 /**
  * Used by Recyclerviews that need to provide ability to select items

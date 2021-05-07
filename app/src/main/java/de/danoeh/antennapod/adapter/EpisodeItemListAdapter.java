@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
