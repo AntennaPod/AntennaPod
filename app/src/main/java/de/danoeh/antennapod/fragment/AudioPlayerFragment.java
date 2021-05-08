@@ -98,6 +98,7 @@ public class AudioPlayerFragment extends Fragment implements
     private boolean hasChapters = false;
     private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
+    private int duration;
     private TabLayoutMediator tabLayoutMediator;
 
     @Override
@@ -195,10 +196,9 @@ public class AudioPlayerFragment extends Fragment implements
         if (hasChapters) {
             List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size()];
-            float duration = controller.getDuration();
 
             for (int i = 0; i < chapters.size(); i++) {
-                dividerPos[i] = chapters.get(i).getStart() / duration;
+                dividerPos[i] = chapters.get(i).getStart() / (float) duration;
             }
         }
         
@@ -418,6 +418,8 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
 
+        duration = controller.getDuration();
+
         if (media != null && media.getChapters() != null) {
             setHasChapters(media.getChapters().size() > 0);
             currentChapterIndex = ChapterUtils.getCurrentChapterIndex(media, controller.getPosition());
@@ -425,7 +427,7 @@ public class AudioPlayerFragment extends Fragment implements
             setHasChapters(false);
             currentChapterIndex = -1;
         }
-        updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
         updatePlaybackSpeedButton(media);
         setChapterDividers(media);
         setupOptionsMenu(media);
@@ -516,8 +518,7 @@ public class AudioPlayerFragment extends Fragment implements
             } else {
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
-        } else if (controller.getDuration() != controller.getMedia().getDuration()) {
-            controller.getMedia().setDuration(controller.getDuration());
+        } else if (duration != controller.getDuration()) {
             updateUi(controller.getMedia());
         }
     }
