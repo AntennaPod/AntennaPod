@@ -419,10 +419,10 @@
   <string name="user_interface_label">Interface de usuaria</string>
   <string name="user_interface_sum">Aparencia, Subscricións, Bloqueo de pantalla</string>
   <string name="pref_set_theme_title">Escolle o decorado</string>
-  <string name="pref_nav_drawer_items_title">Escoller os elementos da Caixa de navegación</string>
-  <string name="pref_nav_drawer_items_sum">Cambie os elementos que aparecerán na Caixa de navegación</string>
+  <string name="pref_nav_drawer_items_title">Configurar a Caixa de navegación</string>
+  <string name="pref_nav_drawer_items_sum">Cambiar os elementos da Caixa de navegación.</string>
   <string name="pref_nav_drawer_feed_order_title">Indicar a orde das subscricións</string>
-  <string name="pref_nav_drawer_feed_order_sum">Cambie a orde das subscricións</string>
+  <string name="pref_nav_drawer_feed_order_sum">Cambiar a orde das subscricións</string>
   <string name="pref_nav_drawer_feed_counter_title">Establecer o contador de subscricións</string>
   <string name="pref_nav_drawer_feed_counter_sum">Cambiar a información mostrada polo contador de subscricións. Tamén afecta á orde das subscricións se \"Orde das subscricións\" está establecida a \"Contador\".</string>
   <string name="pref_set_theme_sum">Cambiar o aspecto de AntennaPod.</string>
@@ -441,7 +441,7 @@
   <string name="pref_show_remain_time_summary">Se o seleccionas mostrará o tempo restante dos episodios. Se non, mostrará a duración total dos episodios.</string>
   <string name="pref_theme_title_use_system">Utilizar o decorado do sistema</string>
   <string name="pref_theme_title_light">Claro</string>
-  <string name="pref_theme_title_dark">Oscuro</string>
+  <string name="pref_theme_title_dark">Escuro</string>
   <string name="pref_theme_title_trueblack">Negro (listo para AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ilimitado</string>
   <string name="pref_update_interval_hours_plural">horas</string>
@@ -474,8 +474,8 @@
   <string name="pref_rewind_sum">Personaliza o número de segundos que se retrocede na reprodución cando se preme o botón retroceso</string>
   <string name="pref_expandNotify_title">Alta prioridade nas notificacións</string>
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
-  <string name="pref_persistNotify_title">Controles persistentes de reprodución</string>
-  <string name="pref_persistNotify_sum">Manter notificación e controles na pantalla de bloqueo cando a reprodución está pausada.</string>
+  <string name="pref_persistNotify_title">Controis persistentes de reprodución</string>
+  <string name="pref_persistNotify_sum">Manter notificación e controis na pantalla de bloqueo cando a reprodución está pausada.</string>
   <string name="pref_compact_notification_buttons_title">Establecer botóns de notificación compactos</string>
   <string name="pref_compact_notification_buttons_sum">Cambia os botóns de reprodución cando a notificación está comprimida. O botón reproducir/pausar sempre se inclúe.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Escolle un máximo de %1$d elementos</string>

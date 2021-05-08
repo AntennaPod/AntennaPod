@@ -834,7 +834,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="cast_failed_media_error_skipping">Fehler bei Wiedergabe. Überspringe...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fehler</string>
-  <string name="notification_group_news">Nachrichten</string>
+  <string name="notification_group_news">Neuigkeiten</string>
   <string name="notification_channel_user_action">Handlung notwendig</string>
   <string name="notification_channel_user_action_description">Wird gezeigt, wenn deine Handlung notwendig ist, zum Beispiel wenn du ein Passwort eingeben musst.</string>
   <string name="notification_channel_downloading">Herunterladen</string>
