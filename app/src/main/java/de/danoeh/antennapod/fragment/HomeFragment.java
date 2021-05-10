@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private boolean displayUpArrow;
 
     private Toolbar toolbar;
+    private SegmentedButtonGroup floatingFilter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +42,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.setOnMenuItemClickListener(this);
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
         Menu menu = toolbar.getMenu();
-        menu.findItem(R.id.mark_all_read_item).setVisible(true);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
         menu.findItem(R.id.add_podcast_item).setVisible(true);
+        menu.findItem(R.id.mark_all_item).setVisible(true);
+        menu.findItem(R.id.filter_items).setVisible(true);
+        menu.findItem(R.id.mark_all_read_item).setVisible(false);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
@@ -51,20 +54,18 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
-        AllEpisodesFragment child = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
-
-        child.updateFeedItemFilter(new String[0]);
-
-        SegmentedButtonGroup floatingFilter = rootView.findViewById(R.id.floatingFilter);
+        floatingFilter = rootView.findViewById(R.id.floatingFilter);
         floatingFilter.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
             @Override
             public void onPositionChanged(int position) {
+                AllEpisodesFragment child = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
                 String[] newFilter;
                 switch (position) {
                     default:
                     case 0: //ALL
-                        newFilter = new String[0];
-                        break;
+                        child.setPrefFilter();
+                        child.loadItems();
+                        return;
                     case 1: //NEW
                         newFilter = new String[] {"unplayed"};
                         break;
@@ -101,6 +102,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
             return true;
         } else if (child != null) {
+            if (item.getItemId() == R.id.filter_items) {
+                floatingFilter.setPosition(0, true);
+            }
             return child.onOptionsItemSelected(item);
         }
         return false;

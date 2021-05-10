@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -127,19 +128,7 @@ public abstract class EpisodesListFragment extends Fragment {
                     AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.mark_all_read_item:
-                    ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
-                            R.string.mark_all_read_label,
-                            R.string.mark_all_read_confirmation_msg) {
-
-                        @Override
-                        public void onConfirmButtonPressed(DialogInterface dialog) {
-                            dialog.dismiss();
-                            DBWriter.markAllItemsRead();
-                            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                                    R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
-                        }
-                    };
-                    markAllReadConfirmationDialog.createNewDialog().show();
+                    markAllAs(FeedItem.PLAYED);
                     return true;
                 case R.id.remove_all_new_flags_item:
                     ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
@@ -156,12 +145,50 @@ public abstract class EpisodesListFragment extends Fragment {
                     };
                     removeAllNewFlagsConfirmationDialog.createNewDialog().show();
                     return true;
+                case R.id.mark_all_item:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle(R.string.mark_all_label);
+                    String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            switch (i) {
+                                case 0: //played
+                                    markAllAs(FeedItem.PLAYED);
+                                    break;
+                                case 1: //unplayed
+                                    markAllAs(FeedItem.UNPLAYED);
+                                    break;
+                                //TODO removeAllPositions
+                            }
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel_label, null);
+                    builder.create().show();
+                    return true;
                 default:
                     return false;
             }
         } else {
             return true;
         }
+    }
+
+    private void markAllAs(int state) {
+        ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                R.string.mark_all_read_label,
+                R.string.mark_all_read_confirmation_msg) {
+
+            @Override
+            public void onConfirmButtonPressed(DialogInterface dialog) {
+                dialog.dismiss();
+                DBWriter.markAllItemsRead(state);
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                        R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
+            }
+        };
+        markAllReadConfirmationDialog.createNewDialog().show();
     }
 
     @Override

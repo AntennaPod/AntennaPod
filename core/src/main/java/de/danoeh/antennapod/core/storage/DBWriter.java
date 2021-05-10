@@ -741,11 +741,11 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of all FeedItems to PLAYED.
      */
-    public static Future<?> markAllItemsRead() {
+    public static Future<?> markAllItemsRead(int state) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItems(FeedItem.PLAYED);
+            adapter.setFeedItems(state);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());

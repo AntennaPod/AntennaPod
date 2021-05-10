@@ -202,6 +202,7 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.9'
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
     // Non-free dependencies:
     playImplementation 'com.google.android.play:core:1.8.0'

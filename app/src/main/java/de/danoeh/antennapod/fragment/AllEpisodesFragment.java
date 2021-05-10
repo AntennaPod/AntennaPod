@@ -2,14 +2,18 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,9 +25,11 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -33,13 +39,20 @@ import java.util.Set;
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static final String PREF_FIRSTSWIPE = "firstswipe";
+    private static final String PREF_SWIPEACTIONS = "swipeactions";
     private static final String PREF_FILTER = "filter";
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private boolean pausedOnTop = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setPrefFilter();
+    }
+
+    public void setPrefFilter() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
     }
@@ -84,11 +97,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void showFilterDialog() {
-        FilterDialog filterDialog = new FilterDialog(getContext(), feedItemFilter) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        FeedItemFilter prefFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+        FilterDialog filterDialog = new FilterDialog(getContext(), prefFilter) {
             @Override
             protected void updateFilter(Set<String> filterValues) {
                 feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[0]));
-                SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 prefs.edit().putString(PREF_FILTER, StringUtils.join(filterValues, ",")).apply();
                 loadItems();
             }
@@ -102,9 +116,29 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         loadItems();
     }
 
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
+
     public void setSwipeAction(){
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        if (prefs.getBoolean(PREF_FIRSTSWIPE, true)) {
+            //first swipe, ask what should happen
+            prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
+            simpleItemTouchCallback = firstSwipe();
+        /*} else if (prefs.getStringSet(PREF_SWIPEACTIONS, Collections.emptySet()).isEmpty()) {
+            //Do nothing if there are no actions
+            return;*/
+        } else {
+            simpleItemTouchCallback = swipeActions();
+        }
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private ItemTouchHelper.SimpleCallback firstSwipe() {
+        return new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
@@ -113,13 +147,50 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
-                FeedItemMenuHandler.removeNewFlagWithUndo(AllEpisodesFragment.this, holder.getFeedItem(), FeedItem.PLAYED);
+                //TODO set simpleItemTouchCallback = swipeActions(); afterwards
+                Toast.makeText(requireActivity(),"First swipe",Toast.LENGTH_SHORT).show();
             }
         };
+    }
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+    private ItemTouchHelper.SimpleCallback swipeActions() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        return new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                switch (swipeDir) {
+                    case ItemTouchHelper.RIGHT:
+                        //TODO
+                        break;
+                    case  ItemTouchHelper.LEFT:
+                        //TODO
+                        EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
+                        FeedItemMenuHandler.removeNewFlagWithUndo(AllEpisodesFragment.this, holder.getFeedItem(), FeedItem.PLAYED);
+                        break;
+                }
+            }
+
+            @Override
+            public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,float dX, float dY,int actionState, boolean isCurrentlyActive){
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.download_success_green))
+                        .addSwipeRightActionIcon(R.drawable.ic_delete)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.download_success_green))
+                        .addSwipeLeftActionIcon(R.drawable.ic_playlist)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
     }
 
     @Override
@@ -137,12 +208,17 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, feedItemFilter);
+        return load(0);
+    }
+
+    private List<FeedItem> load(int offset) {
+        int limit = EPISODES_PER_PAGE;
+        return DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter, pausedOnTop);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
+        return load((page - 1) * EPISODES_PER_PAGE);
     }
 }
