@@ -1063,7 +1063,7 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
     public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
-        return  getRecentlyPublishedItemsCursor(offset, limit,filter,KEY_PLAYED_DURATION + ">0 AND NOT "+KEY_READ+" DESC, ");
+        return  getRecentlyPublishedItemsCursor(offset, limit,filter,"(" + KEY_POSITION + ">0 AND " + KEY_READ + "!=" + FeedItem.PLAYED + ") DESC, ");
     }
     public final Cursor getRecentlyPublishedItemsCursorPausedFirst(int offset, int limit, FeedItemFilter filter) {
         return  getRecentlyPublishedItemsCursor(offset, limit,filter,KEY_PLAYED_DURATION + ">0");
