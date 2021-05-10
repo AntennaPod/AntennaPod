@@ -74,7 +74,6 @@ public class AudioPlayerFragment extends Fragment implements
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
-    public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;

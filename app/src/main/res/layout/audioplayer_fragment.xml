@@ -25,14 +25,14 @@
             android:elevation="8dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_above="@id/playtime_layout"
-        android:layout_below="@id/toolbar"
-        android:layout_marginBottom="12dp"
-        android:foreground="?android:windowContentOverlay"
-        android:orientation="vertical" />
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_above="@id/playtime_layout"
+            android:layout_below="@id/toolbar"
+            android:layout_marginBottom="12dp"
+            android:foreground="?android:windowContentOverlay"
+            android:orientation="vertical" />
 
     <ImageView
             android:layout_width="match_parent"
