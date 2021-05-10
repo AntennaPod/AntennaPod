@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -59,6 +60,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView separatorIcons;
     private final View leftPadding;
     public final CardView coverHolder;
+    public final RadioButton selectRadioButton;
 
     private final MainActivity activity;
     private FeedItem item;
@@ -90,6 +92,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         coverHolder = itemView.findViewById(R.id.coverHolder);
         leftPadding = itemView.findViewById(R.id.left_padding);
         itemView.setTag(this);
+        selectRadioButton = itemView.findViewById(R.id.selectRadioButton);
     }
 
     public void bind(FeedItem item) {

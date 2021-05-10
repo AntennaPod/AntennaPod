@@ -5,6 +5,8 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,6 +87,16 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             return false;
         });
 
+        if (inActionMode()) {
+            if(selectedIds.contains(item.getId())) {
+                holder.selectRadioButton.setChecked(true);
+            } else {
+                holder.selectRadioButton.setChecked(false);
+            }
+            holder.selectRadioButton.setVisibility(View.VISIBLE);
+        } else {
+            holder.selectRadioButton.setVisibility(View.GONE);
+        }
 
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
@@ -187,6 +199,12 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     public List<FeedItem> getSelectedItems() {
         return selectedItems;
+    }
+
+    @Override
+    public void onStartActionMode() {
+        super.onStartActionMode();
+        notifyDataSetChanged();
     }
 
     @Override

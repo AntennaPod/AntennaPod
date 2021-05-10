@@ -35,11 +35,6 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
 
     @Override
     public void onBindViewHolder(@NonNull T holder, int position) {
-        if (inActionMode() && isSelected(position)) {
-            holder.itemView.setBackgroundColor(selectedItemBgColor);
-        } else {
-            holder.itemView.setBackgroundColor(unSelectedItemBgColor);
-        }
     }
 
     @Override
@@ -50,8 +45,6 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
     private ActionMode actionMode;
     private SparseBooleanArray selectedItemPositions = new SparseBooleanArray();
     private Activity activity;
-    protected Integer selectedItemBgColor = Color.LTGRAY;
-    protected Integer unSelectedItemBgColor = Color.WHITE;
 
     public void startActionMode(int pos) {
         if (inActionMode()) {
@@ -66,10 +59,7 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
                 android.R.attr.windowBackground,
                 R.attr.colorAccent
         };
-        TypedArray ta = activity.obtainStyledAttributes(null, attrsArray);
-        Resources res =  activity.getResources();
-        unSelectedItemBgColor = res.getColor(ta.getResourceId(0, Color.LTGRAY));
-        selectedItemBgColor = res.getColor(ta.getResourceId(1, Color.WHITE));
+
         selectedItemPositions.append(pos, true);
         onSelectChanged(pos, true);
         notifyItemChanged(pos);
@@ -213,13 +203,13 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
      * Un-selects all items and notifies subclasses of un-selected items
      */
     private void selectNone() {
-        selectedItemPositions.clear();
         for(int i = 0; i < getItemCount(); ++i) {
             boolean isSelected = selectedItemPositions.get(i);
             if (isSelected) {
                 onSelectChanged(i, false);
             }
         }
+        selectedItemPositions.clear();
         selectedCount = 0;
         notifyDataSetChanged();
     }

@@ -43,6 +43,12 @@
                     tools:src="@drawable/ic_drag_darktheme"
                     tools:background="@android:color/holo_green_dark"/>
 
+            <RadioButton
+                android:id="@+id/selectRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
