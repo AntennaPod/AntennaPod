@@ -75,6 +75,6 @@
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:visible="false"
-        android:checked="true" />
+        android:checked="false" />
 
 </menu>

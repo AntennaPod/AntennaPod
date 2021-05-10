@@ -102,7 +102,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public void onStart() {
         super.onStart();
         //wait for child fragment to load
-        ((AllEpisodesFragment) getChildFragmentManager().getFragments().get(0)).setSwipeAction();
+        AllEpisodesFragment child = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
+        child.setSwipeAction();
+        child.loadMenuCheked(toolbar.getMenu());
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         setQuickFilterPosition(prefs.getInt(PREF_POSITION, QUICKFILTER_ALL));
     }

@@ -72,6 +72,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         inboxMode = prefs.getBoolean(PREF_INBOXMODE,false);
     }
 
+    public void loadMenuCheked(Menu menu) {
+        menu.findItem(R.id.inbox_mode_item).setChecked(inboxMode);
+        menu.findItem(R.id.paused_first_item).setChecked(pausedOnTop);
+    }
+
     @Override
     protected String getPrefName() {
         return PREF_NAME;
@@ -185,7 +190,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
                 builder.setTitle("what do you want to happen?");
                 String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
                 builder.setNegativeButton("normal mode", new DialogInterface.OnClickListener() {
@@ -197,6 +202,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_MARKPLAYED+","+SWIPEACTIONS_MARKPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_ALL);
+                        listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
                         setSwipeAction();
                     }
                 });
@@ -209,6 +215,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_ADDTOQUEUE+","+SWIPEACTIONS_MARKUNPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_NEW);
+                        listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
                         setSwipeAction();
                     }
                 });
@@ -248,6 +255,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                                 item, FeedItem.UNPLAYED);
                         break;
                 }
+                listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
             }
 
             @Override
