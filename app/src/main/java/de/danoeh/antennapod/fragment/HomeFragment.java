@@ -85,6 +85,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                         newFilter = "is_favorite";
                         break;
                 }
+                toolbar.getMenu().findItem(R.id.inbox_mode_item).setVisible(position==QUICKFILTER_NEW);
                 child.updateFeedItemFilter(newFilter,position==QUICKFILTER_NEW);
             }
         });
