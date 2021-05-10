@@ -150,13 +150,18 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         loadItems();
     }
 
+    ItemTouchHelper itemTouchHelper;
+
     public void setSwipeAction(){
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        if (itemTouchHelper != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+        }
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
         if (prefs.getBoolean(PREF_FIRSTSWIPE, true)) {
             //first swipe, ask what should happen
-            prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
             simpleItemTouchCallback = firstSwipe();
         } else if (prefs.getString(PREF_SWIPEACTIONS, "").isEmpty()) {
             //Do nothing if there are no actions
@@ -165,7 +170,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             simpleItemTouchCallback = swipeActions();
         }
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -189,6 +194,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         inboxMode = false;
                         savePrefsBoolean(PREF_INBOXMODE, false);
                         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                        prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_MARKPLAYED+","+SWIPEACTIONS_MARKPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_ALL);
                         setSwipeAction();
@@ -200,6 +206,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         inboxMode = true;
                         savePrefsBoolean(PREF_INBOXMODE, true);
                         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                        prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_ADDTOQUEUE+","+SWIPEACTIONS_MARKUNPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_NEW);
                         setSwipeAction();
@@ -290,7 +297,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     private List<FeedItem> load(int offset) {
         int limit = EPISODES_PER_PAGE;
-        Log.d("gfchv", "load: "+isNewFilter);
         return inboxMode&&isNewFilter ? DBReader.getNewItemsList(offset, limit) : DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter, pausedOnTop);
     }
 
