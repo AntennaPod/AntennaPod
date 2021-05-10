@@ -40,7 +40,7 @@
             android:elevation="8dp"
             app:position="0"
             app:radius="30dp"
-            android:background="@color/grey100"
+            android:background="?attr/background_elevated"
             app:rippleColor="?attr/colorControlHighlight"
             app:selectedBackground="@color/highlight_light">
 

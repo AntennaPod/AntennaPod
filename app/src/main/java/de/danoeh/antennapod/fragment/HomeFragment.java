@@ -25,11 +25,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private static final String PREF_NAME = "PrefHomeFragment";
     private static final String PREF_POSITION = "position";
     private static final String KEY_UP_ARROW = "up_arrow";
+    public static final int QUICKFILTER_ALL = 0;
+    public static final int QUICKFILTER_NEW = 1;
+    private static final int QUICKFILTER_DOWNLOADED = 2;
+    private static final int QUICKFILTER_FAV = 3;
+
 
     private boolean displayUpArrow;
 
     private Toolbar toolbar;
-    private SegmentedButtonGroup floatingFilter;
+    private SegmentedButtonGroup floatingQuickFilter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +54,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         menu.findItem(R.id.mark_all_item).setVisible(true);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.paused_first_item).setVisible(true);
+        menu.findItem(R.id.inbox_mode_item).setVisible(true);
         menu.findItem(R.id.mark_all_read_item).setVisible(false);
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
@@ -58,29 +64,28 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
-        floatingFilter = rootView.findViewById(R.id.floatingFilter);
-        floatingFilter.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
+        floatingQuickFilter = rootView.findViewById(R.id.floatingFilter);
+        floatingQuickFilter.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
             @Override
             public void onPositionChanged(int position) {
                 AllEpisodesFragment child = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
-                String[] newFilter;
+                String newFilter;
                 switch (position) {
                     default:
-                    case 0: //ALL
-                        child.setPrefFilter();
-                        child.loadItems();
-                        return;
-                    case 1: //NEW
-                        newFilter = new String[] {"unplayed"};
+                    case QUICKFILTER_ALL:
+                        newFilter = child.getPrefFilter();
                         break;
-                    case 2: //DOWNL
-                        newFilter = new String[] {"downloaded"};
+                    case QUICKFILTER_NEW:
+                        newFilter = "unplayed";
                         break;
-                    case 3: //FAV
-                        newFilter = new String[] {"is_favorite"};
+                    case QUICKFILTER_DOWNLOADED:
+                        newFilter = "downloaded";
+                        break;
+                    case QUICKFILTER_FAV:
+                        newFilter = "is_favorite";
                         break;
                 }
-                child.updateFeedItemFilter(newFilter);
+                child.updateFeedItemFilter(newFilter,position==QUICKFILTER_NEW);
             }
         });
 
@@ -99,14 +104,18 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         //wait for child fragment to load
         ((AllEpisodesFragment) getChildFragmentManager().getFragments().get(0)).setSwipeAction();
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        floatingFilter.setPosition(prefs.getInt(PREF_POSITION, 0), false);
+        setQuickFilterPosition(prefs.getInt(PREF_POSITION, QUICKFILTER_ALL));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putInt(PREF_POSITION,floatingFilter.getPosition()).apply();
+        prefs.edit().putInt(PREF_POSITION, floatingQuickFilter.getPosition()).apply();
+    }
+
+    public void setQuickFilterPosition(int position){
+        floatingQuickFilter.setPosition(position, false);
     }
 
     @Override
@@ -117,7 +126,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             return true;
         } else if (child != null) {
             if (item.getItemId() == R.id.filter_items) {
-                floatingFilter.setPosition(0, true);
+                setQuickFilterPosition(QUICKFILTER_ALL);
             }
             return child.onOptionsItemSelected(item);
         }

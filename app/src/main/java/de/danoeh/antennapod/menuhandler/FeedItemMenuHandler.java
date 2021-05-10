@@ -268,4 +268,8 @@ public class FeedItemMenuHandler {
         removeNewFlagWithUndo(fragment,item, FeedItem.UNPLAYED);
     }
 
+    public static void addToQueue(Context context, FeedItem item) {
+        DBWriter.addQueueItem(context, item);
+    }
+
 }

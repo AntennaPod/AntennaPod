@@ -67,5 +67,14 @@
         custom:showAsAction="collapseActionView"
         android:visible="false"
         android:checked="true" />
+    <item
+        android:id="@+id/inbox_mode_item"
+        android:title="@string/inbox_mode_label"
+        app:actionViewClass="android.widget.CheckBox"
+        android:checkable="true"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:visible="false"
+        android:checked="true" />
 
 </menu>

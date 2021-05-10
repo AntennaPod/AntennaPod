@@ -149,6 +149,7 @@
 
     <!-- Actions on feeds -->
     <string name="paused_first_label">Paused first</string>
+    <string name="inbox_mode_label">Only "New"</string>
     <string name="mark_all_label">Mark all as...</string>
     <string-array name="mark_all_array">
         <item>@string/played_label</item>
