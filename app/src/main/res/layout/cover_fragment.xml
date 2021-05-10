@@ -87,7 +87,7 @@
         android:paddingRight="8dp">
 
         <LinearLayout
-            android:id="@+id/openDescriptionButton"
+            android:id="@+id/openDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -99,24 +99,20 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/openDescription"
+            <ImageView
+                android:id="@+id/description_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/shownotes_contentdescription"
                 android:padding="2dp"
                 app:srcCompat="@drawable/ic_info" />
-
-            <Space
-                android:layout_width="2dp"
-                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/shownotes_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="none"
+                android:layout_marginLeft="2dp"
                 android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:text="@string/shownotes_label"

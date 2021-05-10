@@ -75,6 +75,14 @@ public class NestedScrollableHost extends FrameLayout {
         setAttributes(context, attrs);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs,
+                                int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context);
+        setAttributes(context, attrs);
+    }
+
     private void setAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
@@ -89,14 +97,6 @@ public class NestedScrollableHost extends FrameLayout {
             a.recycle();
         }
 
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public NestedScrollableHost(@NonNull Context context, @Nullable AttributeSet attrs,
-                                int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
-        setAttributes(context, attrs);
     }
 
     private void init(Context context) {

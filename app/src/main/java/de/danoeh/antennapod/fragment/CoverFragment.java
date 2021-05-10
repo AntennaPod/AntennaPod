@@ -67,8 +67,7 @@ public class CoverFragment extends Fragment {
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
-    private ImageButton openDescription;
-    private LinearLayout openDescriptionLayout;
+    private LinearLayout openDescription;
     private Space counterweight;
     private Space spacer;
     private ImageButton butPrevChapter;
@@ -94,19 +93,18 @@ public class CoverFragment extends Fragment {
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
-        openDescriptionLayout = root.findViewById(R.id.openDescriptionButton);
         openDescription = root.findViewById(R.id.openDescription);
+        ImageView descriptionIcon = root.findViewById(R.id.description_icon);
         counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
         View.OnClickListener scrollToDesc = view ->
                 ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true);
         openDescription.setOnClickListener(scrollToDesc);
-        openDescriptionLayout.setOnClickListener(scrollToDesc);
         ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN);
-        openDescription.setColorFilter(colorFilter);
         butNextChapter.setColorFilter(colorFilter);
         butPrevChapter.setColorFilter(colorFilter);
+        descriptionIcon.setColorFilter(colorFilter);
         ChaptersFragment chaptersFragment = new ChaptersFragment();
         chapterControl.setOnClickListener(v ->
                 chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));
@@ -150,60 +148,21 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
-        updateDetailsButtonsVisibility();
+        updateChapterControlVisibility();
     }
 
-    private void updateDetailsButtonsVisibility() {
-        ArrayList<Animator> anims = new ArrayList<>();
-
-        if (media.getDescription() != null) {
-            boolean hasShownotes = !StringUtils.isEmpty(media.getDescription());
-            int newVisibility = hasShownotes ? View.VISIBLE : View.INVISIBLE;
-            if (openDescriptionLayout.getVisibility() != newVisibility) {
-                ObjectAnimator oa = ObjectAnimator.ofFloat(
-                        openDescriptionLayout,
-                        "alpha",
-                        hasShownotes ? 0 : 1,
-                        hasShownotes ? 1 : 0);
-                oa.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        if (newVisibility == View.VISIBLE) {
-                            openDescriptionLayout.setVisibility(newVisibility);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        if (newVisibility == View.INVISIBLE) {
-                            openDescriptionLayout.setVisibility(newVisibility);
-                        }
-                    }
-                });
-                anims.add(oa);
-            }
-        }
-
+    private void updateChapterControlVisibility() {
         if (media.getChapters() != null) {
             boolean chapterControlVisible = media.getChapters().size() > 0;
             int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
             if (chapterControl.getVisibility() != newVisibility) {
                 chapterControl.setVisibility(newVisibility);
-                ObjectAnimator oa = ObjectAnimator.ofFloat(chapterControl,
+                ObjectAnimator.ofFloat(chapterControl,
                         "alpha",
                         chapterControlVisible ? 0 : 1,
-                        chapterControlVisible ? 1 : 0);
-                anims.add(oa);
+                        chapterControlVisible ? 1 : 0)
+                        .start();
             }
-        }
-
-        if (anims.size() > 0) {
-            AnimatorSet set = new AnimatorSet();
-            set.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
-            set.playTogether(anims);
-            set.start();
         }
     }
 

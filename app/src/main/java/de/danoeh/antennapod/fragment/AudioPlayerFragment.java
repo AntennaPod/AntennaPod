@@ -150,6 +150,10 @@ public class AudioPlayerFragment extends Fragment implements
                         // By the time this is posted, the activity might be closed again.
                         ((MainActivity) getActivity()).getBottomSheet().updateScrollingChild();
                     }
+                    Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + pager.getCurrentItem());
+                    if (visibleChild instanceof ItemDescriptionFragment) {
+                        ((ItemDescriptionFragment) visibleChild).scrollToTop();
+                    }
                 });
             }
         });
@@ -395,6 +399,7 @@ public class AudioPlayerFragment extends Fragment implements
         updatePlaybackSpeedButton(media);
         setChapterDividers(media);
         setupOptionsMenu(media);
+        scrollToPage(AudioPlayerFragment.POS_COVER);
     }
 
     @Override
@@ -412,7 +417,6 @@ public class AudioPlayerFragment extends Fragment implements
         EventBus.getDefault().register(this);
         txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
-        scrollToPage(AudioPlayerFragment.POS_COVER);
     }
 
     @Override

@@ -115,7 +115,6 @@ public class ItemDescriptionFragment extends Fragment {
     public void onPause() {
         super.onPause();
         savePreference();
-        webvDescription.postDelayed(() -> webvDescription.scrollTo(0, 0), 500);
     }
 
     private void savePreference() {
@@ -146,11 +145,15 @@ public class ItemDescriptionFragment extends Fragment {
                     && id.equals(controller.getMedia().getIdentifier().toString())
                     && webvDescription != null) {
                 Log.d(TAG, "Restored scroll Position: " + scrollY);
-                //webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
+                webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
                 return true;
             }
         }
         return false;
+    }
+
+    public void scrollToTop() {
+        webvDescription.scrollTo(0, 0);
     }
 
     @Override
