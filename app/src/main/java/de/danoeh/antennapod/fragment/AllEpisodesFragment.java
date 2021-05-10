@@ -41,6 +41,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FIRSTSWIPE = "firstswipe";
     private static final String PREF_SWIPEACTIONS = "swipeactions";
+    private static final String PREF_PAUSEDFIRST = "pausedfirst";
     private static final String PREF_FILTER = "filter";
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
@@ -50,6 +51,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setPrefFilter();
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        pausedOnTop = prefs.getBoolean(PREF_PAUSEDFIRST,true);
     }
 
     public void setPrefFilter() {
@@ -65,9 +68,17 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            if (item.getItemId() == R.id.filter_items) {
-                showFilterDialog();
-                return true;
+            switch (item.getItemId()) {
+                case R.id.filter_items:
+                    showFilterDialog();
+                    return true;
+                case R.id.paused_first_item:
+                    pausedOnTop = !pausedOnTop;
+                    item.setChecked(pausedOnTop);
+                    SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                    prefs.edit().putBoolean(PREF_PAUSEDFIRST, pausedOnTop).apply();
+                    loadItems();
+                    return true;
             }
             return false;
         } else {

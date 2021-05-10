@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:custom="http://schemas.android.com/apk/res-auto">
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/action_search"
@@ -56,5 +57,15 @@
         custom:showAsAction="collapseActionView"
         android:visible="false"
         android:icon="@drawable/ic_check"/>
+
+    <item
+        android:id="@+id/paused_first_item"
+        android:title="@string/paused_first_label"
+        app:actionViewClass="android.widget.CheckBox"
+        android:checkable="true"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:visible="false"
+        android:checked="true" />
 
 </menu>

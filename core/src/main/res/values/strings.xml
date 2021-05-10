@@ -148,6 +148,7 @@
     <string name="new_episode_notification_group_text">Your subscriptions have new episodes.</string>
 
     <!-- Actions on feeds -->
+    <string name="paused_first_label">Paused first</string>
     <string name="mark_all_label">Mark all as...</string>
     <string-array name="mark_all_array">
         <item>@string/played_label</item>
