@@ -202,7 +202,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_MARKPLAYED+","+SWIPEACTIONS_MARKPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_ALL);
-                        listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
+                        resetItem(viewHolder);
                         setSwipeAction();
                     }
                 });
@@ -215,7 +215,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_ADDTOQUEUE+","+SWIPEACTIONS_MARKUNPLAYED).apply();
                         ((HomeFragment) requireParentFragment()).setQuickFilterPosition(HomeFragment.QUICKFILTER_NEW);
-                        listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
+                        resetItem(viewHolder);
                         setSwipeAction();
                     }
                 });
@@ -255,7 +255,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                                 item, FeedItem.UNPLAYED);
                         break;
                 }
-                listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
+                resetItem(viewHolder);
             }
 
             @Override
@@ -283,6 +283,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             case SWIPEACTIONS_MARKUNPLAYED:
                 return R.drawable.ic_check;
         }
+    }
+
+    private void resetItem(RecyclerView.ViewHolder viewHolder) {
+        listAdapter.notifyItemChangedCompat(viewHolder.getBindingAdapterPosition());
+        itemTouchHelper.attachToRecyclerView(null);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
