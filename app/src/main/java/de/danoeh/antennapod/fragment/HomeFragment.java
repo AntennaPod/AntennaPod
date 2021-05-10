@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     private static final String PREF_NAME = "PrefHomeFragment";
+    private static final String PREF_POSITION = "position";
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private boolean displayUpArrow;
@@ -93,7 +96,17 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public void onStart() {
         super.onStart();
+        //wait for child fragment to load
         ((AllEpisodesFragment) getChildFragmentManager().getFragments().get(0)).setSwipeAction();
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        floatingFilter.setPosition(prefs.getInt(PREF_POSITION, 0), false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putInt(PREF_POSITION,floatingFilter.getPosition()).apply();
     }
 
     @Override
