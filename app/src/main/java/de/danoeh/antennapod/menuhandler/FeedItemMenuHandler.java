@@ -236,7 +236,7 @@ public class FeedItemMenuHandler {
      * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
      * ,i.e., there is (context) menu item for add new flag
      */
-    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
+    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item, int playState) {
         if (item == null) {
             return;
         }
@@ -244,7 +244,7 @@ public class FeedItemMenuHandler {
         Log.d(TAG, "removeNewFlagWithUndo(" + item.getId() + ")");
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+        DBWriter.markItemPlayed(playState, item.getId());
 
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
@@ -263,6 +263,9 @@ public class FeedItemMenuHandler {
                     h.removeCallbacks(r);
                 });
         h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+    }
+    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
+        removeNewFlagWithUndo(fragment,item, FeedItem.UNPLAYED);
     }
 
 }

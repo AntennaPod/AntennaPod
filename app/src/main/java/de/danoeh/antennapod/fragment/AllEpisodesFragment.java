@@ -3,17 +3,25 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -87,6 +95,31 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         };
 
         filterDialog.openDialog();
+    }
+
+    public void updateFeedItemFilter(String[] strings) {
+        feedItemFilter = new FeedItemFilter(strings);
+        loadItems();
+    }
+
+    public void setSwipeAction(){
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
+                FeedItemMenuHandler.removeNewFlagWithUndo(AllEpisodesFragment.this, holder.getFeedItem(), FeedItem.PLAYED);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override

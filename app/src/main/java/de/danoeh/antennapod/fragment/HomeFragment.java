@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,17 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
@@ -59,6 +51,34 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
+        AllEpisodesFragment child = (AllEpisodesFragment) getChildFragmentManager().getFragments().get(0);
+
+        child.updateFeedItemFilter(new String[0]);
+
+        SegmentedButtonGroup floatingFilter = rootView.findViewById(R.id.floatingFilter);
+        floatingFilter.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
+            @Override
+            public void onPositionChanged(int position) {
+                String[] newFilter;
+                switch (position) {
+                    default:
+                    case 0: //ALL
+                        newFilter = new String[0];
+                        break;
+                    case 1: //NEW
+                        newFilter = new String[] {"unplayed"};
+                        break;
+                    case 2: //DOWNL
+                        newFilter = new String[] {"downloaded"};
+                        break;
+                    case 3: //FAV
+                        newFilter = new String[] {"is_favorite"};
+                        break;
+                }
+                child.updateFeedItemFilter(newFilter);
+            }
+        });
+
         return rootView;
     }
 
@@ -66,6 +86,12 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((AllEpisodesFragment) getChildFragmentManager().getFragments().get(0)).setSwipeAction();
     }
 
     @Override

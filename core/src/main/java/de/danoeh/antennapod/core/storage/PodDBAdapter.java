@@ -1055,12 +1055,18 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter, String firstOrder) {
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
-                + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
+                + " ORDER BY " + firstOrder + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
+    }
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+        return  getRecentlyPublishedItemsCursor(offset, limit,filter,KEY_PLAYED_DURATION + ">0 AND NOT "+KEY_READ+" DESC, ");
+    }
+    public final Cursor getRecentlyPublishedItemsCursorPausedFirst(int offset, int limit, FeedItemFilter filter) {
+        return  getRecentlyPublishedItemsCursor(offset, limit,filter,KEY_PLAYED_DURATION + ">0");
     }
 
     public Cursor getDownloadedItemsCursor() {
