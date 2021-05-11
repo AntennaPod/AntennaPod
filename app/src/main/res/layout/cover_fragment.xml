@@ -113,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="none"
                 android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:text="@string/shownotes_label"
