@@ -54,7 +54,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         menu.findItem(R.id.mark_all_item).setVisible(true);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.paused_first_item).setVisible(true);
-        menu.findItem(R.id.inbox_mode_item).setVisible(true);
         menu.findItem(R.id.mark_all_read_item).setVisible(false);
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
@@ -85,8 +84,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                         newFilter = "is_favorite";
                         break;
                 }
-                toolbar.getMenu().findItem(R.id.inbox_mode_item).setVisible(position==QUICKFILTER_NEW);
-                child.updateFeedItemFilter(newFilter,position==QUICKFILTER_NEW);
+                child.updateFeedItemFilter(newFilter);
             }
         });
 

@@ -53,7 +53,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
     private boolean pausedOnTop = true;
     private boolean inboxMode = false;
-    private boolean isNewFilter = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,12 +92,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                     pausedOnTop = !pausedOnTop;
                     item.setChecked(pausedOnTop);
                     savePrefsBoolean(PREF_PAUSEDFIRST, pausedOnTop);
-                    loadItems();
-                    return true;
-                case R.id.inbox_mode_item:
-                    inboxMode = !inboxMode;
-                    item.setChecked(inboxMode);
-                    savePrefsBoolean(PREF_INBOXMODE, inboxMode);
                     loadItems();
                     return true;
             }
@@ -149,9 +142,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         filterDialog.openDialog();
     }
 
-    public void updateFeedItemFilter(String strings, boolean isNewFilter) {
+    public void updateFeedItemFilter(String strings) {
         feedItemFilter = new FeedItemFilter(strings);
-        this.isNewFilter = isNewFilter;
         loadItems();
     }
 
@@ -261,9 +253,9 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,float dX, float dY,int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.download_success_green))
+                        .addSwipeRightBackgroundColor(actionColorFor(leftright[0]))
                         .addSwipeRightActionIcon(actionIconFor(leftright[0]))
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.design_default_color_secondary))
+                        .addSwipeLeftBackgroundColor(actionColorFor(leftright[1]))
                         .addSwipeLeftActionIcon(actionIconFor(leftright[1]))
                         .create()
                         .decorate();
@@ -283,6 +275,19 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             case SWIPEACTIONS_MARKUNPLAYED:
                 return R.drawable.ic_check;
         }
+    }
+    private int actionColorFor(String swipeAction) {
+        int color;
+        switch (swipeAction) {
+            case SWIPEACTIONS_ADDTOQUEUE:
+                color = R.color.swipe_light_green_200;
+            case SWIPEACTIONS_MARKPLAYED:
+                color = R.color.swipe_light_blue_200;
+            default:
+            case SWIPEACTIONS_MARKUNPLAYED:
+                color = R.color.swipe_light_blue_200;
+        }
+        return ContextCompat.getColor(requireActivity(), color);
     }
 
     private void resetItem(RecyclerView.ViewHolder viewHolder) {
@@ -311,7 +316,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     private List<FeedItem> load(int offset) {
         int limit = EPISODES_PER_PAGE;
-        return inboxMode&&isNewFilter ? DBReader.getNewItemsList(offset, limit) : DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter, pausedOnTop);
+        return DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter, pausedOnTop);
     }
 
     @NonNull
