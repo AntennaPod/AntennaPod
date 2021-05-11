@@ -83,13 +83,13 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
         episodeDetails = root.findViewById(R.id.episode_details);
+        final ImageView descriptionIcon = root.findViewById(R.id.description_icon);
         chapterControl = root.findViewById(R.id.chapterButton);
         butPrevChapter = root.findViewById(R.id.butPrevChapter);
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
         openDescription = root.findViewById(R.id.openDescription);
-        ImageView descriptionIcon = root.findViewById(R.id.description_icon);
         counterweight = root.findViewById(R.id.counterweight);
         spacer = root.findViewById(R.id.details_spacer);
         View.OnClickListener scrollToDesc = view ->
