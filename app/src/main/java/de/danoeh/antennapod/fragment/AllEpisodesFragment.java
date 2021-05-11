@@ -47,12 +47,10 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String SWIPEACTIONS_MARKPLAYED = "MARKPLAYED";
     private static final String SWIPEACTIONS_MARKUNPLAYED = "MARKUNPLAYED";
     private static final String PREF_PAUSEDFIRST = "pausedfirst";
-    private static final String PREF_INBOXMODE = "inboxmode";
     private static final String PREF_FILTER = "filter";
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
     private boolean pausedOnTop = true;
-    private boolean inboxMode = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,11 +66,9 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private void loadPrefBooleans() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         pausedOnTop = prefs.getBoolean(PREF_PAUSEDFIRST,true);
-        inboxMode = prefs.getBoolean(PREF_INBOXMODE,false);
     }
 
     public void loadMenuCheked(Menu menu) {
-        menu.findItem(R.id.inbox_mode_item).setChecked(inboxMode);
         menu.findItem(R.id.paused_first_item).setChecked(pausedOnTop);
     }
 
@@ -188,8 +184,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                 builder.setNegativeButton("normal mode", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        inboxMode = false;
-                        savePrefsBoolean(PREF_INBOXMODE, false);
                         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_MARKPLAYED+","+SWIPEACTIONS_MARKPLAYED).apply();
@@ -201,8 +195,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                 builder.setPositiveButton("inbox mode", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        inboxMode = true;
-                        savePrefsBoolean(PREF_INBOXMODE, true);
                         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                         prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
                         prefs.edit().putString(PREF_SWIPEACTIONS, SWIPEACTIONS_ADDTOQUEUE+","+SWIPEACTIONS_MARKUNPLAYED).apply();
