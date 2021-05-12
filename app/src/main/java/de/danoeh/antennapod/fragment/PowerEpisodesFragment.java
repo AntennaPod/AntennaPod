@@ -157,7 +157,6 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
         menu.findItem(R.id.add_podcast_item).setVisible(true);
         menu.findItem(R.id.paused_first_item).setVisible(true);
-        menu.findItem(R.id.mark_all_read_item).setVisible(false);
         menu.findItem(R.id.refresh_item).setVisible(false);
         menu.findItem(R.id.paused_first_item).setChecked(pausedOnTop);
     }
