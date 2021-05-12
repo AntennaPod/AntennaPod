@@ -33,11 +33,6 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefPowerEpisodesFragment";
     private static final String PREF_POSITION = "position";
 
-    public static final int QUICKFILTER_ALL = 0;
-    public static final int QUICKFILTER_NEW = 1;
-    private static final int QUICKFILTER_DOWNLOADED = 2;
-    private static final int QUICKFILTER_FAV = 3;
-
     private static final String PREF_PAUSEDFIRST = "pausedfirst";
     private static final String PREF_FILTER = "filter";
 
@@ -79,6 +74,7 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
                     newFilter = "is_favorite";
                     break;
             }
+            setEmptyView(TAG+position);
             updateFeedItemFilter(newFilter);
         });
 

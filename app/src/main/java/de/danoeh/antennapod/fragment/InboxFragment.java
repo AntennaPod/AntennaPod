@@ -20,8 +20,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
  */
 public class InboxFragment extends EpisodesListFragment {
 
-    public static final String TAG = "NewEpisodesFragment";
-    private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    public static final String TAG = "InboxFragment";
+    private static final String PREF_NAME = "PrefInboxFragment";
 
     @Override
     protected String getPrefName() {
@@ -47,8 +47,7 @@ public class InboxFragment extends EpisodesListFragment {
 
         toolbar.setTitle(R.string.inbox_label);
 
-        emptyView.setTitle(R.string.no_new_episodes_head_label);
-        emptyView.setMessage(R.string.no_new_episodes_label);
+        setEmptyView(TAG);
 
         setSwipeActions(TAG);
 

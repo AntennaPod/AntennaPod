@@ -49,7 +49,6 @@ import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
@@ -591,7 +590,7 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(PlaybackHistoryFragment.TAG, null);
                         break;
                     case "EPISODES":
-                        loadFragment(EpisodesFragment.TAG, null);
+                        loadFragment(PowerEpisodesFragment.TAG, null);
                         break;
                     case "QUEUE":
                         loadFragment(QueueFragment.TAG, null);

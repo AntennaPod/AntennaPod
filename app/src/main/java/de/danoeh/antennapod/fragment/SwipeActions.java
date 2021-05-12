@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,10 +24,14 @@ public class SwipeActions {
     public static final String MARK_PLAYED = "MARKPLAYED";
     public static final String MARK_UNPLAYED = "MARKUNPLAYED";
 
-    public static ItemTouchHelper itemTouchHelper(Fragment fragment) {
+    public static ItemTouchHelper itemTouchHelper(Fragment fragment, String tag) {
         SharedPreferences prefs = fragment.requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putString(PREF_SWIPEACTIONS,MARK_PLAYED+","+MARK_PLAYED).apply();
-        String[] leftright = prefs.getString(PREF_SWIPEACTIONS,"").split(",");
+
+        //TODO
+        prefs.edit().putString(PREF_SWIPEACTIONS+InboxFragment.TAG,ADD_TO_QUEUE+","+MARK_UNPLAYED).apply();
+        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,MARK_PLAYED+","+MARK_PLAYED).apply();
+
+        String[] leftright = prefs.getString(PREF_SWIPEACTIONS+tag,"").split(",");
 
         if (prefs.getBoolean(PREF_FIRSTSWIPE, true) || leftright.length == 0) {
             prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
@@ -64,9 +69,11 @@ public class SwipeActions {
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(actionColorFor(fragment.requireContext(), leftright[0]))
+                        .addSwipeRightBackgroundColor(
+                                ContextCompat.getColor(fragment.requireContext(), actionColorFor(leftright[0])))
                         .addSwipeRightActionIcon(actionIconFor(leftright[0]))
-                        .addSwipeLeftBackgroundColor(actionColorFor(fragment.requireContext(), leftright[1]))
+                        .addSwipeLeftBackgroundColor(
+                                ContextCompat.getColor(fragment.requireContext(), actionColorFor(leftright[1])))
                         .addSwipeLeftActionIcon(actionIconFor(leftright[1]))
                         .create()
                         .decorate();
@@ -89,18 +96,16 @@ public class SwipeActions {
                 return R.drawable.ic_check;
         }
     }
-    private static int actionColorFor(Context context, String swipeAction) {
-        int color;
+    private static int actionColorFor(String swipeAction) {
         switch (swipeAction) {
             case ADD_TO_QUEUE:
-                color = R.color.swipe_light_green_200;
+                return R.color.swipe_light_green_200;
             case MARK_PLAYED:
-                color = R.color.swipe_light_blue_200;
+                return R.color.swipe_light_blue_200;
             default:
             case MARK_UNPLAYED:
-                color = R.color.swipe_light_blue_200;
+                return R.color.swipe_light_blue_200;
         }
-        return ContextCompat.getColor(context, color);
     }
 
     public abstract class SwipeActionsDialog {
@@ -109,6 +114,12 @@ public class SwipeActions {
 
         public SwipeActionsDialog(Context context) {
             this.context = context;
+        }
+
+        private void savePrefs(String tag, String left, String right){
+            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            prefs.edit().putString(PREF_SWIPEACTIONS+tag,left+","+right).apply();
+
         }
 
         //TODO

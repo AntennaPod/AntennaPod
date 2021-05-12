@@ -65,6 +65,12 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     public static final String TAG = "EpisodesListFragment";
     protected static final int EPISODES_PER_PAGE = 150;
     private static final String KEY_UP_ARROW = "up_arrow";
+
+    public static final int QUICKFILTER_ALL = 0;
+    public static final int QUICKFILTER_NEW = 1;
+    public static final int QUICKFILTER_DOWNLOADED = 2;
+    public static final int QUICKFILTER_FAV = 3;
+
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = true;
@@ -258,9 +264,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        emptyView.setIcon(R.drawable.ic_feed);
-        emptyView.setTitle(R.string.no_all_episodes_head_label);
-        emptyView.setMessage(R.string.no_all_episodes_label);
+        setEmptyView(PowerEpisodesFragment.TAG+QUICKFILTER_ALL);
 
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
@@ -282,6 +286,28 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         return root;
     }
 
+    public void setEmptyView(String tag) {
+        switch (tag) {
+            case PowerEpisodesFragment.TAG+QUICKFILTER_ALL:
+            case PowerEpisodesFragment.TAG+QUICKFILTER_NEW:
+            case PowerEpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
+                emptyView.setIcon(R.drawable.ic_feed);
+                emptyView.setTitle(R.string.no_all_episodes_head_label);
+                emptyView.setMessage(R.string.no_all_episodes_label);
+                break;
+            case PowerEpisodesFragment.TAG+QUICKFILTER_FAV:
+                emptyView.setIcon(R.drawable.ic_baseline_new_releases_24);
+                emptyView.setTitle(R.string.no_fav_episodes_head_label);
+                emptyView.setMessage(R.string.no_fav_episodes_label);
+                break;
+            case InboxFragment.TAG:
+                emptyView.setIcon(R.drawable.ic_feed);
+                emptyView.setTitle(R.string.no_new_episodes_head_label);
+                emptyView.setMessage(R.string.no_new_episodes_label);
+                break;
+        }
+    }
+
     private void setupLoadMoreScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -298,7 +324,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     public void setSwipeActions(String tag){
-        itemTouchHelper = SwipeActions.itemTouchHelper(this);
+        itemTouchHelper = SwipeActions.itemTouchHelper(this,tag);
 
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
@@ -345,7 +371,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             recyclerView.restoreScrollPosition(getPrefName());
         }
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+            onPrepareOptionsMenu(toolbar.getMenu());
         }
 
 
@@ -403,7 +429,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+            onPrepareOptionsMenu(toolbar.getMenu());
         }
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
@@ -418,7 +444,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     private void updateUi() {
         loadItems();
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+            onPrepareOptionsMenu(toolbar.getMenu());
         }
     }
 
@@ -449,7 +475,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                     hasMoreItems = true;
                     episodes = data;
                     onFragmentLoaded(episodes);
-                    ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+                    onPrepareOptionsMenu(toolbar.getMenu());
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
