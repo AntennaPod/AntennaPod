@@ -111,7 +111,7 @@ public class EpisodesFragment extends PagedToolbarFragment {
         public Fragment createFragment(int position) {
             switch (position) {
                 case POS_NEW_EPISODES:
-                    return new NewEpisodesFragment();
+                    return new InboxFragment();
                 case POS_ALL_EPISODES:
                     return new AllEpisodesFragment();
                 default:

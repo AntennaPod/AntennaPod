@@ -25,7 +25,7 @@ public class SwipeActions {
 
     public static ItemTouchHelper itemTouchHelper(Fragment fragment) {
         SharedPreferences prefs = fragment.requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        //prefs.edit().putString(PREF_SWIPEACTIONS,MARK_PLAYED+","+MARK_PLAYED).apply();
+        prefs.edit().putString(PREF_SWIPEACTIONS,MARK_PLAYED+","+MARK_PLAYED).apply();
         String[] leftright = prefs.getString(PREF_SWIPEACTIONS,"").split(",");
 
         if (prefs.getBoolean(PREF_FIRSTSWIPE, true) || leftright.length == 0) {

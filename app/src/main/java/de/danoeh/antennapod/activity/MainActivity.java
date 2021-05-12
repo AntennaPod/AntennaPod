@@ -41,7 +41,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.fragment.HomeFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -255,12 +256,14 @@ public class MainActivity extends CastEnabledActivity {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
+            case InboxFragment.TAG:
+                fragment = new InboxFragment();
+                break;
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
                 break;
-            case EpisodesFragment.TAG:
-                //TODO TEST
-                fragment = new HomeFragment();
+            case PowerEpisodesFragment.TAG:
+                fragment = new PowerEpisodesFragment();
                 break;
             case DownloadsFragment.TAG:
                 fragment = new DownloadsFragment();

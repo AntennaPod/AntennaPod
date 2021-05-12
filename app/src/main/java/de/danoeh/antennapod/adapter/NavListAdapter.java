@@ -22,6 +22,8 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -109,9 +111,11 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
+            case InboxFragment.TAG:
+                return R.drawable.ic_baseline_new_releases_24;
             case QueueFragment.TAG:
                 return R.drawable.ic_playlist;
-            case EpisodesFragment.TAG:
+            case PowerEpisodesFragment.TAG:
                 return R.drawable.ic_feed;
             case DownloadsFragment.TAG:
                 return R.drawable.ic_download;
@@ -223,7 +227,13 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         holder.count.setOnClickListener(null);
 
         String tag = fragmentTags.get(position);
-        if (tag.equals(QueueFragment.TAG)) {
+        if (tag.equals(InboxFragment.TAG)) {
+            int newItems = itemAccess.getNumberOfNewItems();
+            if (newItems > 0) {
+                holder.count.setText(NumberFormat.getInstance().format(newItems));
+                holder.count.setVisibility(View.VISIBLE);
+            }
+        } else if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
                 holder.count.setText(NumberFormat.getInstance().format(queueSize));

@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -58,19 +60,25 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Shows unread or recently published episodes
  */
-public abstract class EpisodesListFragment extends Fragment {
+public abstract class EpisodesListFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = "EpisodesListFragment";
     protected static final int EPISODES_PER_PAGE = 150;
+    private static final String KEY_UP_ARROW = "up_arrow";
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = true;
+    private boolean displayUpArrow;
 
     EpisodeItemListRecyclerView recyclerView;
     EpisodeItemListAdapter listAdapter;
     ProgressBar progLoading;
     View loadingMoreView;
     EmptyViewHandler emptyView;
+
+    Toolbar toolbar;
+
+    ItemTouchHelper itemTouchHelper;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -81,6 +89,12 @@ public abstract class EpisodesListFragment extends Fragment {
 
     String getPrefName() {
         return TAG;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -121,7 +135,7 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.refresh_item:
@@ -170,9 +184,10 @@ public abstract class EpisodesListFragment extends Fragment {
                 default:
                     return false;
             }
-        } else {
-            return true;
         }
+
+
+        return true;
     }
 
     private void markAllAs(int state) {
@@ -217,7 +232,7 @@ public abstract class EpisodesListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.all_episodes_fragment, container, false);
+        View root = inflater.inflate(R.layout.episodes_fragment, container, false);
         txtvInformation = root.findViewById(R.id.txtvInformation);
 
         recyclerView = root.findViewById(android.R.id.list);
@@ -250,6 +265,20 @@ public abstract class EpisodesListFragment extends Fragment {
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
 
+        toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.episodes_label);
+        toolbar.inflateMenu(R.menu.episodes);
+        toolbar.setOnMenuItemClickListener(this);
+        onPrepareOptionsMenu(toolbar.getMenu());
+
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
+
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+
         return root;
     }
 
@@ -266,6 +295,20 @@ public abstract class EpisodesListFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void setSwipeActions(String tag){
+        itemTouchHelper = SwipeActions.itemTouchHelper(this);
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void resetItemTouchHelper() {
+        //prevent swipe staying if item is staying in the list
+        if (itemTouchHelper != null && recyclerView != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
     }
 
     private void loadMoreItems() {
@@ -304,6 +347,9 @@ public abstract class EpisodesListFragment extends Fragment {
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
+
+
+        resetItemTouchHelper();
     }
 
     /**
