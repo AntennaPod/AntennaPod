@@ -98,7 +98,7 @@ public class AudioPlayerFragment extends Fragment implements
     private boolean showTimeLeft;
     private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
-
+    private int duration;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -168,10 +168,9 @@ public class AudioPlayerFragment extends Fragment implements
         if (media.getChapters() != null) {
             List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size()];
-            float duration = media.getDuration();
 
             for (int i = 0; i < chapters.size(); i++) {
-                dividerPos[i] = chapters.get(i).getStart() / duration;
+                dividerPos[i] = chapters.get(i).getStart() / (float) duration;
             }
         }
 
@@ -390,8 +389,8 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null) {
             return;
         }
-
-        updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+        duration = controller.getDuration();
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
         updatePlaybackSpeedButton(media);
         setChapterDividers(media);
         setupOptionsMenu(media);
@@ -449,8 +448,11 @@ public class AudioPlayerFragment extends Fragment implements
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
-        float progress = ((float) event.getPosition()) / event.getDuration();
-        sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+
+        if (!sbPosition.isPressed()) {
+            float progress = ((float) event.getPosition()) / event.getDuration();
+            sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -463,6 +465,7 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null || txtvLength == null) {
             return;
         }
+
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
@@ -482,6 +485,8 @@ public class AudioPlayerFragment extends Fragment implements
             } else {
                 txtvSeek.setText(Converter.getDurationStringLong(position));
             }
+        } else if (duration != controller.getDuration()) {
+            updateUi(controller.getMedia());
         }
     }
 

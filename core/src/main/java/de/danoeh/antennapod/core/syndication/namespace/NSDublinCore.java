@@ -29,7 +29,7 @@ public class NSDublinCore extends Namespace {
             String second = state.getSecondTag().getName();
             if (DATE.equals(top) && ITEM.equals(second)) {
                 String content = state.getContentBuf().toString();
-                currentItem.setPubDate(DateUtils.parse(content));
+                currentItem.setPubDate(DateUtils.parseOrNullIfFuture(content));
             }
         }
     }
