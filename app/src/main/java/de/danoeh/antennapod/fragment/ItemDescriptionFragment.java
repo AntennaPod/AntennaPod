@@ -154,6 +154,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     public void scrollToTop() {
         webvDescription.scrollTo(0, 0);
+        savePreference();
     }
 
     @Override
