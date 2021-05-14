@@ -1,5 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -113,6 +117,29 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
+        txtvEpisodeTitle.setOnClickListener(v -> {
+            int lines = txtvEpisodeTitle.getLineCount();
+            int animUnit = 1500;
+            if (lines > txtvEpisodeTitle.getMaxLines()) {
+                ObjectAnimator verticalMarquee = ObjectAnimator.ofInt(
+                        txtvEpisodeTitle, "scrollY", 0, txtvEpisodeTitle.getHeight())
+                        .setDuration(lines*animUnit);
+                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 0);
+                fadeOut.setStartDelay(animUnit);
+                fadeOut.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        txtvEpisodeTitle.scrollTo(0,0);
+                    }
+                });
+                ObjectAnimator fadeBackIn = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 1);
+                AnimatorSet set = new AnimatorSet();
+                set.playSequentially(verticalMarquee,fadeOut,fadeBackIn);
+                set.start();
+            }
+        });
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
