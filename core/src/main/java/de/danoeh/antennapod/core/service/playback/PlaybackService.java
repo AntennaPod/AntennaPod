@@ -1604,6 +1604,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+                EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_SHUT_DOWN));
                 stateManager.stopService();
             }
         }

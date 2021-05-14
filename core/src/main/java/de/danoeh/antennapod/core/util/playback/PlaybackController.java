@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -91,9 +90,6 @@ public abstract class PlaybackController {
         activity.registerReceiver(notificationReceiver, new IntentFilter(
             PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
-        activity.registerReceiver(shutdownReceiver, new IntentFilter(
-                PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-
         if (!released) {
             bindToService();
         } else {
@@ -121,12 +117,6 @@ public abstract class PlaybackController {
             // ignore
         }
         unbind();
-
-        try {
-            activity.unregisterReceiver(shutdownReceiver);
-        } catch (IllegalArgumentException e) {
-            // ignore
-        }
         media = null;
         released = true;
 
@@ -260,26 +250,12 @@ public abstract class PlaybackController {
 
     };
 
-    private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (playbackService != null) {
-                if (TextUtils.equals(intent.getAction(), PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                    unbind();
-                    onShutdownNotification();
-                }
-            }
-        }
-    };
-
     public void onPositionObserverUpdate() {}
 
 
     public void onPlaybackSpeedChange() {}
 
     public void onSetSpeedAbilityChanged() {}
-
-    public void onShutdownNotification() {}
 
     /**
      * Called when the currently displayed information should be refreshed.

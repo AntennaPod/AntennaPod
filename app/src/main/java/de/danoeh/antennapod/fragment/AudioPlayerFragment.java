@@ -29,6 +29,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -251,6 +252,13 @@ public class AudioPlayerFragment extends Fragment implements
                 controller.getDuration()));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
     private void setupLengthTextView() {
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         txtvLength.setOnClickListener(v -> {
@@ -389,11 +397,6 @@ public class AudioPlayerFragment extends Fragment implements
             @Override
             public void loadMediaInfo() {
                 AudioPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
 
             @Override
