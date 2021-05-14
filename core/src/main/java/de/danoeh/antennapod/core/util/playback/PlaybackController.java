@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -461,12 +460,6 @@ public abstract class PlaybackController {
     public void setSleepTimer(long time) {
         if (playbackService != null) {
             playbackService.setSleepTimer(time);
-        }
-    }
-
-    public void seekToChapter(Chapter chapter) {
-        if (playbackService != null) {
-            playbackService.seekToChapter(chapter);
         }
     }
 
