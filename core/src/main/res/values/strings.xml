@@ -87,7 +87,6 @@
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this Podcast</string>
-    <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
@@ -96,6 +95,7 @@
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
+    <string name="shownotes_contentdescription">swipe up to read shownotes</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
     <string name="close_label">Close</string>
@@ -342,8 +342,6 @@
     <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
     <string name="no_fav_episodes_head_label">No favorite episodes</string>
     <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
-    <string name="no_chapters_head_label">No chapters</string>
-    <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
@@ -681,6 +679,8 @@
     <string name="position">Position: %1$s</string>
     <string name="apply_action">Apply action</string>
     <string name="play_chapter">Play chapter</string>
+    <string name="prev_chapter">Previous chapter</string>
+    <string name="next_chapter">Next chapter</string>
 
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
