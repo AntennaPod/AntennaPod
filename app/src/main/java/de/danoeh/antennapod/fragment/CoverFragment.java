@@ -121,6 +121,7 @@ public class CoverFragment extends Fragment {
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
