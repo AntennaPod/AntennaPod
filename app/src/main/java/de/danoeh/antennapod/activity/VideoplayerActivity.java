@@ -230,12 +230,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             public void onBufferStart() {
-                VideoplayerActivity.this.onBufferStart();
+                progressIndicator.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onBufferEnd() {
-                VideoplayerActivity.this.onBufferEnd();
+                progressIndicator.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -247,7 +247,11 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             public void handleError(int code) {
-                VideoplayerActivity.this.handleError(code);
+                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
+                errorDialog.setTitle(R.string.error_label);
+                errorDialog.setMessage(MediaPlayerError.getErrorString(VideoplayerActivity.this, code));
+                errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
+                errorDialog.show();
             }
 
             @Override
@@ -272,7 +276,11 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             public void onAwaitingVideoSurface() {
-                VideoplayerActivity.this.onAwaitingVideoSurface();
+                setupVideoAspectRatio();
+                if (videoSurfaceCreated && controller != null) {
+                    Log.d(TAG, "Videosurface already created, setting videosurface now");
+                    controller.setVideoSurface(videoview.getHolder());
+                }
             }
 
             @Override
@@ -282,8 +290,11 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             protected void setScreenOn(boolean enable) {
-                super.setScreenOn(enable);
-                VideoplayerActivity.this.setScreenOn(enable);
+                if (enable) {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } else {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
             }
         };
     }
@@ -406,14 +417,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
         videoframe.getViewTreeObserver().addOnGlobalLayoutListener(() ->
                 videoview.setAvailableSize(videoframe.getWidth(), videoframe.getHeight()));
-    }
-
-    protected void onAwaitingVideoSurface() {
-        setupVideoAspectRatio();
-        if (videoSurfaceCreated && controller != null) {
-            Log.d(TAG, "Videosurface already created, setting videosurface now");
-            controller.setVideoSurface(videoview.getHolder());
-        }
     }
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
@@ -544,19 +547,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         setupVideoControlsToggler();
     }
 
-    private void handleError(int errorCode) {
-        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
-        errorDialog.setTitle(R.string.error_label);
-        errorDialog.setMessage(MediaPlayerError.getErrorString(this, errorCode));
-        errorDialog.setNeutralButton("OK",
-                (dialog, which) -> {
-                    dialog.dismiss();
-                    finish();
-                }
-        );
-        errorDialog.create().show();
-    }
-
     private final SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -602,14 +592,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         }
     }
 
-    protected void onBufferStart() {
-        progressIndicator.setVisibility(View.VISIBLE);
-    }
-
-    protected void onBufferEnd() {
-        progressIndicator.setVisibility(View.INVISIBLE);
-    }
-
     @SuppressLint("NewApi")
     private void showVideoControls() {
         videoOverlay.setVisibility(View.VISIBLE);
@@ -642,14 +624,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     private void hideVideoControls() {
         hideVideoControls(true);
-    }
-
-    private void setScreenOn(boolean enable) {
-        if (enable) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
