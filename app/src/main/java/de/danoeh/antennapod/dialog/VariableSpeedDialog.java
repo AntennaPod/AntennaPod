@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,16 +38,6 @@ public class VariableSpeedDialog extends DialogFragment {
         format.setDecimalSeparator('.');
         speedFormat = new DecimalFormat("0.00", format);
         selectedSpeeds = new ArrayList<>(UserPreferences.getPlaybackSpeedArray());
-    }
-
-    public static void showGetPluginDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.no_playback_plugin_title);
-        builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
-        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) ->
-                UserPreferences.enableSonic());
-        builder.setNeutralButton(R.string.close_label, null);
-        builder.show();
     }
 
     @Override

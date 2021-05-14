@@ -38,6 +38,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -223,6 +224,13 @@ public class AudioPlayerFragment extends Fragment implements
                 controller.getDuration()));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
     private void setupLengthTextView() {
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         txtvLength.setOnClickListener(v -> {
@@ -239,10 +247,6 @@ public class AudioPlayerFragment extends Fragment implements
     private void setupPlaybackSpeedButton() {
         butPlaybackSpeed.setOnClickListener(v -> {
             if (controller == null) {
-                return;
-            }
-            if (!controller.canSetPlaybackSpeed()) {
-                VariableSpeedDialog.showGetPluginDialog(getContext());
                 return;
             }
             List<Float> availableSpeeds = UserPreferences.getPlaybackSpeedArray();
@@ -278,14 +282,10 @@ public class AudioPlayerFragment extends Fragment implements
         if (butPlaybackSpeed == null || controller == null) {
             return;
         }
-        float speed = 1.0f;
-        if (controller.canSetPlaybackSpeed()) {
-            speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
-        }
+        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
         butPlaybackSpeed.setSpeed(speed);
-        butPlaybackSpeed.setAlpha(controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
@@ -364,22 +364,12 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
-
-            @Override
             public void onPlaybackEnd() {
                 ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
 
             @Override
             public void onPlaybackSpeedChange() {
-                updatePlaybackSpeedButton(getMedia());
-            }
-
-            @Override
-            public void onSetSpeedAbilityChanged() {
                 updatePlaybackSpeedButton(getMedia());
             }
         };

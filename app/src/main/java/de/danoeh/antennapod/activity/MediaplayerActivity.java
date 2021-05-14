@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.view.PlayButton;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -139,11 +140,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public void onShutdownNotification() {
-                finish();
-            }
-
-            @Override
             public void onPlaybackEnd() {
                 finish();
             }
@@ -158,11 +154,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-
-            @Override
-            public void onSetSpeedAbilityChanged() {
-                MediaplayerActivity.this.onSetSpeedAbilityChanged();
-            }
         };
     }
 
@@ -171,9 +162,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         onPositionObserverUpdate();
     }
 
-    private void onSetSpeedAbilityChanged() {
-        Log.d(TAG, "onSetSpeedAbilityChanged()");
-        updatePlaybackSpeedButton();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            finish();
+        }
     }
 
     private void onPlaybackSpeedChange() {

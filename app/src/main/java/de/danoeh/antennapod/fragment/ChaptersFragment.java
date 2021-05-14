@@ -70,7 +70,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 controller.playPause();
             }
             Chapter chapter = adapter.getItem(pos);
-            controller.seekToChapter(chapter);
+            controller.seekTo((int) chapter.getStart());
             updateChapterSelection(pos);
         });
         recyclerView.setAdapter(adapter);

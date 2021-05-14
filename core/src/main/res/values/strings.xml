@@ -320,9 +320,6 @@
     <string name="time_left_label">Time left:\u0020</string>
 
     <!--  Variable Speed -->
-    <string name="no_playback_plugin_title">Plugin Not Installed</string>
-    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer.</string>
-    <string name="enable_sonic">Enable Sonic</string>
     <string name="speed_presets">Presets</string>
     <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
 

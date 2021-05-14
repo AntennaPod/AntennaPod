@@ -511,13 +511,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         this.startWhenPrepared.set(startWhenPrepared);
     }
 
-    // As things are right now, changing the return value of this function is not enough to ensure
-    // all other components recognize it.
-    @Override
-    public boolean canSetSpeed() {
-        return false;
-    }
-
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
         //Can be safely ignored as neither set speed not skipSilence is supported
