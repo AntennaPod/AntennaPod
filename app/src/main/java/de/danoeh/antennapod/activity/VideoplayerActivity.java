@@ -69,11 +69,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private FrameLayout videoframe;
     private ImageView skipAnimationView;
 
-    @Override
-    protected void chooseTheme() {
-        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
-    }
-
     @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -398,11 +393,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private void hideVideoControls() {
         hideVideoControls(true);
-    }
-
-    @Override
-    protected int getContentViewResourceId() {
-        return R.layout.videoplayer_activity;
     }
 
     @Override

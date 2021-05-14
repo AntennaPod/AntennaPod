@@ -65,7 +65,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public abstract class MediaplayerActivity extends CastEnabledActivity implements OnSeekBarChangeListener {
     private static final String TAG = "MediaplayerActivity";
-    private static final String PREFS = "MediaPlayerActivityPreferences";
 
     PlaybackController controller;
 
@@ -145,11 +144,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public void onPlaybackSpeedChange() {
-                MediaplayerActivity.this.onPlaybackSpeedChange();
-            }
-
-            @Override
             protected void setScreenOn(boolean enable) {
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
@@ -169,20 +163,12 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    private void onPlaybackSpeedChange() {
-        updatePlaybackSpeedButtonText();
-    }
-
-    void chooseTheme() {
-        setTheme(UserPreferences.getTheme());
-    }
-
     void setScreenOn(boolean enable) {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        chooseTheme();
+        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate()");
@@ -454,19 +440,10 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         onPositionObserverUpdate();
         checkFavorite();
-        updatePlaybackSpeedButton();
-    }
-
-    void updatePlaybackSpeedButton() {
-        // Only meaningful on AudioplayerActivity, where it is overridden.
-    }
-
-    void updatePlaybackSpeedButtonText() {
-        // Only meaningful on AudioplayerActivity, where it is overridden.
     }
 
     void setupGUI() {
-        setContentView(getContentViewResourceId());
+        setContentView(R.layout.videoplayer_activity);
         sbPosition = findViewById(R.id.sbPosition);
         txtvPosition = findViewById(R.id.txtvPosition);
         cardViewSeek = findViewById(R.id.cardViewSeek);
@@ -570,8 +547,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         int curr = controller.getPosition();
         controller.seekTo(curr + UserPreferences.getFastForwardSecs() * 1000);
     }
-
-    protected abstract int getContentViewResourceId();
 
     private void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
