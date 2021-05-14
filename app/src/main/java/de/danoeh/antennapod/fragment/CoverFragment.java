@@ -195,9 +195,9 @@ public class CoverFragment extends Fragment {
         } else if ((controller.getPosition() - 10000 * controller.getCurrentPlaybackSpeedMultiplier())
                 < curr.getStart()) {
             refreshChapterData(displayedChapterIndex - 1);
-            controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
+            controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
         } else {
-            controller.seekToChapter(curr);
+            controller.seekTo((int) curr.getStart());
         }
     }
 
@@ -208,7 +208,7 @@ public class CoverFragment extends Fragment {
         }
 
         refreshChapterData(displayedChapterIndex + 1);
-        controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
+        controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
     }
 
     @Override
