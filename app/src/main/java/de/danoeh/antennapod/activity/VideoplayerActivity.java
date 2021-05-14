@@ -9,42 +9,31 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MenuInflater;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.WindowCompat;
-import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
-
-import java.lang.ref.WeakReference;
-import java.text.NumberFormat;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
@@ -64,6 +53,7 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
@@ -72,8 +62,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.view.AspectRatioVideoView;
-import de.danoeh.antennapod.view.PlayButton;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -82,6 +70,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Activity for playing video files.
@@ -96,29 +86,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private boolean videoSurfaceCreated = false;
     private boolean destroyingDueToReload = false;
     private long lastScreenTap = 0;
-
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
-
-    private final AtomicBoolean isSetup = new AtomicBoolean(false);
-
-    private LinearLayout controls;
-    private LinearLayout videoOverlay;
-    private AspectRatioVideoView videoview;
-    private ProgressBar progressIndicator;
-    private FrameLayout videoframe;
-    private ImageView skipAnimationView;
-    private TextView txtvPosition;
-    private TextView txtvLength;
-    private SeekBar sbPosition;
-    private ImageButton butRev;
-    private TextView txtvRev;
-    private PlayButton butPlay;
-    private ImageButton butFF;
-    private TextView txtvFF;
-    private ImageButton butSkip;
-    private CardView cardViewSeek;
-    private TextView txtvSeek;
-
+    private VideoplayerActivityBinding viewBinding;
     private PlaybackController controller;
     private boolean showTimeLeft = false;
     private boolean isFavorite = false;
@@ -138,8 +107,11 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         StorageUtils.checkStorageAvailability(this);
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
+        viewBinding = VideoplayerActivityBinding.inflate(LayoutInflater.from(this));
+        setContentView(viewBinding.getRoot());
         setupGUI();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -170,7 +142,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
         }
-        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
+        // Controller released; we will not receive buffering updates
+        viewBinding.progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -230,19 +203,17 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             public void onBufferStart() {
-                progressIndicator.setVisibility(View.VISIBLE);
+                viewBinding.progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onBufferEnd() {
-                progressIndicator.setVisibility(View.INVISIBLE);
+                viewBinding.progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onBufferUpdate(float progress) {
-                if (sbPosition != null) {
-                    sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
-                }
+                viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
             }
 
             @Override
@@ -266,7 +237,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
-                butPlay.setIsShowPlay(showPlay);
+                viewBinding.playButton.setIsShowPlay(showPlay);
             }
 
             @Override
@@ -279,7 +250,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 setupVideoAspectRatio();
                 if (videoSurfaceCreated && controller != null) {
                     Log.d(TAG, "Videosurface already created, setting videosurface now");
-                    controller.setVideoSurface(videoview.getHolder());
+                    controller.setVideoSurface(viewBinding.videoView.getHolder());
                 }
             }
 
@@ -315,108 +286,61 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     protected void setupGUI() {
-        if (isSetup.getAndSet(true)) {
-            return;
-        }
-        setContentView(R.layout.videoplayer_activity);
-        sbPosition = findViewById(R.id.sbPosition);
-        txtvPosition = findViewById(R.id.txtvPosition);
-        cardViewSeek = findViewById(R.id.cardViewSeek);
-        txtvSeek = findViewById(R.id.txtvSeek);
-
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         Log.d("timeleft", showTimeLeft ? "true" : "false");
-        txtvLength = findViewById(R.id.txtvLength);
-        if (txtvLength != null) {
-            txtvLength.setOnClickListener(v -> {
-                showTimeLeft = !showTimeLeft;
-                Playable media = controller.getMedia();
-                if (media == null) {
-                    return;
-                }
+        viewBinding.durationLabel.setOnClickListener(v -> {
+            showTimeLeft = !showTimeLeft;
+            Playable media = controller.getMedia();
+            if (media == null) {
+                return;
+            }
 
-                TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-                String length;
-                if (showTimeLeft) {
-                    int remainingTime = converter.convert(
-                            media.getDuration() - media.getPosition());
+            TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+            String length;
+            if (showTimeLeft) {
+                int remainingTime = converter.convert(
+                        media.getDuration() - media.getPosition());
 
-                    length = "-" + Converter.getDurationStringLong(remainingTime);
-                } else {
-                    int duration = converter.convert(media.getDuration());
-                    length = Converter.getDurationStringLong(duration);
-                }
-                txtvLength.setText(length);
+                length = "-" + Converter.getDurationStringLong(remainingTime);
+            } else {
+                int duration = converter.convert(media.getDuration());
+                length = Converter.getDurationStringLong(duration);
+            }
+            viewBinding.durationLabel.setText(length);
 
-                UserPreferences.setShowRemainTimeSetting(showTimeLeft);
-                Log.d("timeleft on click", showTimeLeft ? "true" : "false");
-            });
-        }
+            UserPreferences.setShowRemainTimeSetting(showTimeLeft);
+            Log.d("timeleft on click", showTimeLeft ? "true" : "false");
+        });
 
-        butRev = findViewById(R.id.butRev);
-        txtvRev = findViewById(R.id.txtvRev);
-        if (txtvRev != null) {
-            txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
-        }
-        butPlay = findViewById(R.id.butPlay);
-        butPlay.setIsVideoScreen(true);
-        butFF = findViewById(R.id.butFF);
-        txtvFF = findViewById(R.id.txtvFF);
-        if (txtvFF != null) {
-            txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
-        }
-        butSkip = findViewById(R.id.butSkip);
-
-        // SEEKBAR SETUP
-
-        sbPosition.setOnSeekBarChangeListener(this);
-
-        // BUTTON SETUP
-
-        if (butRev != null) {
-            butRev.setOnClickListener(v -> onRewind());
-            butRev.setOnLongClickListener(v -> {
-                SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
-                        SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
-                return true;
-            });
-        }
-
-        butPlay.setOnClickListener(v -> onPlayPause());
-
-        if (butFF != null) {
-            butFF.setOnClickListener(v -> onFastForward());
-            butFF.setOnLongClickListener(v -> {
-                SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
-                        SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
-                return false;
-            });
-        }
-
-        if (butSkip != null) {
-            butSkip.setOnClickListener(v ->
-                    IntentUtils.sendLocalBroadcast(VideoplayerActivity.this, PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
-        }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        controls = findViewById(R.id.controls);
-        videoOverlay = findViewById(R.id.overlay);
-        videoview = findViewById(R.id.videoview);
-        videoframe = findViewById(R.id.videoframe);
-        progressIndicator = findViewById(R.id.progressIndicator);
-        skipAnimationView = findViewById(R.id.skip_animation);
-        videoview.getHolder().addCallback(surfaceHolderCallback);
-        videoframe.setOnTouchListener(onVideoviewTouched);
-        videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
-        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        videoOverlay.setFitsSystemWindows(true);
+        viewBinding.sbPosition.setOnSeekBarChangeListener(this);
+        viewBinding.rewindButton.setOnClickListener(v -> onRewind());
+        viewBinding.rewindButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_REWIND, null);
+            return true;
+        });
+        viewBinding.playButton.setIsVideoScreen(true);
+        viewBinding.playButton.setOnClickListener(v -> onPlayPause());
+        viewBinding.fastForwardButton.setOnClickListener(v -> onFastForward());
+        viewBinding.fastForwardButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
+            return false;
+        });
+        // To suppress touches directly below the slider
+        viewBinding.bottomControlsContainer.setOnTouchListener((view, motionEvent) -> true);
+        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
+        viewBinding.videoView.getHolder().addCallback(surfaceHolderCallback);
+        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        videoframe.getViewTreeObserver().addOnGlobalLayoutListener(() ->
-                videoview.setAvailableSize(videoframe.getWidth(), videoframe.getHeight()));
+        viewBinding.videoPlayerContainer.setOnTouchListener(onVideoviewTouched);
+        viewBinding.videoPlayerContainer.getViewTreeObserver().addOnGlobalLayoutListener(() ->
+                viewBinding.videoView.setAvailableSize(
+                        viewBinding.videoPlayerContainer.getWidth(), viewBinding.videoPlayerContainer.getHeight()));
     }
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
@@ -462,18 +386,18 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         skipAnimation.setFillAfter(false);
         skipAnimation.setDuration(800);
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) skipAnimationView.getLayoutParams();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) viewBinding.skipAnimationImage.getLayoutParams();
         if (isForward) {
-            skipAnimationView.setImageResource(R.drawable.ic_fast_forward_video_white);
+            viewBinding.skipAnimationImage.setImageResource(R.drawable.ic_fast_forward_video_white);
             params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         } else {
-            skipAnimationView.setImageResource(R.drawable.ic_fast_rewind_video_white);
+            viewBinding.skipAnimationImage.setImageResource(R.drawable.ic_fast_rewind_video_white);
             params.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
         }
 
-        skipAnimationView.setVisibility(View.VISIBLE);
-        skipAnimationView.setLayoutParams(params);
-        skipAnimationView.startAnimation(skipAnimation);
+        viewBinding.skipAnimationImage.setVisibility(View.VISIBLE);
+        viewBinding.skipAnimationImage.setLayoutParams(params);
+        viewBinding.skipAnimationImage.startAnimation(skipAnimation);
         skipAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -481,7 +405,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                skipAnimationView.setVisibility(View.GONE);
+                viewBinding.skipAnimationImage.setVisibility(View.GONE);
             }
 
             @Override
@@ -502,7 +426,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             Pair<Integer, Integer> videoSize = controller.getVideoSize();
             if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
                 Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
-                videoview.setVideoSize(videoSize.first, videoSize.second);
+                viewBinding.videoView.setVideoSize(videoSize.first, videoSize.second);
             } else {
                 Log.e(TAG, "Could not determine video size");
             }
@@ -530,7 +454,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     void onPlayPause() {
-        if(controller == null) {
+        if (controller == null) {
             return;
         }
         controller.init();
@@ -594,14 +518,14 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @SuppressLint("NewApi")
     private void showVideoControls() {
-        videoOverlay.setVisibility(View.VISIBLE);
-        controls.setVisibility(View.VISIBLE);
+        viewBinding.bottomControlsContainer.setVisibility(View.VISIBLE);
+        viewBinding.controlsContainer.setVisibility(View.VISIBLE);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         if (animation != null) {
-            videoOverlay.startAnimation(animation);
-            controls.startAnimation(animation);
+            viewBinding.bottomControlsContainer.startAnimation(animation);
+            viewBinding.controlsContainer.startAnimation(animation);
         }
-        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     @SuppressLint("NewApi")
@@ -609,17 +533,17 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         if (showAnimation) {
             final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
             if (animation != null) {
-                videoOverlay.startAnimation(animation);
-                controls.startAnimation(animation);
+                viewBinding.bottomControlsContainer.startAnimation(animation);
+                viewBinding.controlsContainer.startAnimation(animation);
             }
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        videoOverlay.setFitsSystemWindows(true);
+        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
 
-        videoOverlay.setVisibility(View.GONE);
-        controls.setVisibility(View.GONE);
+        viewBinding.bottomControlsContainer.setVisibility(View.GONE);
+        viewBinding.controlsContainer.setVisibility(View.GONE);
     }
 
     private void hideVideoControls() {
@@ -774,7 +698,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     void onPositionObserverUpdate() {
-        if (controller == null || txtvPosition == null || txtvLength == null) {
+        if (controller == null) {
             return;
         }
 
@@ -789,42 +713,39 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
-        txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        viewBinding.positionLabel.setText(Converter.getDurationStringLong(currentPosition));
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
+            viewBinding.durationLabel.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
-            txtvLength.setText(Converter.getDurationStringLong(duration));
+            viewBinding.durationLabel.setText(Converter.getDurationStringLong(duration));
         }
         updateProgressbarPosition(currentPosition, duration);
     }
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
-        if(sbPosition == null) {
-            return;
-        }
         float progress = ((float) position) / duration;
-        sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        viewBinding.sbPosition.setProgress((int) (progress * viewBinding.sbPosition.getMax()));
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (controller == null || txtvLength == null) {
+        if (controller == null) {
             return;
         }
         if (fromUser) {
             prog = progress / ((float) seekBar.getMax());
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * controller.getDuration()));
-            txtvSeek.setText(Converter.getDurationStringLong(position));
+            viewBinding.seekPositionLabel.setText(Converter.getDurationStringLong(position));
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        cardViewSeek.setScaleX(.8f);
-        cardViewSeek.setScaleY(.8f);
-        cardViewSeek.animate()
+        viewBinding.seekCardView.setScaleX(.8f);
+        viewBinding.seekCardView.setScaleY(.8f);
+        viewBinding.seekCardView.animate()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .alpha(1f).scaleX(1f).scaleY(1f)
                 .setDuration(200)
@@ -837,9 +758,9 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         if (controller != null) {
             controller.seekTo((int) (prog * controller.getDuration()));
         }
-        cardViewSeek.setScaleX(1f);
-        cardViewSeek.setScaleY(1f);
-        cardViewSeek.animate()
+        viewBinding.seekCardView.setScaleX(1f);
+        viewBinding.seekCardView.setScaleY(1f);
+        viewBinding.seekCardView.animate()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .alpha(0f).scaleX(.8f).scaleY(.8f)
                 .setDuration(200)

@@ -31,6 +31,6 @@ public class VideoplayerActivityTest {
     @Test
     public void testStartActivity() throws Exception {
         activityTestRule.launchActivity(new Intent());
-        onView(withId(R.id.videoframe)).check(matches(isDisplayed()));
+        onView(withId(R.id.videoPlayerContainer)).check(matches(isDisplayed()));
     }
 }
