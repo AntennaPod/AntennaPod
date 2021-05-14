@@ -114,11 +114,6 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public boolean canSetSpeed() {
-        return true;
-    }
-
-    @Override
     public boolean canDownmix() {
         return false;
     }

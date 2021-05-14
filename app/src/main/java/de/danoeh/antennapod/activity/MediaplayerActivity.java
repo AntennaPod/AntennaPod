@@ -154,11 +154,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-
-            @Override
-            public void onSetSpeedAbilityChanged() {
-                MediaplayerActivity.this.onSetSpeedAbilityChanged();
-            }
         };
     }
 
@@ -172,11 +167,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
             finish();
         }
-    }
-
-    private void onSetSpeedAbilityChanged() {
-        Log.d(TAG, "onSetSpeedAbilityChanged()");
-        updatePlaybackSpeedButton();
     }
 
     private void onPlaybackSpeedChange() {

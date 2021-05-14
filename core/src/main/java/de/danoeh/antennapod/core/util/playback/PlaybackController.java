@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
@@ -241,9 +240,6 @@ public abstract class PlaybackController {
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
                     onPlaybackSpeedChange();
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED:
-                    onSetSpeedAbilityChanged();
-                    break;
             }
         }
 
@@ -253,8 +249,6 @@ public abstract class PlaybackController {
 
 
     public void onPlaybackSpeedChange() {}
-
-    public void onSetSpeedAbilityChanged() {}
 
     /**
      * Called when the currently displayed information should be refreshed.
@@ -479,13 +473,6 @@ public abstract class PlaybackController {
         return status;
     }
 
-    public boolean canSetPlaybackSpeed() {
-        return UserPreferences.useSonic()
-                || UserPreferences.useExoplayer()
-                || Build.VERSION.SDK_INT >= 23
-                || (playbackService != null && playbackService.canSetSpeed());
-    }
-
     public void setPlaybackSpeed(float speed) {
         PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
         if (getMedia() != null && getMedia().getMediaType() == MediaType.VIDEO) {
@@ -514,7 +501,7 @@ public abstract class PlaybackController {
     }
 
     public float getCurrentPlaybackSpeedMultiplier() {
-        if (playbackService != null && canSetPlaybackSpeed()) {
+        if (playbackService != null) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return PlaybackSpeedUtils.getCurrentPlaybackSpeed(getMedia());

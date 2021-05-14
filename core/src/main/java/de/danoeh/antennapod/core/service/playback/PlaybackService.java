@@ -189,11 +189,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
     /**
-     * Ability to set the playback speed has changed
-     */
-    public static final int NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED = 9;
-
-    /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
      * is in an invalid state.
      */
@@ -892,10 +887,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void playbackSpeedChanged(float s) {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
-        }
-
-        public void setSpeedAbilityChanged() {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED, 0);
         }
 
         @Override
@@ -1704,10 +1695,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public Playable getPlayable() {
         return mediaPlayer.getPlayable();
-    }
-
-    public boolean canSetSpeed() {
-        return mediaPlayer.canSetSpeed();
     }
 
     public void setSpeed(float speed) {

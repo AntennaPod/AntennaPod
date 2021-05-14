@@ -277,10 +277,6 @@ public class AudioPlayerFragment extends Fragment implements
             if (controller == null) {
                 return;
             }
-            if (!controller.canSetPlaybackSpeed()) {
-                VariableSpeedDialog.showGetPluginDialog(getContext());
-                return;
-            }
             List<Float> availableSpeeds = UserPreferences.getPlaybackSpeedArray();
             float currentSpeed = controller.getCurrentPlaybackSpeedMultiplier();
 
@@ -314,14 +310,10 @@ public class AudioPlayerFragment extends Fragment implements
         if (butPlaybackSpeed == null || controller == null) {
             return;
         }
-        float speed = 1.0f;
-        if (controller.canSetPlaybackSpeed()) {
-            speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
-        }
+        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
         butPlaybackSpeed.setSpeed(speed);
-        butPlaybackSpeed.setAlpha(controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
@@ -406,11 +398,6 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onPlaybackSpeedChange() {
-                updatePlaybackSpeedButton(getMedia());
-            }
-
-            @Override
-            public void onSetSpeedAbilityChanged() {
                 updatePlaybackSpeedButton(getMedia());
             }
         };
