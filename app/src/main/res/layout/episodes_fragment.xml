@@ -112,14 +112,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_feed" />
+                app:drawable="@drawable/ic_baseline_list_24" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_baseline_new_releases_24" />
+                app:drawable="@drawable/ic_play_24dp" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"

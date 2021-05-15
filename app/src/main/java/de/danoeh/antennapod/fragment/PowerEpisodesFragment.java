@@ -37,7 +37,7 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_FILTER = "filter";
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
-    private boolean pausedOnTop = true;
+    private boolean pausedOnTop;
 
     private SegmentedButtonGroup floatingQuickFilter;
 
@@ -103,7 +103,7 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
     }
     private void loadPrefBooleans() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        pausedOnTop = prefs.getBoolean(PREF_PAUSEDFIRST,true);
+        pausedOnTop = prefs.getBoolean(PREF_PAUSEDFIRST,false);
     }
 
     public void loadMenuCheked(Menu menu) {

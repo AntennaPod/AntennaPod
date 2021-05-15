@@ -342,9 +342,4 @@
         <item>@string/subscriptions_label</item>
     </string-array>
 
-    <string-array name="back_button_go_to_pages_tags">
-        <item>QueueFragment</item>
-        <item>EpisodesFragment</item>
-        <item>SubscriptionFragment</item>
-    </string-array>
 </resources>

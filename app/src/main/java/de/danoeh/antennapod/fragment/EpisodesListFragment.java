@@ -290,18 +290,22 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         switch (tag) {
             case PowerEpisodesFragment.TAG+QUICKFILTER_ALL:
             case PowerEpisodesFragment.TAG+QUICKFILTER_NEW:
-            case PowerEpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
                 emptyView.setIcon(R.drawable.ic_feed);
                 emptyView.setTitle(R.string.no_all_episodes_head_label);
                 emptyView.setMessage(R.string.no_all_episodes_label);
                 break;
+            case PowerEpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
+                emptyView.setIcon(R.drawable.ic_download);
+                emptyView.setTitle(R.string.no_comp_downloads_head_label);
+                emptyView.setMessage(R.string.no_comp_downloads_label);
+                break;
             case PowerEpisodesFragment.TAG+QUICKFILTER_FAV:
-                emptyView.setIcon(R.drawable.ic_baseline_new_releases_24);
+                emptyView.setIcon(R.drawable.ic_star);
                 emptyView.setTitle(R.string.no_fav_episodes_head_label);
                 emptyView.setMessage(R.string.no_fav_episodes_label);
                 break;
             case InboxFragment.TAG:
-                emptyView.setIcon(R.drawable.ic_feed);
+                emptyView.setIcon(R.drawable.ic_baseline_inbox_24);
                 emptyView.setTitle(R.string.no_new_episodes_head_label);
                 emptyView.setMessage(R.string.no_new_episodes_label);
                 break;
