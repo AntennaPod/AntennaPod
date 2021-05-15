@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,16 +33,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -57,12 +65,8 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -184,6 +188,11 @@ public class MainActivity extends CastEnabledActivity {
             if (audioPlayer == null) {
                 return;
             }
+
+            if (slideOffset == 0.0f) { //STATE_COLLAPSED
+                audioPlayer.scrollToPage(AudioPlayerFragment.POS_COVER);
+            }
+
             float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
             audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
             audioPlayer.getExternalPlayerHolder().setVisibility(

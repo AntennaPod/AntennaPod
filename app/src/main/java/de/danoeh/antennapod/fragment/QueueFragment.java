@@ -490,19 +490,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     final int position = viewHolder.getAdapterPosition();
                     Log.d(TAG, "remove(" + position + ")");
                     final FeedItem item = queue.get(position);
-                    final boolean isRead = item.isPlayed();
-                    DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), true, item);
 
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            item.hasMedia() ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label,
+                            getResources().getQuantityString(R.plurals.removed_from_queue_batch_label, 1, 1),
                             Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo), v -> {
-                                DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
-                                if (!isRead) {
-                                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                                }
-                            });
+                            .setAction(getString(R.string.undo), v ->
+                                    DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false));
                 }
 
                 @Override

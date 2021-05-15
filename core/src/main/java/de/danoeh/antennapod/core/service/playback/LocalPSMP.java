@@ -608,23 +608,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     /**
-     * Returns true if the playback speed can be adjusted.
-     */
-    @Override
-    public boolean canSetSpeed() {
-        return mediaPlayer != null && mediaPlayer.canSetSpeed();
-    }
-
-    /**
      * Sets the playback speed.
      * This method is executed on the caller's thread.
      */
     private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
-        if (mediaPlayer.canSetSpeed()) {
-            Log.d(TAG, "Playback speed was set to " + speed);
-            callback.playbackSpeedChanged(speed);
-        }
+        Log.d(TAG, "Playback speed was set to " + speed);
+        callback.playbackSpeedChanged(speed);
         mediaPlayer.setPlaybackParams(speed, skipSilence);
         playerLock.unlock();
     }
@@ -651,7 +641,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if ((playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.INITIALIZED
-                || playerStatus == PlayerStatus.PREPARED) && mediaPlayer.canSetSpeed()) {
+                || playerStatus == PlayerStatus.PREPARED)) {
             retVal = mediaPlayer.getCurrentSpeedMultiplier();
         }
         playerLock.unlock();
@@ -1048,7 +1038,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnErrorListener(audioErrorListener);
             ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnInfoListener(audioInfoListener);
-            ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
         } else if (mp instanceof ExoPlayerWrapper) {
             ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
             ap.setOnCompletionListener(audioCompletionListener);
@@ -1091,10 +1080,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private boolean genericInfoListener(int what) {
         return callback.onMediaPlayerInfo(what, 0);
     }
-
-    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener audioSetSpeedAbilityListener =
-            (arg0, speedAdjustmentAvailable) -> callback.setSpeedAbilityChanged();
-
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {

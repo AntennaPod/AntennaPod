@@ -205,9 +205,9 @@ public class NSAtom extends Namespace {
                 state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
             } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
                 state.getCurrentItem().getPubDate() == null) {
-                state.getCurrentItem().setPubDate(DateUtils.parse(content));
+                state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
-                state.getCurrentItem().setPubDate(DateUtils.parse(content));
+                state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImageUrl() == null) {
                 state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {

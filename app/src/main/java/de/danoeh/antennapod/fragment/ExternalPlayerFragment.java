@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -113,11 +114,6 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).setPlayerVisible(false);
-            }
-
-            @Override
             public void onPlaybackEnd() {
                 ((MainActivity) getActivity()).setPlayerVisible(false);
             }
@@ -146,6 +142,13 @@ public class ExternalPlayerFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         onPositionObserverUpdate();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).setPlayerVisible(false);
+        }
     }
 
     @Override

@@ -118,6 +118,14 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
             canvas.drawRect(left, top, right, bottom, paintBackground);
 
+            if (progressSecondary > 0 && progressSecondary < width) {
+                if (right < progressSecondary) {
+                    canvas.drawRect(left, top, right, bottom, paintBackground);
+                } else if (progressSecondary > left) {
+                    canvas.drawRect(left, top, progressSecondary, bottom, paintBackground);
+                }
+            }
+
             if (right < progressPrimary) {
                 currChapter = i + 1;
                 canvas.drawRect(left, top, right, bottom, paintProgressPrimary);
@@ -125,9 +133,6 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
                 canvas.drawRect(leftCurr, topExpanded, rightCurr, bottomExpanded, paintBackground);
                 canvas.drawRect(leftCurr, topExpanded, progressPrimary, bottomExpanded, paintProgressPrimary);
             } else {
-                if (progressSecondary > leftCurr) {
-                    canvas.drawRect(leftCurr, top, progressSecondary, bottom, paintBackground);
-                }
                 canvas.drawRect(leftCurr, top, progressPrimary, bottom, paintProgressPrimary);
             }
         }

@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -113,11 +114,6 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public boolean canSetSpeed() {
-        return true;
-    }
-
-    @Override
     public boolean canDownmix() {
         return false;
     }
@@ -210,6 +206,7 @@ public class ExoPlayerWrapper implements IPlayer {
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
+        extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
         ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
         mediaSource = f.createMediaSource(Uri.parse(s));
     }

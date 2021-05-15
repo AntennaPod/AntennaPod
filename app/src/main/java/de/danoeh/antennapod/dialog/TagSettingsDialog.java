@@ -24,6 +24,8 @@ public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
     private static final String ARG_FEED_PREFERENCES = "feed_preferences";
     private List<String> displayedTags;
+    private EditTagsDialogBinding viewBinding;
+    private TagSelectionAdapter adapter;
 
     public static TagSettingsDialog newInstance(FeedPreferences preferences) {
         TagSettingsDialog fragment = new TagSettingsDialog();
@@ -40,29 +42,22 @@ public class TagSettingsDialog extends DialogFragment {
         displayedTags = new ArrayList<>(preferences.getTags());
         displayedTags.remove(FeedPreferences.TAG_ROOT);
 
-        EditTagsDialogBinding viewBinding = EditTagsDialogBinding.inflate(getLayoutInflater());
+        viewBinding = EditTagsDialogBinding.inflate(getLayoutInflater());
         viewBinding.tagsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         viewBinding.tagsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4));
-        TagSelectionAdapter adapter = new TagSelectionAdapter();
+        adapter = new TagSelectionAdapter();
         adapter.setHasStableIds(true);
         viewBinding.tagsRecycler.setAdapter(adapter);
         viewBinding.rootFolderCheckbox.setChecked(preferences.getTags().contains(FeedPreferences.TAG_ROOT));
 
-
-        viewBinding.newTagButton.setOnClickListener(v -> {
-            String name = viewBinding.newTagEditText.getText().toString().trim();
-            if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
-                return;
-            }
-            displayedTags.add(name);
-            viewBinding.newTagEditText.setText("");
-            adapter.notifyDataSetChanged();
-        });
+        viewBinding.newTagButton.setOnClickListener(v ->
+                addTag(viewBinding.newTagEditText.getText().toString().trim()));
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
         dialog.setTitle(R.string.feed_folders_label);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {
+            addTag(viewBinding.newTagEditText.getText().toString().trim());
             preferences.getTags().clear();
             preferences.getTags().addAll(displayedTags);
             if (viewBinding.rootFolderCheckbox.isChecked()) {
@@ -72,6 +67,15 @@ public class TagSettingsDialog extends DialogFragment {
         });
         dialog.setNegativeButton(R.string.cancel_label, null);
         return dialog.create();
+    }
+
+    private void addTag(String name) {
+        if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
+            return;
+        }
+        displayedTags.add(name);
+        viewBinding.newTagEditText.setText("");
+        adapter.notifyDataSetChanged();
     }
 
     public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapter.ViewHolder> {
