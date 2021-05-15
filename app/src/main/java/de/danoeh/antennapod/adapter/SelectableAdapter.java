@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -115,7 +112,7 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
 
 
     /**
-     * End action mode if currently action mode, otherwise do nothing
+     * End action mode if currently in select mode, otherwise do nothing
      */
     public void finish() {
         if (inActionMode()) {
@@ -123,6 +120,12 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
             actionMode.finish();
         }
     }
+
+    /**
+     * Called by subclasses that need to notify this class of a new selection event
+     * at the given position and to handle
+     * @param pos
+     */
     public void selectHandler(int pos) {
         if (selectedItemPositions.get(pos, false)) {
             selectedItemPositions.put(pos, false);
@@ -135,8 +138,10 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
             selectedCount++;
 
         }
-        actionMode.setTitle(getTitle());
+        if(actionMode != null)
+            actionMode.setTitle(getTitle());
         notifyItemChanged(pos);
+
     }
 
     public void onStartActionMode() {
@@ -163,11 +168,6 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
     public void onSelectChanged(int pos, boolean selected) {
 
     }
-
-    public boolean isSelected(int pos) {
-        return selectedItemPositions.get(pos, false);
-    }
-
 
     private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
         if (toggle) {

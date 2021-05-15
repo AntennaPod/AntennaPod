@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import de.danoeh.antennapod.R;
 import io.reactivex.annotations.Nullable;
 
@@ -18,6 +16,7 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
     private static final String TAG = "EpisodeItemListRecyclerView";
     private static final String PREF_PREFIX_SCROLL_POSITION = "scroll_position_";
     private static final String PREF_PREFIX_SCROLL_OFFSET = "scroll_offset_";
+
     private LinearLayoutManager layoutManager;
 
     public EpisodeItemListRecyclerView(Context context) {

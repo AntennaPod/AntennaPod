@@ -5,8 +5,6 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +34,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
+    // Used to enable O(1) search. Can't use FeedItem because it does not override equals()
     private Set<Long> selectedIds = new HashSet<>();
     private List<FeedItem> selectedItems = new ArrayList<>();
     private FeedItem selectedItem;
@@ -88,14 +87,17 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
 
         if (inActionMode()) {
+            holder.selectCheckBox.setOnClickListener(v -> {
+                selectHandler(pos);
+            });
             if(selectedIds.contains(item.getId())) {
-                holder.selectRadioButton.setChecked(true);
+                holder.selectCheckBox.setChecked(true);
             } else {
-                holder.selectRadioButton.setChecked(false);
+                holder.selectCheckBox.setChecked(false);
             }
-            holder.selectRadioButton.setVisibility(View.VISIBLE);
+            holder.selectCheckBox.setVisibility(View.VISIBLE);
         } else {
-            holder.selectRadioButton.setVisibility(View.GONE);
+            holder.selectCheckBox.setVisibility(View.GONE);
         }
 
         afterBindViewHolder(holder, pos);
@@ -168,6 +170,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             selectedIds.remove(item.getId());
             selectedItems.remove(item);
         }
+
+        if (selectedIds.size() == 0) {
+            finish();
+        }
     }
 
     public void updateItems(List<FeedItem> items) {
@@ -216,7 +222,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     public interface OnEndSelectModeListener {
-        public void onEndSelectMode();
+        void onEndSelectMode();
     }
 
 }
