@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -122,6 +123,21 @@ public class DateUtils {
         return null;
     }
 
+    /**
+     * Parses the date but if the date is in the future, returns null.
+     */
+    @Nullable
+    public static Date parseOrNullIfFuture(final String input) {
+        Date date = parse(input);
+        if (date == null) {
+            return null;
+        }
+        Date now = new Date();
+        if (date.after(now)) {
+            return null;
+        }
+        return date;
+    }
 
     /**
      * Takes a string of the form [HH:]MM:SS[.mmm] and converts it to

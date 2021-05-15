@@ -144,11 +144,6 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract void setStartWhenPrepared(boolean startWhenPrepared);
 
     /**
-     * Returns true if the playback speed can be adjusted.
-     */
-    public abstract boolean canSetSpeed();
-
-    /**
      * Sets the playback parameters.
      * - Speed
      * - SkipSilence (ExoPlayer only)
@@ -348,8 +343,6 @@ public abstract class PlaybackServiceMediaPlayer {
         void shouldStop();
 
         void playbackSpeedChanged(float s);
-
-        void setSpeedAbilityChanged();
 
         void onBufferingUpdate(int percent);
 
