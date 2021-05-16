@@ -8,6 +8,11 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import com.google.android.material.snackbar.Snackbar;
+import com.nextcloud.android.sso.AccountImporter;
+import com.nextcloud.android.sso.exceptions.AndroidGetAccountsPermissionNotGranted;
+import com.nextcloud.android.sso.exceptions.NextcloudFilesAppNotInstalledException;
+import com.nextcloud.android.sso.ui.UiExceptionManager;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
@@ -65,7 +70,7 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         final Activity activity = getActivity();
 
         findPreference(PREF_GPODNET_LOGIN).setOnPreferenceClickListener(preference -> {
-            new GpodderAuthenticationFragment().show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
+            openAccountChooser();
             return true;
         });
         findPreference(PREF_GPODNET_SETLOGIN_INFORMATION)
@@ -125,4 +130,15 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                         lastTime, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_SHOW_TIME));
         ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(status);
     }
+
+    private void openAccountChooser() {
+        try {
+            AccountImporter.pickNewAccount(this);
+        } catch (NextcloudFilesAppNotInstalledException | AndroidGetAccountsPermissionNotGranted e) {
+            UiExceptionManager.showDialogForException(getContext(), e);
+        }
+    }
+
+
+
 }

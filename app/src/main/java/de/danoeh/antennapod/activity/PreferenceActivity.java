@@ -1,8 +1,11 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,14 @@ import android.view.MenuItem;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.google.gson.GsonBuilder;
+import com.nextcloud.android.sso.AccountImporter;
+import com.nextcloud.android.sso.api.NextcloudAPI;
+import com.nextcloud.android.sso.exceptions.AccountImportCancelledException;
+import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
+import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
+import com.nextcloud.android.sso.helper.SingleAccountHelper;
+import com.nextcloud.android.sso.model.SingleSignOnAccount;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -83,6 +94,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
         return prefFragment;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public static int getTitleOfPage(int preferences) {
         switch (preferences) {
             case R.xml.preferences_network:
@@ -158,5 +170,57 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
             result.highlight(fragment);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        try {
+            AccountImporter.onActivityResult(requestCode, resultCode, data, this, new AccountImporter.IAccountAccessGranted() {
+
+                NextcloudAPI.ApiConnectedListener callback = new NextcloudAPI.ApiConnectedListener() {
+                    @Override
+                    public void onConnected() {
+                        // ignore this one… see 5)
+                    }
+
+                    @Override
+                    public void onError(Exception ex) {
+                        // TODO handle errors
+                    }
+                };
+
+                @Override
+                public void accountAccessGranted(SingleSignOnAccount account) {
+                    // As this library supports multiple accounts we created some helper methods if you only want to use one.
+                    // The following line stores the selected account as the "default" account which can be queried by using
+                    // the SingleAccountHelper.getCurrentSingleSignOnAccount(context) method
+                    SingleAccountHelper.setCurrentAccount(getApplicationContext(), account.name);
+
+                    // Get the "default" account
+                    SingleSignOnAccount ssoAccount = null;
+                    try {
+                        ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(getApplicationContext());
+                    } catch (NextcloudFilesAppAccountNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NoCurrentAccountSelectedException e) {
+                        e.printStackTrace();
+                    }
+                    NextcloudAPI nextcloudAPI = new NextcloudAPI(getApplicationContext(), ssoAccount, new GsonBuilder().create(), callback);
+
+                    // TODO ... (see code in section 4 and below)
+                }
+            });
+        } catch (AccountImportCancelledException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        AccountImporter.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 }

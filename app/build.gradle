@@ -150,6 +150,8 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
 
+    implementation "com.github.nextcloud:Android-SingleSignOn:0.5.1"
+
     // Non-free dependencies:
     playImplementation 'com.google.android.play:core:1.8.0'
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
