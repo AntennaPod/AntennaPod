@@ -2,8 +2,10 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ public abstract class HomeSection {
 
     protected boolean expandsToFillHeight = false;
     protected String sectionTitle = "";
+    protected String sectionNavigateTitle = "";
     protected Fragment sectionFragment = null;
 
     public HomeSection(Fragment context) {
@@ -42,7 +45,7 @@ public abstract class HomeSection {
         fragmentContainer = section.findViewById(R.id.sectionFragmentContainer);
     }
 
-    public View getSection() {
+    public void addSectionTo(LinearLayout parent) {
         if (sectionFragment != null) {
             context.requireActivity().getSupportFragmentManager()
                     .beginTransaction().add(R.id.sectionFragmentContainer, sectionFragment)
@@ -53,9 +56,13 @@ public abstract class HomeSection {
             recyclerView.setVisibility(View.VISIBLE);
         }
 
+        tvTitle.setText(sectionTitle);
+        tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
         tvNavigate.setOnClickListener(navigate());
 
-        return section;
+        parent.addView(section);
+
+        expandToFillHeight(expandsToFillHeight);
     }
 
     @NonNull
@@ -63,7 +70,9 @@ public abstract class HomeSection {
 
     public void expandToFillHeight(boolean expand) {
         int height = expand ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT;
-        section.getLayoutParams().height = height;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) section.getLayoutParams();
+        params.height = height;
+        params.weight = 1;
     }
 
     @NonNull

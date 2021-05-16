@@ -74,10 +74,13 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = "HomeFragment";
+    public static final String PREF_NAME = "PrefHomeFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
+    private boolean displayUpArrow;
 
     Toolbar toolbar;
 
-    LinearLayout container;
+    LinearLayout homeContainer;
 
     String getPrefName() {
         return TAG;
@@ -107,7 +110,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.home_fragment, container, false);
-        container = root.findViewById(R.id.homeContainer);
+        homeContainer = root.findViewById(R.id.homeContainer);
 
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.home_label);
@@ -116,9 +119,25 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
         //MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
-        container.addView(new EpisodesSection(this).getSection());
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+
+        loadSections();
 
         return root;
+    }
+
+    private void loadSections() {
+        new EpisodesSection(this).addSectionTo(homeContainer);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private static class HomeSettingsDialog {
