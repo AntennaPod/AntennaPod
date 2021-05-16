@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -375,6 +377,10 @@ public class FeedItem extends FeedComponent implements Serializable {
             failedAttempts = 10;
         }
         return failedAttempts;
+    }
+
+    public boolean isDownloaded() {
+        return media != null && media.isDownloaded();
     }
 
     public boolean isAutoDownloadable() {

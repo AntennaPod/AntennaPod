@@ -49,6 +49,7 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
         loadPrefBooleans();
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);

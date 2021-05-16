@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -32,7 +35,7 @@ public class SwipeActions {
 
         //TODO
         prefs.edit().putString(PREF_SWIPEACTIONS+InboxFragment.TAG,ADD_TO_QUEUE+","+MARK_UNPLAYED).apply();
-        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,MARK_FAV+","+MARK_PLAYED).apply();
+        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,START_DOWNLOAD+","+MARK_PLAYED).apply();
 
         String[] leftright = prefs.getString(PREF_SWIPEACTIONS+tag,"").split(",");
 
@@ -67,10 +70,15 @@ public class SwipeActions {
                                 item, FeedItem.UNPLAYED);
                         break;
                     case MARK_FAV:
-                        DBWriter.addFavoriteItem(item);
+                        DBWriter.toggleFavoriteItem(item);
                         break;
                     case START_DOWNLOAD:
-                        //TODO
+                        try {
+                            DownloadRequester.getInstance().downloadMedia(fragment.requireContext(), true, item);
+                        } catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(fragment.requireContext(), e.getMessage());
+                        }
                         break;
                 }
             }
@@ -105,7 +113,8 @@ public class SwipeActions {
                 return R.drawable.ic_check;
             case MARK_FAV:
                 return R.drawable.ic_star;
-            //case START_DOWNLOAD: TODO
+            case START_DOWNLOAD:
+                return R.drawable.ic_download;
         }
     }
     private static int actionColorFor(String swipeAction) {
@@ -113,13 +122,14 @@ public class SwipeActions {
             case ADD_TO_QUEUE:
                 return R.color.swipe_light_green_200;
             case MARK_PLAYED:
-                return R.color.swipe_light_blue_200;
+                return R.color.swipe_light_red_200;
             default:
             case MARK_UNPLAYED:
                 return R.color.swipe_light_blue_200;
             case MARK_FAV:
                 return R.color.swipe_yellow_200;
-            //case START_DOWNLOAD: TODO
+            case START_DOWNLOAD:
+                return R.color.swipe_light_blue_200;
         }
     }
 

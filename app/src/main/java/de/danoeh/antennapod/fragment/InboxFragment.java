@@ -41,6 +41,7 @@ public class InboxFragment extends EpisodesListFragment {
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);

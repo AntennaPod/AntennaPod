@@ -17,6 +17,7 @@ import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -105,8 +106,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         container.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
-        ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
-        actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
+        if (item.isPlayed() && item.isDownloaded()) {
+            DeleteActionButton actionButton = new DeleteActionButton(item);
+            actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
+        } else {
+            ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
+            actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
+        }
+
         secondaryActionButton.setFocusable(false);
 
         if (item.getMedia() != null) {

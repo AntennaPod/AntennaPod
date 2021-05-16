@@ -535,6 +535,14 @@ public class DBWriter {
         }
     }
 
+    public static Future<?> toggleFavoriteItem(final FeedItem item) {
+        if (item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return removeFavoriteItem(item);
+        } else {
+            return addFavoriteItem(item);
+        }
+    }
+
     public static Future<?> addFavoriteItem(final FeedItem item) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
