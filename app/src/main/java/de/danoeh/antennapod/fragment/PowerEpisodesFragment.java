@@ -74,7 +74,6 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
                     newFilter = "is_favorite";
                     break;
             }
-            setEmptyView(TAG+position);
             updateFeedItemFilter(newFilter);
         });
 
@@ -172,6 +171,8 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
+
+        setEmptyView(TAG+floatingQuickFilter.getPosition());
     }
 
     private void showFilterDialog() {

@@ -378,7 +378,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             onPrepareOptionsMenu(toolbar.getMenu());
         }
 
-
         resetItemTouchHelper();
     }
 
