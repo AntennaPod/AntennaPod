@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -23,13 +24,15 @@ public class SwipeActions {
     public static final String ADD_TO_QUEUE = "ADDTOQUEUE";
     public static final String MARK_PLAYED = "MARKPLAYED";
     public static final String MARK_UNPLAYED = "MARKUNPLAYED";
+    public static final String MARK_FAV = "MARKFAV";
+    public static final String START_DOWNLOAD = "STARTDOWNLOAD";
 
     public static ItemTouchHelper itemTouchHelper(Fragment fragment, String tag) {
         SharedPreferences prefs = fragment.requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
         //TODO
         prefs.edit().putString(PREF_SWIPEACTIONS+InboxFragment.TAG,ADD_TO_QUEUE+","+MARK_UNPLAYED).apply();
-        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,MARK_PLAYED+","+MARK_PLAYED).apply();
+        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,MARK_FAV+","+MARK_PLAYED).apply();
 
         String[] leftright = prefs.getString(PREF_SWIPEACTIONS+tag,"").split(",");
 
@@ -63,6 +66,12 @@ public class SwipeActions {
                         FeedItemMenuHandler.removeNewFlagWithUndo(fragment,
                                 item, FeedItem.UNPLAYED);
                         break;
+                    case MARK_FAV:
+                        DBWriter.addFavoriteItem(item);
+                        break;
+                    case START_DOWNLOAD:
+                        //TODO
+                        break;
                 }
             }
 
@@ -94,6 +103,9 @@ public class SwipeActions {
             default:
             case MARK_UNPLAYED:
                 return R.drawable.ic_check;
+            case MARK_FAV:
+                return R.drawable.ic_star;
+            //case START_DOWNLOAD: TODO
         }
     }
     private static int actionColorFor(String swipeAction) {
@@ -105,6 +117,9 @@ public class SwipeActions {
             default:
             case MARK_UNPLAYED:
                 return R.color.swipe_light_blue_200;
+            case MARK_FAV:
+                return R.color.swipe_yellow_200;
+            //case START_DOWNLOAD: TODO
         }
     }
 
