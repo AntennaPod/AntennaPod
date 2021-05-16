@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
 import com.joanzapata.iconify.Iconify;
@@ -23,9 +26,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.FilterDialog;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 
 public class PowerEpisodesFragment extends EpisodesListFragment {
 
@@ -164,6 +167,16 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
     @Override
     protected void onFragmentLoaded(List<FeedItem> episodes) {
         super.onFragmentLoaded(episodes);
+
+        //smoothly animate filter info
+        TransitionSet auto = new TransitionSet();
+        auto.addTransition(new ChangeBounds());
+        auto.excludeChildren(EmptyViewHandler.class, true);
+        auto.excludeChildren(R.id.swipeRefresh, true);
+        auto.excludeChildren(R.id.floatingFilter, true);
+        TransitionManager.beginDelayedTransition(
+                (ViewGroup) txtvInformation.getParent(),
+                auto);
 
         if (feedItemFilter.getValues().length > 0) {
             txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
