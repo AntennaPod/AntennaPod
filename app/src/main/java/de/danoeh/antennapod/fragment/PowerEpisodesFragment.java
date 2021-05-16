@@ -42,6 +42,7 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
     private boolean pausedOnTop;
+    public boolean hideToolbar;
 
     private SegmentedButtonGroup floatingQuickFilter;
 
@@ -59,6 +60,10 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         toolbar.setTitle(R.string.episodes_label);
+
+        if (hideToolbar) {
+            toolbar.setVisibility(View.GONE);
+        }
 
         floatingQuickFilter = rootView.findViewById(R.id.floatingFilter);
         floatingQuickFilter.setVisibility(View.VISIBLE);

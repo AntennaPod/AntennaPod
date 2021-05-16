@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -19,6 +20,7 @@ public class EpisodesSection extends HomeSection {
         sectionTitle = context.getString(R.string.episodes_label);
         sectionNavigateTitle = context.getString(R.string.episodes_label);
         sectionFragment = new PowerEpisodesFragment();
+        ((PowerEpisodesFragment) sectionFragment).hideToolbar = true;
         expandsToFillHeight = true;
     }
 
