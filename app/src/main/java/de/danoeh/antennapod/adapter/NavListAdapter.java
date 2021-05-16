@@ -238,12 +238,12 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 holder.count.setText(NumberFormat.getInstance().format(queueSize));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if (tag.equals(PowerEpisodesFragment.TAG)) {
+        /*} else if (tag.equals(PowerEpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setText(NumberFormat.getInstance().format(unreadItems));
                 holder.count.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (tag.equals(SubscriptionFragment.TAG)) {
             int sum = itemAccess.getFeedCounterSum();
             if (sum > 0) {
