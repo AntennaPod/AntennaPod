@@ -22,6 +22,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -110,6 +111,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
+            case HomeFragment.TAG:
+                return R.drawable.ic_baseline_home_24;
             case InboxFragment.TAG:
                 return R.drawable.ic_baseline_inbox_24;
             case QueueFragment.TAG:
