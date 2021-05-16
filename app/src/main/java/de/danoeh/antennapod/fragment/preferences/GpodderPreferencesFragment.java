@@ -133,7 +133,7 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
 
     private void openAccountChooser() {
         try {
-            AccountImporter.pickNewAccount(this);
+            AccountImporter.pickNewAccount(getActivity());
         } catch (NextcloudFilesAppNotInstalledException | AndroidGetAccountsPermissionNotGranted e) {
             UiExceptionManager.showDialogForException(getContext(), e);
         }
