@@ -14,6 +14,8 @@ import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
+import de.danoeh.antennapod.fragment.HomeFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -74,7 +76,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     }
                     final Context context = getActivity();
                     final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
-                    final String[] navTags = new String[] {QueueFragment.TAG, PowerEpisodesFragment.TAG, SubscriptionFragment.TAG};
+                    final String[] navTags = new String[] {HomeFragment. TAG, InboxFragment.TAG, QueueFragment.TAG, PowerEpisodesFragment.TAG, SubscriptionFragment.TAG};
                     final String[] choice = { UserPreferences.getBackButtonGoToPage() };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
