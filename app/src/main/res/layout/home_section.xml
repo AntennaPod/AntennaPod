@@ -6,7 +6,7 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingVertical="16dp">
 
     <TextView
         android:id="@+id/sectionTitle"
@@ -15,6 +15,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:textAlignment="center"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_large"
@@ -27,6 +29,7 @@
         android:layout_alignBottom="@+id/sectionTitle"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginEnd="16dp"
         android:background="?android:selectableItemBackground"
         android:textColor="@color/accent_dark"
         android:textSize="@dimen/text_size_medium"
@@ -41,7 +44,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
         android:visibility="gone">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -54,7 +56,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
         android:visibility="gone" />
 
 </RelativeLayout>
