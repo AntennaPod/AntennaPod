@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -18,8 +21,8 @@ import androidx.fragment.app.FragmentContainerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
-import de.danoeh.antennapod.fragment.homesections.EpisodesSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
 /**
@@ -29,6 +32,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
+
+    public enum Sections {
+        QUEUE, INBOX, STATS, SUBS, SURPRISE;
+    }
+
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
 
@@ -40,6 +48,66 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     String getPrefName() {
         return TAG;
+    }
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View root = inflater.inflate(R.layout.home_fragment, container, false);
+        homeContainer = root.findViewById(R.id.homeContainer);
+        fragmentContainer = root.findViewById(R.id.homeFragmentContainer);
+        divider = root.findViewById(R.id.homeFragmentDivider);
+
+        toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.home_label);
+        toolbar.inflateMenu(R.menu.home);
+        toolbar.setOnMenuItemClickListener(this);
+
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
+
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+
+        loadSections();
+
+        return root;
+    }
+
+    private void loadSections() {
+        //TODO PREF switch
+        new QueueSection(this).addSectionTo(homeContainer);
+        new QueueSection(this).addSectionTo(homeContainer);
+        new QueueSection(this).addSectionTo(homeContainer);
+
+        fillFragmentIfRoom();
+    }
+
+    private void fillFragmentIfRoom(){
+        //only if enough free space
+        if (homeContainer.getChildCount() <= 2) {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction().add(R.id.homeFragmentContainer, new PowerEpisodesFragment(true))
+                    .commit();
+            fragmentContainer.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private View searchBar() {
+        //TODO
+        return new View(requireContext());
+    }
+
+    private void reloadSections() {
+        fragmentContainer.setVisibility(View.GONE);
+        divider.setVisibility(View.GONE);
+
+        homeContainer.removeAllViews();
+        loadSections();
     }
 
     @Override
@@ -57,46 +125,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             }
         }
 
-
         return true;
-    }
-
-    @NonNull
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.home_fragment, container, false);
-        homeContainer = root.findViewById(R.id.homeContainer);
-        fragmentContainer = root.findViewById(R.id.homeFragmentContainer);
-        divider = root.findViewById(R.id.homeFragmentDivider);
-
-        toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.home_label);
-        toolbar.inflateMenu(R.menu.home);
-        toolbar.setOnMenuItemClickListener(this);
-
-        //MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
-
-        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
-        if (savedInstanceState != null) {
-            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
-        }
-        ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
-
-        loadSections();
-
-        return root;
-    }
-
-    private void loadSections() {
-        new QueueSection(this).addSectionTo(homeContainer);
-        new QueueSection(this).addSectionTo(homeContainer);
-        //new EpisodesSection(this).addSectionTo(homeContainer);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction().add(R.id.homeFragmentContainer, new PowerEpisodesFragment(true))
-                .commit();
-        fragmentContainer.setVisibility(View.VISIBLE);
-        divider.setVisibility(View.VISIBLE);
     }
 
     @Override

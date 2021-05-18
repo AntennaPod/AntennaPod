@@ -230,6 +230,16 @@ public final class DBReader {
         }
     }
 
+    @NonNull
+    static List<FeedItem> getPausedQueue(PodDBAdapter adapter, int limit) {
+        Log.d(TAG, "getQueue()");
+        try (Cursor cursor = adapter.getPausedQueueCursor(limit)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        }
+    }
+
     /**
      * Loads the IDs of the FeedItems in the queue. This method should be preferred over
      * {@link #getQueue()} if the FeedItems of the queue are not needed.
@@ -271,6 +281,18 @@ public final class DBReader {
         adapter.open();
         try {
             return getQueue(adapter);
+        } finally {
+            adapter.close();
+        }
+    }@NonNull
+
+    public static List<FeedItem> getPausedQueue(int limit) {
+        Log.d(TAG, "getQueue() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            return getPausedQueue(adapter, limit);
         } finally {
             adapter.close();
         }
