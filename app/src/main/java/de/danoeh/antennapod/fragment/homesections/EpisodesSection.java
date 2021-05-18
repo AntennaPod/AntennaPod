@@ -1,8 +1,6 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.fragment.homesections;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,6 +9,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class EpisodesSection extends HomeSection {

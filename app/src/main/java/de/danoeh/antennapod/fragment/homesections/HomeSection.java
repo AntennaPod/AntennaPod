@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.fragment.homesections;
 
 import android.app.Activity;
 import android.content.Context;
