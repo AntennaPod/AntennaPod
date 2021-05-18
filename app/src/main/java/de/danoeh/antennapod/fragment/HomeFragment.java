@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -34,6 +35,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     Toolbar toolbar;
 
     LinearLayout homeContainer;
+    FragmentContainerView fragmentContainer;
+    View divider;
 
     String getPrefName() {
         return TAG;
@@ -64,6 +67,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.home_fragment, container, false);
         homeContainer = root.findViewById(R.id.homeContainer);
+        fragmentContainer = root.findViewById(R.id.homeFragmentContainer);
+        divider = root.findViewById(R.id.homeFragmentDivider);
 
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.home_label);
@@ -85,7 +90,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     private void loadSections() {
         new QueueSection(this).addSectionTo(homeContainer);
-        new EpisodesSection(this).addSectionTo(homeContainer);
+        new QueueSection(this).addSectionTo(homeContainer);
+        //new EpisodesSection(this).addSectionTo(homeContainer);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction().add(R.id.homeFragmentContainer, new PowerEpisodesFragment(true))
+                .commit();
+        fragmentContainer.setVisibility(View.VISIBLE);
+        divider.setVisibility(View.VISIBLE);
     }
 
     @Override

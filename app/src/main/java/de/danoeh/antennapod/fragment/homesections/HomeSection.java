@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment.homesections;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,8 @@ public abstract class HomeSection {
     TextView tvTitle;
     TextView tvNavigate;
     RecyclerView recyclerView;
-    FragmentContainerView fragmentContainer;
+    //FragmentContainerView fragmentContainer;
 
-    protected boolean expandsToFillHeight = false;
     protected String sectionTitle = "";
     protected String sectionNavigateTitle = "";
     protected Fragment sectionFragment = null;
@@ -42,15 +42,15 @@ public abstract class HomeSection {
         tvTitle = section.findViewById(R.id.sectionTitle);
         tvNavigate = section.findViewById(R.id.sectionNavigate);
         recyclerView = section.findViewById(R.id.sectionRecyclerView);
-        fragmentContainer = section.findViewById(R.id.sectionFragmentContainer);
+        //fragmentContainer = section.findViewById(R.id.sectionFragmentContainer);
     }
 
     public void addSectionTo(LinearLayout parent) {
         if (sectionFragment != null) {
-            context.requireActivity().getSupportFragmentManager()
+            /*context.requireActivity().getSupportFragmentManager()
                     .beginTransaction().add(R.id.sectionFragmentContainer, sectionFragment)
                     .commit();
-            fragmentContainer.setVisibility(View.VISIBLE);
+            fragmentContainer.setVisibility(View.VISIBLE);*/
         } else {
             //TODO
             recyclerView.setVisibility(View.VISIBLE);
@@ -61,22 +61,20 @@ public abstract class HomeSection {
         tvNavigate.setOnClickListener(navigate());
 
         parent.addView(section);
-
-        expandToFillHeight(expandsToFillHeight);
     }
 
     @NonNull
     protected abstract View.OnClickListener navigate();
 
-    public void expandToFillHeight(boolean expand) {
-        int height = expand ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT;
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) section.getLayoutParams();
-        params.height = height;
-        params.weight = 1;
-    }
-
     @NonNull
     protected abstract List<FeedItem> loadItems();
 
-
+    public int getItemSize(boolean large) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int dp = 100;
+        if (large) {
+            dp = 130;
+        }
+        return (int) (displayMetrics.density * dp);
+    }
 }

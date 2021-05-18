@@ -20,7 +20,6 @@ public class EpisodesSection extends HomeSection {
         sectionNavigateTitle = context.getString(R.string.episodes_label);
         sectionFragment = new PowerEpisodesFragment();
         ((PowerEpisodesFragment) sectionFragment).hideToolbar = true;
-        expandsToFillHeight = true;
     }
 
     @NonNull

@@ -44,6 +44,14 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
     private boolean pausedOnTop;
     public boolean hideToolbar;
 
+    public PowerEpisodesFragment(){
+        super();
+    }
+    public PowerEpisodesFragment(boolean hideToolbar){
+        super();
+        this.hideToolbar = hideToolbar;
+    }
+
     private SegmentedButtonGroup floatingQuickFilter;
 
     public void onCreate(Bundle savedInstanceState) {
