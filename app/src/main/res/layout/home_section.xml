@@ -7,7 +7,7 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingVertical="16dp">
+    android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/sectionTitle"

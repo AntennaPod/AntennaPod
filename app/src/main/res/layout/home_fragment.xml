@@ -30,7 +30,8 @@
             android:id="@+id/homeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"/>
     </ScrollView>
 
     <View
@@ -39,7 +40,7 @@
         android:layout_height="1dp"
         android:layout_above="@id/homeFragmentContainer"
         android:layout_marginBottom="4dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="32dp"
         android:background="?android:attr/listDivider"
         android:visibility="gone"/>
 
