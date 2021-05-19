@@ -286,9 +286,9 @@ public class MainActivity extends CastEnabledActivity {
                 fragment = new SubscriptionFragment();
                 break;
             default:
-                // default to the queue
-                fragment = new QueueFragment();
-                tag = QueueFragment.TAG;
+                // default to home
+                fragment = new HomeFragment();
+                tag = HomeFragment.TAG;
                 args = null;
                 break;
         }
