@@ -13,7 +13,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -21,23 +20,20 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
 
 
-public class SubsSection extends HomeSection {
+public class SurpriseSection extends HomeSection {
 
-    public static final String TAG = "SubsSection";
+    public static final String TAG = "SurpriseSection";
 
-    public SubsSection(Fragment context) {
+    public SurpriseSection(Fragment context) {
         super(context);
-        sectionTitle = "Rediscover";
-        sectionNavigateTitle = context.getString(R.string.subscriptions_label);
-        itemType = ItemType.COVER_SMALL;
+        sectionTitle = "Surprise";
+        //sectionNavigateTitle = context.getString(R.string.subscriptions_label);
+        itemType = ItemType.COVER_LARGE;
     }
 
-    @NonNull
     @Override
     protected View.OnClickListener navigate() {
-        return view -> {
-            ((MainActivity) context.requireActivity()).loadFragment(SubscriptionFragment.TAG, null);
-        };
+        return null;
     }
 
     @Override
@@ -52,6 +48,6 @@ public class SubsSection extends HomeSection {
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
-        return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter(""), false);
+        return DBReader.getRecentlyPublishedEpisodes(6, 6, new FeedItemFilter(""), false);
     }
 }

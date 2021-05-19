@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment.homesections;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,7 @@ public abstract class HomeSection {
     TextView tvNavigate;
     RecyclerView recyclerView;
 
-    //must be set descendant
+    //must be set by descendant
     protected String sectionTitle;
     protected String sectionNavigateTitle;
     protected ItemType itemType;
@@ -98,8 +99,11 @@ public abstract class HomeSection {
         }
 
         tvTitle.setText(sectionTitle);
-        tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
-        tvNavigate.setOnClickListener(navigate());
+        if (!TextUtils.isEmpty(sectionNavigateTitle)) {
+            tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
+            tvNavigate.setOnClickListener(navigate());
+        }
+
 
         if (items.size() > 0) {
             //don't add if empty
@@ -107,7 +111,6 @@ public abstract class HomeSection {
         }
     }
 
-    @NonNull
     protected abstract View.OnClickListener navigate();
 
     @NonNull
@@ -121,7 +124,7 @@ public abstract class HomeSection {
                 case COVER_SMALL:
                     return (view, feedItem) -> {
                         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                        int side = (int) displayMetrics.density * 120;
+                        int side = (int) displayMetrics.density * 140;
                         view.getLayoutParams().height = side;
                         view.getLayoutParams().width = side;
                         ImageView cover = view.findViewById(R.id.discovery_cover);

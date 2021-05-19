@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +19,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
 import de.danoeh.antennapod.fragment.homesections.SubsSection;
+import de.danoeh.antennapod.fragment.homesections.SurpriseSection;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
@@ -34,10 +43,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
+    public static final String PREF_SECTIONS = "PrefHomeSections";
 
-    public enum Sections {
-        QUEUE, INBOX, STATS, SUBS, SURPRISE;
-    }
+    private final String[] defaultSections = new String[]{
+            QueueSection.TAG,
+            InboxSection.TAG,
+            SubsSection.TAG,
+            SurpriseSection.TAG};
 
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
@@ -66,6 +78,15 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.inflateMenu(R.menu.home);
         toolbar.setOnMenuItemClickListener(this);
 
+        //TEST
+        saveSettings(Arrays.asList(defaultSections));
+        toolbar.setOnLongClickListener(view -> {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(QueueSection.TAG);
+            saveSettings(list);
+            return true;
+        });
+
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
@@ -80,10 +101,29 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     private void loadSections() {
-        //TODO PREF switch
-        new QueueSection(this).addSectionTo(homeContainer);
-        new InboxSection(this).addSectionTo(homeContainer);
-        new SubsSection(this).addSectionTo(homeContainer);
+        homeContainer.removeAllViews();
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        ArrayList<String> sections = gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
+                new TypeToken<ArrayList<String>>() {}.getType());
+
+        for (String s : sections) {
+            switch (s) {
+                case InboxSection.TAG:
+                    new InboxSection(this).addSectionTo(homeContainer);
+                    break;
+                case QueueSection.TAG:
+                    new QueueSection(this).addSectionTo(homeContainer);
+                    break;
+                case SubsSection.TAG:
+                    new SubsSection(this).addSectionTo(homeContainer);
+                    break;
+                case SurpriseSection.TAG:
+                    new SurpriseSection(this).addSectionTo(homeContainer);
+                    break;
+            }
+        }
 
         fillFragmentIfRoom();
     }
@@ -104,11 +144,17 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new View(requireContext());
     }
 
+    private void saveSettings(List<String> list){
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        prefs.edit().putString(PREF_SECTIONS, gson.toJson(list)).apply();
+        reloadSections();
+    }
+
     private void reloadSections() {
         fragmentContainer.setVisibility(View.GONE);
         divider.setVisibility(View.GONE);
 
-        homeContainer.removeAllViews();
         loadSections();
     }
 

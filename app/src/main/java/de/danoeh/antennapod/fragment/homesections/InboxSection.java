@@ -22,6 +22,8 @@ import kotlin.Unit;
 
 public class InboxSection extends HomeSection {
 
+    public static final String TAG = "InboxSection";
+
     public InboxSection(Fragment context) {
         super(context);
         sectionTitle = "New";

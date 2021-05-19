@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
-    android:layout_width="130dp"
+    android:layout_width="120dp"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     app:cardCornerRadius="8dp">
@@ -17,20 +17,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp">
+
             <RelativeLayout
-                android:layout_width="130dp"
-                android:layout_height="130dp">
+                android:layout_width="120dp"
+                android:layout_height="120dp">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:elevation="1dp"
-                    app:srcCompat="@drawable/ic_play_24dp" />
+                    app:srcCompat="@drawable/ic_baseline_play_circle" />
 
                 <de.danoeh.antennapod.ui.common.SquareImageView
                     android:id="@+id/cover_play"
@@ -63,10 +64,10 @@
             style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textAlignment="textStart"
+            android:layout_marginBottom="2dp"
             android:paddingHorizontal="4dp"
-            android:layout_marginBottom="2dp"/>
+            android:singleLine="true"
+            android:textAlignment="textStart" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

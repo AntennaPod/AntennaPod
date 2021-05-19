@@ -35,6 +35,8 @@ import slush.Slush;
 
 public class QueueSection extends HomeSection {
 
+    public static final String TAG = "QueueSection";
+
     public QueueSection(Fragment context) {
         super(context);
         sectionTitle = "Continue";
