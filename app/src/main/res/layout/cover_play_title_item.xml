@@ -1,20 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp"
-        android:clipToPadding="false">
+        android:background="?attr/background_elevated"
+        android:orientation="vertical">
 
-    <de.danoeh.antennapod.ui.common.SquareImageView
-        android:id="@+id/cover_play"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:outlineProvider="bounds"
-        squareImageView:direction="width" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="8dp">
+            <RelativeLayout
+                android:layout_width="130dp"
+                android:layout_height="130dp">
 
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:elevation="1dp"
+                    app:srcCompat="@drawable/ic_play_24dp" />
+
+                <de.danoeh.antennapod.ui.common.SquareImageView
+                    android:id="@+id/cover_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="false"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:outlineProvider="bounds"
+                    squareImageView:direction="width" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/playTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:paddingHorizontal="4dp"/>
+
+        <TextView
+            android:id="@+id/playDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:paddingHorizontal="4dp"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
 

@@ -23,6 +23,7 @@ import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -38,8 +39,7 @@ public class QueueSection extends HomeSection {
         super(context);
         sectionTitle = "Continue";
         sectionNavigateTitle = context.getString(R.string.queue_label);
-        //SHOULD BE LARGE
-        itemType = ItemType.COVER_SMALL;
+        itemType = ItemType.COVER_LARGE;
     }
 
     @NonNull
@@ -52,10 +52,11 @@ public class QueueSection extends HomeSection {
 
     @Override
     protected Unit onItemClick(View view, FeedItem feedItem) {
-        //TODO PLAY
-        long[] ids = FeedItemUtil.getIds(loadItems());
-        int position = ArrayUtils.indexOf(ids, feedItem.getId());
-        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+        new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
+                .callEvenIfRunning(true)
+                .startWhenPrepared(true)
+                .streamIfLastWasStream()
+                .start();
         return null;
     }
 

@@ -16,6 +16,9 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
@@ -29,6 +32,7 @@ import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 import slush.Slush;
+import slush.listeners.OnBindListener;
 
 /**
  * Section on the HomeFragment
@@ -77,39 +81,13 @@ public abstract class HomeSection {
                 break;
         }
 
+        List<FeedItem> items = loadItems();
+
         new Slush.SingleType<FeedItem>()
                 .setItemLayout(itemLayout)
                 .setLayoutManager(new LinearLayoutManager(context.getContext(), orientation, false))
-                .onBind((view, feedItem) -> {
-                    switch (itemType) {
-                        default:
-                        case COVER_SMALL:
-                            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                            int side = (int) displayMetrics.density * 120;
-                            view.getLayoutParams().height = side;
-                            view.getLayoutParams().width = side;
-                            ImageView cover = view.findViewById(R.id.discovery_cover);
-                            new CoverLoader((MainActivity) context.requireActivity())
-                                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
-                                    .withFallbackUri(feedItem.getFeed().getImageUrl())
-                                    .withCoverView(cover)
-                                    .load();
-                            break;
-                        case COVER_LARGE:
-                            ImageView coverPlay = view.findViewById(R.id.cover_play);
-                            new CoverLoader((MainActivity) context.requireActivity())
-                                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
-                                    .withFallbackUri(feedItem.getFeed().getImageUrl())
-                                    .withCoverView(coverPlay)
-                                    .load();
-                            //TODO TITLE
-                            break;
-                        case EPISODE_ITEM:
-                            //TODO
-                            break;
-                    }
-                })
-                .setItems(loadItems())
+                .onBind(bind())
+                .setItems(items)
                 .onItemClickWithItem(this::onItemClick)
                 .into(recyclerView);
 
@@ -117,7 +95,10 @@ public abstract class HomeSection {
         tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
         tvNavigate.setOnClickListener(navigate());
 
-        parent.addView(section);
+        if (items.size() > 0) {
+            //don't add if empty
+            parent.addView(section);
+        }
     }
 
     @NonNull
@@ -127,5 +108,41 @@ public abstract class HomeSection {
     protected abstract List<FeedItem> loadItems();
 
     protected abstract Unit onItemClick(View view, FeedItem feedItem);
+
+    private OnBindListener<FeedItem> bind() {
+        switch (itemType) {
+                default:
+                case COVER_SMALL:
+                    return (view, feedItem) -> {
+                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                        int side = (int) displayMetrics.density * 120;
+                        view.getLayoutParams().height = side;
+                        view.getLayoutParams().width = side;
+                        ImageView cover = view.findViewById(R.id.discovery_cover);
+                        new CoverLoader((MainActivity) context.requireActivity())
+                                .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
+                                .withFallbackUri(feedItem.getFeed().getImageUrl())
+                                .withCoverView(cover)
+                                .load();
+                    };
+                case COVER_LARGE:
+                    return (view, feedItem) -> {
+                        ImageView coverPlay = view.findViewById(R.id.cover_play);
+                        TextView title = view.findViewById(R.id.playTitle);
+                        TextView date = view.findViewById(R.id.playDate);
+                        new CoverLoader((MainActivity) context.requireActivity())
+                                .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
+                                .withFallbackUri(feedItem.getFeed().getImageUrl())
+                                .withCoverView(coverPlay)
+                                .load();
+                        title.setText(feedItem.getTitle());
+                        date.setText(feedItem.getPubDate().toString());
+                    };
+                case EPISODE_ITEM:
+                    return (view, feedItem) -> {
+                        //TODO
+                    };
+            }
+    }
 
 }

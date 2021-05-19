@@ -21,7 +21,9 @@ import androidx.fragment.app.FragmentContainerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
+import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
+import de.danoeh.antennapod.fragment.homesections.SubsSection;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
@@ -80,8 +82,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void loadSections() {
         //TODO PREF switch
         new QueueSection(this).addSectionTo(homeContainer);
-        new QueueSection(this).addSectionTo(homeContainer);
-        new QueueSection(this).addSectionTo(homeContainer);
+        new InboxSection(this).addSectionTo(homeContainer);
+        new SubsSection(this).addSectionTo(homeContainer);
 
         fillFragmentIfRoom();
     }
