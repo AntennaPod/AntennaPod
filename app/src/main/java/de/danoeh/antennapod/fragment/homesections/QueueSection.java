@@ -55,7 +55,7 @@ public class QueueSection extends HomeSection {
         new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
                 .callEvenIfRunning(true)
                 .startWhenPrepared(true)
-                .streamIfLastWasStream()
+                .shouldStream(!feedItem.isDownloaded())
                 .start();
         return null;
     }

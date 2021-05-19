@@ -50,20 +50,23 @@
 
         <TextView
             android:id="@+id/playTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
+            android:paddingHorizontal="4dp"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:paddingHorizontal="4dp"/>
+            android:textColor="?android:attr/textColorPrimary" />
 
         <TextView
             android:id="@+id/playDate"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:paddingHorizontal="4dp"/>
+            android:paddingHorizontal="4dp"
+            android:layout_marginBottom="2dp"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

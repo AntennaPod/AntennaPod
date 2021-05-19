@@ -17,6 +17,7 @@ import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
 
 
@@ -49,6 +50,6 @@ public class SubsSection extends HomeSection {
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
-        return DBReader.getNewItemsList(0, 3);
+        return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter(""), false);
     }
 }

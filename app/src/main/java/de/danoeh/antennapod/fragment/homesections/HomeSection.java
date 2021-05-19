@@ -26,7 +26,9 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -75,21 +77,25 @@ public abstract class HomeSection {
             case COVER_LARGE:
                 itemLayout = R.layout.cover_play_title_item;
                 break;
-            case EPISODE_ITEM:
-                itemLayout = R.layout.feeditemlist_item;
-                orientation = RecyclerView.VERTICAL;
-                break;
         }
 
         List<FeedItem> items = loadItems();
 
-        new Slush.SingleType<FeedItem>()
-                .setItemLayout(itemLayout)
-                .setLayoutManager(new LinearLayoutManager(context.getContext(), orientation, false))
-                .onBind(bind())
-                .setItems(items)
-                .onItemClickWithItem(this::onItemClick)
-                .into(recyclerView);
+        if (itemType == ItemType.EPISODE_ITEM) {
+            EpisodeItemListAdapter adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
+            adapter.updateItems(items);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
+            recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
+            recyclerView.setAdapter(adapter);
+        } else {
+            new Slush.SingleType<FeedItem>()
+                    .setItemLayout(itemLayout)
+                    .setLayoutManager(new LinearLayoutManager(context.getContext(), orientation, false))
+                    .onBind(bind())
+                    .setItems(items)
+                    .onItemClickWithItem(this::onItemClick)
+                    .into(recyclerView);
+        }
 
         tvTitle.setText(sectionTitle);
         tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
@@ -136,11 +142,7 @@ public abstract class HomeSection {
                                 .withCoverView(coverPlay)
                                 .load();
                         title.setText(feedItem.getTitle());
-                        date.setText(feedItem.getPubDate().toString());
-                    };
-                case EPISODE_ITEM:
-                    return (view, feedItem) -> {
-                        //TODO
+                        date.setText(DateUtils.formatAbbrev(context.requireContext(), feedItem.getPubDate()));
                     };
             }
     }
