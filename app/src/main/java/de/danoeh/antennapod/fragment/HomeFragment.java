@@ -33,7 +33,9 @@ import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
 import de.danoeh.antennapod.fragment.homesections.SubsSection;
 import de.danoeh.antennapod.fragment.homesections.SurpriseSection;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
 /**
@@ -44,6 +46,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_SECTIONS = "PrefHomeSections";
+
+    FeedItem selectedItem = null;
 
     private final String[] defaultSections = new String[]{
             QueueSection.TAG,
@@ -218,5 +222,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             builder.create().show();
         }
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    }
+
+    public void setSelectedItem(FeedItem feedItem) {
+        selectedItem = feedItem;
     }
 }

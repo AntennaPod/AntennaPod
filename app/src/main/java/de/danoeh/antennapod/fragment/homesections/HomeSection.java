@@ -5,6 +5,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,7 +33,9 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 import slush.Slush;
@@ -40,25 +44,22 @@ import slush.listeners.OnBindListener;
 /**
  * Section on the HomeFragment
  */
-public abstract class HomeSection {
+public abstract class HomeSection implements View.OnCreateContextMenuListener {
 
-    public enum ItemType {
-        COVER_SMALL, COVER_LARGE, EPISODE_ITEM;
-    }
+    HomeFragment context;
 
-    Fragment context;
-
-    View section;
-    TextView tvTitle;
-    TextView tvNavigate;
-    RecyclerView recyclerView;
+    protected View section;
+    protected TextView tvTitle;
+    protected TextView tvNavigate;
+    protected RecyclerView recyclerView;
 
     //must be set by descendant
     protected String sectionTitle;
     protected String sectionNavigateTitle;
-    protected ItemType itemType;
 
-    public HomeSection(Fragment context) {
+    protected FeedItem selectedItem;
+
+    public HomeSection(HomeFragment context) {
         this.context = context;
         section = View.inflate(context.requireActivity(), R.layout.home_section, null);
         tvTitle = section.findViewById(R.id.sectionTitle);
@@ -67,47 +68,16 @@ public abstract class HomeSection {
     }
 
     public void addSectionTo(LinearLayout parent) {
-        int itemLayout;
-        int orientation = RecyclerView.HORIZONTAL;
-
-        switch (itemType) {
-            default:
-            case COVER_SMALL:
-                itemLayout = R.layout.quick_feed_discovery_item;
-                break;
-            case COVER_LARGE:
-                itemLayout = R.layout.cover_play_title_item;
-                break;
-        }
-
-        List<FeedItem> items = loadItems();
-
-        if (itemType == ItemType.EPISODE_ITEM) {
-            EpisodeItemListAdapter adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
-            adapter.updateItems(items);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
-            recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
-            recyclerView.setAdapter(adapter);
-        } else {
-            new Slush.SingleType<FeedItem>()
-                    .setItemLayout(itemLayout)
-                    .setLayoutManager(new LinearLayoutManager(context.getContext(), orientation, false))
-                    .onBind(bind())
-                    .setItems(items)
-                    .onItemClickWithItem(this::onItemClick)
-                    .into(recyclerView);
-        }
-
         tvTitle.setText(sectionTitle);
         if (!TextUtils.isEmpty(sectionNavigateTitle)) {
             tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
             tvNavigate.setOnClickListener(navigate());
         }
 
-
-        if (items.size() > 0) {
+        if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
             //don't add if empty
             parent.addView(section);
+            context.registerForContextMenu(recyclerView);
         }
     }
 
@@ -118,36 +88,12 @@ public abstract class HomeSection {
 
     protected abstract Unit onItemClick(View view, FeedItem feedItem);
 
-    private OnBindListener<FeedItem> bind() {
-        switch (itemType) {
-                default:
-                case COVER_SMALL:
-                    return (view, feedItem) -> {
-                        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                        int side = (int) displayMetrics.density * 140;
-                        view.getLayoutParams().height = side;
-                        view.getLayoutParams().width = side;
-                        ImageView cover = view.findViewById(R.id.discovery_cover);
-                        new CoverLoader((MainActivity) context.requireActivity())
-                                .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
-                                .withFallbackUri(feedItem.getFeed().getImageUrl())
-                                .withCoverView(cover)
-                                .load();
-                    };
-                case COVER_LARGE:
-                    return (view, feedItem) -> {
-                        ImageView coverPlay = view.findViewById(R.id.cover_play);
-                        TextView title = view.findViewById(R.id.playTitle);
-                        TextView date = view.findViewById(R.id.playDate);
-                        new CoverLoader((MainActivity) context.requireActivity())
-                                .withUri(ImageResourceUtils.getEpisodeListImageLocation(feedItem))
-                                .withFallbackUri(feedItem.getFeed().getImageUrl())
-                                .withCoverView(coverPlay)
-                                .load();
-                        title.setText(feedItem.getTitle());
-                        date.setText(DateUtils.formatAbbrev(context.requireContext(), feedItem.getPubDate()));
-                    };
-            }
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        MenuInflater inflater = context.requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.feeditemlist_context, contextMenu);
+        contextMenu.setHeaderTitle(selectedItem.getTitle());
+        FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
     }
 
 }
