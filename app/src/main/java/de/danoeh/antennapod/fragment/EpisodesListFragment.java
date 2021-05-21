@@ -75,6 +75,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = true;
+    public boolean hideToolbar = false;
     private boolean displayUpArrow;
 
     EpisodeItemListRecyclerView recyclerView;
@@ -265,7 +266,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        setEmptyView(PowerEpisodesFragment.TAG+QUICKFILTER_ALL);
+        setEmptyView(EpisodesFragment.TAG+QUICKFILTER_ALL);
 
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
@@ -284,23 +285,25 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
+        toolbar.setVisibility(hideToolbar ? View.GONE : View.VISIBLE);
+
         return root;
     }
 
     public void setEmptyView(String tag) {
         switch (tag) {
-            case PowerEpisodesFragment.TAG+QUICKFILTER_ALL:
-            case PowerEpisodesFragment.TAG+QUICKFILTER_NEW:
+            case EpisodesFragment.TAG+QUICKFILTER_ALL:
+            case EpisodesFragment.TAG+QUICKFILTER_NEW:
                 emptyView.setIcon(R.drawable.ic_feed);
                 emptyView.setTitle(R.string.no_all_episodes_head_label);
                 emptyView.setMessage(R.string.no_all_episodes_label);
                 break;
-            case PowerEpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
+            case EpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
                 emptyView.setIcon(R.drawable.ic_download);
                 emptyView.setTitle(R.string.no_comp_downloads_head_label);
                 emptyView.setMessage(R.string.no_comp_downloads_label);
                 break;
-            case PowerEpisodesFragment.TAG+QUICKFILTER_FAV:
+            case EpisodesFragment.TAG+QUICKFILTER_FAV:
                 emptyView.setIcon(R.drawable.ic_star);
                 emptyView.setTitle(R.string.no_fav_episodes_head_label);
                 emptyView.setMessage(R.string.no_fav_episodes_label);

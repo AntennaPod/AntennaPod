@@ -31,7 +31,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 
-public class PowerEpisodesFragment extends EpisodesListFragment {
+public class EpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "PowerEpisodesFragment";
     private static final String PREF_NAME = "PrefPowerEpisodesFragment";
@@ -42,12 +42,11 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
     private boolean pausedOnTop;
-    public boolean hideToolbar;
 
-    public PowerEpisodesFragment(){
+    public EpisodesFragment(){
         super();
     }
-    public PowerEpisodesFragment(boolean hideToolbar){
+    public EpisodesFragment(boolean hideToolbar){
         super();
         this.hideToolbar = hideToolbar;
     }
@@ -68,10 +67,6 @@ public class PowerEpisodesFragment extends EpisodesListFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         toolbar.setTitle(R.string.episodes_label);
-
-        if (hideToolbar) {
-            toolbar.setVisibility(View.GONE);
-        }
 
         floatingQuickFilter = rootView.findViewById(R.id.floatingFilter);
         floatingQuickFilter.setVisibility(View.VISIBLE);

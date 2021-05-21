@@ -30,6 +30,8 @@ public class InboxSection extends HomeSection {
 
     public static final String TAG = "InboxSection";
 
+    private EpisodeItemListAdapter adapter;
+
     public InboxSection(HomeFragment context) {
         super(context);
         sectionTitle = "New";
@@ -54,14 +56,14 @@ public class InboxSection extends HomeSection {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        EpisodeItemListAdapter adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
+        adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
         adapter.updateItems(loadItems());
         recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
         recyclerView.setAdapter(adapter);
 
         //context.setSelectedItem(item);
-        
+        //->FRAGMENT?
         super.addSectionTo(parent);
     }
 
@@ -69,5 +71,10 @@ public class InboxSection extends HomeSection {
     @Override
     protected List<FeedItem> loadItems() {
         return DBReader.getNewItemsList(0, 2);
+    }
+
+    @Override
+    public void updateItems() {
+        adapter.updateItems(loadItems());
     }
 }

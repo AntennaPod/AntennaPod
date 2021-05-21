@@ -2,14 +2,12 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -22,13 +20,25 @@ import androidx.fragment.app.FragmentContainerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.fragment.homesections.HomeSection;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
 import de.danoeh.antennapod.fragment.homesections.SubsSection;
@@ -37,6 +47,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
  * Shows unread or recently published episodes
@@ -104,29 +115,37 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return root;
     }
 
+    ArrayList<HomeSection> sections = new ArrayList<>();
+
     private void loadSections() {
         homeContainer.removeAllViews();
+        sections.clear();
 
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        ArrayList<String> sections = gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
+        ArrayList<String> prefSections = gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
                 new TypeToken<ArrayList<String>>() {}.getType());
 
-        for (String s : sections) {
+        for (String s : prefSections) {
+            HomeSection section;
             switch (s) {
                 case InboxSection.TAG:
-                    new InboxSection(this).addSectionTo(homeContainer);
+                    section = new InboxSection(this);
                     break;
+                default:
                 case QueueSection.TAG:
-                    new QueueSection(this).addSectionTo(homeContainer);
+                    section = new QueueSection(this);
                     break;
                 case SubsSection.TAG:
-                    new SubsSection(this).addSectionTo(homeContainer);
+                    section = new SubsSection(this);
                     break;
                 case SurpriseSection.TAG:
-                    new SurpriseSection(this).addSectionTo(homeContainer);
+                    section = new SurpriseSection(this);
                     break;
             }
+
+            sections.add(section);
+            section.addSectionTo(homeContainer);
         }
 
         fillFragmentIfRoom();
@@ -136,7 +155,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         //only if enough free space
         if (homeContainer.getChildCount() <= 2) {
             requireActivity().getSupportFragmentManager()
-                    .beginTransaction().add(R.id.homeFragmentContainer, new PowerEpisodesFragment(true))
+                    .beginTransaction().add(R.id.homeFragmentContainer, new EpisodesFragment(true))
                     .commit();
             fragmentContainer.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
@@ -231,5 +250,27 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public void setSelectedItem(FeedItem feedItem) {
         selectedItem = feedItem;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        event.; }
+
+    private void updateSections() {
+        for (HomeSection section: sections) {
+            section.updateItems();
+        }
     }
 }

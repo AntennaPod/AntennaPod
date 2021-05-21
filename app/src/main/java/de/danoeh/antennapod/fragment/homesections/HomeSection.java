@@ -1,45 +1,27 @@
 package de.danoeh.antennapod.fragment.homesections;
 
-import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
-import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
+import slush.AdapterAppliedResult;
 import slush.Slush;
 import slush.listeners.OnBindListener;
+import slush.utils.BasicDiffCallback;
 
 /**
  * Section on the HomeFragment
@@ -86,6 +68,8 @@ public abstract class HomeSection implements View.OnCreateContextMenuListener {
     @NonNull
     protected abstract List<FeedItem> loadItems();
 
+    public void updateItems() {}
+
     protected abstract Unit onItemClick(View view, FeedItem feedItem);
 
     @Override
@@ -94,6 +78,16 @@ public abstract class HomeSection implements View.OnCreateContextMenuListener {
         inflater.inflate(R.menu.feeditemlist_context, contextMenu);
         contextMenu.setHeaderTitle(selectedItem.getTitle());
         FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
+    }
+
+    protected AdapterAppliedResult<FeedItem> easySlush(int layout, OnBindListener<FeedItem> onBindListener) {
+        return new Slush.SingleType<FeedItem>()
+                .setItemLayout(layout)
+                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
+                .setItems(loadItems())
+                .onItemClickWithItem(this::onItemClick)
+                .onBind(onBindListener)
+                .into(recyclerView);
     }
 
 }

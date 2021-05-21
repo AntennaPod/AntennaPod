@@ -65,7 +65,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             HomeFragment.TAG,
             InboxFragment.TAG,
             QueueFragment.TAG,
-            PowerEpisodesFragment.TAG,
+            EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
@@ -176,7 +176,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 return true;
             case R.id.remove_item:
                 RemoveFeedDialog.show(getContext(), feed, () -> {
-                    ((MainActivity) getActivity()).loadFragment(PowerEpisodesFragment.TAG, null);
+                    ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
                 });
                 return true;
             default:

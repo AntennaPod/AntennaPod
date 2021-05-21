@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,7 +34,7 @@ public class SwipeActions {
 
         //TODO
         prefs.edit().putString(PREF_SWIPEACTIONS+InboxFragment.TAG,ADD_TO_QUEUE+","+MARK_UNPLAYED).apply();
-        prefs.edit().putString(PREF_SWIPEACTIONS+PowerEpisodesFragment.TAG,START_DOWNLOAD+","+MARK_PLAYED).apply();
+        prefs.edit().putString(PREF_SWIPEACTIONS+ EpisodesFragment.TAG,START_DOWNLOAD+","+MARK_PLAYED).apply();
 
         String[] leftright = prefs.getString(PREF_SWIPEACTIONS+tag,"").split(",");
 

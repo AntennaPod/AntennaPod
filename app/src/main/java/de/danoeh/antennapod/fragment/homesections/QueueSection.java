@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.homesections;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -39,12 +40,16 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
+import slush.AdapterAppliedResult;
 import slush.Slush;
+import slush.utils.BasicDiffCallback;
 
 
 public class QueueSection extends HomeSection {
 
     public static final String TAG = "QueueSection";
+
+    private AdapterAppliedResult<FeedItem> slush;
 
     public QueueSection(HomeFragment context) {
         super(context);
@@ -72,10 +77,7 @@ public class QueueSection extends HomeSection {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        new Slush.SingleType<FeedItem>()
-                .setItemLayout(R.layout.cover_play_title_item)
-                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
-                .onBind((view, item) -> {
+        slush = easySlush(R.layout.cover_play_title_item, (view, item) -> {
                     ImageView coverPlay = view.findViewById(R.id.cover_play);
                     TextView title = view.findViewById(R.id.playTitle);
                     TextView date = view.findViewById(R.id.playDate);
@@ -93,10 +95,7 @@ public class QueueSection extends HomeSection {
                         return false;
                     });
                     view.setOnCreateContextMenuListener(QueueSection.this);
-                })
-                .setItems(loadItems())
-                .onItemClickWithItem(this::onItemClick)
-                .into(recyclerView);
+                });
 
         super.addSectionTo(parent);
     }
@@ -105,6 +104,11 @@ public class QueueSection extends HomeSection {
     @Override
     protected List<FeedItem> loadItems() {
         return DBReader.getPausedQueue(5);
+    }
+
+    @Override
+    public void updateItems() {
+        slush.getItemListEditor().changeAll(loadItems());
     }
 
 

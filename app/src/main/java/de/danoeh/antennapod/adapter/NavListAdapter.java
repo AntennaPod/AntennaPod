@@ -24,7 +24,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
-import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -117,7 +117,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 return R.drawable.ic_baseline_inbox_24;
             case QueueFragment.TAG:
                 return R.drawable.ic_playlist;
-            case PowerEpisodesFragment.TAG:
+            case EpisodesFragment.TAG:
                 return R.drawable.ic_feed;
             case DownloadsFragment.TAG:
                 return R.drawable.ic_download;

@@ -43,7 +43,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
-import de.danoeh.antennapod.fragment.PowerEpisodesFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -270,8 +270,8 @@ public class MainActivity extends CastEnabledActivity {
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
                 break;
-            case PowerEpisodesFragment.TAG:
-                fragment = new PowerEpisodesFragment();
+            case EpisodesFragment.TAG:
+                fragment = new EpisodesFragment();
                 break;
             case DownloadsFragment.TAG:
                 fragment = new DownloadsFragment();
@@ -599,7 +599,7 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(PlaybackHistoryFragment.TAG, null);
                         break;
                     case "EPISODES":
-                        loadFragment(PowerEpisodesFragment.TAG, null);
+                        loadFragment(EpisodesFragment.TAG, null);
                         break;
                     case "QUEUE":
                         loadFragment(QueueFragment.TAG, null);

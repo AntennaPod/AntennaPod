@@ -28,12 +28,15 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
+import slush.AdapterAppliedResult;
 import slush.Slush;
 
 
 public class SurpriseSection extends HomeSection {
 
     public static final String TAG = "SurpriseSection";
+
+    private AdapterAppliedResult<FeedItem> slush;
 
     public SurpriseSection(HomeFragment context) {
         super(context);
@@ -57,10 +60,7 @@ public class SurpriseSection extends HomeSection {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        new Slush.SingleType<FeedItem>()
-                .setItemLayout(R.layout.cover_play_title_item)
-                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
-                .onBind((view, item) -> {
+        slush = easySlush(R.layout.cover_play_title_item, (view, item) -> {
                     ImageView coverPlay = view.findViewById(R.id.cover_play);
                     TextView title = view.findViewById(R.id.playTitle);
                     TextView date = view.findViewById(R.id.playDate);
@@ -78,10 +78,7 @@ public class SurpriseSection extends HomeSection {
                         return false;
                     });
                     view.setOnCreateContextMenuListener(SurpriseSection.this);
-                })
-                .setItems(loadItems())
-                .onItemClickWithItem(this::onItemClick)
-                .into(recyclerView);
+                });
 
         super.addSectionTo(parent);
     }
@@ -90,5 +87,10 @@ public class SurpriseSection extends HomeSection {
     @Override
     protected List<FeedItem> loadItems() {
         return DBReader.getRecentlyPublishedEpisodes(6, 6, new FeedItemFilter(""), false);
+    }
+
+    @Override
+    public void updateItems() {
+        slush.getItemListEditor().changeAll(loadItems());
     }
 }
