@@ -265,8 +265,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FeedItemEvent event) {
-        event.; }
+    public void onEventMainThread(FeedItemEvent event) { updateSections(); }
 
     private void updateSections() {
         for (HomeSection section: sections) {
