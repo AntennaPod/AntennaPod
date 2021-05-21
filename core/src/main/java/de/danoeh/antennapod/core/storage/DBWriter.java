@@ -830,6 +830,7 @@ public class DBWriter {
      * @param media The FeedMedia object.
      */
     public static Future<?> setFeedMediaPlaybackInformation(final FeedMedia media) {
+        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem())); //propagate changes
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
