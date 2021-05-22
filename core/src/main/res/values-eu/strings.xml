@@ -75,6 +75,7 @@
   <string name="author_label">Egilea(k)</string>
   <string name="language_label">Hizkuntza</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Azala</string>
   <string name="error_label">Errorea</string>
   <string name="error_msg_prefix">Errorea gertatu da:</string>
   <string name="needs_storage_permission">Biltegiratze baimenak behar dira hori egiteko</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">Kapituluak</string>
   <string name="chapter_duration">Iraupena: %1$s</string>
   <string name="description_label">Deskribapena</string>
+  <string name="shownotes_label">Programaren oharrak</string>
   <string name="episodes_suffix">\u0020saio</string>
   <string name="processing_label">Prozesatzen</string>
   <string name="close_label">Itxi</string>

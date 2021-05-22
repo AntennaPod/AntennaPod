@@ -18,6 +18,7 @@
   <string name="downloads_log_label">سجل</string>
   <string name="subscriptions_label">إشتراكات</string>
   <string name="subscriptions_list_label">لائحة الإشتراكات</string>
+  <string name="cancel_download_label">الغاء التنزيل</string>
   <string name="playback_history_label">سجل التشغيل</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">تسجيل الدخول لموقع gpodder</string>
@@ -27,6 +28,7 @@
   <string name="download_statistics_label">تنزيلات</string>
   <string name="notification_pref_fragment">إشعارات</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">لم يتم العثور على %1$s</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">الوقت الكلي للحلقات المشغلة:</string>
   <string name="statistics_details_dialog">%1$d حلقة من  %2$d بدأ.\n\nتشغيلها %3$s من مجموع %4$s.</string>
@@ -54,6 +56,8 @@
   <string name="drawer_feed_counter_none">بدون</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">لا يوجد برنامج متوافق</string>
+  <string name="export_logs_menu_title">اصدار سجلات مفصله</string>
+  <string name="confirm_export_log_dialog_message">السجلات المفصلة قد تحتوي على معلومات حساسة مثل قائمة اشتراكاتك</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">افتح فى المتصفح</string>
   <string name="copy_url_label">انسخ الرابط</string>
@@ -71,6 +75,7 @@
   <string name="author_label">الناشر(ون)</string>
   <string name="language_label">لغة</string>
   <string name="url_label">عنوان الموقع</string>
+  <string name="cover_label">الغلاف</string>
   <string name="error_label">خطأ</string>
   <string name="error_msg_prefix">حدث خطأ:</string>
   <string name="needs_storage_permission">هذه العلملية تحتاج السماح للوصول لمساحة التخزين</string>
@@ -79,6 +84,7 @@
   <string name="chapters_label">فصول</string>
   <string name="chapter_duration">مدة: %1$s</string>
   <string name="description_label">وصف</string>
+  <string name="shownotes_label">ملاحظات الحلقة</string>
   <string name="episodes_suffix">\u0020حلقات</string>
   <string name="processing_label">جارى المعالجة</string>
   <string name="close_label">اغلاق</string>
@@ -92,11 +98,13 @@
   <string name="feed_volume_reduction_off">بدون</string>
   <string name="feed_volume_reduction_light">خفيف</string>
   <string name="feed_volume_reduction_heavy">شديد</string>
+  <string name="parallel_downloads">%1$d تنزيلات متوازية</string>
   <string name="feed_auto_download_global">اعدادات افتراضية شاملة</string>
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="send_label">ارسال ...</string>
   <string name="episode_cleanup_never">ابدا</string>
+  <string name="episode_cleanup_except_favorite_removal">عند عدم التفضيل</string>
   <string name="episode_cleanup_queue_removal">إذا ليس في لائحة الاستماع</string>
   <string name="episode_cleanup_after_listening">بعد الانتهاء</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -123,7 +131,34 @@
     <item quantity="many">%d مختار</item>
     <item quantity="other">%d مختار</item>
   </plurals>
+  <plurals name="num_episodes">
+    <item quantity="zero">%d حلقة</item>
+    <item quantity="one">حلقة</item>
+    <item quantity="two">حلقتين</item>
+    <item quantity="few">%d حلقات</item>
+    <item quantity="many">%d حلقات</item>
+    <item quantity="other">%d حلقات</item>
+  </plurals>
   <string name="loading_more">تحميل المزيد...</string>
+  <string name="episode_notification">تنبيهات الحلقات</string>
+  <string name="episode_notification_summary">اظهر تنبيه عند صدور حلقه جديدة</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="zero">لا توجد حلقات جديده لدى %2$s %1$d </item>
+    <item quantity="one">حلقة جديدة من %2$s</item>
+    <item quantity="two">حلقتان جديدة من %2$s</item>
+    <item quantity="few">حلقات جديدة من %2$s</item>
+    <item quantity="many">حلقات جديدة من %2$s</item>
+    <item quantity="other">%1$d حلقات جديدة من %2$s</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="zero">لا حلقات جديدة</item>
+    <item quantity="one">حلقة جديدة</item>
+    <item quantity="two">حلقتان جديدتان</item>
+    <item quantity="few">حلقات جديدة</item>
+    <item quantity="many">حلقات جديدة</item>
+    <item quantity="other">حلقات جديدة</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">حلقات جديدة من اشتراكاتك</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">تعليم الكل بـ تم تشغيله</string>
   <string name="mark_all_read_msg">علم كل الحلقات بـ تم تشغيلها</string>
@@ -155,6 +190,7 @@
   <string name="hide_not_queued_episodes_label">ليس ضمن لائحة الاستماع</string>
   <string name="hide_has_media_label">فيها وسائط</string>
   <string name="filtered_label">مصفى</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle}  فشلت آخر عملية تحديث. إضغط لرؤية التفاصيل.</string>
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
   <!--actions on feeditems-->
@@ -234,14 +270,23 @@
   <string name="download_running">جارى التنزيل</string>
   <string name="download_error_details">تفاصيل</string>
   <string name="download_error_details_message">%1$s \n\nURL الملف:\n%2$s</string>
+  <string name="download_error_tap_for_details">إضغط لرؤية التفاصيل.</string>
   <string name="download_error_device_not_found">جهاز التخزين غير موجود</string>
+  <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك</string>
   <string name="download_error_http_data_error">خطاء فى بيانات HTTP</string>
   <string name="download_error_error_unknown">خطاء غير معروف</string>
+  <string name="download_error_parser_exception">خادم البودكاست المستضيف ارسل ملف تغذية معطوب</string>
   <string name="download_error_unsupported_type">نمط قناة غير مدعوم</string>
+  <string name="download_error_unsupported_type_html">خادم البودكاست المستضيف ارسل موقع و ليس بودكاست</string>
+  <string name="download_error_not_found">خادم البودكاست لم يتمكن من العثور على الملف. من الارجح ان الملف محذوف.</string>
   <string name="download_error_connection_error">خطاء فى الاتصال</string>
+  <string name="download_error_unknown_host">لم يتم العثور على الخادم. تأكد من كتابة العنوان بشكل صحيح و توفر اتصال بالشبكة.</string>
   <string name="download_error_unauthorized">خطاء فى التحقق</string>
   <string name="download_error_file_type_type">خطأ في نوع الملف</string>
+  <string name="download_error_forbidden">خادم البودكاست يرفض الرد</string>
   <string name="download_canceled_msg">ألغي التنزيل</string>
+  <string name="download_error_wrong_size">الاتصال مع الخادم فقد قبل الانتهاء من التنزيل</string>
+  <string name="download_error_blocked">تم منع التنزيل من برنامج اخر في جهازك</string>
   <string name="download_canceled_autodownload_enabled_msg">ألغي التنزيل\nمعطل <i>التنزيل التلقائي</i> لهذه المادة</string>
   <string name="download_report_title">أنتهى التنزيل مع خطأ (او أكثر)</string>
   <string name="auto_download_report_title">التنزيل التلقائي أنتهى</string>
@@ -258,6 +303,7 @@
     <item quantity="many">%d تنزيلات بقت</item>
     <item quantity="other">%d تنزيلات بقت</item>
   </plurals>
+  <string name="service_shutting_down">جاري اغلاق الخدمة</string>
   <string name="download_notification_title">تنزيل بيانات البودكاست</string>
   <string name="download_log_title_unknown">عنوان غير معروف</string>
   <string name="download_type_feed">قناة</string>
@@ -360,6 +406,7 @@
 </string>
   <string name="interruptions">المقاطعات</string>
   <string name="playback_control">تحكم التشغيل</string>
+  <string name="reassign_hardware_buttons">اعد تحديد وظائف الازرار الملموسة</string>
   <string name="preference_search_hint">بحث</string>
   <string name="preference_search_no_results">لا توجد نتائج</string>
   <string name="preference_search_clear_history">مسح السجل</string>
@@ -492,19 +539,33 @@
   <string name="pref_videoBehavior_sum">التصرف عند ترك تشغيل فيديو</string>
   <string name="stop_playback">اوقف التشغيل</string>
   <string name="continue_playback">استمر في تشغيل الصوت</string>
+  <string name="back_button_double_tap">النقر مرتين للخروج</string>
+  <string name="back_button_show_prompt">التاكيد للخروج</string>
+  <string name="double_tap_toast">انقر زر الرجوع للخروج</string>
+  <string name="back_button_go_to_page">اذهب الى صفحة...</string>
+  <string name="back_button_go_to_page_title">اختر صفحة</string>
   <string name="pref_delete_removes_from_queue_title">المسح يزيل الحلقة من لائحة الاستماع</string>
   <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من لائحة الاستماع آليا عند مسحها.</string>
   <string name="pref_filter_feed_title">مصفاة الإشتراكات</string>
   <string name="pref_filter_feed_sum">صفي إشتراكاتك في درج الملاحة وشاشة الإشتراكات.</string>
+  <string name="no_filter_label">لا شئ</string>
   <string name="subscriptions_are_filtered">الإشتراكات مصففاة</string>
   <!--About screen-->
+  <string name="antennapod_version">اصدار AntennaPod</string>
+  <string name="developers">المطورين</string>
+  <string name="translators">المترجمين</string>
+  <string name="special_thanks">شكر خاص</string>
   <!--Search-->
+  <string name="search_status_no_results">لم يتم العثور على نتائج</string>
+  <string name="search_label">البحث</string>
   <!--Synchronization-->
+  <string name="sync_status_started">بدأت المزامنة</string>
   <string name="sync_status_subscriptions">تتزامن الإشتراكات الآن...</string>
   <string name="sync_status_success">نجحت المزامنة</string>
   <string name="sync_status_error">فشلت المزامنة</string>
   <!--import and export-->
   <string name="import_export_summary">نقل الاشتراكات ولائحة الاستماع الى جهاز آخر</string>
+  <string name="database">قاعدة البيانات</string>
   <string name="html_export_summary">عرض إشتراكاتك لصديق</string>
   <string name="opml_export_summary">نقل إشتراكاتك لبرنامج بوكاست آخر</string>
   <string name="opml_import_summary">إستيراد اشتراكاتك من برنامج آخر</string>

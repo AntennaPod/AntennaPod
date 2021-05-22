@@ -18,6 +18,7 @@
   <string name="downloads_log_label">Loki</string>
   <string name="subscriptions_label">Tilaukset</string>
   <string name="subscriptions_list_label">Tilauslista</string>
+  <string name="cancel_download_label">Peruuta lataus</string>
   <string name="playback_history_label">Soittohistoria</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Kirjautuminen</string>
@@ -25,6 +26,7 @@
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
   <string name="playback_statistics_label">Toisto</string>
   <string name="download_statistics_label">Lataukset</string>
+  <string name="notification_pref_fragment">Ilmoitukset</string>
   <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
@@ -48,6 +50,9 @@
   <string name="drawer_feed_counter_downloaded">Ladattuja jaksoja</string>
   <string name="drawer_feed_counter_none">Ei yhtään</string>
   <!--Bug report activity-->
+  <string name="log_file_share_exception">Yhteensopivia sovelluksia ei löytynyt</string>
+  <string name="export_logs_menu_title">Vie yksityiskohtaiset lokit</string>
+  <string name="confirm_export_log_dialog_message">Yksityiskohtaiset lokit voivat sisältää arkaluonteista tietoa, kuten listan tilauksistasi</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Avaa selaimessa</string>
   <string name="copy_url_label">Kopioi URL</string>
@@ -65,6 +70,7 @@
   <string name="author_label">Tekijä(t)</string>
   <string name="language_label">Kieli</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Kansi</string>
   <string name="error_label">Virhe</string>
   <string name="error_msg_prefix">Tapahtui virhe:</string>
   <string name="needs_storage_permission">Tallennustilan valtuutus tarvitaan tähän operaatioon.</string>
@@ -73,6 +79,7 @@
   <string name="chapters_label">Kappaleet</string>
   <string name="chapter_duration">Kesto: %1$s</string>
   <string name="description_label">Kuvaus</string>
+  <string name="shownotes_label">Jaksomuistio</string>
   <string name="episodes_suffix">\u0020jaksoa</string>
   <string name="processing_label">Prosessoi</string>
   <string name="close_label">Sulje</string>
@@ -86,12 +93,14 @@
   <string name="feed_volume_reduction_off">Pois käytöstä</string>
   <string name="feed_volume_reduction_light">Kevyt</string>
   <string name="feed_volume_reduction_heavy">Voimakas</string>
+  <string name="parallel_downloads">%1$d yhtäaikaista latausta</string>
   <string name="feed_auto_download_global">Globaali oletus</string>
   <string name="feed_auto_download_always">Aina</string>
   <string name="feed_auto_download_never">Ei koskaan</string>
   <string name="send_label">Lähetä...</string>
   <string name="episode_cleanup_never">Ei koskaan</string>
-  <string name="episode_cleanup_queue_removal">Kun ei jonossa</string>
+  <string name="episode_cleanup_except_favorite_removal">Kun ei ole suosikeissa</string>
+  <string name="episode_cleanup_queue_removal">Kun ei ole jonossa</string>
   <string name="episode_cleanup_after_listening">Lopetuksen jälkeen</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 hour after finishing</item>
@@ -105,7 +114,22 @@
     <item quantity="one">%d valittu</item>
     <item quantity="other">%d valittua</item>
   </plurals>
+  <plurals name="num_episodes">
+    <item quantity="one">%d jakso</item>
+    <item quantity="other">%d jaksoa</item>
+  </plurals>
   <string name="loading_more">Ladataan lisää...</string>
+  <string name="episode_notification">Jakson ilmoitukset</string>
+  <string name="episode_notification_summary">Näytä ilmoitus kun uusi jakso julkaistaan.</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="one">%2$s on julkaissut uuden jakson</item>
+    <item quantity="other">%2$s on julkaissut %1$d uutta jaksoa</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="one">Uusi jakso</item>
+    <item quantity="other">Uusia jaksoja</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">Tilauksissasi on uusia jaksoa.</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Merkkaa kaikki soitetuksi</string>
   <string name="mark_all_read_msg">Merkkaa kaikki episodit soitetuiksi</string>
@@ -120,8 +144,13 @@
   <string name="feed_settings_label">Podcastin asetukset</string>
   <string name="rename_feed_label">Uudelleennimeä podcast </string>
   <string name="remove_feed_label">Poista podcast</string>
+  <string name="share_label">Jaa</string>
+  <string name="share_label_with_ellipses">Jaa...</string>
   <string name="share_file_label">Jaa tietodosto</string>
+  <string name="share_website_url_label">Web-sivujen osoite</string>
+  <string name="share_feed_url_label">Podcast-virran URL-osoite</string>
   <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\" ja KAIKKI sen jaksot (mukaan lukien ladatut jaksot).</string>
+  <string name="feed_delete_confirmation_local_msg">Vahvista, että haluat poistaa podcastin \"%1$s\". Paikallisia tiedostoja ei poisteta.</string>
   <string name="feed_remover_msg">Poistetaan podcast</string>
   <string name="load_complete_feed">Päivitä podcast</string>
   <string name="multi_select">Monivalinta</string>
@@ -132,6 +161,7 @@
   <string name="hide_not_queued_episodes_label">Ei jonossa</string>
   <string name="hide_has_media_label">Sisältää mediaa</string>
   <string name="filtered_label">Suodatettu</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimeisin päivitys epäonnistui. Paina tästä saadaksesi lisätietoja.</string>
   <string name="open_podcast">Avaa podcast</string>
   <string name="please_wait_for_data">Odota kunnes tiedot ovat ladattu</string>
   <!--actions on feeditems-->
@@ -146,6 +176,10 @@
   <string name="delete_label">Poista</string>
   <string name="delete_failed">Ei voida poistaa tiedostoa. Laitteen uudelleenkäynnistys saattaa auttaa.</string>
   <string name="delete_episode_label">Poista jakso</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">%d jakso valittuna, %d lataus poistettu.</item>
+    <item quantity="other">%d jaksoa valittuna, %d latausta poistettu.</item>
+  </plurals>
   <string name="remove_new_flag_label">Poista \"uusi\"-lippu</string>
   <string name="removed_new_flag_label">Poistettiin \"uusi\"-lippu</string>
   <string name="mark_read_label">Merkitse soitetuksi</string>

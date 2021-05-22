@@ -18,7 +18,7 @@
   <string name="downloads_log_label">Log</string>
   <string name="subscriptions_label">Assinaturas</string>
   <string name="subscriptions_list_label">Lista de Assinaturas</string>
-  <string name="cancel_download_label">Cancelar Download</string>
+  <string name="cancel_download_label">Cancelar download</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
@@ -73,6 +73,7 @@
   <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Capa</string>
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Um erro ocorreu:</string>
   <string name="needs_storage_permission">Permissão de armazenamento necessária para essa operação</string>

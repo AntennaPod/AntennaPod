@@ -76,6 +76,7 @@
   <string name="author_label">Přispěvatel(é)</string>
   <string name="language_label">Jazyk</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Obrázek</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Došlo k chybě:</string>
   <string name="needs_storage_permission">Tato operace vyžaduje oprávnění pro přístup do úložiště</string>
@@ -84,6 +85,7 @@
   <string name="chapters_label">Kapitoly</string>
   <string name="chapter_duration">Délka: %1$s</string>
   <string name="description_label">Popis</string>
+  <string name="shownotes_label">Poznámky</string>
   <string name="episodes_suffix">\u0020epizod</string>
   <string name="processing_label">Zpracovávám</string>
   <string name="close_label">Zavřít</string>

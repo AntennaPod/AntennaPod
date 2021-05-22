@@ -261,7 +261,7 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">%d Download übrig</item>
     <item quantity="other">%d Downloads übrig</item>
   </plurals>
-  <string name="service_shutting_down">Dienst wird herunter gefahren</string>
+  <string name="service_shutting_down">Dienst wird gestoppt</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_log_title_unknown">Unbekannter Titel</string>
   <string name="download_type_feed">Feed</string>
@@ -834,7 +834,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="cast_failed_media_error_skipping">Fehler bei Wiedergabe. Überspringe...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fehler</string>
-  <string name="notification_group_news">Nachrichten</string>
+  <string name="notification_group_news">Neuigkeiten</string>
   <string name="notification_channel_user_action">Handlung notwendig</string>
   <string name="notification_channel_user_action_description">Wird gezeigt, wenn deine Handlung notwendig ist, zum Beispiel wenn du ein Passwort eingeben musst.</string>
   <string name="notification_channel_downloading">Herunterladen</string>
