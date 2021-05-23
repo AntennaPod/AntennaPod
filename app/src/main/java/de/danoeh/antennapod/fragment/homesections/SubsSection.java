@@ -35,6 +35,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
 import slush.Slush;
+import slush.listeners.OnBindListener;
 
 
 public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
@@ -71,31 +72,25 @@ public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        slush = new Slush.SingleType<NavDrawerData.DrawerItem>()
-                .setItemLayout(R.layout.quick_feed_discovery_item)
-                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
-                .setItems(loadItems())
-                .onItemClickWithItem(this::onItemClick)
-                .onBind((view, item) -> {
-                    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                    int side = (int) displayMetrics.density * 140;
-                    view.getLayoutParams().height = side;
-                    view.getLayoutParams().width = side;
-                    ImageView cover = view.findViewById(R.id.discovery_cover);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        cover.setElevation(2 * displayMetrics.density);
-                    }
-                    CoverLoader coverLoader = new CoverLoader((MainActivity) context.requireActivity())
-                            .withCoverView(cover);
-                    if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                        Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-                        coverLoader.withUri(feed.getImageUrl());
-                    } else {
-                        coverLoader.withResource(R.drawable.ic_folder);
-                    }
-                    coverLoader.load();
-                })
-                .into(recyclerView);
+        slush = easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            int side = (int) displayMetrics.density * 140;
+            view.getLayoutParams().height = side;
+            view.getLayoutParams().width = side;
+            ImageView cover = view.findViewById(R.id.discovery_cover);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                cover.setElevation(2 * displayMetrics.density);
+            }
+            CoverLoader coverLoader = new CoverLoader((MainActivity) context.requireActivity())
+                    .withCoverView(cover);
+            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
+                coverLoader.withUri(feed.getImageUrl());
+            } else {
+                coverLoader.withResource(R.drawable.ic_folder);
+            }
+            coverLoader.load();
+        });
 
         super.addSectionTo(parent);
     }
