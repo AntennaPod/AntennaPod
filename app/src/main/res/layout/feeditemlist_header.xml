@@ -127,8 +127,7 @@
             android:background="?android:attr/windowBackground"
             android:visibility="gone"
             android:gravity="center"
-            android:textColor="@color/accent_dark"
-            android:textSize="18sp"
+            android:textColor="?attr/colorAccent"
             tools:visibility="visible"
             tools:text="Updates disabled"/>
 </LinearLayout>
