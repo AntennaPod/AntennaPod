@@ -12,30 +12,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
-import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
 import slush.Slush;
 
 
-public class SubsSection extends HomeSection {
+public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     public static final String TAG = "SubsSection";
 
-    private AdapterAppliedResult<FeedItem> slush;
+    private AdapterAppliedResult<NavDrawerData.DrawerItem> slush;
 
     public SubsSection(HomeFragment context) {
         super(context);
@@ -51,48 +56,59 @@ public class SubsSection extends HomeSection {
         };
     }
 
-    @Override
-    protected Unit onItemClick(View view, FeedItem feedItem) {
-        //TODO PLAY
-        long[] ids = FeedItemUtil.getIds(loadItems());
-        int position = ArrayUtils.indexOf(ids, feedItem.getId());
-        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+    protected Unit onItemClick(View view, NavDrawerData.DrawerItem item) {
+        if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
+            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+            ((MainActivity) context.requireActivity()).loadChildFragment(fragment);
+        } else if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+            Fragment fragment = SubscriptionFragment.newInstance(item.getTitle());
+            ((MainActivity) context.requireActivity()).loadChildFragment(fragment);
+        }
         return null;
     }
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        slush = easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
+        slush = new Slush.SingleType<NavDrawerData.DrawerItem>()
+                .setItemLayout(R.layout.quick_feed_discovery_item)
+                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
+                .setItems(loadItems())
+                .onItemClickWithItem(this::onItemClick)
+                .onBind((view, item) -> {
                     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
                     int side = (int) displayMetrics.density * 140;
                     view.getLayoutParams().height = side;
                     view.getLayoutParams().width = side;
-                    ImageView cover = view.findViewById(R.id.discovery_cover);
-                    new CoverLoader((MainActivity) context.requireActivity())
-                            .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                            .withFallbackUri(item.getFeed().getImageUrl())
-                            .withCoverView(cover)
-                            .load();
-
-                    view.setOnLongClickListener(v -> {
-                        selectedItem = item;
-                        context.setSelectedItem(item);
-                        return false;
-                    });
-                    view.setOnCreateContextMenuListener(SubsSection.this);
-                });
+                    CoverLoader coverLoader = new CoverLoader((MainActivity) context.requireActivity())
+                            .withCoverView(view.findViewById(R.id.discovery_cover));
+                    if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                        Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
+                        coverLoader.withUri(feed.getImageUrl());
+                    } else {
+                        coverLoader.withResource(R.drawable.ic_folder);
+                    }
+                    coverLoader.load();
+                })
+                .into(recyclerView);
 
         super.addSectionTo(parent);
     }
 
     @NonNull
     @Override
-    protected List<FeedItem> loadItems() {
-        return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter(""), false);
+    protected List<NavDrawerData.DrawerItem> loadItems() {
+        List<NavDrawerData.DrawerItem> items = DBReader.getNavDrawerData(UserPreferences.FEED_ORDER_MOST_PLAYED).items;
+        //Least played on top
+        Collections.reverse(items);
+        //mix up the first few podcasts
+        List<NavDrawerData.DrawerItem> topItems = items.subList(0,4);
+        items = items.subList(4, items.size());
+        Collections.shuffle(topItems);
+        topItems.addAll(items);
+        return topItems;
     }
 
-    @Override
-    public void updateItems() {
-        slush.getItemListEditor().changeAll(loadItems());
-    }
+    //don't update, to prevent reordering of topItems
+    //public void updateItems()
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -21,12 +22,11 @@ import kotlin.Unit;
 import slush.AdapterAppliedResult;
 import slush.Slush;
 import slush.listeners.OnBindListener;
-import slush.utils.BasicDiffCallback;
 
 /**
  * Section on the HomeFragment
  */
-public abstract class HomeSection implements View.OnCreateContextMenuListener {
+public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuListener {
 
     HomeFragment context;
 
@@ -56,21 +56,27 @@ public abstract class HomeSection implements View.OnCreateContextMenuListener {
             tvNavigate.setOnClickListener(navigate());
         }
 
-        if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
-            //don't add if empty
-            parent.addView(section);
-            context.registerForContextMenu(recyclerView);
-        }
+        parent.addView(section);
+        context.registerForContextMenu(recyclerView);
+
+        hideIfEmpty();
+    }
+
+    private void hideIfEmpty() {
+        boolean isVisible = recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0;
+        section.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     protected abstract View.OnClickListener navigate();
 
     @NonNull
-    protected abstract List<FeedItem> loadItems();
+    protected abstract List<ITEMS> loadItems();
 
-    public void updateItems() {}
+    public void updateItems() {
+        hideIfEmpty();
+    }
 
-    protected abstract Unit onItemClick(View view, FeedItem feedItem);
+    protected abstract Unit onItemClick(View view, ITEMS item);
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
@@ -80,8 +86,8 @@ public abstract class HomeSection implements View.OnCreateContextMenuListener {
         FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
     }
 
-    protected AdapterAppliedResult<FeedItem> easySlush(int layout, OnBindListener<FeedItem> onBindListener) {
-        return new Slush.SingleType<FeedItem>()
+    protected AdapterAppliedResult<ITEMS> easySlush(int layout, OnBindListener<ITEMS> onBindListener) {
+        return new Slush.SingleType<ITEMS>()
                 .setItemLayout(layout)
                 .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
                 .setItems(loadItems())

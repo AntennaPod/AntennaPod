@@ -1,15 +1,11 @@
 package de.danoeh.antennapod.fragment.homesections;
 
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -20,19 +16,18 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
-import slush.Slush;
 
 
-public class SurpriseSection extends HomeSection {
+public class SurpriseSection extends HomeSection<FeedItem> {
 
     public static final String TAG = "SurpriseSection";
 
@@ -92,5 +87,6 @@ public class SurpriseSection extends HomeSection {
     @Override
     public void updateItems() {
         slush.getItemListEditor().changeAll(loadItems());
+        super.updateItems();
     }
 }

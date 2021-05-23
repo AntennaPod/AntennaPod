@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,17 +15,16 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
-import slush.Slush;
 
 
-public class InboxSection extends HomeSection {
+public class InboxSection extends HomeSection<FeedItem> {
 
     public static final String TAG = "InboxSection";
 
@@ -76,5 +74,6 @@ public class InboxSection extends HomeSection {
     @Override
     public void updateItems() {
         adapter.updateItems(loadItems());
+        super.updateItems();
     }
 }

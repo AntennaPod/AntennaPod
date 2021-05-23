@@ -836,7 +836,7 @@ public final class DBReader {
      * items.
      */
     @NonNull
-    public static NavDrawerData getNavDrawerData() {
+    public static NavDrawerData getNavDrawerData(Integer feedOrder) {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -846,7 +846,9 @@ public final class DBReader {
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
-        int feedOrder = UserPreferences.getFeedOrder();
+        if (feedOrder == null) {
+            feedOrder = UserPreferences.getFeedOrder();
+        }
         if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
             comparator = (lhs, rhs) -> {
                 long counterLhs = feedCounters.get(lhs.getId());
@@ -879,6 +881,21 @@ public final class DBReader {
                 long counterLhs = playedCounters.get(lhs.getId());
                 long counterRhs = playedCounters.get(rhs.getId());
                 if (counterLhs > counterRhs) {
+                    // podcast with most played episodes first
+                    return -1;
+                } else if (counterLhs == counterRhs) {
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            };
+        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
+            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
+
+            comparator = (lhs, rhs) -> {
+                long counterLhs = playedCounters.get(lhs.getId());
+                long counterRhs = playedCounters.get(rhs.getId());
+                if (counterLhs < counterRhs) {
                     // podcast with most played episodes first
                     return -1;
                 } else if (counterLhs == counterRhs) {
@@ -930,5 +947,10 @@ public final class DBReader {
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
+    }
+
+    @NonNull
+    public static NavDrawerData getNavDrawerData() {
+        return getNavDrawerData(null);
     }
 }
