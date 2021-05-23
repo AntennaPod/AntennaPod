@@ -28,6 +28,14 @@ public class InboxFragment extends EpisodesListFragment {
         return PREF_NAME;
     }
 
+    public InboxFragment(){
+        super();
+    }
+    public InboxFragment(boolean hideToolbar){
+        super();
+        this.hideToolbar = hideToolbar;
+    }
+
     @Override
     protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
         return item.isNew();

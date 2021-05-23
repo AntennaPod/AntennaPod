@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,6 +78,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_SECTIONS = "PrefHomeSections";
+    public static final String PREF_FRAGMENT = "PrefHomeFragment";
 
     FeedItem selectedItem = null;
 
@@ -161,8 +165,22 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void fillFragmentIfRoom(){
         //only if enough free space
         if (homeContainer.getChildCount() <= 2) {
+            Fragment fragment;
+            SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            switch (prefs.getInt(PREF_FRAGMENT, 0)) {
+                default:
+                case 0: //Episodes
+                    fragment = new EpisodesFragment(true);
+                    break;
+                case 1: //Inbox
+                    fragment = new InboxFragment(true);
+                    break;
+                case 2: //Queue
+                    fragment = new QueueFragment();
+                    break;
+            }
             requireActivity().getSupportFragmentManager()
-                    .beginTransaction().replace(R.id.homeFragmentContainer, new EpisodesFragment(true))
+                    .beginTransaction().replace(R.id.homeFragmentContainer, fragment)
                     .commit();
             fragmentContainer.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
@@ -184,7 +202,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private void saveSettings(List<SectionTitle> list){
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        Log.d("asfa", "openHomeDialog: "+gson.toJson(list));
         prefs.edit().putString(PREF_SECTIONS, gson.toJson(list)).apply();
         reloadSections();
     }
@@ -227,8 +244,32 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             LayoutInflater inflater = LayoutInflater.from(requireContext());
             View layout = inflater.inflate(R.layout.home_dialog, null, false);
             RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
+            Spinner spinner = layout.findViewById(R.id.homeSpinner);
+            String[] bottomHalfOptions = new String[]{
+                    getString(R.string.episodes_label),
+                    getString(R.string.inbox_label),
+                    getString(R.string.queue_label)};
+            spinner.setAdapter(
+                    new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_spinner_dropdown_item,
+                            bottomHalfOptions));
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                    prefs.edit().putInt(PREF_FRAGMENT, i).apply();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
             ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
+        
+            //enable only if 2 or less sections are selected
+            //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
 
             AdapterAppliedResult<SectionTitle> slush = new Slush.SingleType<SectionTitle>()
                     .setItemLayout(R.layout.home_dialog_item)
@@ -263,7 +304,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     .onItemClick((view, i) -> {
                         CheckBox checkBox = view.findViewById(R.id.checkBox);
                         list.get(i).toggleHidden();
-                        Log.d("asfa", "openHomeDialog: "+i);
                         checkBox.setChecked(!checkBox.isChecked());
                     })
                     .into(dialogRecyclerView);
@@ -271,8 +311,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                    slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
-                    Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+                    //int activeSections = list.stream().filter(s -> s.hidden).count();
+                    //min 1 section active
+                    //if (activeSections > 1) {
+                        slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+                        Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+
+                        //spinner.setEnabled(activeSections <= 2);
+                    //}
                     return false;
                 }
 
