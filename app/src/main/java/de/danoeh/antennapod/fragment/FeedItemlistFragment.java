@@ -470,7 +470,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
-                txtvInformation.setText("{md-info} " + this.getString(R.string.filtered_label));
+                txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {
                     FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {
