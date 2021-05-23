@@ -75,6 +75,7 @@
   <string name="author_label">Maker(s)</string>
   <string name="language_label">Taal</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Omslag</string>
   <string name="error_label">Fout</string>
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
   <string name="needs_storage_permission">Recht vereist voor gebruik van opslag</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">Hoofdstukken</string>
   <string name="chapter_duration">Duur: %1$s</string>
   <string name="description_label">Omschrijving</string>
+  <string name="shownotes_label">Notities</string>
   <string name="episodes_suffix">\u0020afleveringen</string>
   <string name="processing_label">Bezig met verwerken...</string>
   <string name="close_label">Sluiten</string>

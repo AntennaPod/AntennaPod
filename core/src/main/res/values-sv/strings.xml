@@ -75,6 +75,7 @@
   <string name="author_label">Författare</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">Omslag</string>
   <string name="error_label">Fel</string>
   <string name="error_msg_prefix">Ett fel inträffade:</string>
   <string name="needs_storage_permission">Lagringtillstånd behövs för denna åtgärd</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Längd: %1$s</string>
   <string name="description_label">Beskrivning</string>
+  <string name="shownotes_label">Shownotes</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="processing_label">Bearbetar</string>
   <string name="close_label">Stäng</string>

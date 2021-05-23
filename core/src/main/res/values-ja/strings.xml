@@ -10,7 +10,7 @@
   <string name="all_episodes_short_label">すべて</string>
   <string name="new_episodes_label">新規</string>
   <string name="favorite_episodes_label">お気に入り</string>
-  <string name="new_label">新</string>
+  <string name="new_label">新規</string>
   <string name="settings_label">設定</string>
   <string name="downloads_label">ダウンロード</string>
   <string name="downloads_running_label">実行中</string>
@@ -30,6 +30,7 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$sが見つかりません</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">エピソード総再生時間:</string>
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
   <string name="statistics_mode">統計情報モード</string>
   <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
@@ -37,7 +38,9 @@
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <string name="statistics_reset_data">統計情報のデータをリセット</string>
   <string name="statistics_reset_data_msg">これにより、すべてのエピソードを再生した期間の履歴が消去されます。 続行しますか?</string>
+  <string name="statistics_counting_since">%sからの再生時間</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">ダウンロードされたエピソードのサイズ:</string>
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -52,6 +55,9 @@
   <string name="drawer_feed_counter_downloaded">ダウンロード済のエピソードの数</string>
   <string name="drawer_feed_counter_none">なし</string>
   <!--Bug report activity-->
+  <string name="log_file_share_exception">互換性のあるアプリが見つかりません</string>
+  <string name="export_logs_menu_title">詳細ログを出力する</string>
+  <string name="confirm_export_log_dialog_message">詳細ログには購読リストなどの機密情報が含まれる可能性があります</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">ブラウザーで開く</string>
   <string name="copy_url_label">URLをコピー</string>
@@ -69,6 +75,7 @@
   <string name="author_label">作者</string>
   <string name="language_label">言語</string>
   <string name="url_label">URL</string>
+  <string name="cover_label">カバー</string>
   <string name="error_label">エラー</string>
   <string name="error_msg_prefix">エラーが発生しました。</string>
   <string name="needs_storage_permission">この操作にはストレージのアクセス許可が必要です</string>
@@ -77,6 +84,7 @@
   <string name="chapters_label">チャプター</string>
   <string name="chapter_duration">時間: %1$s</string>
   <string name="description_label">説明</string>
+  <string name="shownotes_label">ショーノート</string>
   <string name="episodes_suffix">\u0020エピソード</string>
   <string name="processing_label">処理中</string>
   <string name="close_label">閉じる</string>
@@ -86,14 +94,17 @@
   <string name="auto_download_apply_to_items_message">新しい <i>自動ダウンロード</i> の設定は、自動的に新しいエピソードに適用されます。\n以前に公開されたエピソードにも適用しますか?</string>
   <string name="auto_delete_label">エピソードを自動削除</string>
   <string name="feed_volume_reduction">ボリューム削減</string>
+  <string name="feed_volume_reduction_summary">エピソードのボリュームをこのフィードのみ下げる: %1$s</string>
   <string name="feed_volume_reduction_off">オフ</string>
   <string name="feed_volume_reduction_light">ライト</string>
   <string name="feed_volume_reduction_heavy">ヘビー</string>
+  <string name="parallel_downloads">%1$d個を並列ダウンロード</string>
   <string name="feed_auto_download_global">全般のデフォルト</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
   <string name="send_label">送信…</string>
   <string name="episode_cleanup_never">しない</string>
+  <string name="episode_cleanup_except_favorite_removal">お気に入りされていない</string>
   <string name="episode_cleanup_queue_removal">キューにない時</string>
   <string name="episode_cleanup_after_listening">完了後</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -109,6 +120,7 @@
     <item quantity="other">%dエピソード</item>
   </plurals>
   <string name="loading_more">さらに読み込んでいます…</string>
+  <string name="episode_notification">エピソードの通知</string>
   <plurals name="new_episode_notification_title">
     <item quantity="other">新エピソード</item>
   </plurals>
