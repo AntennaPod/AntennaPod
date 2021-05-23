@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
@@ -43,7 +42,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -78,6 +76,7 @@ import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -116,31 +115,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
 
-
-    // fab speed dial
-
-    /**
-     * Specify an action (defined by #flag) 's UI bindings.
-     *
-     * Includes: the menu / action item and the actual logic
-     */
-    public static class ActionBinding {
-        int flag;
-        @IdRes
-        final int actionItemId;
-        @NonNull
-        final Runnable action;
-
-        ActionBinding(int flag, @IdRes int actionItemId, @NonNull Runnable action) {
-            this.flag = flag;
-            this.actionItemId = actionItemId;
-            this.action = action;
-        }
-    }
-//    private final List<? extends ActionBinding> actionBindings;
-
     private SpeedDialView mSpeedDialView;
-    private int actions;
     private  LongList checkedIds = new LongList();
 
     private boolean displayUpArrow;
@@ -150,35 +125,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private boolean isUpdatingFeed;
     private Disposable disposable;
-
-
-    public static final int ACTION_ADD_TO_QUEUE = 1;
-    public static final int ACTION_REMOVE_FROM_QUEUE = 2;
-    private static final int ACTION_MARK_PLAYED = 4;
-    private static final int ACTION_MARK_UNPLAYED = 8;
-    public static final int ACTION_DOWNLOAD = 16;
-    public static final int ACTION_DELETE = 32;
-    public static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
-            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
+    private EpisodeMultSelectActionHandler episodeMultSelectActionHandler;
 
     public FeedItemlistFragment() {
-//        actionBindings = Arrays.asList(
-//                new ActionBinding(ACTION_ADD_TO_QUEUE,
-//                        R.id.add_to_queue_batch, this::queueChecked),
-//                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
-//                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
-//                new ActionBinding(ACTION_MARK_PLAYED,
-//                        R.id.mark_read_batch, this::markedCheckedPlayed),
-//                new ActionBinding(ACTION_MARK_UNPLAYED,
-//                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
-//                new ActionBinding(ACTION_DOWNLOAD,
-//                        R.id.download_batch, this::downloadChecked),
-//                new ActionBinding(ACTION_DELETE,
-//                        R.id.delete_batch, this::deleteChecked)
-//        );
-    }
-
-    private void action() {
+        episodeMultSelectActionHandler = new EpisodeMultSelectActionHandler(this);
     }
 
     /**
@@ -191,7 +141,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public static FeedItemlistFragment newInstance(long feedId) {
         FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
-        i.actions = ACTION_ALL;
         b.putLong(ARGUMENT_FEED_ID, feedId);
         i.setArguments(b);
         return i;
@@ -313,39 +262,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
             checkedIds = new LongList();
-            for (FeedItem episode : getCheckedItems()) {
+            for (FeedItem episode : getSelectedItems()) {
                 checkedIds.add(episode.getId());
             }
-
-            switch (actionItem.getId()) {
-                case R.id.add_to_queue_batch:
-                    queueChecked();
-                    break;
-                case R.id.remove_from_queue_batch:
-                    removeFromQueueChecked();
-                    break;
-                case R.id.mark_read_batch:
-                    markedCheckedPlayed();
-                    break;
-                case R.id.mark_unread_batch:
-                    markedCheckedUnplayed();
-                    break;
-                case R.id.download_batch:
-                    downloadChecked();
-                    break;
-                case R.id.delete_batch:
-                    deleteChecked();
-                    break;
-                default:
-                    Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
-            }
-
+            episodeMultSelectActionHandler.handleAction(actionItem.getId());
             onEndSelectMode();
             adapter.finish();
             return true;
         });
         return root;
     }
+
+    public LongList getSelectedIds() {
+        return checkedIds;
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -470,6 +401,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
@@ -534,7 +467,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         mSpeedDialView.setVisibility(View.GONE);
     }
 
-    private List<FeedItem> getCheckedItems() {
+    public List<FeedItem> getSelectedItems() {
         return adapter.getSelectedItems();
     }
     private void updateUi() {
@@ -729,67 +662,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         return feed;
     }
 
-    private void queueChecked() {
-        // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(checkedIds.size());
-        for (FeedItem episode : getCheckedItems()) {
-            if (episode.hasMedia()) {
-                toQueue.add(episode.getId());
-            }
-        }
-        DBWriter.addQueueItem(getActivity(), true, toQueue.toArray());
-        showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
-    }
-
-    private void removeFromQueueChecked() {
-        DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.size());
-    }
-
-    private void markedCheckedPlayed() {
-        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds.toArray());
-        showMessage(R.plurals.marked_read_batch_label, checkedIds.size());
-    }
-
-    private void markedCheckedUnplayed() {
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds.toArray());
-        showMessage(R.plurals.marked_unread_batch_label, checkedIds.size());
-    }
-
-    private void downloadChecked() {
-        // download the check episodes in the same order as they are currently displayed
-        List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
-        List<FeedItem> episodes = adapter.getSelectedItems();
-        for (FeedItem episode : episodes) {
-            if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
-                toDownload.add(episode);
-            }
-        }
-        try {
-            DownloadRequester.getInstance().downloadMedia(getActivity(), true, toDownload.toArray(new FeedItem[0]));
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-        }
-        showMessage(R.plurals.downloading_batch_label, toDownload.size());
-    }
-
-    private void deleteChecked() {
-        int countHasMedia = 0;
-        int countNoMedia = 0;
-        List<FeedItem> episodes = adapter.getSelectedItems();
-        for (FeedItem feedItem : episodes) {
-            checkedIds.contains(feedItem.getId());
-            if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
-                countHasMedia++;
-                DBWriter.deleteFeedMediaOfItem(getActivity(), feedItem.getMedia().getId());
-            } else {
-                countNoMedia++;
-            }
-        }
-        showMessageMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
-    }
-
     private class FeedItemListAdapter extends EpisodeItemListAdapter {
         public FeedItemListAdapter(MainActivity mainActivity) {
             super(mainActivity);
@@ -799,18 +671,5 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
         }
-    }
-
-    private void showMessage(@PluralsRes int msgId, int numItems) {
-        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-    }
-
-    private void showMessageMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
-        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                getResources().getQuantityString(msgId,
-                        (countHasMedia + countNoMedia),
-                        (countHasMedia + countNoMedia), countHasMedia),
-                Snackbar.LENGTH_LONG);
     }
 }
