@@ -32,7 +32,7 @@ public class QueueSection extends HomeSection<FeedItem> {
 
     public QueueSection(HomeFragment context) {
         super(context);
-        sectionTitle = "Continue";
+        sectionTitle = context.getString(R.string.continue_title);
         sectionNavigateTitle = context.getString(R.string.queue_label);
     }
 

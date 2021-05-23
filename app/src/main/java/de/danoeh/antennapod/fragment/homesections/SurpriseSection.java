@@ -35,8 +35,8 @@ public class SurpriseSection extends HomeSection<FeedItem> {
 
     public SurpriseSection(HomeFragment context) {
         super(context);
-        sectionTitle = "Surprise";
-        //sectionNavigateTitle = context.getString(R.string.subscriptions_label);
+        sectionTitle = context.getString(R.string.surprise_title);
+        //sectionNavigateTitle
     }
 
     @Override

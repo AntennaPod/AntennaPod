@@ -46,7 +46,7 @@ public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     public SubsSection(HomeFragment context) {
         super(context);
-        sectionTitle = "Rediscover";
+        sectionTitle = context.getString(R.string.rediscover_title);
         sectionNavigateTitle = context.getString(R.string.subscriptions_label);
     }
 

@@ -47,7 +47,7 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
 
     public StatisticsSection(HomeFragment context) {
         super(context);
-        sectionTitle = "Classics";
+        sectionTitle = context.getString(R.string.classics_title);
         sectionNavigateTitle = context.getString(R.string.statistics_label);
     }
 

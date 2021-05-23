@@ -36,7 +36,7 @@ public class InboxSection extends HomeSection<FeedItem> {
 
     public InboxSection(HomeFragment context) {
         super(context);
-        sectionTitle = "New";
+        sectionTitle = context.getString(R.string.new_title);
         sectionNavigateTitle = context.getString(R.string.inbox_label);
 
         recyclerView.setPadding(0,0,0,0);

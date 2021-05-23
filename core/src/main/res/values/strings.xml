@@ -37,6 +37,13 @@
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
 
+    <!-- Home fragment -->
+    <string name="surprise_title">Get surprise</string>
+    <string name="classics_title">Check your classics</string>
+    <string name="continue_title">Continue listening</string>
+    <string name="rediscover_title">Rediscover podcasts</string>
+    <string name="new_title">Review the new</string>
+
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>

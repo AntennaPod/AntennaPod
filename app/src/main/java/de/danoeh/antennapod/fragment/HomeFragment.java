@@ -8,14 +8,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
@@ -29,6 +35,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -53,6 +60,12 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
+import slush.AdapterAppliedResult;
+import slush.Slush;
+import slush.listeners.OnBindListener;
+import slush.listeners.OnItemClickListener;
 
 /**
  * Shows unread or recently published episodes
@@ -65,12 +78,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     FeedItem selectedItem = null;
 
-    private final String[] defaultSections = new String[]{
-            QueueSection.TAG,
-            InboxSection.TAG,
-            StatisticsSection.TAG,
-            SubsSection.TAG,
-            SurpriseSection.TAG};
+    private final List<SectionTitle> defaultSections = Arrays.asList(
+            new SectionTitle(QueueSection.TAG, false),
+            new SectionTitle(InboxSection.TAG, false),
+            new SectionTitle(StatisticsSection.TAG, false),
+            new SectionTitle(SubsSection.TAG, false),
+            new SectionTitle(SurpriseSection.TAG, false)
+    );
 
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
@@ -80,10 +94,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     LinearLayout homeContainer;
     FragmentContainerView fragmentContainer;
     View divider;
-
-    String getPrefName() {
-        return TAG;
-    }
 
     @NonNull
     @Override
@@ -98,15 +108,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.setTitle(R.string.home_label);
         toolbar.inflateMenu(R.menu.home);
         toolbar.setOnMenuItemClickListener(this);
-
-        //TEST
-        saveSettings(Arrays.asList(defaultSections));
-        toolbar.setOnLongClickListener(view -> {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(QueueSection.TAG);
-            saveSettings(list);
-            return true;
-        });
 
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
@@ -127,14 +128,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         homeContainer.removeAllViews();
         sections.clear();
 
-        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        ArrayList<String> prefSections = gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
-                new TypeToken<ArrayList<String>>() {}.getType());
-
-        for (String s : prefSections) {
+        for (SectionTitle s : getSectionsPrefs()) {
             HomeSection section;
-            switch (s) {
+            switch (s.tag) {
                 case InboxSection.TAG:
                     section = new InboxSection(this);
                     break;
@@ -153,8 +149,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     break;
             }
 
-            sections.add(section);
-            section.addSectionTo(homeContainer);
+            if (!s.hidden) {
+                sections.add(section);
+                section.addSectionTo(homeContainer);
+            }
         }
 
         fillFragmentIfRoom();
@@ -164,7 +162,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         //only if enough free space
         if (homeContainer.getChildCount() <= 2) {
             requireActivity().getSupportFragmentManager()
-                    .beginTransaction().add(R.id.homeFragmentContainer, new EpisodesFragment(true))
+                    .beginTransaction().replace(R.id.homeFragmentContainer, new EpisodesFragment(true))
                     .commit();
             fragmentContainer.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
@@ -176,9 +174,17 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new View(requireContext());
     }
 
-    private void saveSettings(List<String> list){
+    private List<SectionTitle> getSectionsPrefs() {
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Gson gson = new Gson();
+        return gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
+                new TypeToken<List<SectionTitle>>() {}.getType());
+    }
+
+    private void saveSettings(List<SectionTitle> list){
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Log.d("asfa", "openHomeDialog: "+gson.toJson(list));
         prefs.edit().putString(PREF_SECTIONS, gson.toJson(list)).apply();
         reloadSections();
     }
@@ -198,7 +204,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
                     return true;
                 case R.id.homesettings_items:
-                    new HomeSettingsDialog(requireContext()).openDialog();
+                    openHomeDialog();
                     return true;
                 default:
                     return false;
@@ -214,42 +220,88 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         super.onSaveInstanceState(outState);
     }
 
-    private static class HomeSettingsDialog {
-
-        protected Context context;
-
-        public HomeSettingsDialog(Context context) {
-            this.context = context;
-        }
-
-        public void openDialog() {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    private void openHomeDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.home_label);
 
-            LayoutInflater inflater = LayoutInflater.from(this.context);
-            View layout = inflater.inflate(R.layout.filter_dialog, null, false);
-            LinearLayout rows = layout.findViewById(R.id.filter_rows);
+            LayoutInflater inflater = LayoutInflater.from(requireContext());
+            View layout = inflater.inflate(R.layout.home_dialog, null, false);
+            RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
+
+            ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
+
+            AdapterAppliedResult<SectionTitle> slush = new Slush.SingleType<SectionTitle>()
+                    .setItemLayout(R.layout.home_dialog_item)
+                    .setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false))
+                    .setItems(list)
+                    .onBind((view, sectionTitle) -> {
+                        TextView title = view.findViewById(R.id.txtvSectionTitle);
+                        CheckBox checkBox = view.findViewById(R.id.checkBox);
+                        int res;
+                        switch (sectionTitle.tag) {
+                            case InboxSection.TAG:
+                                res = R.string.new_title;
+                                break;
+                            default:
+                            case QueueSection.TAG:
+                                res = R.string.continue_title;
+                                break;
+                            case SubsSection.TAG:
+                                res = R.string.rediscover_title;
+                                break;
+                            case SurpriseSection.TAG:
+                                res = R.string.surprise_title;
+                                break;
+                            case StatisticsSection.TAG:
+                                res = R.string.classics_title;
+                                break;
+                        }
+
+                        title.setText(getString(res));
+                        checkBox.setChecked(!sectionTitle.hidden);
+                    })
+                    .onItemClick((view, i) -> {
+                        CheckBox checkBox = view.findViewById(R.id.checkBox);
+                        list.get(i).toggleHidden();
+                        Log.d("asfa", "openHomeDialog: "+i);
+                        checkBox.setChecked(!checkBox.isChecked());
+                    })
+                    .into(dialogRecyclerView);
+
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+                    Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
+            }).attachToRecyclerView(dialogRecyclerView);
+
             builder.setView(layout);
 
-            for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
-                RecursiveRadioGroup row = (RecursiveRadioGroup) inflater.inflate(R.layout.filter_dialog_row, null, false);
-                RadioButton filter1 = row.findViewById(R.id.filter_dialog_radioButton1);
-                RadioButton filter2 = row.findViewById(R.id.filter_dialog_radioButton2);
-                filter1.setText(item.values[0].displayName);
-                filter1.setTag(item.values[0].filterId);
-                filter2.setText(item.values[1].displayName);
-                filter2.setTag(item.values[1].filterId);
-                rows.addView(row);
-            }
-
             builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                //TODO
+                saveSettings(list);
+                reloadSections();
             });
             builder.setNegativeButton(R.string.cancel_label, null);
             builder.create().show();
+    }
+
+    static class SectionTitle {
+        String tag;
+        boolean hidden;
+
+        public SectionTitle(String tag, boolean hidden) {
+            this.tag = tag;
+            this.hidden = hidden;
         }
 
+        public void toggleHidden() {
+            hidden = !hidden;
+        }
     }
 
     @Override
