@@ -16,6 +16,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,6 +50,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
@@ -267,7 +271,15 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) { updateSections(); }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateSections(); }
+
+
     private void updateSections() {
+        TransitionManager.beginDelayedTransition(
+                homeContainer,
+                new ChangeBounds());
+
         for (HomeSection section: sections) {
             section.updateItems();
         }

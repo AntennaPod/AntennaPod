@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
+import de.danoeh.antennapod.fragment.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 
@@ -30,10 +32,15 @@ public class InboxSection extends HomeSection<FeedItem> {
 
     private EpisodeItemListAdapter adapter;
 
+    private ItemTouchHelper itemTouchHelper;
+
     public InboxSection(HomeFragment context) {
         super(context);
         sectionTitle = "New";
         sectionNavigateTitle = context.getString(R.string.inbox_label);
+
+        recyclerView.setPadding(0,0,0,0);
+        SwipeActions.itemTouchHelper(context,InboxFragment.TAG).attachToRecyclerView(recyclerView);
     }
 
     @NonNull
