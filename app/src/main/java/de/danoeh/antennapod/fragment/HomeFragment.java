@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             });
 
             ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
-        
+
             //enable only if 2 or less sections are selected
             //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
 
@@ -330,6 +330,10 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
             builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                 saveSettings(list);
+                reloadSections();
+            });
+            builder.setNeutralButton(R.string.reset, (dialog, which) -> {
+                saveSettings(defaultSections);
                 reloadSections();
             });
             builder.setNegativeButton(R.string.cancel_label, null);
