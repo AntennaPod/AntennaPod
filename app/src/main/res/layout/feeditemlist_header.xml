@@ -113,6 +113,7 @@
             android:layout_height="wrap_content"
             android:padding="2dp"
             android:background="?android:attr/windowBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:visibility="gone"
             android:gravity="center"
             tools:visibility="visible"
