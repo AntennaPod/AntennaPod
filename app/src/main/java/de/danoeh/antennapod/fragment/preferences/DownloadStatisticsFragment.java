@@ -30,7 +30,7 @@ import java.util.List;
  * Displays the 'download statistics' screen
  */
 public class DownloadStatisticsFragment extends Fragment {
-    private static final String TAG = DownloadStatisticsFragment.class.getSimpleName();
+    public static final String TAG = DownloadStatisticsFragment.class.getSimpleName();
 
     private Disposable disposable;
     private RecyclerView downloadStatisticsList;

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment.homesections;
 
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,8 +81,12 @@ public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
                     int side = (int) displayMetrics.density * 140;
                     view.getLayoutParams().height = side;
                     view.getLayoutParams().width = side;
+                    ImageView cover = view.findViewById(R.id.discovery_cover);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        cover.setElevation(2 * displayMetrics.density);
+                    }
                     CoverLoader coverLoader = new CoverLoader((MainActivity) context.requireActivity())
-                            .withCoverView(view.findViewById(R.id.discovery_cover));
+                            .withCoverView(cover);
                     if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                         Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
                         coverLoader.withUri(feed.getImageUrl());

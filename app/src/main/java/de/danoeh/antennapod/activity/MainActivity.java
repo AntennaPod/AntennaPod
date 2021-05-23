@@ -44,6 +44,8 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.preferences.DownloadStatisticsFragment;
+import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -284,6 +286,9 @@ public class MainActivity extends CastEnabledActivity {
                 break;
             case SubscriptionFragment.TAG:
                 fragment = new SubscriptionFragment();
+                break;
+            case StatisticsFragment.TAG:
+                fragment = new StatisticsFragment();
                 break;
             default:
                 // default to home

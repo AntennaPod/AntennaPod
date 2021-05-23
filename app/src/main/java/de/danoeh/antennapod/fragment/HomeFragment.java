@@ -44,6 +44,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.homesections.HomeSection;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
+import de.danoeh.antennapod.fragment.homesections.StatisticsSection;
 import de.danoeh.antennapod.fragment.homesections.SubsSection;
 import de.danoeh.antennapod.fragment.homesections.SurpriseSection;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private final String[] defaultSections = new String[]{
             QueueSection.TAG,
             InboxSection.TAG,
+            StatisticsSection.TAG,
             SubsSection.TAG,
             SurpriseSection.TAG};
 
@@ -145,6 +147,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     break;
                 case SurpriseSection.TAG:
                     section = new SurpriseSection(this);
+                    break;
+                case StatisticsSection.TAG:
+                    section = new StatisticsSection(this);
                     break;
             }
 

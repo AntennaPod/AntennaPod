@@ -67,6 +67,8 @@ public class SurpriseSection extends HomeSection<FeedItem> {
                     title.setText(item.getTitle());
                     date.setText(DateUtils.formatAbbrev(context.requireContext(), item.getPubDate()));
 
+                    view.findViewById(R.id.play_icon).setVisibility(View.GONE);
+
                     view.setOnLongClickListener(v -> {
                         selectedItem = item;
                         context.setSelectedItem(item);
@@ -81,6 +83,7 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
+        //TODO randomly not new/played
         return DBReader.getRecentlyPublishedEpisodes(6, 6, new FeedItemFilter(""), false);
     }
 
