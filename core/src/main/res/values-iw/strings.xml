@@ -75,6 +75,7 @@
   <string name="author_label">יוצרים</string>
   <string name="language_label">שפה</string>
   <string name="url_label">כתובת</string>
+  <string name="cover_label">עטיפה</string>
   <string name="error_label">שגיאה</string>
   <string name="error_msg_prefix">אירעה שגיאה:</string>
   <string name="needs_storage_permission">נדרשת הרשאה לאחסון כדי לבצע פעולה זו</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">פרקים</string>
   <string name="chapter_duration">משך: %1$s</string>
   <string name="description_label">תיאור</string>
+  <string name="shownotes_label">הערות הפרק</string>
   <string name="episodes_suffix">\u0020פרקים</string>
   <string name="processing_label">מתבצע עיבוד</string>
   <string name="close_label">סגירה</string>

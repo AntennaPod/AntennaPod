@@ -75,6 +75,7 @@
   <string name="author_label">作者(们)</string>
   <string name="language_label">语言</string>
   <string name="url_label">链接地址</string>
+  <string name="cover_label">封面</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="needs_storage_permission">此操作需要存储权限。</string>
@@ -83,6 +84,7 @@
   <string name="chapters_label">章节</string>
   <string name="chapter_duration">时长：%1$s</string>
   <string name="description_label">描述</string>
+  <string name="shownotes_label">节目信息</string>
   <string name="episodes_suffix">\u0020 曲</string>
   <string name="processing_label">处理中</string>
   <string name="close_label">关闭</string>

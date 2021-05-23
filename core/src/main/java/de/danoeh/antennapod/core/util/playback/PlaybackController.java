@@ -49,6 +49,7 @@ public abstract class PlaybackController {
     private boolean released = false;
     private boolean initialized = false;
     private boolean eventsRegistered = false;
+    private long loadedFeedMedia = -1;
 
     public PlaybackController(@NonNull Activity activity) {
         this.activity = activity;
@@ -319,7 +320,8 @@ public abstract class PlaybackController {
     }
 
     private void checkMediaInfoLoaded() {
-        if (!mediaInfoLoaded) {
+        if (!mediaInfoLoaded || loadedFeedMedia != PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+            loadedFeedMedia = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
             loadMediaInfo();
         }
         mediaInfoLoaded = true;

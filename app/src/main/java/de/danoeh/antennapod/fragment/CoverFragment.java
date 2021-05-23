@@ -1,7 +1,13 @@
 package de.danoeh.antennapod.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -20,6 +26,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
@@ -29,6 +36,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +44,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
@@ -141,7 +151,35 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
+        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
+        txtvEpisodeTitle.setOnClickListener(v -> {
+            int lines = txtvEpisodeTitle.getLineCount();
+            int animUnit = 1500;
+            if (lines > txtvEpisodeTitle.getMaxLines()) {
+                ObjectAnimator verticalMarquee = ObjectAnimator.ofInt(
+                        txtvEpisodeTitle, "scrollY", 0, txtvEpisodeTitle.getHeight())
+                        .setDuration(lines * animUnit);
+                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 0);
+                fadeOut.setStartDelay(animUnit);
+                fadeOut.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        txtvEpisodeTitle.scrollTo(0, 0);
+                    }
+                });
+                ObjectAnimator fadeBackIn = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 1);
+                AnimatorSet set = new AnimatorSet();
+                set.playSequentially(verticalMarquee, fadeOut, fadeBackIn);
+                set.start();
+            }
+        });
+        
         displayedChapterIndex = -1;
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
         updateChapterControlVisibility();
@@ -352,5 +390,16 @@ public class CoverFragment extends Fragment {
             return;
         }
         controller.playPause();
+    }
+
+    private boolean copyText(String text) {
+        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
+        }
+        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
+                getResources().getString(R.string.copied_to_clipboard),
+                Snackbar.LENGTH_SHORT);
+        return true;
     }
 }

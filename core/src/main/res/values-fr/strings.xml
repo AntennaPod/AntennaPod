@@ -75,6 +75,7 @@
   <string name="author_label">Auteur(s)</string>
   <string name="language_label">Langue</string>
   <string name="url_label">Lien</string>
+  <string name="cover_label">Image</string>
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="needs_storage_permission">L\'autorisation d\'utiliser le stockage est requis pour cette opération</string>
@@ -82,7 +83,8 @@
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="chapter_duration">Durée : %1$s</string>
-  <string name="description_label">Notes</string>
+  <string name="description_label">Description</string>
+  <string name="shownotes_label">Notes</string>
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="processing_label">Traitement en cours</string>
   <string name="close_label">Fermer</string>
