@@ -39,10 +39,12 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -384,6 +386,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
                     adapter.notifyItemChangedCompat(pos);
+                    swipeActions.resetItemTouchHelper();
                 }
             }
         }
@@ -418,6 +421,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void favoritesChanged(FavoritesEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onQueueChanged(QueueEvent event) { updateUi(); }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         if (feed != null && event.contains(feed)) {
             updateUi();
@@ -449,9 +460,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
-            swipeActions.resetItemTouchHelper();
         }
 
+        swipeActions.resetItemTouchHelper();
         refreshToolbarState();
         updateSyncProgressBarVisibility();
     }

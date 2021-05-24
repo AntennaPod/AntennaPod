@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -463,6 +464,9 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     public void favoritesChanged(FavoritesEvent event) {
         updateUi();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onQueueChanged(QueueEvent event) { updateUi(); }
 
     void loadItems() {
         if (disposable != null) {

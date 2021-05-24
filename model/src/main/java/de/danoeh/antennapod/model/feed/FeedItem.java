@@ -250,6 +250,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         return state == NEW;
     }
 
+    public int getPlayState() { return state; }
 
     public void setNew() {
         state = NEW;

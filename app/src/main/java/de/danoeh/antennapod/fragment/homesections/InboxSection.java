@@ -32,7 +32,7 @@ public class InboxSection extends HomeSection<FeedItem> {
 
     private EpisodeItemListAdapter adapter;
 
-    private ItemTouchHelper itemTouchHelper;
+    private SwipeActions swipeActions;
 
     public InboxSection(HomeFragment context) {
         super(context);
@@ -40,7 +40,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         sectionNavigateTitle = context.getString(R.string.inbox_label);
 
         recyclerView.setPadding(0,0,0,0);
-        new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
+        swipeActions = new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
     }
 
     @NonNull
@@ -81,6 +81,7 @@ public class InboxSection extends HomeSection<FeedItem> {
     @Override
     public void updateItems(UpdateEvents event) {
         adapter.updateItems(loadItems());
+        swipeActions.resetItemTouchHelper();
         super.updateItems(event);
     }
 }

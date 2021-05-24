@@ -87,14 +87,20 @@ public class SwipeActions {
                 FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
                 switch (action) {
                     case ADD_TO_QUEUE:
-                        FeedItemMenuHandler.addToQueue(fragment.requireContext(),item);
+                        if (!item.isTagged(FeedItem.TAG_QUEUE)) {
+                            FeedItemMenuHandler.addToQueue(fragment.requireContext(),item);
+                        } else {
+                            //already in queue
+                            resetItemTouchHelper();
+                        }
                         break;
                     case MARK_PLAYED:
-                        FeedItemMenuHandler.removeNewFlagWithUndo(fragment,
-                                item, FeedItem.PLAYED);
+                        int togglePlayState = item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+                        FeedItemMenuHandler.markReadWithUndo(fragment,
+                                item, togglePlayState);
                         break;
-                    case MARK_UNPLAYED:
-                        FeedItemMenuHandler.removeNewFlagWithUndo(fragment,
+                    case MARK_UNPLAYED: //remove "new" flag
+                        FeedItemMenuHandler.markReadWithUndo(fragment,
                                 item, FeedItem.UNPLAYED);
                         break;
                     case MARK_FAV:
