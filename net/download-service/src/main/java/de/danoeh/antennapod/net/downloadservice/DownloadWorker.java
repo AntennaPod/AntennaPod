@@ -39,12 +39,12 @@ public class DownloadWorker extends Worker {
         WorkManager.getInstance(context).enqueue(builder.build());
     }
 
-    public static void cancel(Context context, String downloadUrl) {
+    public static void cancel(Context context, @NonNull String downloadUrl) {
         try {
             List<WorkInfo> downloads = WorkManager.getInstance(context).getWorkInfosByTag(DownloadRequest.TAG).get();
             for (WorkInfo workInfo : downloads) {
                 DownloadRequest request = DownloadRequest.from(workInfo.getProgress());
-                if (!workInfo.getState().isFinished() && request.getSource().equals(downloadUrl)) {
+                if (!workInfo.getState().isFinished() && downloadUrl.equals(request.getSource())) {
                     WorkManager.getInstance(context).cancelWorkById(workInfo.getId());
                 }
             }
@@ -63,6 +63,7 @@ public class DownloadWorker extends Worker {
     @Override
     public Result doWork() {
         DownloadRequest request = DownloadRequest.from(getInputData());
+        setProgressAsync(request.toWorkData());
 
         if (request.isCleanupMedia()) {
             UserPreferences.getEpisodeCleanupAlgorithm().makeRoomForEpisodes(getApplicationContext(), 1); // TODO

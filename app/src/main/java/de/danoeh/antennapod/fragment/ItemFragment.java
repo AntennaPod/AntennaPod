@@ -383,8 +383,11 @@ public class ItemFragment extends Fragment {
                     }
                     long mediaId = item.getMedia().getId();
                     for (WorkInfo workInfo : workInfos) {
+                        if (workInfo.getState().isFinished()) {
+                            continue;
+                        }
                         DownloadRequest request = DownloadRequest.from(workInfo.getProgress());
-                        if (!workInfo.getState().isFinished() && request.getFeedfileId() == mediaId) {
+                        if (request.getFeedfileId() == mediaId) {
                             progbarDownload.setProgress(request.getProgressPercent());
                             isDownloadingCurrentItem = true;
                             break;
