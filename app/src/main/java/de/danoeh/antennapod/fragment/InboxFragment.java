@@ -5,12 +5,14 @@ import androidx.annotation.NonNull;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 
@@ -47,6 +49,7 @@ public class InboxFragment extends EpisodesListFragment {
         menu.findItem(R.id.filter_items).setVisible(false);
         menu.findItem(R.id.mark_all_read_item).setVisible(false);
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
+        menu.findItem(R.id.swipe_settings).setVisible(true);
     }
 
     @NonNull
@@ -61,6 +64,21 @@ public class InboxFragment extends EpisodesListFragment {
         setSwipeActions(TAG);
 
         return root;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (!super.onMenuItemClick(item)) {
+            switch (item.getItemId()) {
+                case R.id.swipe_settings:
+                    swipeActions.show();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     @NonNull

@@ -86,7 +86,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     Toolbar toolbar;
 
-    ItemTouchHelper itemTouchHelper;
+    SwipeActions swipeActions;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -332,17 +332,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     public void setSwipeActions(String tag){
-        itemTouchHelper = SwipeActions.itemTouchHelper(this,tag);
-
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-
-    private void resetItemTouchHelper() {
-        //prevent swipe staying if item is staying in the list
-        if (itemTouchHelper != null && recyclerView != null) {
-            itemTouchHelper.attachToRecyclerView(null);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
-        }
+        swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
     }
 
     private void loadMoreItems() {
@@ -382,7 +372,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             onPrepareOptionsMenu(toolbar.getMenu());
         }
 
-        resetItemTouchHelper();
+        swipeActions.resetItemTouchHelper();
     }
 
     /**
@@ -443,7 +433,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChangedCompat(pos);
-                    resetItemTouchHelper();
+                    swipeActions.resetItemTouchHelper();
                 }
             }
         }

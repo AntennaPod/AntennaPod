@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment.homesections;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,18 +10,26 @@ import androidx.annotation.NonNull;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.EpisodesListFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
@@ -36,20 +45,31 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     public SurpriseSection(HomeFragment context) {
         super(context);
         sectionTitle = context.getString(R.string.surprise_title);
-        //sectionNavigateTitle
+        sectionNavigateTitle = context.getString(R.string.episodes_label);
     }
 
     @Override
     protected View.OnClickListener navigate() {
-        return null;
+        return view -> {
+            Bundle b = new Bundle();
+            b.putInt(EpisodesFragment.PREF_FILTER,EpisodesListFragment.QUICKFILTER_NEW);
+            ((MainActivity) context.requireActivity()).loadFragment(EpisodesFragment.TAG, b);
+        };
     }
 
     @Override
     protected Unit onItemClick(View view, FeedItem feedItem) {
-        //TODO PLAY
-        long[] ids = FeedItemUtil.getIds(loadItems());
+        /*long[] ids = FeedItemUtil.getIds(loadItems());
         int position = ArrayUtils.indexOf(ids, feedItem.getId());
-        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));*/
+        new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
+                .callEvenIfRunning(true)
+                .startWhenPrepared(true)
+                .shouldStream(!feedItem.isDownloaded())
+                .start();
+        //
+        slush.getItemListEditor().removeItem(feedItem);
+        slush.getItemListEditor().addItem(loadItems().get(0));
         return null;
     }
 
@@ -67,8 +87,6 @@ public class SurpriseSection extends HomeSection<FeedItem> {
                     title.setText(item.getTitle());
                     date.setText(DateUtils.formatAbbrev(context.requireContext(), item.getPubDate()));
 
-                    view.findViewById(R.id.play_icon).setVisibility(View.GONE);
-
                     view.setOnLongClickListener(v -> {
                         selectedItem = item;
                         context.setSelectedItem(item);
@@ -83,13 +101,11 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
-        //TODO randomly not new/played
-        return DBReader.getRecentlyPublishedEpisodes(6, 6, new FeedItemFilter(""), false);
+        return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter("not_queued,unplayed"), true);
     }
 
     @Override
-    public void updateItems() {
-        slush.getItemListEditor().changeAll(loadItems());
-        super.updateItems();
+    public void updateItems(UpdateEvents event) {
+        super.updateItems(event);
     }
 }

@@ -3,13 +3,27 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Arrays;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -21,30 +35,39 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class SwipeActions {
     private static final String PREF_NAME = "SwipeActionsPrefs";
-    private static final String PREF_SWIPEACTIONS = "swipeactions";
-    private static final String PREF_FIRSTSWIPE = "firstswipe";
+    private static final String PREF_SWIPEACTIONS = "PrefsSwipeActions";
     public static final String ADD_TO_QUEUE = "ADDTOQUEUE";
     public static final String MARK_PLAYED = "MARKPLAYED";
     public static final String MARK_UNPLAYED = "MARKUNPLAYED";
     public static final String MARK_FAV = "MARKFAV";
     public static final String START_DOWNLOAD = "STARTDOWNLOAD";
 
-    public static ItemTouchHelper itemTouchHelper(Fragment fragment, String tag) {
-        SharedPreferences prefs = fragment.requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    RecyclerView recyclerView;
+    ItemTouchHelper itemTouchHelper;
+    Fragment fragment;
+    String tag;
 
-        //TODO
-        prefs.edit().putString(PREF_SWIPEACTIONS+InboxFragment.TAG,ADD_TO_QUEUE+","+MARK_UNPLAYED).apply();
-        prefs.edit().putString(PREF_SWIPEACTIONS+ EpisodesFragment.TAG,START_DOWNLOAD+","+MARK_PLAYED).apply();
+    private interface Callback {
+        void onPrefsChange();
+    }
 
-        String[] leftright = prefs.getString(PREF_SWIPEACTIONS+tag,"").split(",");
+    public SwipeActions(Fragment fragment, String tag) {
+        this.fragment = fragment;
+        this.tag = tag;
+        itemTouchHelper();
+    }
+    public SwipeActions attachTo(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        return this;
+    }
 
-        if (prefs.getBoolean(PREF_FIRSTSWIPE, true) || leftright.length == 0) {
-            prefs.edit().putBoolean(PREF_FIRSTSWIPE, false).apply();
-            //TODO
-        }
-
+    private void itemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+
+            String[] rightleft = getPrefs(fragment.requireContext(), tag);
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
@@ -53,7 +76,13 @@ public class SwipeActions {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                String action = leftright[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
+                if (rightleft.length == 0) {
+                    //open settings dialog if no prefs are set
+                    show(() -> rightleft = getPrefs(fragment.requireContext(), tag));
+                    return;
+                }
+
+                String action = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
 
                 FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
                 switch (action) {
@@ -72,11 +101,18 @@ public class SwipeActions {
                         DBWriter.toggleFavoriteItem(item);
                         break;
                     case START_DOWNLOAD:
-                        try {
-                            DownloadRequester.getInstance().downloadMedia(fragment.requireContext(), true, item);
-                        } catch (DownloadRequestException e) {
-                            e.printStackTrace();
-                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(fragment.requireContext(), e.getMessage());
+                        if (!item.isDownloaded()) {
+                            try {
+                                DownloadRequester.getInstance().downloadMedia(fragment.requireContext(), true, item);
+                            } catch (DownloadRequestException e) {
+                                e.printStackTrace();
+                                DownloadRequestErrorDialogCreator.newRequestErrorDialog(fragment.requireContext(), e.getMessage());
+                            }
+                        } else {
+                            resetItemTouchHelper();
+                            ((MainActivity) fragment.requireActivity()).showSnackbarAbovePlayer(
+                                    fragment.getResources().getString(R.string.already_downloaded),
+                                    Snackbar.LENGTH_SHORT);
                         }
                         break;
                 }
@@ -84,21 +120,24 @@ public class SwipeActions {
 
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
-                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(
-                                ContextCompat.getColor(fragment.requireContext(), actionColorFor(leftright[0])))
-                        .addSwipeRightActionIcon(actionIconFor(leftright[0]))
-                        .addSwipeLeftBackgroundColor(
-                                ContextCompat.getColor(fragment.requireContext(), actionColorFor(leftright[1])))
-                        .addSwipeLeftActionIcon(actionIconFor(leftright[1]))
-                        .create()
-                        .decorate();
+                //display only if preferences are set
+                if (rightleft.length > 0) {
+                    new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeRightBackgroundColor(
+                                    ContextCompat.getColor(fragment.requireContext(), actionColorFor(rightleft[0])))
+                            .addSwipeRightActionIcon(actionIconFor(rightleft[0]))
+                            .addSwipeLeftBackgroundColor(
+                                    ContextCompat.getColor(fragment.requireContext(), actionColorFor(rightleft[1])))
+                            .addSwipeLeftActionIcon(actionIconFor(rightleft[1]))
+                            .create()
+                            .decorate();
+                }
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
 
-        return new ItemTouchHelper(simpleCallback);
+        itemTouchHelper = new ItemTouchHelper(simpleCallback);
     }
 
     private static int actionIconFor(String swipeAction) {
@@ -132,20 +171,166 @@ public class SwipeActions {
         }
     }
 
-    public abstract class SwipeActionsDialog {
+    private static String[] getPrefs(Context context, String tag, String defaultActions) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String prefsString = prefs.getString(PREF_SWIPEACTIONS+tag, defaultActions);
+        if (prefsString.isEmpty()) {
+            //no prefs set
+            return new String[]{};
+        }
+        return prefsString.split(",");
+    }
+    private static String[] getPrefs(Context context, String tag) {
+        return getPrefs(context, tag, "");
+    }
+    private static String[] getPrefsWithDefaults(Context context, String tag) {
+        String defaultActions;
+        switch (tag) {
+            case InboxFragment.TAG:
+                defaultActions = ADD_TO_QUEUE+","+MARK_UNPLAYED;
+                break;
+            default:
+            case EpisodesFragment.TAG:
+                defaultActions = MARK_FAV+","+START_DOWNLOAD;
+                break;
+        }
+
+        return getPrefs(context, tag, defaultActions);
+    }
+
+    public void resetItemTouchHelper() {
+        //prevent swipe staying if item is staying in the list
+        if (itemTouchHelper != null && recyclerView != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
+    }
+
+    public void show() {
+        new SwipeActionsDialog().show(() -> {
+            //detach old
+            itemTouchHelper.attachToRecyclerView(null);
+            //create new
+            itemTouchHelper();
+            //attach new
+            attachTo(recyclerView);
+        });
+    }
+    private void show(Callback callback) {
+        new SwipeActionsDialog().show(callback);
+    }
+
+    private class SwipeActionsDialog {
 
         protected Context context;
 
-        public SwipeActionsDialog(Context context) {
-            this.context = context;
+        public SwipeActionsDialog() {
+            context = fragment.requireContext();
         }
 
-        private void savePrefs(String tag, String left, String right){
+        private void show(Callback callback) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            String forFragment = "";
+            switch (tag) {
+                case InboxFragment.TAG:
+                    forFragment = context.getString(R.string.inbox_label);
+                    break;
+                case EpisodesFragment.TAG:
+                    forFragment = context.getString(R.string.episodes_label);
+                    break;
+                case FeedItemlistFragment.TAG:
+                    forFragment = context.getString(R.string.feeds_label);
+                    break;
+            }
+
+            builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
+
             SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            prefs.edit().putString(PREF_SWIPEACTIONS+tag,left+","+right).apply();
 
+            //same order as in R.array.swipe_actions
+            List<String> prefKeys = Arrays.asList(ADD_TO_QUEUE,MARK_UNPLAYED,START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
+
+            ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
+            ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
+            View rightColor = layout.findViewById(R.id.swipeColorViewRight);
+            View leftColor = layout.findViewById(R.id.swipeColorViewLeft);
+
+            Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
+            Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
+
+            rightColor.setOnClickListener(view -> {
+                spinnerRightAction.performClick();
+            });
+            leftColor.setOnClickListener(view -> {
+                spinnerLeftAction.performClick();
+            });
+
+            spinnerRightAction.setAdapter(adapter());
+            spinnerLeftAction.setAdapter(adapter());
+
+            spinnerRightAction.setOnItemSelectedListener(
+                    listener((a, v, i, l) -> {
+                        String action = prefKeys.get(i);
+                        rightIcon.setImageResource(actionIconFor(action));
+                        rightColor.setBackgroundResource(actionColorFor(action));
+                    })
+            );
+            spinnerLeftAction.setOnItemSelectedListener(
+                    listener((a, v, i, l) -> {
+                        String action = prefKeys.get(i);
+                        leftIcon.setImageResource(actionIconFor(action));
+                        leftColor.setBackgroundResource(actionColorFor(action));
+                    })
+            );
+
+            //load prefs and suggest defaults if swiped the first time
+            String[] rightleft = getPrefsWithDefaults(context,tag);
+            int right = prefKeys.indexOf(rightleft[0]);
+            int left = prefKeys.indexOf(rightleft[1]);
+
+            spinnerRightAction.setSelection(right);
+            spinnerLeftAction.setSelection(left);
+
+            builder.setView(layout);
+
+            builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                String rightAction = prefKeys.get(spinnerRightAction.getSelectedItemPosition());
+                String leftAction = prefKeys.get(spinnerLeftAction.getSelectedItemPosition());
+                savePrefs(tag, rightAction, leftAction);
+                callback.onPrefsChange();
+            });
+            builder.setNegativeButton(R.string.cancel_label, null);
+            builder.setOnDismissListener(dialogInterface -> resetItemTouchHelper());
+            builder.create().show();
         }
 
-        //TODO
+        private void savePrefs(String tag, String right, String left){
+            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            prefs.edit().putString(PREF_SWIPEACTIONS+tag,right+","+left).apply();
+        }
+
+        private AdapterView.OnItemSelectedListener listener(AdapterView.OnItemClickListener listener) {
+            return new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    listener.onItemClick(adapterView, view, i, l);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            };
+        }
+
+        private ArrayAdapter<String> adapter() {
+            return new ArrayAdapter<>(context,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    context.getResources().getStringArray(R.array.swipe_actions));
+        }
     }
 }

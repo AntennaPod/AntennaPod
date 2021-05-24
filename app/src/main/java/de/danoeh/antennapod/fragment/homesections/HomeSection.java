@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -28,12 +28,16 @@ import slush.listeners.OnBindListener;
  */
 public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuListener {
 
-    HomeFragment context;
+    protected HomeFragment context;
 
     protected View section;
     protected TextView tvTitle;
-    protected TextView tvNavigate;
+    protected Button navigateButton;
     protected RecyclerView recyclerView;
+
+    public enum UpdateEvents {
+        FEED_ITEM, UNREAD, FAVORITES, QUEUE
+    }
 
     //must be set by descendant
     protected String sectionTitle;
@@ -45,15 +49,17 @@ public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuList
         this.context = context;
         section = View.inflate(context.requireActivity(), R.layout.home_section, null);
         tvTitle = section.findViewById(R.id.sectionTitle);
-        tvNavigate = section.findViewById(R.id.sectionNavigate);
+        navigateButton = section.findViewById(R.id.sectionNavigate);
         recyclerView = section.findViewById(R.id.sectionRecyclerView);
     }
 
     public void addSectionTo(LinearLayout parent) {
         tvTitle.setText(sectionTitle);
         if (!TextUtils.isEmpty(sectionNavigateTitle)) {
-            tvNavigate.setText(sectionNavigateTitle.toLowerCase()+" >>");
-            tvNavigate.setOnClickListener(navigate());
+            navigateButton.setText(context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase()));
+            navigateButton.setOnClickListener(navigate());
+        } else {
+            navigateButton.setVisibility(View.INVISIBLE);
         }
 
         parent.addView(section);
@@ -72,7 +78,7 @@ public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuList
     @NonNull
     protected abstract List<ITEMS> loadItems();
 
-    public void updateItems() {
+    public void updateItems(UpdateEvents event) {
         hideIfEmpty();
     }
 

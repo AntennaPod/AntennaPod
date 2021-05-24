@@ -98,8 +98,8 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
     }
 
     @Override
-    public void updateItems() {
+    public void updateItems(UpdateEvents event) {
         slush.getItemListEditor().changeAll(loadItems());
-        super.updateItems();
+        super.updateItems(event);
     }
 }

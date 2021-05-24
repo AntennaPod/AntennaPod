@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -85,11 +86,12 @@ import java.util.Set;
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
         Toolbar.OnMenuItemClickListener {
-    private static final String TAG = "ItemlistFragment";
+    public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private FeedItemListAdapter adapter;
+    private SwipeActions swipeActions;
     private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
@@ -273,9 +275,15 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            item.getActionView().post(() -> iconTintManager.updateTint());
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                item.getActionView().post(() -> iconTintManager.updateTint());
+                break;
+            case R.id.swipe_settings:
+                swipeActions.show();
+                break;
         }
+
         if (feed == null) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -435,11 +443,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
             recyclerView.setAdapter(adapter);
+            swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         }
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
+            swipeActions.resetItemTouchHelper();
         }
 
         refreshToolbarState();

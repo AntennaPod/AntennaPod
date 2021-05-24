@@ -238,7 +238,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     private void openHomeDialog() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle(R.string.home_label);
 
             LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -256,7 +258,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                     prefs.edit().putInt(PREF_FRAGMENT, i).apply();
                 }
 
@@ -265,6 +266,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
                 }
             });
+            spinner.setSelection(prefs.getInt(PREF_FRAGMENT, 0));
 
             ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
 
@@ -376,19 +378,19 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FeedItemEvent event) { updateSections(); }
+    public void onEventMainThread(FeedItemEvent event) { updateSections(HomeSection.UpdateEvents.FEED_ITEM); }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateSections(); }
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateSections(HomeSection.UpdateEvents.UNREAD); }
 
 
-    private void updateSections() {
+    private void updateSections(HomeSection.UpdateEvents event) {
         TransitionManager.beginDelayedTransition(
                 homeContainer,
                 new ChangeBounds());
 
         for (HomeSection section: sections) {
-            section.updateItems();
+            section.updateItems(event);
         }
     }
 }

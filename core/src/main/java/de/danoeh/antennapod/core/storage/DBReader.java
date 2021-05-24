@@ -406,18 +406,22 @@ public final class DBReader {
      * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter, boolean pausedOnTop) {
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter, boolean randomOrder) {
         Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit, filter, pausedOnTop)) {
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit, filter, randomOrder)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
             adapter.close();
         }
+    }
+    @NonNull
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter) {
+        return getRecentlyPublishedEpisodes(offset, limit, filter, false);
     }
 
     /**

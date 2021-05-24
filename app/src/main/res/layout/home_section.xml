@@ -7,41 +7,39 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="8dp">
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/sectionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/sectionNavigate"
+        android:layout_alignBottom="@id/sectionNavigate"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="18sp"
         tools:text="Title" />
 
-    <TextView
+    <Button
         android:id="@+id/sectionNavigate"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/sectionTitle"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="16dp"
-        android:background="?android:selectableItemBackground"
-        android:textColor="@color/accent_dark"
-        android:textSize="@dimen/text_size_medium"
-        android:textStyle="bold"
-        tools:text="navigate >>" />
+        android:paddingVertical="0dp"
+        android:layout_marginEnd="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sectionRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sectionTitle"
+        android:layout_below="@+id/sectionNavigate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

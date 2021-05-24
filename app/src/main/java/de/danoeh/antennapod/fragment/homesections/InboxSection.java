@@ -40,7 +40,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         sectionNavigateTitle = context.getString(R.string.inbox_label);
 
         recyclerView.setPadding(0,0,0,0);
-        SwipeActions.itemTouchHelper(context,InboxFragment.TAG).attachToRecyclerView(recyclerView);
+        new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
     }
 
     @NonNull
@@ -79,8 +79,8 @@ public class InboxSection extends HomeSection<FeedItem> {
     }
 
     @Override
-    public void updateItems() {
+    public void updateItems(UpdateEvents event) {
         adapter.updateItems(loadItems());
-        super.updateItems();
+        super.updateItems(event);
     }
 }

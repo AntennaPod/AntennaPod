@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,11 +36,9 @@ public class EpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefPowerEpisodesFragment";
     private static final String PREF_POSITION = "position";
 
-    private static final String PREF_PAUSEDFIRST = "pausedfirst";
-    private static final String PREF_FILTER = "filter";
+    public static final String PREF_FILTER = "filter";
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
-    private boolean pausedOnTop;
 
     public EpisodesFragment(){
         super();
@@ -58,7 +55,6 @@ public class EpisodesFragment extends EpisodesListFragment {
         setRetainInstance(true);
 
         feedItemFilter = new FeedItemFilter(getPrefFilter());
-        loadPrefBooleans();
     }
 
     @NonNull
@@ -100,6 +96,7 @@ public class EpisodesFragment extends EpisodesListFragment {
         super.onStart();
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         setQuickFilterPosition(prefs.getInt(PREF_POSITION, QUICKFILTER_ALL));
+        loadArgsIfAvailable();
     }
 
     @Override
@@ -113,14 +110,15 @@ public class EpisodesFragment extends EpisodesListFragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(PREF_FILTER, "");
     }
-    private void loadPrefBooleans() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        pausedOnTop = prefs.getBoolean(PREF_PAUSEDFIRST,false);
+    private void loadArgsIfAvailable() {
+        if (getArguments() != null) {
+            int argumentsFilter = getArguments().getInt(PREF_FILTER, -1);
+            if (argumentsFilter >= 0) {
+                setQuickFilterPosition(argumentsFilter);
+            }
+        }
     }
 
-    public void loadMenuCheked(Menu menu) {
-        menu.findItem(R.id.paused_first_item).setChecked(pausedOnTop);
-    }
 
     @Override
     protected String getPrefName() {
@@ -139,14 +137,11 @@ public class EpisodesFragment extends EpisodesListFragment {
                     setQuickFilterPosition(QUICKFILTER_ALL);
                     showFilterDialog();
                     return true;
-                case R.id.paused_first_item:
-                    pausedOnTop = !pausedOnTop;
-                    item.setChecked(pausedOnTop);
-                    savePrefsBoolean(PREF_PAUSEDFIRST, pausedOnTop);
-                    loadItems();
-                    return true;
                 case R.id.add_podcast_item:
                     ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
+                    return true;
+                case R.id.swipe_settings:
+                    swipeActions.show();
                     return true;
                 default:
                     return false;
@@ -168,9 +163,8 @@ public class EpisodesFragment extends EpisodesListFragment {
         menu.findItem(R.id.mark_all_read_item).setVisible(true);
         menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
         menu.findItem(R.id.add_podcast_item).setVisible(true);
-        menu.findItem(R.id.paused_first_item).setVisible(true);
+        menu.findItem(R.id.swipe_settings).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
-        menu.findItem(R.id.paused_first_item).setChecked(pausedOnTop);
     }
 
     @Override
@@ -238,7 +232,7 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     private List<FeedItem> load(int offset) {
         int limit = EPISODES_PER_PAGE;
-        return DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter, pausedOnTop);
+        return DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter);
     }
 
     @NonNull

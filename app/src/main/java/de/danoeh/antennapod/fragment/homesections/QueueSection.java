@@ -86,9 +86,9 @@ public class QueueSection extends HomeSection<FeedItem> {
     }
 
     @Override
-    public void updateItems() {
+    public void updateItems(UpdateEvents event) {
         slush.getItemListEditor().changeAll(loadItems());
-        super.updateItems();
+        super.updateItems(event);
     }
 
 

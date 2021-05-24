@@ -59,13 +59,10 @@
         android:icon="@drawable/ic_check"/>
 
     <item
-        android:id="@+id/paused_first_item"
-        android:title="@string/paused_first_label"
-        app:actionViewClass="android.widget.CheckBox"
-        android:checkable="true"
+        android:id="@+id/swipe_settings"
+        android:title="@string/swipeactions_label"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
-        android:visible="false"
-        android:checked="false" />
+        android:visible="false" />
 
 </menu>
