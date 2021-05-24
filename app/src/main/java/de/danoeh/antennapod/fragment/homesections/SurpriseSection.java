@@ -24,6 +24,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.EpisodesListFragment;
@@ -35,6 +36,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
+
+import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
 
 public class SurpriseSection extends HomeSection<FeedItem> {
@@ -68,7 +71,6 @@ public class SurpriseSection extends HomeSection<FeedItem> {
                 .startWhenPrepared(true)
                 .shouldStream(!feedItem.isDownloaded())
                 .start();
-        //
         slush.getItemListEditor().removeItem(feedItem);
         slush.getItemListEditor().addItem(loadItems().get(0));
         return null;

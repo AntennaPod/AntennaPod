@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
-    android:layout_width="120dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     app:cardCornerRadius="8dp">
@@ -31,7 +31,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:elevation="1dp"
-                    app:srcCompat="@drawable/ic_baseline_play_circle" />
+                    app:srcCompat="@drawable/ic_play_circle" />
 
                 <de.danoeh.antennapod.ui.common.SquareImageView
                     android:id="@+id/cover_play"

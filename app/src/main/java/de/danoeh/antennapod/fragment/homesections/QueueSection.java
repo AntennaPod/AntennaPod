@@ -16,12 +16,16 @@ import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
+
+import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
 
 public class QueueSection extends HomeSection<FeedItem> {
@@ -46,11 +50,17 @@ public class QueueSection extends HomeSection<FeedItem> {
 
     @Override
     protected Unit onItemClick(View view, FeedItem feedItem) {
-        new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
-                .callEvenIfRunning(true)
-                .startWhenPrepared(true)
-                .shouldStream(!feedItem.isDownloaded())
-                .start();
+        boolean isPlaying = FeedItemUtil.isCurrentlyPlaying(feedItem.getMedia());
+        if (isPlaying) {
+            IntentUtils.sendLocalBroadcast(context.requireContext(), ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        } else {
+            new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
+                    .callEvenIfRunning(true)
+                    .startWhenPrepared(true)
+                    .shouldStream(!feedItem.isDownloaded())
+                    .start();
+        }
+        playPauseIcon(view.findViewById(R.id.play_icon), !isPlaying);
         return null;
     }
 
@@ -60,6 +70,8 @@ public class QueueSection extends HomeSection<FeedItem> {
                     ImageView coverPlay = view.findViewById(R.id.cover_play);
                     TextView title = view.findViewById(R.id.playTitle);
                     TextView date = view.findViewById(R.id.playDate);
+                    playPauseIcon(view.findViewById(R.id.play_icon),
+                            FeedItemUtil.isCurrentlyPlaying(item.getMedia()));
                     new CoverLoader((MainActivity) context.requireActivity())
                             .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                             .withFallbackUri(item.getFeed().getImageUrl())
@@ -77,6 +89,10 @@ public class QueueSection extends HomeSection<FeedItem> {
                 });
 
         super.addSectionTo(parent);
+    }
+
+    private void playPauseIcon(ImageView icon, boolean isPlaying){
+        icon.setImageResource(isPlaying ? R.drawable.ic_pause_circle : R.drawable.ic_play_circle);
     }
 
     @NonNull
