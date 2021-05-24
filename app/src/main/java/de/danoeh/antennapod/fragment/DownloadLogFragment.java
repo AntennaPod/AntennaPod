@@ -24,15 +24,13 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.net.downloadservice.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
 import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -53,11 +51,8 @@ public class DownloadLogFragment extends ListFragment {
     private static final String TAG = "DownloadLogFragment";
 
     private List<DownloadStatus> downloadLog = new ArrayList<>();
-    private List<Downloader> runningDownloads = new ArrayList<>();
     private DownloadLogAdapter adapter;
     private Disposable disposable;
-
-    private boolean isUpdatingFeeds = false;
 
     @Override
     public void onStart() {
@@ -165,7 +160,6 @@ public class DownloadLogFragment extends ListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         menu.findItem(R.id.episode_actions).setVisible(false);
         menu.findItem(R.id.clear_logs_item).setVisible(!downloadLog.isEmpty());
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
@@ -181,14 +175,6 @@ public class DownloadLogFragment extends ListFragment {
         }
         return false;
     }
-/*
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-        }
-    }*/
 
     private void setupDownloaderUpdates() {
         WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(DownloadRequest.TAG)
@@ -202,9 +188,6 @@ public class DownloadLogFragment extends ListFragment {
                     adapter.setRunningDownloads(requests);
                 });
     }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> false;
 
     private void loadDownloadLog() {
         if (disposable != null) {

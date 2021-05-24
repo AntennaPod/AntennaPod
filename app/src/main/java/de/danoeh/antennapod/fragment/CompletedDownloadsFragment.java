@@ -21,13 +21,12 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -58,8 +57,6 @@ public class CompletedDownloadsFragment extends Fragment {
     private ProgressBar progressBar;
     private Disposable disposable;
     private EmptyViewHandler emptyView;
-
-    private boolean isUpdatingFeeds = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -104,7 +101,6 @@ public class CompletedDownloadsFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         menu.findItem(R.id.clear_logs_item).setVisible(false);
         menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
@@ -119,17 +115,6 @@ public class CompletedDownloadsFragment extends Fragment {
         }
         return false;
     }
-
-    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-        }
-    }*/
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> false;
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
