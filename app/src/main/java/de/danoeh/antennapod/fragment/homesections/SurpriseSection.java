@@ -98,9 +98,7 @@ public class SurpriseSection extends HomeSection<FeedItem> {
 
         ImageButton shuffle = section.findViewById(R.id.shuffleButton);
         shuffle.setVisibility(View.VISIBLE);
-        shuffle.setOnClickListener(view -> {
-            slush.getItemListEditor().changeAll(loadItems());
-        });
+        shuffle.setOnClickListener(view -> slush.getItemListEditor().changeAll(loadItems()));
 
         super.addSectionTo(parent);
     }
