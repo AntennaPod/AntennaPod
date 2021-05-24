@@ -428,12 +428,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
                 f.setPreferences(feed.getPreferences());
                 this.feed = f;
-                try {
-                    DownloadRequester.getInstance().downloadFeed(this, f);
+                /*try {
+                    //DownloadRequester.getInstance().downloadFeed(this, f);
                 } catch (DownloadRequestException e) {
                     Log.e(TAG, Log.getStackTraceString(e));
                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
-                }
+                }*/
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus(feed);
             }

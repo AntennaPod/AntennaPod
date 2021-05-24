@@ -129,54 +129,27 @@ public class DownloadRequester implements DownloadStateProvider {
         return true;*/
     }
 
-    /**
-     * Downloads a feed.
-     *
-     * @param context The application's environment.
-     * @param feed Feeds to download
-     * @param loadAllPages Set to true to download all pages
-     */
-    public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages,
-                                           boolean force, boolean initiatedByUser) throws DownloadRequestException {
-        downloadFeeds(context, Collections.singletonList(feed), loadAllPages, force, initiatedByUser);
-    }
 
     /**
      * Downloads a list of feeds.
      *
-     * @param context The application's environment.
-     * @param feeds Feeds to download
      * @param loadAllPages Set to true to download all pages
      */
-    public synchronized void downloadFeeds(Context context, List<Feed> feeds, boolean loadAllPages,
+    public synchronized DownloadRequest createRequest(Feed feed, boolean loadAllPages,
                                           boolean force, boolean initiatedByUser) throws DownloadRequestException {
-        /*List<DownloadRequest> requests = new ArrayList<>();
-        for (Feed feed : feeds) {
-            if (!feedFileValid(feed)) {
-                continue;
-            }
-            String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
-            String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            String lastModified = feed.isPaged() || force ? null : feed.getLastUpdate();
-
-            Bundle args = new Bundle();
-            args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
-            args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
-
-            DownloadRequest request = createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
-                    true, username, password, lastModified, true, args, initiatedByUser
-            );
-            if (request != null) {
-                requests.add(request);
-            }
+        if (!feedFileValid(feed)) {
+            return null;
         }
-        if (!requests.isEmpty()) {
-            download(context, requests.toArray(new DownloadRequest[0]));
-        }*/
-    }
+        String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
+        String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
+        String lastModified = feed.isPaged() || force ? null : feed.getLastUpdate();
 
-    public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
-        downloadFeed(context, feed, false, false, true);
+        Bundle args = new Bundle();
+        args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
+        args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
+
+        return createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
+                true, username, password, lastModified, true, args, initiatedByUser);
     }
 
     public synchronized void downloadMedia(@NonNull Context context, boolean initiatedByUser, FeedItem... feedItems)

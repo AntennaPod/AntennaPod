@@ -44,12 +44,12 @@ public class SPAReceiver extends BroadcastReceiver{
         ClientConfig.initialize(context);
         for (String url : feedUrls) {
             Feed f = new Feed(url, null);
-            try {
+            /*try {
                 DownloadRequester.getInstance().downloadFeed(context, f);
             } catch (DownloadRequestException e) {
                 Log.e(TAG, "Error while trying to add feed " + url);
                 e.printStackTrace();
-            }
+            }*/
         }
         Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
     }

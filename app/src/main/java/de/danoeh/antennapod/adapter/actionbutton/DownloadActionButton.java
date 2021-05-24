@@ -55,7 +55,11 @@ public class DownloadActionButton extends ItemActionButton {
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
         if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
-            downloadEpisode(context);
+            try {
+                DownloadWorker.enqueue(context, DownloadRequester.getInstance().createRequest(media, true));
+            } catch (DownloadRequestException e) {
+                e.printStackTrace();
+            }
         } else if (MobileDownloadHelper.userChoseAddToQueue() && !isInQueue) {
             addEpisodeToQueue(context);
         } else {
@@ -71,15 +75,5 @@ public class DownloadActionButton extends ItemActionButton {
     private void addEpisodeToQueue(Context context) {
         DBWriter.addQueueItem(context, item);
         Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
-    }
-
-    private void downloadEpisode(Context context) {
-        try {
-            DownloadRequest downloadRequest = DownloadRequester.getInstance().createRequest(item.getMedia(), true);
-            DownloadWorker.enqueue(context, downloadRequest);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
-        }
     }
 }

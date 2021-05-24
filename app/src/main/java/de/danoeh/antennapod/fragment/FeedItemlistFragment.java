@@ -26,6 +26,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
@@ -50,6 +52,7 @@ import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequestException;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
@@ -108,7 +111,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private long feedID;
     private Feed feed;
     private boolean headerCreated = false;
-    private boolean isUpdatingFeed;
     private Disposable disposable;
 
     /**
@@ -220,6 +222,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         loadItems();
+        setupRefreshIndicator();
         return root;
     }
 
@@ -256,9 +259,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
-
-        isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
         FeedMenuHandler.onPrepareOptionsMenu(toolbar.getMenu(), feed);
     }
 
@@ -361,6 +361,26 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         }
     }
+
+    private void setupRefreshIndicator() {
+        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(DownloadRequest.TAG)
+                .observe(getViewLifecycleOwner(), workInfos -> {
+                    boolean isDownloadingCurrentFeed = false;
+                    for (WorkInfo workInfo : workInfos) {
+                        if (workInfo.getState().isFinished()) {
+                            continue;
+                        }
+                        DownloadRequest request = DownloadRequest.from(workInfo.getProgress());
+                        if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED
+                                && request.getFeedfileId() == feedID) {
+                            isDownloadingCurrentFeed = true;
+                            break;
+                        }
+                    }
+                    MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, isDownloadingCurrentFeed);
+                });
+    }
+
 /*
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
@@ -415,9 +435,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void updateSyncProgressBarVisibility() {
-        if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
-            refreshToolbarState();
-        }
         if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }

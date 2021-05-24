@@ -46,11 +46,11 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 			OpmlElement element = OpmlImportHolder.getReadElements().get(selected);
 			Feed feed = new Feed(element.getXmlUrl(), null,
 					element.getText());
-			try {
+			/*try {
 				requester.downloadFeed(context.getApplicationContext(), feed);
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		return null;
 	}
