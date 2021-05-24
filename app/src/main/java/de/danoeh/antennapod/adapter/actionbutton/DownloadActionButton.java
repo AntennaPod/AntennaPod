@@ -10,6 +10,7 @@ import androidx.annotation.StringRes;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 
 public class DownloadActionButton extends ItemActionButton {
     private boolean isInQueue;
@@ -73,7 +75,8 @@ public class DownloadActionButton extends ItemActionButton {
 
     private void downloadEpisode(Context context) {
         try {
-            DownloadRequester.getInstance().downloadMedia(context, true, item);
+            DownloadRequest downloadRequest = DownloadRequester.getInstance().createRequest(item.getMedia(), true);
+            DownloadWorker.enqueue(context, downloadRequest);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());

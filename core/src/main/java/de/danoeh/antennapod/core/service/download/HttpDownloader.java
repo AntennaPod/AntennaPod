@@ -40,9 +40,14 @@ public class HttpDownloader extends Downloader {
 
     private static final int BUFFER_SIZE = 8 * 1024;
     private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
+    private Runnable progressUpdateListener;
 
     public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
+    }
+
+    public void setProgressUpdateListener(Runnable progressUpdateListener) {
+        this.progressUpdateListener = progressUpdateListener;
     }
 
     @Override
@@ -221,6 +226,9 @@ public class HttpDownloader extends Downloader {
                     request.setSoFar(request.getSoFar() + count);
                     int progressPercent = (int) (100.0 * request.getSoFar() / request.getSize());
                     request.setProgressPercent(progressPercent);
+                    if (progressUpdateListener != null) {
+                        progressUpdateListener.run();
+                    }
                 }
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));

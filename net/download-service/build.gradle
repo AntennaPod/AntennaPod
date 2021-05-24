@@ -1,0 +1,15 @@
+apply plugin: "com.android.library"
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle" // Because of the dependency on core
+
+dependencies {
+    implementation project(':core')
+    implementation project(':model')
+    implementation project(':ui:app-start-intent')
+    implementation project(':ui:png-icons')
+
+    implementation "androidx.work:work-runtime:$workManagerVersion"
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+}

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import org.apache.commons.io.FilenameUtils;
 
@@ -21,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -276,7 +280,7 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     @Nullable
-    private DownloadRequest createRequest(@Nullable FeedMedia feedmedia, boolean initiatedByUser)
+    public DownloadRequest createRequest(@Nullable FeedMedia feedmedia, boolean initiatedByUser)
             throws DownloadRequestException {
         if (!feedFileValid(feedmedia)) {
             return null;
