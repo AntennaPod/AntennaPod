@@ -69,8 +69,6 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
-
-    private volatile boolean isUpdatingFeeds;
     protected Disposable disposable;
     protected TextView txtvInformation;
 
@@ -108,11 +106,6 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = () -> false;
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -269,9 +262,6 @@ public abstract class EpisodesListFragment extends Fragment {
         if (restoreScrollPosition) {
             recyclerView.restoreScrollPosition(getPrefName());
         }
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-        }
     }
 
     /**
@@ -324,9 +314,6 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-        }
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
@@ -339,9 +326,6 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private void updateUi() {
         loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
