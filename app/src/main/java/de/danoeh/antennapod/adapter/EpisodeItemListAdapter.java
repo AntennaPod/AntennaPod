@@ -87,6 +87,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
 
         if (inActionMode()) {
+            holder.secondaryActionButton.setVisibility(View.INVISIBLE);
             holder.selectCheckBox.setOnClickListener(v -> {
                 selectHandler(pos);
             });
