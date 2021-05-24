@@ -16,13 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -94,6 +95,7 @@ public class DownloadLogFragment extends ListFragment {
         adapter = new DownloadLogAdapter(getActivity(), this);
         setListAdapter(adapter);
         EventBus.getDefault().register(this);
+        setupDownloaderUpdates();
     }
 
     @Override
@@ -191,12 +193,17 @@ public class DownloadLogFragment extends ListFragment {
         }
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(DownloadEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        runningDownloads = update.downloaders;
-        adapter.setRunningDownloads(runningDownloads);
+    private void setupDownloaderUpdates() {
+        WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(DownloadRequest.TAG)
+                .observe(getViewLifecycleOwner(), workInfos -> {
+                    List<DownloadRequest> requests = new ArrayList<>();
+                    for (WorkInfo workInfo : workInfos) {
+                        if (!workInfo.getState().isFinished()) {
+                            requests.add(DownloadRequest.from(workInfo.getProgress()));
+                        }
+                    }
+                    adapter.setRunningDownloads(requests);
+                });
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
