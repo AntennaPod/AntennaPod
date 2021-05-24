@@ -51,12 +51,6 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         selectedCount = 1;
         selectedItemPositions.clear();
 
-        AttributeSet attrs = null;
-        int[] attrsArray = new int[] {
-                android.R.attr.windowBackground,
-                R.attr.colorAccent
-        };
-
         selectedItemPositions.append(pos, true);
         onSelectChanged(pos, true);
         notifyItemChanged(pos);
@@ -122,26 +116,52 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
     }
 
     /**
-     * Called by subclasses that need to notify this class of a new selection event
-     * at the given position and to handle
-     * @param pos
+     *  Set the selected state of item at given position
+     * @param pos the position to select
+     * @param selected true for selected state and false for unselected
      */
-    public void selectHandler(int pos) {
+    public void setSelected(int pos, boolean selected) {
         if (selectedItemPositions.get(pos, false)) {
-            selectedItemPositions.put(pos, false);
-            onSelectChanged(pos, false);
-            selectedCount--;
-
+            if(!selected) {
+                selectedItemPositions.put(pos, false);
+                onSelectChanged(pos, false);
+                selectedCount--;
+            }
         } else {
-            selectedItemPositions.put(pos, true);
-            onSelectChanged(pos, true);
-            selectedCount++;
-
+            if(selected) {
+                selectedItemPositions.put(pos, true);
+                onSelectChanged(pos, true);
+                selectedCount++;
+            }
         }
         if(actionMode != null)
             actionMode.setTitle(getTitle());
         notifyItemChanged(pos);
+    }
 
+    /**
+     *  Set the selected state of item for a given range
+     * @param startPos start position of range, inclusive
+     * @param endPos end position of range, inclusive
+     * @param selected
+     * @throws IllegalArgumentException if start and end positions are not valid
+     */
+    public void setSelected(int startPos, int endPos, boolean selected) throws IllegalArgumentException {
+        if (startPos < 0 || endPos < 0 || startPos > endPos) {
+            throw new IllegalArgumentException();
+        }
+
+        for (int i = startPos; i < endPos; i++) {
+            setSelected(i, selected);
+        }
+    }
+
+    public boolean isSelected(int pos) {
+        if (selectedItemPositions.get(pos, false)) {
+            return true;
+        } else {
+           return false;
+        }
     }
 
     public void onStartActionMode() {

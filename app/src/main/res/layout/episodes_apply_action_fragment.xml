@@ -37,23 +37,23 @@
         android:id="@+id/fabSDScrollCtr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="false"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:elevation="@dimen/sd_open_elevation"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute" >
 
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/fabSD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
+            app:sdOverlayLayout="@id/fabSDOverlay"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:accessibilityTraversalBefore="@android:id/list"
-            android:contentDescription="@string/apply_action"
-            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
-            app:sdOverlayLayout="@id/fabSDOverlay" />
+            android:contentDescription="@string/apply_action" />
     </ScrollView>
 
 </RelativeLayout>

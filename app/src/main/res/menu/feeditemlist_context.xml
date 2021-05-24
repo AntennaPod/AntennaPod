@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/episode_actions"
+        android:menuCategory="container"
+        android:icon="@drawable/ic_check_multiple"
+        android:title="@string/multi_select">
+    </item>
 
     <item
         android:id="@id/skip_episode_item"
@@ -56,12 +62,6 @@
         android:id="@+id/deactivate_auto_download"
         android:menuCategory="container"
         android:title="@string/deactivate_auto_download" />
-    <item
-        android:id="@+id/episode_actions"
-        android:menuCategory="container"
-        android:icon="@drawable/ic_check_multiple"
-        android:title="@string/multi_select">
-    </item>
 
     <item
         android:id="@+id/visit_website_item"

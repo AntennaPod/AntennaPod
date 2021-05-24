@@ -76,7 +76,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-                selectHandler(pos);
+               selectHandler(pos);
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
@@ -151,11 +151,13 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         if (!inActionMode()) {
-            MenuInflater inflater = mainActivityRef.get().getMenuInflater();
             inflater.inflate(R.menu.feeditemlist_context, menu);
             menu.setHeaderTitle(selectedItem.getTitle());
             FeedItemMenuHandler.onPrepareMenu(menu, selectedItem, R.id.skip_episode_item);
+        } else {
+            inflater.inflate(R.menu.multi_select_context_popup, menu);
         }
     }
 
@@ -225,4 +227,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         void onEndSelectMode();
     }
 
+    private void selectHandler(int pos) {
+        if (isSelected(pos)) {
+            setSelected(pos, false);
+        } else {
+            setSelected(pos, true);
+        }
+    }
 }
