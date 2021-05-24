@@ -421,9 +421,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        updateUi();
-    }
+    public void favoritesChanged(FavoritesEvent event) { updateUi(); }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueueChanged(QueueEvent event) { updateUi(); }
@@ -573,8 +571,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void loadItems() {
         if (disposable != null) {
             disposable.dispose();
+        } else {
+            //only show on first loading
+            progressBar.setVisibility(View.VISIBLE);
         }
-        progressBar.setVisibility(View.VISIBLE);
+
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

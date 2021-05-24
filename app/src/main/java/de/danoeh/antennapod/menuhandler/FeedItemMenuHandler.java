@@ -257,8 +257,14 @@ public class FeedItemMenuHandler {
         int playStateStringRes;
         switch (playState) {
             default:
-            case FeedItem.UNPLAYED: //was new
-                playStateStringRes = R.string.removed_new_flag_label;
+            case FeedItem.UNPLAYED:
+                if (item.getPlayState() == FeedItem.NEW) {
+                    //was new
+                    playStateStringRes = R.string.removed_new_flag_label;
+                } else {
+                    //was played
+                    playStateStringRes = R.string.marked_unread_label;
+                }
                 break;
             case FeedItem.PLAYED:
                 playStateStringRes = R.string.marked_read_label;
