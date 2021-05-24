@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -110,7 +111,8 @@ public class CompletedDownloadsFragment extends Fragment {
                     .loadChildFragment(EpisodesApplyActionFragment.newInstance(items, ACTION_DELETE | ACTION_ADD_TO_QUEUE));
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+
+            DownloadRequester.getInstance().refreshAllFeeds(requireContext());
             return true;
         }
         return false;

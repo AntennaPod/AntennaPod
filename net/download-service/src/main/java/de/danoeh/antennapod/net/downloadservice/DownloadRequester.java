@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadStateProvider;
 import org.apache.commons.io.FilenameUtils;
 
@@ -129,6 +130,19 @@ public class DownloadRequester implements DownloadStateProvider {
         return true;*/
     }
 
+    public void refreshAllFeeds(Context context) {
+        new Thread(() -> {
+            List<Feed> feeds = DBReader.getFeedList();
+            for (Feed feed : feeds) {
+                try {
+                    DownloadWorker.enqueue(context, createRequest(feed, false, false, false));
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 
     /**
      * Downloads a list of feeds.
@@ -155,7 +169,6 @@ public class DownloadRequester implements DownloadStateProvider {
     public synchronized void downloadMedia(@NonNull Context context, boolean initiatedByUser, FeedItem... feedItems)
             throws DownloadRequestException {
         downloadMedia(true, context, initiatedByUser, feedItems);
-
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)

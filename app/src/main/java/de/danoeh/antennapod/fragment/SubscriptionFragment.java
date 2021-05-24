@@ -52,6 +52,7 @@ import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -148,7 +149,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            DownloadRequester.getInstance().refreshAllFeeds(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -170,7 +171,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh_item:
-                AutoUpdateManager.runImmediate(requireContext());
+                DownloadRequester.getInstance().refreshAllFeeds(requireContext());
                 return true;
             case R.id.subscriptions_filter:
                 SubscriptionsFilterDialog.showDialog(requireContext());

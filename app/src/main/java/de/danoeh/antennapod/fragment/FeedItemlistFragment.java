@@ -65,6 +65,7 @@ import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -213,7 +214,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             try {
-                DBTasks.forceRefreshFeed(requireContext(), feed, true);
+                DownloadWorker.enqueue(getContext(), DownloadRequester.getInstance()
+                        .createRequest(feed, false, false, true));
             } catch (Exception e) {
                 e.printStackTrace();
             }

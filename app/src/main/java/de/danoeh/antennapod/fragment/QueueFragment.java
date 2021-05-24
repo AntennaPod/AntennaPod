@@ -49,6 +49,7 @@ import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -264,7 +265,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                 toggleQueueLock();
                 return true;
             case R.id.refresh_item:
-                AutoUpdateManager.runImmediate(requireContext());
+                DownloadRequester.getInstance().refreshAllFeeds(requireContext());
                 return true;
             case R.id.clear_queue:
                 // make sure the user really wants to clear the queue
@@ -450,7 +451,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            DownloadRequester.getInstance().refreshAllFeeds(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });

@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
@@ -112,7 +113,7 @@ public abstract class EpisodesListFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.refresh_item:
-                    AutoUpdateManager.runImmediate(requireContext());
+                    DownloadRequester.getInstance().refreshAllFeeds(requireContext());
                     return true;
                 case R.id.mark_all_read_item:
                     ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
@@ -193,7 +194,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            DownloadRequester.getInstance().refreshAllFeeds(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });

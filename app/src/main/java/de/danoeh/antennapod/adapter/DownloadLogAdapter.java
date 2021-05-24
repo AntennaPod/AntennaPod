@@ -22,6 +22,7 @@ import de.danoeh.antennapod.net.downloadservice.DownloadRequestException;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.viewholder.DownloadLogItemViewHolder;
 
@@ -125,7 +126,8 @@ public class DownloadLogAdapter extends BaseAdapter {
                             return;
                         }
                         try {
-                            DBTasks.forceRefreshFeed(context, feed, true);
+                            DownloadWorker.enqueue(context, DownloadRequester.getInstance()
+                                    .createRequest(feed, false, true, true));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -139,7 +141,8 @@ public class DownloadLogAdapter extends BaseAdapter {
                             return;
                         }
                         try {
-                            DownloadRequester.getInstance().downloadMedia(context, true, media.getItem());
+                            DownloadWorker.enqueue(context, DownloadRequester.getInstance()
+                                    .createRequest(media, true));
                             ((MainActivity) context).showSnackbarAbovePlayer(
                                     R.string.status_downloading_label, Toast.LENGTH_SHORT);
                         } catch (DownloadRequestException e) {

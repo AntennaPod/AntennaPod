@@ -9,6 +9,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.net.downloadservice.handler.FeedSyncTask;
@@ -64,6 +65,13 @@ public class DownloadWorker extends Worker {
     public Result doWork() {
         DownloadRequest request = DownloadRequest.from(getInputData());
         setProgressAsync(request.toWorkData());
+        if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            Feed feed = DBReader.getFeed(request.getFeedfileId());
+            if (feed.isLocalFeed()) {
+                LocalFeedUpdater.updateFeed(feed, getApplicationContext());
+                return Result.success();
+            }
+        }
 
         if (request.isCleanupMedia()) {
             UserPreferences.getEpisodeCleanupAlgorithm().makeRoomForEpisodes(getApplicationContext(), 1); // TODO

@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -170,7 +171,7 @@ public class DownloadLogFragment extends ListFragment {
             DBWriter.clearDownloadLog();
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            DownloadRequester.getInstance().refreshAllFeeds(requireContext());
             return true;
         }
         return false;
