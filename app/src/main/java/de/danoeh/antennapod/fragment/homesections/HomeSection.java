@@ -35,6 +35,7 @@ public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuList
     protected Button navigateButton;
     protected RecyclerView recyclerView;
 
+    //TODO nessesary?
     public enum UpdateEvents {
         FEED_ITEM, UNREAD, FAVORITES, QUEUE
     }

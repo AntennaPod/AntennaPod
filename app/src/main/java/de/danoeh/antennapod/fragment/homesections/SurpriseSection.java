@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment.homesections;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -95,6 +96,12 @@ public class SurpriseSection extends HomeSection<FeedItem> {
                     view.setOnCreateContextMenuListener(SurpriseSection.this);
                 });
 
+        ImageButton shuffle = section.findViewById(R.id.shuffleButton);
+        shuffle.setVisibility(View.VISIBLE);
+        shuffle.setOnClickListener(view -> {
+            slush.getItemListEditor().changeAll(loadItems());
+        });
+
         super.addSectionTo(parent);
     }
 
@@ -104,8 +111,4 @@ public class SurpriseSection extends HomeSection<FeedItem> {
         return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter("not_queued,unplayed"), true);
     }
 
-    @Override
-    public void updateItems(UpdateEvents event) {
-        super.updateItems(event);
-    }
 }

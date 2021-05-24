@@ -96,10 +96,4 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
                 CompareCompat.compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
         return statisticsData;
     }
-
-    @Override
-    public void updateItems(UpdateEvents event) {
-        slush.getItemListEditor().changeAll(loadItems());
-        super.updateItems(event);
-    }
 }
