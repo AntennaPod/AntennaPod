@@ -37,13 +37,9 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -111,8 +107,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = () -> false;
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -325,7 +320,7 @@ public abstract class EpisodesListFragment extends Fragment {
         return true;
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    /*@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -340,7 +335,7 @@ public abstract class EpisodesListFragment extends Fragment {
                 }
             }
         }
-    }
+    }*/
 
     private void updateUi() {
         loadItems();

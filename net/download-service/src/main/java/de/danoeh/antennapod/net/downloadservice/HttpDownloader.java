@@ -1,9 +1,11 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapod.net.downloadservice;
 
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
@@ -327,17 +329,6 @@ public class HttpDownloader extends Downloader {
             } else {
                 Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
-        }
-    }
-
-    public static String encodeCredentials(String username, String password, String charset) {
-        try {
-            String credentials = username + ":" + password;
-            byte[] bytes = credentials.getBytes(charset);
-            String encoded = ByteString.of(bytes).base64();
-            return "Basic " + encoded;
-        } catch (UnsupportedEncodingException e) {
-            throw new AssertionError(e);
         }
     }
 }

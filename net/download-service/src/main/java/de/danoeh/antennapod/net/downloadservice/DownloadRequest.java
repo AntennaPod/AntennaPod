@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapod.net.downloadservice;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import androidx.work.Data;
 import de.danoeh.antennapod.model.feed.FeedFile;
-import de.danoeh.antennapod.core.util.URLChecker;
 
 public class DownloadRequest implements Parcelable {
     public static final String TAG = "DownloadRequest";

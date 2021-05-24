@@ -22,20 +22,18 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.net.downloadservice.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.downloadservice.DownloadWorker;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,7 +41,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,9 +106,9 @@ public class DownloadLogFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         Object item = adapter.getItem(position);
-        if (item instanceof Downloader) {
-            DownloadRequest downloadRequest = ((Downloader) item).getDownloadRequest();
-            DownloadRequester.getInstance().cancelDownload(getActivity(), downloadRequest.getSource());
+        if (item instanceof DownloadRequest) {
+            DownloadRequest downloadRequest = ((DownloadRequest) item);
+            DownloadWorker.cancel(getContext(), downloadRequest.getSource());
 
             if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
                     && UserPreferences.isEnableAutodownload()) {
@@ -184,14 +181,14 @@ public class DownloadLogFragment extends ListFragment {
         }
         return false;
     }
-
+/*
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
-    }
+    }*/
 
     private void setupDownloaderUpdates() {
         WorkManager.getInstance(getContext()).getWorkInfosByTagLiveData(DownloadRequest.TAG)
@@ -207,7 +204,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> false;
 
     private void loadDownloadLog() {
         if (disposable != null) {

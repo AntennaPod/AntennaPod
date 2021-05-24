@@ -36,8 +36,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -49,12 +47,11 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequestException;
+import de.danoeh.antennapod.net.downloadservice.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
@@ -193,7 +190,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (feed != null) {
                 try {
                     DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
-                } catch (DownloadRequestException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
                 }
@@ -215,7 +212,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeRefreshLayout.setOnRefreshListener(() -> {
             try {
                 DBTasks.forceRefreshFeed(requireContext(), feed, true);
-            } catch (DownloadRequestException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
@@ -246,7 +243,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
         @Override
         public boolean isRefreshing() {
-            return feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed);
+            return false;
+            //return feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed);
         }
     };
 
@@ -363,7 +361,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         }
     }
-
+/*
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
@@ -379,7 +377,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 }
             }
         }
-    }
+    }*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {

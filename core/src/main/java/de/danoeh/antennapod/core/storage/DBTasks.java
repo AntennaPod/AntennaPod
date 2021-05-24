@@ -131,7 +131,7 @@ public final class DBTasks {
         }
         try {
             refreshFeeds(context, feeds, false, false, false);
-        } catch (DownloadRequestException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         isRefreshing.set(false);
@@ -155,7 +155,7 @@ public final class DBTasks {
     public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
         try {
             refreshFeeds(context, Collections.singletonList(feed), true, true, false);
-        } catch (DownloadRequestException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
                     new DownloadStatus(feed,
@@ -176,14 +176,14 @@ public final class DBTasks {
      * @param feed         The feed whose next page should be loaded.
      * @param loadAllPages True if any subsequent pages should also be loaded, false otherwise.
      */
-    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
+    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) {
         if (feed.isPaged() && feed.getNextPageLink() != null) {
             int pageNr = feed.getPageNr() + 1;
             Feed nextFeed = new Feed(feed.getNextPageLink(), null, feed.getTitle() + "(" + pageNr + ")");
             nextFeed.setPageNr(pageNr);
             nextFeed.setPaged(true);
             nextFeed.setId(feed.getId());
-            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false, true);
+            //DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false, true);
         } else {
             Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
         }
@@ -195,14 +195,13 @@ public final class DBTasks {
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
      */
-    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)
-            throws DownloadRequestException {
+    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)  {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() + ")");
         refreshFeeds(context, Collections.singletonList(feed), false, true, initiatedByUser);
     }
 
     private static void refreshFeeds(Context context, List<Feed> feeds, boolean loadAllPages,
-                                    boolean force, boolean initiatedByUser) throws DownloadRequestException {
+                                    boolean force, boolean initiatedByUser) {
         List<Feed> localFeeds = new ArrayList<>();
         List<Feed> normalFeeds = new ArrayList<>();
 
@@ -222,7 +221,7 @@ public final class DBTasks {
             }).start();
         }
         if (!normalFeeds.isEmpty()) {
-            DownloadRequester.getInstance().downloadFeeds(context, normalFeeds, loadAllPages, force, initiatedByUser);
+            //DownloadRequester.getInstance().downloadFeeds(context, normalFeeds, loadAllPages, force, initiatedByUser);
         }
     }
 
