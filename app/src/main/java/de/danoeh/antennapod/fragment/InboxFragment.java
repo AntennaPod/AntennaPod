@@ -1,20 +1,19 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and

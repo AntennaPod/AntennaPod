@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.HomeFragment;
@@ -58,7 +59,7 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     public void addSectionTo(LinearLayout parent) {
         tvTitle.setText(sectionTitle);
         if (!TextUtils.isEmpty(sectionNavigateTitle)) {
-            navigateButton.setText(context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase()));
+            navigateButton.setText(context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase(Locale.getDefault())));
             navigateButton.setOnClickListener(navigate());
         } else {
             navigateButton.setVisibility(View.INVISIBLE);
