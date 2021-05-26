@@ -893,21 +893,6 @@ public final class DBReader {
                     return 1;
                 }
             };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
-
-            comparator = (lhs, rhs) -> {
-                long counterLhs = playedCounters.get(lhs.getId());
-                long counterRhs = playedCounters.get(rhs.getId());
-                if (counterLhs < counterRhs) {
-                    // podcast with most played episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
         } else {
             final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
             comparator = (lhs, rhs) -> {

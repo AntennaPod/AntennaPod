@@ -25,8 +25,9 @@ import slush.listeners.OnBindListener;
 
 /**
  * Section on the HomeFragment
+ * can have different I item types
  */
-public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuListener {
+public abstract class HomeSection<I> implements View.OnCreateContextMenuListener {
 
     protected HomeFragment context;
 
@@ -77,13 +78,13 @@ public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuList
     protected abstract View.OnClickListener navigate();
 
     @NonNull
-    protected abstract List<ITEMS> loadItems();
+    protected abstract List<I> loadItems();
 
     public void updateItems(UpdateEvents event) {
         hideIfEmpty();
     }
 
-    protected abstract Unit onItemClick(View view, ITEMS item);
+    protected abstract Unit onItemClick(View view, I item);
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
@@ -93,8 +94,8 @@ public abstract class HomeSection<ITEMS> implements View.OnCreateContextMenuList
         FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
     }
 
-    protected AdapterAppliedResult<ITEMS> easySlush(int layout, OnBindListener<ITEMS> onBindListener) {
-        return new Slush.SingleType<ITEMS>()
+    protected AdapterAppliedResult<I> easySlush(int layout, OnBindListener<I> onBindListener) {
+        return new Slush.SingleType<I>()
                 .setItemLayout(layout)
                 .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
                 .setItems(loadItems())

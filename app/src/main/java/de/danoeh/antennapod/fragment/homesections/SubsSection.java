@@ -8,41 +8,26 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
-import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
-import slush.AdapterAppliedResult;
-import slush.Slush;
-import slush.listeners.OnBindListener;
 
 
 public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     public static final String TAG = "SubsSection";
-
-    private AdapterAppliedResult<NavDrawerData.DrawerItem> slush;
 
     public SubsSection(HomeFragment context) {
         super(context);
@@ -72,7 +57,7 @@ public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        slush = easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
+        easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
             int side = (int) displayMetrics.density * 140;
             view.getLayoutParams().height = side;

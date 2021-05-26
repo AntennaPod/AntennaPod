@@ -5,12 +5,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,32 +15,18 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
-import de.danoeh.antennapod.fragment.ItemPagerFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.danoeh.antennapod.fragment.preferences.DownloadStatisticsFragment;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import kotlin.Unit;
-import slush.AdapterAppliedResult;
 
 
 public class StatisticsSection extends HomeSection<StatisticsItem> {
 
     public static final String TAG = "StatisticsSection";
-
-    private AdapterAppliedResult<StatisticsItem> slush;
 
     public StatisticsSection(HomeFragment context) {
         super(context);
@@ -69,7 +52,7 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        slush = easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
+        easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
             int side = (int) displayMetrics.density * 140;
             view.getLayoutParams().height = side;

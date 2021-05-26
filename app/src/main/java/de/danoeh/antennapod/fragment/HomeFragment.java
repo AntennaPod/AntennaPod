@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
-import androidx.transition.TransitionSet;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,14 +39,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.homesections.HomeSection;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
@@ -60,15 +50,8 @@ import de.danoeh.antennapod.fragment.homesections.SurpriseSection;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 import slush.AdapterAppliedResult;
 import slush.Slush;
-import slush.listeners.OnBindListener;
-import slush.listeners.OnItemClickListener;
 
 /**
  * Shows unread or recently published episodes
@@ -115,7 +98,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
-        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() > 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
@@ -179,7 +162,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     fragment = new QueueFragment();
                     break;
             }
-            requireActivity().getSupportFragmentManager()
+            getParentFragmentManager()
                     .beginTransaction().replace(R.id.homeFragmentContainer, fragment)
                     .commit();
             fragmentContainer.setVisibility(View.VISIBLE);

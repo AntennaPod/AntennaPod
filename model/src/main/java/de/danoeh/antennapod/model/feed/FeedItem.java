@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

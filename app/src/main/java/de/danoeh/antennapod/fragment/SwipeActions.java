@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -125,7 +124,7 @@ public class SwipeActions {
             }
 
             @Override
-            public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
                 //display only if preferences are set
                 if (rightleft.length > 0) {
                     new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -251,8 +250,6 @@ public class SwipeActions {
             }
 
             builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
-
-            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
             //same order as in R.array.swipe_actions
             List<String> prefKeys = Arrays.asList(ADD_TO_QUEUE,MARK_UNPLAYED,START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
