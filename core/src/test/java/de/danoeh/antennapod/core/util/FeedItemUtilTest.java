@@ -52,7 +52,13 @@ public class FeedItemUtilTest {
     public void testGetIds() {
         List<FeedItem> feedItemsList = new ArrayList<FeedItem>(5);
         List<FeedItem> emptyList = new ArrayList<FeedItem>();
-        List<Integer> ids_list = List.of(980, 324, 226, 164, 854);
+        List<Integer> ids_list = new ArrayList<Integer>();
+
+        ids_list.add(980);
+        ids_list.add(324);
+        ids_list.add(226);
+        ids_list.add(164);
+        ids_list.add(854);
 
         for (int i = 0; i < 5; i++) {
             FeedItem item = createFeedItem(feedLink, itemLink);
@@ -64,14 +70,13 @@ public class FeedItemUtilTest {
 
         // covers edge case for getIds() method
         long[] testEmptyList = FeedItemUtil.getIds(emptyList);
-
+        assertEquals(msg, 0, testEmptyList.length);
         assertEquals(msg, 980, actual[0]);
         assertEquals(msg, 324, actual[1]);
         assertEquals(msg, 226, actual[2]);
         assertEquals(msg, 164, actual[3]);
         assertEquals(msg, 854, actual[4]);
 
-        assertEquals(msg, 0, testEmptyList.length);
     }
 
     // Tests the Null value for getLinkWithFallback() method
