@@ -28,14 +28,14 @@ public class FeedItemUtilTest {
 
     @Parameters
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-                { "average", FEED_LINK, ITEM_LINK, ITEM_LINK },
-                { "null item link - fallback to feed", FEED_LINK, null, FEED_LINK},
-                { "empty item link - same as null", FEED_LINK, "", FEED_LINK},
-                { "blank item link - same as null", FEED_LINK, "  ", FEED_LINK},
-                { "fallback, but feed link is null too", null, null, null },
-                { "fallback - but empty feed link - same as null", "", null, null},
-                { "fallback - but blank feed link - same as null", "  ", null, null}
+        return Arrays.asList(new Object[][]{
+                {"average", FEED_LINK, ITEM_LINK, ITEM_LINK},
+                {"null item link - fallback to feed", FEED_LINK, null, FEED_LINK},
+                {"empty item link - same as null", FEED_LINK, "", FEED_LINK},
+                {"blank item link - same as null", FEED_LINK, "  ", FEED_LINK},
+                {"fallback, but feed link is null too", null, null, null},
+                {"fallback - but empty feed link - same as null", "", null, null},
+                {"fallback - but blank feed link - same as null", "  ", null, null}
         });
     }
 
@@ -47,7 +47,6 @@ public class FeedItemUtilTest {
     }
 
 
-
     // Test the getIds() method
     @Test
     public void testGetIds() {
@@ -55,7 +54,7 @@ public class FeedItemUtilTest {
         List<FeedItem> emptyList = new ArrayList<FeedItem>();
         List<Integer> ids_list = List.of(980, 324, 226, 164, 854);
 
-        for(int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             FeedItem item = createFeedItem(feedLink, itemLink);
             item.setId(ids_list.get(i));
             feedItemsList.add(item);
@@ -81,8 +80,6 @@ public class FeedItemUtilTest {
         String actual = FeedItemUtil.getLinkWithFallback(null);
         assertEquals(msg, null, actual);
     }
-
-
 
 
     @Test
