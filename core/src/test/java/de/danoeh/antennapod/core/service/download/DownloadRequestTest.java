@@ -61,8 +61,8 @@ public class DownloadRequestTest {
                 .withArguments(arg)
                 .build();
 
-        assertEquals(request1,request2);
-        assertNotEquals(request1,request3);
+        assertEquals(request1, request2);
+        assertNotEquals(request1, request3);
     }
 
     // Test to ensure parcel using put/getParcelableArrayList() API work
