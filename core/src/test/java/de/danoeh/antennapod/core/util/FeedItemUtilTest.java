@@ -5,9 +5,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -43,6 +45,45 @@ public class FeedItemUtilTest {
         this.itemLink = itemLink;
         this.expected = expected;
     }
+
+
+
+    // Test the getIds() method
+    @Test
+    public void testGetIds() {
+        List<FeedItem> feedItemsList = new ArrayList<FeedItem>(5);
+        List<FeedItem> emptyList = new ArrayList<FeedItem>();
+        List<Integer> ids_list = List.of(980, 324, 226, 164, 854);
+
+        for(int i=0; i<5; i++){
+            FeedItem item = createFeedItem(feedLink, itemLink);
+            item.setId(ids_list.get(i));
+            feedItemsList.add(item);
+        }
+
+        long[] actual = FeedItemUtil.getIds(feedItemsList);
+
+        // covers edge case for getIds() method
+        long[] testEmptyList = FeedItemUtil.getIds(emptyList);
+
+        assertEquals(msg, 980, actual[0]);
+        assertEquals(msg, 324, actual[1]);
+        assertEquals(msg, 226, actual[2]);
+        assertEquals(msg, 164, actual[3]);
+        assertEquals(msg, 854, actual[4]);
+
+        assertEquals(msg, 0, testEmptyList.length);
+    }
+
+    // Tests the Null value for getLinkWithFallback() method
+    @Test
+    public void testLinkWithFallbackNullValue() {
+        String actual = FeedItemUtil.getLinkWithFallback(null);
+        assertEquals(msg, null, actual);
+    }
+
+
+
 
     @Test
     public void testLinkWithFallback() {
