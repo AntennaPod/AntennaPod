@@ -51,24 +51,24 @@ public class FeedItemUtilTest {
     @Test
     public void testGetIds() {
         List<FeedItem> feedItemsList = new ArrayList<FeedItem>(5);
-        List<FeedItem> emptyList = new ArrayList<FeedItem>();
-        List<Integer> ids_list = new ArrayList<Integer>();
+        List<Integer> idList = new ArrayList<Integer>();
 
-        ids_list.add(980);
-        ids_list.add(324);
-        ids_list.add(226);
-        ids_list.add(164);
-        ids_list.add(854);
+        idList.add(980);
+        idList.add(324);
+        idList.add(226);
+        idList.add(164);
+        idList.add(854);
 
         for (int i = 0; i < 5; i++) {
             FeedItem item = createFeedItem(feedLink, itemLink);
-            item.setId(ids_list.get(i));
+            item.setId(idList.get(i));
             feedItemsList.add(item);
         }
 
         long[] actual = FeedItemUtil.getIds(feedItemsList);
 
         // covers edge case for getIds() method
+        List<FeedItem> emptyList = new ArrayList<FeedItem>();
         long[] testEmptyList = FeedItemUtil.getIds(emptyList);
         assertEquals(msg, 0, testEmptyList.length);
         assertEquals(msg, 980, actual[0]);
