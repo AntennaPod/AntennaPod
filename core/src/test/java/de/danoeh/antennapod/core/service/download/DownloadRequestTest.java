@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.model.feed.FeedFile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class DownloadRequestTest {
