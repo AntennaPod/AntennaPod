@@ -60,7 +60,8 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     public void addSectionTo(LinearLayout parent) {
         tvTitle.setText(sectionTitle);
         if (!TextUtils.isEmpty(sectionNavigateTitle)) {
-            navigateButton.setText(context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase(Locale.getDefault())));
+            navigateButton.setText(
+                    context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase(Locale.getDefault())));
             navigateButton.setOnClickListener(navigate());
         } else {
             navigateButton.setVisibility(View.INVISIBLE);

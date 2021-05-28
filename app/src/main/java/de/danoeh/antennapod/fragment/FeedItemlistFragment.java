@@ -286,6 +286,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             case R.id.swipe_settings:
                 swipeActions.show();
                 break;
+            default: break;
         }
 
         if (feed == null) {
@@ -423,10 +424,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) { updateUi(); }
+    public void favoritesChanged(FavoritesEvent event) {
+        updateUi();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onQueueChanged(QueueEvent event) { updateUi(); }
+    public void onQueueChanged(QueueEvent event) {
+        updateUi();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {

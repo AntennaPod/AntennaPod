@@ -39,7 +39,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         sectionNavigateTitle = context.getString(R.string.inbox_label);
         updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.UNREAD);
 
-        recyclerView.setPadding(0,0,0,0);
+        recyclerView.setPadding(0, 0, 0, 0);
         swipeActions = new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
     }
 

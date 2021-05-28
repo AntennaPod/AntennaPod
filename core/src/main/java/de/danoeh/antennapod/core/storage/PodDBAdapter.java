@@ -1007,7 +1007,8 @@ public class PodDBAdapter {
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_QUEUE
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                + " ORDER BY " + TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + ">0 DESC , "+ TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + " DESC , " + TABLE_NAME_QUEUE + "." + KEY_ID
+                + " ORDER BY " + TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + ">0 DESC , "
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + " DESC , " + TABLE_NAME_QUEUE + "." + KEY_ID
                 + " LIMIT " + limit;
         return db.rawQuery(query, null);
     }

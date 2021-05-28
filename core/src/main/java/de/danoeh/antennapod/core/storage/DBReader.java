@@ -284,8 +284,9 @@ public final class DBReader {
         } finally {
             adapter.close();
         }
-    }@NonNull
+    }
 
+    @NonNull
     public static List<FeedItem> getPausedQueue(int limit) {
         Log.d(TAG, "getQueue() called");
 
@@ -419,6 +420,7 @@ public final class DBReader {
             adapter.close();
         }
     }
+
     @NonNull
     public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter) {
         return getRecentlyPublishedEpisodes(offset, limit, filter, false);

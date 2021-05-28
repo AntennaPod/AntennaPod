@@ -225,105 +225,106 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            builder.setTitle(R.string.home_label);
+        builder.setTitle(R.string.home_label);
 
-            LayoutInflater inflater = LayoutInflater.from(requireContext());
-            View layout = inflater.inflate(R.layout.home_dialog, null, false);
-            RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
-            Spinner spinner = layout.findViewById(R.id.homeSpinner);
-            String[] bottomHalfOptions = new String[]{
-                    getString(R.string.episodes_label),
-                    getString(R.string.inbox_label),
-                    getString(R.string.queue_label)};
-            spinner.setAdapter(
-                    new ArrayAdapter<>(requireContext(),
-                            android.R.layout.simple_spinner_dropdown_item,
-                            bottomHalfOptions));
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    prefs.edit().putInt(PREF_FRAGMENT, i).apply();
-                }
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.home_dialog, null, false);
+        RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
+        Spinner spinner = layout.findViewById(R.id.homeSpinner);
+        String[] bottomHalfOptions = new String[]{
+                getString(R.string.episodes_label),
+                getString(R.string.inbox_label),
+                getString(R.string.queue_label)};
+        spinner.setAdapter(
+                new ArrayAdapter<>(requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        bottomHalfOptions));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                prefs.edit().putInt(PREF_FRAGMENT, i).apply();
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                }
-            });
-            spinner.setSelection(prefs.getInt(PREF_FRAGMENT, 0));
+            }
+        });
+        spinner.setSelection(prefs.getInt(PREF_FRAGMENT, 0));
 
-            ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
+        ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
 
-            //enable only if 2 or less sections are selected
-            //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
+        //enable only if 2 or less sections are selected
+        //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
 
-            AdapterAppliedResult<SectionTitle> slush = new Slush.SingleType<SectionTitle>()
-                    .setItemLayout(R.layout.home_dialog_item)
-                    .setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false))
-                    .setItems(list)
-                    .onBind((view, sectionTitle) -> {
-                        TextView title = view.findViewById(R.id.txtvSectionTitle);
-                        CheckBox checkBox = view.findViewById(R.id.checkBox);
-                        int res;
-                        switch (sectionTitle.tag) {
-                            case InboxSection.TAG:
-                                res = R.string.new_title;
-                                break;
-                            default:
-                            case QueueSection.TAG:
-                                res = R.string.continue_title;
-                                break;
-                            case SubsSection.TAG:
-                                res = R.string.rediscover_title;
-                                break;
-                            case SurpriseSection.TAG:
-                                res = R.string.surprise_title;
-                                break;
-                            case StatisticsSection.TAG:
-                                res = R.string.classics_title;
-                                break;
-                        }
+        AdapterAppliedResult<SectionTitle> slush = new Slush.SingleType<SectionTitle>()
+                .setItemLayout(R.layout.home_dialog_item)
+                .setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false))
+                .setItems(list)
+                .onBind((view, sectionTitle) -> {
+                    TextView title = view.findViewById(R.id.txtvSectionTitle);
+                    CheckBox checkBox = view.findViewById(R.id.checkBox);
+                    int res;
+                    switch (sectionTitle.tag) {
+                        case InboxSection.TAG:
+                            res = R.string.new_title;
+                            break;
+                        default:
+                        case QueueSection.TAG:
+                            res = R.string.continue_title;
+                            break;
+                        case SubsSection.TAG:
+                            res = R.string.rediscover_title;
+                            break;
+                        case SurpriseSection.TAG:
+                            res = R.string.surprise_title;
+                            break;
+                        case StatisticsSection.TAG:
+                            res = R.string.classics_title;
+                            break;
+                    }
 
-                        title.setText(getString(res));
-                        checkBox.setChecked(!sectionTitle.hidden);
-                    })
-                    .onItemClick((view, i) -> {
-                        CheckBox checkBox = view.findViewById(R.id.checkBox);
-                        list.get(i).toggleHidden();
-                        checkBox.setChecked(!checkBox.isChecked());
-                    })
-                    .into(dialogRecyclerView);
+                    title.setText(getString(res));
+                    checkBox.setChecked(!sectionTitle.hidden);
+                })
+                .onItemClick((view, i) -> {
+                    CheckBox checkBox = view.findViewById(R.id.checkBox);
+                    list.get(i).toggleHidden();
+                    checkBox.setChecked(!checkBox.isChecked());
+                })
+                .into(dialogRecyclerView);
 
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                    //int activeSections = list.stream().filter(s -> s.hidden).count();
-                    //min 1 section active
-                    //if (activeSections > 1) {
-                        slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
-                        Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                //int activeSections = list.stream().filter(s -> s.hidden).count();
+                //min 1 section active
+                //if (activeSections > 1) {
+                    slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
+                    Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
 
-                        //spinner.setEnabled(activeSections <= 2);
-                    //}
-                    return false;
-                }
+                    //spinner.setEnabled(activeSections <= 2);
+                //}
+                return false;
+            }
 
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
-            }).attachToRecyclerView(dialogRecyclerView);
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
+        }).attachToRecyclerView(dialogRecyclerView);
 
-            builder.setView(layout);
+        builder.setView(layout);
 
-            builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                saveSettings(list);
-                reloadSections();
-            });
-            builder.setNeutralButton(R.string.reset, (dialog, which) -> {
-                saveSettings(defaultSections);
-                reloadSections();
-            });
-            builder.setNegativeButton(R.string.cancel_label, null);
-            builder.create().show();
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            saveSettings(list);
+            reloadSections();
+        });
+        builder.setNeutralButton(R.string.reset, (dialog, which) -> {
+            saveSettings(defaultSections);
+            reloadSections();
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
     }
 
     static class SectionTitle {
@@ -369,13 +370,19 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FeedItemEvent event) { updateSections(HomeSection.UpdateEvents.FEED_ITEM); }
+    public void onEventMainThread(FeedItemEvent event) {
+        updateSections(HomeSection.UpdateEvents.FEED_ITEM);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateSections(HomeSection.UpdateEvents.UNREAD); }
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateSections(HomeSection.UpdateEvents.UNREAD);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) { updateSections(HomeSection.UpdateEvents.QUEUE); }
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        updateSections(HomeSection.UpdateEvents.QUEUE);
+    }
 
     private void updateSections(HomeSection.UpdateEvents event) {
         TransitionManager.beginDelayedTransition(

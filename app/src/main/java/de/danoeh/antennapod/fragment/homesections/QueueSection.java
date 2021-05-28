@@ -68,31 +68,31 @@ public class QueueSection extends HomeSection<FeedItem> {
     @Override
     public void addSectionTo(LinearLayout parent) {
         slush = easySlush(R.layout.cover_play_title_item, (view, item) -> {
-                    ImageView coverPlay = view.findViewById(R.id.cover_play);
-                    TextView title = view.findViewById(R.id.playTitle);
-                    TextView date = view.findViewById(R.id.playDate);
-                    playPauseIcon(view.findViewById(R.id.play_icon),
-                            FeedItemUtil.isCurrentlyPlaying(item.getMedia()));
-                    new CoverLoader((MainActivity) context.requireActivity())
-                            .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                            .withFallbackUri(item.getFeed().getImageUrl())
-                            .withCoverView(coverPlay)
-                            .load();
-                    title.setText(item.getTitle());
-                    date.setText(DateUtils.formatAbbrev(context.requireContext(), item.getPubDate()));
+            ImageView coverPlay = view.findViewById(R.id.cover_play);
+            TextView title = view.findViewById(R.id.playTitle);
+            TextView date = view.findViewById(R.id.playDate);
+            playPauseIcon(view.findViewById(R.id.play_icon),
+                    FeedItemUtil.isCurrentlyPlaying(item.getMedia()));
+            new CoverLoader((MainActivity) context.requireActivity())
+                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
+                    .withFallbackUri(item.getFeed().getImageUrl())
+                    .withCoverView(coverPlay)
+                    .load();
+            title.setText(item.getTitle());
+            date.setText(DateUtils.formatAbbrev(context.requireContext(), item.getPubDate()));
 
-                    view.setOnLongClickListener(v -> {
-                        selectedItem = item;
-                        context.setSelectedItem(item);
-                        return false;
-                    });
-                    view.setOnCreateContextMenuListener(QueueSection.this);
-                });
+            view.setOnLongClickListener(v -> {
+                selectedItem = item;
+                context.setSelectedItem(item);
+                return false;
+            });
+            view.setOnCreateContextMenuListener(QueueSection.this);
+        });
 
         super.addSectionTo(parent);
     }
 
-    private void playPauseIcon(ImageView icon, boolean isPlaying){
+    private void playPauseIcon(ImageView icon, boolean isPlaying) {
         icon.setImageResource(isPlaying ? R.drawable.ic_pause_circle : R.drawable.ic_play_circle);
     }
 

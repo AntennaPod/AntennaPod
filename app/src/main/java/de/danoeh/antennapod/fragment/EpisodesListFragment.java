@@ -182,7 +182,8 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                                 case 1: //unplayed
                                     markAllAs(FeedItem.UNPLAYED);
                                     break;
-                                //TODO removeAllPositions
+                                default: break;
+                                    //TODO removeAllPositions
                             }
                         }
                     });
@@ -263,7 +264,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        setEmptyView(EpisodesFragment.TAG+QUICKFILTER_ALL);
+        setEmptyView(EpisodesFragment.TAG + QUICKFILTER_ALL);
 
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
@@ -289,18 +290,19 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     public void setEmptyView(String tag) {
         switch (tag) {
-            case EpisodesFragment.TAG+QUICKFILTER_ALL:
-            case EpisodesFragment.TAG+QUICKFILTER_NEW:
+            default:
+            case EpisodesFragment.TAG + QUICKFILTER_ALL:
+            case EpisodesFragment.TAG + QUICKFILTER_NEW:
                 emptyView.setIcon(R.drawable.ic_feed);
                 emptyView.setTitle(R.string.no_all_episodes_head_label);
                 emptyView.setMessage(R.string.no_all_episodes_label);
                 break;
-            case EpisodesFragment.TAG+QUICKFILTER_DOWNLOADED:
+            case EpisodesFragment.TAG + QUICKFILTER_DOWNLOADED:
                 emptyView.setIcon(R.drawable.ic_download);
                 emptyView.setTitle(R.string.no_comp_downloads_head_label);
                 emptyView.setMessage(R.string.no_comp_downloads_label);
                 break;
-            case EpisodesFragment.TAG+QUICKFILTER_FAV:
+            case EpisodesFragment.TAG + QUICKFILTER_FAV:
                 emptyView.setIcon(R.drawable.ic_star);
                 emptyView.setTitle(R.string.no_fav_episodes_head_label);
                 emptyView.setMessage(R.string.no_fav_episodes_label);
@@ -449,7 +451,9 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateUi(); }
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
@@ -462,7 +466,9 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onQueueChanged(QueueEvent event) { updateUi(); }
+    public void onQueueChanged(QueueEvent event) {
+        updateUi();
+    }
 
     void loadItems() {
         if (disposable != null) {

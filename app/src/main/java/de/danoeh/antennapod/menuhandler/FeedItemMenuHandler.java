@@ -280,6 +280,7 @@ public class FeedItemMenuHandler {
                 });
         h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
     }
+
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
         markReadWithUndo(fragment,item, FeedItem.UNPLAYED);
     }

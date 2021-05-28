@@ -87,7 +87,7 @@ public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
         //Least played on top
         Collections.reverse(items);
         //mix up the first few podcasts
-        List<NavDrawerData.DrawerItem> topItems = items.subList(0,4);
+        List<NavDrawerData.DrawerItem> topItems = items.subList(0, 4);
         items = items.subList(4, items.size());
         Collections.shuffle(topItems);
         topItems.addAll(items);

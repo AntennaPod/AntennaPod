@@ -55,6 +55,7 @@ public class SwipeActions {
         this.tag = tag;
         itemTouchHelper();
     }
+
     public SwipeActions attachTo(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -124,7 +125,7 @@ public class SwipeActions {
             }
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 //display only if preferences are set
                 if (rightleft.length > 0) {
                     new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -160,6 +161,7 @@ public class SwipeActions {
                 return R.drawable.ic_download;
         }
     }
+
     private static int actionColorFor(String swipeAction) {
         switch (swipeAction) {
             case ADD_TO_QUEUE:
@@ -178,25 +180,27 @@ public class SwipeActions {
 
     private static String[] getPrefs(Context context, String tag, String defaultActions) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String prefsString = prefs.getString(PREF_SWIPEACTIONS+tag, defaultActions);
+        String prefsString = prefs.getString(PREF_SWIPEACTIONS + tag, defaultActions);
         if (prefsString.isEmpty()) {
             //no prefs set
             return new String[]{};
         }
         return prefsString.split(",");
     }
+
     private static String[] getPrefs(Context context, String tag) {
         return getPrefs(context, tag, "");
     }
+
     private static String[] getPrefsWithDefaults(Context context, String tag) {
         String defaultActions;
         switch (tag) {
             case InboxFragment.TAG:
-                defaultActions = ADD_TO_QUEUE+","+MARK_UNPLAYED;
+                defaultActions = ADD_TO_QUEUE + "," + MARK_UNPLAYED;
                 break;
             default:
             case EpisodesFragment.TAG:
-                defaultActions = MARK_FAV+","+START_DOWNLOAD;
+                defaultActions = MARK_FAV + "," + START_DOWNLOAD;
                 break;
         }
 
@@ -252,15 +256,15 @@ public class SwipeActions {
             builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
 
             //same order as in R.array.swipe_actions
-            List<String> prefKeys = Arrays.asList(ADD_TO_QUEUE,MARK_UNPLAYED,START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
+            final List<String> prefKeys = Arrays.asList(ADD_TO_QUEUE,MARK_UNPLAYED,START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
 
-            ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
-            ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
-            View rightColor = layout.findViewById(R.id.swipeColorViewRight);
-            View leftColor = layout.findViewById(R.id.swipeColorViewLeft);
+            final ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
+            final ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
+            final View rightColor = layout.findViewById(R.id.swipeColorViewRight);
+            final View leftColor = layout.findViewById(R.id.swipeColorViewLeft);
 
             Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
             Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
@@ -291,7 +295,7 @@ public class SwipeActions {
             );
 
             //load prefs and suggest defaults if swiped the first time
-            String[] rightleft = getPrefsWithDefaults(context,tag);
+            String[] rightleft = getPrefsWithDefaults(context, tag);
             int right = prefKeys.indexOf(rightleft[0]);
             int left = prefKeys.indexOf(rightleft[1]);
 
@@ -311,9 +315,9 @@ public class SwipeActions {
             builder.create().show();
         }
 
-        private void savePrefs(String tag, String right, String left){
+        private void savePrefs(String tag, String right, String left) {
             SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            prefs.edit().putString(PREF_SWIPEACTIONS+tag,right+","+left).apply();
+            prefs.edit().putString(PREF_SWIPEACTIONS + tag, right + "," + left).apply();
         }
 
         private AdapterView.OnItemSelectedListener listener(AdapterView.OnItemClickListener listener) {

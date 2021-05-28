@@ -173,7 +173,7 @@
     <string name="mark_all_label">Mark all as...</string>
     <string-array name="mark_all_array">
         <item>@string/played_label</item>
-        <item>@string/unplayed_label</item>
+        <item>@string/remove_all_new_flags_label</item>
     </string-array>
     <string name="mark_all_confirmation_msg">Please confirm that you want to mark all episodes as %s.</string>
     <string name="removed_all_msg">Marked all \"%s\" flags</string>

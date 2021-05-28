@@ -40,10 +40,10 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     private FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
-    public EpisodesFragment(){
+    public EpisodesFragment() {
         super();
     }
-    public EpisodesFragment(boolean hideToolbar){
+    public EpisodesFragment(boolean hideToolbar) {
         super();
         this.hideToolbar = hideToolbar;
     }
@@ -110,6 +110,7 @@ public class EpisodesFragment extends EpisodesListFragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(PREF_FILTER, "");
     }
+
     private void loadArgsIfAvailable() {
         if (getArguments() != null) {
             int argumentsFilter = getArguments().getInt(PREF_FILTER, -1);
@@ -125,7 +126,7 @@ public class EpisodesFragment extends EpisodesListFragment {
         return PREF_NAME;
     }
 
-    public void setQuickFilterPosition(int position){
+    public void setQuickFilterPosition(int position) {
         floatingQuickFilter.setPosition(position, false);
     }
 
@@ -160,8 +161,7 @@ public class EpisodesFragment extends EpisodesListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.mark_all_read_item).setVisible(true);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
+        menu.findItem(R.id.mark_all_item).setVisible(true);
         menu.findItem(R.id.add_podcast_item).setVisible(true);
         menu.findItem(R.id.swipe_settings).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
@@ -189,7 +189,7 @@ public class EpisodesFragment extends EpisodesListFragment {
             txtvInformation.setVisibility(View.GONE);
         }
 
-        setEmptyView(TAG+floatingQuickFilter.getPosition());
+        setEmptyView(TAG + floatingQuickFilter.getPosition());
     }
 
     private void showFilterDialog() {

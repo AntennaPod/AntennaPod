@@ -66,7 +66,7 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
                                 .withFallbackUri(item.feed.getImageUrl())
                                 .withCoverView(cover)
                                 .load();
-            });
+        });
 
         super.addSectionTo(parent);
     }

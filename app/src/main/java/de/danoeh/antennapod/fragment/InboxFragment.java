@@ -29,10 +29,10 @@ public class InboxFragment extends EpisodesListFragment {
         return PREF_NAME;
     }
 
-    public InboxFragment(){
+    public InboxFragment() {
         super();
     }
-    public InboxFragment(boolean hideToolbar){
+    public InboxFragment(boolean hideToolbar) {
         super();
         this.hideToolbar = hideToolbar;
     }
@@ -46,15 +46,13 @@ public class InboxFragment extends EpisodesListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(false);
-        menu.findItem(R.id.mark_all_read_item).setVisible(false);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
+        menu.findItem(R.id.mark_all_item).setVisible(true);
         menu.findItem(R.id.swipe_settings).setVisible(true);
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
 
         toolbar.setTitle(R.string.inbox_label);
 
@@ -62,7 +60,7 @@ public class InboxFragment extends EpisodesListFragment {
 
         setSwipeActions(TAG);
 
-        return root;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
