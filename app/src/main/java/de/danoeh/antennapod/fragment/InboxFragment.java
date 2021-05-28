@@ -54,6 +54,7 @@ public class InboxFragment extends EpisodesListFragment {
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View root = super.onCreateView(inflater, container, savedInstanceState);
 
         toolbar.setTitle(R.string.inbox_label);
 
@@ -61,7 +62,7 @@ public class InboxFragment extends EpisodesListFragment {
 
         setSwipeActions(TAG);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return root;
     }
 
     @Override
