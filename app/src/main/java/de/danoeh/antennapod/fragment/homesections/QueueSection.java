@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -37,6 +38,7 @@ public class QueueSection extends HomeSection<FeedItem> {
         super(context);
         sectionTitle = context.getString(R.string.continue_title);
         sectionNavigateTitle = context.getString(R.string.queue_label);
+        updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.QUEUE);
     }
 
     @NonNull

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -36,6 +37,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         super(context);
         sectionTitle = context.getString(R.string.new_title);
         sectionNavigateTitle = context.getString(R.string.inbox_label);
+        updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.UNREAD);
 
         recyclerView.setPadding(0,0,0,0);
         swipeActions = new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
@@ -65,8 +67,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
         recyclerView.setAdapter(adapter);
 
-        //context.setSelectedItem(item);
-        //->FRAGMENT?
+        adapter.selectedItem.observe(context, feedItem -> context.setSelectedItem(feedItem));
         super.addSectionTo(parent);
     }
 

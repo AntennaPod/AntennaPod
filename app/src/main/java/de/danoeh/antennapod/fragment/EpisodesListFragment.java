@@ -223,9 +223,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         if (!isVisible()) {
             return false;
         }
-        if (item.getItemId() == R.id.share_item) {
-            return true; // avoids that the position is reset when we need it in the submenu
-        }
 
         if (listAdapter.getSelectedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");

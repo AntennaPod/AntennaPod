@@ -15,7 +15,7 @@
     <string name="inbox_label">Inbox</string>
     <string name="queue_label">Queue</string>
     <string name="all_episodes_short_label">All</string>
-    <!-- <string name="new_episodes_label">New</string> -->
+    <string name="new_episodes_label">New</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
     <string name="settings_label">Settings</string>

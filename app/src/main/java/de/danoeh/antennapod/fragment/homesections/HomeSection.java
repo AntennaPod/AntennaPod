@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,7 +38,6 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     protected Button navigateButton;
     protected RecyclerView recyclerView;
 
-    //TODO nessesary?
     public enum UpdateEvents {
         FEED_ITEM, UNREAD, FAVORITES, QUEUE
     }
@@ -45,6 +45,7 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     //must be set by descendant
     protected String sectionTitle;
     protected String sectionNavigateTitle;
+    public List<UpdateEvents> updateEvents = Collections.emptyList();
 
     protected FeedItem selectedItem;
 

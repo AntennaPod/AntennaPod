@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,8 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.homesections.HomeSection;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
@@ -162,8 +165,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     fragment = new QueueFragment();
                     break;
             }
-            getParentFragmentManager()
-                    .beginTransaction().replace(R.id.homeFragmentContainer, fragment)
+            getChildFragmentManager()
+                    .beginTransaction().replace(R.id.homeFragmentContainer, fragment, PREF_FRAGMENT)
                     .commit();
             fragmentContainer.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
@@ -340,8 +343,15 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    public boolean onContextItemSelected(@NonNull MenuItem menuItem) {
+        if (selectedItem == null) {
+            //can only happen if it comes from the fragment
+            return getChildFragmentManager().findFragmentByTag(PREF_FRAGMENT).onContextItemSelected(menuItem);
+        }
+        final FeedItem item = selectedItem;
+        //reset selectedItem so we know whether it came from the fragment next time
+        selectedItem = null;
+        return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
     }
 
     public void setSelectedItem(FeedItem feedItem) {
@@ -366,6 +376,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) { updateSections(HomeSection.UpdateEvents.UNREAD); }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) { updateSections(HomeSection.UpdateEvents.QUEUE); }
 
     private void updateSections(HomeSection.UpdateEvents event) {
         TransitionManager.beginDelayedTransition(
@@ -373,7 +385,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 new ChangeBounds());
 
         for (HomeSection section: sections) {
-            section.updateItems(event);
+            if (section.updateEvents.contains(event)) {
+                section.updateItems(event);
+            }
         }
     }
 }
