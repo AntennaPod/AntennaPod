@@ -330,7 +330,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         });
     }
 
-    public void setSwipeActions(String tag){
+    public void setSwipeActions(String tag) {
         swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
     }
 

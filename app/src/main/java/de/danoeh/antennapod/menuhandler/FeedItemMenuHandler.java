@@ -282,7 +282,7 @@ public class FeedItemMenuHandler {
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
-        markReadWithUndo(fragment,item, FeedItem.UNPLAYED);
+        markReadWithUndo(fragment, item, FeedItem.UNPLAYED);
     }
 
     public static void addToQueue(Context context, FeedItem item) {

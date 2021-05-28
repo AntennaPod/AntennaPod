@@ -146,7 +146,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         fillFragmentIfRoom();
     }
 
-    private void fillFragmentIfRoom(){
+    private void fillFragmentIfRoom() {
         //only if enough free space
         if (homeContainer.getChildCount() <= 2) {
             Fragment fragment;
@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 new TypeToken<List<SectionTitle>>() {}.getType());
     }
 
-    private void saveSettings(List<SectionTitle> list){
+    private void saveSettings(List<SectionTitle> list) {
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Gson gson = new Gson();
         prefs.edit().putString(PREF_SECTIONS, gson.toJson(list)).apply();
@@ -297,7 +297,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
                 //int activeSections = list.stream().filter(s -> s.hidden).count();
                 //min 1 section active
                 //if (activeSections > 1) {
@@ -310,7 +312,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            }
+
         }).attachToRecyclerView(dialogRecyclerView);
 
         builder.setView(layout);

@@ -43,6 +43,7 @@ public class EpisodesFragment extends EpisodesListFragment {
     public EpisodesFragment() {
         super();
     }
+
     public EpisodesFragment(boolean hideToolbar) {
         super();
         this.hideToolbar = hideToolbar;

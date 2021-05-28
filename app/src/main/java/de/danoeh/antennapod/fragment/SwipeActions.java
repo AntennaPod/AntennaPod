@@ -88,14 +88,15 @@ public class SwipeActions {
                 switch (action) {
                     case ADD_TO_QUEUE:
                         if (!item.isTagged(FeedItem.TAG_QUEUE)) {
-                            FeedItemMenuHandler.addToQueue(fragment.requireContext(),item);
+                            FeedItemMenuHandler.addToQueue(fragment.requireContext(), item);
                         } else {
                             //already in queue
                             resetItemTouchHelper();
                         }
                         break;
                     case MARK_PLAYED:
-                        int togglePlayState = item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+                        int togglePlayState =
+                                item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
                         FeedItemMenuHandler.markReadWithUndo(fragment,
                                 item, togglePlayState);
                         break;
@@ -112,7 +113,8 @@ public class SwipeActions {
                                 DownloadRequester.getInstance().downloadMedia(fragment.requireContext(), true, item);
                             } catch (DownloadRequestException e) {
                                 e.printStackTrace();
-                                DownloadRequestErrorDialogCreator.newRequestErrorDialog(fragment.requireContext(), e.getMessage());
+                                DownloadRequestErrorDialogCreator
+                                        .newRequestErrorDialog(fragment.requireContext(), e.getMessage());
                             }
                         } else {
                             resetItemTouchHelper();
@@ -121,14 +123,16 @@ public class SwipeActions {
                                     Snackbar.LENGTH_SHORT);
                         }
                         break;
+                    default: break;
                 }
             }
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dx, float dy, int actionState, boolean isCurrentlyActive) {
                 //display only if preferences are set
                 if (rightleft.length > 0) {
-                    new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    new RecyclerViewSwipeDecorator.Builder(
+                            c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
                             .addSwipeRightBackgroundColor(
                                     ContextCompat.getColor(fragment.requireContext(), actionColorFor(rightleft[0])))
                             .addSwipeRightActionIcon(actionIconFor(rightleft[0]))
@@ -139,7 +143,7 @@ public class SwipeActions {
                             .decorate();
                 }
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
             }
         };
 
@@ -225,6 +229,7 @@ public class SwipeActions {
             attachTo(recyclerView);
         });
     }
+
     private void show(Callback callback) {
         new SwipeActionsDialog().show(callback);
     }
@@ -251,12 +256,14 @@ public class SwipeActions {
                 case FeedItemlistFragment.TAG:
                     forFragment = context.getString(R.string.feeds_label);
                     break;
+                default: break;
             }
 
             builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
 
             //same order as in R.array.swipe_actions
-            final List<String> prefKeys = Arrays.asList(ADD_TO_QUEUE,MARK_UNPLAYED,START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
+            final List<String> prefKeys =
+                    Arrays.asList(ADD_TO_QUEUE, MARK_UNPLAYED, START_DOWNLOAD, MARK_FAV, MARK_PLAYED);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);

@@ -43,7 +43,7 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     protected View.OnClickListener navigate() {
         return view -> {
             Bundle b = new Bundle();
-            b.putInt(EpisodesFragment.PREF_FILTER,EpisodesListFragment.QUICKFILTER_NEW);
+            b.putInt(EpisodesFragment.PREF_FILTER, EpisodesListFragment.QUICKFILTER_NEW);
             ((MainActivity) context.requireActivity()).loadFragment(EpisodesFragment.TAG, b);
         };
     }

@@ -32,6 +32,7 @@ public class InboxFragment extends EpisodesListFragment {
     public InboxFragment() {
         super();
     }
+
     public InboxFragment(boolean hideToolbar) {
         super();
         this.hideToolbar = hideToolbar;

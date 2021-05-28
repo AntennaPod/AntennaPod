@@ -68,9 +68,9 @@ public class QueueSection extends HomeSection<FeedItem> {
     @Override
     public void addSectionTo(LinearLayout parent) {
         slush = easySlush(R.layout.cover_play_title_item, (view, item) -> {
-            ImageView coverPlay = view.findViewById(R.id.cover_play);
-            TextView title = view.findViewById(R.id.playTitle);
-            TextView date = view.findViewById(R.id.playDate);
+            final ImageView coverPlay = view.findViewById(R.id.cover_play);
+            final TextView title = view.findViewById(R.id.playTitle);
+            final TextView date = view.findViewById(R.id.playDate);
             playPauseIcon(view.findViewById(R.id.play_icon),
                     FeedItemUtil.isCurrentlyPlaying(item.getMedia()));
             new CoverLoader((MainActivity) context.requireActivity())
