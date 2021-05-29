@@ -25,7 +25,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import kotlin.Unit;
 
 
-public class SubsSection extends HomeSection<NavDrawerData.DrawerItem> {
+public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> {
 
     public static final String TAG = "SubsSection";
 
