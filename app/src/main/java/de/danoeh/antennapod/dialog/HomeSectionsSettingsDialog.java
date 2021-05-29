@@ -3,13 +3,11 @@ package de.danoeh.antennapod.dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +17,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +34,7 @@ import slush.Slush;
 
 public class 
 HomeSectionsSettingsDialog {
-    public static void openHomeDialog(Fragment fragment, DialogInterface.OnClickListener onSettingsChanged) {
+    public static void open(Fragment fragment, DialogInterface.OnClickListener onSettingsChanged) {
         SharedPreferences prefs = fragment.requireActivity().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         Context context = fragment.requireContext();
         
@@ -47,27 +44,23 @@ HomeSectionsSettingsDialog {
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.home_dialog, null, false);
         RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
-        Spinner spinner = layout.findViewById(R.id.homeSpinner);
-        String[] bottomHalfOptions = new String[]{
+        AutoCompleteTextView spinner = layout.findViewById(R.id.homeSpinner);
+        List<String> bottomHalfOptions = Arrays.asList(
                 context.getString(R.string.episodes_label),
                 context.getString(R.string.inbox_label),
-                context.getString(R.string.queue_label)};
+                context.getString(R.string.queue_label)
+        );
+
+        spinner.setText(bottomHalfOptions.get(prefs.getInt(HomeFragment.PREF_FRAGMENT, 0)));
+
         spinner.setAdapter(
                 new ArrayAdapter<>(context,
                         android.R.layout.simple_spinner_dropdown_item,
                         bottomHalfOptions));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                prefs.edit().putInt(HomeFragment.PREF_FRAGMENT, i).apply();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+        spinner.setOnItemClickListener((adapterView, view, i, l) -> {
+            prefs.edit().putInt(HomeFragment.PREF_FRAGMENT, i).apply();
         });
-        spinner.setSelection(prefs.getInt(HomeFragment.PREF_FRAGMENT, 0));
 
         ArrayList<HomeFragment.SectionTitle> list = new ArrayList<>(HomeFragment.getSectionsPrefs(fragment));
 

@@ -56,6 +56,7 @@
     <string name="rediscover_title">Rediscover podcasts</string>
     <string name="new_title">Review the new</string>
     <string name="navigate_arrows">%s »</string>
+    <string name="bottom_half">Bottom Half</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>

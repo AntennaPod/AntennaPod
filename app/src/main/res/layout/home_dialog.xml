@@ -11,14 +11,22 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Spinner
-        android:id="@+id/homeSpinner"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:hint="@string/bottom_half"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/grey_border"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
-        android:paddingVertical="2dp"
-        android:paddingHorizontal="8dp"
-        android:spinnerMode="dropdown" />
+        android:paddingVertical="2dp" >
+
+        <AutoCompleteTextView
+            android:id="@+id/homeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

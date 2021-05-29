@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public boolean onMenuItemClick(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             if (item.getItemId() == R.id.homesettings_items) {
-                HomeSectionsSettingsDialog.openHomeDialog(this,
+                HomeSectionsSettingsDialog.open(this,
                         (dialogInterface, i) -> {
                             reloadSections();
                         });
