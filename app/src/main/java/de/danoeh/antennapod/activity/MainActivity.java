@@ -264,7 +264,7 @@ public class MainActivity extends CastEnabledActivity {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
-           case InboxFragment.TAG:
+            case InboxFragment.TAG:
                 fragment = new InboxFragment();
                 break;
             case QueueFragment.TAG:
