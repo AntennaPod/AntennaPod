@@ -23,6 +23,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -109,13 +110,8 @@ public class SwipeActions {
                         break;
                     case START_DOWNLOAD:
                         if (!item.isDownloaded()) {
-                            try {
-                                DownloadRequester.getInstance().downloadMedia(fragment.requireContext(), true, item);
-                            } catch (DownloadRequestException e) {
-                                e.printStackTrace();
-                                DownloadRequestErrorDialogCreator
-                                        .newRequestErrorDialog(fragment.requireContext(), e.getMessage());
-                            }
+                            new DownloadActionButton(item, item.isTagged(FeedItem.TAG_QUEUE))
+                                    .onClick(fragment.requireContext());
                         } else {
                             resetItemTouchHelper();
                             ((MainActivity) fragment.requireActivity()).showSnackbarAbovePlayer(
