@@ -227,7 +227,6 @@
     <string name="activate_auto_download">Activate Auto Download</string>
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
-    <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>
 
     <!-- Download messages and labels -->
