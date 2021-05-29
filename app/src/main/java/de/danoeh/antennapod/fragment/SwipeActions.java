@@ -128,7 +128,8 @@ public class SwipeActions {
             }
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dx, float dy, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                    float dx, float dy, int actionState, boolean isCurrentlyActive) {
                 //display only if preferences are set
                 if (rightleft.length > 0) {
                     new RecyclerViewSwipeDecorator.Builder(
