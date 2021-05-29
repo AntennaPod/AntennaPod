@@ -39,6 +39,7 @@ public abstract class ItemActionButton {
             return new MarkAsPlayedActionButton(item);
         }
 
+        
         final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
         if (FeedItemUtil.isCurrentlyPlaying(media)) {
             return new PauseActionButton(item);
