@@ -290,9 +290,6 @@ public class MainActivity extends CastEnabledActivity {
             case SubscriptionFragment.TAG:
                 fragment = new SubscriptionFragment();
                 break;
-            case StatisticsFragment.TAG:
-                fragment = new StatisticsFragment();
-                break;
             default:
                 // default to home
                 fragment = new HomeFragment();

@@ -25,6 +25,7 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -134,19 +135,12 @@ public class EpisodesFragment extends EpisodesListFragment {
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (!super.onMenuItemClick(item)) {
-            switch (item.getItemId()) {
-                case R.id.filter_items:
-                    setQuickFilterPosition(QUICKFILTER_ALL);
-                    showFilterDialog();
-                    return true;
-                case R.id.add_podcast_item:
-                    ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
-                    return true;
-                case R.id.swipe_settings:
-                    swipeActions.show();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.filter_items) {
+                AutoUpdateManager.runImmediate(requireContext());
+                setQuickFilterPosition(QUICKFILTER_ALL);
+                showFilterDialog();
+            } else {
+                return false;
             }
         }
 
@@ -163,7 +157,6 @@ public class EpisodesFragment extends EpisodesListFragment {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.mark_all_item).setVisible(true);
-        menu.findItem(R.id.add_podcast_item).setVisible(true);
         menu.findItem(R.id.swipe_settings).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
     }

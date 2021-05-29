@@ -37,7 +37,7 @@
         android:layout_toEndOf="@+id/sectionTitle"
         android:layout_toRightOf="@+id/sectionTitle"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_baseline_shuffle_24"
+        app:srcCompat="@drawable/ic_shuffle"
         android:visibility="gone"/>
 
     <Button

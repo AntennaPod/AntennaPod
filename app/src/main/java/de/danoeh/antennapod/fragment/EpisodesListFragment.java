@@ -145,56 +145,53 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.refresh_item:
-                    AutoUpdateManager.runImmediate(requireContext());
-                    return true;
-                case R.id.mark_all_read_item:
-                    markAllAs(FeedItem.PLAYED);
-                    return true;
-                case R.id.remove_all_new_flags_item:
-                    ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                            R.string.remove_all_new_flags_label,
-                            R.string.remove_all_new_flags_confirmation_msg) {
+            if (item.getItemId() == R.id.refresh_item) {
+                AutoUpdateManager.runImmediate(requireContext());
+            } else if (item.getItemId() == R.id.mark_all_read_item) {
+                markAllAs(FeedItem.PLAYED);
+            } else if (item.getItemId() == R.id.remove_all_new_flags_item) {
+                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.remove_all_new_flags_label,
+                        R.string.remove_all_new_flags_confirmation_msg) {
 
-                        @Override
-                        public void onConfirmButtonPressed(DialogInterface dialog) {
-                            dialog.dismiss();
-                            DBWriter.removeAllNewFlags();
-                            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                                    R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.removeAllNewFlags();
+                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                                R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
+                    }
+                };
+                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            } else if (item.getItemId() == R.id.mark_all_item) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.mark_all_label);
+                String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        switch (i) {
+                            case 0: //played
+                                markAllAs(FeedItem.PLAYED);
+                                break;
+                            case 1: //unplayed
+                                markAllAs(FeedItem.UNPLAYED);
+                                break;
+                            default: break;
+                            //TODO removeAllPositions
                         }
-                    };
-                    removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-                    return true;
-                case R.id.mark_all_item:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                    builder.setTitle(R.string.mark_all_label);
-                    String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
-                    builder.setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            switch (i) {
-                                case 0: //played
-                                    markAllAs(FeedItem.PLAYED);
-                                    break;
-                                case 1: //unplayed
-                                    markAllAs(FeedItem.UNPLAYED);
-                                    break;
-                                default: break;
-                                    //TODO removeAllPositions
-                            }
-                        }
-                    });
-                    builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.create().show();
-                    return true;
-                default:
-                    return false;
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel_label, null);
+                builder.create().show();
+            } else if (item.getItemId() == R.id.swipe_settings && swipeActions != null) {
+                //null safe
+                swipeActions.show();
+            } else {
+                return false;
             }
         }
-
 
         return true;
     }
@@ -308,7 +305,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                 emptyView.setMessage(R.string.no_fav_episodes_label);
                 break;
             case InboxFragment.TAG:
-                emptyView.setIcon(R.drawable.ic_baseline_inbox_24);
+                emptyView.setIcon(R.drawable.ic_inbox);
                 emptyView.setTitle(R.string.no_new_episodes_head_label);
                 emptyView.setMessage(R.string.no_new_episodes_label);
                 break;

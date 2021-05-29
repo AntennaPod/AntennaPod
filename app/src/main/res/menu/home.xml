@@ -11,13 +11,6 @@
         android:title="@string/search_label"/>
 
     <item
-        android:id="@+id/add_podcast_item"
-        android:icon="@drawable/ic_add"
-        android:menuCategory="container"
-        android:title="@string/add_feed_label"
-        custom:showAsAction="always" />
-
-    <item
         android:id="@+id/homesettings_items"
         android:icon="@drawable/ic_settings"
         android:menuCategory="container"

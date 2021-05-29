@@ -13,6 +13,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 /**
@@ -63,21 +64,6 @@ public class InboxFragment extends EpisodesListFragment {
         setSwipeActions(TAG);
 
         return root;
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        if (!super.onMenuItemClick(item)) {
-            switch (item.getItemId()) {
-                case R.id.swipe_settings:
-                    swipeActions.show();
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        return true;
     }
 
     @NonNull

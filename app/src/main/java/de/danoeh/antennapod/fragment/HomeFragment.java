@@ -7,26 +7,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,7 +22,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -42,17 +29,16 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.dialog.HomeSectionsSettingsDialog;
 import de.danoeh.antennapod.fragment.homesections.HomeSection;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
 import de.danoeh.antennapod.fragment.homesections.StatisticsSection;
-import de.danoeh.antennapod.fragment.homesections.SubsSection;
+import de.danoeh.antennapod.fragment.homesections.SubscriptionsSection;
 import de.danoeh.antennapod.fragment.homesections.SurpriseSection;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import slush.AdapterAppliedResult;
-import slush.Slush;
 
 /**
  * Shows unread or recently published episodes
@@ -61,16 +47,16 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
-    public static final String PREF_SECTIONS = "PrefHomeSections";
+    public static final String PREF_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_FRAGMENT = "PrefHomeFragment";
 
     FeedItem selectedItem = null;
 
-    private final List<SectionTitle> defaultSections = Arrays.asList(
+    public static final List<SectionTitle> defaultSections = Arrays.asList(
             new SectionTitle(QueueSection.TAG, false),
             new SectionTitle(InboxSection.TAG, false),
             new SectionTitle(StatisticsSection.TAG, false),
-            new SectionTitle(SubsSection.TAG, false),
+            new SectionTitle(SubscriptionsSection.TAG, false),
             new SectionTitle(SurpriseSection.TAG, false)
     );
 
@@ -126,8 +112,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                 case QueueSection.TAG:
                     section = new QueueSection(this);
                     break;
-                case SubsSection.TAG:
-                    section = new SubsSection(this);
+                case SubscriptionsSection.TAG:
+                    section = new SubscriptionsSection(this);
                     break;
                 case SurpriseSection.TAG:
                     section = new SurpriseSection(this);
@@ -176,18 +162,22 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new View(requireContext());
     }
 
-    private List<SectionTitle> getSectionsPrefs() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        return gson.fromJson(prefs.getString(PREF_SECTIONS, gson.toJson(defaultSections)),
-                new TypeToken<List<SectionTitle>>() {}.getType());
+    public static List<SectionTitle> getSectionsPrefs(Fragment fragment) {
+        SharedPreferences prefs = fragment.requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String[] strings = prefs.getString(PREF_SECTIONS,
+                HomeSectionsSettingsDialog.encodeSectionSettings(defaultSections))
+                .split(";");
+        List<SectionTitle> sectionTitles = new ArrayList<>();
+        for (String s:
+             strings) {
+            String[] tagBool = s.split(",");
+            sectionTitles.add(new SectionTitle(tagBool[0], Boolean.parseBoolean(tagBool[1])));
+        }
+        return sectionTitles;
     }
 
-    private void saveSettings(List<SectionTitle> list) {
-        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        prefs.edit().putString(PREF_SECTIONS, gson.toJson(list)).apply();
-        reloadSections();
+    private List<SectionTitle> getSectionsPrefs() {
+        return getSectionsPrefs(this);
     }
 
     private void reloadSections() {
@@ -200,15 +190,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.add_podcast_item:
-                    ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
-                    return true;
-                case R.id.homesettings_items:
-                    openHomeDialog();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.homesettings_items) {
+                HomeSectionsSettingsDialog.openHomeDialog(this,
+                        (dialogInterface, i) -> {
+                            reloadSections();
+                        });
             }
         }
 
@@ -221,119 +207,11 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         super.onSaveInstanceState(outState);
     }
 
-    private void openHomeDialog() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.home_label);
 
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View layout = inflater.inflate(R.layout.home_dialog, null, false);
-        RecyclerView dialogRecyclerView = layout.findViewById(R.id.dialogRecyclerView);
-        Spinner spinner = layout.findViewById(R.id.homeSpinner);
-        String[] bottomHalfOptions = new String[]{
-                getString(R.string.episodes_label),
-                getString(R.string.inbox_label),
-                getString(R.string.queue_label)};
-        spinner.setAdapter(
-                new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        bottomHalfOptions));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                prefs.edit().putInt(PREF_FRAGMENT, i).apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        spinner.setSelection(prefs.getInt(PREF_FRAGMENT, 0));
-
-        ArrayList<SectionTitle> list = new ArrayList<>(getSectionsPrefs());
-
-        //enable only if 2 or less sections are selected
-        //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
-
-        AdapterAppliedResult<SectionTitle> slush = new Slush.SingleType<SectionTitle>()
-                .setItemLayout(R.layout.home_dialog_item)
-                .setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false))
-                .setItems(list)
-                .onBind((view, sectionTitle) -> {
-                    TextView title = view.findViewById(R.id.txtvSectionTitle);
-                    CheckBox checkBox = view.findViewById(R.id.checkBox);
-                    int res;
-                    switch (sectionTitle.tag) {
-                        case InboxSection.TAG:
-                            res = R.string.new_title;
-                            break;
-                        default:
-                        case QueueSection.TAG:
-                            res = R.string.continue_title;
-                            break;
-                        case SubsSection.TAG:
-                            res = R.string.rediscover_title;
-                            break;
-                        case SurpriseSection.TAG:
-                            res = R.string.surprise_title;
-                            break;
-                        case StatisticsSection.TAG:
-                            res = R.string.classics_title;
-                            break;
-                    }
-
-                    title.setText(getString(res));
-                    checkBox.setChecked(!sectionTitle.hidden);
-                })
-                .onItemClick((view, i) -> {
-                    CheckBox checkBox = view.findViewById(R.id.checkBox);
-                    list.get(i).toggleHidden();
-                    checkBox.setChecked(!checkBox.isChecked());
-                })
-                .into(dialogRecyclerView);
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView,
-                                  @NonNull RecyclerView.ViewHolder viewHolder,
-                                  @NonNull RecyclerView.ViewHolder target) {
-                //int activeSections = list.stream().filter(s -> s.hidden).count();
-                //min 1 section active
-                //if (activeSections > 1) {
-                    slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
-                    Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
-
-                    //spinner.setEnabled(activeSections <= 2);
-                //}
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            }
-
-        }).attachToRecyclerView(dialogRecyclerView);
-
-        builder.setView(layout);
-
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            saveSettings(list);
-            reloadSections();
-        });
-        builder.setNeutralButton(R.string.reset, (dialog, which) -> {
-            saveSettings(defaultSections);
-            reloadSections();
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
-    }
-
-    static class SectionTitle {
-        String tag;
-        boolean hidden;
+    public static class SectionTitle {
+        public String tag;
+        public boolean hidden;
 
         public SectionTitle(String tag, boolean hidden) {
             this.tag = tag;

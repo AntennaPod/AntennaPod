@@ -29,7 +29,7 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
 
     public static final String TAG = "SubsSection";
 
-    public SubsSection(HomeFragment context) {
+    public SubscriptionsSection(HomeFragment context) {
         super(context);
         sectionTitle = context.getString(R.string.rediscover_title);
         sectionNavigateTitle = context.getString(R.string.subscriptions_label);

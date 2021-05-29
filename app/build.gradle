@@ -156,7 +156,6 @@ dependencies {
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
     implementation 'com.github.ueen:slush:1.2.3'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Non-free dependencies:
     playImplementation 'com.google.android.play:core:1.8.0'
