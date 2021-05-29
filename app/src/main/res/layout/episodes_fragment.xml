@@ -111,28 +111,36 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_list" />
+                app:drawable="@drawable/ic_list"
+                android:tooltipText="@string/all_episodes_short_label"
+                android:contentDescription="@string/all_episodes_short_label" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_play_24dp" />
+                app:drawable="@drawable/ic_play_24dp"
+                android:tooltipText="@string/new_label"
+                android:contentDescription="@string/new_label" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_download" />
+                app:drawable="@drawable/ic_download"
+                android:tooltipText="@string/downloaded_label"
+                android:contentDescription="@string/downloaded_label" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_star" />
+                app:drawable="@drawable/ic_star"
+                android:tooltipText="@string/favorite_episodes_label"
+                android:contentDescription="@string/favorite_episodes_label" />
 
         </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
 
