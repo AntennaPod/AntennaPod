@@ -33,19 +33,22 @@ public abstract class ItemActionButton {
     }
 
     @NonNull
-    public static ItemActionButton forItem(@NonNull FeedItem item, boolean isInQueue, boolean allowStream) {
+    public static ItemActionButton forItem(@NonNull FeedItem item, boolean allowStream) {
         final FeedMedia media = item.getMedia();
         if (media == null) {
             return new MarkAsPlayedActionButton(item);
         }
 
-        
         final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
+        final boolean isInQueue = item.isTagged(FeedItem.TAG_QUEUE);
         if (FeedItemUtil.isCurrentlyPlaying(media)) {
             return new PauseActionButton(item);
         } else if (item.getFeed().isLocalFeed()) {
             return new PlayLocalActionButton(item);
         } else if (media.isDownloaded()) {
+            if (item.isPlayed()) {
+                return new DeleteActionButton(item);
+            }
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
