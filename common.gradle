@@ -5,7 +5,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
 
-        multiDexEnabled false
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
 
@@ -52,8 +52,8 @@ android {
         checkGeneratedSources = true
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 }
 

@@ -90,6 +90,14 @@ android {
         }
     }
 
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     lintOptions {
         disable 'ObsoleteLintCustomCheck', 'CheckResult', 'UnusedAttribute', 'BatteryLife', 'InflateParams',
                 'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup', 'VectorDrawableCompat',
@@ -127,6 +135,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"

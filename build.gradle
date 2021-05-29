@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
         classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.3'
         classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
