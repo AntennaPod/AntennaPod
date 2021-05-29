@@ -116,6 +116,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:visibility="gone"
             android:gravity="center"
+            android:textColor="?attr/colorAccent"
             tools:visibility="visible"
             tools:text="(i) Information"/>
 
