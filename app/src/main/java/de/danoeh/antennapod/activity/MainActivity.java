@@ -57,7 +57,6 @@ import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
-import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
@@ -266,10 +265,7 @@ public class MainActivity extends CastEnabledActivity {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
-            case HomeFragment.TAG:
-                fragment = new HomeFragment();
-                break;
-            case InboxFragment.TAG:
+           case InboxFragment.TAG:
                 fragment = new InboxFragment();
                 break;
             case QueueFragment.TAG:
@@ -291,9 +287,9 @@ public class MainActivity extends CastEnabledActivity {
                 fragment = new SubscriptionFragment();
                 break;
             default:
-                // default to home
-                fragment = new HomeFragment();
-                tag = HomeFragment.TAG;
+                // default to the queue
+                fragment = new QueueFragment();
+                tag = QueueFragment.TAG;
                 args = null;
                 break;
         }

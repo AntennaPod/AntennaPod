@@ -86,7 +86,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     Toolbar toolbar;
 
-    SwipeActions swipeActions;
+    //SwipeActions swipeActions;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -148,7 +148,19 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             if (item.getItemId() == R.id.refresh_item) {
                 AutoUpdateManager.runImmediate(requireContext());
             } else if (item.getItemId() == R.id.mark_all_read_item) {
-                markAllAs(FeedItem.PLAYED);
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markAllItemsRead();
+                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                                R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
             } else if (item.getItemId() == R.id.remove_all_new_flags_item) {
                 ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
                         R.string.remove_all_new_flags_label,
@@ -163,53 +175,15 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                     }
                 };
                 removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-            } else if (item.getItemId() == R.id.mark_all_item) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setTitle(R.string.mark_all_label);
-                String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        switch (i) {
-                            case 0: //played
-                                markAllAs(FeedItem.PLAYED);
-                                break;
-                            case 1: //unplayed
-                                markAllAs(FeedItem.UNPLAYED);
-                                break;
-                            default: break;
-                            //TODO removeAllPositions
-                        }
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel_label, null);
-                builder.create().show();
-            } else if (item.getItemId() == R.id.swipe_settings && swipeActions != null) {
+            //} else if (item.getItemId() == R.id.swipe_settings && swipeActions != null) {
                 //null safe
-                swipeActions.show();
+                //swipeActions.show();
             } else {
                 return false;
             }
         }
 
         return true;
-    }
-
-    private void markAllAs(int state) {
-        ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
-                R.string.mark_all_read_label,
-                R.string.mark_all_read_confirmation_msg) {
-
-            @Override
-            public void onConfirmButtonPressed(DialogInterface dialog) {
-                dialog.dismiss();
-                DBWriter.markAllItemsRead(state);
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                        R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
-            }
-        };
-        markAllReadConfirmationDialog.createNewDialog().show();
     }
 
     @Override
@@ -328,7 +302,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     public void setSwipeActions(String tag) {
-        swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
+        //swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
     }
 
     private void loadMoreItems() {
@@ -368,7 +342,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             onPrepareOptionsMenu(toolbar.getMenu());
         }
 
-        swipeActions.resetItemTouchHelper();
+        //swipeActions.resetItemTouchHelper();
     }
 
     /**
@@ -429,7 +403,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChangedCompat(pos);
-                    swipeActions.resetItemTouchHelper();
+                    //swipeActions.resetItemTouchHelper();
                 }
             }
         }
