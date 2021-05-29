@@ -199,9 +199,9 @@ public class SwipeActions {
     private static String[] getPrefsWithDefaults(Context context, String tag) {
         String defaultActions;
         switch (tag) {
-            case InboxFragment.TAG:
+            /*case InboxFragment.TAG:
                 defaultActions = ADD_TO_QUEUE + "," + MARK_UNPLAYED;
-                break;
+                break;*/
             default:
             case EpisodesFragment.TAG:
                 defaultActions = MARK_FAV + "," + START_DOWNLOAD;
@@ -247,9 +247,9 @@ public class SwipeActions {
 
             String forFragment = "";
             switch (tag) {
-                case InboxFragment.TAG:
+                /*case InboxFragment.TAG:
                     forFragment = context.getString(R.string.inbox_label);
-                    break;
+                    break;*/
                 case EpisodesFragment.TAG:
                     forFragment = context.getString(R.string.episodes_label);
                     break;
