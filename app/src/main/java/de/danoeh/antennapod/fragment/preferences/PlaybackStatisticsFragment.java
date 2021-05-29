@@ -43,8 +43,8 @@ import java.util.List;
  */
 public class PlaybackStatisticsFragment extends Fragment {
     private static final String TAG = PlaybackStatisticsFragment.class.getSimpleName();
-    public static final String PREF_NAME = "StatisticsActivityPrefs";
-    public static final String PREF_COUNT_ALL = "countAll";
+    private static final String PREF_NAME = "StatisticsActivityPrefs";
+    private static final String PREF_COUNT_ALL = "countAll";
 
     private Disposable disposable;
     private RecyclerView feedStatisticsList;
@@ -57,7 +57,7 @@ public class PlaybackStatisticsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
+        countAll = shouldCountAll(this);
         setHasOptionsMenu(true);
     }
 
@@ -194,5 +194,11 @@ public class PlaybackStatisticsFragment extends Fragment {
                     CompareCompat.compareLong(item1.timePlayed, item2.timePlayed));
         }
         return statisticsData;
+    }
+
+    public static boolean shouldCountAll(Fragment fragment) {
+        return fragment.requireActivity()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getBoolean(PREF_COUNT_ALL, false);
     }
 }

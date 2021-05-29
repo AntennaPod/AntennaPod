@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment.homesections;
 
-import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -21,7 +20,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackStatisticsFragment;
@@ -40,9 +38,7 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
         sectionTitle = context.getString(R.string.classics_title);
         sectionNavigateTitle = context.getString(R.string.statistics_label);
 
-        countAll = context.requireActivity()
-                .getSharedPreferences(PlaybackStatisticsFragment.PREF_NAME, Context.MODE_PRIVATE)
-                .getBoolean(PlaybackStatisticsFragment.PREF_COUNT_ALL, false);
+        countAll = PlaybackStatisticsFragment.shouldCountAll(context);
     }
 
     @Override
