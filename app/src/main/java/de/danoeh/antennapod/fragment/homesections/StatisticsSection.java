@@ -1,13 +1,17 @@
 package de.danoeh.antennapod.fragment.homesections;
 
+import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.annimon.stream.Stream;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +24,7 @@ import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.HomeFragment;
+import de.danoeh.antennapod.fragment.preferences.PlaybackStatisticsFragment;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import kotlin.Unit;
 
@@ -28,10 +33,16 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
 
     public static final String TAG = "StatisticsSection";
 
+    private final boolean countAll;
+
     public StatisticsSection(HomeFragment context) {
         super(context);
         sectionTitle = context.getString(R.string.classics_title);
         sectionNavigateTitle = context.getString(R.string.statistics_label);
+
+        countAll = context.requireActivity()
+                .getSharedPreferences(PlaybackStatisticsFragment.PREF_NAME, Context.MODE_PRIVATE)
+                .getBoolean(PlaybackStatisticsFragment.PREF_COUNT_ALL, false);
     }
 
     @Override
@@ -54,7 +65,7 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
     public void addSectionTo(LinearLayout parent) {
         easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            int side = (int) displayMetrics.density * 140;
+            int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
             view.getLayoutParams().height = side;
             view.getLayoutParams().width = side;
             ImageView cover = view.findViewById(R.id.discovery_cover);
@@ -74,9 +85,10 @@ public class StatisticsSection extends HomeSection<StatisticsItem> {
     @NonNull
     @Override
     protected List<StatisticsItem> loadItems() {
-        List<StatisticsItem> statisticsData = DBReader.getStatistics();
-        Collections.sort(statisticsData, (item1, item2) ->
-                CompareCompat.compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
+        List<StatisticsItem> statisticsData = Stream.of(DBReader.getStatistics())
+                .sortBy(s -> countAll ? s.timePlayedCountAll : s.timePlayed)
+                .toList();
+        Collections.reverse(statisticsData);
         return statisticsData;
     }
 }

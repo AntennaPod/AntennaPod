@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment.homesections;
 
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,7 +60,7 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
     public void addSectionTo(LinearLayout parent) {
         easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            int side = (int) displayMetrics.density * 140;
+            int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
             view.getLayoutParams().height = side;
             view.getLayoutParams().width = side;
             ImageView cover = view.findViewById(R.id.discovery_cover);

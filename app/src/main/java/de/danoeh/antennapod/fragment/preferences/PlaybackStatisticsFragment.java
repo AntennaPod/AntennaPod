@@ -43,8 +43,8 @@ import java.util.List;
  */
 public class PlaybackStatisticsFragment extends Fragment {
     private static final String TAG = PlaybackStatisticsFragment.class.getSimpleName();
-    private static final String PREF_NAME = "StatisticsActivityPrefs";
-    private static final String PREF_COUNT_ALL = "countAll";
+    public static final String PREF_NAME = "StatisticsActivityPrefs";
+    public static final String PREF_COUNT_ALL = "countAll";
 
     private Disposable disposable;
     private RecyclerView feedStatisticsList;

@@ -21,8 +21,8 @@
             app:cardElevation="0dp">
 
             <RelativeLayout
-                android:layout_width="120dp"
-                android:layout_height="120dp">
+                android:layout_width="100dp"
+                android:layout_height="100dp">
 
                 <ImageView
                     android:id="@+id/play_icon"
@@ -57,7 +57,8 @@
             android:paddingHorizontal="4dp"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/playDate"
@@ -67,7 +68,8 @@
             android:layout_marginBottom="2dp"
             android:paddingHorizontal="4dp"
             android:singleLine="true"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

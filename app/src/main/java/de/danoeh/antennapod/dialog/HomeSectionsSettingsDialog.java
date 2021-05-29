@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.annimon.stream.Stream;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,8 +66,8 @@ HomeSectionsSettingsDialog {
 
         ArrayList<HomeFragment.SectionTitle> list = new ArrayList<>(HomeFragment.getSectionsPrefs(fragment));
 
-        //enable only if 2 or less sections are selected
-        //spinner.setEnabled(list.stream().filter(s -> s.hidden).count() <= 2);
+        //enabled only if 2 or less sections are selected
+        spinner.setEnabled(Stream.of(list).filterNot(s -> s.hidden).count() <= 2);
 
         AdapterAppliedResult<HomeFragment.SectionTitle> slush = new Slush.SingleType<HomeFragment.SectionTitle>()
                 .setItemLayout(R.layout.home_dialog_item)
@@ -99,8 +101,16 @@ HomeSectionsSettingsDialog {
                 })
                 .onItemClick((view, i) -> {
                     CheckBox checkBox = view.findViewById(R.id.checkBox);
-                    list.get(i).toggleHidden();
-                    checkBox.setChecked(!checkBox.isChecked());
+                    long selectedSections = Stream.of(list).filterNot(s -> s.hidden).count();
+                    //min 1 section selected
+                    if (selectedSections > 1 || !checkBox.isChecked()) {
+                        list.get(i).toggleHidden();
+                        checkBox.setChecked(!checkBox.isChecked());
+
+                        selectedSections += checkBox.isChecked() ? 1 : -1;
+                        //enabled only if 2 or less sections are selected
+                        spinner.setEnabled(selectedSections <= 2);
+                    }
                 })
                 .into(dialogRecyclerView);
 
@@ -110,14 +120,8 @@ HomeSectionsSettingsDialog {
             public boolean onMove(@NonNull RecyclerView recyclerView,
                                   @NonNull RecyclerView.ViewHolder viewHolder,
                                   @NonNull RecyclerView.ViewHolder target) {
-                //int activeSections = list.stream().filter(s -> s.hidden).count();
-                //min 1 section active
-                //if (activeSections > 1) {
                 slush.getItemListEditor().moveItem(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
                 Collections.swap(list, viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
-
-                //spinner.setEnabled(activeSections <= 2);
-                //}
                 return false;
             }
 

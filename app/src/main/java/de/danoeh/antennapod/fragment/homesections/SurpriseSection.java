@@ -50,9 +50,6 @@ public class SurpriseSection extends HomeSection<FeedItem> {
 
     @Override
     protected Unit onItemClick(View view, FeedItem feedItem) {
-        /*long[] ids = FeedItemUtil.getIds(loadItems());
-        int position = ArrayUtils.indexOf(ids, feedItem.getId());
-        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));*/
         new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
                 .callEvenIfRunning(true)
                 .startWhenPrepared(true)
