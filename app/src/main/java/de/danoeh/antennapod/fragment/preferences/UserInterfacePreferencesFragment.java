@@ -14,11 +14,7 @@ import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,11 +70,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     }
                     final Context context = getActivity();
                     final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
-                    final String[] navTags = new String[]{
-                            QueueFragment.TAG,
-                            EpisodesFragment.TAG,
-                            SubscriptionFragment.TAG
-                    };
+                    final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
                     final String[] choice = { UserPreferences.getBackButtonGoToPage() };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);

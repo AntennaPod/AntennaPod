@@ -10,9 +10,7 @@
     <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
-    <string name="home_label">Home</string>
     <string name="episodes_label">Episodes</string>
-    <string name="inbox_label">Inbox</string>
     <string name="queue_label">Queue</string>
     <string name="all_episodes_short_label">All</string>
     <string name="new_episodes_label">New</string>
@@ -48,14 +46,6 @@
         <item>@string/add_to_favorite_label</item>
         <item>@string/mark_read_label</item>
     </string-array>
-
-    <!-- Home fragment -->
-    <string name="surprise_title">Get surprised</string>
-    <string name="classics_title">Check your classics</string>
-    <string name="continue_title">Continue listening</string>
-    <string name="rediscover_title">Rediscover podcasts</string>
-    <string name="new_title">Review the new</string>
-    <string name="navigate_arrows">%s »</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
