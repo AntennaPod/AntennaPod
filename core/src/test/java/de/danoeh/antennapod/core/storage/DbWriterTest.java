@@ -778,7 +778,7 @@ public class DbWriterTest {
             assertTrue(item.isPlayed());
         }
     }
-    
+
     @Test
     public void testRemoveAllNewFlags() throws Exception {
         final int numItems = 10;
@@ -803,7 +803,7 @@ public class DbWriterTest {
         DBWriter.removeAllNewFlags();
         List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
         for (FeedItem item : loadedItems) {
-            assertFalse(item.isPlayed());
+            assertFalse(item.isNew());
         }
     }
 
