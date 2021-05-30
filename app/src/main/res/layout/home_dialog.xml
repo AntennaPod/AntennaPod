@@ -27,7 +27,8 @@
             android:inputType="none"
             android:focusable="false"
             android:enabled="false"
-            android:focusableInTouchMode="false" />
+            android:focusableInTouchMode="false"
+            android:cursorVisible="false" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

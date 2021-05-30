@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.annimon.stream.Stream;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.homesections.InboxSection;
 import de.danoeh.antennapod.fragment.homesections.QueueSection;
@@ -110,6 +112,9 @@ HomeSectionsSettingsDialog {
                         selectedSections += checkBox.isChecked() ? 1 : -1;
                         //enabled only if 2 or less sections are selected
                         spinner.setEnabled(selectedSections <= 2);
+                    } else {
+                        ((MainActivity) fragment.requireActivity()).showSnackbarAbovePlayer(
+                                R.string.home_dialog_min_one_section, Snackbar.LENGTH_LONG);
                     }
                 })
                 .into(dialogRecyclerView);
