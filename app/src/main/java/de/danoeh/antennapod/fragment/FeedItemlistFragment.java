@@ -156,7 +156,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
 
         progressBar = root.findViewById(R.id.progLoading);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -436,7 +435,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
             recyclerView.setAdapter(adapter);
         }
-        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());

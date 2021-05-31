@@ -18,7 +18,6 @@ import de.danoeh.antennapod.R;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;
-    private View list;
     private ListAdapter listAdapter;
     private RecyclerView.Adapter<?> recyclerAdapter;
 
@@ -61,7 +60,6 @@ public class EmptyViewHandler {
         }
         addToParentView(listView);
         layoutAdded = true;
-        this.list = listView;
         listView.setEmptyView(emptyView);
         updateAdapter(listView.getAdapter());
     }
@@ -72,7 +70,6 @@ public class EmptyViewHandler {
         }
         addToParentView(recyclerView);
         layoutAdded = true;
-        this.list = recyclerView;
         updateAdapter(recyclerView.getAdapter());
     }
 
@@ -142,7 +139,6 @@ public class EmptyViewHandler {
         } else {
             empty = true;
         }
-        list.setVisibility(empty ? View.GONE : View.VISIBLE);
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 }
