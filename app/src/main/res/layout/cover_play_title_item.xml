@@ -26,8 +26,8 @@
 
                 <ImageView
                     android:id="@+id/play_icon"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:elevation="1dp"
