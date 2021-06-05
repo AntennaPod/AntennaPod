@@ -800,7 +800,7 @@ public class DbWriterTest {
             assertTrue(item.getId() != 0);
         }
 
-        DBWriter.removeAllNewFlags();
+        DBWriter.removeAllNewFlags().get();
         List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
         for (FeedItem item : loadedItems) {
             assertFalse(item.isNew());
