@@ -271,15 +271,17 @@ public class FeedItemMenuHandler {
                 playStateStringRes = R.string.marked_read_label;
                 break;
         }
-
-        Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                playStateStringRes, Snackbar.LENGTH_LONG)
-                .setAction(fragment.getString(R.string.undo), v -> {
-                    DBWriter.markItemPlayed(item.getPlayState(), item.getId());
-                    // don't forget to cancel the thing that's going to remove the media
-                    h.removeCallbacks(r);
-                });
-        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+        if (playState == FeedItem.UNPLAYED && item.getPlayState() == FeedItem.NEW) {
+            //was new
+            Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
+                    playStateStringRes, Snackbar.LENGTH_LONG)
+                    .setAction(fragment.getString(R.string.undo), v -> {
+                        DBWriter.markItemPlayed(item.getPlayState(), item.getId());
+                        // don't forget to cancel the thing that's going to remove the media
+                        h.removeCallbacks(r);
+                    });
+            h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+        }
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {

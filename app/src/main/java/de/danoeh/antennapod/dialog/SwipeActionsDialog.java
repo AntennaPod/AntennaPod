@@ -29,14 +29,14 @@ public class SwipeActionsDialog {
         this.tag = tag;
     }
 
-    public void show(PrefsCallback callback, DismissCallback dismissCallback) {
+    public void show(Callback prefsChanged, Callback dismissed) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         String forFragment = "";
         switch (tag) {
-                /*case InboxFragment.TAG:
-                    forFragment = context.getString(R.string.inbox_label);
-                    break;*/
+            /*case InboxFragment.TAG:
+                forFragment = context.getString(R.string.inbox_label);
+                break;*/
             case EpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
                 break;
@@ -49,8 +49,9 @@ public class SwipeActionsDialog {
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
 
         //same order as in R.array.swipe_actions
-        final List<String> prefKeys =
-                Arrays.asList(SwipeActions.ADD_TO_QUEUE, SwipeActions.MARK_UNPLAYED, SwipeActions.START_DOWNLOAD, SwipeActions.MARK_FAV, SwipeActions.MARK_PLAYED);
+        final List<String> prefKeys = Arrays.asList(SwipeActions.ADD_TO_QUEUE,
+                SwipeActions.MARK_UNPLAYED, SwipeActions.START_DOWNLOAD,
+                SwipeActions.MARK_FAV, SwipeActions.MARK_PLAYED);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
@@ -98,10 +99,10 @@ public class SwipeActionsDialog {
             String rightAction = prefKeys.get(spinnerRightAction.getSelectedItemPosition());
             String leftAction = prefKeys.get(spinnerLeftAction.getSelectedItemPosition());
             savePrefs(tag, rightAction, leftAction);
-            callback.onPrefsChange();
+            prefsChanged.onCall();
         });
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setOnDismissListener(dialogInterface -> dismissCallback.onDismiss());
+        builder.setOnDismissListener(dialogInterface -> dismissed.onCall());
         builder.create().show();
     }
 
@@ -130,11 +131,7 @@ public class SwipeActionsDialog {
                 context.getResources().getStringArray(R.array.swipe_actions));
     }
 
-    public interface PrefsCallback {
-        void onPrefsChange();
-    }
-
-    public interface DismissCallback {
-        void onDismiss();
+    public interface Callback {
+        void onCall();
     }
 }

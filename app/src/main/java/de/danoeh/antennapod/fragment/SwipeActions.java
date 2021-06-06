@@ -110,7 +110,8 @@ public class SwipeActions {
             }
 
             @Override
-            public void onChildDraw(@NotNull Canvas c, @NotNull RecyclerView recyclerView, @NotNull RecyclerView.ViewHolder viewHolder,
+            public void onChildDraw(@NotNull Canvas c, @NotNull RecyclerView recyclerView,
+                                    @NotNull RecyclerView.ViewHolder viewHolder,
                                     float dx, float dy, int actionState, boolean isCurrentlyActive) {
                 //display only if preferences are set
                 if (rightleft.length > 0) {
@@ -206,8 +207,8 @@ public class SwipeActions {
         show(this::resetItemTouchHelper);
     }
 
-    private void show(SwipeActionsDialog.PrefsCallback callback) {
-        new SwipeActionsDialog(fragment.requireContext(), tag).show(callback, this::resetItemTouchHelper);
+    private void show(SwipeActionsDialog.Callback prefsChanged) {
+        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::resetItemTouchHelper);
     }
 
 
