@@ -33,14 +33,13 @@ public abstract class ItemActionButton {
     }
 
     @NonNull
-    public static ItemActionButton forItem(@NonNull FeedItem item, boolean allowStream) {
+    public static ItemActionButton forItem(@NonNull FeedItem item) {
         final FeedMedia media = item.getMedia();
         if (media == null) {
             return new MarkAsPlayedActionButton(item);
         }
 
         final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
-        final boolean isInQueue = item.isTagged(FeedItem.TAG_QUEUE);
         if (FeedItemUtil.isCurrentlyPlaying(media)) {
             return new PauseActionButton(item);
         } else if (item.getFeed().isLocalFeed()) {
@@ -52,13 +51,10 @@ public abstract class ItemActionButton {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
-        } else if (UserPreferences.isStreamOverDownload() && allowStream) {
+        } else if (UserPreferences.isStreamOverDownload()) {
             return new StreamActionButton(item);
-        } else if (MobileDownloadHelper.userAllowedMobileDownloads()
-                || !MobileDownloadHelper.userChoseAddToQueue() || isInQueue) {
-            return new DownloadActionButton(item, isInQueue);
         } else {
-            return new AddToQueueActionButton(item);
+            return new DownloadActionButton(item);
         }
     }
 
