@@ -272,15 +272,26 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         updateSections(HomeSection.UpdateEvents.QUEUE);
     }
 
-    private void updateSections(HomeSection.UpdateEvents event) {
+    private void updateSections(HomeSection.UpdateEvents event, Boolean all) {
         TransitionManager.beginDelayedTransition(
                 homeContainer,
                 new ChangeBounds());
 
         for (HomeSection section: sections) {
-            if (section.updateEvents.contains(event)) {
+            if (section.updateEvents.contains(event) || all) {
                 section.updateItems(event);
             }
         }
+    }
+
+    private void updateSections(HomeSection.UpdateEvents event) {
+        updateSections(event, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //update all sections, especially play/pauseStatus in QueueSection
+        updateSections(HomeSection.UpdateEvents.QUEUE, true);
     }
 }
