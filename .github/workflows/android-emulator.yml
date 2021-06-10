@@ -24,7 +24,7 @@ jobs:
         api-level: 28
         disable-animations: true
         script: zsh .github/workflows/runTests.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       if: failure()
       with:
         name: test-report
