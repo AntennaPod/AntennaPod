@@ -13,6 +13,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Wrapper validation
+      uses: gradle/wrapper-validation-action@v1
     - name: Build with Gradle
       run: ./gradlew assemblePlayDebugAndroidTest
     - name: Android Emulator test
