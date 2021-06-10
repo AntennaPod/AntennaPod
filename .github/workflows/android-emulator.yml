@@ -9,10 +9,11 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
       with:
-        java-version: 1.8
+        distribution: 'adopt'
+        java-version: '8'
     - name: Wrapper validation
       uses: gradle/wrapper-validation-action@v1
     - name: Build with Gradle
