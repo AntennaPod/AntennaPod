@@ -68,8 +68,8 @@ HomeSectionsSettingsDialog {
 
         ArrayList<HomeFragment.SectionTitle> list = new ArrayList<>(HomeFragment.getSectionsPrefs(fragment));
 
-        //enabled only if 2 or less sections are selected
-        spinner.setEnabled(Stream.of(list).filterNot(s -> s.hidden).count() <= 2);
+        //enabled only if 3 or less sections are selected
+        spinner.setEnabled(Stream.of(list).filterNot(s -> s.hidden).count() <= 3);
 
         AdapterAppliedResult<HomeFragment.SectionTitle> slush = new Slush.SingleType<HomeFragment.SectionTitle>()
                 .setItemLayout(R.layout.home_dialog_item)
@@ -110,8 +110,8 @@ HomeSectionsSettingsDialog {
                         checkBox.setChecked(!checkBox.isChecked());
 
                         selectedSections += checkBox.isChecked() ? 1 : -1;
-                        //enabled only if 2 or less sections are selected
-                        spinner.setEnabled(selectedSections <= 2);
+                        //enabled only if 3 or less sections are selected
+                        spinner.setEnabled(selectedSections <= 3);
                     } else {
                         ((MainActivity) fragment.requireActivity()).showSnackbarAbovePlayer(
                                 R.string.home_dialog_min_one_section, Snackbar.LENGTH_LONG);

@@ -134,28 +134,33 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     private void fillFragmentIfRoom() {
-        //only if enough free space
-        if (homeContainer.getChildCount() <= 2) {
-            Fragment fragment;
-            SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            switch (prefs.getInt(PREF_FRAGMENT, 0)) {
-                default:
-                case 0: //Episodes
-                    fragment = new EpisodesFragment(true);
-                    break;
-                case 1: //Inbox
-                    fragment = new InboxFragment(true);
-                    break;
-                case 2: //Queue
-                    fragment = new QueueFragment();
-                    break;
+        //only if at least halve of the screen is empty
+        homeContainer.post(() -> {
+            if (homeContainer.getHeight() == homeContainer.getPaddingBottom()) {
+                //no subs
+                ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
+            } else if (homeContainer.getHeight() < getView().getHeight() / 2) {
+                Fragment fragment;
+                SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                switch (prefs.getInt(PREF_FRAGMENT, 0)) {
+                    default:
+                    case 0: //Episodes
+                        fragment = new EpisodesFragment(true);
+                        break;
+                    case 1: //Inbox
+                        fragment = new InboxFragment(true);
+                        break;
+                    case 2: //Queue
+                        fragment = new QueueFragment();
+                        break;
+                }
+                getChildFragmentManager()
+                        .beginTransaction().replace(R.id.homeFragmentContainer, fragment, PREF_FRAGMENT)
+                        .commit();
+                fragmentContainer.setVisibility(View.VISIBLE);
+                divider.setVisibility(View.VISIBLE);
             }
-            getChildFragmentManager()
-                    .beginTransaction().replace(R.id.homeFragmentContainer, fragment, PREF_FRAGMENT)
-                    .commit();
-            fragmentContainer.setVisibility(View.VISIBLE);
-            divider.setVisibility(View.VISIBLE);
-        }
+        });
     }
 
     private View searchBar() {
