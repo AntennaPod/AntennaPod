@@ -72,7 +72,7 @@ public class SwipeActions {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 if (rightleft.length == 0) {
                     //open settings dialog if no prefs are set
-                    show(() -> rightleft = getPrefs(fragment.requireContext(), tag));
+                    showDialog(() -> rightleft = getPrefs(fragment.requireContext(), tag));
                     return;
                 }
 
@@ -140,7 +140,7 @@ public class SwipeActions {
         return getPrefs(context, tag, defaultActions);
     }
 
-    public void resetItemTouchHelper() {
+    public void reattachItemTouchHelper() {
         //prevent swipe staying if item is staying in the list
         if (itemTouchHelper != null && recyclerView != null) {
             itemTouchHelper.attachToRecyclerView(null);
@@ -148,12 +148,21 @@ public class SwipeActions {
         }
     }
 
-    public void show() {
-        show(this::resetItemTouchHelper);
+    public void refreshItemTouchHelper() {
+        //refresh itemTouchHelper after prefs changed
+        if (itemTouchHelper != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+        }
+        itemTouchHelper();
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void show(SwipeActionsDialog.Callback prefsChanged) {
-        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::resetItemTouchHelper);
+    public void showDialog() {
+        showDialog(this::refreshItemTouchHelper);
+    }
+
+    private void showDialog(SwipeActionsDialog.Callback prefsChanged) {
+        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::reattachItemTouchHelper);
     }
 
 

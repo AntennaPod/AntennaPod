@@ -285,7 +285,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 item.getActionView().post(() -> iconTintManager.updateTint());
                 break;
             case R.id.swipe_settings:
-                swipeActions.show();
+                swipeActions.showDialog();
                 break;
             default: break;
         }
@@ -390,7 +390,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
                     adapter.notifyItemChangedCompat(pos);
-                    swipeActions.resetItemTouchHelper();
+                    swipeActions.reattachItemTouchHelper();
                 }
             }
         }
