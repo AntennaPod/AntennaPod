@@ -71,6 +71,7 @@ import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -465,9 +466,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
+            swipeActions.setFilter(feed.getItemFilter());
         }
 
-        swipeActions.resetItemTouchHelper();
         refreshToolbarState();
         updateSyncProgressBarVisibility();
     }

@@ -46,7 +46,7 @@ public class FeedItemFilter {
         showNotFavorite = hasProperty("not_favorite");
     }
 
-    private boolean hasProperty(String property) {
+    public boolean hasProperty(String property) {
         return Arrays.asList(properties).contains(property);
     }
 

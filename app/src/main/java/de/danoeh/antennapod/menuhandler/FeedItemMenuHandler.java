@@ -237,7 +237,7 @@ public class FeedItemMenuHandler {
      * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
      * ,i.e., there is (context) menu item for add new flag
      */
-    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item, int playState) {
+    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item, int playState, boolean showSnackbar) {
         if (item == null) {
             return;
         }
@@ -271,21 +271,24 @@ public class FeedItemMenuHandler {
                 playStateStringRes = R.string.marked_read_label;
                 break;
         }
-        if (playState == FeedItem.UNPLAYED && item.getPlayState() == FeedItem.NEW) {
-            //was new
-            Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                    playStateStringRes, Snackbar.LENGTH_LONG)
+
+        int duration = Snackbar.LENGTH_LONG;
+
+        if (showSnackbar) {
+            ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
+                    playStateStringRes, duration)
                     .setAction(fragment.getString(R.string.undo), v -> {
                         DBWriter.markItemPlayed(item.getPlayState(), item.getId());
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
                     });
-            h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
         }
+
+        h.postDelayed(r, (int) Math.ceil(duration * 1.05f));
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
-        markReadWithUndo(fragment, item, FeedItem.UNPLAYED);
+        markReadWithUndo(fragment, item, FeedItem.UNPLAYED, false);
     }
 
     public static void addToQueue(Context context, FeedItem item) {

@@ -39,13 +39,6 @@
     <string name="swipeactions_label">Swipe Actions</string>
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
-    <string-array name="swipe_actions">
-        <item>@string/add_to_queue_label</item>
-        <item>@string/remove_new_flag_label</item>
-        <item>@string/download_label</item>
-        <item>@string/add_to_favorite_label</item>
-        <item>@string/mark_read_label</item>
-    </string-array>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>

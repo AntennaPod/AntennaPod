@@ -11,13 +11,16 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.annimon.stream.Stream;
+
 import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
-import de.danoeh.antennapod.fragment.SwipeActions;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 
 public class SwipeActionsDialog {
 
@@ -48,11 +51,6 @@ public class SwipeActionsDialog {
 
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
 
-        //same order as in R.array.swipe_actions
-        final List<String> prefKeys = Arrays.asList(SwipeActions.ADD_TO_QUEUE,
-                SwipeActions.MARK_UNPLAYED, SwipeActions.START_DOWNLOAD,
-                SwipeActions.MARK_FAV, SwipeActions.MARK_PLAYED);
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
 
@@ -70,25 +68,19 @@ public class SwipeActionsDialog {
         spinnerRightAction.setAdapter(adapter());
         spinnerLeftAction.setAdapter(adapter());
 
-        spinnerRightAction.setOnItemSelectedListener(
-                listener((a, v, i, l) -> {
-                    String action = prefKeys.get(i);
-                    rightIcon.setImageResource(SwipeActions.actionIconFor(action));
-                    rightColor.setBackgroundResource(SwipeActions.actionColorFor(action));
-                })
-        );
-        spinnerLeftAction.setOnItemSelectedListener(
-                listener((a, v, i, l) -> {
-                    String action = prefKeys.get(i);
-                    leftIcon.setImageResource(SwipeActions.actionIconFor(action));
-                    leftColor.setBackgroundResource(SwipeActions.actionColorFor(action));
-                })
-        );
+        spinnerRightAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
+            rightIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
+            rightColor.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+        }));
+        spinnerLeftAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
+            leftIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
+            leftColor.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+        }));
 
         //load prefs and suggest defaults if swiped the first time
-        String[] rightleft = SwipeActions.getPrefsWithDefaults(context, tag);
-        int right = prefKeys.indexOf(rightleft[0]);
-        int left = prefKeys.indexOf(rightleft[1]);
+        int[] rightleft = SwipeActions.getPrefsWithDefaults(context, tag);
+        int right = rightleft[0];
+        int left = rightleft[1];
 
         spinnerRightAction.setSelection(right);
         spinnerLeftAction.setSelection(left);
@@ -96,8 +88,8 @@ public class SwipeActionsDialog {
         builder.setView(layout);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            String rightAction = prefKeys.get(spinnerRightAction.getSelectedItemPosition());
-            String leftAction = prefKeys.get(spinnerLeftAction.getSelectedItemPosition());
+            int rightAction = spinnerRightAction.getSelectedItemPosition();
+            int leftAction = spinnerLeftAction.getSelectedItemPosition();
             savePrefs(tag, rightAction, leftAction);
             prefsChanged.onCall();
         });
@@ -106,9 +98,10 @@ public class SwipeActionsDialog {
         builder.create().show();
     }
 
-    private void savePrefs(String tag, String right, String left) {
+    private void savePrefs(String tag, int right, int left) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putString(SwipeActions.PREF_SWIPEACTIONS + tag, right + "," + left).apply();
+        prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_RIGHT + tag, right).apply();
+        prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_LEFT + tag, left).apply();
     }
 
     private AdapterView.OnItemSelectedListener listener(AdapterView.OnItemClickListener listener) {
@@ -126,9 +119,13 @@ public class SwipeActionsDialog {
     }
 
     private ArrayAdapter<String> adapter() {
+        final List<String> titles = Stream.of(SwipeActions.swipeActions)
+                .map(swa -> swa.title(context))
+                .toList();
+
         return new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_dropdown_item,
-                context.getResources().getStringArray(R.array.swipe_actions));
+                titles);
     }
 
     public interface Callback {
