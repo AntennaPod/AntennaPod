@@ -9,9 +9,10 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.FeedFile;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class DownloadRequestTest {
@@ -32,6 +33,36 @@ public class DownloadRequestTest {
     public void parcelInArrayListTest_MixAuth() {
         doTestParcelInArrayList("case mixed authentication",
                 null, null, "usr2", "pass2");
+    }
+
+    @Test
+    public void downloadRequestTestEquals() {
+        String destStr = "file://location/media.mp3";
+        String username = "testUser";
+        String password = "testPassword";
+        FeedFile item = createFeedItem(1);
+        Bundle arg = new Bundle();
+        arg.putString("arg1", "value1");
+        DownloadRequest request1 = new DownloadRequest.Builder(destStr, item, true)
+                .deleteOnFailure(true)
+                .withAuthentication(username, password)
+                .withArguments(arg)
+                .build();
+
+        DownloadRequest request2 = new DownloadRequest.Builder(destStr, item, true)
+                .deleteOnFailure(true)
+                .withAuthentication(username, password)
+                .withArguments(arg)
+                .build();
+
+        DownloadRequest request3 = new DownloadRequest.Builder(destStr, item, true)
+                .deleteOnFailure(true)
+                .withAuthentication("diffUsername", "diffPassword")
+                .withArguments(arg)
+                .build();
+
+        assertEquals(request1, request2);
+        assertNotEquals(request1, request3);
     }
 
     // Test to ensure parcel using put/getParcelableArrayList() API work

@@ -8,9 +8,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
-import de.danoeh.antennapod.view.SquareImageView;
+import de.danoeh.antennapod.ui.common.SquareImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

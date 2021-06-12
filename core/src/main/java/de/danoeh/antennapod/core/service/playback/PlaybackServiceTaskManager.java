@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -199,14 +201,25 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startWidgetUpdater() {
         if (!isWidgetUpdaterActive() && !schedExecutor.isShutdown()) {
-            Runnable widgetUpdater = callback::onWidgetUpdaterTick;
+            Runnable widgetUpdater = this::requestWidgetUpdate;
             widgetUpdater = useMainThreadIfNecessary(widgetUpdater);
-            widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
-                    WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
-
+            widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater,
+                    WIDGET_UPDATER_NOTIFICATION_INTERVAL, WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
             Log.d(TAG, "Started WidgetUpdater");
         } else {
             Log.d(TAG, "Call to startWidgetUpdater was ignored.");
+        }
+    }
+
+    /**
+     * Retrieves information about the widget state in the calling thread and then displays it in a background thread.
+     */
+    public synchronized void requestWidgetUpdate() {
+        WidgetUpdater.WidgetState state = callback.requestWidgetState();
+        if (!schedExecutor.isShutdown()) {
+            schedExecutor.execute(() -> WidgetUpdater.updateWidget(context, state));
+        } else {
+            Log.d(TAG, "Call to requestWidgetUpdate was ignored.");
         }
     }
 
@@ -303,7 +316,7 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             chapterLoaderFuture = Completable.create(emitter -> {
-                media.loadChapterMarks(context);
+                ChapterUtils.loadChapters(media, context);
                 emitter.onComplete();
             })
                     .subscribeOn(Schedulers.io())
@@ -464,7 +477,7 @@ public class PlaybackServiceTaskManager {
 
         void onSleepTimerReset();
 
-        void onWidgetUpdaterTick();
+        WidgetUpdater.WidgetState requestWidgetState();
 
         void onChapterLoaded(Playable media);
     }

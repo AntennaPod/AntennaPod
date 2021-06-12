@@ -6,15 +6,13 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,8 +29,15 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.playback.MediaType;
 
 public class LocalFeedUpdater {
+
+    static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
 
     public static void updateFeed(Feed feed, Context context) {
         try {
@@ -70,7 +75,21 @@ public class LocalFeedUpdater {
         Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
             String mime = file.getType();
-            if (mime != null && (mime.startsWith("audio/") || mime.startsWith("video/"))) {
+            if (mime == null) {
+                continue;
+            }
+
+            MediaType mediaType = MediaType.fromMimeType(mime);
+            if (mediaType == MediaType.UNKNOWN) {
+                String path = file.getUri().toString();
+                int fileExtensionPosition = path.lastIndexOf('.');
+                if (fileExtensionPosition >= 0) {
+                    String extensionWithoutDot = path.substring(fileExtensionPosition + 1);
+                    mediaType = MediaType.fromFileExtension(extensionWithoutDot);
+                }
+            }
+
+            if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
                 mediaFiles.add(file);
                 mediaFileNames.add(file.getName());
             }
@@ -97,18 +116,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        List<String> iconLocations = Arrays.asList("folder.jpg", "Folder.jpg", "folder.png", "Folder.png");
-        for (String iconLocation : iconLocations) {
-            DocumentFile image = documentFolder.findFile(iconLocation);
-            if (image != null) {
-                feed.setImageUrl(image.getUri().toString());
-                break;
-            }
-        }
-        if (StringUtils.isBlank(feed.getImageUrl())) {
-            // set default feed image
-            feed.setImageUrl(getDefaultIconUrl(context));
-        }
+        feed.setImageUrl(getImageUrl(context, documentFolder));
 
         feed.getPreferences().setAutoDownload(false);
         feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
@@ -120,6 +128,31 @@ public class LocalFeedUpdater {
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
+    }
+
+    /**
+     * Returns the image URL for the local feed.
+     */
+    @NonNull
+    static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
+        // look for special file names
+        for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
+            DocumentFile image = documentFolder.findFile(iconLocation);
+            if (image != null) {
+                return image.getUri().toString();
+            }
+        }
+
+        // use the first image in the folder if existing
+        for (DocumentFile file : documentFolder.listFiles()) {
+            String mime = file.getType();
+            if (mime != null && (mime.startsWith("image/jpeg") || mime.startsWith("image/png"))) {
+                return file.getUri().toString();
+            }
+        }
+
+        // use default icon as fallback
+        return getDefaultIconUrl(context);
     }
 
     /**
@@ -155,13 +188,13 @@ public class LocalFeedUpdater {
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
-            item.setDescription(e.getMessage());
+            item.setDescriptionIfLonger(e.getMessage());
         }
 
         return item;
     }
 
-    private static void loadMetadata(FeedItem item, DocumentFile file, Context context) throws Exception {
+    private static void loadMetadata(FeedItem item, DocumentFile file, Context context) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
 

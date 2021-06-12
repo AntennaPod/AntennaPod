@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.syndication.namespace;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.util.DateUtils;
 
@@ -29,7 +29,7 @@ public class NSDublinCore extends Namespace {
             String second = state.getSecondTag().getName();
             if (DATE.equals(top) && ITEM.equals(second)) {
                 String content = state.getContentBuf().toString();
-                currentItem.setPubDate(DateUtils.parse(content));
+                currentItem.setPubDate(DateUtils.parseOrNullIfFuture(content));
             }
         }
     }

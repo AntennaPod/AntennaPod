@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
 public class ShareDialog extends DialogFragment {

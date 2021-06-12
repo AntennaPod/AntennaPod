@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.FeedFile;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.DownloadError;
 

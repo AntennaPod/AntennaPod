@@ -1,9 +1,9 @@
 package de.test.antennapod.service.playback;
 
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallback {
 
@@ -40,14 +40,6 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
             return;
         }
         originalCallback.playbackSpeedChanged(s);
-    }
-
-    @Override
-    public void setSpeedAbilityChanged() {
-        if (isCancelled) {
-            return;
-        }
-        originalCallback.setSpeedAbilityChanged();
     }
 
     @Override

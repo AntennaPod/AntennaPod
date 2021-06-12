@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

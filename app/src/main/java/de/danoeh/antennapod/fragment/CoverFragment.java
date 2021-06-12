@@ -1,7 +1,15 @@
 package de.danoeh.antennapod.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,34 +18,47 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.BlendModeColorFilterCompat;
+import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -51,9 +72,16 @@ public class CoverFragment extends Fragment {
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
+    private LinearLayout openDescription;
+    private Space counterweight;
+    private Space spacer;
+    private ImageButton butPrevChapter;
+    private ImageButton butNextChapter;
+    private LinearLayout episodeDetails;
+    private LinearLayout chapterControl;
     private PlaybackController controller;
     private Disposable disposable;
-    private int displayedChapterIndex = -2;
+    private int displayedChapterIndex = -1;
     private Playable media;
 
     @Override
@@ -64,7 +92,30 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
+        episodeDetails = root.findViewById(R.id.episode_details);
+        final ImageView descriptionIcon = root.findViewById(R.id.description_icon);
+        chapterControl = root.findViewById(R.id.chapterButton);
+        butPrevChapter = root.findViewById(R.id.butPrevChapter);
+        butNextChapter = root.findViewById(R.id.butNextChapter);
+
         imgvCover.setOnClickListener(v -> onPlayPause());
+        openDescription = root.findViewById(R.id.openDescription);
+        counterweight = root.findViewById(R.id.counterweight);
+        spacer = root.findViewById(R.id.details_spacer);
+        View.OnClickListener scrollToDesc = view ->
+                ((AudioPlayerFragment) requireParentFragment()).scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true);
+        openDescription.setOnClickListener(scrollToDesc);
+        ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                txtvPodcastTitle.getCurrentTextColor(), BlendModeCompat.SRC_IN);
+        butNextChapter.setColorFilter(colorFilter);
+        butPrevChapter.setColorFilter(colorFilter);
+        descriptionIcon.setColorFilter(colorFilter);
+        ChaptersFragment chaptersFragment = new ChaptersFragment();
+        chapterControl.setOnClickListener(v ->
+                chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));
+        butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
+        butNextChapter.setOnClickListener(v -> seekToNextChapter());
+
         return root;
     }
 
@@ -80,6 +131,7 @@ public class CoverFragment extends Fragment {
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -93,10 +145,108 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        txtvPodcastTitle.setText(media.getFeedTitle());
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getPubDate());
+        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                + "\u00A0"
+                + "・"
+                + "\u00A0"
+                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
+        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
+        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+        txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        displayedChapterIndex = -2; // Force refresh
-        displayCoverImage(media.getPosition());
+        txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
+        txtvEpisodeTitle.setOnClickListener(v -> {
+            int lines = txtvEpisodeTitle.getLineCount();
+            int animUnit = 1500;
+            if (lines > txtvEpisodeTitle.getMaxLines()) {
+                ObjectAnimator verticalMarquee = ObjectAnimator.ofInt(
+                        txtvEpisodeTitle, "scrollY", 0, txtvEpisodeTitle.getHeight())
+                        .setDuration(lines * animUnit);
+                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 0);
+                fadeOut.setStartDelay(animUnit);
+                fadeOut.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        txtvEpisodeTitle.scrollTo(0, 0);
+                    }
+                });
+                ObjectAnimator fadeBackIn = ObjectAnimator.ofFloat(
+                        txtvEpisodeTitle, "alpha", 1);
+                AnimatorSet set = new AnimatorSet();
+                set.playSequentially(verticalMarquee, fadeOut, fadeBackIn);
+                set.start();
+            }
+        });
+        
+        displayedChapterIndex = -1;
+        refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition())); //calls displayCoverImage
+        updateChapterControlVisibility();
+    }
+
+    private void updateChapterControlVisibility() {
+        if (media.getChapters() != null) {
+            boolean chapterControlVisible = media.getChapters().size() > 0;
+            int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
+            if (chapterControl.getVisibility() != newVisibility) {
+                chapterControl.setVisibility(newVisibility);
+                ObjectAnimator.ofFloat(chapterControl,
+                        "alpha",
+                        chapterControlVisible ? 0 : 1,
+                        chapterControlVisible ? 1 : 0)
+                        .start();
+            }
+        }
+    }
+
+    private void refreshChapterData(int chapterIndex) {
+        if (chapterIndex > -1) {
+            if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
+                displayedChapterIndex = media.getChapters().size() - 1;
+                butNextChapter.setVisibility(View.INVISIBLE);
+            } else {
+                displayedChapterIndex = chapterIndex;
+                butNextChapter.setVisibility(View.VISIBLE);
+            }
+        }
+
+        displayCoverImage();
+    }
+
+    private Chapter getCurrentChapter() {
+        if (media == null || media.getChapters() == null || displayedChapterIndex == -1) {
+            return null;
+        }
+        return media.getChapters().get(displayedChapterIndex);
+    }
+
+    private void seekToPrevChapter() {
+        Chapter curr = getCurrentChapter();
+
+        if (controller == null || curr == null || displayedChapterIndex == -1) {
+            return;
+        }
+
+        if (displayedChapterIndex < 1) {
+            controller.seekTo(0);
+        } else if ((controller.getPosition() - 10000 * controller.getCurrentPlaybackSpeedMultiplier())
+                < curr.getStart()) {
+            refreshChapterData(displayedChapterIndex - 1);
+            controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
+        } else {
+            controller.seekTo((int) curr.getStart());
+        }
+    }
+
+    private void seekToNextChapter() {
+        if (controller == null || media == null || media.getChapters() == null
+                || displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
+            return;
+        }
+
+        refreshChapterData(displayedChapterIndex + 1);
+        controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
     }
 
     @Override
@@ -111,13 +261,7 @@ public class CoverFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 CoverFragment.this.loadMediaInfo();
             }
         };
@@ -140,38 +284,36 @@ public class CoverFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        if (media == null) {
-            return;
+        int newChapterIndex = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
+        if (newChapterIndex > -1 && newChapterIndex != displayedChapterIndex) {
+            refreshChapterData(newChapterIndex);
         }
-        displayCoverImage(event.getPosition());
     }
 
-    private void displayCoverImage(int position) {
-        int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
-        if (chapter != displayedChapterIndex) {
-            displayedChapterIndex = chapter;
+    private void displayCoverImage() {
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .dontAnimate()
+                .transforms(new FitCenter(),
+                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
             RequestBuilder<Drawable> cover = Glide.with(this)
-                    .load(ImageResourceUtils.getImageLocation(media))
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .dontAnimate()
-                            .transforms(new FitCenter(),
-                                    new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
-            if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
-                cover.into(imgvCover);
-            } else {
-                Glide.with(this)
-                        .load(EmbeddedChapterImage.getModelFor(media, chapter))
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .dontAnimate()
-                                .transforms(new FitCenter(),
-                                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))))
-                        .thumbnail(cover)
-                        .error(cover)
-                        .into(imgvCover);
-            }
+                    .load(media.getImageLocation())
+                    .error(Glide.with(this)
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(options))
+                    .apply(options);
+
+        if (displayedChapterIndex == -1 || media == null || media.getChapters() == null
+                || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
+            cover.into(imgvCover);
+        } else {
+            Glide.with(this)
+                    .load(EmbeddedChapterImage.getModelFor(media, displayedChapterIndex))
+                    .apply(options)
+                    .thumbnail(cover)
+                    .error(cover)
+                    .into(imgvCover);
         }
     }
 
@@ -195,6 +337,10 @@ public class CoverFragment extends Fragment {
         LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
         double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
 
+        boolean spacerVisible = true;
+        ViewGroup detailsParent = (ViewGroup) getView();
+        int detailsWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             double percentageWidth = 0.8;
             if (ratio <= SIXTEEN_BY_NINE) {
@@ -208,7 +354,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
         } else {
-            double percentageHeight = ratio * 0.8;
+            double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
@@ -216,6 +362,26 @@ public class CoverFragment extends Fragment {
                 textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
+
+            spacerVisible = false;
+            detailsParent = textContainer;
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        if (displayedChapterIndex == -1) {
+            detailsWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+
+        spacer.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
+        counterweight.setVisibility(spacerVisible ? View.VISIBLE : View.GONE);
+        LinearLayout.LayoutParams wrapHeight =
+                new LinearLayout.LayoutParams(detailsWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        episodeDetails.setLayoutParams(wrapHeight);
+        getView().findViewById(R.id.vertical_divider).setVisibility(spacerVisible ? View.GONE : View.VISIBLE);
+
+        if (episodeDetails.getParent() != detailsParent) {
+            ((ViewGroup) episodeDetails.getParent()).removeView(episodeDetails);
+            detailsParent.addView(episodeDetails);
         }
     }
 
@@ -224,5 +390,16 @@ public class CoverFragment extends Fragment {
             return;
         }
         controller.playPause();
+    }
+
+    private boolean copyText(String text) {
+        ClipboardManager clipboardManager = ContextCompat.getSystemService(requireContext(), ClipboardManager.class);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
+        }
+        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(
+                getResources().getString(R.string.copied_to_clipboard),
+                Snackbar.LENGTH_SHORT);
+        return true;
     }
 }

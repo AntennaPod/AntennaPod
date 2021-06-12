@@ -31,7 +31,7 @@ import java.util.Arrays;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -94,7 +94,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
                         if (len != -1) {
                             byte[] oldChecksum = new byte[len];
-                            inState.read(oldChecksum);
+                            IOUtils.read(inState, oldChecksum, 0, len);
                             Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
 
                             if (Arrays.equals(oldChecksum, newChecksum)) {

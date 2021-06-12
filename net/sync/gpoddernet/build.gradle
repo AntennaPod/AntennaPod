@@ -1,0 +1,12 @@
+apply plugin: "com.android.library"
+apply from: "../../../common.gradle"
+
+dependencies {
+    implementation project(':net:sync:model')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+}

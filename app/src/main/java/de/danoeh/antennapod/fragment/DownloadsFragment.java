@@ -28,16 +28,16 @@ public class DownloadsFragment extends PagedToolbarFragment {
     public static final String TAG = "DownloadsFragment";
 
     public static final String ARG_SELECTED_TAB = "selected_tab";
-
-    public static final int POS_RUNNING = 0;
-    private static final int POS_COMPLETED = 1;
-    public static final int POS_LOG = 2;
-    private static final int TOTAL_COUNT = 3;
-
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
+    private static final String KEY_UP_ARROW = "up_arrow";
+
+    private static final int POS_COMPLETED = 0;
+    public static final int POS_LOG = 1;
+    private static final int TOTAL_COUNT = 2;
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
+    private boolean displayUpArrow;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,7 +48,11 @@ public class DownloadsFragment extends PagedToolbarFragment {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         viewPager = root.findViewById(R.id.viewpager);
         viewPager.setAdapter(new DownloadsPagerAdapter(this));
@@ -59,9 +63,6 @@ public class DownloadsFragment extends PagedToolbarFragment {
         tabLayout = root.findViewById(R.id.sliding_tabs);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
-                case POS_RUNNING:
-                    tab.setText(R.string.downloads_running_label);
-                    break;
                 case POS_COMPLETED:
                     tab.setText(R.string.downloads_completed_label);
                     break;
@@ -79,6 +80,12 @@ public class DownloadsFragment extends PagedToolbarFragment {
         viewPager.setCurrentItem(lastPosition, false);
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -110,8 +117,6 @@ public class DownloadsFragment extends PagedToolbarFragment {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case POS_RUNNING:
-                    return new RunningDownloadsFragment();
                 case POS_COMPLETED:
                     return new CompletedDownloadsFragment();
                 default:

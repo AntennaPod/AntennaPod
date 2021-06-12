@@ -15,7 +15,7 @@
             android:elevation="4dp"
             android:id="@+id/toolbar"/>
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

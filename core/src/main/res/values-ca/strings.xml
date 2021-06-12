@@ -6,6 +6,7 @@
   <string name="statistics_label">Estadístiques</string>
   <string name="add_feed_label">Afegeix podcast</string>
   <string name="episodes_label">Episodis</string>
+  <string name="queue_label">Cua</string>
   <string name="all_episodes_short_label">Tot</string>
   <string name="new_episodes_label">Nou</string>
   <string name="favorite_episodes_label">Preferits</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">Registre</string>
   <string name="subscriptions_label">Subscripcions</string>
   <string name="subscriptions_list_label">Llista de subscripcions</string>
-  <string name="cancel_download_label">Cancel·la\nBaixada</string>
   <string name="playback_history_label">Historial de reproducció</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Inici de sessió a gpodder.net</string>
@@ -25,6 +25,7 @@
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
   <string name="playback_statistics_label">Reproducció</string>
   <string name="download_statistics_label">Baixades</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d de %2$depisodis començats.\n\nReproduïts %3$s de %4$s.</string>
   <string name="statistics_mode">Mode d\'estadístiques</string>
@@ -64,7 +65,6 @@
   <string name="author_label">Autor/s</string>
   <string name="language_label">Llengua</string>
   <string name="url_label">Adreça web</string>
-  <string name="cover_label">Imatge</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">S\'ha produït un error:</string>
   <string name="needs_storage_permission">Calen permisos d\'emmagatzematge per a aquesta operació</string>
@@ -75,7 +75,6 @@
   <string name="description_label">Descripció</string>
   <string name="episodes_suffix">\u0020episodis</string>
   <string name="processing_label">S\'està processant</string>
-  <string name="save_username_password_label">Desa nom d\'usuari i contrasenya</string>
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
@@ -87,7 +86,6 @@
   <string name="feed_volume_reduction_off">Off</string>
   <string name="feed_volume_reduction_light">Lleuger</string>
   <string name="feed_volume_reduction_heavy">Fort</string>
-  <string name="parallel_downloads_suffix">\u0020baixades en paral·lel</string>
   <string name="feed_auto_download_global">Valor predeterminat global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
@@ -134,7 +132,6 @@
   <string name="hide_not_queued_episodes_label">No en cua</string>
   <string name="hide_has_media_label">Conté medis</string>
   <string name="filtered_label">Filtrat</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Darrera actualització fallida</string>
   <string name="open_podcast">Obrir podcast</string>
   <string name="please_wait_for_data">Per favor, espera fins a que les dades estiguen carregades</string>
   <!--actions on feeditems-->
@@ -195,16 +192,12 @@
   <string name="download_error_details">Detalls</string>
   <string name="download_error_details_message">%1$s \n\nURL del fitxer:\n%2$s</string>
   <string name="download_error_device_not_found">No s\'ha trobat cap dispositiu d\'emmagatzemament</string>
-  <string name="download_error_insufficient_space">No hi ha prou espai</string>
   <string name="download_error_http_data_error">Error de dades HTTP</string>
   <string name="download_error_error_unknown">Error desconegut</string>
-  <string name="download_error_parser_exception">Error de l\'analitzador</string>
   <string name="download_error_unsupported_type">Tipus de canal no suportat</string>
   <string name="download_error_connection_error">Error de connexió</string>
-  <string name="download_error_unknown_host">Amfitrió desconegut</string>
   <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="download_error_file_type_type">Error de tipus de fitxer</string>
-  <string name="download_error_forbidden">Prohibit</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_canceled_autodownload_enabled_msg">Baixada cancel·lada\nDesactivada les <i>baixades automàtiques</i> per aquest element</string>
   <string name="download_report_title">Baixades completades amb error(s)</string>
@@ -218,7 +211,6 @@
     <item quantity="one">%d baixada pendent</item>
     <item quantity="other">%d baixades pendents</item>
   </plurals>
-  <string name="downloads_processing">S\'estan processant les baixades</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
   <string name="download_log_title_unknown">Títol desconegut</string>
   <string name="download_type_feed">Canal</string>
@@ -304,7 +296,6 @@
   <string name="storage_pref">Emmagatzematge</string>
   <string name="storage_sum">Auto-esborrat d\'episodis, Importar, Exportar</string>
   <string name="project_pref">Projecte</string>
-  <string name="queue_label">Cua</string>
   <string name="synchronization_pref">Sincronització</string>
   <string name="synchronization_sum">Sincronitza amb altres dispositius usant gpodder.net</string>
   <string name="automation">Automatització</string>
@@ -320,14 +311,9 @@
   <string name="preference_search_clear_history">Esborra l\'historial</string>
   <string name="media_player">Reproductor multimèdia</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
-  <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són preferits seran candidats a ser suprimits si l\'Auto Descàrrega necessita espai per a nous episodis</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció en desconnectar els auriculars o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continua la reproducció en connectar novament el bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Endavant per saltar</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">En prémer el botó d\'avançada en un dispositiu bluetooth bota al següent episodi en lloc d\'avançar.</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Endarrere per reiniciar</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">En prémer un botó físic, reinicieu l\'episodi actual en lloc de rebobinar-lo</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
@@ -347,7 +333,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Desactivar</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Establir interval</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Establir hora del dia</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">cada %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">als %1$s</string>
   <string name="pref_followQueue_title">Reproducció continuada</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexió d\'auriculars</string>
@@ -380,7 +365,6 @@
   <string name="pref_episode_cache_title">Memòria cau d\'episodis</string>
   <string name="pref_episode_cache_summary">Nombre total d\'episodis baixats al dispositiu. La baixada automàtica serà suspesa si s\'arriba a aquest nombre.</string>
   <string name="pref_episode_cover_title">Usa la coberta de l\'episodi</string>
-  <string name="pref_episode_cover_summary">Usa la coberta específica de l\'episodi quan siga possible. Si no es marca aquesta opció s\'usarà sempre la imatge del podcast com a coberta.</string>
   <string name="pref_theme_title_use_system">Usa el tema del sistema</string>
   <string name="pref_theme_title_light">Clar</string>
   <string name="pref_theme_title_dark">Fosc</string>
@@ -400,7 +384,6 @@
   <string name="pref_gpodnet_full_sync_title">Força sincronització completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronitza amb gpodder.net totes les subscripcions i els estats dels episodis.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connectat com a <i>%1$s</i> amb el dispositiu <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_sum">Aquest paràmetre no s\'aplica als errors d\'autenticació. </string>
   <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>
   <string name="pref_feed_skip">Auto Ometre</string>
   <string name="pref_feed_skip_sum">Omet introduccions i crèdits finals</string>
@@ -414,8 +397,6 @@
   <string name="pref_fast_forward_sum">Personalitzar el nombre de segons del salt endavant quan es prem el botó d\'Avanç ràpid.</string>
   <string name="pref_rewind">Temps de salt del Rebobinat</string>
   <string name="pref_rewind_sum">Personalitza el nombre de segons del salt endarrere quan es prem el botó de Rebobinat</string>
-  <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <string name="pref_expandNotify_title">Alta prioritat de notificacions</string>
   <string name="pref_expandNotify_sum">Açò normalment expandeix la notificació per a mostrar botons de reproducció</string>
   <string name="pref_persistNotify_title">Botons de reproducció persistents</string>
@@ -424,8 +405,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Només pots seleccionar un màxim de %1$d elements.</string>
   <string name="pref_lockscreen_background_title">Estableix el fons del bloqueig de pantalla</string>
   <string name="pref_lockscreen_background_sum">Estableix el fons del bloqueig de pantalla a la imatge de l\'episodi actual. Com a efecte secundari, això també mostrarà la imatge en aplicacions de tercers.</string>
-  <string name="pref_showDownloadReport_sum">Si les descàrregues fallen, genera un informe que mostra els detalls de la fallada.</string>
-  <string name="pref_showAutoDownloadReport_sum">Mostra una notificació per a episodis descarregats automàticament</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android anteriors a la 4.1 no suporten les notificacions ampliades.</string>
   <string name="pref_enqueue_location_title">Posició d\'entrada en cola</string>
   <string name="pref_enqueue_location_sum">Afegit episodis a: %1$s</string>
@@ -446,14 +425,12 @@
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Servidor intermediari</string>
   <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
-  <string name="pref_faq">Preguntes Freqüents</string>
   <string name="pref_no_browser_found">No s\'ha trobat cap navegador web.</string>
   <string name="pref_cast_title">Suport per a Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilita el suport per la reproducció remota en dispositius de difusió (com ara Chromecast, Audio Speakers o Android TV). </string>
   <string name="pref_cast_message_free_flavor">Chromecast requereix de llibreries propietàries de terceres parts que estan inhabilitades en aquesta versió d\'AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Afegeix les baixades a la cua</string>
   <string name="pref_enqueue_downloaded_summary">Afegeix els episodis descarregats a la cua</string>
-  <string name="media_player_builtin">Reproductor Android estàndard</string>
   <string name="media_player_switch_to_exoplayer">Canvia a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Canviat a ExoPlayer</string>
   <string name="pref_skip_silence_title">Omet Silenci en Audio</string>
@@ -556,22 +533,12 @@
   <string name="gpodnet_suggestions_header">SUGGERÈNCIES</string>
   <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="gpodnetauth_login_title">Inici de sessió</string>
-  <string name="gpodnetauth_login_descr">Benvingut al procés d\'inici de sessió a gpodder.net. Primerament, introduïu la informació d\'accés:</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
-  <string name="gpodnetauth_login_register">Si no teniu compte, podeu crear-ne un aquí:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Nom d\'usuari</string>
   <string name="password_label">Contrasenya</string>
-  <string name="gpodnetauth_device_title">Selecció de dispositiu</string>
   <string name="gpodnetauth_device_descr">Per a utilitzar gpodder.net, creeu un nou dispositiu o seleccioneu-ne un d\'existent:</string>
-  <string name="gpodnetauth_device_deviceID">ID de dispositiu:\u0020</string>
-  <string name="gpodnetauth_device_caption">Llegenda</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Crea nou dispositiu</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Seleccioneu un dispositiu existent:</string>
-  <string name="gpodnetauth_device_errorEmpty">L\'ID de dispositiu no pot ser buit</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">L\'ID de dispositiu ja existeix</string>
   <string name="gpodnetauth_device_caption_errorEmpty">El títol no pot estar buit </string>
   <string name="gpodnetauth_device_butChoose">Selecciona</string>
-  <string name="gpodnetauth_finish_title">Heu iniciat la sessió!</string>
   <string name="gpodnetauth_finish_descr">Felicitats! El vostre compte de gpodder.net s\'ha enllaçat amb el dispositiu. D\'ara endavant, AntennaPod sincronitzarà automàticament les subscripcions del dispositiu al vostre compte.</string>
   <string name="gpodnetauth_finish_butsyncnow">Sincronitza ara</string>
   <string name="gpodnetauth_finish_butgomainscreen">Vés a la pantalla principal</string>
@@ -739,8 +706,6 @@
   <string name="notification_channel_downloading_description">Mostrar durant baixades.</string>
   <string name="notification_channel_playing">Reproducció actual</string>
   <string name="notification_channel_playing_description">Permet controlar la reproducció. Aquesta és la notificació principal que veureu durant la reproducció d\'un podcast.</string>
-  <string name="notification_channel_error">Errors</string>
-  <string name="notification_channel_auto_download">Baixades automàtiques</string>
   <string name="notification_channel_episode_auto_download">Mostrat quan els episodis han sigut descarregats automàticament</string>
   <!--Widget settings-->
   <string name="widget_settings">Settings del widget</string>

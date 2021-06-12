@@ -1,14 +1,11 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.model.feed.FeedItem;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import de.danoeh.antennapod.core.storage.DBReader;
 
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
@@ -113,7 +110,7 @@ public class FeedItemTest {
      * If one of `description` or `content:encoded` is null, use the other one.
      */
     @Test
-    public void testShownotesNullValues() throws Exception {
+    public void testShownotesNullValues() {
         testShownotes(null, TEXT_LONG);
         testShownotes(TEXT_LONG, null);
     }
@@ -122,7 +119,7 @@ public class FeedItemTest {
      * If `description` is reasonably longer than `content:encoded`, use `description`.
      */
     @Test
-    public void testShownotesLength() throws Exception {
+    public void testShownotesLength() {
         testShownotes(TEXT_SHORT, TEXT_LONG);
         testShownotes(TEXT_LONG, TEXT_SHORT);
     }
@@ -133,12 +130,10 @@ public class FeedItemTest {
      * @param description Description of the feed item
      * @param contentEncoded `content:encoded` of the feed item
      */
-    private void testShownotes(String description, String contentEncoded) throws Exception {
-        try (MockedStatic<DBReader> ignore = Mockito.mockStatic(DBReader.class)) {
-            FeedItem item = new FeedItem();
-            item.setDescription(description);
-            item.setContentEncoded(contentEncoded);
-            assertEquals(TEXT_LONG, item.loadShownotes().call());
-        }
+    private void testShownotes(String description, String contentEncoded) {
+        FeedItem item = new FeedItem();
+        item.setDescriptionIfLonger(description);
+        item.setDescriptionIfLonger(contentEncoded);
+        assertEquals(TEXT_LONG, item.getDescription());
     }
 }

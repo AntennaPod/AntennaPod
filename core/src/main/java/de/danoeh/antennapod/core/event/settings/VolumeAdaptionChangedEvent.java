@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.event.settings;
 
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 
 public class VolumeAdaptionChangedEvent {
     private final VolumeAdaptionSetting volumeAdaptionSetting;

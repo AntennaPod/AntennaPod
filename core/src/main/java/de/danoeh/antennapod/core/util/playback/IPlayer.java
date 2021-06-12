@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IPlayer {
-
-    boolean canSetSpeed();
-
     boolean canDownmix();
 
     int getCurrentPosition();
@@ -34,6 +31,8 @@ public interface IPlayer {
 
     void setDataSource(String path) throws IllegalStateException, IOException,
             IllegalArgumentException, SecurityException;
+
+    void setDataSource(String streamUrl, String username, String password) throws IOException;
 
     void setDisplay(SurfaceHolder sh);
 

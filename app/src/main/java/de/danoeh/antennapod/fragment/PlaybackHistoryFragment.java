@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -41,6 +41,7 @@ import java.util.List;
 
 public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "PlaybackHistoryFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private List<FeedItem> playbackHistory;
     private PlaybackHistoryListAdapter adapter;
@@ -49,6 +50,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
     private EmptyViewHandler emptyView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private boolean displayUpArrow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,19 +65,22 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.playback_history_label);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.playback_history);
         refreshToolbarState();
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
         adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
 
         emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.ic_history);
+        emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
         emptyView.attachToRecyclerView(recyclerView);
@@ -96,6 +101,12 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

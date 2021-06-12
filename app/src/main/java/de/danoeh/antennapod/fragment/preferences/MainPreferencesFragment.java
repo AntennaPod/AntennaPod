@@ -1,14 +1,15 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -30,6 +31,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
+    private static final String PREF_CONTRIBUTE = "prefContribute";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -81,26 +83,21 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
-            if (Build.VERSION.SDK_INT >= 26) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-                startActivity(intent);
-            } else {
-                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
-            }
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
-                    getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.settingsContainer, new AboutFragment())
                             .addToBackStack(getString(R.string.about_pref)).commit();
                     return true;
                 }
         );
         findPreference(STATISTICS).setOnPreferenceClickListener(
                 preference -> {
-                    getParentFragmentManager().beginTransaction().replace(R.id.content, new StatisticsFragment())
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.settingsContainer, new StatisticsFragment())
                             .addToBackStack(getString(R.string.statistics_label)).commit();
                     return true;
                 }
@@ -113,6 +110,10 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             IntentUtils.openInBrowser(getContext(), "https://forum.antennapod.org/");
             return true;
         });
+        findPreference(PREF_CONTRIBUTE).setOnPreferenceClickListener(preference -> {
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/contribute/");
+            return true;
+        });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
@@ -123,7 +124,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         SearchPreference searchPreference = findPreference("searchPreference");
         SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
-        config.setFragmentContainerViewId(R.id.content);
+        config.setFragmentContainerViewId(R.id.settingsContainer);
         config.setBreadcrumbsEnabled(true);
 
         config.index(R.xml.preferences_user_interface)
@@ -145,5 +146,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_gpodder));
         config.index(R.xml.preferences_notifications)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_notifications));
+        config.index(R.xml.feed_settings)
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.feed_settings));
     }
 }

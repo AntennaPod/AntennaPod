@@ -3,11 +3,12 @@ package de.danoeh.antennapod.core.syndication.namespace.atom;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.syndication.namespace.NSITunes;
 import de.danoeh.antennapod.core.syndication.namespace.NSRSS20;
@@ -137,7 +138,7 @@ public class NSAtom extends Namespace {
                         //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
-                    state.getFeed().setPaymentLink(href);
+                    state.getFeed().addPayment(new FeedFunding(href, ""));
                 } else if (LINK_REL_NEXT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaged(true);
                     state.getFeed().setNextPageLink(href);
@@ -198,15 +199,15 @@ public class NSAtom extends Namespace {
                 state.getFeed().setDescription(textElement.getProcessedContent());
             } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
                 state.getCurrentItem() != null) {
-                state.getCurrentItem().setDescription(textElement.getProcessedContent());
-            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null &&
-                state.getCurrentItem() != null && state.getCurrentItem().getDescription() == null) {
-                state.getCurrentItem().setDescription(textElement.getProcessedContent());
+                state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
+            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null
+                    && state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
             } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
                 state.getCurrentItem().getPubDate() == null) {
-                state.getCurrentItem().setPubDate(DateUtils.parse(content));
+                state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
-                state.getCurrentItem().setPubDate(DateUtils.parse(content));
+                state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImageUrl() == null) {
                 state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {

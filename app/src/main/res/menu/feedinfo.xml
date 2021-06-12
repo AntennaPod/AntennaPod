@@ -3,7 +3,7 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/visit_website_item"
-        android:icon="?attr/location_web_site"
+        android:icon="@drawable/ic_web"
         custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="true"/>
@@ -11,7 +11,7 @@
         android:id="@+id/share_parent"
         custom:showAsAction="ifRoom"
         android:title="@string/share_label_with_ellipses"
-        android:icon="?attr/ic_share"
+        android:icon="@drawable/ic_share"
         android:visible="true">
         <menu android:id="@+id/share_submenu">
             <item

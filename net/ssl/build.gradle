@@ -1,0 +1,12 @@
+apply plugin: "com.android.library"
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    playImplementation "com.google.android.gms:play-services-base:$playServicesVersion"
+    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
+}

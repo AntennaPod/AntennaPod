@@ -15,14 +15,14 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.view.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
 public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapter.ChapterHolder> {
     private Playable media;
@@ -42,7 +42,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         hasImages = false;
         if (media.getChapters() != null) {
             for (Chapter chapter : media.getChapters()) {
-                if (!ignoreChapter(chapter) && !TextUtils.isEmpty(chapter.getImageUrl())) {
+                if (!TextUtils.isEmpty(chapter.getImageUrl())) {
                     hasImages = true;
                 }
             }
@@ -53,6 +53,10 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
     @Override
     public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
         Chapter sc = getItem(position);
+        if (sc == null) {
+            holder.title.setText("Error");
+            return;
+        }
         holder.title.setText(sc.getTitle());
         holder.start.setText(Converter.getDurationStringLong((int) sc
                 .getStart()));
@@ -73,7 +77,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             holder.link.setText(sc.getLink());
             holder.link.setOnClickListener(v -> IntentUtils.openInBrowser(context, sc.getLink()));
         }
-        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_play));
+        holder.secondaryActionIcon.setImageResource(R.drawable.ic_play_48dp);
         holder.secondaryActionButton.setContentDescription(context.getString(R.string.play_chapter));
         holder.secondaryActionButton.setOnClickListener(v -> {
             if (callback != null) {
@@ -88,7 +92,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
             progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
             holder.progressBar.setPercentage(progress, position);
-            holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_replay));
+            holder.secondaryActionIcon.setImageResource(R.drawable.ic_replay);
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.progressBar.setPercentage(0, null);
@@ -125,14 +129,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         if (media == null || media.getChapters() == null) {
             return 0;
         }
-        // ignore invalid chapters
-        int counter = 0;
-        for (Chapter chapter : media.getChapters()) {
-            if (!ignoreChapter(chapter)) {
-                counter++;
-            }
-        }
-        return counter;
+        return media.getChapters().size();
     }
 
     static class ChapterHolder extends RecyclerView.ViewHolder {
@@ -171,22 +168,8 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         notifyItemChanged(currentChapterIndex, "foo");
     }
 
-    private boolean ignoreChapter(Chapter c) {
-        return media.getDuration() > 0 && media.getDuration() < c.getStart();
-    }
-
     public Chapter getItem(int position) {
-        int i = 0;
-        for (Chapter chapter : media.getChapters()) {
-            if (!ignoreChapter(chapter)) {
-                if (i == position) {
-                    return chapter;
-                } else {
-                    i++;
-                }
-            }
-        }
-        return null;
+        return media.getChapters().get(position);
     }
 
     public interface Callback {

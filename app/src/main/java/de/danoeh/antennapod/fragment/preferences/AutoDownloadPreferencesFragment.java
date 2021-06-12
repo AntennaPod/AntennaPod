@@ -174,7 +174,9 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
             int v = Integer.parseInt(values[x]);
-            if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
+            if (v == UserPreferences.EPISODE_CLEANUP_EXCEPT_FAVORITE) {
+                entries[x] =  res.getString(R.string.episode_cleanup_except_favorite_removal);
+            } else if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
                 entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
             } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
                 entries[x] = res.getString(R.string.episode_cleanup_never);

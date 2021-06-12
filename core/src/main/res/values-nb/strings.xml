@@ -6,6 +6,7 @@
   <string name="statistics_label">Statistikk</string>
   <string name="add_feed_label">Legg til podkast</string>
   <string name="episodes_label">Episoder</string>
+  <string name="queue_label">Kø</string>
   <string name="all_episodes_short_label">Alle</string>
   <string name="new_episodes_label">Nye</string>
   <string name="favorite_episodes_label">Favoritter</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">Logg</string>
   <string name="subscriptions_label">Abonnementer</string>
   <string name="subscriptions_list_label">Abonnementliste</string>
-  <string name="cancel_download_label">Avbryt\nLast ned</string>
   <string name="playback_history_label">Avspillingshistorikk</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net-innlogging</string>
@@ -26,6 +26,7 @@
   <string name="playback_statistics_label">Avspilling</string>
   <string name="download_statistics_label">Nedlastinger</string>
   <string name="notification_pref_fragment">Varslinger</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total tid, avspilte episoder</string>
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
@@ -70,7 +71,6 @@
   <string name="author_label">Forfatter(e)</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
-  <string name="cover_label">Bilde</string>
   <string name="error_label">Feil</string>
   <string name="error_msg_prefix">Det oppsto en feil:</string>
   <string name="needs_storage_permission">Lagringstillatelse er nødvendig for denne operasjonen</string>
@@ -81,7 +81,6 @@
   <string name="description_label">Beskrivelse</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="processing_label">Behandler</string>
-  <string name="save_username_password_label">Lagre brukernavn og passord</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
@@ -93,7 +92,6 @@
   <string name="feed_volume_reduction_off">Av</string>
   <string name="feed_volume_reduction_light">Lett</string>
   <string name="feed_volume_reduction_heavy">Tung</string>
-  <string name="parallel_downloads_suffix">\u0020samtidige nedlastinger</string>
   <string name="feed_auto_download_global">Global standard</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
@@ -140,7 +138,6 @@
   <string name="hide_not_queued_episodes_label">Ikke i kø</string>
   <string name="hide_has_media_label">Har medier</string>
   <string name="filtered_label">Filtrert</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Siste oppdatering mislyktes</string>
   <string name="open_podcast">Åpne podkast</string>
   <string name="please_wait_for_data">Vent til dataene er lastet inn</string>
   <!--actions on feeditems-->
@@ -201,16 +198,12 @@
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Lagringsenhet ikke funnet</string>
-  <string name="download_error_insufficient_space">Ikke nok plass</string>
   <string name="download_error_http_data_error">HTTP-datafeil</string>
   <string name="download_error_error_unknown">Ukjent feil</string>
-  <string name="download_error_parser_exception">Parser-unntak</string>
   <string name="download_error_unsupported_type">Strøm-typen er ikke støttet</string>
   <string name="download_error_connection_error">Tilkoblingsfeil</string>
-  <string name="download_error_unknown_host">Ukjent vert</string>
   <string name="download_error_unauthorized">Autentiseringsfeil</string>
   <string name="download_error_file_type_type">Filtype-feil</string>
-  <string name="download_error_forbidden">Ikke tillatt</string>
   <string name="download_canceled_msg">Nedlasting avbrutt</string>
   <string name="download_canceled_autodownload_enabled_msg">Nedlasting avbrutt\n<i>Automatisk nedlasting</i> for dette elementet er deaktivert</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
@@ -224,12 +217,7 @@
     <item quantity="one">%d nedlasting gjenstår</item>
     <item quantity="other">%d nedlastinger gjenstår</item>
   </plurals>
-  <string name="downloads_processing">Behandler nedlastninger</string>
   <string name="download_notification_title">Laster ned data til podkast</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%1$d nedlastninger lyktes, %2$d mislyktes</item>
-    <item quantity="other">%d nedlastinger lyktes, %d mislyktes</item>
-  </plurals>
   <string name="download_log_title_unknown">Ukjent tittel</string>
   <string name="download_type_feed">Strøm</string>
   <string name="download_type_media">Mediafil</string>
@@ -318,7 +306,6 @@
   <string name="storage_pref">Lagring</string>
   <string name="storage_sum">Auto-slett episoder, importer, eksporter</string>
   <string name="project_pref">Prosjekt</string>
-  <string name="queue_label">Kø</string>
   <string name="synchronization_pref">Synkronisering</string>
   <string name="synchronization_sum">Synkroniser med andre enheter over gpodder.net</string>
   <string name="automation">Automasjon</string>
@@ -334,14 +321,9 @@
   <string name="preference_search_clear_history">Slett logg</string>
   <string name="media_player">Mediespiller</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
-  <string name="pref_episode_cleanup_summary">Episoder som ikke er i køen og ikke er favoritter skal kunne fjernes hvis auto-nedlasting trenger plass til nye episoder</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Gjenoppta avspilling når hodetelefoner gjeninnkoples</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsett avspilling når bluetooth er tilkoblet igjen</string>
-  <string name="pref_hardwareForwardButtonSkips_title">\"Fremover\" hopper over</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Hopp til neste episode i stedet for å spole når du trykker på \"Fremover\"-knappen</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Forriv</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Start episoden på nytt i stedet for å spole når du trykker på \"Tilbake\"-knappen</string>
   <string name="pref_followQueue_sum">Hopp til neste element i køen når avspillingen er ferdig</string>
   <string name="pref_auto_delete_sum">Slett episode når avspillingen er ferdig</string>
   <string name="pref_auto_delete_title">Automatisk sletting</string>
@@ -361,7 +343,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Skru av</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Sett intervall</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Angi klokkeslett</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">hver %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">ved %1$s</string>
   <string name="pref_followQueue_title">Kontinuerlig avspilling</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Koblet fra hodetelefoner eller Bluetooth</string>
@@ -396,7 +377,6 @@
   <string name="pref_episode_cache_title">Mellomlager for episoder</string>
   <string name="pref_episode_cache_summary">Totalt antall nedlastede episoder bufret på enheten. Automatisk nedlasting vil bli stoppet hvis dette nummeret er nådd.</string>
   <string name="pref_episode_cover_title">Bruk episode-cover</string>
-  <string name="pref_episode_cover_summary">Bruk et episode-spesifikt cover hvis det er tilgjengelig. Hvis dette ikke er valgt vil appen alltid bruke podkastens cover-bilde.</string>
   <string name="pref_theme_title_use_system">Bruk systemets tema</string>
   <string name="pref_theme_title_light">Lyst</string>
   <string name="pref_theme_title_dark">Mørkt</string>
@@ -416,8 +396,6 @@
   <string name="pref_gpodnet_full_sync_title">Tving fram full synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser alle abonnement og episoder med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget inn som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Synkronisering feilet</string>
-  <string name="pref_gpodnet_notifications_sum">Denne instillingen gjelder ikke autentiseringfeil.</string>
   <string name="pref_feed_playback_speed_sum">Hastigheten som brukes når episoder av denne podkasten spilles av</string>
   <string name="pref_feed_skip">Automatisk hopp</string>
   <string name="pref_feed_skip_sum">Hopp over introer og \"rulletekster\"</string>
@@ -431,8 +409,6 @@
   <string name="pref_fast_forward_sum">Velg hvor mange sekunder som skal hoppes når du trykker på \"Spol fremover\"-knappen</string>
   <string name="pref_rewind">Hopp tilbake</string>
   <string name="pref_rewind_sum">Velg hvor mange sekunder som skal hoppes tilbake når \"Spol tilbake\"-knappen trykkes</string>
-  <string name="pref_gpodnet_sethostname_title">Sett vertsnavn</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Bruk standard vert</string>
   <string name="pref_expandNotify_title">Høy varsling-prioritet</string>
   <string name="pref_expandNotify_sum">Dette utvider som regel varslingen for å vise kontroller.</string>
   <string name="pref_persistNotify_title">Vedvarende avspillingskontroller</string>
@@ -442,9 +418,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Du kan kun velge opp til %1$d ting.</string>
   <string name="pref_lockscreen_background_title">Angi som bakgrunn på låseskjermen</string>
   <string name="pref_lockscreen_background_sum">Angir låseskjermbakgrunnsbildet til å være den nåværende episodens bilde. Som en sideeffekt vil dette også vise bildet i tredjepartsapper.</string>
-  <string name="pref_showDownloadReport_sum">Generer en rapport som viser detaljer dersom nedlastinger feiler.</string>
-  <string name="pref_showAutoDownloadReport_title">Automatisk nedlasting fullført</string>
-  <string name="pref_showAutoDownloadReport_sum">Vis en varsling for automatisk nedlastede episoder</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versjoner tidligere enn 4.1 støtter ikke utvidede varsler.</string>
   <string name="pref_enqueue_location_title">Plassering i køen</string>
   <string name="pref_enqueue_location_sum">Legg episoder til på: %1$s</string>
@@ -465,14 +438,12 @@
   <string name="pref_current_value">Valgt: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Velg en nettverk-proxy</string>
-  <string name="pref_faq">FAQ (Ofte stilte spørsmål)</string>
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
   <string name="pref_cast_title">Chromecast støtte</string>
   <string name="pref_cast_message_play_flavor">Aktiver støtte for fjern-avspilling på Cast-enheter (som Chromecast, høyttalere eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast krever proprietær tredjeparts programvare som er deaktivert i denne utgaven av AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Legg til nedlastede i køen</string>
   <string name="pref_enqueue_downloaded_summary">Legg til nedlastede episoder i køen</string>
-  <string name="media_player_builtin">Innebygd Android-spiller</string>
   <string name="media_player_switch_to_exoplayer">Bytt til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Byttet til ExoPlayer</string>
   <string name="pref_skip_silence_title">Hopp over stillhet</string>
@@ -565,22 +536,12 @@
   <string name="gpodnet_suggestions_header">FORSLAG</string>
   <string name="gpodnet_search_hint">Søk på gpodder.net</string>
   <string name="gpodnetauth_login_title">Logg inn</string>
-  <string name="gpodnetauth_login_descr">Velkommen til gpodder.net innlogginsprosess. Først begynner vi med å skrive inn innlogginsinformasjon.</string>
   <string name="gpodnetauth_login_butLabel">Logg inn</string>
-  <string name="gpodnetauth_login_register">Dersom du ikke har en konto enda kan du opprette en her:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Brukernavn</string>
   <string name="password_label">Passord</string>
-  <string name="gpodnetauth_device_title">Enhetsvalg</string>
   <string name="gpodnetauth_device_descr">Lag en ny enhet til å bruke for din gpodder.net konto eller velg en som allerede eksisterer.</string>
-  <string name="gpodnetauth_device_deviceID">EnhetsID:\u0020</string>
-  <string name="gpodnetauth_device_caption">Tekst</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Lag en ny enhet</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Velg eksisterende enhet:</string>
-  <string name="gpodnetauth_device_errorEmpty">Device ID kan ikke være tom</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">EnhetsID er allerede i bruk</string>
   <string name="gpodnetauth_device_caption_errorEmpty">Tittel kan ikke være tom</string>
   <string name="gpodnetauth_device_butChoose">Velg</string>
-  <string name="gpodnetauth_finish_title">Innlogging lyktes.</string>
   <string name="gpodnetauth_finish_descr">Gratulerer! Din gpodder.net konto er nå linket opp med din enhet. AntennaPod vil nå automatisk synkronisere abonnementer på din enhet med din gpodder.net konto.</string>
   <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nå.</string>
   <string name="gpodnetauth_finish_butgomainscreen">Gå til hovedskjermen</string>
@@ -751,10 +712,7 @@
   <string name="notification_channel_downloading_description">Vises mens nedlasting foregår.</string>
   <string name="notification_channel_playing">Spilles nå</string>
   <string name="notification_channel_playing_description">Kan styrre avspilling. Dette er hoved-varslingen du vil se mens en podkast spilles.</string>
-  <string name="notification_channel_error">Feil</string>
-  <string name="notification_channel_sync_error">Feil ved synkronisering</string>
   <string name="notification_channel_sync_error_description">Vises når synkronisering mot gpodder feiler</string>
-  <string name="notification_channel_auto_download">Automatiske nedlastinger</string>
   <string name="notification_channel_episode_auto_download">Vises når episoder har blitt lastet ned automatisk</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget-innstillinger</string>

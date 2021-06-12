@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+        <Class name="de.danoeh.antennapod.adapter.NavListAdapter"/>
+    </Match>
+    <Match>
+        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+        <Class name="de.danoeh.antennapod.net.ssl.NoV1SslSocketFactory"/>
+    </Match>
+    <Match>
+        <Bug pattern="DM_DEFAULT_ENCODING"/>
+        <Class name="de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentReader"/>
+    </Match>
+    <Match>
+        <Bug pattern="HSC_HUGE_SHARED_STRING_CONSTANT"/>
+        <Class name="de.danoeh.antennapod.net.ssl.BackportCaCerts"/>
+    </Match>
+    <Match>
+        <Bug pattern="MS_CANNOT_BE_FINAL"/>
+        <Class name="de.danoeh.antennapod.core.service.playback.PlaybackService"/>
+    </Match>
+    <Match>
+        <Bug pattern="MS_MUTABLE_ARRAY"/>
+        <Class name="de.danoeh.antennapod.fragment.NavDrawerFragment"/>
+    </Match>
+    <Match>
+        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+        <Class name="de.danoeh.antennapod.menuhandler.MenuItemUtils"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+        <Class name="de.danoeh.antennapod.activity.MainActivity"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+        <Class name="de.danoeh.antennapod.activity.MainActivity"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_PARAM_DEREF"/>
+        <Class name="de.danoeh.antennapod.model.feed.FeedMedia"/>
+    </Match>
+    <Match>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+        <Class name="de.danoeh.antennapod.preferences.PreferenceUpgrader"/>
+    </Match>
+    <Match>
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+        <Class name="de.danoeh.antennapod.PodcastApp"/>
+    </Match>
+    <Match>
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
+    </Match>
+    <Match>
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+        <Class name="de.danoeh.antennapod.core.service.playback.PlaybackService"/>
+    </Match>
+    <Match>
+        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+        <Class name="de.danoeh.antennapod.core.storage.NavDrawerData$FolderDrawerItem"/>
+    </Match>
+    <Match>
+        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+        <Class name="de.danoeh.antennapod.core.cast.CastButtonVisibilityManager"/>
+    </Match>
+
+    <Match><Class name="de.danoeh.antennapod.core.ClientConfig"/></Match>
+
+    <Match><Package name="de.danoeh.antennapod.core.glide"/></Match>
+    <Match><Package name="de.danoeh.antennapod.databinding"/></Match>
+
+    <Match><Bug pattern="EI_EXPOSE_REP"/></Match>
+    <Match><Bug pattern="EI_EXPOSE_REP2"/></Match>
+    <Match><Bug pattern="HE_EQUALS_NO_HASHCODE"/></Match>
+    <Match><Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"/></Match>
+    <Match><Bug pattern="IS2_INCONSISTENT_SYNC"/></Match>
+    <Match><Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/></Match>
+    <Match><Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/></Match>
+    <Match><Bug pattern="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"/></Match>
+    <Match><Bug pattern="OS_OPEN_STREAM"/></Match>
+    <Match><Bug pattern="OS_OPEN_STREAM_EXCEPTION_PATH"/></Match>
+    <Match><Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"/></Match>
+    <Match><Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/></Match>
+    <Match><Bug pattern="RV_RETURN_VALUE_IGNORED"/></Match>
+    <Match><Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/></Match>
+    <Match><Bug pattern="SE_NO_SERIALVERSIONID"/></Match>
+    <Match><Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/></Match>
+    <Match><Bug pattern="SF_SWITCH_NO_DEFAULT"/></Match>
+    <Match><Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/></Match>
+    <Match><Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/></Match>
+    <Match><Bug pattern="WMI_WRONG_MAP_ITERATOR"/></Match>
+</FindBugsFilter>

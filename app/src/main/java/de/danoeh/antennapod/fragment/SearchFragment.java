@@ -28,8 +28,8 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -120,7 +120,6 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
 
@@ -133,7 +132,7 @@ public class SearchFragment extends Fragment {
 
         emptyViewHandler = new EmptyViewHandler(getContext());
         emptyViewHandler.attachToRecyclerView(recyclerView);
-        emptyViewHandler.setIcon(R.attr.action_search);
+        emptyViewHandler.setIcon(R.drawable.ic_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
 

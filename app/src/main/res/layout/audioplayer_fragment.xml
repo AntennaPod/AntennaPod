@@ -15,16 +15,6 @@
             app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="?android:attr/windowBackground"
-            app:tabBackground="?attr/selectableItemBackground"
-            app:tabMode="fixed"
-            app:tabGravity="fill"/>
-
     <FrameLayout
             android:id="@+id/playerFragment"
             android:layout_width="match_parent"
@@ -39,28 +29,58 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_above="@id/playtime_layout"
-            android:layout_below="@id/sliding_tabs"
+            android:layout_below="@id/toolbar"
+            android:layout_marginBottom="12dp"
             android:foreground="?android:windowContentOverlay"
-            android:layout_marginBottom="12dp"/>
+            android:orientation="vertical" />
 
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_alignBottom="@id/pager"
-            android:src="@drawable/bg_gradient"
+            app:srcCompat="@drawable/bg_gradient"
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewSeek"
+            android:alpha="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignBottom="@+id/pager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
+            app:cardElevation="0dp"
+            tools:alpha="1">
+
+        <TextView
+                android:id="@+id/txtvSeek"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                tools:text="1:06:29" />
+
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
             android:id="@+id/playtime_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:clickable="true"
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
-        <SeekBar
+        <de.danoeh.antennapod.view.ChapterSeekBar
                 android:id="@+id/sbPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp">
 
-            <ImageButton
+            <de.danoeh.antennapod.view.PlayButton
                     android:id="@+id/butPlay"
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"
@@ -124,11 +144,11 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/pause_label"
-                    app:srcCompat="?attr/av_play"
+                    app:srcCompat="@drawable/ic_play_48dp"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_play_white_24dp"/>
+                    tools:srcCompat="@drawable/ic_play_48dp"/>
 
-            <de.danoeh.antennapod.view.CircularProgressBar
+            <de.danoeh.antennapod.ui.common.CircularProgressBar
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_marginLeft="16dp"
@@ -136,7 +156,8 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    app:foregroundColor="?attr/action_icon_color"/>
 
             <ProgressBar
                     style="?android:attr/progressBarStyle"
@@ -158,9 +179,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/rewind_label"
-                    app:srcCompat="?attr/av_rewind"
+                    app:srcCompat="@drawable/ic_fast_rewind"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_fast_rewind"/>
 
             <TextView
                     android:id="@+id/txtvRev"
@@ -177,7 +198,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
-            <de.danoeh.antennapod.view.PlaybackSpeedIndicatorView
+            <de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView
                     android:id="@+id/butPlaybackSpeed"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
@@ -186,7 +207,8 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/playback_speed"
-                    tools:srcCompat="@drawable/ic_playback_speed_white"/>
+                    tools:srcCompat="@drawable/ic_playback_speed"
+                    app:foregroundColor="?attr/action_icon_color"/>
 
             <TextView
                     android:id="@+id/txtvPlaybackSpeed"
@@ -214,9 +236,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/fast_forward_label"
-                    app:srcCompat="?attr/av_fast_forward"
+                    app:srcCompat="@drawable/ic_fast_forward"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_forward_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_fast_forward"/>
 
             <TextView
                     android:id="@+id/txtvFF"
@@ -242,9 +264,9 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="fitCenter"
-                    app:srcCompat="?attr/av_skip"
+                    app:srcCompat="@drawable/ic_skip_48dp"
                     android:contentDescription="@string/skip_episode_label"
-                    tools:srcCompat="@drawable/ic_av_skip_white_48dp"/>
+                    tools:srcCompat="@drawable/ic_skip_48dp"/>
         </RelativeLayout>
 
     </LinearLayout>

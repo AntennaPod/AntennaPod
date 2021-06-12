@@ -9,7 +9,7 @@ import java.util.Arrays;
 import de.danoeh.antennapod.activity.OpmlImportHolder;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 

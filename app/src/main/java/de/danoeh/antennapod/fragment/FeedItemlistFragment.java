@@ -16,11 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,10 +43,10 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -57,8 +57,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.Optional;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
@@ -89,6 +87,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Toolbar.OnMenuItemClickListener {
     private static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private FeedItemListAdapter adapter;
     private MoreContentListFooterUtil nextPageLoader;
@@ -101,11 +100,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private ImageView imgvCover;
     private TextView txtvInformation;
     private TextView txtvAuthor;
+    private TextView txtvUpdatesDisabled;
     private ImageButton butShowInfo;
     private ImageButton butShowSettings;
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
+    private boolean displayUpArrow;
 
     private long feedID;
     private Feed feed;
@@ -146,12 +147,15 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.feedlist);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         refreshToolbarState();
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
 
         progressBar = root.findViewById(R.id.progLoading);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -162,6 +166,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         butShowSettings = root.findViewById(R.id.butShowSettings);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         txtvFailure = root.findViewById(R.id.txtvFailure);
+        txtvUpdatesDisabled = root.findViewById(R.id.txtvUpdatesDisabled);
         header = root.findViewById(R.id.headerContainer);
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
@@ -170,13 +175,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_sort));
                 toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_filter));
                 toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_refresh));
                 toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
+                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_search));
             }
         };
         iconTintManager.updateTint();
@@ -229,6 +234,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -424,7 +435,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
             recyclerView.setAdapter(adapter);
         }
-        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
@@ -446,15 +456,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             txtvFailure.setVisibility(View.GONE);
         }
+        if (!feed.getPreferences().getKeepUpdated()) {
+            txtvUpdatesDisabled.setText("{md-pause-circle-outline} " + this.getString(R.string.updates_disabled_label));
+            Iconify.addIcons(txtvUpdatesDisabled);
+            txtvUpdatesDisabled.setVisibility(View.VISIBLE);
+        } else {
+            txtvUpdatesDisabled.setVisibility(View.GONE);
+        }
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
-                if (feed.hasLastUpdateFailed()) {
-                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
-                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
-                }
                 txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {
@@ -514,7 +527,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void loadFeedImage() {
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
@@ -524,7 +537,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .into(imgvBackground);
 
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
@@ -542,27 +555,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    feed = result.orElse(null);
-                    refreshHeaderView();
-                    displayList();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(
+                    result -> {
+                        feed = result;
+                        refreshHeaderView();
+                        displayList();
+                    }, error -> {
+                        feed = null;
+                        refreshHeaderView();
+                        displayList();
+                        Log.e(TAG, Log.getStackTraceString(error));
+                    });
     }
 
-    @NonNull
-    private Optional<Feed> loadData() {
-        Feed feed = DBReader.getFeed(feedID);
-        if (feed != null && feed.getItemFilter() != null) {
-            DBReader.loadAdditionalFeedItemListData(feed.getItems());
-            FeedItemFilter filter = feed.getItemFilter();
-            feed.setItems(filter.filter(feed.getItems()));
+    @Nullable
+    private Feed loadData() {
+        Feed feed = DBReader.getFeed(feedID, true);
+        if (feed == null) {
+            return null;
         }
-        if (feed != null && feed.getSortOrder() != null) {
+        DBReader.loadAdditionalFeedItemListData(feed.getItems());
+        if (feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();
             FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
             feed.setItems(feedItems);
         }
-        return Optional.ofNullable(feed);
+        return feed;
     }
 
     private static class FeedItemListAdapter extends EpisodeItemListAdapter {
