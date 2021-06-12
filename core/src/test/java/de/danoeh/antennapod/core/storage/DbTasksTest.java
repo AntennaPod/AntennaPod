@@ -213,7 +213,7 @@ public class DbTasksTest {
         // change the guid of the first item
         FeedItem item = feed.getItemAtIndex(0);
         item.setItemIdentifier("id 1-duplicate");
-        Feed newFeed = DBTasks.updateFeed(context, feed, true);
+        Feed newFeed = DBTasks.updateFeed(context, feed, false);
         assertEquals(10, newFeed.getItems().size()); // id1-duplicate should override id 1
 
         Feed feedFromDB = DBReader.getFeed(newFeed.getId());
