@@ -197,6 +197,30 @@ public class DbTasksTest {
         assertEquals(8, feedFromDB.getItems().size()); // 10 - 2 = 8 items
     }
 
+    @Test
+    public void testUpdateFeedSetDuplicate() {
+        final Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        for (int i = 0; i < 10; i++) {
+            feed.getItems().add(
+                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+        }
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // change the guid of the first item
+        FeedItem item = feed.getItemAtIndex(0);
+        item.setItemIdentifier("id 1-duplicate");
+        Feed newFeed = DBTasks.updateFeed(context, feed, true);
+        assertEquals(10, newFeed.getItems().size()); // id1-duplicate should override id 1
+
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        assertEquals(10, feedFromDB.getItems().size()); // id1-duplicate should override id 1
+    }
+
+
     @SuppressWarnings("SameParameterValue")
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs,
                                  int numItemsOld, int numItemsNew) {
