@@ -162,9 +162,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         }
     }
 
-    @Override
     public void onSelectChanged(int pos, boolean selected) {
-        super.onSelectChanged(pos, selected);
         FeedItem item = episodes.get(pos);
         if (selected && !selectedIds.contains(item.getId())) {
             selectedIds.add(item.getId());
@@ -210,15 +208,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return selectedItems;
     }
 
-    @Override
     public void onStartActionMode() {
-        super.onStartActionMode();
         notifyDataSetChanged();
     }
 
-    @Override
     protected void onEndActionMode() {
-        super.onEndActionMode();
         selectedItems.clear();
         selectedIds.clear();
         if(onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();

@@ -18,7 +18,7 @@ import de.danoeh.antennapod.R;
  * Used by Recyclerviews that need to provide ability to select items
  * @param <T>
  */
-class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T>{
+abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T>{
     private int selectedCount;
 
     public SelectableAdapter(Activity activity) {
@@ -164,13 +164,9 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
         }
     }
 
-    public void onStartActionMode() {
+    abstract public void onStartActionMode();
 
-    }
-
-    protected void onEndActionMode() {
-
-    }
+    abstract protected void onEndActionMode();
 
     public boolean inActionMode() {
         return actionMode != null;
@@ -185,9 +181,7 @@ class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.
      * @param pos the position that was changed
      * @param selected the new state of the selection, true if selected, otherwise false
      */
-    public void onSelectChanged(int pos, boolean selected) {
-
-    }
+    abstract public void onSelectChanged(int pos, boolean selected);
 
     private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
         if (toggle) {
