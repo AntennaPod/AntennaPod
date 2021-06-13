@@ -190,7 +190,6 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         } else {
             selectAllItem.setIcon(R.drawable.ic_select_all);
             selectAllItem.setTitle(R.string.select_all_label);
-
         }
     }
 

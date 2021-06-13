@@ -116,7 +116,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private ToolbarIconTintManager iconTintManager;
 
     private SpeedDialView mSpeedDialView;
-    private  LongList checkedIds = new LongList();
 
     private boolean displayUpArrow;
 
@@ -261,10 +260,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         });
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
-            checkedIds = new LongList();
-            for (FeedItem episode : getSelectedItems()) {
-                checkedIds.add(episode.getId());
-            }
             episodeMultSelectActionHandler.handleAction(actionItem.getId());
             onEndSelectMode();
             adapter.finish();
@@ -272,11 +267,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         return root;
     }
-
-    public LongList getSelectedIds() {
-        return checkedIds;
-    }
-
 
     @Override
     public void onDestroyView() {

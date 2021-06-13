@@ -52,7 +52,7 @@ public class EpisodeMultSelectActionHandler {
     }
     private void queueChecked() {
         // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(feedItemlistFragment.getSelectedIds().size());
+        LongList toQueue = new LongList(feedItemlistFragment.getSelectedItems().size());
         for (FeedItem episode : feedItemlistFragment.getSelectedItems()) {
             if (episode.hasMedia()) {
                 toQueue.add(episode.getId());
@@ -63,26 +63,29 @@ public class EpisodeMultSelectActionHandler {
     }
 
     private void removeFromQueueChecked() {
-        DBWriter.removeQueueItem(feedItemlistFragment.getActivity(), true, feedItemlistFragment.getSelectedIds().toArray());
-        showMessage(R.plurals.removed_from_queue_batch_label, feedItemlistFragment.getSelectedIds().size());
+        long[] checkedIds = getSelectedIds();
+        DBWriter.removeQueueItem(feedItemlistFragment.getActivity(), true, checkedIds);
+        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
     }
 
     private void markedCheckedPlayed() {
-        DBWriter.markItemPlayed(FeedItem.PLAYED, feedItemlistFragment.getSelectedIds().toArray());
-        showMessage(R.plurals.marked_read_batch_label, feedItemlistFragment.getSelectedIds().size());
+        long[] checkedIds = getSelectedIds();
+        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
+        showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
     }
 
     private void markedCheckedUnplayed() {
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, feedItemlistFragment.getSelectedIds().toArray());
-        showMessage(R.plurals.marked_unread_batch_label, feedItemlistFragment.getSelectedIds().size());
+        long[] checkedIds = getSelectedIds();
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
+        showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
     }
 
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
-        List<FeedItem> toDownload = new ArrayList<>(feedItemlistFragment.getSelectedIds().size());
+        List<FeedItem> toDownload = new ArrayList<>(feedItemlistFragment.getSelectedItems().size());
         List<FeedItem> episodes = feedItemlistFragment.getSelectedItems();
         for (FeedItem episode : episodes) {
-            if (feedItemlistFragment.getSelectedIds().contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
+            if (episodes.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
             }
         }
@@ -100,7 +103,6 @@ public class EpisodeMultSelectActionHandler {
         int countNoMedia = 0;
         List<FeedItem> episodes = feedItemlistFragment.getSelectedItems();
         for (FeedItem feedItem : episodes) {
-            feedItemlistFragment.getSelectedIds().contains(feedItem.getId());
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(feedItemlistFragment.getActivity(), feedItem.getMedia().getId());
@@ -122,5 +124,14 @@ public class EpisodeMultSelectActionHandler {
                         (countHasMedia + countNoMedia),
                         (countHasMedia + countNoMedia), countHasMedia),
                 Snackbar.LENGTH_LONG);
+    }
+
+    private long[] getSelectedIds() {
+        List<FeedItem> items = feedItemlistFragment.getSelectedItems();
+        long[] checkedIds = new long[items.size()];
+        for (int i = 0; i < items.size(); ++i) {
+            checkedIds[i] = items.get(i).getId();
+        }
+        return checkedIds;
     }
 }
