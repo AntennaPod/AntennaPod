@@ -380,9 +380,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         if (item.getItemId() == R.id.select_all_above) {
             adapter.setSelected(0, adapter.getSelectedPosition(), true);
-        }
-
-        if (item.getItemId() == R.id.select_all_below) {
+        } else if(item.getItemId() == R.id.select_all_below) {
             adapter.setSelected(adapter.getSelectedPosition(), adapter.getItemCount(), true);
         }
 
