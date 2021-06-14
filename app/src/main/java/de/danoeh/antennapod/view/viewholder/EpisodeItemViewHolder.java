@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.joanzapata.iconify.Iconify;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
@@ -31,8 +33,8 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 /**
  * Holds the view which shows FeedItems.
