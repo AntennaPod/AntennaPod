@@ -13,6 +13,7 @@ import de.danoeh.antennapod.R;
 
 /**
  * Used by Recyclerviews that need to provide ability to select items
+ *
  * @param <T>
  */
 abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
@@ -40,6 +41,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
             private MenuItem selectAllItem = null;
+
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 MenuInflater inflater = mode.getMenuInflater();
@@ -52,7 +54,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 mode.setTitle(getTitle());
                 selectAllItem = menu.findItem(R.id.select_toggle);
                 selectAllItem.setIcon(R.drawable.ic_select_all);
-                toggleSelectAllIcon(selectAllItem,false);
+                toggleSelectAllIcon(selectAllItem, false);
                 return false;
             }
 
@@ -98,34 +100,36 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     }
 
     /**
-     *  Set the selected state of item at given position
-     * @param pos the position to select
+     * Set the selected state of item at given position
+     *
+     * @param pos      the position to select
      * @param selected true for selected state and false for unselected
      */
     public void setSelected(int pos, boolean selected) {
         if (selectedItemPositions.get(pos, false)) {
-            if(!selected) {
+            if (!selected) {
                 selectedItemPositions.put(pos, false);
                 onSelectChanged(pos, false);
                 selectedCount--;
             }
         } else {
-            if(selected) {
+            if (selected) {
                 selectedItemPositions.put(pos, true);
                 onSelectChanged(pos, true);
                 selectedCount++;
             }
         }
-        if(actionMode != null)
+        if (actionMode != null)
             actionMode.setTitle(getTitle());
         notifyItemChanged(pos);
     }
 
     /**
-     *  Set the selected state of item for a given range
+     * Set the selected state of item for a given range
+     *
      * @param startPos start position of range, inclusive
-     * @param endPos end position of range, inclusive
-     * @param selected
+     * @param endPos   end position of range, inclusive
+     * @param selected indicates the selection state
      * @throws IllegalArgumentException if start and end positions are not valid
      */
     public void setSelected(int startPos, int endPos, boolean selected) throws IllegalArgumentException {
@@ -142,7 +146,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         if (selectedItemPositions.get(pos, false)) {
             return true;
         } else {
-           return false;
+            return false;
         }
     }
 
@@ -160,7 +164,8 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
     /**
      * Allows subclasses to be notified when a selection change has occurred
-     * @param pos the position that was changed
+     *
+     * @param pos      the position that was changed
      * @param selected the new state of the selection, true if selected, otherwise false
      */
     public abstract void onSelectChanged(int pos, boolean selected);
@@ -184,7 +189,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      * Selects all items and notifies subclasses of selected items
      */
     private void selectAll() {
-        for(int i = 0; i < getItemCount(); ++i) {
+        for (int i = 0; i < getItemCount(); ++i) {
             boolean isSelected = selectedItemPositions.get(i);
             if (!isSelected) {
                 selectedItemPositions.put(i, true);
@@ -194,11 +199,12 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         selectedCount = getItemCount();
         notifyDataSetChanged();
     }
+
     /**
      * Un-selects all items and notifies subclasses of un-selected items
      */
     private void selectNone() {
-        for(int i = 0; i < getItemCount(); ++i) {
+        for (int i = 0; i < getItemCount(); ++i) {
             boolean isSelected = selectedItemPositions.get(i);
             if (isSelected) {
                 onSelectChanged(i, false);

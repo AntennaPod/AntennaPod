@@ -50,6 +50,7 @@ public class EpisodeMultSelectActionHandler {
                 Log.e(feedItemlistFragment.getTag(), "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
     }
+
     private void queueChecked() {
         // Check if an episode actually contains any media files before adding it to queue
         LongList toQueue = new LongList(feedItemlistFragment.getSelectedItems().size());
@@ -90,7 +91,8 @@ public class EpisodeMultSelectActionHandler {
             }
         }
         try {
-            DownloadRequester.getInstance().downloadMedia(feedItemlistFragment.getActivity(), true, toDownload.toArray(new FeedItem[0]));
+            DownloadRequester.getInstance().downloadMedia(feedItemlistFragment.getActivity(),
+                    true, toDownload.toArray(new FeedItem[0]));
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(feedItemlistFragment.getActivity(), e.getMessage());

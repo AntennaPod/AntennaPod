@@ -76,7 +76,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-               selectHandler(pos);
+                selectHandler(pos);
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
@@ -91,7 +91,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             holder.selectCheckBox.setOnClickListener(v -> {
                 selectHandler(pos);
             });
-            if(selectedIds.contains(item.getId())) {
+            if (selectedIds.contains(item.getId())) {
                 holder.selectCheckBox.setChecked(true);
             } else {
                 holder.selectCheckBox.setChecked(false);
@@ -165,7 +165,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         if (selected && !selectedIds.contains(item.getId())) {
             selectedIds.add(item.getId());
             selectedItems.add(item);
-        } else if(!selected){
+        } else if (!selected) {
             selectedIds.remove(item.getId());
             selectedItems.remove(item);
         }
@@ -181,7 +181,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
-       this.onEndSelectModeListener = onEndSelectModeListener;
+        this.onEndSelectModeListener = onEndSelectModeListener;
     }
 
     protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
@@ -210,10 +210,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         notifyDataSetChanged();
     }
 
-    protected void onEndSelectMode() {
+    public void onEndSelectMode() {
         selectedItems.clear();
         selectedIds.clear();
-        if(onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();
+        if (onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();
     }
 
     public interface OnEndSelectModeListener {
