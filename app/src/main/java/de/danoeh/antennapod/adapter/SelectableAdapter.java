@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -43,9 +42,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private SparseBooleanArray selectedItemPositions = new SparseBooleanArray();
     private Activity activity;
 
-    public void startActionMode(int pos) {
+    public void startSelectMode(int pos) {
         if (inActionMode()) {
-            finish();
+            endSelectMode();
         }
 
         selectedCount = 1;
@@ -54,7 +53,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         selectedItemPositions.append(pos, true);
         onSelectChanged(pos, true);
         notifyItemChanged(pos);
-        onStartActionMode();
+        onStartSelectMode();
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
             private MenuItem selectAllItem = null;
@@ -91,7 +90,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                onEndActionMode();
+                onEndSelectMode();
                 actionMode = null;
                 selectedItemPositions.clear();
                 selectedCount = 0;
@@ -108,9 +107,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     /**
      * End action mode if currently in select mode, otherwise do nothing
      */
-    public void finish() {
+    public void endSelectMode() {
         if (inActionMode()) {
-            onEndActionMode();
+            onEndSelectMode();
             actionMode.finish();
         }
     }
@@ -164,9 +163,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
     }
 
-    abstract public void onStartActionMode();
+    abstract public void onStartSelectMode();
 
-    abstract protected void onEndActionMode();
+    abstract protected void onEndSelectMode();
 
     public boolean inActionMode() {
         return actionMode != null;

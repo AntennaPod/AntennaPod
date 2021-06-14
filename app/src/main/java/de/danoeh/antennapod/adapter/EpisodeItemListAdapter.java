@@ -173,7 +173,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         }
 
         if (selectedIds.size() == 0) {
-            finish();
+            endSelectMode();
         }
     }
 
@@ -208,11 +208,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return selectedItems;
     }
 
-    public void onStartActionMode() {
+    public void onStartSelectMode() {
         notifyDataSetChanged();
     }
 
-    protected void onEndActionMode() {
+    protected void onEndSelectMode() {
         selectedItems.clear();
         selectedIds.clear();
         if(onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();

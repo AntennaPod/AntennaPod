@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.PluralsRes;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -70,7 +69,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
@@ -262,7 +260,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
             episodeMultSelectActionHandler.handleAction(actionItem.getId());
             onEndSelectMode();
-            adapter.finish();
+            adapter.endSelectMode();
             return true;
         });
         return root;
@@ -368,7 +366,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // if multi select
         if (item.getItemId() == R.id.episode_actions) {
-            adapter.startActionMode(adapter.getSelectedPosition());
+            adapter.startSelectMode(adapter.getSelectedPosition());
             if (feed.isLocalFeed()) {
                 mSpeedDialView.removeActionItemById(R.id.download_batch);
                 mSpeedDialView.removeActionItemById(R.id.delete_batch);
