@@ -113,7 +113,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
 
-    private SpeedDialView mSpeedDialView;
+    private SpeedDialView speedDialView;
 
     private boolean displayUpArrow;
 
@@ -240,9 +240,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // Speed dial
         // Init action UI (via a FAB Speed Dial)
-        mSpeedDialView = root.findViewById(R.id.fabSD);
-        mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
-        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
                 return false;
@@ -253,11 +253,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 if (open && adapter.getSelectedCount() == 0) {
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                             Snackbar.LENGTH_SHORT);
-                    mSpeedDialView.close();
+                    speedDialView.close();
                 }
             }
         });
-        mSpeedDialView.setOnActionSelectedListener(actionItem -> {
+        speedDialView.setOnActionSelectedListener(actionItem -> {
             episodeMultSelectActionHandler.handleAction(actionItem.getId());
             onEndSelectMode();
             adapter.endSelectMode();
@@ -368,10 +368,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (item.getItemId() == R.id.episode_actions) {
             adapter.startSelectMode(adapter.getSelectedPosition());
             if (feed.isLocalFeed()) {
-                mSpeedDialView.removeActionItemById(R.id.download_batch);
-                mSpeedDialView.removeActionItemById(R.id.delete_batch);
+                speedDialView.removeActionItemById(R.id.download_batch);
+                speedDialView.removeActionItemById(R.id.delete_batch);
             }
-            mSpeedDialView.setVisibility(View.VISIBLE);
+            speedDialView.setVisibility(View.VISIBLE);
             refreshToolbarState();
             return true;
         }
@@ -456,8 +456,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onEndSelectMode() {
-        mSpeedDialView.close();
-        mSpeedDialView.setVisibility(View.GONE);
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
     }
 
     public List<FeedItem> getSelectedItems() {
@@ -656,7 +656,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         return feed;
     }
 
-    private class FeedItemListAdapter extends EpisodeItemListAdapter {
+    private static class FeedItemListAdapter extends EpisodeItemListAdapter {
         public FeedItemListAdapter(MainActivity mainActivity) {
             super(mainActivity);
         }

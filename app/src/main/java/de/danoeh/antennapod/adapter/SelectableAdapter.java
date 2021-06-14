@@ -14,7 +14,6 @@ import de.danoeh.antennapod.R;
 /**
  * Used by Recyclerviews that need to provide ability to select items
  *
- * @param <T>
  */
 abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
     private int selectedCount;
@@ -119,8 +118,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedCount++;
             }
         }
-        if (actionMode != null)
+        if (actionMode != null) {
             actionMode.setTitle(getTitle());
+        }
         notifyItemChanged(pos);
     }
 

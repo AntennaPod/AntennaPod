@@ -213,7 +213,9 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void onEndSelectMode() {
         selectedItems.clear();
         selectedIds.clear();
-        if (onEndSelectModeListener != null) onEndSelectModeListener.onEndSelectMode();
+        if (onEndSelectModeListener != null) {
+            onEndSelectModeListener.onEndSelectMode();
+        }
     }
 
     public interface OnEndSelectModeListener {

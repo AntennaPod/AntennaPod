@@ -86,7 +86,7 @@ public class EpisodeMultSelectActionHandler {
         List<FeedItem> toDownload = new ArrayList<>(feedItemlistFragment.getSelectedItems().size());
         List<FeedItem> episodes = feedItemlistFragment.getSelectedItems();
         for (FeedItem episode : episodes) {
-            if (episodes.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
+            if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
             }
         }
