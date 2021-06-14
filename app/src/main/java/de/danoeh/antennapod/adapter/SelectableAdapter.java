@@ -146,9 +146,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
     }
 
-    abstract public void onStartSelectMode();
+    public abstract void onStartSelectMode();
 
-    abstract protected void onEndSelectMode();
+    public abstract void onEndSelectMode();
 
     public boolean inActionMode() {
         return actionMode != null;
@@ -163,7 +163,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      * @param pos the position that was changed
      * @param selected the new state of the selection, true if selected, otherwise false
      */
-    abstract public void onSelectChanged(int pos, boolean selected);
+    public abstract void onSelectChanged(int pos, boolean selected);
 
     private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
         if (toggle) {

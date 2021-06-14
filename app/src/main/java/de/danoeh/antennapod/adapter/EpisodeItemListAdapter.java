@@ -103,8 +103,6 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
-        super.onBindViewHolder(holder, pos);
-
     }
 
     @Override
