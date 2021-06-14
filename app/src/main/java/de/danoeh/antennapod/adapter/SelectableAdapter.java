@@ -19,28 +19,13 @@ import de.danoeh.antennapod.R;
  */
 abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
     private int selectedCount;
+    private ActionMode actionMode;
+    private SparseBooleanArray selectedItemPositions = new SparseBooleanArray();
+    private Activity activity;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
     }
-    @NonNull
-    @Override
-    public T onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull T holder, int position) {
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-    private ActionMode actionMode;
-    private SparseBooleanArray selectedItemPositions = new SparseBooleanArray();
-    private Activity activity;
 
     public void startSelectMode(int pos) {
         if (inActionMode()) {
