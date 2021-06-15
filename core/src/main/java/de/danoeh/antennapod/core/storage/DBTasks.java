@@ -336,9 +336,14 @@ public final class DBTasks {
     /**
      * Get a FeedItem by its identifying value.
      */
-    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, String identifier) {
+    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
-            if (TextUtils.equals(item.getIdentifyingValue(), identifier)) {
+            if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
+                return item;
+            }
+            if (!TextUtils.isEmpty(item.getMedia().getDownload_url()) &&
+                    !TextUtils.isEmpty((searchItem.getMedia().getDownload_url())) &&
+                    TextUtils.equals(item.getMedia().getDownload_url(), searchItem.getMedia().getDownload_url())) {
                 return item;
             }
         }
