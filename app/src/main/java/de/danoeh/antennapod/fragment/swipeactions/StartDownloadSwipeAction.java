@@ -17,7 +17,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class StartDownload extends SwipeAction {
+public class StartDownloadSwipeAction extends SwipeAction {
 
     @Override
     public int actionIcon() {
@@ -43,7 +43,7 @@ public class StartDownload extends SwipeAction {
     }
 
     @Override
-    List<String> affectedFilters() {
-        return Collections.emptyList();
+    public boolean willRemove(FeedItemFilter filter) {
+        return false;
     }
 }

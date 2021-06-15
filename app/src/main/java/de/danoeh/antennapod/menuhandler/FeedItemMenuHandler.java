@@ -291,8 +291,4 @@ public class FeedItemMenuHandler {
         markReadWithUndo(fragment, item, FeedItem.UNPLAYED, false);
     }
 
-    public static void addToQueue(Context context, FeedItem item) {
-        DBWriter.addQueueItem(context, item);
-    }
-
 }

@@ -14,7 +14,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkFavourite extends SwipeAction {
+public class MarkFavouriteSwipeAction extends SwipeAction {
 
     @Override
     public int actionIcon() {
@@ -37,7 +37,7 @@ public class MarkFavourite extends SwipeAction {
     }
 
     @Override
-    List<String> affectedFilters() {
-        return Arrays.asList("is_favorite", "not_favorite");
+    public boolean willRemove(FeedItemFilter filter) {
+        return filter.showIsFavorite || filter.showNotFavorite;
     }
 }

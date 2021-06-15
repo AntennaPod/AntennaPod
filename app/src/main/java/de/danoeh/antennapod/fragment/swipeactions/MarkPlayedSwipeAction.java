@@ -12,32 +12,33 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class AddToQueue extends SwipeAction {
+public class MarkPlayedSwipeAction extends SwipeAction {
 
     @Override
     public int actionIcon() {
-        return R.drawable.ic_playlist;
+        return R.drawable.ic_check;
     }
 
     @Override
     public int actionColor() {
-        return R.color.swipe_light_green_200;
+        return R.color.swipe_light_red_200;
     }
 
     @Override
     public String title(Context context) {
-        return context.getString(R.string.add_to_queue_label);
+        return context.getString(R.string.mark_read_label);
     }
 
     @Override
     public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        if (!item.isTagged(FeedItem.TAG_QUEUE)) {
-            FeedItemMenuHandler.addToQueue(fragment.requireContext(), item);
-        }
+        int togglePlayState =
+                item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+        FeedItemMenuHandler.markReadWithUndo(fragment,
+                item, togglePlayState, willRemove(filter));
     }
 
     @Override
-    List<String> affectedFilters() {
-        return Arrays.asList("queued", "unplayed");
+    public boolean willRemove(FeedItemFilter filter) {
+        return filter.showUnplayed || filter.showPlayed;
     }
 }

@@ -280,14 +280,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                item.getActionView().post(() -> iconTintManager.updateTint());
-                break;
-            case R.id.swipe_settings:
-                swipeActions.showDialog();
-                break;
-            default: break;
+        if (item.getItemId() == R.id.action_search) {
+            item.getActionView().post(() -> iconTintManager.updateTint());
         }
 
         if (feed == null) {

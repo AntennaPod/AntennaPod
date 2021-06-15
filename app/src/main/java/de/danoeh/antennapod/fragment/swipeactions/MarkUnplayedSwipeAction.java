@@ -12,7 +12,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkPlayed extends SwipeAction {
+public class MarkUnplayedSwipeAction extends SwipeAction {
 
     @Override
     public int actionIcon() {
@@ -21,24 +21,22 @@ public class MarkPlayed extends SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_light_red_200;
+        return R.color.swipe_light_blue_200;
     }
 
     @Override
     public String title(Context context) {
-        return context.getString(R.string.mark_read_label);
+        return context.getString(R.string.remove_new_flag_label);
     }
 
     @Override
     public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        int togglePlayState =
-                item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
         FeedItemMenuHandler.markReadWithUndo(fragment,
-                item, togglePlayState, willRemove(filter));
+                item, FeedItem.UNPLAYED, willRemove(filter));
     }
 
     @Override
-    List<String> affectedFilters() {
-        return Arrays.asList("unplayed", "played");
+    public boolean willRemove(FeedItemFilter filter) {
+        return filter.showUnplayed;
     }
 }

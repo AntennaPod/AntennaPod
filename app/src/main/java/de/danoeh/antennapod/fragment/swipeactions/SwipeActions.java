@@ -24,15 +24,16 @@ public class SwipeActions {
     public static final String PREF_SWIPEACTION_RIGHT = "PrefsSwipeActionRight";
     public static final String PREF_SWIPEACTION_LEFT = "PrefsSwipeActionLeft";
 
+    //indexes of swipeActions
     public static final int ADD_TO_QUEUE = 0;
     public static final int MARK_UNPLAYED = 1;
     public static final int START_DOWNLOAD = 2;
     public static final int MARK_FAV = 3;
     public static final int MARK_PLAYED = 4;
-    //indexes of swipeActions
-    public static final List<SwipeAction> swipeActions = Arrays.asList(new AddToQueue(),
-            new MarkUnplayed(), new StartDownload(),
-            new MarkFavourite(), new MarkPlayed());
+
+    public static final List<SwipeAction> swipeActions = Arrays.asList(new AddToQueueSwipeAction(),
+            new MarkUnplayedSwipeAction(), new StartDownloadSwipeAction(),
+            new MarkFavouriteSwipeAction(), new MarkPlayedSwipeAction());
 
     RecyclerView recyclerView;
     ItemTouchHelper itemTouchHelper;
