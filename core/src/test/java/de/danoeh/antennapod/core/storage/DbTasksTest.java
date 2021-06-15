@@ -210,7 +210,7 @@ public class DbTasksTest {
         adapter.setCompleteFeed(feed);
         adapter.close();
 
-        // change the guid of the first item
+        // change the guid of the first item, but leave the download url the same
         FeedItem item = feed.getItemAtIndex(0);
         item.setItemIdentifier("id 1-duplicate");
         Feed newFeed = DBTasks.updateFeed(context, feed, false);
