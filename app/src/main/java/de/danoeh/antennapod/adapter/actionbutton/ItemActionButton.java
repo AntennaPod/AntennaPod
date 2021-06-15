@@ -45,9 +45,6 @@ public abstract class ItemActionButton {
         } else if (item.getFeed().isLocalFeed()) {
             return new PlayLocalActionButton(item);
         } else if (media.isDownloaded()) {
-            if (item.isPlayed()) {
-                return new DeleteActionButton(item);
-            }
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
