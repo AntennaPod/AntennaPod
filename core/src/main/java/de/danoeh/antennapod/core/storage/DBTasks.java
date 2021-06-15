@@ -416,7 +416,7 @@ public final class DBTasks {
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item.getIdentifyingValue());
+                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item);
                 if (oldItem == null) {
                     // item is new
                     item.setFeed(savedFeed);
@@ -450,7 +450,7 @@ public final class DBTasks {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
-                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem.getIdentifyingValue()) == null) {
+                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();
                     }
