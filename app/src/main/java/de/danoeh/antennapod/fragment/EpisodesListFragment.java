@@ -350,10 +350,14 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new EpisodeItemListAdapter(mainActivity);
+        listAdapter = newAdapter(mainActivity);
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
+    }
+
+    protected EpisodeItemListAdapter newAdapter(MainActivity mainActivity) {
+        return new EpisodeItemListAdapter(mainActivity);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

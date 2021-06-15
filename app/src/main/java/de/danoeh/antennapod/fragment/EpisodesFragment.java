@@ -23,12 +23,16 @@ import java.util.List;
 import java.util.Set;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 public class EpisodesFragment extends EpisodesListFragment {
 
@@ -227,9 +231,30 @@ public class EpisodesFragment extends EpisodesListFragment {
         return DBReader.getRecentlyPublishedEpisodes(offset, limit, feedItemFilter);
     }
 
+    @Override
+    protected EpisodeItemListAdapter newAdapter(MainActivity mainActivity) {
+        return new EpisodesListAdapter(mainActivity);
+    }
+
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
         return load((page - 1) * EPISODES_PER_PAGE);
+    }
+
+    private static class EpisodesListAdapter extends EpisodeItemListAdapter {
+
+        public EpisodesListAdapter(MainActivity mainActivity) {
+            super(mainActivity);
+        }
+
+        @Override
+        public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            FeedItem item = getItem(pos);
+            if (item.isPlayed() && item.getMedia() != null && item.getMedia().isDownloaded()) {
+                DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+                actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+            }
+        }
     }
 }
