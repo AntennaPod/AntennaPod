@@ -341,9 +341,9 @@ public final class DBTasks {
             if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
                 return item;
             }
-            if (!TextUtils.isEmpty(item.getMedia().getDownload_url())
-                    && !TextUtils.isEmpty((searchItem.getMedia().getDownload_url()))
-                    && TextUtils.equals(item.getMedia().getDownload_url(), searchItem.getMedia().getDownload_url())) {
+            if (!TextUtils.isEmpty(item.getLink())
+                    && !TextUtils.isEmpty(searchItem.getLink())
+                    && TextUtils.equals(item.getLink(), searchItem.getLink())) {
                 return item;
             }
         }
