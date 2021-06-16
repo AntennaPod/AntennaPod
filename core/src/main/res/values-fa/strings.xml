@@ -13,14 +13,12 @@
   <string name="new_label">جدید</string>
   <string name="settings_label">تنظیمات</string>
   <string name="downloads_label">بارگیری‌ها</string>
-  <string name="downloads_running_label">در حال اجرا</string>
   <string name="downloads_completed_label">تکمیل‌شده</string>
   <string name="downloads_log_label">گزارش</string>
   <string name="subscriptions_label">اشتراک‌ها</string>
   <string name="subscriptions_list_label">فهرست اشتراک‌ها</string>
   <string name="playback_history_label">تاریخچه پخش</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net ورود</string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز تکمیل شده است. شما می‌توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
   <string name="playback_statistics_label">پخش</string>
@@ -68,12 +66,9 @@
   <string name="yes">بله</string>
   <string name="no">خیر</string>
   <string name="reset">بازنشانی</string>
-  <string name="author_label">مؤلف(ها)</string>
-  <string name="language_label">زبان</string>
   <string name="url_label">URL</string>
   <string name="error_label">خطا</string>
   <string name="error_msg_prefix">یک خطا رخ داد:</string>
-  <string name="needs_storage_permission">دسترسی حافظه برای انجام این عملیات مورد نیاز است</string>
   <string name="refresh_label">تازه کردن</string>
   <string name="external_storage_error_msg">هیچ  فضای ذخیره سازی خارجی موجود نیست لطفاً مطمئن شوید که کارت حافظه به درستی نصب شده است تا برنامه بتواند به درستی کار کند.</string>
   <string name="chapters_label">فصل‌ها</string>
@@ -122,7 +117,6 @@
   <string name="remove_all_new_flags_confirmation_msg">لطفاً تأیید کنید که می‌خواهید برچسب‌های «جدید» را از همهٔ قسمت‌ها حذف کنید.</string>
   <string name="show_info_label">نمایش اطلاعات</string>
   <string name="show_feed_settings_label">نمایش تنظیمات پادکست</string>
-  <string name="feed_info_label">اطلاعات پادکست</string>
   <string name="feed_settings_label">تنظیمات پادکست</string>
   <string name="rename_feed_label">تغییر نام پادکست</string>
   <string name="remove_feed_label">پاک کردن پادکست</string>
@@ -138,10 +132,6 @@
   <string name="multi_select">چندانتخابی</string>
   <string name="select_all_above">انتخاب همهٔ بالایی‌ها</string>
   <string name="select_all_below">انتخاب همهٔ پایینی‌ها</string>
-  <string name="hide_unplayed_episodes_label">پخش‌نشده</string>
-  <string name="hide_queued_episodes_label">در صف</string>
-  <string name="hide_not_queued_episodes_label">خارج از صف</string>
-  <string name="hide_has_media_label">دارای رسانه</string>
   <string name="filtered_label">فیلتر شده</string>
   <string name="open_podcast">باز کردن پادکست</string>
   <string name="please_wait_for_data">لطفا تا زمان دریافت اطلاعات منتظر بمانید</string>
@@ -160,9 +150,7 @@
   <string name="remove_new_flag_label">حذف نشان «جدید»</string>
   <string name="removed_new_flag_label">نشان «جدید» حذف شد</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>
-  <string name="marked_as_read_label">به‌عنوان پخش‌شده علامت‌گذاری شد</string>
   <string name="mark_read_no_media_label">علامت زدن به عنوان خوانده شده</string>
-  <string name="marked_as_read_no_media_label">به عنوان خوانده شده علامت زده شد</string>
   <string name="play_this_to_seek_position">برای پرش به موقعیت‌ها، می‌توانید قسمت را پخش کنید</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d قسمت به‌عنوان پخش‌شده علامت‌گذاری شد.</item>
@@ -186,9 +174,7 @@
     <item quantity="other">%d قسمت از صف حذف شد.</item>
   </plurals>
   <string name="add_to_favorite_label">اضافه کردن به علاقه‌مندی‌ها</string>
-  <string name="added_to_favorites">به موارد دلخواه اضافه شد.</string>
   <string name="remove_from_favorite_label">از علاقه‌مندی‌ها حذف شود</string>
-  <string name="removed_from_favorites">از موارد دلخواه حذف شد.</string>
   <string name="visit_website_label">مشاهده تارنما</string>
   <string name="skip_episode_label">رد شدن از قسمت</string>
   <string name="activate_auto_download">فعال کردن بارگیری خودکار</string>
@@ -213,8 +199,6 @@
   <string name="download_canceled_autodownload_enabled_msg">بارگیری لغو شد\nغیر فعال  کردن <i>بارگیری خودکار</i> برای این مورد </string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
   <string name="auto_download_report_title">بارگیری‌های خودکار کامل شد</string>
-  <string name="download_report_content_title">گزارش بارگیری</string>
-  <string name="download_error_malformed_url">نشانی نادرست</string>
   <string name="download_error_io_error">خطای ورودی/خروجی</string>
   <string name="download_error_request_error">خطای درخواست</string>
   <string name="download_error_db_access">خطای دسترسی به پایگاه‌داده</string>
@@ -241,17 +225,12 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">اجازهٔ موقت</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">خطا!</string>
-  <string name="player_stopped_msg">رسانه‌ای در حال پخش نیست</string>
-  <string name="player_preparing_msg">آماده‌سازی</string>
-  <string name="player_ready_msg">آماده</string>
-  <string name="player_seeking_msg">جابجا کردن</string>
   <string name="playback_error_server_died">کارساز مرده است.</string>
   <string name="playback_error_unsupported">نوع رسانه‌ای حمایت نشده</string>
   <string name="playback_error_timeout">عملیات منقضی شد</string>
   <string name="playback_error_source">ناتوانی در دسترسی به پرونده رسانه‌ای</string>
   <string name="playback_error_unknown">خطای ناشناخته</string>
   <string name="no_media_playing_label">رسانه‌ای در حال پخش نیست</string>
-  <string name="player_buffering_msg">میانگیری</string>
   <string name="player_go_to_picture_in_picture">حالت تصویر در تصویر</string>
   <string name="unknown_media_key">آنتناپاد - کلید رسانه‌ای ناشناخته: %1$d</string>
   <string name="error_file_not_found">پرونده یافت نشد</string>
@@ -274,23 +253,15 @@
   <string name="feed_title">عنوان پادکست</string>
   <string name="random">تصادفی</string>
   <string name="smart_shuffle">بر زدن هوشمند</string>
-  <string name="ascending">صعودی</string>
-  <string name="descending">نزولی</string>
   <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید صف را از همهٔ قسمت‌های درونش پاک‌سازی کنید</string>
   <string name="time_left_label">زمان مانده:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">بارگیری افزایه</string>
-  <string name="no_playback_plugin_title">افزایه نصب‌نشده</string>
-  <string name="no_playback_plugin_or_sonic_msg">برای اینکه سرعت بازپخش متغیر کار کند، پیشنهاد می‌دهید که پخش‌کنندهٔ داخلی Sonic را استفاده کنید.</string>
-  <string name="enable_sonic">فعال‌سازی Sonic</string>
   <string name="speed_presets">از پیش نشاندن</string>
   <string name="preset_already_exists">%1$.2f قبلاً به عنوان یک پیش تنظیم ذخیره شده است.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">بدون قسمت صف‌شده</string>
   <string name="no_items_label">افزودن یک قسمت با بارگیری آن، یا فرشدن طولانی یک قسمت و انتخاب «افزودن به صف».</string>
   <string name="no_shownotes_label">این قسمت دارای توضیحات نیست.</string>
-  <string name="no_run_downloads_head_label">هیچ بارگیری‌ای در حال اجرا نیست</string>
-  <string name="no_run_downloads_label">می‌توانید قسمت‌ها را در صفحهٔ جزئیات پادکست بارگیری کنید.</string>
   <string name="no_comp_downloads_head_label">هیچ قسمت بارگیری‌شده‌ای نیست</string>
   <string name="no_comp_downloads_label">می‌توانید قسمت‌ها را در صفحهٔ جزئیات پادکست بارگیری کنید.</string>
   <string name="no_log_downloads_head_label">بدون سیاههٔ بارگیری</string>
@@ -303,8 +274,6 @@
   <string name="no_new_episodes_label">هنگامی که قسمت‌های جدید از راه برسند، اینجا نمایش داده می‌شود.</string>
   <string name="no_fav_episodes_head_label">قسمت مورد علاقه‌ای موجود نیست</string>
   <string name="no_fav_episodes_label">با کلیک طولانی می‌توانید قسمت‌ها را به مورد علاقه‌ها بیافزایید.</string>
-  <string name="no_chapters_head_label">بدون بخش</string>
-  <string name="no_chapters_label">این قسمت فصلی ندارد.</string>
   <string name="no_subscriptions_head_label">بدون اشتراک</string>
   <string name="no_subscriptions_label">برای اشتراک در یک پادکست، آیکون بعلاوه را زیر را فشار دهید.</string>
   <!--Preferences-->
@@ -342,13 +311,6 @@
   <string name="playback_pref_sum">کنترل هدفون ، رد کردن فواصل ، صف</string>
   <string name="network_pref">شبکه</string>
   <string name="network_pref_sum">فاصله به روزرسانی ، کنترل های بارگیری ، داده تلفن همراه</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">فاصله یا زمان روز را به روز کنید</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">یک بازه یا زمان مشخص از روز را برای بروزرسازی خودکار پادکست ها مشخص کنید</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">شما می توانید یک بازه مانند \"هر 2 ساعت\" یا یک ساعت خاص از روز را مانند \"7:00 صبح\" تنظیم کنید. شما همچنین می توانید به طور کامل به روزرسانی های خودکار را غیرفعال کنید.\n\n لطفا توجه داشته باشید: زمان بروزرسانی دقیق نیست و شما ممکن است با تأخیر کوتاه روبرو شوید.</string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">از کار انداختن</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">تنظیم بازه</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">تنظیم زمان روز</string>
-  <string name="pref_autoUpdateIntervallOrTime_at">در %1$s</string>
   <string name="pref_followQueue_title">پخش مداوم</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">قطع اتصال هدفون یا بلوتوث</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">وصل دوباره هدفون</string>
@@ -387,9 +349,6 @@
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_theme_title_trueblack">سیاه (مناسب AMOLED)</string>
   <string name="pref_episode_cache_unlimited">نامحدود</string>
-  <string name="pref_update_interval_hours_plural">ساعت</string>
-  <string name="pref_update_interval_hours_singular">ساعت</string>
-  <string name="pref_update_interval_hours_manual">دستی</string>
   <string name="pref_gpodnet_authenticate_title">ورود</string>
   <string name="pref_gpodnet_authenticate_sum">برای همگام سازی اشتراک های خود با حساب gpodder.net وارد شوید.</string>
   <string name="pref_gpodnet_logout_title">خروج</string>
@@ -425,7 +384,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">شما فقط می توانید حداکثر %1$d مورد را انتخاب کنید.</string>
   <string name="pref_lockscreen_background_title">تنظیم پس‌زمینه صفحهٔ قفل</string>
   <string name="pref_lockscreen_background_sum">پس زمینه صفحه قفل را روی تصویر جلد قسمت فعلی تنظیم کن. به عنوان اثر جانبی ، این تصویر در برنامه های شخص ثالث نیز نشان داده خواهد شد.</string>
-  <string name="pref_expand_notify_unsupport_toast">اندرویدهای قدیمی‌تر از نسخه ۴٫۱ از اعلان‌های بسط‌یافته پشتیبانی نمی‌کنند.</string>
   <string name="pref_enqueue_location_title">مکان را از صف در آور</string>
   <string name="pref_enqueue_location_sum">قسمتها را به اضافه کنید به : %1$s</string>
   <string name="enqueue_location_back">عقب</string>
@@ -437,7 +395,6 @@
   <string name="visit_user_forum">تالار گفتمان کاربر</string>
   <string name="bug_report_title">گزارش مشکل</string>
   <string name="open_bug_tracker">باز کردن ردیاب اشکال</string>
-  <string name="export_logs">خارج کردن گزارشها</string>
   <string name="copy_to_clipboard">کپی به کلیپ بورد</string>
   <string name="copied_to_clipboard">در کلیپ بورد کپی شد</string>
   <string name="experimental_pref">آزمایشی</string>
@@ -448,7 +405,7 @@
   <string name="pref_no_browser_found">مرورگر وب پیدا نشد.</string>
   <string name="pref_cast_title">پشتیبانی از کروم‌کست</string>
   <string name="pref_cast_message_play_flavor">پشتیبانی از پخش از راه دور رسانه را در دستگاه های Cast فعال کنید (مانند Chromecast ، بلندگوهای صوتی یا Android TV)</string>
-  <string name="pref_cast_message_free_flavor">کروم‌کست نیازمند کتاب‌خانه‌های غیرآزاد است که در این نسخه از AntennaPod غیر فعال هستند</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">کروم‌کست نیازمند کتاب‌خانه‌های غیرآزاد است که در این نسخه از AntennaPod غیر فعال هستند</string>
   <string name="pref_enqueue_downloaded_title">در صف نهادن بارگیری‌شده‌ها</string>
   <string name="pref_enqueue_downloaded_summary">قسمتهای بارگیری شده را به صف اضافه کنید</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (توصیه می شود)</string>
@@ -474,7 +431,6 @@
   <string name="pref_delete_removes_from_queue_sum">وقتی اپیزود حذف شد ، به طور خودکار از صف حذف شود.</string>
   <string name="pref_filter_feed_title">فیلتر اشتراک</string>
   <string name="pref_filter_feed_sum">اشتراک های خود را در کشوی ناوبری و صفحه اشتراک ها فیلتر کنید.</string>
-  <string name="no_filter_label">هیچ یک</string>
   <string name="subscriptions_are_filtered">اشتراک ها فیلتر می شوند.</string>
   <string name="subscriptions_counter_greater_zero">شمارنده بزرگتر از صفر</string>
   <string name="auto_downloaded">بارگیری خودکار</string>
@@ -565,41 +521,20 @@
   <string name="gpodnet_toplist_header">پادکست‌های برتر</string>
   <string name="gpodnet_suggestions_header">پیشنهادها</string>
   <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
-  <string name="gpodnetauth_login_title">ورود</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
   <string name="username_label">نام کاربری</string>
   <string name="password_label">گذرواژه</string>
-  <string name="gpodnetauth_device_descr">برای استفادهٔ حساب gpodder,netتان حسابی جدید ساخته یا حسابی موجود را برگزینید:</string>
-  <string name="gpodnetauth_device_caption_errorEmpty">عنوان نباید خالی باشد</string>
-  <string name="gpodnetauth_device_butChoose">گزینش</string>
   <string name="gpodnetauth_finish_descr">تبریک می گویم! حساب gpodder.net شما اکنون با دستگاه شما پیوند داده شده است. آنتن پاد از این پس اشتراک های دستگاه شما را با حساب gpodder.net خود به طور خودکار همگام سازی می کند.</string>
   <string name="gpodnetauth_finish_butsyncnow">شروع همگام‌سازی</string>
-  <string name="gpodnetauth_finish_butgomainscreen">رفتن به صفحهٔ اصلی</string>
-  <string name="gpodnetsync_auth_error_title">خطای تأیید هویت gpodder.net</string>
-  <string name="gpodnetsync_auth_error_descr">نام کاربری یا گذرواژهٔ اشتباه</string>
   <string name="gpodnetsync_error_title">خطای همگام‌سازی gpodder.net</string>
   <string name="gpodnetsync_error_descr">هنگام همگام‌سازی خطایی رخ داد:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">موفق</string>
   <string name="gpodnetsync_pref_report_failed">شکست خورد</string>
   <string name="gpodnetsync_username_characters_error">نام‌های کاربری فقط می‌توانند شامل حروف، ارقام، خط‌های تیره و زیرخط‌ها باشند.</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">پوشهٔ انتخاب‌شده:</string>
-  <string name="create_folder_label">ساخت پوشه</string>
   <string name="choose_data_directory">انتخاب پوشه داده‌ها</string>
   <string name="choose_data_directory_message">لطفاً مکان اصلی پوشه داده خود را انتخاب کنید. آنتن پاد زیر فهرستهای مناسب را ایجاد می کند.</string>
-  <string name="choose_data_directory_permission_rationale">دسترسی به فضای ذخیره سازی خارجی برای تغییر پوشه داده مورد نیاز است</string>
   <string name="choose_data_directory_available_space">%1$s از %2$s آزاد</string>
-  <string name="create_folder_msg">ایجاد پوشهٔ جدید با نام %1$s؟</string>
-  <string name="create_folder_success">ساخت پوشه جدید</string>
-  <string name="create_folder_error_no_write_access">نمی‌توان در این پوشه نوشت</string>
-  <string name="create_folder_error_already_exists">این پوشه از پیش موجود است</string>
-  <string name="create_folder_error">ناتوانی در ساخت پوشه</string>
-  <string name="folder_does_not_exist_error">%1$s وجود ندارد</string>
-  <string name="folder_not_readable_error">%1$s قابل خواندن نیست</string>
-  <string name="folder_not_writable_error">%1$s قابل نوشتن نیست</string>
-  <string name="folder_not_empty_dialog_title">پوشه خالی نیست</string>
-  <string name="folder_not_empty_dialog_msg">پوشه ای که انتخاب کرده اید خالی نیست. بارگیری رسانه و سایر پرونده ها مستقیماً در این پوشه قرار می گیرند. ادامه بدهم ؟</string>
-  <string name="set_to_default_folder">انتخاب پوشه پیش‌فرض</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">وقتی برنامه دیگری می خواهد صداها را پخش کند ، به جای کاهش میزان صدا ، پخش را متوقف کن</string>
   <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه ها</string>
   <string name="pref_resumeAfterCall_sum">پس از اتمام تماس تلفنی ، پخش را از سر بگیرید</string>
@@ -615,17 +550,14 @@
   <string name="fast_forward_label">حرکت سریع به جلو</string>
   <string name="increase_speed">افزایش سرعت</string>
   <string name="decrease_speed">کاهش سرعت</string>
-  <string name="media_type_audio_label">سمعی</string>
   <string name="media_type_video_label">ویدئو</string>
   <string name="status_downloading_label">قسمت در حال بارگیری است</string>
   <string name="in_queue_label">قسمت در صف است</string>
   <string name="is_favorite_label">قسمت به عنوان موردعلاقه علامت گذاری شده است</string>
-  <string name="drag_handle_content_description">برای تغییر موقعیت این مورد را بکشید</string>
   <string name="load_next_page_label">صفحه بعدی را لود کن</string>
-  <string name="switch_pages">تغییر صفحات</string>
   <string name="position">موقعیت: %1$s</string>
   <string name="apply_action">حرکت را اعمال کن</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
   <string name="authentication_descr">تغییر نام کاربری و رمز ورود خود را برای این پادکست و قسمت های آن</string>
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
@@ -641,8 +573,6 @@
   <string name="statistics_episodes_on_device">قسمت های موجود در دستگاه:</string>
   <string name="statistics_space_used">فضای مورد استفاده:</string>
   <string name="statistics_view_all">مشاهده همه پادکست ها »</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">به روز رسانی پایگاه داده</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">وارد کردن اشتراک از برنامه های تک منظوره</string>
   <!--Add podcast fragment-->
@@ -709,11 +639,11 @@
   <string name="sort_short_long">کوتاه به بلند</string>
   <string name="sort_long_short">بلند به کوتاه</string>
   <!--Rating dialog-->
-  <string name="rating_title">علاقهمند به  آنتن پاد ؟</string>
-  <string name="rating_message">اگر وقت بگذارید و به  آنتن پاد امتیاز دهید ، از آن استقبال می کنیم.</string>
-  <string name="rating_never_label">دست از سر من بردار</string>
-  <string name="rating_later_label">بعدا به من یادآوری کن</string>
-  <string name="rating_now_label">مطمئنا ، بریم این کار را انجام بدیم!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">علاقهمند به  آنتن پاد ؟</string>
+  <string name="rating_message" tools:ignore="UnusedResources">اگر وقت بگذارید و به  آنتن پاد امتیاز دهید ، از آن استقبال می کنیم.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">دست از سر من بردار</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">بعدا به من یادآوری کن</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">مطمئنا ، بریم این کار را انجام بدیم!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">عبارتند از:</string>
   <string name="share_playback_position_dialog_label">موقعیت پخش</string>
