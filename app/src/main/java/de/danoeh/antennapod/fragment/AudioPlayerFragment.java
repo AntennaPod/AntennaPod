@@ -166,7 +166,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         float[] dividerPos = null;
 
-        if (media.getChapters() != null) {
+        if (media.getChapters() != null && !media.getChapters().isEmpty()) {
             List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size()];
 
