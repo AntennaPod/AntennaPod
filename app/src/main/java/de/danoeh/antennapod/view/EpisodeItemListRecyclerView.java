@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import de.danoeh.antennapod.R;
 import io.reactivex.annotations.Nullable;
 
