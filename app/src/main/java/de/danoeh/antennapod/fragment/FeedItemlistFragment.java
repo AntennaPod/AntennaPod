@@ -602,21 +602,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Glide.with(getActivity())
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
-                        .placeholder(R.color.image_readability_tint)
-                        .error(R.color.image_readability_tint)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .transform(new FastBlurTransformation())
-                        .dontAnimate())
+                    .placeholder(R.color.image_readability_tint)
+                    .error(R.color.image_readability_tint)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .transform(new FastBlurTransformation())
+                    .dontAnimate())
                 .into(imgvBackground);
 
         Glide.with(getActivity())
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate())
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(imgvCover);
     }
 
@@ -629,16 +629,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        result -> {
-                            feed = result;
-                            refreshHeaderView();
-                            displayList();
-                        }, error -> {
-                            feed = null;
-                            refreshHeaderView();
-                            displayList();
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        });
+                    result -> {
+                        feed = result;
+                        refreshHeaderView();
+                        displayList();
+                    }, error -> {
+                        feed = null;
+                        refreshHeaderView();
+                        displayList();
+                        Log.e(TAG, Log.getStackTraceString(error));
+                    });
     }
 
     @Nullable
