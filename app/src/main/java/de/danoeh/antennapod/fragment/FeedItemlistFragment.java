@@ -74,7 +74,7 @@ import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import de.danoeh.antennapod.fragment.actions.EpisodeMultSelectActionHandler;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -122,10 +122,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private boolean isUpdatingFeed;
     private Disposable disposable;
-    private EpisodeMultSelectActionHandler episodeMultSelectActionHandler;
 
     public FeedItemlistFragment() {
-        episodeMultSelectActionHandler = new EpisodeMultSelectActionHandler(this);
+
     }
 
     /**
@@ -258,7 +257,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            episodeMultSelectActionHandler.handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
             onEndSelectMode();
             adapter.endSelectMode();
             return true;
@@ -364,8 +364,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return super.onContextItemSelected(item);
         }
 
-        // if multi select
-        if (item.getItemId() == R.id.episode_actions) {
+        if (item.getItemId() == R.id.multi_select) {
             adapter.startSelectMode(adapter.getSelectedPosition());
             if (feed.isLocalFeed()) {
                 speedDialView.removeActionItemById(R.id.download_batch);
@@ -374,12 +373,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             speedDialView.setVisibility(View.VISIBLE);
             refreshToolbarState();
             return true;
-        }
-
-        if (item.getItemId() == R.id.select_all_above) {
+        } else if (item.getItemId() == R.id.select_all_above) {
             adapter.setSelected(0, adapter.getSelectedPosition(), true);
         } else if (item.getItemId() == R.id.select_all_below) {
-            adapter.setSelected(adapter.getSelectedPosition(), adapter.getItemCount(), true);
+            adapter.setSelected(adapter.getSelectedPosition() + 1, adapter.getItemCount(), true);
         }
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
@@ -394,7 +391,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         long[] ids = FeedItemUtil.getIds(feed.getItems());
         activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedEvent event) {
@@ -458,10 +454,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
-    }
-
-    public List<FeedItem> getSelectedItems() {
-        return adapter.getSelectedItems();
     }
 
     private void updateUi() {

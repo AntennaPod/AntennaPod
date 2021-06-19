@@ -34,12 +34,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
-    // Used to enable O(1) search. Can't use FeedItem because it does not override equals()
-    private Set<Long> selectedIds = new HashSet<>();
-    private List<FeedItem> selectedItems = new ArrayList<>();
     private FeedItem selectedItem;
     int selectedPosition = 0; // used to init actionMode
-    private OnEndSelectModeListener onEndSelectModeListener;
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -76,7 +72,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-                selectHandler(pos);
+                toggleSelection(pos);
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
@@ -89,13 +85,9 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         if (inActionMode()) {
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
             holder.selectCheckBox.setOnClickListener(v -> {
-                selectHandler(pos);
+                toggleSelection(pos);
             });
-            if (selectedIds.contains(item.getId())) {
-                holder.selectCheckBox.setChecked(true);
-            } else {
-                holder.selectCheckBox.setChecked(false);
-            }
+            holder.selectCheckBox.setChecked(isSelected(pos));
             holder.selectCheckBox.setVisibility(View.VISIBLE);
         } else {
             holder.selectCheckBox.setVisibility(View.GONE);
@@ -160,28 +152,9 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         }
     }
 
-    public void onSelectChanged(int pos, boolean selected) {
-        FeedItem item = episodes.get(pos);
-        if (selected && !selectedIds.contains(item.getId())) {
-            selectedIds.add(item.getId());
-            selectedItems.add(item);
-        } else if (!selected) {
-            selectedIds.remove(item.getId());
-            selectedItems.remove(item);
-        }
-
-        if (selectedIds.size() == 0) {
-            endSelectMode();
-        }
-    }
-
     public void updateItems(List<FeedItem> items) {
         episodes = items;
         notifyDataSetChanged();
-    }
-
-    public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
-        this.onEndSelectModeListener = onEndSelectModeListener;
     }
 
     protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
@@ -203,30 +176,13 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     public List<FeedItem> getSelectedItems() {
-        return selectedItems;
-    }
-
-    public void onStartSelectMode() {
-        notifyDataSetChanged();
-    }
-
-    public void onEndSelectMode() {
-        selectedItems.clear();
-        selectedIds.clear();
-        if (onEndSelectModeListener != null) {
-            onEndSelectModeListener.onEndSelectMode();
+        List<FeedItem> items = new ArrayList<>();
+        for (int i = 0; i < getItemCount(); i++) {
+            if (isSelected(i)) {
+                items.add(getItem(i));
+            }
         }
+        return items;
     }
 
-    public interface OnEndSelectModeListener {
-        void onEndSelectMode();
-    }
-
-    private void selectHandler(int pos) {
-        if (isSelected(pos)) {
-            setSelected(pos, false);
-        } else {
-            setSelected(pos, true);
-        }
-    }
 }

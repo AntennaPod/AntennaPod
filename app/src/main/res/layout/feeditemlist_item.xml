@@ -44,9 +44,9 @@
                     tools:background="@android:color/holo_green_dark"/>
 
             <CheckBox
-                android:id="@+id/selectCheckBox"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                    android:id="@+id/selectCheckBox"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"/>
 
         </LinearLayout>
 

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
 
+import java.util.HashSet;
+
 /**
- * Used by Recyclerviews that need to provide ability to select items
- *
+ * Used by Recyclerviews that need to provide ability to select items.
  */
 abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
-    private int selectedCount;
     private ActionMode actionMode;
-    private SparseBooleanArray selectedItemPositions = new SparseBooleanArray();
-    private Activity activity;
+    private final HashSet<Long> selectedIds = new HashSet<>();
+    private final Activity activity;
+    private OnEndSelectModeListener onEndSelectModeListener;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -30,16 +30,12 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             endSelectMode();
         }
 
-        selectedCount = 1;
-        selectedItemPositions.clear();
-
-        selectedItemPositions.append(pos, true);
-        onSelectChanged(pos, true);
+        selectedIds.clear();
+        selectedIds.add(getItemId(pos));
         notifyItemChanged(pos);
-        onStartSelectMode();
+        notifyDataSetChanged();
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
-            private MenuItem selectAllItem = null;
 
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -51,22 +47,16 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 mode.setTitle(getTitle());
-                selectAllItem = menu.findItem(R.id.select_toggle);
-                selectAllItem.setIcon(R.drawable.ic_select_all);
-                toggleSelectAllIcon(selectAllItem, false);
+                toggleSelectAllIcon(menu.findItem(R.id.select_toggle), false);
                 return false;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 if (item.getItemId() == R.id.select_toggle) {
-                    if (selectedCount == getItemCount()) {
-                        selectNone();
-                        toggleSelectAllIcon(item, false);
-                    } else {
-                        selectAll();
-                        toggleSelectAllIcon(item, true);
-                    }
+                    boolean allSelected = selectedIds.size() == getItemCount();
+                    setSelected(0, getItemCount(), !allSelected);
+                    toggleSelectAllIcon(item, !allSelected);
                     mode.setTitle(getTitle());
                 }
                 return false;
@@ -74,12 +64,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                onEndSelectMode();
+                callOnEndSelectMode();
                 actionMode = null;
-                selectedItemPositions.clear();
-                selectedCount = 0;
+                selectedIds.clear();
                 notifyDataSetChanged();
-
             }
 
         });
@@ -87,15 +75,18 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         actionMode.setTitle(getTitle());
     }
 
-
     /**
      * End action mode if currently in select mode, otherwise do nothing
      */
     public void endSelectMode() {
         if (inActionMode()) {
-            onEndSelectMode();
+            callOnEndSelectMode();
             actionMode.finish();
         }
+    }
+
+    public boolean isSelected(int pos) {
+        return selectedIds.contains(getItemId(pos));
     }
 
     /**
@@ -105,18 +96,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      * @param selected true for selected state and false for unselected
      */
     public void setSelected(int pos, boolean selected) {
-        if (selectedItemPositions.get(pos, false)) {
-            if (!selected) {
-                selectedItemPositions.put(pos, false);
-                onSelectChanged(pos, false);
-                selectedCount--;
-            }
+        if (selected) {
+            selectedIds.add(getItemId(pos));
         } else {
-            if (selected) {
-                selectedItemPositions.put(pos, true);
-                onSelectChanged(pos, true);
-                selectedCount++;
-            }
+            selectedIds.remove(getItemId(pos));
         }
         if (actionMode != null) {
             actionMode.setTitle(getTitle());
@@ -133,45 +116,29 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      * @throws IllegalArgumentException if start and end positions are not valid
      */
     public void setSelected(int startPos, int endPos, boolean selected) throws IllegalArgumentException {
-        if (startPos < 0 || endPos < 0 || startPos > endPos) {
-            throw new IllegalArgumentException();
-        }
-
-        for (int i = startPos; i < endPos; i++) {
+        for (int i = startPos; i < endPos && i < getItemCount(); i++) {
             setSelected(i, selected);
         }
     }
 
-    public boolean isSelected(int pos) {
-        if (selectedItemPositions.get(pos, false)) {
-            return true;
-        } else {
-            return false;
+    protected void toggleSelection(int pos) {
+        setSelected(pos, !isSelected(pos));
+
+        if (selectedIds.size() == 0) {
+            endSelectMode();
         }
     }
-
-    public abstract void onStartSelectMode();
-
-    public abstract void onEndSelectMode();
 
     public boolean inActionMode() {
         return actionMode != null;
     }
 
     public int getSelectedCount() {
-        return selectedCount;
+        return selectedIds.size();
     }
 
-    /**
-     * Allows subclasses to be notified when a selection change has occurred
-     *
-     * @param pos      the position that was changed
-     * @param selected the new state of the selection, true if selected, otherwise false
-     */
-    public abstract void onSelectChanged(int pos, boolean selected);
-
-    private void toggleSelectAllIcon(MenuItem selectAllItem, boolean toggle) {
-        if (toggle) {
+    private void toggleSelectAllIcon(MenuItem selectAllItem, boolean allSelected) {
+        if (allSelected) {
             selectAllItem.setIcon(R.drawable.ic_select_none);
             selectAllItem.setTitle(R.string.deselect_all_label);
         } else {
@@ -181,38 +148,20 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     }
 
     private String getTitle() {
-        return selectedCount + " / " + getItemCount() + " selected";
+        return selectedIds.size() + " / " + getItemCount() + " selected";
     }
 
+    public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
+        this.onEndSelectModeListener = onEndSelectModeListener;
+    }
 
-    /**
-     * Selects all items and notifies subclasses of selected items
-     */
-    private void selectAll() {
-        for (int i = 0; i < getItemCount(); ++i) {
-            boolean isSelected = selectedItemPositions.get(i);
-            if (!isSelected) {
-                selectedItemPositions.put(i, true);
-                onSelectChanged(i, true);
-            }
+    private void callOnEndSelectMode() {
+        if (onEndSelectModeListener != null) {
+            onEndSelectModeListener.onEndSelectMode();
         }
-        selectedCount = getItemCount();
-        notifyDataSetChanged();
     }
 
-    /**
-     * Un-selects all items and notifies subclasses of un-selected items
-     */
-    private void selectNone() {
-        for (int i = 0; i < getItemCount(); ++i) {
-            boolean isSelected = selectedItemPositions.get(i);
-            if (isSelected) {
-                onSelectChanged(i, false);
-            }
-        }
-        selectedItemPositions.clear();
-        selectedCount = 0;
-        notifyDataSetChanged();
+    public interface OnEndSelectModeListener {
+        void onEndSelectMode();
     }
-
 }
