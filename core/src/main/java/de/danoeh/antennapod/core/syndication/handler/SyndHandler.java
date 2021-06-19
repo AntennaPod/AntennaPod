@@ -6,7 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.syndication.namespace.NSContent;
 import de.danoeh.antennapod.core.syndication.namespace.NSDublinCore;
 import de.danoeh.antennapod.core.syndication.namespace.NSITunes;

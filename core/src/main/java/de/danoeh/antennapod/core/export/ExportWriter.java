@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 public interface ExportWriter {
 

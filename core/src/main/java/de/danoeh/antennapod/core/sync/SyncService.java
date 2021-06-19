@@ -21,9 +21,9 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -32,17 +32,17 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
-import de.danoeh.antennapod.core.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.core.sync.model.ISyncService;
-import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.core.sync.model.SyncServiceException;
-import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.model.ISyncService;
+import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.model.SyncServiceException;
+import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +81,9 @@ public class SyncService extends Worker {
         if (!GpodnetPreferences.loggedIn()) {
             return Result.success();
         }
-        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHosturl());
+        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();

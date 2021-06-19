@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.export.html;
 import android.content.Context;
 import android.util.Log;
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;

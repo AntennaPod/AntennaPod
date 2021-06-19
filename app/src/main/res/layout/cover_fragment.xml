@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,14 +11,18 @@
     android:padding="8dp"
     android:gravity="center">
 
+    <Space
+        android:id="@+id/counterweight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
     <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_weight="0"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:importantForAccessibility="no"
@@ -29,33 +34,142 @@
         android:id="@+id/cover_fragment_text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginVertical="8dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtvPodcastTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:textSize="@dimen/text_size_small"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:textColor="?android:attr/textColorSecondary"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_small"
             tools:text="Podcast" />
 
         <TextView
             android:id="@+id/txtvEpisodeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_small"
             android:maxLines="2"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_small"
             tools:text="Episode" />
+
+        <Space
+            android:id="@+id/vertical_divider"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <Space
+        android:id="@+id/details_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/episode_details"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_weight="0"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <LinearLayout
+            android:id="@+id/openDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/grey_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/description_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:contentDescription="@string/shownotes_contentdescription"
+                android:padding="2dp"
+                app:srcCompat="@drawable/ic_info" />
+
+            <TextView
+                android:id="@+id/shownotes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="none"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
+                android:text="@string/shownotes_label"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chapterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/butPrevChapter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/prev_chapter"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_chapter_prev" />
+
+            <TextView
+                android:id="@+id/chapters_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/chapters_label"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size_navdrawer" />
+
+            <ImageButton
+                android:id="@+id/butNextChapter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/next_chapter"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_chapter_next" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

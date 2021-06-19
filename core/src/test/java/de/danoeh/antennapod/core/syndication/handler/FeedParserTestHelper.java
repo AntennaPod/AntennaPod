@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 /**
  * Tests for FeedHandler.

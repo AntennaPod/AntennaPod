@@ -10,19 +10,6 @@
         android:baselineAligned="false"
         android:descendantFocusability="blocksDescendants">
 
-    <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/txtvIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
-            android:layout_marginStart="@dimen/listitem_threeline_textleftpadding"
-            android:textSize="40dp"
-            android:gravity="center"
-            tools:text="X"
-            tools:ignore="SpUsage"/>
-
     <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,49 +25,43 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/status"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-            <TextView
-                    android:id="@+id/txtvType"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            <com.joanzapata.iconify.widget.IconTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Media file"/>
-            <TextView
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:text="·"
-                    tools:background="@android:color/holo_blue_light"/>
+                    android:padding="2dp"
+                    android:id="@+id/txtvIcon"
+                    android:textSize="18sp"
+                    android:gravity="center"/>
+
             <TextView
-                    android:id="@+id/txtvDate"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtvTitle"
+                    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="January 23"/>
+                    tools:text="@sample/episodes.json/data/title"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:background="@android:color/holo_blue_light"/>
 
         </LinearLayout>
+
         <TextView
-                android:id="@+id/txtvTitle"
-                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                android:layout_width="match_parent"
+                android:id="@+id/status"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@sample/episodes.json/data/title"
-                android:ellipsize="end"
-                tools:background="@android:color/holo_blue_light"/>
+                tools:text="Media file - 01/01/1970"/>
 
         <TextView
                 android:id="@+id/txtvReason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/download_failed_red"
                 tools:text="@string/design_time_downloaded_log_failure_reason"/>
 
         <TextView
@@ -94,5 +75,4 @@
     </LinearLayout>
 
     <include layout="@layout/secondary_action"/>
-
 </LinearLayout>

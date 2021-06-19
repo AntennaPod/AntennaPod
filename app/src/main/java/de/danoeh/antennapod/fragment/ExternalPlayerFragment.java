@@ -16,12 +16,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.view.PlayButton;
 import io.reactivex.Maybe;
@@ -79,17 +80,17 @@ public class ExternalPlayerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         butPlay.setOnClickListener(v -> {
-            if (controller != null) {
-                if (controller.getMedia().getMediaType() == MediaType.VIDEO
-                        && controller.getStatus() != PlayerStatus.PLAYING) {
-                    controller.playPause();
-                    getContext().startActivity(PlaybackService
-                            .getPlayerActivityIntent(getContext(), controller.getMedia()));
-                } else {
-                    controller.playPause();
-                }
+            if (controller == null) {
+                return;
             }
-
+            if (controller.getMedia() != null && controller.getMedia().getMediaType() == MediaType.VIDEO
+                    && controller.getStatus() != PlayerStatus.PLAYING) {
+                controller.playPause();
+                getContext().startActivity(PlaybackService
+                        .getPlayerActivityIntent(getContext(), controller.getMedia()));
+            } else {
+                controller.playPause();
+            }
         });
         loadMediaInfo();
     }
@@ -110,11 +111,6 @@ public class ExternalPlayerFragment extends Fragment {
             @Override
             public void loadMediaInfo() {
                 ExternalPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).setPlayerVisible(false);
             }
 
             @Override
@@ -146,6 +142,13 @@ public class ExternalPlayerFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         onPositionObserverUpdate();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).setPlayerVisible(false);
+        }
     }
 
     @Override

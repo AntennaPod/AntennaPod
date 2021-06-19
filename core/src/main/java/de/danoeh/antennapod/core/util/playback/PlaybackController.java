@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -18,14 +16,14 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.model.playback.Playable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,6 +49,7 @@ public abstract class PlaybackController {
     private boolean released = false;
     private boolean initialized = false;
     private boolean eventsRegistered = false;
+    private long loadedFeedMedia = -1;
 
     public PlaybackController(@NonNull Activity activity) {
         this.activity = activity;
@@ -90,9 +89,6 @@ public abstract class PlaybackController {
         activity.registerReceiver(notificationReceiver, new IntentFilter(
             PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
-        activity.registerReceiver(shutdownReceiver, new IntentFilter(
-                PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-
         if (!released) {
             bindToService();
         } else {
@@ -120,12 +116,6 @@ public abstract class PlaybackController {
             // ignore
         }
         unbind();
-
-        try {
-            activity.unregisterReceiver(shutdownReceiver);
-        } catch (IllegalArgumentException e) {
-            // ignore
-        }
         media = null;
         released = true;
 
@@ -251,34 +241,15 @@ public abstract class PlaybackController {
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
                     onPlaybackSpeedChange();
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED:
-                    onSetSpeedAbilityChanged();
-                    break;
             }
         }
 
-    };
-
-    private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (playbackService != null) {
-                if (TextUtils.equals(intent.getAction(), PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                    unbind();
-                    onShutdownNotification();
-                }
-            }
-        }
     };
 
     public void onPositionObserverUpdate() {}
 
 
     public void onPlaybackSpeedChange() {}
-
-    public void onSetSpeedAbilityChanged() {}
-
-    public void onShutdownNotification() {}
 
     /**
      * Called when the currently displayed information should be refreshed.
@@ -349,7 +320,8 @@ public abstract class PlaybackController {
     }
 
     private void checkMediaInfoLoaded() {
-        if (!mediaInfoLoaded) {
+        if (!mediaInfoLoaded || loadedFeedMedia != PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+            loadedFeedMedia = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
             loadMediaInfo();
         }
         mediaInfoLoaded = true;
@@ -487,12 +459,6 @@ public abstract class PlaybackController {
         }
     }
 
-    public void seekToChapter(Chapter chapter) {
-        if (playbackService != null) {
-            playbackService.seekToChapter(chapter);
-        }
-    }
-
     public void seekTo(int time) {
         if (playbackService != null) {
             playbackService.seekTo(time);
@@ -507,13 +473,6 @@ public abstract class PlaybackController {
 
     public PlayerStatus getStatus() {
         return status;
-    }
-
-    public boolean canSetPlaybackSpeed() {
-        return UserPreferences.useSonic()
-                || UserPreferences.useExoplayer()
-                || Build.VERSION.SDK_INT >= 23
-                || (playbackService != null && playbackService.canSetSpeed());
     }
 
     public void setPlaybackSpeed(float speed) {
@@ -544,7 +503,7 @@ public abstract class PlaybackController {
     }
 
     public float getCurrentPlaybackSpeedMultiplier() {
-        if (playbackService != null && canSetPlaybackSpeed()) {
+        if (playbackService != null) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return PlaybackSpeedUtils.getCurrentPlaybackSpeed(getMedia());

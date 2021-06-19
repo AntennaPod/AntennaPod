@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.util.id3reader;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;

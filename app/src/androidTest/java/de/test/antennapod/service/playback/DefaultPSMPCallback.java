@@ -2,9 +2,9 @@ package de.test.antennapod.service.playback;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallback {
         @Override
@@ -19,11 +19,6 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
 
         @Override
         public void playbackSpeedChanged(float s) {
-
-        }
-
-        @Override
-        public void setSpeedAbilityChanged() {
 
         }
 

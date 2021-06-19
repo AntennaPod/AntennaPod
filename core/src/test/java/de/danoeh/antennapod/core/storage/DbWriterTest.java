@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -776,6 +776,34 @@ public class DbWriterTest {
         List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
         for (FeedItem item : loadedItems) {
             assertTrue(item.isPlayed());
+        }
+    }
+
+    @Test
+    public void testRemoveAllNewFlags() throws Exception {
+        final int numItems = 10;
+        Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        for (int i = 0; i < numItems; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
+                    new Date(), FeedItem.NEW, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+
+        DBWriter.removeAllNewFlags().get();
+        List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
+        for (FeedItem item : loadedItems) {
+            assertFalse(item.isNew());
         }
     }
 

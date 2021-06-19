@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedFunding;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.namespace.PodcastIndex;
 import de.danoeh.antennapod.core.util.DateUtils;
 

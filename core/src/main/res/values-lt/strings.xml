@@ -13,14 +13,12 @@
   <string name="new_label">Naujas</string>
   <string name="settings_label">Nustatymai</string>
   <string name="downloads_label">Atsiuntimai</string>
-  <string name="downloads_running_label">Vykdomi</string>
   <string name="downloads_completed_label">Užbaigti</string>
   <string name="downloads_log_label">Žurnalas</string>
   <string name="subscriptions_label">Prenumeratos</string>
   <string name="subscriptions_list_label">Prenumeratų sąrašas</string>
   <string name="playback_history_label">Atkūrimo istorija</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net prisijungimas</string>
   <string name="episode_cache_full_title">Epizodų podėlis pilnas</string>
   <string name="episode_cache_full_message">Pasiektas epizodų podėlio dydžio limitas. Nustatymuose galite padidinti podėlio dydį.</string>
   <string name="playback_statistics_label">Atkūrimas</string>
@@ -62,12 +60,9 @@
   <string name="yes">Taip</string>
   <string name="no">Ne</string>
   <string name="reset">Nustatyti iš naujo</string>
-  <string name="author_label">Autorius (-iai)</string>
-  <string name="language_label">Kalba</string>
   <string name="url_label">URL</string>
   <string name="error_label">Klaida</string>
   <string name="error_msg_prefix">Įvyko klaida:</string>
-  <string name="needs_storage_permission">Šiam veiksmui atlikti reikalingas laikmenos prieigos leidimas</string>
   <string name="refresh_label">Atnaujinti</string>
   <string name="external_storage_error_msg">Nėra prieinamų išorinių laikmenų. Patikrinkite, jog išorinės laikmenos yra prijungtos, kad programėlė tinkamai veiktų.</string>
   <string name="chapters_label">Skyriai</string>
@@ -122,7 +117,6 @@
   <string name="remove_all_new_flags_confirmation_msg">Patvirtinkite, jog norite pašalinti „naujas“ gairelę visiems epizodams.</string>
   <string name="show_info_label">Rodyti informaciją</string>
   <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
-  <string name="feed_info_label">Tinklalaidės informacija</string>
   <string name="feed_settings_label">Tinklalaidės nustatymai</string>
   <string name="rename_feed_label">Pervadinti tinklalaidę</string>
   <string name="remove_feed_label">Pašalinti tinklalaidę</string>
@@ -133,10 +127,6 @@
   <string name="multi_select">Pažymėti keletą</string>
   <string name="select_all_above">Pažymėti visus aukščiau</string>
   <string name="select_all_below">Pažymėti visus žemiau</string>
-  <string name="hide_unplayed_episodes_label">Neperklausyti</string>
-  <string name="hide_queued_episodes_label">Esantys eilėje</string>
-  <string name="hide_not_queued_episodes_label">Nesantys eilėje</string>
-  <string name="hide_has_media_label">Turintys medijos failų</string>
   <string name="filtered_label">Filtruota</string>
   <string name="open_podcast">Atverti tinklalaidę</string>
   <string name="please_wait_for_data">Prašome luktelėti, kol duomenys bus įkelti</string>
@@ -157,9 +147,7 @@
   <string name="remove_new_flag_label">Pašalinti „naujas“ gairelę</string>
   <string name="removed_new_flag_label">„naujas“ gairelė pašalinta</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
-  <string name="marked_as_read_label">Pažymėtas kaip perklausytas</string>
   <string name="mark_read_no_media_label">Pažymėti kaip perskaitytą</string>
-  <string name="marked_as_read_no_media_label">Pažymėtas kaip perskaitytas</string>
   <string name="play_this_to_seek_position">Norint peršokti į poziciją reikia pradėti epizodo atkūrimą</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d epizodas pažymėtas kaip perklausytas.</item>
@@ -191,9 +179,7 @@
     <item quantity="other">%d epizodai pašalinti iš eilės.</item>
   </plurals>
   <string name="add_to_favorite_label">Pridėti prie mėgstamų</string>
-  <string name="added_to_favorites">Pridėtas prie mėgstamų</string>
   <string name="remove_from_favorite_label">Pašalinti iš mėgstamų</string>
-  <string name="removed_from_favorites">Pašalintas iš mėgstamų</string>
   <string name="visit_website_label">Aplankyti svetainę</string>
   <string name="skip_episode_label">Praleisti epizodą</string>
   <string name="activate_auto_download">Įjungti automatinį atsiuntimą</string>
@@ -218,8 +204,6 @@
   <string name="download_canceled_autodownload_enabled_msg">Atsiuntimas atšauktas\n<i>Automatinis atsiuntimas</i> šiam elementui išjungtas</string>
   <string name="download_report_title">Atsiuntimai užbaigti su klaida (-omis)</string>
   <string name="auto_download_report_title">Automatiniai atsiuntimai užbaigti</string>
-  <string name="download_report_content_title">Atsiuntimų ataskaita</string>
-  <string name="download_error_malformed_url">Netvarkingas URL</string>
   <string name="download_error_io_error">Įvesties/išvesties klaida</string>
   <string name="download_error_request_error">Užklausos klaida</string>
   <string name="download_error_db_access">Duomenų bazės prieigos klaida</string>
@@ -246,17 +230,12 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">Laikinai leisti</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Klaida!</string>
-  <string name="player_stopped_msg">Atkūrimas nevyksta</string>
-  <string name="player_preparing_msg">Ruošiamasi</string>
-  <string name="player_ready_msg">Pasiruošęs</string>
-  <string name="player_seeking_msg">Ieškoma</string>
   <string name="playback_error_server_died">Serveris nepasiekiamas</string>
   <string name="playback_error_unsupported">Nepalaikomas medijos tipas</string>
   <string name="playback_error_timeout">Baigėsi operacijai skirtas laikas</string>
   <string name="playback_error_source">Prieiga prie medijos failo negalima</string>
   <string name="playback_error_unknown">Nežinoma klaida</string>
   <string name="no_media_playing_label">Atkūrimas nevyksta</string>
-  <string name="player_buffering_msg">Buferizuojama</string>
   <string name="player_go_to_picture_in_picture">„Picture-in-picture“ režimas</string>
   <string name="unknown_media_key">„AntennaPod“ – nežinomas medijos klavišas: %1$d</string>
   <string name="error_file_not_found">Failas nerastas</string>
@@ -279,21 +258,13 @@
   <string name="feed_title">Tinklalaidės pavadinimas</string>
   <string name="random">Atsitiktinai</string>
   <string name="smart_shuffle">Išmanus maišymas</string>
-  <string name="ascending">Didėjančia tvarka</string>
-  <string name="descending">Mažėjančia tvarka</string>
   <string name="clear_queue_confirmation_msg">Patvirtinkite, jog norite pašalinti VISUS epizodus iš perklausos eilės</string>
   <string name="time_left_label">Liko laiko:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Atsiųsti įskiepį</string>
-  <string name="no_playback_plugin_title">Įskiepis neįdiegtas</string>
-  <string name="no_playback_plugin_or_sonic_msg">Tinkamam kintamos atkūrimo spartos veikimui rekomenduojame įjungti įtaisytąją „Sonic“ medijos leistuvę.</string>
-  <string name="enable_sonic">Įjungti „Sonic“</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Epizodų eilėje nėra</string>
   <string name="no_items_label">Pridėkite epizodą jį atsisiųsdami arba ilgai paspausdami ant epizodo ir pasirinkdami „Pridėti į eilę“.</string>
   <string name="no_shownotes_label">Šis epizodas neturi užrašų.</string>
-  <string name="no_run_downloads_head_label">Nėra vykstančių atsiuntimų</string>
-  <string name="no_run_downloads_label">Atsisiųsti epizodų galite tinklalaidės informacijos ekrane.</string>
   <string name="no_comp_downloads_head_label">Atsisiųstų epizodų nėra</string>
   <string name="no_comp_downloads_label">Atsisiųsti epizodų galite tinklalaidės informacijos ekrane.</string>
   <string name="no_log_downloads_head_label">Nėra atsiuntimo žurnalų</string>
@@ -306,8 +277,6 @@
   <string name="no_new_episodes_label">Čia bus rodomi naujai atkeliavę epizodai.</string>
   <string name="no_fav_episodes_head_label">Mėgstamų epizodų nėra</string>
   <string name="no_fav_episodes_label">Ilgai paspausdami ant epizodų pridėsite juos prie mėgstamų.</string>
-  <string name="no_chapters_head_label">Skyrių nėra</string>
-  <string name="no_chapters_label">Šis epizodas neturi skyrių.</string>
   <string name="no_subscriptions_head_label">Prenumeratų nėra</string>
   <string name="no_subscriptions_label">Jei norite prenumeruoti tinklalaidę, paspauskite žemiau esančią pliuso piktogramą.</string>
   <!--Preferences-->
@@ -345,13 +314,6 @@
   <string name="playback_pref_sum">Ausinių valdikliai, praleidimo intervalai, eilė</string>
   <string name="network_pref">Tinklas</string>
   <string name="network_pref_sum">Atnaujinimų intervalas, atsiuntimų valdymas, mobilieji duomenys</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">Atnaujinimų intervalas ar dienos metas</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Nurodykite automatinio tinklalaidžių atnaujinimo intervalą ar tikslų dienos metą</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Galite nustatyti <i>intervalą</i>, pvz. „kas 2 valandas“, nurodyti tikslų <i>dienos metą</i>, pvz. „07:00“ arba visiškai <i>išjungti</i> automatinius atnaujinimus.\n\n<small>Atkreipkite dėmesį: atnaujinimo laikas nėra tikslus, galimas trumpas uždelsimas.</small></string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">Išjungti</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">Nustatyti intervalą</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Nustatyti dienos metą</string>
-  <string name="pref_autoUpdateIntervallOrTime_at">lygiai %1$s</string>
   <string name="pref_followQueue_title">Nenutrūkstamas atkūrimas</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Pakartotinai prijungus ausines</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Pakartotinai prisijungus prie „Bluetooth“</string>
@@ -388,9 +350,6 @@
   <string name="pref_theme_title_dark">Tamsi</string>
   <string name="pref_theme_title_trueblack">Juoda (paruošta AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Neribojamas</string>
-  <string name="pref_update_interval_hours_plural">valandos</string>
-  <string name="pref_update_interval_hours_singular">valanda</string>
-  <string name="pref_update_interval_hours_manual">Rankinis</string>
   <string name="pref_gpodnet_authenticate_title">Prisijungimas</string>
   <string name="pref_gpodnet_authenticate_sum">Norėdami sinchronizuoti prenumeratas, prisijunkite prie savo „gpodder.net“ paskyros.</string>
   <string name="pref_gpodnet_logout_title">Atsijungti</string>
@@ -423,7 +382,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Galite pasirinkti daugiausiai %1$d elementus.</string>
   <string name="pref_lockscreen_background_title">Nustatyti ekrano užrakto foną</string>
   <string name="pref_lockscreen_background_sum">Atkuriamo epizodo paveikslėlį naudoti kaip ekrano užrakto foną. Paveikslėlis taip pat bus matomas trečiųjų šalių programėlėse.</string>
-  <string name="pref_expand_notify_unsupport_toast">Ankstesnės nei 4.1 „Android“ versijos nepalaiko išplėstų programos pranešimų.</string>
   <string name="pref_enqueue_location_title">Pridėjimo į eilę vieta</string>
   <string name="pref_enqueue_location_sum">Epizodus pridėti: %1$s</string>
   <string name="enqueue_location_back">Į galą</string>
@@ -435,7 +393,6 @@
   <string name="visit_user_forum">Naudotojų forumas</string>
   <string name="bug_report_title">Pranešti apie klaidą</string>
   <string name="open_bug_tracker">Atverti klaidų sekimo sistemą</string>
-  <string name="export_logs">Eksportuoti žurnalus</string>
   <string name="copy_to_clipboard">Kopijuoti į iškarpinę</string>
   <string name="copied_to_clipboard">Nukopijuotas į iškarpinę</string>
   <string name="experimental_pref">Eksperimentinis</string>
@@ -446,7 +403,7 @@
   <string name="pref_no_browser_found">Nerasta jokia interneto naršyklė.</string>
   <string name="pref_cast_title">„Chromecast“ palaikymas</string>
   <string name="pref_cast_message_play_flavor">Įjungti nuotolinio medijos atkūrimo „Cast“ įrenginiuose (pvz. „Chromecast“, garso kolonėlės ar „Android TV“) palaikymą</string>
-  <string name="pref_cast_message_free_flavor">„Chromecast“ palaikymui reikalingos nuosavybinės trečiųjų šalių bibliotekos, kurios yra negalimos šioje „AntennaPod“ versijoje.</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">„Chromecast“ palaikymui reikalingos nuosavybinės trečiųjų šalių bibliotekos, kurios yra negalimos šioje „AntennaPod“ versijoje.</string>
   <string name="pref_enqueue_downloaded_title">Atsiuntimus pridėti į eilę</string>
   <string name="pref_enqueue_downloaded_summary">Parsiuntus epizodus, pridėti juos į eilę</string>
   <string name="media_player_switch_to_exoplayer">Perjungti į „ExoPlayer“</string>
@@ -556,41 +513,20 @@
   <string name="gpodnet_toplist_header">POPULIARIAUSIOS TINKLALAIDĖS</string>
   <string name="gpodnet_suggestions_header">PASIŪLYMAI</string>
   <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
-  <string name="gpodnetauth_login_title">Prisijungti</string>
   <string name="gpodnetauth_login_butLabel">Prisijungti</string>
   <string name="username_label">Vartotojo vardas</string>
   <string name="password_label">Slaptažodis</string>
-  <string name="gpodnetauth_device_descr">Sukurkite naują įrenginį savo „gpodder.net“ paskyrai arba pasirinkite esamą:</string>
-  <string name="gpodnetauth_device_caption_errorEmpty">Pavadinimas negali būti tuščias</string>
-  <string name="gpodnetauth_device_butChoose">Pasirinkti</string>
   <string name="gpodnetauth_finish_descr">Sveikiname! Jūsų „gpodder.net“ paskyra susieta su šiuo įrenginiu. Nuo šiol „AntennaPod“ automatiškai sinchronizuos prenumeratas šiame įrenginyje su Jūsų „gpodder.net“ paskyra.</string>
   <string name="gpodnetauth_finish_butsyncnow">Pradėti sinchronizavimą dabar</string>
-  <string name="gpodnetauth_finish_butgomainscreen">Eiti į pagrindinį ekraną</string>
-  <string name="gpodnetsync_auth_error_title">„gpodder.net“ tapatumo nustatymo klaida</string>
-  <string name="gpodnetsync_auth_error_descr">Neteisingas vartotojo vardas ar slaptažodis</string>
   <string name="gpodnetsync_error_title">„gpodder.net“ sinchronizavimo klaida</string>
   <string name="gpodnetsync_error_descr">Sinchronizavimo metu įvyko klaida:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Pavyko</string>
   <string name="gpodnetsync_pref_report_failed">Nepavyko</string>
   <string name="gpodnetsync_username_characters_error">Naudotojo vardą sudaryti gali tik raidės, skaitmenys, brūkšniai ir pabraukimo brūkšniai.</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">Pasirinktas aplankas:</string>
-  <string name="create_folder_label">Sukurti aplanką</string>
   <string name="choose_data_directory">Pasirinkite duomenų aplanką</string>
   <string name="choose_data_directory_message">Prašome pasirinkti pamatinį duomenų aplanką. „AntennaPod“ sukurs reikiamus poaplankius.</string>
-  <string name="choose_data_directory_permission_rationale">Norinti pakeisti duomenų aplanką reikalinga prieiga prie išorinės laikmenos</string>
   <string name="choose_data_directory_available_space">%1$s iš %2$s laisva</string>
-  <string name="create_folder_msg">Sukurti naują aplanką pavadinimu \"%1$s\"?</string>
-  <string name="create_folder_success">Sukurtas naujas aplankas</string>
-  <string name="create_folder_error_no_write_access">Nepavyksta rašyti šiame aplanke</string>
-  <string name="create_folder_error_already_exists">Aplankas jau egzistuoja</string>
-  <string name="create_folder_error">Nepavyko sukurti aplanko</string>
-  <string name="folder_does_not_exist_error">„%1$s“ neegzistuoja</string>
-  <string name="folder_not_readable_error">„%1$s“ negalima skaityti</string>
-  <string name="folder_not_writable_error">Į „%1$s“ negalima rašyti</string>
-  <string name="folder_not_empty_dialog_title">Aplankas nėra tuščias</string>
-  <string name="folder_not_empty_dialog_msg">Jūsų pasirinktas aplankas nėra tuščias. Atsiųsti medijos ir kiti failai bus saugomi būtent šiame aplanke. Ar norite tęsti?</string>
-  <string name="set_to_default_folder">Pasirinkite numatytąjį aplanką</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Kai kita programėlė nori atkurti garsus, pristabdyti atkūrimą vietoje garsio sumažinimo</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pristabdyti pertraukus</string>
   <string name="pref_resumeAfterCall_sum">Pratęsti atkūrimą užbaigus pokalbį telefonu</string>
@@ -606,17 +542,14 @@
   <string name="fast_forward_label">Persukti į priekį</string>
   <string name="increase_speed">Padidinti spartą</string>
   <string name="decrease_speed">Sumažinti spartą</string>
-  <string name="media_type_audio_label">Garsas</string>
   <string name="media_type_video_label">Vaizdas</string>
   <string name="status_downloading_label">Epizodas atsiunčiamas</string>
   <string name="in_queue_label">Epizodas yra eilėje</string>
   <string name="is_favorite_label">Epizodas pažymėtas kaip mėgstamas</string>
-  <string name="drag_handle_content_description">Tempkite norėdami pakeisti šio elemento poziciją</string>
   <string name="load_next_page_label">Įkelti kitą puslapį</string>
-  <string name="switch_pages">Perjungti puslapius</string>
   <string name="position">Pozicija: %1$s</string>
   <string name="apply_action">Pritaikyti veiksmą</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="authentication_label">Tapatumo nustatymas</string>
   <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams.</string>
   <string name="auto_download_settings_label">Automatinio atsiuntimo nustatymai</string>
@@ -628,8 +561,6 @@
   <string name="keep_updated">Pastoviai atnaujinti</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">Atnaujinama duomenų bazė</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
   <!--Add podcast fragment-->
@@ -679,11 +610,11 @@
   <string name="sort_short_long">Trumpi \u2192 Ilgi</string>
   <string name="sort_long_short">Ilgi \u2192 Trumpi</string>
   <!--Rating dialog-->
-  <string name="rating_title">Patinka „AntennaPod“?</string>
-  <string name="rating_message">Būtume dėkingi, jei skirtumėte laiko įvertinti „AntennaPod“.</string>
-  <string name="rating_never_label">Palikite mane ramybėje</string>
-  <string name="rating_later_label">Priminti vėliau</string>
-  <string name="rating_now_label">Žinoma, padarykime tai!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">Patinka „AntennaPod“?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Būtume dėkingi, jei skirtumėte laiko įvertinti „AntennaPod“.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">Palikite mane ramybėje</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">Priminti vėliau</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">Žinoma, padarykime tai!</string>
   <!--Share episode dialog-->
   <!--Audio controls-->
   <string name="audio_controls">Garso valdikliai</string>
