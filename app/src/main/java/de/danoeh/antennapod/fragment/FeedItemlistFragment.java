@@ -326,17 +326,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         }
         switch (item.getItemId()) {
-            case R.id.episode_actions:
-                int actions = EpisodesApplyActionFragment.ACTION_ALL;
-                if (feed.isLocalFeed()) {
-                    // turn off download and delete actions for local feed
-                    actions ^= EpisodesApplyActionFragment.ACTION_DOWNLOAD;
-                    actions ^= EpisodesApplyActionFragment.ACTION_DELETE;
-                }
-                EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(feed.getItems(), actions);
-                ((MainActivity) getActivity()).loadChildFragment(fragment);
-                return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
