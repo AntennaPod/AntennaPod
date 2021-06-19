@@ -46,7 +46,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                mode.setTitle(getTitle());
+                updateTitle();
                 toggleSelectAllIcon(menu.findItem(R.id.select_toggle), false);
                 return false;
             }
@@ -57,7 +57,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                     boolean allSelected = selectedIds.size() == getItemCount();
                     setSelected(0, getItemCount(), !allSelected);
                     toggleSelectAllIcon(item, !allSelected);
-                    mode.setTitle(getTitle());
+                    updateTitle();
                 }
                 return false;
             }
@@ -71,8 +71,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             }
 
         });
-
-        actionMode.setTitle(getTitle());
+        updateTitle();
     }
 
     /**
@@ -101,10 +100,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         } else {
             selectedIds.remove(getItemId(pos));
         }
-        if (actionMode != null) {
-            actionMode.setTitle(getTitle());
-        }
-        notifyItemChanged(pos);
+        updateTitle();
     }
 
     /**
@@ -119,10 +115,12 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         for (int i = startPos; i < endPos && i < getItemCount(); i++) {
             setSelected(i, selected);
         }
+        notifyItemRangeChanged(startPos, (endPos - startPos));
     }
 
     protected void toggleSelection(int pos) {
         setSelected(pos, !isSelected(pos));
+        notifyItemChanged(pos);
 
         if (selectedIds.size() == 0) {
             endSelectMode();
@@ -147,8 +145,13 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
     }
 
-    private String getTitle() {
-        return selectedIds.size() + " / " + getItemCount() + " selected";
+    private void updateTitle() {
+        if (actionMode == null) {
+            return;
+        }
+        actionMode.setTitle(activity.getResources()
+                .getQuantityString(R.plurals.num_selected_label, selectedIds.size(),
+                selectedIds.size(), getItemCount()));
     }
 
     public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
