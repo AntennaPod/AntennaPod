@@ -32,11 +32,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
-        notifyItemChanged(pos);
         notifyDataSetChanged();
 
         actionMode = activity.startActionMode(new ActionMode.Callback() {
-
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 MenuInflater inflater = mode.getMenuInflater();
@@ -58,6 +56,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                     setSelected(0, getItemCount(), !allSelected);
                     toggleSelectAllIcon(item, !allSelected);
                     updateTitle();
+                    return true;
                 }
                 return false;
             }
@@ -69,7 +68,6 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedIds.clear();
                 notifyDataSetChanged();
             }
-
         });
         updateTitle();
     }

@@ -33,12 +33,17 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
     private FeedItem selectedItem;
-    int selectedPosition = 0; // used to init actionMode
+    int longPressedPosition = 0; // used to init actionMode
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
+    }
+
+    public void updateItems(List<FeedItem> items) {
+        episodes = items;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -76,7 +81,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
             selectedItem = item;
-            selectedPosition = pos;
+            longPressedPosition = pos;
             return false;
         });
 
@@ -93,6 +98,12 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
+    }
+
+    protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+    }
+
+    protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
     }
 
     @Override
@@ -138,6 +149,14 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         return episodes.size();
     }
 
+    protected FeedItem getItem(int index) {
+        return episodes.get(index);
+    }
+
+    protected Activity getActivity() {
+        return mainActivityRef.get();
+    }
+
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
@@ -150,27 +169,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         }
     }
 
-    public void updateItems(List<FeedItem> items) {
-        episodes = items;
-        notifyDataSetChanged();
-    }
-
-    protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-    }
-
-    protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-    }
-
-    protected FeedItem getItem(int index) {
-        return episodes.get(index);
-    }
-
-    protected Activity getActivity() {
-        return mainActivityRef.get();
-    }
-
-    public int getSelectedPosition() {
-        return selectedPosition;
+    public int getLongPressedPosition() {
+        return longPressedPosition;
     }
 
     public List<FeedItem> getSelectedItems() {

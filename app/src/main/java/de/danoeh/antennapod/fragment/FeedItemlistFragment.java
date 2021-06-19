@@ -112,7 +112,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
-
     private SpeedDialView speedDialView;
 
     private boolean displayUpArrow;
@@ -122,10 +121,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private boolean headerCreated = false;
     private boolean isUpdatingFeed;
     private Disposable disposable;
-
-    public FeedItemlistFragment() {
-
-    }
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -237,7 +232,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         loadItems();
 
-        // Speed dial
         // Init action UI (via a FAB Speed Dial)
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
@@ -365,7 +359,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
 
         if (item.getItemId() == R.id.multi_select) {
-            adapter.startSelectMode(adapter.getSelectedPosition());
+            adapter.startSelectMode(adapter.getLongPressedPosition());
             if (feed.isLocalFeed()) {
                 speedDialView.removeActionItemById(R.id.download_batch);
                 speedDialView.removeActionItemById(R.id.delete_batch);
@@ -374,9 +368,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             refreshToolbarState();
             return true;
         } else if (item.getItemId() == R.id.select_all_above) {
-            adapter.setSelected(0, adapter.getSelectedPosition(), true);
+            adapter.setSelected(0, adapter.getLongPressedPosition(), true);
         } else if (item.getItemId() == R.id.select_all_below) {
-            adapter.setSelected(adapter.getSelectedPosition() + 1, adapter.getItemCount(), true);
+            adapter.setSelected(adapter.getLongPressedPosition() + 1, adapter.getItemCount(), true);
         }
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
