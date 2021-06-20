@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -58,55 +59,7 @@ public class SwipeActions {
     }
 
     private void itemTouchHelper() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-
-            int[] rightleft = getPrefs(fragment.requireContext(), tag);
-
-            @Override
-            public boolean onMove(RecyclerView  recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                if (rightleft.length == 0) {
-                    //open settings dialog if no prefs are set
-                    showDialog(() -> rightleft = getPrefs(fragment.requireContext(), tag));
-                    return;
-                }
-
-                FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
-
-                int index = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
-                swipeActions.get(index).action(item, fragment, filter);
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                                    RecyclerView.ViewHolder viewHolder,
-                                    float dx, float dy, int actionState, boolean isCurrentlyActive) {
-                //display only if preferences are set
-                if (rightleft.length > 0) {
-                    SwipeAction right = swipeActions.get(rightleft[0]);
-                    SwipeAction left = swipeActions.get(rightleft[1]);
-
-                    new RecyclerViewSwipeDecorator.Builder(
-                            c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                            .addSwipeRightBackgroundColor(
-                                    ContextCompat.getColor(fragment.requireContext(), right.actionColor()))
-                            .addSwipeRightActionIcon(right.actionIcon())
-                            .addSwipeLeftBackgroundColor(
-                                    ContextCompat.getColor(fragment.requireContext(), left.actionColor()))
-                            .addSwipeLeftActionIcon(left.actionIcon())
-                            .create()
-                            .decorate();
-                }
-
-                super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
-            }
-        };
+        ItemTouchHelper.SimpleCallback simpleCallback = new SimpleSwipeCallback();
 
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
     }
@@ -166,5 +119,60 @@ public class SwipeActions {
         new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::reattachItemTouchHelper);
     }
 
+    public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
+
+        public SimpleSwipeCallback(int dragDirs) {
+            super(dragDirs, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
+        }
+
+        public SimpleSwipeCallback() {
+            this(0);
+        }
+
+        int[] rightleft = getPrefs(fragment.requireContext(), tag);
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            if (rightleft.length == 0) {
+                //open settings dialog if no prefs are set
+                showDialog(() -> rightleft = getPrefs(fragment.requireContext(), tag));
+                return;
+            }
+
+            FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
+
+            int index = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
+            swipeActions.get(index).action(item, fragment, filter);
+        }
+
+        @Override
+        public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                                RecyclerView.ViewHolder viewHolder,
+                                float dx, float dy, int actionState, boolean isCurrentlyActive) {
+            //display only if preferences are set
+            if (rightleft.length > 0) {
+                SwipeAction right = swipeActions.get(rightleft[0]);
+                SwipeAction left = swipeActions.get(rightleft[1]);
+
+                new RecyclerViewSwipeDecorator.Builder(
+                        c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
+                        .addSwipeRightBackgroundColor(
+                                ContextCompat.getColor(fragment.requireContext(), right.actionColor()))
+                        .addSwipeRightActionIcon(right.actionIcon())
+                        .addSwipeLeftBackgroundColor(
+                                ContextCompat.getColor(fragment.requireContext(), left.actionColor()))
+                        .addSwipeLeftActionIcon(left.actionIcon())
+                        .create()
+                        .decorate();
+            }
+
+            super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
+        }
+    }
 
 }
