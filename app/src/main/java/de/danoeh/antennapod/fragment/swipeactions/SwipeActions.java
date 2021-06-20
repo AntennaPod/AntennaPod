@@ -153,6 +153,14 @@ public class SwipeActions {
 
             int index = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
             swipeActions.get(index).action(item, fragment, filter);
+
+            if (!swipeActions.get(index).willRemove(filter)) {
+                //https://stackoverflow.com/questions/31787272/android-recyclerview-itemtouchhelper-revert-swipe-and-restore-view-holder
+
+                //itemTouchHelper.startSwipe(viewHolder); //snaps back
+                refreshItemTouchHelper();
+                //recyclerView.getAdapter().notifyItemChanged(viewHolder.getBindingAdapterPosition());
+            }
         }
 
         @Override
@@ -164,6 +172,23 @@ public class SwipeActions {
                 SwipeAction right = swipeActions.get(rightleft[0]);
                 SwipeAction left = swipeActions.get(rightleft[1]);
 
+                boolean wontLeaveRight = dx > 0 && !right.willRemove(filter);
+                boolean wontLeaveLeft = dx < 0 && !left.willRemove(filter);
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && (wontLeaveRight || wontLeaveLeft)) {
+                    // Slow down child - it is just an action and does not remove the whole item
+                    int maxMovement = recyclerView.getWidth() * 40 / 100;
+
+                    //swipe right : left
+                    float sign = dx > 0 ? 1 : -1;
+
+                    float limitMovement = Math.min(maxMovement, sign * dx); // Only move to maxMovement
+
+                    float displacementPercentage = limitMovement / maxMovement;
+
+                    // Move slower when getting near the middle
+                    dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+                }
+
                 new RecyclerViewSwipeDecorator.Builder(
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
                         .addSwipeRightBackgroundColor(
@@ -174,9 +199,15 @@ public class SwipeActions {
                         .addSwipeLeftActionIcon(left.actionIcon())
                         .create()
                         .decorate();
+
             }
 
             super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
+        }
+
+        @Override
+        public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
         }
     }
 
