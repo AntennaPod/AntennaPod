@@ -19,6 +19,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 
@@ -45,6 +46,9 @@ public class SwipeActionsDialog {
                 break;
             case FeedItemlistFragment.TAG:
                 forFragment = context.getString(R.string.feeds_label);
+                break;
+            case QueueFragment.TAG:
+                forFragment = context.getString(R.string.queue_label);
                 break;
             default: break;
         }

@@ -15,6 +15,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -31,10 +32,12 @@ public class SwipeActions {
     public static final int START_DOWNLOAD = 2;
     public static final int MARK_FAV = 3;
     public static final int MARK_PLAYED = 4;
+    public static final int REMOVE_FROM_QUEUE = 5;
 
     public static final List<SwipeAction> swipeActions = Arrays.asList(new AddToQueueSwipeAction(),
             new MarkUnplayedSwipeAction(), new StartDownloadSwipeAction(),
-            new MarkFavouriteSwipeAction(), new MarkPlayedSwipeAction());
+            new MarkFavouriteSwipeAction(), new MarkPlayedSwipeAction(),
+            new RemoveFromQueueSwipeAction());
 
     RecyclerView recyclerView;
     ItemTouchHelper itemTouchHelper;
@@ -45,7 +48,7 @@ public class SwipeActions {
     public SwipeActions(Fragment fragment, String tag) {
         this.fragment = fragment;
         this.tag = tag;
-        itemTouchHelper();
+        itemTouchHelper(new SimpleSwipeCallback());
     }
 
     public void setFilter (FeedItemFilter filter) {
@@ -58,10 +61,9 @@ public class SwipeActions {
         return this;
     }
 
-    private void itemTouchHelper() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new SimpleSwipeCallback();
-
+    public ItemTouchHelper itemTouchHelper(ItemTouchHelper.SimpleCallback simpleCallback) {
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        return itemTouchHelper;
     }
 
     private static int[] getPrefs(Context context, String tag, int[] defaultActions) {
@@ -85,6 +87,9 @@ public class SwipeActions {
             /*case InboxFragment.TAG:
                 defaultActions = new int[] {ADD_TO_QUEUE, MARK_UNPLAYED};
                 break;*/
+            case QueueFragment.TAG:
+                defaultActions = new int[] {REMOVE_FROM_QUEUE, REMOVE_FROM_QUEUE};
+                break;
             default:
             case EpisodesFragment.TAG:
                 defaultActions = new int[] {MARK_FAV, START_DOWNLOAD};
@@ -107,7 +112,7 @@ public class SwipeActions {
         if (itemTouchHelper != null) {
             itemTouchHelper.attachToRecyclerView(null);
         }
-        itemTouchHelper();
+        itemTouchHelper(new SimpleSwipeCallback());
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 

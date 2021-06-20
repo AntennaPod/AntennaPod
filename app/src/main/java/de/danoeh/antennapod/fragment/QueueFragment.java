@@ -45,6 +45,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
@@ -452,10 +453,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
-        itemTouchHelper = new ItemTouchHelper(
-            new SimpleQueueCallback()
+        SwipeActions swipeActions = new SwipeActions(this, TAG);
+        //TODO
+        swipeActions.setFilter(new FeedItemFilter("queued"));
+        itemTouchHelper = swipeActions.itemTouchHelper(
+                new SimpleQueueCallback(swipeActions)
         );
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        swipeActions.attachTo(recyclerView);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -549,19 +553,19 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
     private class SimpleQueueCallback extends SwipeActions.SimpleSwipeCallback {
 
-        public SimpleQueueCallback() {
-            new SwipeActions(QueueFragment.this, TAG).super(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
-        }
-
         // Position tracking whilst dragging
         int dragFrom = -1;
         int dragTo = -1;
 
+        public SimpleQueueCallback(SwipeActions swipeActions) {
+            swipeActions.super(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
+        }
+
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                               RecyclerView.ViewHolder target) {
-            int fromPosition = viewHolder.getAdapterPosition();
-            int toPosition = target.getAdapterPosition();
+            int fromPosition = viewHolder.getBindingAdapterPosition();
+            int toPosition = target.getBindingAdapterPosition();
 
             // Update tracked position
             if (dragFrom == -1) {
@@ -569,8 +573,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             }
             dragTo = toPosition;
 
-            int from = viewHolder.getAdapterPosition();
-            int to = target.getAdapterPosition();
+            int from = viewHolder.getBindingAdapterPosition();
+            int to = target.getBindingAdapterPosition();
             Log.d(TAG, "move(" + from + ", " + to + ") in memory");
             if (from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
                 return false;
@@ -582,22 +586,12 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            //SwipeActions
-            //super.onSwiped(viewHolder, direction);
-            //TODO
             if (disposable != null) {
                 disposable.dispose();
             }
-            final int position = viewHolder.getAdapterPosition();
-            Log.d(TAG, "remove(" + position + ")");
-            final FeedItem item = queue.get(position);
-            DBWriter.removeQueueItem(getActivity(), true, item);
 
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    getResources().getQuantityString(R.plurals.removed_from_queue_batch_label, 1, 1),
-                    Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.undo), v ->
-                            DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false));
+            //SwipeActions
+            super.onSwiped(viewHolder, direction);
         }
 
         @Override
