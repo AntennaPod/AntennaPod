@@ -26,6 +26,7 @@ import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NotificationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.StoragePreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.SwipePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragment;
 
 /**
@@ -79,6 +80,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new PlaybackPreferencesFragment();
         } else if (screen == R.xml.preferences_notifications) {
             prefFragment = new NotificationPreferencesFragment();
+        } else if (screen == R.xml.preferences_swipe) {
+            prefFragment = new SwipePreferencesFragment();
         }
         return prefFragment;
     }
@@ -103,6 +106,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 return R.string.notification_pref_fragment;
             case R.xml.feed_settings:
                 return R.string.feed_settings_label;
+            case R.xml.preferences_swipe:
+                return R.string.swipeactions_label;
             default:
                 return R.string.settings_label;
         }

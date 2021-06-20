@@ -23,6 +23,7 @@
         android:title="@string/refresh_label"
         custom:showAsAction="always">
     </item>
+
     <item
         android:id="@+id/refresh_complete_item"
         android:menuCategory="container"
@@ -68,6 +69,7 @@
             </item>
         </menu>
     </item>
+
 
     <item
         android:id="@+id/rename_item"

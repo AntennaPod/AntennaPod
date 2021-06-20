@@ -37,6 +37,7 @@
 
     <!-- SwipeActions -->
     <string name="swipeactions_label">Swipe Actions</string>
+    <string name="swipeactions_summary">Choose what happens when swiping an episode in a list</string>
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
 

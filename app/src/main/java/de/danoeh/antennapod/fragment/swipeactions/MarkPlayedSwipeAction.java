@@ -4,15 +4,12 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.Arrays;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkPlayedSwipeAction extends SwipeAction {
+public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {

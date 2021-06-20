@@ -9,7 +9,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class AddToQueueSwipeAction extends SwipeAction {
+public class AddToQueueSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {

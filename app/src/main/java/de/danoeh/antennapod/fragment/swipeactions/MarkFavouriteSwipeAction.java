@@ -4,17 +4,12 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkFavouriteSwipeAction extends SwipeAction {
+public class MarkFavouriteSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {

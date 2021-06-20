@@ -7,16 +7,15 @@ import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public abstract class SwipeAction {
+public interface SwipeAction {
 
-    abstract public String title(Context context);
+    String title(Context context);
 
-    abstract public int actionIcon();
-    abstract public int actionColor();
+    int actionIcon();
 
-    abstract public void action(FeedItem item, Fragment fragment, FeedItemFilter filter);
+    int actionColor();
 
-    //see FeedItemFilter for valid properties
-    abstract public boolean willRemove(FeedItemFilter filter);
+    void action(FeedItem item, Fragment fragment, FeedItemFilter filter);
 
+    boolean willRemove(FeedItemFilter filter);
 }

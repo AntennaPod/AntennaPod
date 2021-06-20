@@ -1,23 +1,13 @@
 package de.danoeh.antennapod.fragment.swipeactions;
 
 import android.content.Context;
-
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class StartDownloadSwipeAction extends SwipeAction {
+public class StartDownloadSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {
