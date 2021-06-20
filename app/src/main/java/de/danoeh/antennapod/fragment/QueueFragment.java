@@ -488,11 +488,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                 emptyView.updateAdapter(recyclerAdapter);
             }
             recyclerAdapter.updateItems(queue);
-            recyclerView.setVisibility(View.VISIBLE);
         } else {
             recyclerAdapter = null;
-            recyclerView.setVisibility(View.GONE);
-            emptyView.updateAdapter(recyclerAdapter);
+            emptyView.updateAdapter(null);
         }
 
         if (restoreScrollPosition) {
@@ -534,7 +532,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             disposable.dispose();
         }
         if (queue == null) {
-            recyclerView.setVisibility(View.GONE);
             emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }

@@ -9,10 +9,13 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
       with:
-        java-version: 1.8
+        distribution: 'adopt'
+        java-version: '8'
+    - name: Wrapper validation
+      uses: gradle/wrapper-validation-action@v1
     - name: Build with Gradle
       run: ./gradlew assemblePlayDebugAndroidTest
     - name: Android Emulator test
@@ -21,7 +24,7 @@ jobs:
         api-level: 28
         disable-animations: true
         script: zsh .github/workflows/runTests.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       if: failure()
       with:
         name: test-report

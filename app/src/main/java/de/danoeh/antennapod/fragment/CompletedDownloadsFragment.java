@@ -73,7 +73,6 @@ public class CompletedDownloadsFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);

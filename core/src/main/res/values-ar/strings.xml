@@ -13,7 +13,7 @@
   <string name="new_label">جديد</string>
   <string name="settings_label">إعدادات</string>
   <string name="downloads_label">تنزيلات</string>
-  <string name="downloads_running_label">جارى التشغيل</string>
+  <string name="open_autodownload_settings">إفتح الإعدادات</string>
   <string name="downloads_completed_label">منتهى</string>
   <string name="downloads_log_label">سجل</string>
   <string name="subscriptions_label">إشتراكات</string>
@@ -21,7 +21,6 @@
   <string name="cancel_download_label">الغاء التنزيل</string>
   <string name="playback_history_label">سجل التشغيل</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">تسجيل الدخول لموقع gpodder</string>
   <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. المرجو الرفع من قيمة التخزين في قائمة الإعدادات.</string>
   <string name="playback_statistics_label">تشغيل</string>
@@ -72,13 +71,9 @@
   <string name="yes">نعم</string>
   <string name="no">لا</string>
   <string name="reset">إعادة التعيين</string>
-  <string name="author_label">الناشر(ون)</string>
-  <string name="language_label">لغة</string>
   <string name="url_label">عنوان الموقع</string>
-  <string name="cover_label">الغلاف</string>
   <string name="error_label">خطأ</string>
   <string name="error_msg_prefix">حدث خطأ:</string>
-  <string name="needs_storage_permission">هذه العلملية تحتاج السماح للوصول لمساحة التخزين</string>
   <string name="refresh_label">تحديث</string>
   <string name="external_storage_error_msg">لا توجد ذاكرة خارجية متاحة. فضلا تأكد من إتاحة الذاكرة الخارجية للتطبيق حتى يعمل جيدا.</string>
   <string name="chapters_label">فصول</string>
@@ -169,7 +164,6 @@
   <string name="remove_all_new_flags_confirmation_msg">نرجو تأكيد إزالة كل العلامات الجديدة من كل الحلقات.</string>
   <string name="show_info_label">اظهر معلومات</string>
   <string name="show_feed_settings_label">أظهر اعدادات البودكاست</string>
-  <string name="feed_info_label">معلومات البودكاست</string>
   <string name="feed_settings_label">إعدادات البودكاست</string>
   <string name="rename_feed_label">تغيير اسم البودكاست</string>
   <string name="remove_feed_label">ازل البودكاست</string>
@@ -185,14 +179,11 @@
   <string name="multi_select">اختيار متعدد</string>
   <string name="select_all_above">اختار الكل أعلاه</string>
   <string name="select_all_below">اختار الكل أدناه</string>
-  <string name="hide_unplayed_episodes_label">لم يتم تشغيله</string>
-  <string name="hide_queued_episodes_label">ضمن لائحة الاستماع</string>
-  <string name="hide_not_queued_episodes_label">ليس ضمن لائحة الاستماع</string>
-  <string name="hide_has_media_label">فيها وسائط</string>
   <string name="filtered_label">مصفى</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle}  فشلت آخر عملية تحديث. إضغط لرؤية التفاصيل.</string>
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
+  <string name="updates_disabled_label">التحديثات موقوفة</string>
   <!--actions on feeditems-->
   <string name="download_label">تنزيل</string>
   <plurals name="downloading_batch_label">
@@ -212,9 +203,7 @@
   <string name="remove_new_flag_label">أزل العلامات الجديدة</string>
   <string name="removed_new_flag_label">أزيلت العلامات الجديدة</string>
   <string name="mark_read_label">علمها كـ مشغلة</string>
-  <string name="marked_as_read_label">تم تعليمها كـ مشغلة</string>
   <string name="mark_read_no_media_label">علمها كـ مقروءة</string>
-  <string name="marked_as_read_no_media_label">علمت كـ مقروءة</string>
   <string name="play_this_to_seek_position">للإنتقال للتوقيتات, يجب أن تشغل الحلقة</string>
   <plurals name="marked_read_batch_label">
     <item quantity="zero">%d حلقة علمت كـ مقروءة.</item>
@@ -254,9 +243,7 @@
     <item quantity="other">%d حلقات أزيلت من لائحة الاستماع.</item>
   </plurals>
   <string name="add_to_favorite_label">اضافة للمفضلات</string>
-  <string name="added_to_favorites">تم اضافته للمفضلات</string>
   <string name="remove_from_favorite_label">المسح من المفضلات</string>
-  <string name="removed_from_favorites">تم مسحه من المفضلات</string>
   <string name="visit_website_label">زيارة الموقع</string>
   <string name="skip_episode_label">تخطى الحلقة</string>
   <string name="activate_auto_download">تفعيل التنزيل التلقائي</string>
@@ -290,8 +277,6 @@
   <string name="download_canceled_autodownload_enabled_msg">ألغي التنزيل\nمعطل <i>التنزيل التلقائي</i> لهذه المادة</string>
   <string name="download_report_title">أنتهى التنزيل مع خطأ (او أكثر)</string>
   <string name="auto_download_report_title">التنزيل التلقائي أنتهى</string>
-  <string name="download_report_content_title">تقرير التنزيل</string>
-  <string name="download_error_malformed_url">غطأ في تنسيق URL</string>
   <string name="download_error_io_error">خطأ إدخال/إخراج</string>
   <string name="download_error_request_error">خطأ طلب</string>
   <string name="download_error_db_access">خطأ وصول لقاعدة البيانات</string>
@@ -323,17 +308,12 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">السماح مؤقتا</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">خطأ!</string>
-  <string name="player_stopped_msg">لا وسائط تشغل</string>
-  <string name="player_preparing_msg">تجهيز</string>
-  <string name="player_ready_msg">جاهز</string>
-  <string name="player_seeking_msg">جارى القصد</string>
   <string name="playback_error_server_died">تعطل الخادم</string>
   <string name="playback_error_unsupported">نمط وسائط غير مدعوم</string>
   <string name="playback_error_timeout">أنتهى وقت العملية</string>
   <string name="playback_error_source">لا يمكن الوصول لملف الوسائط</string>
   <string name="playback_error_unknown">خطاء غير معروف</string>
   <string name="no_media_playing_label">لا وسائط تشغل</string>
-  <string name="player_buffering_msg">تخزين مؤقت</string>
   <string name="player_go_to_picture_in_picture">نمط صورة-في-صورة</string>
   <string name="unknown_media_key">AntennaPod - مفتاح وسائط غير معروف: %1$d</string>
   <string name="error_file_not_found">ملف غير موجود</string>
@@ -356,23 +336,15 @@
   <string name="feed_title">عنوان البودكاست</string>
   <string name="random">عشوائي</string>
   <string name="smart_shuffle">خلط ذكي</string>
-  <string name="ascending">تصاعدي</string>
-  <string name="descending">تنازلي</string>
   <string name="clear_queue_confirmation_msg">نرجو تأكيد تصفية لائحة الإستماع من كل الحلقات فيها</string>
   <string name="time_left_label">الوقت المتبقى:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">تنزيل الإضافة</string>
-  <string name="no_playback_plugin_title">الإضافة غير منصبة</string>
-  <string name="no_playback_plugin_or_sonic_msg">للتشغيل متغير السرعات نقترح تفعيل مشغل وسائط سونيك المضمن.</string>
-  <string name="enable_sonic">تفعيل سونيك</string>
   <string name="speed_presets">إعدادات أولية</string>
   <string name="preset_already_exists">%1$.2fx محفوظة كإعداد أولي.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">لا حلقات بلائحة الاستماع</string>
   <string name="no_items_label">أضف حلقة بإختيار تنزيل, أو أضغط مطولا على الحلقة وأختر  \"أضف الى لائحة الاستماع\".</string>
   <string name="no_shownotes_label">الحلقة ليس مكتوب بها أي تفاصيل</string>
-  <string name="no_run_downloads_head_label">لا يوجد تنزيل جاري</string>
-  <string name="no_run_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل البودكاست.</string>
   <string name="no_comp_downloads_head_label">لا توجد حلقات منزلة</string>
   <string name="no_comp_downloads_label">يمكنك تنزيل حلقات من صفحة تفاصيل البودكاست.</string>
   <string name="no_log_downloads_head_label">لا سجل للتنزيلات</string>
@@ -386,8 +358,6 @@
   <string name="no_new_episodes_label">ستظهر هنا اللحلقات التى وصلت حديثا.</string>
   <string name="no_fav_episodes_head_label">لا توجد حلقات مفضلة</string>
   <string name="no_fav_episodes_label">يمكنك إضافة حلقات للمفضلات بالضغط عليها لمدة طويلة.</string>
-  <string name="no_chapters_head_label">لا توجد فصول</string>
-  <string name="no_chapters_label">هذة الحلقة لا تتضمن فصول</string>
   <string name="no_subscriptions_head_label">لا توجد إشتراكات</string>
   <string name="no_subscriptions_label">للاشتراك في بودكاست ، اضغط على أيقونة علامة الجمع أدناه.</string>
   <!--Preferences-->
@@ -428,11 +398,7 @@
   <string name="playback_pref_sum">تحكم سماعة الأذن, وقت التقدم, لائحة الاستماع</string>
   <string name="network_pref">شبكة</string>
   <string name="network_pref_sum">الفاصل الزمني للتحديث، التحكم بالتنزيل ،شبكة الجوال</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">الفاصل الزمنى ووقت التحديث</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">حدد فاصل زمنى أو وقت محدد لتحديث البودكاستات تلقائيا</string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">تعطيل</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">تعيين الفاصل الزمني</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">ضبط الوقت من اليوم</string>
+  <string name="feed_refresh_time">الوقت</string>
   <string name="pref_followQueue_title">تشغيل مستمر</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">قطع اتصال سماعات الرأس أو البلوتوث</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">إعادة توصيل سماعات الرأس</string>
@@ -471,9 +437,6 @@
   <string name="pref_theme_title_dark">داكن</string>
   <string name="pref_theme_title_trueblack">اسود (ِلأجهزة AMOLED)</string>
   <string name="pref_episode_cache_unlimited">غير محدود</string>
-  <string name="pref_update_interval_hours_plural">ساعات</string>
-  <string name="pref_update_interval_hours_singular">ساعة</string>
-  <string name="pref_update_interval_hours_manual">يدوى</string>
   <string name="pref_gpodnet_authenticate_title">تسجيل الدخول</string>
   <string name="pref_gpodnet_authenticate_sum">سجل دخول بحساب gpodder.net لتتزامن إشتراكاتك</string>
   <string name="pref_gpodnet_logout_title">تسجيل خروج</string>
@@ -507,7 +470,6 @@
   <string name="pref_compact_notification_buttons_sum">غير أزرار التشغيل عند إزالة الإشعار. زري تشغيل/إيقاف سيكونا دوما ظاهران.</string>
   <string name="pref_lockscreen_background_title">تعيين خلفية شاشة القفل</string>
   <string name="pref_lockscreen_background_sum">اضبط خلفية شاشة القفل على صورة الحلقة الحالية. كأثر جانبي ، سيعرض هذا أيضًا الصورة في تطبيقات الطرف الثالث.</string>
-  <string name="pref_expand_notify_unsupport_toast">إصدارات Android قبل 4.1 لا تدعم الإشعارات الموسعة.</string>
   <string name="pref_enqueue_location_title">مكان الـ Enqueue</string>
   <string name="enqueue_location_back">خلف</string>
   <string name="enqueue_location_front">أمام</string>
@@ -518,7 +480,6 @@
   <string name="visit_user_forum">منتدى المستخدم</string>
   <string name="bug_report_title">بلغ عن خطأ بالتطبيق</string>
   <string name="open_bug_tracker">إفتح نظام تتبع الأخطاء</string>
-  <string name="export_logs">تصدير السجلات</string>
   <string name="copy_to_clipboard">إنسخ لذاكرة القصاصات</string>
   <string name="copied_to_clipboard">تم النسخ لذاكرة القصاصات</string>
   <string name="experimental_pref">تجريبي</string>
@@ -528,7 +489,7 @@
   <string name="pref_no_browser_found">لم يتم العثور على متصفح ويب.</string>
   <string name="pref_cast_title">دعم Chromecast</string>
   <string name="pref_cast_message_play_flavor">فعل تحكم التشغيل بأجهزة الكاست (مثل كرومكاست, سماعات الصوت, وتلفزيون اندرويد)</string>
-  <string name="pref_cast_message_free_flavor">يتطلب Chromecast مكتبات برمجية مملوكة لجهات خارجية معطلة في هذا الإصدار من AntennaPod</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">يتطلب Chromecast مكتبات برمجية مملوكة لجهات خارجية معطلة في هذا الإصدار من AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">الـ Enqueue المنزلة</string>
   <string name="pref_enqueue_downloaded_summary">أضف الحلقات المنزلة الى لائحة الاستماع</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (موصى به)</string>
@@ -548,7 +509,6 @@
   <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من لائحة الاستماع آليا عند مسحها.</string>
   <string name="pref_filter_feed_title">مصفاة الإشتراكات</string>
   <string name="pref_filter_feed_sum">صفي إشتراكاتك في درج الملاحة وشاشة الإشتراكات.</string>
-  <string name="no_filter_label">لا شئ</string>
   <string name="subscriptions_are_filtered">الإشتراكات مصففاة</string>
   <!--About screen-->
   <string name="antennapod_version">اصدار AntennaPod</string>
@@ -615,37 +575,28 @@
   <string name="gpodnet_taglist_header">الفئات</string>
   <string name="gpodnet_toplist_header">أقوى البودكاستات</string>
   <string name="gpodnet_suggestions_header">إقتراحات</string>
-  <string name="gpodnetauth_login_title">تسجيل الدخول</string>
   <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
   <string name="username_label">إسم المستخدم</string>
   <string name="password_label">كلمة المرور</string>
-  <string name="gpodnetauth_device_butChoose">إختر</string>
   <string name="gpodnetauth_finish_descr">تهانينا! حسابك في gpodder.net مربوط الآن مغ جهازك. سيزامن AntennaPod من الآن وصاعدا إشتراكاتك على جهازك مع حسابك على gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">ابدأ المزامنة الآن</string>
-  <string name="gpodnetauth_finish_butgomainscreen">إذهب إلى الصفحة الرئيسية</string>
-  <string name="gpodnetsync_auth_error_descr">خطأ في إسم المستخدم أو كلمة المرور</string>
   <string name="gpodnetsync_pref_report_successful">تم بنجاح</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">إختيار المستند:</string>
-  <string name="create_folder_label">أنشأ مستندا جديدا</string>
   <string name="choose_data_directory">إختيار مستند البيانات</string>
-  <string name="choose_data_directory_permission_rationale">الوصول الى مساحة التخزين الخارجية مطلوب لتغيير مجلد البيانات</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">توقف التشغيل بدل اخفات الصوت عندما برنامج يشغل صوت</string>
   <string name="pref_resumeAfterCall_sum">واصل التشغيل عندما تنتهى مكالمة هاتفية</string>
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">التخطى للخلف</string>
   <string name="fast_forward_label">التقدم السريع</string>
-  <string name="media_type_audio_label">صوت</string>
   <string name="media_type_video_label">فيديو</string>
   <string name="in_queue_label">الحلقة موجودة في لائحة الاستماع</string>
   <string name="is_favorite_label">الحلقة علمت كمفضلة</string>
   <string name="load_next_page_label">تحميل الصفحة التالية</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="authentication_label">تسجيل الدخول</string>
   <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
   <string name="auto_download_disabled_globally">التنزيل التلقائي معطل في الإعدادات الرئيسية لـ AntennaPod</string>
-  <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <!--Local feeds-->
