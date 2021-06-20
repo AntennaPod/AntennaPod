@@ -21,19 +21,19 @@ public class FeedItemFilter {
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
 
-    public static String PLAYED = "played";
-    public static String UNPLAYED = "unplayed";
-    public static String NEW = "new";
-    public static String PAUSED = "paused";
-    public static String NOT_PAUSED = "not_paused";
-    public static String IS_FAVORITE = "is_favorite";
-    public static String NOT_FAVORITE = "not_favorite";
-    public static String HAS_MEDIA = "has_media";
-    public static String NO_MEDIA = "no_media";
-    public static String QUEUED = "queued";
-    public static String NOT_QUEUED = "not_queued";
-    public static String DOWNLOADED = "downloaded";
-    public static String NOT_DOWNLOADED = "not_downloaded";
+    public final static String PLAYED = "played";
+    public final static String UNPLAYED = "unplayed";
+    public final static String NEW = "new";
+    public final static String PAUSED = "paused";
+    public final static String NOT_PAUSED = "not_paused";
+    public final static String IS_FAVORITE = "is_favorite";
+    public final static String NOT_FAVORITE = "not_favorite";
+    public final static String HAS_MEDIA = "has_media";
+    public final static String NO_MEDIA = "no_media";
+    public final static String QUEUED = "queued";
+    public final static String NOT_QUEUED = "not_queued";
+    public final static String DOWNLOADED = "downloaded";
+    public final static String NOT_DOWNLOADED = "not_downloaded";
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter("");
