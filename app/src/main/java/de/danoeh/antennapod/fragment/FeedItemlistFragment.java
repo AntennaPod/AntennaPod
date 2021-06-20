@@ -282,7 +282,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (item.getItemId() == R.id.action_search) {
             item.getActionView().post(() -> iconTintManager.updateTint());
         }
-
         if (feed == null) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -414,16 +413,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onQueueChanged(QueueEvent event) {
         updateUi();
     }
 
@@ -571,10 +560,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private void loadItems() {
         if (disposable != null) {
             disposable.dispose();
-        } else {
-            //only show on first loading
-            progressBar.setVisibility(View.VISIBLE);
         }
+        progressBar.setVisibility(View.VISIBLE);
 
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
