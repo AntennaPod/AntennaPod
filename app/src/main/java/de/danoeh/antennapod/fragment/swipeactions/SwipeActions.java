@@ -51,7 +51,7 @@ public class SwipeActions {
         itemTouchHelper(new SimpleSwipeCallback());
     }
 
-    public void setFilter (FeedItemFilter filter) {
+    public void setFilter(FeedItemFilter filter) {
         this.filter = filter;
     }
 

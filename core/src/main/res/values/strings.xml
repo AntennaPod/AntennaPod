@@ -265,7 +265,6 @@
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
-    <string name="already_downloaded">Download already completed</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request Error</string>
     <string name="download_error_db_access">Database Access Error</string>
