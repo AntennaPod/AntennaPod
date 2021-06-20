@@ -107,7 +107,7 @@ public class SwipeActions {
         }
     }
 
-    public void refreshItemTouchHelper() {
+    public void resetItemTouchHelper() {
         //refresh itemTouchHelper after prefs changed
         if (itemTouchHelper != null) {
             itemTouchHelper.attachToRecyclerView(null);
@@ -117,7 +117,7 @@ public class SwipeActions {
     }
 
     public void showDialog() {
-        showDialog(this::refreshItemTouchHelper);
+        showDialog(this::resetItemTouchHelper);
     }
 
     private void showDialog(SwipeActionsDialog.Callback prefsChanged) {
