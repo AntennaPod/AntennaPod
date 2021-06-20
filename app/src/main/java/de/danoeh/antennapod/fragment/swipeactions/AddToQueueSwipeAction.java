@@ -35,6 +35,6 @@ public class AddToQueueSwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter) {
-        return filter.showQueued || filter.showUnplayed;
+        return filter.showQueued;// || filter.showNew; for Inbox
     }
 }

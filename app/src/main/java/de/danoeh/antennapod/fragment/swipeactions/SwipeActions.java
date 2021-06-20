@@ -126,6 +126,10 @@ public class SwipeActions {
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
+        int[] rightleft = getPrefs(fragment.requireContext(), tag);
+        boolean swipeOutEnabled = true;
+        int swipeDir = 0;
+
         public SimpleSwipeCallback(int dragDirs) {
             super(dragDirs, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         }
@@ -133,8 +137,6 @@ public class SwipeActions {
         public SimpleSwipeCallback() {
             this(0);
         }
-
-        int[] rightleft = getPrefs(fragment.requireContext(), tag);
 
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -153,14 +155,6 @@ public class SwipeActions {
 
             int index = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
             swipeActions.get(index).action(item, fragment, filter);
-
-            if (!swipeActions.get(index).willRemove(filter)) {
-                //https://stackoverflow.com/questions/31787272/android-recyclerview-itemtouchhelper-revert-swipe-and-restore-view-holder
-
-                //itemTouchHelper.startSwipe(viewHolder); //snaps back
-                refreshItemTouchHelper();
-                //recyclerView.getAdapter().notifyItemChanged(viewHolder.getBindingAdapterPosition());
-            }
         }
 
         @Override
@@ -172,11 +166,17 @@ public class SwipeActions {
                 SwipeAction right = swipeActions.get(rightleft[0]);
                 SwipeAction left = swipeActions.get(rightleft[1]);
 
+                //normal threshold
+                boolean swipeThreshold = dx/recyclerView.getWidth() > getSwipeThreshold(viewHolder);
+
+                //check if it will be removed
                 boolean wontLeaveRight = dx > 0 && !right.willRemove(filter);
                 boolean wontLeaveLeft = dx < 0 && !left.willRemove(filter);
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && (wontLeaveRight || wontLeaveLeft)) {
-                    // Slow down child - it is just an action and does not remove the whole item
-                    int maxMovement = recyclerView.getWidth() * 40 / 100;
+                    swipeOutEnabled = false;
+
+                    //Limit swipe if it's not removed
+                    int maxMovement = recyclerView.getWidth() / 3;
 
                     //swipe right : left
                     float sign = dx > 0 ? 1 : -1;
@@ -185,8 +185,17 @@ public class SwipeActions {
 
                     float displacementPercentage = limitMovement / maxMovement;
 
+                    //limited threshold
+                    swipeThreshold = displacementPercentage == 1;
+
                     // Move slower when getting near the middle
                     dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+                } else {
+                    swipeOutEnabled = true;
+                }
+
+                if (isCurrentlyActive && swipeThreshold) {
+                    swipeDir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
                 }
 
                 new RecyclerViewSwipeDecorator.Builder(
@@ -206,8 +215,28 @@ public class SwipeActions {
         }
 
         @Override
+        public float getSwipeEscapeVelocity(float defaultValue) {
+            return swipeOutEnabled ? defaultValue : Float.MAX_VALUE;
+        }
+
+        @Override
+        public float getSwipeVelocityThreshold(float defaultValue) {
+            return swipeOutEnabled ? defaultValue : 0;
+        }
+
+        @Override
+        public float getSwipeThreshold(RecyclerView.ViewHolder viewHolder) {
+            return swipeOutEnabled ? 0.6f : 1.0f;
+        }
+
+        @Override
         public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
             super.clearView(recyclerView, viewHolder);
+
+            if (swipeDir != 0) {
+                onSwiped(viewHolder, swipeDir);
+                swipeDir = 0;
+            }
         }
     }
 
