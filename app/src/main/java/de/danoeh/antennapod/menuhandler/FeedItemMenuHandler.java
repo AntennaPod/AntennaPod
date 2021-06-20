@@ -237,7 +237,8 @@ public class FeedItemMenuHandler {
      * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
      * ,i.e., there is (context) menu item for add new flag
      */
-    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item, int playState, boolean showSnackbar) {
+    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item,
+                                        int playState, boolean showSnackbar) {
         if (item == null) {
             return;
         }

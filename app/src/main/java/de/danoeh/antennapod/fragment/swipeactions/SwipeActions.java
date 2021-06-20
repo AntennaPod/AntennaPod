@@ -139,7 +139,9 @@ public class SwipeActions {
         }
 
         @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
@@ -167,7 +169,7 @@ public class SwipeActions {
                 SwipeAction left = swipeActions.get(rightleft[1]);
 
                 //normal threshold
-                boolean swipeThreshold = dx/recyclerView.getWidth() > getSwipeThreshold(viewHolder);
+                boolean swipeThreshold = dx / recyclerView.getWidth() > getSwipeThreshold(viewHolder);
 
                 //check if it will be removed
                 boolean wontLeaveRight = dx > 0 && !right.willRemove(filter);
