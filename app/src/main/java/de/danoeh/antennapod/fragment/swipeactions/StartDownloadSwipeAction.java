@@ -27,7 +27,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
     @Override
     public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (!item.isDownloaded()) {
-            new DownloadActionButton(item, item.isTagged(FeedItem.TAG_QUEUE))
+            new DownloadActionButton(item)
                     .onClick(fragment.requireContext());
         }
     }
