@@ -31,10 +31,9 @@ public class DownloadsFragment extends PagedToolbarFragment {
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
     private static final String KEY_UP_ARROW = "up_arrow";
 
-    public static final int POS_RUNNING = 0;
-    private static final int POS_COMPLETED = 1;
-    public static final int POS_LOG = 2;
-    private static final int TOTAL_COUNT = 3;
+    private static final int POS_COMPLETED = 0;
+    public static final int POS_LOG = 1;
+    private static final int TOTAL_COUNT = 2;
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
@@ -64,9 +63,6 @@ public class DownloadsFragment extends PagedToolbarFragment {
         tabLayout = root.findViewById(R.id.sliding_tabs);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
-                case POS_RUNNING:
-                    tab.setText(R.string.downloads_running_label);
-                    break;
                 case POS_COMPLETED:
                     tab.setText(R.string.downloads_completed_label);
                     break;
@@ -121,8 +117,6 @@ public class DownloadsFragment extends PagedToolbarFragment {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case POS_RUNNING:
-                    return new RunningDownloadsFragment();
                 case POS_COMPLETED:
                     return new CompletedDownloadsFragment();
                 default:

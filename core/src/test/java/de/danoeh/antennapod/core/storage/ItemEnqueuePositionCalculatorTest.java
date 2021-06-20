@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
-import de.danoeh.antennapod.core.util.playback.RemoteMedia;
+import de.danoeh.antennapod.model.playback.RemoteMedia;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -14,12 +14,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.danoeh.antennapod.core.feed.FeedComponent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedComponent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;

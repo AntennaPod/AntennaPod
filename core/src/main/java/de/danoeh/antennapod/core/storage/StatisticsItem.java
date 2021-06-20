@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 public class StatisticsItem {
     public final Feed feed;

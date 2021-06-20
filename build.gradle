@@ -20,44 +20,6 @@ allprojects {
         maven { url "https://jitpack.io" }
         jcenter()
     }
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint"
-        }
-    }
-
-    apply plugin: 'com.github.spotbugs'
-
-    spotbugs {
-        effort = 'max'
-        reportLevel = 'medium'
-        excludeFilter = rootProject.file('config/spotbugs/exclude.xml')
-        ignoreFailures = true // Handled by printing task
-    }
-
-    gradle.taskGraph.beforeTask { task ->
-        if (task.name.toLowerCase().contains('spotbugs')) {
-            task.doLast {
-                def reportFile = task.project.file("build/reports/spotbugs/playDebug.xml")
-                if (!reportFile.exists()) return
-                def slurped = new XmlSlurper().parse(reportFile)
-
-                def foundErrors = false
-                slurped['BugInstance'].each { bug ->
-                    logger.error "[SpotBugs] ${bug['LongMessage']} [${bug.@'type'}]"
-                    bug['SourceLine'].each { line ->
-                        logger.error "[SpotBugs]     ${line['Message']}"
-                        foundErrors = true
-                    }
-                }
-                if (foundErrors) {
-                    throw new TaskExecutionException(task,
-                            new Exception("SpotBugs violations were found. See output above for details."))
-                }
-            }
-        }
-    }
 }
 
 // Disable predex if requested (we can"t predex in Circle CI
@@ -76,10 +38,6 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 30
-    minSdkVersion = 16
-    targetSdkVersion = 30
-
     // AndroidX
     annotationVersion = "1.1.0"
     appcompatVersion = "1.2.0"
@@ -114,10 +72,6 @@ project.ext {
     espressoVersion = "3.2.0"
     runnerVersion = "1.2.0"
     rulesVersion = "1.2.0"
-}
-
-wrapper {
-    gradleVersion = "6.3"
 }
 
 apply plugin: "checkstyle"

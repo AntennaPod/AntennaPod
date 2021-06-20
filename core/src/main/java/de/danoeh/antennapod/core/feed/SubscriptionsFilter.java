@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 public class SubscriptionsFilter {
     private static final String divider = ",";
@@ -19,6 +21,9 @@ public class SubscriptionsFilter {
 
     private boolean showUpdatedEnabled = false;
     private boolean showUpdatedDisabled = false;
+
+    private boolean showEpisodeNotificationEnabled = false;
+    private boolean showEpisodeNotificationDisabled = false;
 
     public SubscriptionsFilter(String properties) {
         this(TextUtils.split(properties, divider));
@@ -44,6 +49,12 @@ public class SubscriptionsFilter {
                     break;
                 case "disabled_updates":
                     showUpdatedDisabled = true;
+                    break;
+                case "episode_notification_enabled":
+                    showEpisodeNotificationEnabled = true;
+                    break;
+                case "episode_notification_disabled":
+                    showEpisodeNotificationDisabled = true;
                     break;
                 default:
                     break;
@@ -78,6 +89,12 @@ public class SubscriptionsFilter {
             if (showUpdatedEnabled && !itemPreferences.getKeepUpdated()) {
                 continue;
             } else if (showUpdatedDisabled && itemPreferences.getKeepUpdated()) {
+                continue;
+            }
+
+            if (showEpisodeNotificationEnabled && !itemPreferences.getShowEpisodeNotification()) {
+                continue;
+            } else if (showEpisodeNotificationDisabled && itemPreferences.getShowEpisodeNotification()) {
                 continue;
             }
 

@@ -21,7 +21,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
         Bundle args = new Bundle();
-        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_RUNNING);
+        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
         return PendingIntent.getActivity(context,
                 R.id.pending_intent_download_service_notification, intent, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 public enum FeedItemFilterGroup {
     PLAYED(new ItemProperties(R.string.hide_played_episodes_label, FeedItemFilter.PLAYED),

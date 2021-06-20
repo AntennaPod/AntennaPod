@@ -3,40 +3,28 @@ plugins {
     id('com.getkeepsafe.dexcount')
     id('com.github.triplet.play') version '2.7.5' apply false
 }
+apply from: "../common.gradle"
+apply from: "../playFlavor.gradle"
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-
-    viewBinding {
-        enabled = true
-    }
-
-    lintOptions {
-        checkGeneratedSources = true
-    }
-
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2020001
-        versionName "2.2.0-beta1"
+        versionCode 2030002
+        versionName "2.3.0-beta2"
 
-        multiDexEnabled false
-        vectorDrawables.useSupportLibrary true
-        vectorDrawables.generatedDensities = []
-
-        testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        def commit = "Unknown commit"
+        def commit = ""
         try {
-            commit = "git rev-parse --short HEAD".execute().text.trim()
+            def hashStdOut = new ByteArrayOutputStream()
+            exec {
+                commandLine "git", "rev-parse", "--short", "HEAD"
+                standardOutput = hashStdOut
+            }
+            commit = hashStdOut.toString().trim()
         } catch (Exception ignore) {
         }
-        buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
+        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
 
         if (project.hasProperty("podcastindexApiKey")) {
             buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
@@ -86,13 +74,6 @@ android {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
 
-            // debug build has method count over 64k single-dex threshold.
-            // For building debug build to use on Android < 21 (pre-Android 5) devices,
-            // you need to manually change class
-            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication .
-            // See Issue #2813
-            multiDexEnabled true
-
             dexcount {
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
@@ -105,48 +86,22 @@ android {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
         }
     }
 
-    packagingOptions {
-        exclude "META-INF/LICENSE.txt"
-        exclude "META-INF/NOTICE.txt"
-    }
-
     lintOptions {
         disable 'ObsoleteLintCustomCheck', 'CheckResult', 'UnusedAttribute', 'BatteryLife', 'InflateParams',
-                'GradleDependency', 'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup',
+                'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup', 'VectorDrawableCompat',
                 'StaticFieldLeak', 'UseCompoundDrawables', 'NestedWeights', 'Overdraw', 'UselessParent', 'TextFields',
                 'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
                 'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
-                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter'
-        warningsAsErrors true
-        abortOnError true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter', 'VectorPath',
+                'InvalidPeriodicWorkRequestInterval'
     }
 
     aaptOptions {
         additionalParameters "--no-version-vectors"
-    }
-
-    testOptions {
-        animationsDisabled = true
-    }
-
-    flavorDimensions "market"
-    productFlavors {
-        free {
-            dimension "market"
-        }
-        play {
-            dimension "market"
-        }
     }
 
     dexOptions {
@@ -156,6 +111,9 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation project(':model')
+    implementation project(':net:sync:gpoddernet')
+    implementation project(':net:sync:model')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
 

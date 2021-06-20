@@ -6,16 +6,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/black"
     android:orientation="vertical"
-    android:id="@+id/videoframe">
+    android:id="@+id/videoPlayerContainer">
 
     <de.danoeh.antennapod.view.AspectRatioVideoView
-        android:id="@+id/videoview"
+        android:id="@+id/videoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <ProgressBar
-        android:id="@+id/progressIndicator"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,7 +23,7 @@
         android:visibility="invisible" />
 
     <LinearLayout
-        android:id="@+id/controls"
+        android:id="@+id/controlsContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -33,36 +33,36 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/butRev"
+            android:id="@+id/rewindButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/rewind_label"
-            app:srcCompat="@drawable/ic_av_fast_rewind_white_80dp" />
+            app:srcCompat="@drawable/ic_fast_rewind_video_white" />
 
-        <ImageButton
-            android:id="@+id/butPlay"
+        <de.danoeh.antennapod.view.PlayButton
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/pause_label"
-            app:srcCompat="@drawable/ic_av_pause_white_80dp" />
+            app:srcCompat="@drawable/ic_pause_video_white" />
 
         <ImageButton
-            android:id="@+id/butFF"
+            android:id="@+id/fastForwardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/fast_forward_label"
-            app:srcCompat="@drawable/ic_av_fast_forward_white_80dp" />
+            app:srcCompat="@drawable/ic_fast_forward_video_white" />
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/skip_animation"
+        android:id="@+id/skipAnimationImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -70,14 +70,14 @@
         android:layout_gravity="center"/>
 
     <LinearLayout
-        android:id="@+id/overlay"
+        android:id="@+id/bottomControlsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewSeek"
+            android:id="@+id/seekCardView"
             android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             tools:alpha="1">
 
             <TextView
-                android:id="@+id/txtvSeek"
+                android:id="@+id/seekPositionLabel"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,6 @@
         </androidx.cardview.widget.CardView>
 
         <RelativeLayout
-            android:id="@+id/timecontrol"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#80000000"
@@ -112,7 +111,7 @@
             android:paddingTop="8dp">
 
             <TextView
-                android:id="@+id/txtvPosition"
+                android:id="@+id/positionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -129,7 +128,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtvLength"
+                android:id="@+id/durationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -149,10 +148,10 @@
                 android:id="@+id/sbPosition"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/txtvLength"
-                android:layout_toStartOf="@+id/txtvLength"
-                android:layout_toRightOf="@+id/txtvPosition"
-                android:layout_toEndOf="@+id/txtvPosition"
+                android:layout_toLeftOf="@+id/durationLabel"
+                android:layout_toStartOf="@+id/durationLabel"
+                android:layout_toRightOf="@+id/positionLabel"
+                android:layout_toEndOf="@+id/positionLabel"
                 android:layout_centerInParent="true"
                 android:max="500" />
 

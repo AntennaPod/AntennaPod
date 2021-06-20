@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
 import de.danoeh.antennapod.view.ItemOffsetDecoration;
@@ -24,6 +24,8 @@ public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
     private static final String ARG_FEED_PREFERENCES = "feed_preferences";
     private List<String> displayedTags;
+    private EditTagsDialogBinding viewBinding;
+    private TagSelectionAdapter adapter;
 
     public static TagSettingsDialog newInstance(FeedPreferences preferences) {
         TagSettingsDialog fragment = new TagSettingsDialog();
@@ -40,29 +42,22 @@ public class TagSettingsDialog extends DialogFragment {
         displayedTags = new ArrayList<>(preferences.getTags());
         displayedTags.remove(FeedPreferences.TAG_ROOT);
 
-        EditTagsDialogBinding viewBinding = EditTagsDialogBinding.inflate(getLayoutInflater());
+        viewBinding = EditTagsDialogBinding.inflate(getLayoutInflater());
         viewBinding.tagsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         viewBinding.tagsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4));
-        TagSelectionAdapter adapter = new TagSelectionAdapter();
+        adapter = new TagSelectionAdapter();
         adapter.setHasStableIds(true);
         viewBinding.tagsRecycler.setAdapter(adapter);
         viewBinding.rootFolderCheckbox.setChecked(preferences.getTags().contains(FeedPreferences.TAG_ROOT));
 
-
-        viewBinding.newTagButton.setOnClickListener(v -> {
-            String name = viewBinding.newTagEditText.getText().toString().trim();
-            if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
-                return;
-            }
-            displayedTags.add(name);
-            viewBinding.newTagEditText.setText("");
-            adapter.notifyDataSetChanged();
-        });
+        viewBinding.newTagButton.setOnClickListener(v ->
+                addTag(viewBinding.newTagEditText.getText().toString().trim()));
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
         dialog.setTitle(R.string.feed_folders_label);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {
+            addTag(viewBinding.newTagEditText.getText().toString().trim());
             preferences.getTags().clear();
             preferences.getTags().addAll(displayedTags);
             if (viewBinding.rootFolderCheckbox.isChecked()) {
@@ -74,6 +69,15 @@ public class TagSettingsDialog extends DialogFragment {
         return dialog.create();
     }
 
+    private void addTag(String name) {
+        if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
+            return;
+        }
+        displayedTags.add(name);
+        viewBinding.newTagEditText.setText("");
+        adapter.notifyDataSetChanged();
+    }
+
     public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapter.ViewHolder> {
 
         @Override
@@ -81,7 +85,7 @@ public class TagSettingsDialog extends DialogFragment {
         public TagSelectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
             chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_delete_black);
+            chip.setCloseIconResource(R.drawable.ic_delete);
             return new TagSelectionAdapter.ViewHolder(chip);
         }
 

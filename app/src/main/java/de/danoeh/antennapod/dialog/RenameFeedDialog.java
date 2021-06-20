@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 

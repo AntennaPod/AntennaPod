@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.service.download.handler;
 import android.content.Context;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -39,7 +39,7 @@ public class FeedSyncTask {
         if (loadAllPages && feed.getNextPageLink() != null) {
             try {
                 feed.setId(savedFeed.getId());
-                DBTasks.loadNextPageOfFeed(context, savedFeed, true);
+                DBTasks.loadNextPageOfFeed(context, feed, true);
             } catch (DownloadRequestException e) {
                 Log.e(TAG, "Error trying to load next page", e);
             }

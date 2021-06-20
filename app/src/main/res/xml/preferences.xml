@@ -13,41 +13,41 @@
             android:key="prefScreenInterface"
             android:title="@string/user_interface_label"
             android:summary="@string/user_interface_sum"
-            android:icon="?attr/ic_appearance" />
+            android:icon="@drawable/ic_appearance" />
 
     <Preference
             android:key="prefScreenPlayback"
             android:title="@string/playback_pref"
             android:summary="@string/playback_pref_sum"
-            android:icon="?attr/ic_settings_playback" />
+            android:icon="@drawable/ic_play_24dp" />
 
     <Preference
             android:key="prefScreenNetwork"
             android:title="@string/network_pref"
             android:summary="@string/network_pref_sum"
-            android:icon="?attr/ic_network" />
+            android:icon="@drawable/ic_network" />
 
     <Preference
             android:key="prefScreenGpodder"
             android:title="@string/synchronization_pref"
             android:summary="@string/synchronization_sum"
-            android:icon="?attr/ic_unfav" />
+            android:icon="@drawable/ic_star" />
 
     <Preference
             android:key="prefScreenStorage"
             android:title="@string/storage_pref"
             android:summary="@string/storage_sum"
-            android:icon="?attr/storage" />
+            android:icon="@drawable/ic_storage" />
 
     <Preference
             android:key="notifications"
             android:title="@string/notification_pref_fragment"
-            android:icon="?attr/ic_notifications"/>
+            android:icon="@drawable/ic_notifications"/>
 
     <Preference
             android:key="statistics"
             android:title="@string/statistics_label"
-            android:icon="?attr/statistics" />
+            android:icon="@drawable/ic_statistics" />
 
     <PreferenceCategory
             android:key="project"
@@ -55,18 +55,22 @@
         <Preference
             android:key="prefDocumentation"
             android:title="@string/documentation_support"
-            android:icon="?attr/ic_questionmark" />
+            android:icon="@drawable/ic_questionmark" />
         <Preference
             android:key="prefViewForum"
             android:title="@string/visit_user_forum"
-            android:icon="?attr/ic_chat" />
+            android:icon="@drawable/ic_chat" />
+        <Preference
+            android:key="prefContribute"
+            android:title="@string/pref_contribute"
+            android:icon="@drawable/ic_contribute" />
         <Preference
             android:key="prefSendBugReport"
             android:title="@string/bug_report_title"
-            android:icon="?attr/ic_bug" />
+            android:icon="@drawable/ic_bug" />
         <Preference
             android:key="prefAbout"
             android:title="@string/about_pref"
-            android:icon="?attr/action_about" />
+            android:icon="@drawable/ic_info" />
     </PreferenceCategory>
 </PreferenceScreen>
