@@ -194,8 +194,9 @@ public class SwipeActions {
                     swipeOutEnabled = true;
                 }
 
-                if (isCurrentlyActive && swipeThreshold) {
-                    swipeDir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
+                if (isCurrentlyActive) {
+                    int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
+                    swipeDir = swipeThreshold ? dir : 0;
                 }
 
                 new RecyclerViewSwipeDecorator.Builder(
