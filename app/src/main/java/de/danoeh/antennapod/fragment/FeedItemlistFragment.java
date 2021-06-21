@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +71,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
-import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -637,6 +637,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            MenuItem menuItem = menu.findItem(R.id.multi_select);
+            menuItem.setVisible(true);
         }
     }
 }
