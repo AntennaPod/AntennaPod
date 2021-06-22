@@ -102,7 +102,8 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             return true;
         } else if (r != null && r.getType() == HitTestResult.EMAIL_TYPE) {
             Log.d(TAG, "E-Mail of webview was long-pressed. Extra: " + r.getExtra());
-            ClipboardManager clipboardManager = ContextCompat.getSystemService(this.getContext(), ClipboardManager.class);
+            ClipboardManager clipboardManager = ContextCompat.getSystemService(this.getContext(),
+                                                                               ClipboardManager.class);
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
