@@ -162,7 +162,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
 
         progressBar = root.findViewById(R.id.progLoading);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -461,7 +460,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             recyclerView.setAdapter(adapter);
             swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         }
-        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());

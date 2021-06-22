@@ -239,7 +239,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         txtvInformation = root.findViewById(R.id.txtvInformation);
 
         recyclerView = root.findViewById(android.R.id.list);
-        recyclerView.setVisibility(View.GONE);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
 

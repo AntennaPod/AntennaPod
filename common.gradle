@@ -15,7 +15,7 @@ android {
 
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
         }
         debug {
             // debug build has method count over 64k single-dex threshold.

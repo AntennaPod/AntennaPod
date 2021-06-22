@@ -970,7 +970,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia) {
-                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, true);
+                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
             }
