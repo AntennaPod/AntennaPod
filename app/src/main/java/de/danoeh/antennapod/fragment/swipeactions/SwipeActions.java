@@ -38,10 +38,10 @@ public class SwipeActions {
     public static final int REMOVE_FROM_QUEUE = 5;
 
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
-            Arrays.asList(new AddToQueueSwipeAction(),
-            new MarkUnplayedSwipeAction(), new StartDownloadSwipeAction(),
-            new MarkFavouriteSwipeAction(), new MarkPlayedSwipeAction(),
-            new RemoveFromQueueSwipeAction()));
+            Arrays.asList(new AddToQueueSwipeAction(), new MarkUnplayedSwipeAction(),
+                    new StartDownloadSwipeAction(), new MarkFavouriteSwipeAction(),
+                    new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
+    );
 
     RecyclerView recyclerView;
     ItemTouchHelper itemTouchHelper;
