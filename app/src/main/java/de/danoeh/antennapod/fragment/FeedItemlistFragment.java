@@ -380,7 +380,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
                     adapter.notifyItemChangedCompat(pos);
-                    swipeActions.reattachItemTouchHelper();
                 }
             }
         }
