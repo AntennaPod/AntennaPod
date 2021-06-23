@@ -30,6 +30,8 @@ public class AddToQueueSwipeAction implements SwipeAction {
     public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (!item.isTagged(FeedItem.TAG_QUEUE)) {
             DBWriter.addQueueItem(fragment.requireContext(), item);
+        } else {
+            new RemoveFromQueueSwipeAction().action(item, fragment, filter);
         }
     }
 

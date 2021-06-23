@@ -185,7 +185,7 @@ public class SwipeActions {
                     swipeOutEnabled = false;
 
                     //Limit swipe if it's not removed
-                    int maxMovement = recyclerView.getWidth() / 3;
+                    int maxMovement = recyclerView.getWidth() * 2 / 5;
 
                     //swipe right : left
                     float sign = dx > 0 ? 1 : -1;
@@ -197,7 +197,7 @@ public class SwipeActions {
                     //limited threshold
                     swipeThreshold = displacementPercentage == 1;
 
-                    // Move slower when getting near the middle
+                    // Move slower when getting near the maxMovement
                     dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
                 } else {
                     swipeOutEnabled = true;
