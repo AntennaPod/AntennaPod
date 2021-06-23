@@ -132,7 +132,7 @@
                     android:layout_height="14sp"
                     app:srcCompat="@drawable/ic_playlist"
                     android:contentDescription="@string/in_queue_label"
-                    android:id="@+id/ivInPlaylist"/>
+                    android:id="@+id/ivInPlaylist" />
 
                 <TextView
                     android:id="@+id/separatorIcons"
@@ -145,7 +145,7 @@
                     android:text="·"
                     android:importantForAccessibility="no"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:background="@android:color/holo_blue_light"/>
+                    tools:background="@android:color/holo_blue_light" />
 
                 <TextView
                     android:id="@+id/txtvPubDate"
@@ -154,7 +154,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:text="@sample/episodes.json/data/published_at"/>
+                    tools:text="@sample/episodes.json/data/published_at" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                     android:text="·"
                     android:importantForAccessibility="no"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    tools:background="@android:color/holo_blue_light"/>
+                    tools:background="@android:color/holo_blue_light" />
 
                 <TextView
                     android:id="@+id/size"
@@ -216,7 +216,7 @@
                     android:max="100"
                     android:layout_margin="4dp"
                     style="?attr/progressBarTheme"
-                    tools:background="@android:color/holo_blue_light"/>
+                    tools:background="@android:color/holo_blue_light" />
 
                 <TextView
                     android:id="@+id/txtvDuration"
