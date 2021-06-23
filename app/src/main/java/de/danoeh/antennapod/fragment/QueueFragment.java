@@ -454,8 +454,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         });
 
         SwipeActions swipeActions = new SwipeActions(this, TAG);
-        //TODO
-        swipeActions.setFilter(new FeedItemFilter("queued"));
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.QUEUED));
         itemTouchHelper = swipeActions.itemTouchHelper(
                 new SimpleQueueCallback(swipeActions)
         );
