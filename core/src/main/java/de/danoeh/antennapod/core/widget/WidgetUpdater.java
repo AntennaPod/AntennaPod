@@ -19,7 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -38,7 +37,6 @@ import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
  */
 public abstract class WidgetUpdater {
     private static final String TAG = "WidgetUpdater";
-    private static boolean showTimeLeft;
 
     public static class WidgetState {
         final Playable media;
@@ -68,10 +66,8 @@ public abstract class WidgetUpdater {
      */
     public static void updateWidget(Context context, WidgetState widgetState) {
         if (!PlayerWidget.isEnabled(context) || widgetState == null) {
-            Log.d(TAG, "updateWidget: enteredstatement");
             return;
         }
-        Log.d(TAG, "updateWidget: enteredmain");
         ComponentName playerWidget = new ComponentName(context, PlayerWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
@@ -87,7 +83,6 @@ public abstract class WidgetUpdater {
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
         if (widgetState.media != null) {
-            Log.d(TAG, "updateWidget: entered11");
             Bitmap icon;
             int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
@@ -123,13 +118,10 @@ public abstract class WidgetUpdater {
             String progressString = getProgressString(widgetState.position,
                     widgetState.duration, widgetState.playbackSpeed);
             if (progressString != null) {
-                Log.d(TAG, "updateWidget: progressString != null");
                 views.setViewVisibility(R.id.txtvProgress, View.VISIBLE);
                 views.setTextViewText(R.id.txtvProgress, progressString);
                 views.setOnClickPendingIntent(R.id.txtvProgress,
                         createProgressStringIntent(context));
-            }else{
-                Log.d(TAG, "updateWidget: progressString = null");
             }
 
 
@@ -207,7 +199,7 @@ public abstract class WidgetUpdater {
     private static PendingIntent createProgressStringIntent(Context context) {
         Intent startingIntent = new Intent(context, MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_PROGRESS_STRING_RECEIVER);
-        startingIntent.putExtra(MediaButtonReceiver.DUMMY_VALUE,"DUMMY_VALUE");
+        startingIntent.putExtra(MediaButtonReceiver.DUMMY_VALUE,MediaButtonReceiver.DUMMY_VALUE);
         return PendingIntent.getBroadcast(context, 0, startingIntent, 0);
 
     }
@@ -239,7 +231,7 @@ public abstract class WidgetUpdater {
     }
 
     private static String getProgressString(int position, int duration, float speed) {
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+        boolean showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (position >= 0 && duration > 0) {
             TimeSpeedConverter converter = new TimeSpeedConverter(speed);
             int remainingTime = converter.convert(Math.max(duration - position, 0));
@@ -258,6 +250,4 @@ public abstract class WidgetUpdater {
             return null;
         }
     }
-
-
 }
