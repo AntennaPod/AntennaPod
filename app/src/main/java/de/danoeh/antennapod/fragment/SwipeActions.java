@@ -110,7 +110,7 @@ public class SwipeActions {
                         break;
                     case START_DOWNLOAD:
                         if (!item.isDownloaded()) {
-                            new DownloadActionButton(item, item.isTagged(FeedItem.TAG_QUEUE))
+                            new DownloadActionButton(item)
                                     .onClick(fragment.requireContext());
                         } else {
                             resetItemTouchHelper();
