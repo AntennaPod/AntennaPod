@@ -125,7 +125,6 @@ public abstract class WidgetUpdater {
             }
 
 
-
             if (widgetState.status == PlayerStatus.PLAYING) {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause);
                 views.setContentDescription(R.id.butPlay, context.getString(R.string.pause_label));
@@ -199,7 +198,7 @@ public abstract class WidgetUpdater {
     private static PendingIntent createProgressStringIntent(Context context) {
         Intent startingIntent = new Intent(context, MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_PROGRESS_STRING_RECEIVER);
-        startingIntent.putExtra(MediaButtonReceiver.DUMMY_VALUE,MediaButtonReceiver.DUMMY_VALUE);
+        startingIntent.putExtra(MediaButtonReceiver.DUMMY_VALUE, MediaButtonReceiver.DUMMY_VALUE);
         return PendingIntent.getBroadcast(context, 0, startingIntent, 0);
 
     }
@@ -239,9 +238,9 @@ public abstract class WidgetUpdater {
             duration = converter.convert(duration);
 
             if (showTimeLeft) {
-                return Converter.getDurationStringLong(position) + " / " +  ((remainingTime > 0) ? "-" : "")
+                return Converter.getDurationStringLong(position) + " / " + ((remainingTime > 0) ? "-" : "")
                         + Converter.getDurationStringLong(remainingTime);
-            }else{
+            } else {
                 return Converter.getDurationStringLong(position) + " / "
                         + Converter.getDurationStringLong(duration);
             }
