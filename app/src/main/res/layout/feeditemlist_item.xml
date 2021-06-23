@@ -27,9 +27,9 @@
         tools:ignore="UselessParent">
 
         <LinearLayout
+            android:id="@+id/left_padding"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/left_padding"
             android:minWidth="4dp">
             <ImageView
                 android:id="@+id/drag_handle"
@@ -37,24 +37,24 @@
                 android:layout_height="match_parent"
                 android:importantForAccessibility="no"
                 android:scaleType="fitCenter"
-                app:srcCompat="?attr/dragview_background"
                 android:paddingStart="0dp"
                 android:paddingLeft="0dp"
                 android:paddingEnd="4dp"
                 android:paddingRight="4dp"
+                app:srcCompat="?attr/dragview_background"
                 tools:src="@drawable/ic_drag_darktheme"
-                tools:background="@android:color/holo_green_dark"/>
+                tools:background="@android:color/holo_green_dark" />
 
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/coverHolder"
             android:layout_width="@dimen/thumbnail_length_queue_item"
             android:layout_height="@dimen/thumbnail_length_queue_item"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
-            android:id="@+id/coverHolder"
             app:cardBackgroundColor="@color/non_square_icon_background"
             app:cardCornerRadius="4dp"
             app:cardPreventCornerOverlap="false"
@@ -73,14 +73,14 @@
                     android:background="@color/light_gray"
                     android:maxLines="3"
                     android:padding="2dp"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end" />
                 <ImageView
                     android:id="@+id/imgvCover"
                     android:layout_width="@dimen/thumbnail_length_queue_item"
                     android:layout_height="@dimen/thumbnail_length_queue_item"
                     android:layout_centerVertical="true"
                     android:importantForAccessibility="no"
-                    tools:src="@tools:sample/avatars"/>
+                    tools:src="@tools:sample/avatars" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -93,39 +93,39 @@
             android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_weight="1"
-            tools:background="@android:color/holo_red_dark"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:background="@android:color/holo_red_dark">
 
             <LinearLayout
+                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/status"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:text="@string/new_label"
-                    style="@style/AntennaPod.TextView.UnreadIndicator"
+                    android:id="@+id/statusUnread"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/statusUnread"
+                    android:text="@string/new_label"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
+                    style="@style/AntennaPod.TextView.UnreadIndicator"
                     tools:text="@sample/episodes.json/data/status_label"/>
 
                 <ImageView
+                    android:id="@+id/ivIsVideo"
                     android:layout_width="14sp"
                     android:layout_height="14sp"
-                    app:srcCompat="@drawable/ic_videocam"
                     android:contentDescription="@string/media_type_video_label"
-                    android:id="@+id/ivIsVideo"/>
+                    app:srcCompat="@drawable/ic_videocam" />
 
                 <ImageView
+                    android:id="@+id/isFavorite"
                     android:layout_width="14sp"
                     android:layout_height="14sp"
-                    app:srcCompat="@drawable/ic_star"
                     android:contentDescription="@string/is_favorite_label"
-                    android:id="@+id/isFavorite"/>
+                    app:srcCompat="@drawable/ic_star" />
 
                 <ImageView
                     android:layout_width="14sp"
@@ -136,7 +136,6 @@
 
                 <TextView
                     android:id="@+id/separatorIcons"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -145,35 +144,36 @@
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:background="@android:color/holo_blue_light"/>
 
                 <TextView
                     android:id="@+id/txtvPubDate"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/published_at"/>
 
                 <TextView
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:background="@android:color/holo_blue_light"/>
 
                 <TextView
                     android:id="@+id/size"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="10 MB"/>
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    tools:text="10 MB" />
 
             </LinearLayout>
 
@@ -184,55 +184,55 @@
             -->
             <TextView
                 android:id="@+id/txtvTitle"
-                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@sample/episodes.json/data/title"
                 android:importantForAccessibility="no"
                 android:ellipsize="end"
-                tools:background="@android:color/holo_blue_light"/>
+                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                tools:text="@sample/episodes.json/data/title"
+                tools:background="@android:color/holo_blue_light" />
 
             <LinearLayout
+                android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/progress"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/txtvPosition"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="00:42:23"
-                    tools:background="@android:color/holo_blue_light"/>
+                    tools:background="@android:color/holo_blue_light" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
-                    style="?attr/progressBarTheme"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="4dp"
+                    android:layout_weight="1"
                     android:max="100"
                     android:layout_margin="4dp"
+                    style="?attr/progressBarTheme"
                     tools:background="@android:color/holo_blue_light"/>
 
                 <TextView
                     android:id="@+id/txtvDuration"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/duration"
-                    tools:background="@android:color/holo_blue_light"/>
+                    tools:background="@android:color/holo_blue_light" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <include
-            layout="@layout/secondary_action"/>
+            layout="@layout/secondary_action" />
 
     </LinearLayout>
 </FrameLayout>
