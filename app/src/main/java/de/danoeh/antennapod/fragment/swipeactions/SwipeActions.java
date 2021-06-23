@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
@@ -36,10 +37,11 @@ public class SwipeActions {
     public static final int MARK_PLAYED = 4;
     public static final int REMOVE_FROM_QUEUE = 5;
 
-    public static final List<SwipeAction> swipeActions = Arrays.asList(new AddToQueueSwipeAction(),
+    public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
+            Arrays.asList(new AddToQueueSwipeAction(),
             new MarkUnplayedSwipeAction(), new StartDownloadSwipeAction(),
             new MarkFavouriteSwipeAction(), new MarkPlayedSwipeAction(),
-            new RemoveFromQueueSwipeAction());
+            new RemoveFromQueueSwipeAction()));
 
     RecyclerView recyclerView;
     ItemTouchHelper itemTouchHelper;
