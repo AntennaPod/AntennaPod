@@ -41,11 +41,4 @@
         android:visible="false"
         android:icon="@drawable/ic_check"/>
 
-    <item
-        android:id="@+id/swipe_settings"
-        android:title="@string/episodes_label"
-        android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:visible="false" />
-
 </menu>

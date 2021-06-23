@@ -174,9 +174,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                     }
                 };
                 removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-            //} else if (item.getItemId() == R.id.swipe_settings && swipeActions != null) {
-                //null safe
-                //swipeActions.show();
             } else {
                 return false;
             }
@@ -340,8 +337,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             onPrepareOptionsMenu(toolbar.getMenu());
         }
-
-        //swipeActions.resetItemTouchHelper();
     }
 
     /**
@@ -406,7 +401,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChangedCompat(pos);
-                    //swipeActions.resetItemTouchHelper();
                 }
             }
         }
@@ -431,16 +425,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onQueueChanged(QueueEvent event) {
         updateUi();
     }
 

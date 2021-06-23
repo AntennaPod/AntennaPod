@@ -159,7 +159,6 @@ public class EpisodesFragment extends EpisodesListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.swipe_settings).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
     }
 
