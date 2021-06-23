@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +60,11 @@ public class SwipeActions {
     public SwipeActions attachTo(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        fragment.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
+            if (event == Lifecycle.Event.ON_RESUME) {
+                resetItemTouchHelper();
+            }
+        });
         return this;
     }
 
