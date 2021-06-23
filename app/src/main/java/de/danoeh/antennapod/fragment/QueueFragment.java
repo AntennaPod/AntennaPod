@@ -92,7 +92,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
-    private ItemTouchHelper itemTouchHelper;
+    private SwipeActions swipeActions;
     private SharedPreferences prefs;
 
     @Override
@@ -453,11 +453,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
-        SwipeActions swipeActions = new SwipeActions(this, TAG);
+        swipeActions = new SwipeActions(this, TAG);
+        swipeActions.setNewSwipeCallback(() -> new SimpleQueueCallback(swipeActions));
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.QUEUED));
-        itemTouchHelper = swipeActions.itemTouchHelper(
-                new SimpleQueueCallback(swipeActions)
-        );
         swipeActions.attachTo(recyclerView);
 
         emptyView = new EmptyViewHandler(getContext());
@@ -482,7 +480,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (queue != null && queue.size() > 0) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, itemTouchHelper);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }

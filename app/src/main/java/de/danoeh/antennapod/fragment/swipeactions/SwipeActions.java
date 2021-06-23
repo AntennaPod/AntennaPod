@@ -43,16 +43,18 @@ public class SwipeActions {
                     new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
     );
 
-    RecyclerView recyclerView;
-    ItemTouchHelper itemTouchHelper;
-    Fragment fragment;
-    String tag;
-    FeedItemFilter filter = null;
+    private RecyclerView recyclerView;
+    public ItemTouchHelper itemTouchHelper;
+    private final Fragment fragment;
+    private final String tag;
+    private FeedItemFilter filter = null;
+
+    private NewSwipeCallback newSwipeCallback = SimpleSwipeCallback::new;
 
     public SwipeActions(Fragment fragment, String tag) {
         this.fragment = fragment;
         this.tag = tag;
-        itemTouchHelper(new SimpleSwipeCallback());
+        itemTouchHelper();
     }
 
     public void setFilter(FeedItemFilter filter) {
@@ -62,6 +64,7 @@ public class SwipeActions {
     public SwipeActions attachTo(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        //reload as settings might have changed
         fragment.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
             if (event == Lifecycle.Event.ON_RESUME) {
                 resetItemTouchHelper();
@@ -70,9 +73,8 @@ public class SwipeActions {
         return this;
     }
 
-    public ItemTouchHelper itemTouchHelper(ItemTouchHelper.SimpleCallback simpleCallback) {
-        itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        return itemTouchHelper;
+    public void itemTouchHelper() {
+        itemTouchHelper = new ItemTouchHelper(newSwipeCallback.construct());
     }
 
     private static int[] getPrefs(Context context, String tag, int[] defaultActions) {
@@ -121,8 +123,17 @@ public class SwipeActions {
         if (itemTouchHelper != null) {
             itemTouchHelper.attachToRecyclerView(null);
         }
-        itemTouchHelper(new SimpleSwipeCallback());
+        itemTouchHelper();
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    public interface NewSwipeCallback {
+        SimpleSwipeCallback construct();
+    }
+
+    public void setNewSwipeCallback(NewSwipeCallback newSwipeCallback) {
+        this.newSwipeCallback = newSwipeCallback;
+        itemTouchHelper();
     }
 
     public void showDialog() {
@@ -131,6 +142,10 @@ public class SwipeActions {
 
     private void showDialog(SwipeActionsDialog.Callback prefsChanged) {
         new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::reattachItemTouchHelper);
+    }
+
+    private SimpleSwipeCallback newSwipeCallback() {
+        return new SimpleSwipeCallback();
     }
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
