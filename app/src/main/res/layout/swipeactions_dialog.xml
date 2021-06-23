@@ -52,7 +52,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:text="@string/swipe_left" />
-    
+
     <Spinner
         android:id="@+id/spinnerLeftAction"
         android:layout_width="match_parent"
