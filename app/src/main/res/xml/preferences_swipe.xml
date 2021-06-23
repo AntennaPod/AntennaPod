@@ -4,5 +4,8 @@
     <Preference
         android:key="prefSwipeFeed"
         android:title="@string/feeds_label"/>
+    <Preference
+        android:key="prefSwipeQueue"
+        android:title="@string/queue_label"/>
 
 </PreferenceScreen>
