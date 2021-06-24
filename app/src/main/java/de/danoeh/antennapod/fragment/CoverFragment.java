@@ -124,14 +124,16 @@ public class CoverFragment extends Fragment {
         configureForOrientation(getResources().getConfiguration());
     }
 
-    private void loadMediaInfo() {
+    private void loadMediaInfo(boolean includingChapters) {
         if (disposable != null) {
             disposable.dispose();
         }
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext());
+                if (includingChapters) {
+                    ChapterUtils.loadChapters(media, getContext());
+                }
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -141,6 +143,9 @@ public class CoverFragment extends Fragment {
                 .subscribe(media -> {
                     this.media = media;
                     displayMediaInfo(media);
+                    if (media.getChapters() == null && !includingChapters) {
+                        loadMediaInfo(true);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -186,17 +191,22 @@ public class CoverFragment extends Fragment {
     }
 
     private void updateChapterControlVisibility() {
+        boolean chapterControlVisible = false;
         if (media.getChapters() != null) {
-            boolean chapterControlVisible = media.getChapters().size() > 0;
-            int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
-            if (chapterControl.getVisibility() != newVisibility) {
-                chapterControl.setVisibility(newVisibility);
-                ObjectAnimator.ofFloat(chapterControl,
-                        "alpha",
-                        chapterControlVisible ? 0 : 1,
-                        chapterControlVisible ? 1 : 0)
-                        .start();
-            }
+            chapterControlVisible = media.getChapters().size() > 0;
+        } else if (media instanceof FeedMedia) {
+            FeedMedia fm = ((FeedMedia) media);
+            // If an item has chapters but they are not loaded yet, still display the button.
+            chapterControlVisible = fm.getItem() != null && fm.getItem().hasChapters();
+        }
+        int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
+        if (chapterControl.getVisibility() != newVisibility) {
+            chapterControl.setVisibility(newVisibility);
+            ObjectAnimator.ofFloat(chapterControl,
+                    "alpha",
+                    chapterControlVisible ? 0 : 1,
+                    chapterControlVisible ? 1 : 0)
+                    .start();
         }
     }
 
@@ -262,11 +272,11 @@ public class CoverFragment extends Fragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
+                CoverFragment.this.loadMediaInfo(false);
             }
         };
         controller.init();
-        loadMediaInfo();
+        loadMediaInfo(false);
         EventBus.getDefault().register(this);
     }
 
