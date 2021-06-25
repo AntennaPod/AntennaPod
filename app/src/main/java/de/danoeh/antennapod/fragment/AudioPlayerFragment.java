@@ -268,7 +268,7 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             controller.setPlaybackSpeed(newSpeed);
-            loadMediaInfo();
+            loadMediaInfo(false);
         });
         butPlaybackSpeed.setOnLongClickListener(v -> {
             new VariableSpeedDialog().show(getChildFragmentManager(), null);
@@ -290,14 +290,16 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
-    private void loadMediaInfo() {
+    private void loadMediaInfo(boolean includingChapters) {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.create(emitter -> {
+        disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext());
+                if (includingChapters) {
+                    ChapterUtils.loadChapters(media, getContext());
+                }
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -305,9 +307,13 @@ public class AudioPlayerFragment extends Fragment implements
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> updateUi((Playable) media),
-                error -> Log.e(TAG, Log.getStackTraceString(error)),
-                () -> updateUi(null));
+        .subscribe(media -> {
+            updateUi(media);
+            if (media.getChapters() == null && !includingChapters) {
+                loadMediaInfo(true);
+            }
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)),
+            () -> updateUi(null));
     }
 
     private PlaybackController newPlaybackController() {
@@ -350,7 +356,7 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onSleepTimerUpdate() {
-                AudioPlayerFragment.this.loadMediaInfo();
+                AudioPlayerFragment.this.loadMediaInfo(false);
             }
 
             @Override
@@ -360,7 +366,7 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void loadMediaInfo() {
-                AudioPlayerFragment.this.loadMediaInfo();
+                AudioPlayerFragment.this.loadMediaInfo(false);
             }
 
             @Override
@@ -397,7 +403,7 @@ public class AudioPlayerFragment extends Fragment implements
         super.onStart();
         controller = newPlaybackController();
         controller.init();
-        loadMediaInfo();
+        loadMediaInfo(false);
         EventBus.getDefault().register(this);
         txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
@@ -447,7 +453,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void favoritesChanged(FavoritesEvent event) {
-        AudioPlayerFragment.this.loadMediaInfo();
+        AudioPlayerFragment.this.loadMediaInfo(false);
     }
 
     @Override
