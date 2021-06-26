@@ -527,7 +527,7 @@ public class GpodnetService implements ISyncService {
 
 
     @Override
-    public boolean authenticated() {
+    public boolean isAuthenticated() {
         return this.deviceId != null;
     }
 
