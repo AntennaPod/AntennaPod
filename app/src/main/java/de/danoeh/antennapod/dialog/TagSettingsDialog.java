@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -25,7 +24,6 @@ import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
 import de.danoeh.antennapod.view.ItemOffsetDecoration;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
@@ -37,10 +35,6 @@ public class TagSettingsDialog extends DialogFragment {
     private List<String> displayedTags;
     private EditTagsDialogBinding viewBinding;
     private TagSelectionAdapter adapter;
-    private Disposable disposable;
-    private AutoCompleteTextView acTagTextView;
-    private ArrayAdapter<String> acAdapter;
-    private List<String> listItems;
 
     public static TagSettingsDialog newInstance(FeedPreferences preferences) {
         TagSettingsDialog fragment = new TagSettingsDialog();
@@ -69,13 +63,12 @@ public class TagSettingsDialog extends DialogFragment {
                 addTag(viewBinding.newTagEditText.getText().toString().trim()));
 
         loadTags();
-        acTagTextView = viewBinding.newTagEditText;
-        acTagTextView.setThreshold(1);
-        acTagTextView.setOnTouchListener(new View.OnTouchListener() {
+        viewBinding.newTagEditText.setThreshold(1);
+        viewBinding.newTagEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                acTagTextView.showDropDown();
-                acTagTextView.requestFocus();
+                viewBinding.newTagEditText.showDropDown();
+                viewBinding.newTagEditText.requestFocus();
                 return false;
             }
         });
@@ -97,32 +90,27 @@ public class TagSettingsDialog extends DialogFragment {
     }
 
     private void loadTags() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        disposable = Observable.fromCallable(
+        Observable.fromCallable(
                 () -> {
                     NavDrawerData data = DBReader.getNavDrawerData();
                     List<NavDrawerData.DrawerItem> items = data.items;
-                    List<String> folder = new ArrayList<String>();
+                    List<String> folders = new ArrayList<String>();
                     for (NavDrawerData.DrawerItem item : items) {
                         if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
-                            folder.add(item.getTitle());
+                            folders.add(item.getTitle());
                         }
                     }
-                    return folder;
+                    return folders;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            listItems = result;
-                            acAdapter = new ArrayAdapter<String>(getContext(), R.layout.single_tag_text_view, listItems);
-                            acTagTextView.setAdapter(acAdapter);
+                            ArrayAdapter<String> acAdapter = new ArrayAdapter<String>(getContext(), R.layout.single_tag_text_view, result);
+                            viewBinding.newTagEditText.setAdapter(acAdapter);
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
                         });
-
     }
 
     private void addTag(String name) {
