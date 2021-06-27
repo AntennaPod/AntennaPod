@@ -3,7 +3,12 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -12,10 +17,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
 import de.danoeh.antennapod.view.ItemOffsetDecoration;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +37,10 @@ public class TagSettingsDialog extends DialogFragment {
     private List<String> displayedTags;
     private EditTagsDialogBinding viewBinding;
     private TagSelectionAdapter adapter;
+    private Disposable disposable;
+    private AutoCompleteTextView acTagTextView;
+    private ArrayAdapter<String> acAdapter;
+    private List<String> listItems;
 
     public static TagSettingsDialog newInstance(FeedPreferences preferences) {
         TagSettingsDialog fragment = new TagSettingsDialog();
@@ -53,6 +68,18 @@ public class TagSettingsDialog extends DialogFragment {
         viewBinding.newTagButton.setOnClickListener(v ->
                 addTag(viewBinding.newTagEditText.getText().toString().trim()));
 
+        loadTags();
+        acTagTextView = viewBinding.newTagEditText;
+        acTagTextView.setThreshold(1);
+        acTagTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                acTagTextView.showDropDown();
+                acTagTextView.requestFocus();
+                return false;
+            }
+        });
+
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
         dialog.setTitle(R.string.feed_folders_label);
@@ -67,6 +94,35 @@ public class TagSettingsDialog extends DialogFragment {
         });
         dialog.setNegativeButton(R.string.cancel_label, null);
         return dialog.create();
+    }
+
+    private void loadTags() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(
+                () -> {
+                    NavDrawerData data = DBReader.getNavDrawerData();
+                    List<NavDrawerData.DrawerItem> items = data.items;
+                    List<String> folder = new ArrayList<String>();
+                    for (NavDrawerData.DrawerItem item : items) {
+                        if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+                            folder.add(item.getTitle());
+                        }
+                    }
+                    return folder;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {
+                            listItems = result;
+                            acAdapter = new ArrayAdapter<String>(getContext(), R.layout.single_tag_text_view, listItems);
+                            acTagTextView.setAdapter(acAdapter);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        });
+
     }
 
     private void addTag(String name) {
