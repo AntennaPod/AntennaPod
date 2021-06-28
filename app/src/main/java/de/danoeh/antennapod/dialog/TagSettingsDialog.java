@@ -106,7 +106,8 @@ public class TagSettingsDialog extends DialogFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            ArrayAdapter<String> acAdapter = new ArrayAdapter<String>(getContext(), R.layout.single_tag_text_view, result);
+                            ArrayAdapter<String> acAdapter = new ArrayAdapter<String>(getContext(),
+                                    R.layout.single_tag_text_view, result);
                             viewBinding.newTagEditText.setAdapter(acAdapter);
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
