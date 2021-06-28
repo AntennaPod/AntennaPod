@@ -643,7 +643,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
             MenuItem menuItem = menu.findItem(R.id.multi_select);
-            menuItem.setVisible(true);
+            if (!inActionMode()) {
+                menuItem.setVisible(true);
+            }
         }
     }
 }
