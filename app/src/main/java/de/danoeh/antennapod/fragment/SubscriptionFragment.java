@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -207,7 +207,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
     private void setupEmptyView() {
         emptyView = new EmptyViewHandler(getContext());
-        emptyView.setIcon(R.attr.ic_folder);
+        emptyView.setIcon(R.drawable.ic_folder);
         emptyView.setTitle(R.string.no_subscriptions_head_label);
         emptyView.setMessage(R.string.no_subscriptions_label);
         emptyView.attachToListView(subscriptionGridLayout);
@@ -291,6 +291,9 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        if (menuInfo == null) {
+            return;
+        }
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
 

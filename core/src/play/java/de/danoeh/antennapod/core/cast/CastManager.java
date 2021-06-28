@@ -23,13 +23,11 @@
 package de.danoeh.antennapod.core.cast;
 
 import android.content.Context;
-import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.view.ActionProvider;
 import androidx.core.view.MenuItemCompat;
 import androidx.mediarouter.media.MediaRouter;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -46,7 +44,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 import com.google.android.libraries.cast.companionlibrary.cast.CastConfiguration;
-import com.google.android.libraries.cast.companionlibrary.cast.MediaQueue;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.OnFailedListener;
@@ -58,9 +55,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -97,32 +92,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     public static final String CAST_APP_ID = CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID;
 
-    public static final double DEFAULT_VOLUME_STEP = 0.05;
-    public static final long DEFAULT_LIVE_STREAM_DURATION_MS = TimeUnit.HOURS.toMillis(2);
-    private double volumeStep = DEFAULT_VOLUME_STEP;
-    private MediaQueue mediaQueue;
     private MediaStatus mediaStatus;
-
     private static CastManager INSTANCE;
     private RemoteMediaPlayer remoteMediaPlayer;
     private int state = MediaStatus.PLAYER_STATE_IDLE;
-    private int idleReason;
     private final Set<CastConsumer> castConsumers = new CopyOnWriteArraySet<>();
-    private long liveStreamDuration = DEFAULT_LIVE_STREAM_DURATION_MS;
-    private MediaQueueItem preLoadingItem;
 
     public static final int QUEUE_OPERATION_LOAD = 1;
-    public static final int QUEUE_OPERATION_INSERT_ITEMS = 2;
-    public static final int QUEUE_OPERATION_UPDATE_ITEMS = 3;
-    public static final int QUEUE_OPERATION_JUMP = 4;
-    public static final int QUEUE_OPERATION_REMOVE_ITEM = 5;
-    public static final int QUEUE_OPERATION_REMOVE_ITEMS = 6;
-    public static final int QUEUE_OPERATION_REORDER = 7;
-    public static final int QUEUE_OPERATION_MOVE = 8;
     public static final int QUEUE_OPERATION_APPEND = 9;
-    public static final int QUEUE_OPERATION_NEXT = 10;
-    public static final int QUEUE_OPERATION_PREV = 11;
-    public static final int QUEUE_OPERATION_SET_REPEAT = 12;
 
     private CastManager(Context context, CastConfiguration castConfiguration) {
         super(context, castConfiguration);
@@ -176,19 +153,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         return remoteMediaPlayer;
     }
 
-    /**
-     * Determines if the media that is loaded remotely is a live stream or not.
-     *
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public final boolean isRemoteStreamLive() throws TransientNetworkDisconnectionException,
-            NoConnectionException {
-        checkConnectivity();
-        MediaInfo info = getRemoteMediaInformation();
-        return (info != null) && (info.getStreamType() == MediaInfo.STREAM_TYPE_LIVE);
-    }
-
     /*
      * A simple check to make sure remoteMediaPlayer is not null
      */
@@ -196,25 +160,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (remoteMediaPlayer == null) {
             throw new NoConnectionException();
         }
-    }
-
-    /**
-     * Returns the url for the media that is currently playing on the remote device. If there is no
-     * connection, this will return <code>null</code>.
-     *
-     * @throws NoConnectionException If no connectivity to the device exists
-     * @throws TransientNetworkDisconnectionException If framework is still trying to recover from
-     * a possibly transient loss of network
-     */
-    public String getRemoteMediaUrl() throws TransientNetworkDisconnectionException,
-            NoConnectionException {
-        checkConnectivity();
-        if (remoteMediaPlayer != null && remoteMediaPlayer.getMediaInfo() != null) {
-            MediaInfo info = remoteMediaPlayer.getMediaInfo();
-            remoteMediaPlayer.getMediaStatus().getPlayerState();
-            return info.getContentId();
-        }
-        throw new NoConnectionException();
     }
 
     /**
@@ -253,20 +198,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         return isRemoteMediaPaused() || isRemoteMediaPlaying();
-    }
-
-    /**
-     * Returns the {@link MediaInfo} for the current media
-     *
-     * @throws NoConnectionException If no connectivity to the device exists
-     * @throws TransientNetworkDisconnectionException If framework is still trying to recover from
-     * a possibly transient loss of network
-     */
-    public MediaInfo getRemoteMediaInformation() throws TransientNetworkDisconnectionException,
-            NoConnectionException {
-        checkConnectivity();
-        checkRemoteMediaPlayerAvailable();
-        return remoteMediaPlayer.getMediaInfo();
     }
 
     /**
@@ -327,30 +258,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     }
 
     /**
-     * Returns <code>true</code> if remote device is muted.
-     *
-     * @throws NoConnectionException
-     * @throws TransientNetworkDisconnectionException
-     */
-    public boolean isMute() throws TransientNetworkDisconnectionException, NoConnectionException {
-        return isStreamMute() || isDeviceMute();
-    }
-
-    /**
-     * Mutes or un-mutes the stream volume.
-     *
-     * @throws CastException
-     * @throws NoConnectionException
-     * @throws TransientNetworkDisconnectionException
-     */
-    public void setStreamMute(boolean mute) throws CastException, TransientNetworkDisconnectionException,
-            NoConnectionException {
-        checkConnectivity();
-        checkRemoteMediaPlayerAvailable();
-        remoteMediaPlayer.setStreamMute(mApiClient, mute);
-    }
-
-    /**
      * Returns the duration of the media that is loaded, in milliseconds.
      *
      * @throws NoConnectionException
@@ -361,23 +268,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
         return remoteMediaPlayer.getStreamDuration();
-    }
-
-    /**
-     * Returns the time left (in milliseconds) of the current media. If there is no
-     * {@code RemoteMediaPlayer}, it returns -1.
-     *
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public long getMediaTimeRemaining()
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            return -1;
-        }
-        return isRemoteStreamLive() ? liveStreamDuration : remoteMediaPlayer.getStreamDuration()
-                - remoteMediaPlayer.getApproximateStreamPosition();
     }
 
     /**
@@ -671,435 +561,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     }
 
     /**
-     * Inserts a list of new media items into the queue.
-     *
-     * @param itemsToInsert List of items to insert into the queue, in the order that they should be
-     *                      played. The itemId field of the items should be unassigned or the
-     *                      request will fail with an INVALID_PARAMS error. Must not be {@code null}
-     *                      or empty.
-     * @param insertBeforeItemId ID of the item that will be located immediately after the inserted
-     *                           list. If the value is {@link MediaQueueItem#INVALID_ITEM_ID} or
-     *                           invalid, the inserted list will be appended to the end of the
-     *                           queue.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     * @throws IllegalArgumentException
-     */
-    public void queueInsertItems(final MediaQueueItem[] itemsToInsert, final int insertBeforeItemId,
-                                 final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueInsertItems");
-        checkConnectivity();
-        if (itemsToInsert == null || itemsToInsert.length == 0) {
-            throw new IllegalArgumentException("items cannot be empty or null");
-        }
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to insert into queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueInsertItems(mApiClient, itemsToInsert, insertBeforeItemId, customData)
-                .setResultCallback(
-                        result -> {
-                            for (CastConsumer consumer : castConsumers) {
-                                consumer.onMediaQueueOperationResult(
-                                        QUEUE_OPERATION_INSERT_ITEMS,
-                                        result.getStatus().getStatusCode());
-                            }
-                        });
-    }
-
-    /**
-     * Updates properties of a subset of the existing items in the media queue.
-     *
-     * @param itemsToUpdate List of queue items to be updated. The items will retain the existing
-     *                      order and will be fully replaced with the ones provided, including the
-     *                      media information. Any other items currently in the queue will remain
-     *                      unchanged. The tracks information can not change once the item is loaded
-     *                      (if the item is the currentItem). If any of the items does not exist it
-     *                      will be ignored.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueUpdateItems(final MediaQueueItem[] itemsToUpdate, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to update the queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueUpdateItems(mApiClient, itemsToUpdate, customData).setResultCallback(
-                result -> {
-                    Log.d(TAG, "queueUpdateItems() " + result.getStatus() + result.getStatus()
-                            .isSuccess());
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_UPDATE_ITEMS,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Plays the item with {@code itemId} in the queue.
-     * <p>
-     * If {@code itemId} is not found in the queue, this method will report success without sending
-     * a request to the receiver.
-     *
-     * @param itemId The ID of the item to which to jump.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     * @throws IllegalArgumentException
-     */
-    public void queueJumpToItem(int itemId, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException,
-            IllegalArgumentException {
-        checkConnectivity();
-        if (itemId == MediaQueueItem.INVALID_ITEM_ID) {
-            throw new IllegalArgumentException("itemId is not valid");
-        }
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to jump in a queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueJumpToItem(mApiClient, itemId, customData).setResultCallback(
-                result -> {
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_JUMP,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Removes a list of items from the queue. If the remaining queue is empty, the media session
-     * will be terminated.
-     *
-     * @param itemIdsToRemove The list of media item IDs to remove. Must not be {@code null} or
-     *                        empty.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     * @throws IllegalArgumentException
-     */
-    public void queueRemoveItems(final int[] itemIdsToRemove, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException,
-            IllegalArgumentException {
-        Log.d(TAG, "queueRemoveItems");
-        checkConnectivity();
-        if (itemIdsToRemove == null || itemIdsToRemove.length == 0) {
-            throw new IllegalArgumentException("itemIds cannot be empty or null");
-        }
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to remove items from queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueRemoveItems(mApiClient, itemIdsToRemove, customData).setResultCallback(
-                result -> {
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REMOVE_ITEMS,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Removes the item with {@code itemId} from the queue.
-     * <p>
-     * If {@code itemId} is not found in the queue, this method will silently return without sending
-     * a request to the receiver. A {@code itemId} may not be in the queue because it wasn't
-     * originally in the queue, or it was removed by another sender.
-     *
-     * @param itemId The ID of the item to be removed.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     * @throws IllegalArgumentException
-     */
-    public void queueRemoveItem(final int itemId, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException,
-            IllegalArgumentException {
-        Log.d(TAG, "queueRemoveItem");
-        checkConnectivity();
-        if (itemId == MediaQueueItem.INVALID_ITEM_ID) {
-            throw new IllegalArgumentException("itemId is invalid");
-        }
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to remove an item from queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueRemoveItem(mApiClient, itemId, customData).setResultCallback(
-                result -> {
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REMOVE_ITEM,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Reorder a list of media items in the queue.
-     *
-     * @param itemIdsToReorder The list of media item IDs to reorder, in the new order. Any other
-     *                         items currently in the queue will maintain their existing order. The
-     *                         list will be inserted just before the item specified by
-     *                         {@code insertBeforeItemId}, or at the end of the queue if
-     *                         {@code insertBeforeItemId} is {@link MediaQueueItem#INVALID_ITEM_ID}.
-     *                         <p>
-     *                         For example:
-     *                         <p>
-     *                         If insertBeforeItemId is not specified <br>
-     *                         Existing queue: "A","D","G","H","B","E" <br>
-     *                         itemIds: "D","H","B" <br>
-     *                         New Order: "A","G","E","D","H","B" <br>
-     *                         <p>
-     *                         If insertBeforeItemId is "A" <br>
-     *                         Existing queue: "A","D","G","H","B" <br>
-     *                         itemIds: "D","H","B" <br>
-     *                         New Order: "D","H","B","A","G","E" <br>
-     *                         <p>
-     *                         If insertBeforeItemId is "G" <br>
-     *                         Existing queue: "A","D","G","H","B" <br>
-     *                         itemIds: "D","H","B" <br>
-     *                         New Order: "A","D","H","B","G","E" <br>
-     *                         <p>
-     *                         If any of the items does not exist it will be ignored.
-     *                         Must not be {@code null} or empty.
-     * @param insertBeforeItemId ID of the item that will be located immediately after the reordered
-     *                           list. If set to {@link MediaQueueItem#INVALID_ITEM_ID}, the
-     *                           reordered list will be appended at the end of the queue.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueReorderItems(final int[] itemIdsToReorder, final int insertBeforeItemId,
-                                  final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException,
-            IllegalArgumentException {
-        Log.d(TAG, "queueReorderItems");
-        checkConnectivity();
-        if (itemIdsToReorder == null || itemIdsToReorder.length == 0) {
-            throw new IllegalArgumentException("itemIdsToReorder cannot be empty or null");
-        }
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to reorder items in a queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueReorderItems(mApiClient, itemIdsToReorder, insertBeforeItemId, customData)
-                .setResultCallback(
-                        result -> {
-                            for (CastConsumer consumer : castConsumers) {
-                                consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REORDER,
-                                        result.getStatus().getStatusCode());
-                            }
-                        });
-    }
-
-    /**
-     * Moves the item with {@code itemId} to a new position in the queue.
-     * <p>
-     * If {@code itemId} is not found in the queue, either because it wasn't there originally or it
-     * was removed by another sender before calling this function, this function will silently
-     * return without sending a request to the receiver.
-     *
-     * @param itemId The ID of the item to be moved.
-     * @param newIndex The new index of the item. If the value is negative, an error will be
-     *                 returned. If the value is out of bounds, or becomes out of bounds because the
-     *                 queue was shortened by another sender while this request is in progress, the
-     *                 item will be moved to the end of the queue.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueMoveItemToNewIndex(int itemId, int newIndex, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueMoveItemToNewIndex");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to mote item to new index with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueMoveItemToNewIndex(mApiClient, itemId, newIndex, customData)
-                .setResultCallback(
-                        result -> {
-                            for (CastConsumer consumer : castConsumers) {
-                                consumer.onMediaQueueOperationResult(QUEUE_OPERATION_MOVE,
-                                        result.getStatus().getStatusCode());
-                            }
-                        });
-    }
-
-    /**
-     * Appends a new media item to the end of the queue.
-     *
-     * @param item The item to append. Must not be {@code null}.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueAppendItem(MediaQueueItem item, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueAppendItem");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to append item with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueAppendItem(mApiClient, item, customData)
-                .setResultCallback(
-                        result -> {
-                            for (CastConsumer consumer : castConsumers) {
-                                consumer.onMediaQueueOperationResult(QUEUE_OPERATION_APPEND,
-                                        result.getStatus().getStatusCode());
-                            }
-                        });
-    }
-
-    /**
-     * Jumps to the next item in the queue.
-     *
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueNext(final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueNext");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to update the queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueNext(mApiClient, customData).setResultCallback(
-                result -> {
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_NEXT,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Jumps to the previous item in the queue.
-     *
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queuePrev(final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queuePrev");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to update the queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queuePrev(mApiClient, customData).setResultCallback(
-                result -> {
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_PREV,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Inserts an item in the queue and starts the playback of that newly inserted item. It is
-     * assumed that we are inserting  before the "current item"
-     *
-     * @param item The item to be inserted
-     * @param insertBeforeItemId ID of the item that will be located immediately after the inserted
-     * and is assumed to be the "current item"
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     * @throws IllegalArgumentException
-     */
-    public void queueInsertBeforeCurrentAndPlay(MediaQueueItem item, int insertBeforeItemId,
-                                                final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueInsertBeforeCurrentAndPlay");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to insert into queue with no active media session");
-            throw new NoConnectionException();
-        }
-        if (item == null || insertBeforeItemId == MediaQueueItem.INVALID_ITEM_ID) {
-            throw new IllegalArgumentException(
-                    "item cannot be empty or insertBeforeItemId cannot be invalid");
-        }
-        remoteMediaPlayer.queueInsertItems(mApiClient, new MediaQueueItem[]{item},
-                insertBeforeItemId, customData).setResultCallback(
-                result -> {
-                    if (result.getStatus().isSuccess()) {
-
-                        try {
-                            queuePrev(customData);
-                        } catch (TransientNetworkDisconnectionException |
-                                NoConnectionException e) {
-                            Log.e(TAG, "queuePrev() Failed to skip to previous", e);
-                        }
-                    }
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_INSERT_ITEMS,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Sets the repeat mode of the queue.
-     *
-     * @param repeatMode The repeat playback mode for the queue.
-     * @param customData Custom application-specific data to pass along with the request. May be
-     *                   {@code null}.
-     * @throws TransientNetworkDisconnectionException
-     * @throws NoConnectionException
-     */
-    public void queueSetRepeatMode(final int repeatMode, final JSONObject customData)
-            throws TransientNetworkDisconnectionException, NoConnectionException {
-        Log.d(TAG, "queueSetRepeatMode");
-        checkConnectivity();
-        if (remoteMediaPlayer == null) {
-            Log.e(TAG, "Trying to update the queue with no active media session");
-            throw new NoConnectionException();
-        }
-        remoteMediaPlayer
-                .queueSetRepeatMode(mApiClient, repeatMode, customData).setResultCallback(
-                result -> {
-                    if (!result.getStatus().isSuccess()) {
-                        Log.d(TAG, "Failed with status: " + result.getStatus());
-                    }
-                    for (CastConsumer consumer : castConsumers) {
-                        consumer.onMediaQueueOperationResult(QUEUE_OPERATION_SET_REPEAT,
-                                result.getStatus().getStatusCode());
-                    }
-                });
-    }
-
-    /**
      * Plays the loaded media.
      *
      * @param position Where to start the playback. Units is milliseconds.
@@ -1294,29 +755,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                 });
     }
 
-    /**
-     * Toggles the playback of the media.
-     *
-     * @throws CastException
-     * @throws NoConnectionException
-     * @throws TransientNetworkDisconnectionException
-     */
-    public void togglePlayback() throws CastException, TransientNetworkDisconnectionException,
-            NoConnectionException {
-        checkConnectivity();
-        boolean isPlaying = isRemoteMediaPlaying();
-        if (isPlaying) {
-            pause();
-        } else {
-            if (state == MediaStatus.PLAYER_STATE_IDLE
-                    && idleReason == MediaStatus.IDLE_REASON_FINISHED) {
-                loadMedia(getRemoteMediaInformation(), true, 0);
-            } else {
-                play();
-            }
-        }
-    }
-
     private void attachMediaChannel() throws TransientNetworkDisconnectionException,
             NoConnectionException {
         Log.d(TAG, "attachMediaChannel()");
@@ -1400,45 +838,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     }
 
     /**
-     * Returns the playback status of the remote device.
-     *
-     * @return Returns one of the values
-     * <ul>
-     * <li> <code>MediaStatus.PLAYER_STATE_UNKNOWN</code></li>
-     * <li> <code>MediaStatus.PLAYER_STATE_IDLE</code></li>
-     * <li> <code>MediaStatus.PLAYER_STATE_PLAYING</code></li>
-     * <li> <code>MediaStatus.PLAYER_STATE_PAUSED</code></li>
-     * <li> <code>MediaStatus.PLAYER_STATE_BUFFERING</code></li>
-     * </ul>
-     */
-    public int getPlaybackStatus() {
-        return state;
-    }
-
-    /**
      * Returns the latest retrieved value for the {@link MediaStatus}. This value is updated
      * whenever the onStatusUpdated callback is called.
      */
     public final MediaStatus getMediaStatus() {
         return mediaStatus;
-    }
-
-    /**
-     * Returns the Idle reason, defined in <code>MediaStatus.IDLE_*</code>. Note that the returned
-     * value is only meaningful if the status is truly <code>MediaStatus.PLAYER_STATE_IDLE
-     * </code>
-     *
-     * <p>Possible values are:
-     * <ul>
-     *     <li>IDLE_REASON_NONE</li>
-     *     <li>IDLE_REASON_FINISHED</li>
-     *     <li>IDLE_REASON_CANCELED</li>
-     *     <li>IDLE_REASON_INTERRUPTED</li>
-     *     <li>IDLE_REASON_ERROR</li>
-     * </ul>
-     */
-    public int getIdleReason() {
-        return idleReason;
     }
 
     /*
@@ -1465,7 +869,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                 onQueueUpdated(null, null, MediaStatus.REPEAT_MODE_REPEAT_OFF, false);
             }
             state = mediaStatus.getPlayerState();
-            idleReason = mediaStatus.getIdleReason();
+            int idleReason = mediaStatus.getIdleReason();
 
             if (state == MediaStatus.PLAYER_STATE_PLAYING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = playing");
@@ -1503,15 +907,10 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (mediaStatus != null) {
             item = mediaStatus.getQueueItemById(mediaStatus.getPreloadedItemId());
         }
-        preLoadingItem = item;
         Log.d(TAG, "onRemoteMediaPreloadStatusUpdated() " + item);
         for (CastConsumer consumer : castConsumers) {
             consumer.onRemoteMediaPreloadStatusUpdated(item);
         }
-    }
-
-    public MediaQueueItem getPreLoadingItem() {
-        return preLoadingItem;
     }
 
     /*
@@ -1522,13 +921,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         Log.d(TAG, "onQueueUpdated() reached");
         Log.d(TAG, String.format(Locale.US, "Queue Items size: %d, Item: %s, Repeat Mode: %d, Shuffle: %s",
                 queueItems == null ? 0 : queueItems.size(), item, repeatMode, shuffle));
-        if (queueItems != null) {
-            mediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(queueItems), item, shuffle,
-                    repeatMode);
-        } else {
-            mediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(), null, false,
-                    MediaStatus.REPEAT_MODE_REPEAT_OFF);
-        }
         for (CastConsumer consumer : castConsumers) {
             consumer.onMediaQueueUpdated(queueItems, item, repeatMode, shuffle);
         }
@@ -1599,7 +991,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         super.onDisconnected(stopAppOnExit, clearPersistedConnectionData, setDefaultRoute);
         state = MediaStatus.PLAYER_STATE_IDLE;
         mediaStatus = null;
-        mediaQueue = null;
     }
 
     class CastListener extends Cast.Listener {
@@ -1632,77 +1023,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public void onFailed(int resourceId, int statusCode) {
         Log.d(TAG, "onFailed: " + mContext.getString(resourceId) + ", code: " + statusCode);
         super.onFailed(resourceId, statusCode);
-    }
-
-    /**
-     * Clients can call this method to delegate handling of the volume. Clients should override
-     * {@code dispatchEvent} and call this method:
-     * <pre>
-     public boolean dispatchKeyEvent(KeyEvent event) {
-     if (mCastManager.onDispatchVolumeKeyEvent(event, VOLUME_DELTA)) {
-     return true;
-     }
-     return super.dispatchKeyEvent(event);
-     }
-     * </pre>
-     * @param event The dispatched event.
-     * @param volumeDelta The amount by which volume should be increased or decreased in each step
-     * @return <code>true</code> if volume is handled by the library, <code>false</code> otherwise.
-     */
-    public boolean onDispatchVolumeKeyEvent(KeyEvent event, double volumeDelta) {
-        if (isConnected()) {
-            boolean isKeyDown = event.getAction() == KeyEvent.ACTION_DOWN;
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_VOLUME_UP:
-                    return changeVolume(volumeDelta, isKeyDown);
-                case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    return changeVolume(-volumeDelta, isKeyDown);
-            }
-        }
-        return false;
-    }
-
-    private boolean changeVolume(double volumeIncrement, boolean isKeyDown) {
-        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                && getPlaybackStatus() == MediaStatus.PLAYER_STATE_PLAYING
-                && isFeatureEnabled(CastConfiguration.FEATURE_LOCKSCREEN)) {
-            return false;
-        }
-
-        if (isKeyDown) {
-            try {
-                adjustDeviceVolume(volumeIncrement);
-            } catch (CastException | TransientNetworkDisconnectionException |
-                    NoConnectionException e) {
-                Log.e(TAG, "Failed to change volume", e);
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Sets the volume step, i.e. the fraction by which volume will increase or decrease each time
-     * user presses the hard volume buttons on the device.
-     *
-     * @param volumeStep Should be a double between 0 and 1, inclusive.
-     */
-    public CastManager setVolumeStep(double volumeStep) {
-        if ((volumeStep > 1) || (volumeStep < 0)) {
-            throw new IllegalArgumentException("Volume Step should be between 0 and 1, inclusive");
-        }
-        this.volumeStep = volumeStep;
-        return this;
-    }
-
-    /**
-     * Returns the volume step. The default value is {@code DEFAULT_VOLUME_STEP}.
-     */
-    public double getVolumeStep() {
-        return volumeStep;
-    }
-
-    public final MediaQueue getMediaQueue() {
-        return mediaQueue;
     }
 
     /**

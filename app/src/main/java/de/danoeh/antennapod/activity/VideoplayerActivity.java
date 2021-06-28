@@ -1,53 +1,79 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.widget.EditText;
-import android.widget.ImageView;
-
-import androidx.core.view.WindowCompat;
-import androidx.appcompat.app.ActionBar;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.WindowCompat;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
+import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
+import de.danoeh.antennapod.dialog.ShareDialog;
+import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
+import de.danoeh.antennapod.dialog.SleepTimerDialog;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.view.AspectRatioVideoView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Activity for playing video files.
  */
-public class VideoplayerActivity extends MediaplayerActivity {
+public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "VideoplayerActivity";
 
     /**
@@ -57,36 +83,39 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private boolean videoSurfaceCreated = false;
     private boolean destroyingDueToReload = false;
     private long lastScreenTap = 0;
-
-    private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
-
-    private final AtomicBoolean isSetup = new AtomicBoolean(false);
-
-    private LinearLayout controls;
-    private LinearLayout videoOverlay;
-    private AspectRatioVideoView videoview;
-    private ProgressBar progressIndicator;
-    private FrameLayout videoframe;
-    private ImageView skipAnimationView;
-
-    @Override
-    protected void chooseTheme() {
-        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
-    }
+    private Handler videoControlsHider = new Handler(Looper.getMainLooper());
+    private VideoplayerActivityBinding viewBinding;
+    private PlaybackController controller;
+    private boolean showTimeLeft = false;
+    private boolean isFavorite = false;
+    private Disposable disposable;
+    private float prog;
 
     @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY); // has to be called before setting layout content
+        // has to be called before setting layout content
+        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
+        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate()");
+        StorageUtils.checkStorageAvailability(this);
+
+        getWindow().setFormat(PixelFormat.TRANSPARENT);
+        viewBinding = VideoplayerActivityBinding.inflate(LayoutInflater.from(this));
+        setContentView(viewBinding.getRoot());
+        setupView();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        StorageUtils.checkStorageAvailability(this);
         if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
@@ -99,11 +128,20 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onStop() {
+        if (controller != null) {
+            controller.release();
+            controller = null; // prevent leak
+        }
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        EventBus.getDefault().unregister(this);
         super.onStop();
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
-            videoControlsHider.stop();
+            videoControlsHider.removeCallbacks(hideVideoControls);
         }
-        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
+        // Controller released; we will not receive buffering updates
+        viewBinding.progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -112,6 +150,16 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
             compatEnterPictureInPicture();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        controller = newPlaybackController();
+        controller.init();
+        loadMediaInfo();
+        onPositionObserverUpdate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -124,16 +172,103 @@ public class VideoplayerActivity extends MediaplayerActivity {
         super.onPause();
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
-    protected void onDestroy() {
-        videoControlsHider.stop();
-        videoControlsHider = null;
-        super.onDestroy();
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
     }
 
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
+    }
+
+    private PlaybackController newPlaybackController() {
+        return new PlaybackController(this) {
+            @Override
+            public void onPositionObserverUpdate() {
+                VideoplayerActivity.this.onPositionObserverUpdate();
+            }
+
+            @Override
+            public void onBufferStart() {
+                viewBinding.progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onBufferEnd() {
+                viewBinding.progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onBufferUpdate(float progress) {
+                viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
+            }
+
+            @Override
+            public void handleError(int code) {
+                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
+                errorDialog.setTitle(R.string.error_label);
+                errorDialog.setMessage(MediaPlayerError.getErrorString(VideoplayerActivity.this, code));
+                errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
+                errorDialog.show();
+            }
+
+            @Override
+            public void onReloadNotification(int code) {
+                VideoplayerActivity.this.onReloadNotification(code);
+            }
+
+            @Override
+            public void onSleepTimerUpdate() {
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                viewBinding.playButton.setIsShowPlay(showPlay);
+            }
+
+            @Override
+            public void loadMediaInfo() {
+                VideoplayerActivity.this.loadMediaInfo();
+            }
+
+            @Override
+            public void onAwaitingVideoSurface() {
+                setupVideoAspectRatio();
+                if (videoSurfaceCreated && controller != null) {
+                    Log.d(TAG, "Videosurface already created, setting videosurface now");
+                    controller.setVideoSurface(viewBinding.videoView.getHolder());
+                }
+            }
+
+            @Override
+            public void onPlaybackEnd() {
+                finish();
+            }
+
+            @Override
+            protected void setScreenOn(boolean enable) {
+                if (enable) {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } else {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            }
+        };
+    }
+
     protected void loadMediaInfo() {
-        super.loadMediaInfo();
+        Log.d(TAG, "loadMediaInfo()");
+        if (controller == null || controller.getMedia() == null) {
+            return;
+        }
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+        onPositionObserverUpdate();
+        checkFavorite();
         Playable media = controller.getMedia();
         if (media != null) {
             getSupportActionBar().setSubtitle(media.getEpisodeTitle());
@@ -141,75 +276,103 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }
 
-    @Override
-    protected void setupGUI() {
-        if (isSetup.getAndSet(true)) {
-            return;
-        }
-        super.setupGUI();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        controls = findViewById(R.id.controls);
-        videoOverlay = findViewById(R.id.overlay);
-        videoview = findViewById(R.id.videoview);
-        videoframe = findViewById(R.id.videoframe);
-        progressIndicator = findViewById(R.id.progressIndicator);
-        skipAnimationView = findViewById(R.id.skip_animation);
-        videoview.getHolder().addCallback(surfaceHolderCallback);
-        videoframe.setOnTouchListener(onVideoviewTouched);
-        videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
-        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        videoOverlay.setFitsSystemWindows(true);
+    protected void setupView() {
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+        Log.d("timeleft", showTimeLeft ? "true" : "false");
+        viewBinding.durationLabel.setOnClickListener(v -> {
+            showTimeLeft = !showTimeLeft;
+            Playable media = controller.getMedia();
+            if (media == null) {
+                return;
+            }
+
+            TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+            String length;
+            if (showTimeLeft) {
+                int remainingTime = converter.convert(media.getDuration() - media.getPosition());
+                length = "-" + Converter.getDurationStringLong(remainingTime);
+            } else {
+                int duration = converter.convert(media.getDuration());
+                length = Converter.getDurationStringLong(duration);
+            }
+            viewBinding.durationLabel.setText(length);
+
+            UserPreferences.setShowRemainTimeSetting(showTimeLeft);
+            Log.d("timeleft on click", showTimeLeft ? "true" : "false");
+        });
+
+        viewBinding.sbPosition.setOnSeekBarChangeListener(this);
+        viewBinding.rewindButton.setOnClickListener(v -> onRewind());
+        viewBinding.rewindButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_REWIND, null);
+            return true;
+        });
+        viewBinding.playButton.setIsVideoScreen(true);
+        viewBinding.playButton.setOnClickListener(v -> onPlayPause());
+        viewBinding.fastForwardButton.setOnClickListener(v -> onFastForward());
+        viewBinding.fastForwardButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(VideoplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
+            return false;
+        });
+        // To suppress touches directly below the slider
+        viewBinding.bottomControlsContainer.setOnTouchListener((view, motionEvent) -> true);
+        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
+        viewBinding.videoView.getHolder().addCallback(surfaceHolderCallback);
+        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        videoframe.getViewTreeObserver().addOnGlobalLayoutListener(() ->
-                videoview.setAvailableSize(videoframe.getWidth(), videoframe.getHeight()));
+        viewBinding.videoPlayerContainer.setOnTouchListener(onVideoviewTouched);
+        viewBinding.videoPlayerContainer.getViewTreeObserver().addOnGlobalLayoutListener(() ->
+                viewBinding.videoView.setAvailableSize(
+                        viewBinding.videoPlayerContainer.getWidth(), viewBinding.videoPlayerContainer.getHeight()));
     }
 
-    @Override
-    protected void onAwaitingVideoSurface() {
-        setupVideoAspectRatio();
-        if (videoSurfaceCreated && controller != null) {
-            Log.d(TAG, "Videosurface already created, setting videosurface now");
-            controller.setVideoSurface(videoview.getHolder());
+    private final Runnable hideVideoControls = () -> {
+        if (videoControlsShowing) {
+            Log.d(TAG, "Hiding video controls");
+            getSupportActionBar().hide();
+            hideVideoControls(true);
+            videoControlsShowing = false;
         }
-    }
+    };
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
-                return true;
-            }
-            videoControlsHider.stop();
-
-            if (System.currentTimeMillis() - lastScreenTap < 300) {
-                if (event.getX() > v.getMeasuredWidth() / 2.0f) {
-                    onFastForward();
-                    showSkipAnimation(true);
-                } else {
-                    onRewind();
-                    showSkipAnimation(false);
-                }
-                if (videoControlsShowing) {
-                    getSupportActionBar().hide();
-                    hideVideoControls(false);
-                    videoControlsShowing = false;
-                }
-                return true;
-            }
-
-            toggleVideoControlsVisibility();
-            if (videoControlsShowing) {
-                setupVideoControlsToggler();
-            }
-
-            lastScreenTap = System.currentTimeMillis();
-            return true;
-        } else {
+        if (event.getAction() != MotionEvent.ACTION_DOWN) {
             return false;
         }
+        if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            return true;
+        }
+        videoControlsHider.removeCallbacks(hideVideoControls);
+
+        if (System.currentTimeMillis() - lastScreenTap < 300) {
+            if (event.getX() > v.getMeasuredWidth() / 2.0f) {
+                onFastForward();
+                showSkipAnimation(true);
+            } else {
+                onRewind();
+                showSkipAnimation(false);
+            }
+            if (videoControlsShowing) {
+                getSupportActionBar().hide();
+                hideVideoControls(false);
+                videoControlsShowing = false;
+            }
+            return true;
+        }
+
+        toggleVideoControlsVisibility();
+        if (videoControlsShowing) {
+            setupVideoControlsToggler();
+        }
+
+        lastScreenTap = System.currentTimeMillis();
+        return true;
     };
 
     private void showSkipAnimation(boolean isForward) {
@@ -220,18 +383,18 @@ public class VideoplayerActivity extends MediaplayerActivity {
         skipAnimation.setFillAfter(false);
         skipAnimation.setDuration(800);
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) skipAnimationView.getLayoutParams();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) viewBinding.skipAnimationImage.getLayoutParams();
         if (isForward) {
-            skipAnimationView.setImageResource(R.drawable.ic_av_fast_forward_white_80dp);
+            viewBinding.skipAnimationImage.setImageResource(R.drawable.ic_fast_forward_video_white);
             params.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
         } else {
-            skipAnimationView.setImageResource(R.drawable.ic_av_fast_rewind_white_80dp);
+            viewBinding.skipAnimationImage.setImageResource(R.drawable.ic_fast_rewind_video_white);
             params.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
         }
 
-        skipAnimationView.setVisibility(View.VISIBLE);
-        skipAnimationView.setLayoutParams(params);
-        skipAnimationView.startAnimation(skipAnimation);
+        viewBinding.skipAnimationImage.setVisibility(View.VISIBLE);
+        viewBinding.skipAnimationImage.setLayoutParams(params);
+        viewBinding.skipAnimationImage.startAnimation(skipAnimation);
         skipAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -239,7 +402,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                skipAnimationView.setVisibility(View.GONE);
+                viewBinding.skipAnimationImage.setVisibility(View.GONE);
             }
 
             @Override
@@ -249,10 +412,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         });
     }
 
-    @SuppressLint("NewApi")
     private void setupVideoControlsToggler() {
-        videoControlsHider.stop();
-        videoControlsHider.start();
+        videoControlsHider.removeCallbacks(hideVideoControls);
+        videoControlsHider.postDelayed(hideVideoControls, 2500);
     }
 
     private void setupVideoAspectRatio() {
@@ -260,7 +422,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Pair<Integer, Integer> videoSize = controller.getVideoSize();
             if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
                 Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
-                videoview.setVideoSize(videoSize.first, videoSize.second);
+                viewBinding.videoView.setVideoSize(videoSize.first, videoSize.second);
             } else {
                 Log.e(TAG, "Could not determine video size");
             }
@@ -270,7 +432,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private void toggleVideoControlsVisibility() {
         if (videoControlsShowing) {
             getSupportActionBar().hide();
-            hideVideoControls();
+            hideVideoControls(true);
         } else {
             getSupportActionBar().show();
             showVideoControls();
@@ -278,29 +440,35 @@ public class VideoplayerActivity extends MediaplayerActivity {
         videoControlsShowing = !videoControlsShowing;
     }
 
-    @Override
-    protected void onRewind() {
-        super.onRewind();
+    void onRewind() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
         setupVideoControlsToggler();
     }
 
-    @Override
-    protected void onPlayPause() {
-        super.onPlayPause();
+    void onPlayPause() {
+        if (controller == null) {
+            return;
+        }
+        controller.playPause();
         setupVideoControlsToggler();
     }
 
-    @Override
-    protected void onFastForward() {
-        super.onFastForward();
+    void onFastForward() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr + UserPreferences.getFastForwardSecs() * 1000);
         setupVideoControlsToggler();
     }
-
 
     private final SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
         @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                                   int height) {
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             holder.setFixedSize(width, height);
         }
 
@@ -326,8 +494,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     };
 
-
-    @Override
     protected void onReloadNotification(int notificationCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && PictureInPictureUtil.isInPictureInPictureMode(this)) {
             if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
@@ -344,84 +510,87 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        super.onStartTrackingTouch(seekBar);
-        videoControlsHider.stop();
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        super.onStopTrackingTouch(seekBar);
-        setupVideoControlsToggler();
-    }
-
-    @Override
-    protected void onBufferStart() {
-        progressIndicator.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onBufferEnd() {
-        progressIndicator.setVisibility(View.INVISIBLE);
-    }
-
-    @SuppressLint("NewApi")
     private void showVideoControls() {
-        videoOverlay.setVisibility(View.VISIBLE);
-        controls.setVisibility(View.VISIBLE);
+        viewBinding.bottomControlsContainer.setVisibility(View.VISIBLE);
+        viewBinding.controlsContainer.setVisibility(View.VISIBLE);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         if (animation != null) {
-            videoOverlay.startAnimation(animation);
-            controls.startAnimation(animation);
+            viewBinding.bottomControlsContainer.startAnimation(animation);
+            viewBinding.controlsContainer.startAnimation(animation);
         }
-        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
-    @SuppressLint("NewApi")
     private void hideVideoControls(boolean showAnimation) {
         if (showAnimation) {
             final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
             if (animation != null) {
-                videoOverlay.startAnimation(animation);
-                controls.startAnimation(animation);
+                viewBinding.bottomControlsContainer.startAnimation(animation);
+                viewBinding.controlsContainer.startAnimation(animation);
             }
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        videoOverlay.setFitsSystemWindows(true);
+        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
 
-        videoOverlay.setVisibility(View.GONE);
-        controls.setVisibility(View.GONE);
+        viewBinding.bottomControlsContainer.setVisibility(View.GONE);
+        viewBinding.controlsContainer.setVisibility(View.GONE);
     }
 
-    private void hideVideoControls() {
-        hideVideoControls(true);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        onPositionObserverUpdate();
     }
 
-    @Override
-    protected int getContentViewResourceId() {
-        return R.layout.videoplayer_activity;
-    }
-
-    @Override
-    protected void setScreenOn(boolean enable) {
-        super.setScreenOn(enable);
-        if (enable) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        requestCastButton(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mediaplayer, menu);
+        return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        if (controller == null) {
+            return false;
+        }
+        Playable media = controller.getMedia();
+        boolean isFeedMedia = (media instanceof FeedMedia);
+
+        menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
+
+        boolean hasWebsiteLink = getWebsiteLinkWithFallback(media) != null;
+        menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
+
+        boolean isItemAndHasLink = isFeedMedia && ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
+        boolean isItemHasDownloadLink = isFeedMedia && ((FeedMedia) media).getDownload_url() != null;
+        menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
+
+        menu.findItem(R.id.add_to_favorites_item).setVisible(false);
+        menu.findItem(R.id.remove_from_favorites_item).setVisible(false);
+        if (isFeedMedia) {
+            menu.findItem(R.id.add_to_favorites_item).setVisible(!isFavorite);
+            menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
+        }
+
+        menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
+        menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
+
         if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
-        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders_white);
+        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         return true;
     }
 
@@ -431,7 +600,161 @@ public class VideoplayerActivity extends MediaplayerActivity {
             compatEnterPictureInPicture();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        if (controller == null) {
+            return false;
+        }
+
+        Playable media = controller.getMedia();
+        if (media == null) {
+            return false;
+        }
+        final @Nullable FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
+        if (item.getItemId() == R.id.add_to_favorites_item && feedItem != null) {
+            DBWriter.addFavoriteItem(feedItem);
+            isFavorite = true;
+            invalidateOptionsMenu();
+        } else if (item.getItemId() == R.id.remove_from_favorites_item && feedItem != null) {
+            DBWriter.removeFavoriteItem(feedItem);
+            isFavorite = false;
+            invalidateOptionsMenu();
+        } else if (item.getItemId() == R.id.disable_sleeptimer_item
+                || item.getItemId() == R.id.set_sleeptimer_item) {
+            new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
+        } else if (item.getItemId() == R.id.audio_controls) {
+            PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
+            dialog.show(getSupportFragmentManager(), "playback_controls");
+        } else if (item.getItemId() == R.id.open_feed_item && feedItem != null) {
+            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.visit_website_item) {
+            IntentUtils.openInBrowser(VideoplayerActivity.this, getWebsiteLinkWithFallback(media));
+        } else if (item.getItemId() == R.id.share_item && feedItem != null) {
+            ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
+            shareDialog.show(getSupportFragmentManager(), "ShareEpisodeDialog");
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private static String getWebsiteLinkWithFallback(Playable media) {
+        if (media == null) {
+            return null;
+        } else if (StringUtils.isNotBlank(media.getWebsiteLink())) {
+            return media.getWebsiteLink();
+        } else if (media instanceof FeedMedia) {
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia) media).getItem());
+        }
+        return null;
+    }
+
+    void onPositionObserverUpdate() {
+        if (controller == null) {
+            return;
+        }
+
+        TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+        int currentPosition = converter.convert(controller.getPosition());
+        int duration = converter.convert(controller.getDuration());
+        int remainingTime = converter.convert(
+                controller.getDuration() - controller.getPosition());
+        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        if (currentPosition == PlaybackService.INVALID_TIME
+                || duration == PlaybackService.INVALID_TIME) {
+            Log.w(TAG, "Could not react to position observer update because of invalid time");
+            return;
+        }
+        viewBinding.positionLabel.setText(Converter.getDurationStringLong(currentPosition));
+        if (showTimeLeft) {
+            viewBinding.durationLabel.setText("-" + Converter.getDurationStringLong(remainingTime));
+        } else {
+            viewBinding.durationLabel.setText(Converter.getDurationStringLong(duration));
+        }
+        updateProgressbarPosition(currentPosition, duration);
+    }
+
+    private void updateProgressbarPosition(int position, int duration) {
+        Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
+        float progress = ((float) position) / duration;
+        viewBinding.sbPosition.setProgress((int) (progress * viewBinding.sbPosition.getMax()));
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (controller == null) {
+            return;
+        }
+        if (fromUser) {
+            prog = progress / ((float) seekBar.getMax());
+            TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+            int position = converter.convert((int) (prog * controller.getDuration()));
+            viewBinding.seekPositionLabel.setText(Converter.getDurationStringLong(position));
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        viewBinding.seekCardView.setScaleX(.8f);
+        viewBinding.seekCardView.setScaleY(.8f);
+        viewBinding.seekCardView.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(200)
+                .start();
+        videoControlsHider.removeCallbacks(hideVideoControls);
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        if (controller != null) {
+            controller.seekTo((int) (prog * controller.getDuration()));
+        }
+        viewBinding.seekCardView.setScaleX(1f);
+        viewBinding.seekCardView.setScaleY(1f);
+        viewBinding.seekCardView.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
+        setupVideoControlsToggler();
+    }
+
+    private void checkFavorite() {
+        FeedItem feedItem = getFeedItem(controller.getMedia());
+        if (feedItem == null) {
+            return;
+        }
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    @Nullable
+    private static FeedItem getFeedItem(@Nullable Playable playable) {
+        if (playable instanceof FeedMedia) {
+            return ((FeedMedia) playable).getItem();
+        } else {
+            return null;
+        }
     }
 
     private void compatEnterPictureInPicture() {
@@ -441,43 +764,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
             enterPictureInPictureMode();
         }
     }
-
-    private static class VideoControlsHider extends Handler {
-
-        private static final int DELAY = 2500;
-
-        private WeakReference<VideoplayerActivity> activity;
-
-        VideoControlsHider(VideoplayerActivity activity) {
-            this.activity = new WeakReference<>(activity);
-        }
-
-        private final Runnable hideVideoControls = () -> {
-            VideoplayerActivity vpa = activity != null ? activity.get() : null;
-            if (vpa == null) {
-                return;
-            }
-            if (vpa.videoControlsShowing) {
-                Log.d(TAG, "Hiding video controls");
-                ActionBar actionBar = vpa.getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.hide();
-                }
-                vpa.hideVideoControls();
-                vpa.videoControlsShowing = false;
-            }
-        };
-
-        public void start() {
-            this.postDelayed(hideVideoControls, DELAY);
-        }
-
-        void stop() {
-            this.removeCallbacks(hideVideoControls);
-        }
-
-    }
-
 
     //Hardware keyboard support
     @Override

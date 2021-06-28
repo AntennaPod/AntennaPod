@@ -1,12 +1,12 @@
 package de.test.antennapod.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
@@ -32,6 +32,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -48,6 +49,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
@@ -55,23 +57,24 @@ import static org.junit.Assert.assertTrue;
 @LargeTest
 public class PreferencesTest {
     private Resources res;
-    private Activity activity;
 
     @Rule
-    public ActivityTestRule<PreferenceActivity> mActivityRule = new ActivityTestRule<>(PreferenceActivity.class, false, false);
+    public ActivityTestRule<PreferenceActivity> activityTestRule =
+            new ActivityTestRule<>(PreferenceActivity.class,
+                    false,
+                    false);
 
 
     @Before
     public void setUp() {
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.clearPreferences();
-        mActivityRule.launchActivity(new Intent());
-        activity = mActivityRule.getActivity();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        activityTestRule.launchActivity(new Intent());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
         prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
 
-        res = mActivityRule.getActivity().getResources();
-        UserPreferences.init(activity);
+        res = activityTestRule.getActivity().getResources();
+        UserPreferences.init(activityTestRule.getActivity());
     }
 
     @Test
@@ -261,8 +264,10 @@ public class PreferencesTest {
     @Test
     public void testDisableUpdateInterval() {
         clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_autoUpdateIntervallOrTime_title)).perform(click());
-        onView(withText(R.string.pref_autoUpdateIntervallOrTime_Disable)).perform(click());
+        clickPreference(R.string.feed_refresh_title);
+        onView(withText(R.string.feed_refresh_never)).perform(click());
+        onView(withId(R.id.disableRadioButton)).perform(click());
+        onView(withText(R.string.confirm_label)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getUpdateInterval() == 0);
     }
@@ -270,12 +275,14 @@ public class PreferencesTest {
     @Test
     public void testSetUpdateInterval() {
         clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_autoUpdateIntervallOrTime_title);
-        onView(withText(R.string.pref_autoUpdateIntervallOrTime_Interval)).perform(click());
-        String search = "12 " + res.getString(R.string.pref_update_interval_hours_plural);
-        onView(withText(search)).perform(click());
+        clickPreference(R.string.feed_refresh_title);
+        onView(withId(R.id.intervalRadioButton)).perform(click());
+        onView(withId(R.id.spinner)).perform(click());
+        int position = 1; // an arbitrary position
+        onData(anything()).inRoot(RootMatchers.isPlatformPopup()).atPosition(position).perform(click());
+        onView(withText(R.string.confirm_label)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == TimeUnit.HOURS.toMillis(12));
+                .until(() -> UserPreferences.getUpdateInterval() == TimeUnit.HOURS.toMillis(2));
     }
 
     @Test

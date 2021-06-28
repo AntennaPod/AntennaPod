@@ -1,14 +1,15 @@
 package de.danoeh.antennapod.core.util;
 
+import de.danoeh.antennapod.model.feed.SortOrder;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

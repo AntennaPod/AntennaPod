@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.event;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 import java.util.ArrayList;
 import java.util.List;

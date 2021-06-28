@@ -29,7 +29,7 @@ public class DevelopersFragment extends ListFragment {
         developersLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> developers = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("developers.csv")));
+                    getContext().getAssets().open("developers.csv"), "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");

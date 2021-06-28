@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 
 /** Writes saved favorites to file. */

@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.util.LongIntMap;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class NavDrawerData {
 
         public FolderDrawerItem(String name) {
             // Keep IDs >0 but make room for many feeds
-            super(DrawerItem.Type.FOLDER, (long) Math.abs(name.hashCode()) << 20);
+            super(DrawerItem.Type.FOLDER, Math.abs((long) name.hashCode()) << 20);
             this.name = name;
         }
 

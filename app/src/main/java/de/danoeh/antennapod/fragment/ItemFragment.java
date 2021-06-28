@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +45,8 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
@@ -57,6 +56,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
@@ -337,7 +337,7 @@ public class ItemFragment extends Fragment {
                 txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
-            if (media.isCurrentlyPlaying()) {
+            if (FeedItemUtil.isCurrentlyPlaying(media)) {
                 actionButton1 = new PauseActionButton(item);
             } else if (item.getFeed().isLocalFeed()) {
                 actionButton1 = new PlayLocalActionButton(item);
@@ -357,15 +357,12 @@ public class ItemFragment extends Fragment {
 
         butAction1Text.setText(actionButton1.getLabel());
         butAction1Text.setTransformationMethod(null);
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(actionButton1.getDrawable(), typedValue, true);
-        butAction1Icon.setImageResource(typedValue.resourceId);
+        butAction1Icon.setImageResource(actionButton1.getDrawable());
         butAction1.setVisibility(actionButton1.getVisibility());
 
         butAction2Text.setText(actionButton2.getLabel());
         butAction2Text.setTransformationMethod(null);
-        getContext().getTheme().resolveAttribute(actionButton2.getDrawable(), typedValue, true);
-        butAction2Icon.setImageResource(typedValue.resourceId);
+        butAction2Icon.setImageResource(actionButton2.getDrawable());
         butAction2.setVisibility(actionButton2.getVisibility());
     }
 

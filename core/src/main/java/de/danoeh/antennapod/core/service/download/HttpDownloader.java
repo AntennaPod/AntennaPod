@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -188,8 +188,11 @@ public class HttpDownloader extends Downloader {
                 out = new RandomAccessFile(destination, "rw");
                 out.seek(request.getSoFar());
             } else {
-                destination.delete();
-                destination.createNewFile();
+                boolean success = destination.delete();
+                success |= destination.createNewFile();
+                if (!success) {
+                    throw new IOException("Unable to recreate partially downloaded file");
+                }
                 out = new RandomAccessFile(destination, "rw");
             }
 

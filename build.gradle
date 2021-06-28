@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.6.3'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
         classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.3'
+        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
     }
 }
 
@@ -18,12 +19,6 @@ allprojects {
         mavenCentral()
         maven { url "https://jitpack.io" }
         jcenter()
-    }
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint"
-        }
     }
 }
 
@@ -43,10 +38,6 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 30
-    minSdkVersion = 16
-    targetSdkVersion = 30
-
     // AndroidX
     annotationVersion = "1.1.0"
     appcompatVersion = "1.2.0"

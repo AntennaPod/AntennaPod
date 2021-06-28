@@ -16,7 +16,7 @@
         android:layout_height="16dp"
         android:layout_gravity="center"
         android:contentDescription="@string/load_next_page_label"
-        app:srcCompat="?attr/ic_load_more" />
+        app:srcCompat="@drawable/ic_load_more" />
 
     <ProgressBar
         android:id="@+id/progBar"

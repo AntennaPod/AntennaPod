@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +27,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

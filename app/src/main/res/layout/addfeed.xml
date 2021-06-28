@@ -34,7 +34,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:contentDescription="@string/search_podcast_hint"
-                    app:srcCompat="?attr/action_search"
+                    app:srcCompat="@drawable/ic_search"
                     android:id="@+id/searchButton"
                     android:scaleType="center"/>
 
@@ -90,8 +90,8 @@
                     android:id="@+id/addViaUrlButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/feed"
-                    app:drawableLeftCompat="?attr/feed"
+                    app:drawableStartCompat="@drawable/ic_feed"
+                    app:drawableLeftCompat="@drawable/ic_feed"
                     style="@style/AddPodcastTextView"
                     android:text="@string/add_podcast_by_url"/>
 
@@ -99,8 +99,8 @@
                     android:id="@+id/addLocalFolderButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/ic_folder"
-                    app:drawableLeftCompat="?attr/ic_folder"
+                    app:drawableStartCompat="@drawable/ic_folder"
+                    app:drawableLeftCompat="@drawable/ic_folder"
                     style="@style/AddPodcastTextView"
                     android:text="@string/add_local_folder"/>
 
@@ -108,8 +108,8 @@
                     android:id="@+id/searchItunesButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/action_search"
-                    app:drawableLeftCompat="?attr/action_search"
+                    app:drawableStartCompat="@drawable/ic_search"
+                    app:drawableLeftCompat="@drawable/ic_search"
                     style="@style/AddPodcastTextView"
                     android:text="@string/search_itunes_label"/>
 
@@ -117,8 +117,8 @@
                     android:id="@+id/searchFyydButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/action_search"
-                    app:drawableLeftCompat="?attr/action_search"
+                    app:drawableStartCompat="@drawable/ic_search"
+                    app:drawableLeftCompat="@drawable/ic_search"
                     style="@style/AddPodcastTextView"
                     android:text="@string/search_fyyd_label"/>
 
@@ -126,8 +126,8 @@
                     android:id="@+id/searchGPodderButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/action_search"
-                    app:drawableLeftCompat="?attr/action_search"
+                    app:drawableStartCompat="@drawable/ic_search"
+                    app:drawableLeftCompat="@drawable/ic_search"
                     style="@style/AddPodcastTextView"
                     android:text="@string/browse_gpoddernet_label"/>
 
@@ -135,8 +135,8 @@
                     android:id="@+id/searchPodcastIndexButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/action_search"
-                    app:drawableLeftCompat="?attr/action_search"
+                    app:drawableStartCompat="@drawable/ic_search"
+                    app:drawableLeftCompat="@drawable/ic_search"
                     style="@style/AddPodcastTextView"
                     android:text="@string/search_podcastindex_label"/>
 
@@ -144,8 +144,8 @@
                     android:id="@+id/opmlImportButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:drawableStartCompat="?attr/av_download"
-                    app:drawableLeftCompat="?attr/av_download"
+                    app:drawableStartCompat="@drawable/ic_download"
+                    app:drawableLeftCompat="@drawable/ic_download"
                     style="@style/AddPodcastTextView"
                     android:text="@string/opml_add_podcast_label"/>
         </LinearLayout>

@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +18,7 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
@@ -36,6 +35,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
  */
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
+    public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,17 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        FrameLayout root = new FrameLayout(this);
-        root.setId(R.id.content);
-        root.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        setContentView(root);
+        final SettingsActivityBinding binding = SettingsActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content, new MainPreferencesFragment(), FRAGMENT_TAG)
+                    .replace(R.id.settingsContainer, new MainPreferencesFragment(), FRAGMENT_TAG)
                     .commit();
+        }
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra(OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
+            openScreen(R.xml.preferences_autodownload);
         }
     }
 
@@ -116,7 +117,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
             startActivity(intent);
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment)
+            getSupportFragmentManager().beginTransaction().replace(R.id.settingsContainer, fragment)
                     .addToBackStack(getString(getTitleOfPage(screen))).commit();
         }
 
@@ -163,5 +164,4 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             result.highlight(fragment);
         }
     }
-
 }

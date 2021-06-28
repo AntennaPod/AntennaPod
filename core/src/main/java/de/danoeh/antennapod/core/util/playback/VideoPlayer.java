@@ -11,11 +11,6 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
     private static final String TAG = "VideoPlayer";
 
     @Override
-    public boolean canSetSpeed() {
-        return false;
-    }
-
-    @Override
     public boolean canDownmix() {
         return false;
     }

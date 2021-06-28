@@ -19,12 +19,11 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
@@ -115,7 +114,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
                     .load();
         } else {
             new CoverLoader(mainActivityRef.get())
-                    .withResource(ThemeUtils.getDrawableFromAttr(mainActivityRef.get(), R.attr.ic_folder))
+                    .withResource(R.drawable.ic_folder)
                     .withPlaceholderView(holder.feedTitle, true)
                     .withCoverView(holder.imageView)
                     .load();

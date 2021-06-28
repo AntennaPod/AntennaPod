@@ -15,16 +15,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.mapper.ChapterCursorMapper;
 import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
+import de.danoeh.antennapod.core.storage.mapper.FeedItemCursorMapper;
+import de.danoeh.antennapod.core.storage.mapper.FeedMediaCursorMapper;
+import de.danoeh.antennapod.core.storage.mapper.FeedPreferencesCursorMapper;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -199,10 +203,10 @@ public final class DBReader {
         if (cursor.moveToFirst()) {
             int indexMediaId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
             do {
-                FeedItem item = FeedItem.fromCursor(cursor);
+                FeedItem item = FeedItemCursorMapper.convert(cursor);
                 result.add(item);
                 if (!cursor.isNull(indexMediaId)) {
-                    item.setMedia(FeedMedia.fromCursor(cursor));
+                    item.setMedia(FeedMediaCursorMapper.convert(cursor));
                 }
             } while (cursor.moveToNext());
         }
@@ -211,7 +215,7 @@ public final class DBReader {
 
     private static Feed extractFeedFromCursorRow(Cursor cursor) {
         Feed feed = FeedCursorMapper.convert(cursor);
-        FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
+        FeedPreferences preferences = FeedPreferencesCursorMapper.convert(cursor);
         feed.setPreferences(preferences);
         return feed;
     }
@@ -687,7 +691,7 @@ public final class DBReader {
             }
             ArrayList<Chapter> chapters = new ArrayList<>();
             while (cursor.moveToNext()) {
-                chapters.add(Chapter.fromCursor(cursor));
+                chapters.add(ChapterCursorMapper.convert(cursor));
             }
             return chapters;
         }
@@ -729,7 +733,7 @@ public final class DBReader {
 
             int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
             long itemId = mediaCursor.getLong(indexFeedItem);
-            FeedMedia media = FeedMedia.fromCursor(mediaCursor);
+            FeedMedia media = FeedMediaCursorMapper.convert(mediaCursor);
             FeedItem item = getFeedItem(itemId);
             if (item != null) {
                 media.setItem(item);

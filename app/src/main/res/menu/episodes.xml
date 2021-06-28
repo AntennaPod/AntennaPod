@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="?attr/action_search"
+        android:icon="@drawable/ic_search"
         custom:showAsAction="collapseActionView|always"
         custom:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search_label"/>
@@ -15,11 +15,11 @@
         android:title="@string/refresh_label"
         android:menuCategory="container"
         custom:showAsAction="always"
-        android:icon="?attr/navigation_refresh"/>
+        android:icon="@drawable/ic_refresh"/>
 
     <item
         android:id="@+id/filter_items"
-        android:icon="?attr/ic_filter"
+        android:icon="@drawable/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
         android:visible="false"
@@ -31,7 +31,7 @@
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:visible="false"
-        android:icon="?attr/navigation_accept"/>
+        android:icon="@drawable/ic_check"/>
 
     <item
         android:id="@+id/remove_all_new_flags_item"
@@ -39,6 +39,6 @@
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:visible="false"
-        android:icon="?attr/navigation_accept"/>
+        android:icon="@drawable/ic_check"/>
 
 </menu>
