@@ -357,8 +357,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         } else if (item.getItemId() == R.id.select_all_above) {
             adapter.setSelected(0, adapter.getLongPressedPosition(), true);
+            return true;
         } else if (item.getItemId() == R.id.select_all_below) {
             adapter.setSelected(adapter.getLongPressedPosition() + 1, adapter.getItemCount(), true);
+            return true;
         }
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
@@ -642,9 +644,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
-            MenuItem menuItem = menu.findItem(R.id.multi_select);
             if (!inActionMode()) {
-                menuItem.setVisible(true);
+                menu.findItem(R.id.multi_select).setVisible(true);
             }
         }
     }
