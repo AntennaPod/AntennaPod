@@ -44,6 +44,7 @@ public class SwipeActions {
                     new StartDownloadSwipeAction(), new MarkFavouriteSwipeAction(),
                     new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
     );
+    private static final SwipeAction showSettingsDialogAction = new ShowSettingsDialogSwipeAction();
 
     private RecyclerView recyclerView;
     public ItemTouchHelper itemTouchHelper;
@@ -189,52 +190,55 @@ public class SwipeActions {
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder,
                                 float dx, float dy, int actionState, boolean isCurrentlyActive) {
-            //display only if preferences are set
+            SwipeAction right;
+            SwipeAction left;
             if (rightleft.length > 0) {
-                SwipeAction right = swipeActions.get(rightleft[0]);
-                SwipeAction left = swipeActions.get(rightleft[1]);
-
-                //normal threshold
-                boolean swipeThresholdReached = dx / recyclerView.getWidth() > getSwipeThreshold(viewHolder);
-
-                //check if it will be removed
-                boolean wontLeave = (dx > 0 && !right.willRemove(filter)) || (dx < 0 && !left.willRemove(filter));
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
-                    swipeOutEnabled = false;
-
-                    //Limit swipe if it's not removed
-                    int maxMovement = recyclerView.getWidth() * 2 / 5;
-                    float sign = dx > 0 ? 1 : -1;
-                    float limitMovement = Math.min(maxMovement, sign * dx);
-                    float displacementPercentage = limitMovement / maxMovement;
-                    swipeThresholdReached = displacementPercentage >= 0.7;
-
-                    // Move slower when getting near the maxMovement
-                    dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
-                } else {
-                    swipeOutEnabled = true;
-                }
-
-                if (isCurrentlyActive) {
-                    int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
-                    swipedOutTo = swipeThresholdReached ? dir : 0;
-                }
-
-                Context context = fragment.requireContext();
-                RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
-                        c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(context, right.actionColor()))
-                        .addSwipeRightActionIcon(right.actionIcon())
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, left.actionColor()))
-                        .addSwipeLeftActionIcon(left.actionIcon());
-                if (wontLeave) {
-                    int actionColor = ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color);
-                    builder.setActionIconTint(swipeThresholdReached
-                            ? actionColor : ((actionColor & 0xffffff) | 0x66000000));
-                }
-                builder.create().decorate();
-
+                right = swipeActions.get(rightleft[0]);
+                left = swipeActions.get(rightleft[1]);
+            } else {
+                right = showSettingsDialogAction;
+                left = showSettingsDialogAction;
             }
+
+            //normal threshold
+            boolean swipeThresholdReached = dx / recyclerView.getWidth() > getSwipeThreshold(viewHolder);
+
+            //check if it will be removed
+            boolean wontLeave = (dx > 0 && !right.willRemove(filter)) || (dx < 0 && !left.willRemove(filter));
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
+                swipeOutEnabled = false;
+
+                //Limit swipe if it's not removed
+                int maxMovement = recyclerView.getWidth() * 2 / 5;
+                float sign = dx > 0 ? 1 : -1;
+                float limitMovement = Math.min(maxMovement, sign * dx);
+                float displacementPercentage = limitMovement / maxMovement;
+                swipeThresholdReached = displacementPercentage >= 0.7;
+
+                // Move slower when getting near the maxMovement
+                dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+            } else {
+                swipeOutEnabled = true;
+            }
+
+            if (isCurrentlyActive) {
+                int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
+                swipedOutTo = swipeThresholdReached ? dir : 0;
+            }
+
+            Context context = fragment.requireContext();
+            RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
+                    c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(context, right.actionColor()))
+                    .addSwipeRightActionIcon(right.actionIcon())
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, left.actionColor()))
+                    .addSwipeLeftActionIcon(left.actionIcon());
+            if (wontLeave) {
+                int actionColor = ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color);
+                builder.setActionIconTint(swipeThresholdReached
+                        ? actionColor : ((actionColor & 0xffffff) | 0x66000000));
+            }
+            builder.create().decorate();
 
             super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
         }
