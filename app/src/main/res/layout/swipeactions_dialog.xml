@@ -22,25 +22,27 @@
         android:spinnerMode="dropdown" />
 
     <LinearLayout
-        android:id="@+id/swipeColorViewRight"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="76dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <ImageView
             android:id="@+id/swipeactionIconRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:padding="20dp"
+            android:layout_marginVertical="4dp"
             app:srcCompat="@drawable/ic_add" />
 
-        <View
+        <include
+            android:id="@+id/mockEpisodeRight"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:background="@color/grey100" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            layout="@layout/feeditemlist_item" />
 
     </LinearLayout>
 
@@ -60,23 +62,25 @@
         android:spinnerMode="dropdown" />
 
     <LinearLayout
-        android:id="@+id/swipeColorViewLeft"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="76dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <View
+        <include
+            android:id="@+id/mockEpisodeLeft"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:background="@color/grey100" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            layout="@layout/feeditemlist_item" />
 
         <ImageView
             android:id="@+id/swipeactionIconLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:padding="20dp"
+            android:layout_marginVertical="4dp"
             app:srcCompat="@drawable/ic_add" />
 
     </LinearLayout>

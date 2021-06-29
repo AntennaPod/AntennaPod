@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.annimon.stream.Stream;
@@ -55,28 +56,28 @@ public class SwipeActionsDialog {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
+        populateMockEpisode(layout.findViewById(R.id.mockEpisodeLeft));
+        populateMockEpisode(layout.findViewById(R.id.mockEpisodeRight));
 
         final ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
         final ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
-        final View rightColor = layout.findViewById(R.id.swipeColorViewRight);
-        final View leftColor = layout.findViewById(R.id.swipeColorViewLeft);
 
         Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
         Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
 
-        rightColor.setOnClickListener(view -> spinnerRightAction.performClick());
-        leftColor.setOnClickListener(view -> spinnerLeftAction.performClick());
+        rightIcon.setOnClickListener(view -> spinnerRightAction.performClick());
+        leftIcon.setOnClickListener(view -> spinnerLeftAction.performClick());
 
         spinnerRightAction.setAdapter(adapter());
         spinnerLeftAction.setAdapter(adapter());
 
         spinnerRightAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
             rightIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            rightColor.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+            rightIcon.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
         }));
         spinnerLeftAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
             leftIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            leftColor.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+            leftIcon.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
         }));
 
         //load prefs and suggest defaults if swiped the first time
@@ -97,6 +98,16 @@ public class SwipeActionsDialog {
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private void populateMockEpisode(View view) {
+        view.setAlpha(0.3f);
+        view.findViewById(R.id.secondaryActionButton).setVisibility(View.GONE);
+        view.findViewById(R.id.drag_handle).setVisibility(View.GONE);
+        ((TextView) view.findViewById(R.id.statusUnread)).setText("███");
+        ((TextView) view.findViewById(R.id.txtvTitle)).setText("████████████");
+        ((TextView) view.findViewById(R.id.txtvPosition)).setText("█████");
+        ((TextView) view.findViewById(R.id.txtvDuration)).setText("█████");
     }
 
     private void savePrefs(String tag, int right, int left) {
