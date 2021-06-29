@@ -177,11 +177,11 @@ public abstract class EpisodesListFragment extends Fragment {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
-        if (listAdapter.getSelectedItem() == null) {
+        if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        FeedItem selectedItem = listAdapter.getSelectedItem();
+        FeedItem selectedItem = listAdapter.getLongPressedItem();
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +33,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
-    private FeedItem selectedItem;
+    private FeedItem longPressedItem;
     int longPressedPosition = 0; // used to init actionMode
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
@@ -80,13 +81,13 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
-            selectedItem = item;
+            longPressedItem = item;
             longPressedPosition = pos;
             return false;
         });
 
         if (inActionMode()) {
-            holder.secondaryActionButton.setVisibility(View.INVISIBLE);
+            holder.secondaryActionButton.setVisibility(View.GONE);
             holder.selectCheckBox.setOnClickListener(v -> {
                 toggleSelection(pos);
             });
@@ -134,8 +135,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     @Nullable
-    public FeedItem getSelectedItem() {
-        return selectedItem;
+    public FeedItem getLongPressedItem() {
+        return longPressedItem;
     }
 
     @Override
@@ -160,17 +161,27 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
-        if (!inActionMode()) {
-            inflater.inflate(R.menu.feeditemlist_context, menu);
-            menu.setHeaderTitle(selectedItem.getTitle());
-            FeedItemMenuHandler.onPrepareMenu(menu, selectedItem, R.id.skip_episode_item);
-        } else {
+        if (inActionMode()) {
             inflater.inflate(R.menu.multi_select_context_popup, menu);
+        } else {
+            inflater.inflate(R.menu.feeditemlist_context, menu);
+            menu.setHeaderTitle(longPressedItem.getTitle());
+            FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
         }
     }
 
-    public int getLongPressedPosition() {
-        return longPressedPosition;
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.multi_select) {
+            startSelectMode(longPressedPosition);
+            return true;
+        } else if (item.getItemId() == R.id.select_all_above) {
+            setSelected(0, longPressedPosition, true);
+            return true;
+        } else if (item.getItemId() == R.id.select_all_below) {
+            setSelected(longPressedPosition + 1, getItemCount(), true);
+            return true;
+        }
+        return false;
     }
 
     public List<FeedItem> getSelectedItems() {

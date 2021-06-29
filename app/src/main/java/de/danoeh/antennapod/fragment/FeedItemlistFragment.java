@@ -340,29 +340,24 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getSelectedItem();
+        FeedItem selectedItem = adapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 
         if (item.getItemId() == R.id.multi_select) {
-            adapter.startSelectMode(adapter.getLongPressedPosition());
             if (feed.isLocalFeed()) {
                 speedDialView.removeActionItemById(R.id.download_batch);
                 speedDialView.removeActionItemById(R.id.delete_batch);
             }
             speedDialView.setVisibility(View.VISIBLE);
             refreshToolbarState();
-            return true;
-        } else if (item.getItemId() == R.id.select_all_above) {
-            adapter.setSelected(0, adapter.getLongPressedPosition(), true);
-            return true;
-        } else if (item.getItemId() == R.id.select_all_below) {
-            adapter.setSelected(adapter.getLongPressedPosition() + 1, adapter.getItemCount(), true);
+            // Do not return: Let adapter handle its actions, too.
+        }
+        if (adapter.onContextItemSelected(item)) {
             return true;
         }
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 

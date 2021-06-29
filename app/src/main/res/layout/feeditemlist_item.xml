@@ -43,9 +43,10 @@
                 tools:src="@drawable/ic_drag_darktheme"
                 tools:background="@android:color/holo_green_dark" />
 
+            <!-- Needs to have the same width as the action button. Otherwise, the screen jumps around. -->
             <CheckBox
                 android:id="@+id/selectCheckBox"
-                android:layout_width="48dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent" />
 
         </LinearLayout>
