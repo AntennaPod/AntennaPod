@@ -19,13 +19,11 @@ public class SwipePreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences_swipe);
 
         findPreference(PREF_SWIPE_FEED).setOnPreferenceClickListener(preference -> {
-            new SwipeActionsDialog(requireContext(), FeedItemlistFragment.TAG)
-                    .show(() -> { }, () -> { });
+            new SwipeActionsDialog(requireContext(), FeedItemlistFragment.TAG).show(() -> { });
             return true;
         });
         findPreference(PREF_SWIPE_QUEUE).setOnPreferenceClickListener(preference -> {
-            new SwipeActionsDialog(requireContext(), QueueFragment.TAG)
-                    .show(() -> { }, () -> { });
+            new SwipeActionsDialog(requireContext(), QueueFragment.TAG).show(() -> { });
             return true;
         });
     }

@@ -113,14 +113,6 @@ public class SwipeActions {
         return getPrefs(context, tag, defaultActions);
     }
 
-    public void reattachItemTouchHelper() {
-        //prevent swipe staying if item is staying in the list
-        if (itemTouchHelper != null && recyclerView != null) {
-            itemTouchHelper.attachToRecyclerView(null);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
-        }
-    }
-
     public void resetItemTouchHelper() {
         //refresh itemTouchHelper after prefs changed
         if (itemTouchHelper != null) {
@@ -139,16 +131,8 @@ public class SwipeActions {
         itemTouchHelper();
     }
 
-    public void showDialog() {
-        showDialog(this::resetItemTouchHelper);
-    }
-
     private void showDialog(SwipeActionsDialog.Callback prefsChanged) {
-        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged, this::reattachItemTouchHelper);
-    }
-
-    private SimpleSwipeCallback newSwipeCallback() {
-        return new SimpleSwipeCallback();
+        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged);
     }
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {

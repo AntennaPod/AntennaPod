@@ -31,7 +31,7 @@ public class SwipeActionsDialog {
         this.tag = tag;
     }
 
-    public void show(Callback prefsChanged, Callback dismissed) {
+    public void show(Callback prefsChanged) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         String forFragment = "";
@@ -96,7 +96,6 @@ public class SwipeActionsDialog {
             prefsChanged.onCall();
         });
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setOnDismissListener(dialogInterface -> dismissed.onCall());
         builder.create().show();
     }
 
