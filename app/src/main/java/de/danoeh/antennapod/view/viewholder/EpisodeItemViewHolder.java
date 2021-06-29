@@ -7,13 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.joanzapata.iconify.Iconify;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
@@ -31,8 +34,8 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 /**
  * Holds the view which shows FeedItems.
@@ -60,6 +63,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView separatorIcons;
     private final View leftPadding;
     public final CardView coverHolder;
+    public final CheckBox selectCheckBox;
 
     private final MainActivity activity;
     private FeedItem item;
@@ -91,6 +95,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         coverHolder = itemView.findViewById(R.id.coverHolder);
         leftPadding = itemView.findViewById(R.id.left_padding);
         itemView.setTag(this);
+        selectCheckBox = itemView.findViewById(R.id.selectCheckBox);
     }
 
     public void bind(FeedItem item) {
