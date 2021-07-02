@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -22,6 +27,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -51,7 +57,8 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DEL
 /**
  * Displays all completed downloads and provides a button to delete them.
  */
-public class CompletedDownloadsFragment extends Fragment {
+public class CompletedDownloadsFragment extends Fragment implements
+        EpisodeItemListAdapter.OnEndSelectModeListener{
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
@@ -63,6 +70,8 @@ public class CompletedDownloadsFragment extends Fragment {
     private EmptyViewHandler emptyView;
 
     private boolean isUpdatingFeeds = false;
+
+    private SpeedDialView speedDialView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -76,6 +85,35 @@ public class CompletedDownloadsFragment extends Fragment {
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
+
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.removeActionItemById(R.id.download_batch);
+        speedDialView.removeActionItemById(R.id.mark_read_batch);
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && adapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
+            onEndSelectMode();
+            adapter.endSelectMode();
+            return true;
+        });
 
         addEmptyView();
         EventBus.getDefault().register(this);
@@ -140,6 +178,13 @@ public class CompletedDownloadsFragment extends Fragment {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+        if (item.getItemId() == R.id.multi_select) {
+            speedDialView.setVisibility(View.VISIBLE);
+        }
+        if (adapter.onContextItemSelected(item)) {
+            return true;
+        }
+
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
@@ -150,7 +195,6 @@ public class CompletedDownloadsFragment extends Fragment {
         emptyView.setMessage(R.string.no_comp_downloads_label);
         emptyView.attachToRecyclerView(recyclerView);
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
@@ -221,6 +265,12 @@ public class CompletedDownloadsFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
+    }
+
     private static class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
 
         public CompletedDownloadsListAdapter(MainActivity mainActivity) {
@@ -231,6 +281,14 @@ public class CompletedDownloadsFragment extends Fragment {
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
             actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            if (!inActionMode()) {
+                menu.findItem(R.id.multi_select).setVisible(true);
+            }
         }
     }
 }

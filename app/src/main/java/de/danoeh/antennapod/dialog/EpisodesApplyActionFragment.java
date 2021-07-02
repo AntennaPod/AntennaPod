@@ -386,8 +386,8 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
             mListView.setItemChecked(i, checked);
         }
         refreshToolbarState();
-        toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
-                checkedIds.size(), checkedIds.size()));
+//        toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
+//                checkedIds.size(), checkedIds.size()));
     }
 
     private void queueChecked() {

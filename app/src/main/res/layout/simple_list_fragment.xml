@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -25,5 +25,6 @@
             android:layout_centerInParent="true"
             android:indeterminateOnly="true"
             android:visibility="gone"/>
-
-</RelativeLayout>
+    <include
+        layout="@layout/multi_select_speed_dial" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

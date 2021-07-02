@@ -24,8 +24,12 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -35,6 +39,7 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -70,7 +75,8 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REM
 /**
  * Shows all items in the queue.
  */
-public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
+        EpisodeItemListAdapter.OnEndSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
@@ -92,6 +98,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private Disposable disposable;
     private ItemTouchHelper itemTouchHelper;
     private SharedPreferences prefs;
+
+    private SpeedDialView speedDialView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -402,6 +410,14 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             Log.i(TAG, "Selected item no longer exist, ignoring selection");
             return super.onContextItemSelected(item);
         }
+        if (item.getItemId() == R.id.multi_select) {
+            speedDialView.setVisibility(View.VISIBLE);
+            refreshToolbarState();
+            // Do not return: Let adapter handle its actions, too.
+        }
+        if (recyclerAdapter.onContextItemSelected(item)) {
+            return true;
+        }
 
         switch(item.getItemId()) {
             case R.id.move_to_top_item:
@@ -418,7 +434,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                 return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -538,6 +553,33 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.removeActionItemById(R.id.mark_read_batch);
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.add_to_queue_batch);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && recyclerAdapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
+            onEndSelectMode();
+            recyclerAdapter.endSelectMode();
+            return true;
+        });
         return root;
     }
 
@@ -614,5 +656,11 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                         recyclerAdapter.notifyDataSetChanged();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
     }
 }
