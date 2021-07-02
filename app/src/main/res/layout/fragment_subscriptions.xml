@@ -35,7 +35,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/feeds_filtered_message">
 
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/subscriptions_grid"
                 android:layout_width="match_parent"
                 android:numColumns="3"

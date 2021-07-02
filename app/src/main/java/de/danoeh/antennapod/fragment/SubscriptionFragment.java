@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
@@ -35,6 +37,7 @@ import java.util.concurrent.Callable;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
+import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
@@ -79,9 +82,10 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
             R.id.subscription_num_columns_4,
             R.id.subscription_num_columns_5};
 
-    private GridView subscriptionGridLayout;
+    private RecyclerView subscriptionGridLayout;
     private List<NavDrawerData.DrawerItem> listItems;
-    private SubscriptionsAdapter subscriptionAdapter;
+//    private SubscriptionsAdapter subscriptionAdapter;
+    private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
@@ -139,7 +143,9 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         }
 
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
-        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
+        subscriptionGridLayout.setLayoutManager(gridLayoutManager);
+//        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
@@ -169,6 +175,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
                 R.id.refresh_item, updateRefreshMenuItemChecker);
     }
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -200,7 +207,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     }
 
     private void setColumnNumber(int columns) {
-        subscriptionGridLayout.setNumColumns(columns);
+//        subscriptionGridLayout.setNumColumns(columns);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }
@@ -210,16 +217,18 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         emptyView.setIcon(R.drawable.ic_folder);
         emptyView.setTitle(R.string.no_subscriptions_head_label);
         emptyView.setMessage(R.string.no_subscriptions_label);
-        emptyView.attachToListView(subscriptionGridLayout);
+//        emptyView.attachToListView(subscriptionGridLayout);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        subscriptionAdapter = new SubscriptionsAdapter((MainActivity) getActivity(), itemAccess);
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity(), itemAccess);
+
+
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
-        subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
+//        subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
         setupEmptyView();
 
         subscriptionAddButton.setOnClickListener(view -> {
@@ -376,7 +385,26 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
-    private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+//    private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+//        @Override
+//        public int getCount() {
+//            if (listItems != null) {
+//                return listItems.size();
+//            } else {
+//                return 0;
+//            }
+//        }
+//
+//        @Override
+//        public NavDrawerData.DrawerItem getItem(int position) {
+//            if (listItems != null && 0 <= position && position < listItems.size()) {
+//                return listItems.get(position);
+//            } else {
+//                return null;
+//            }
+//        }
+//    };
+    private final SubscriptionsRecyclerAdapter.ItemAccess itemAccess = new SubscriptionsRecyclerAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (listItems != null) {
