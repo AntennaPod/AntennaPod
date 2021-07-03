@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.annimon.stream.Stream;
 
@@ -62,8 +64,10 @@ public class SwipeActionsDialog {
         final ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
         final ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
 
-        Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
-        Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
+        final Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
+        final Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
+
+        final SwitchCompat enableSwitch = layout.findViewById(R.id.enableSwitch);
 
         rightIcon.setOnClickListener(view -> spinnerRightAction.performClick());
         leftIcon.setOnClickListener(view -> spinnerLeftAction.performClick());
@@ -80,10 +84,19 @@ public class SwipeActionsDialog {
             leftIcon.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
         }));
 
+        enableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            LinearLayout container = layout.findViewById(R.id.container);
+            for ( int i = 1; i < container.getChildCount();  i++ ){
+                View view = container.getChildAt(i);
+                view.setEnabled(b); // Or whatever you want to do with the view.
+            }
+        });
+
         //load prefs and suggest defaults if swiped the first time
         int[] rightleft = SwipeActions.getPrefsWithDefaults(context, tag);
         int right = rightleft[0];
         int left = rightleft[1];
+        enableSwitch.setChecked(!SwipeActions.getNoActionPref(context, tag));
 
         spinnerRightAction.setSelection(right);
         spinnerLeftAction.setSelection(left);
@@ -94,9 +107,10 @@ public class SwipeActionsDialog {
             int rightAction = spinnerRightAction.getSelectedItemPosition();
             int leftAction = spinnerLeftAction.getSelectedItemPosition();
             savePrefs(tag, rightAction, leftAction);
+            saveNoActionsPrefs(!enableSwitch.isChecked());
             prefsChanged.onCall();
         });
-        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.setNegativeButton(R.string.cancel_label, (dialogInterface, i) -> saveNoActionsPrefs(true));
         builder.create().show();
     }
 
@@ -114,6 +128,11 @@ public class SwipeActionsDialog {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_RIGHT + tag, right).apply();
         prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_LEFT + tag, left).apply();
+    }
+
+    private void saveNoActionsPrefs(Boolean noActions) {
+        SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(SwipeActions.PREF_NO_ACTION + tag, noActions).apply();
     }
 
     private AdapterView.OnItemSelectedListener listener(AdapterView.OnItemClickListener listener) {

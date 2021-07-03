@@ -2,18 +2,27 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/enableSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/enable_swipeactions"
+        android:textSize="12sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/swipe_right"
         android:textAlignment="textStart"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:text="@string/swipe_right" />
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinnerRightAction"
@@ -34,26 +43,25 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:padding="20dp"
-            android:layout_marginVertical="4dp"
             app:srcCompat="@drawable/ic_add" />
 
         <include
             android:id="@+id/mockEpisodeRight"
+            layout="@layout/feeditemlist_item"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            layout="@layout/feeditemlist_item" />
+            android:layout_weight="0.7" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/swipe_left"
         android:textAlignment="textStart"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:text="@string/swipe_left" />
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinnerLeftAction"
@@ -69,10 +77,10 @@
 
         <include
             android:id="@+id/mockEpisodeLeft"
+            layout="@layout/feeditemlist_item"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            layout="@layout/feeditemlist_item" />
+            android:layout_weight="0.7" />
 
         <ImageView
             android:id="@+id/swipeactionIconLeft"
@@ -80,7 +88,6 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:padding="20dp"
-            android:layout_marginVertical="4dp"
             app:srcCompat="@drawable/ic_add" />
 
     </LinearLayout>

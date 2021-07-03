@@ -45,7 +45,6 @@ public class SwipeActions {
                     new StartDownloadSwipeAction(), new MarkFavouriteSwipeAction(),
                     new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
     );
-    private static final SwipeAction showSettingsDialogAction = new ShowSettingsDialogSwipeAction();
 
     private RecyclerView recyclerView;
     public ItemTouchHelper itemTouchHelper;
@@ -67,8 +66,7 @@ public class SwipeActions {
 
     public SwipeActions attachTo(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
-
-        attachToRecyclerView();
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         //reload as settings might have changed
         fragment.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -116,20 +114,22 @@ public class SwipeActions {
         return getPrefs(context, tag, defaultActions);
     }
 
+    public static Boolean getNoActionPref(Context context, String tag) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(PREF_NO_ACTION + tag, false);
+    }
+
+    private Boolean getNoActionPref() {
+        return getNoActionPref(fragment.requireContext(), tag);
+    }
+
     public void resetItemTouchHelper() {
         //refresh itemTouchHelper after prefs changed
         if (itemTouchHelper != null) {
             itemTouchHelper.attachToRecyclerView(null);
         }
         itemTouchHelper();
-        attachToRecyclerView();
-    }
-
-    private void attachToRecyclerView() {
-        SharedPreferences prefs = recyclerView.getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        if (!prefs.getBoolean(PREF_NO_ACTION, false)) {
-            itemTouchHelper.attachToRecyclerView(recyclerView);
-        }
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     public interface NewSwipeCallback {
@@ -170,7 +170,7 @@ public class SwipeActions {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
             if (rightleft.length == 0) {
                 //open settings dialog if no prefs are set
-                showDialog(() -> rightleft = getPrefs(fragment.requireContext(), tag));
+                showDialog(SwipeActions.this::resetItemTouchHelper);
                 return;
             }
 
@@ -184,21 +184,21 @@ public class SwipeActions {
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder,
                                 float dx, float dy, int actionState, boolean isCurrentlyActive) {
-            SwipeAction right;
-            SwipeAction left;
-            if (rightleft.length > 0) {
+            SwipeAction right = null;
+            SwipeAction left = null;
+            boolean hasSwipeActions = rightleft.length > 0;
+            if (hasSwipeActions) {
                 right = swipeActions.get(rightleft[0]);
                 left = swipeActions.get(rightleft[1]);
-            } else {
-                right = showSettingsDialogAction;
-                left = showSettingsDialogAction;
             }
 
             //normal threshold
             boolean swipeThresholdReached = dx / recyclerView.getWidth() > getSwipeThreshold(viewHolder);
 
             //check if it will be removed
-            boolean wontLeave = (dx > 0 && !right.willRemove(filter)) || (dx < 0 && !left.willRemove(filter));
+            boolean rightWillRemove = hasSwipeActions && right.willRemove(filter);
+            boolean leftWillRemove = hasSwipeActions && left.willRemove(filter);
+            boolean wontLeave = (dx > 0 && !rightWillRemove) || (dx < 0 && !leftWillRemove);
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
                 swipeOutEnabled = false;
 
@@ -220,19 +220,22 @@ public class SwipeActions {
                 swipedOutTo = swipeThresholdReached ? dir : 0;
             }
 
-            Context context = fragment.requireContext();
-            RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
-                    c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(context, right.actionColor()))
-                    .addSwipeRightActionIcon(right.actionIcon())
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, left.actionColor()))
-                    .addSwipeLeftActionIcon(left.actionIcon());
-            if (wontLeave) {
-                int actionColor = ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color);
-                builder.setActionIconTint(swipeThresholdReached
-                        ? actionColor : ((actionColor & 0xffffff) | 0x66000000));
+            //add color and icon (only if its not the very first time)
+            if (hasSwipeActions) {
+                Context context = fragment.requireContext();
+                RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
+                        c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(context, right.actionColor()))
+                        .addSwipeRightActionIcon(right.actionIcon())
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, left.actionColor()))
+                        .addSwipeLeftActionIcon(left.actionIcon());
+                if (wontLeave) {
+                    int actionColor = ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color);
+                    builder.setActionIconTint(swipeThresholdReached
+                            ? actionColor : ((actionColor & 0xffffff) | 0x66000000));
+                }
+                builder.create().decorate();
             }
-            builder.create().decorate();
 
             super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
         }
@@ -259,6 +262,15 @@ public class SwipeActions {
             if (swipedOutTo != 0) {
                 onSwiped(viewHolder, swipedOutTo);
                 swipedOutTo = 0;
+            }
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            if (getNoActionPref()) {
+                return makeMovementFlags(getDragDirs(recyclerView, viewHolder), 0);
+            } else {
+                return super.getMovementFlags(recyclerView, viewHolder);
             }
         }
     }
