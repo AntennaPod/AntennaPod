@@ -193,9 +193,6 @@ public class SwipeActions {
                 left = swipeActions.get(rightleft[1]);
             }
 
-            //normal threshold
-            boolean swipeThresholdReached = dx / recyclerView.getWidth() > getSwipeThreshold(viewHolder);
-
             //check if it will be removed
             boolean rightWillRemove = hasSwipeActions && right.willRemove(filter);
             boolean leftWillRemove = hasSwipeActions && left.willRemove(filter);
@@ -210,7 +207,7 @@ public class SwipeActions {
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
                 swipeOutEnabled = false;
 
-                swipeThresholdReached = displacementPercentage == 1;
+                boolean swipeThresholdReached = displacementPercentage == 1;
 
                 // Move slower when getting near the maxMovement
                 dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
