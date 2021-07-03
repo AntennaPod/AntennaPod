@@ -30,6 +30,7 @@ public class SwipeActions {
     public static final String PREF_NAME = "SwipeActionsPrefs";
     public static final String PREF_SWIPEACTION_RIGHT = "PrefsSwipeActionRight";
     public static final String PREF_SWIPEACTION_LEFT = "PrefsSwipeActionLeft";
+    public static final String PREF_NO_ACTION = "PrefsNoSwipeAction";
 
     //indexes of swipeActions
     public static final int ADD_TO_QUEUE = 0;
@@ -66,13 +67,15 @@ public class SwipeActions {
 
     public SwipeActions attachTo(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        attachToRecyclerView();
         //reload as settings might have changed
         fragment.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
             if (event == Lifecycle.Event.ON_RESUME) {
                 resetItemTouchHelper();
             }
         });
+
         return this;
     }
 
@@ -119,7 +122,14 @@ public class SwipeActions {
             itemTouchHelper.attachToRecyclerView(null);
         }
         itemTouchHelper();
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        attachToRecyclerView();
+    }
+
+    private void attachToRecyclerView() {
+        SharedPreferences prefs = recyclerView.getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        if (!prefs.getBoolean(PREF_NO_ACTION, false)) {
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
     }
 
     public interface NewSwipeCallback {
