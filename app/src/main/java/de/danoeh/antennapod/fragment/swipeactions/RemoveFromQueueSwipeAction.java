@@ -47,6 +47,6 @@ public class RemoveFromQueueSwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter) {
-        return filter.showQueued;
+        return filter.showQueued || filter.showNotQueued;
     }
 }
