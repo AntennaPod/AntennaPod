@@ -214,13 +214,13 @@ public class SwipeActions {
 
                 // Move slower when getting near the maxMovement
                 dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
+
+                if (isCurrentlyActive) {
+                    int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
+                    swipedOutTo = swipeThresholdReached ? dir : 0;
+                }
             } else {
                 swipeOutEnabled = true;
-            }
-
-            if (isCurrentlyActive) {
-                int dir = dx > 0 ? ItemTouchHelper.RIGHT : ItemTouchHelper.LEFT;
-                swipedOutTo = swipeThresholdReached ? dir : 0;
             }
 
             //add color and icon (only if its not the very first time)
