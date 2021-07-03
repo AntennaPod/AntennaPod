@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
@@ -199,15 +200,17 @@ public class SwipeActions {
             boolean rightWillRemove = hasSwipeActions && right.willRemove(filter);
             boolean leftWillRemove = hasSwipeActions && left.willRemove(filter);
             boolean wontLeave = (dx > 0 && !rightWillRemove) || (dx < 0 && !leftWillRemove);
+
+            //Limit swipe if it's not removed
+            int maxMovement = recyclerView.getWidth() * 2 / 5;
+            float sign = dx > 0 ? 1 : -1;
+            float limitMovement = Math.min(maxMovement, sign * dx);
+            float displacementPercentage = limitMovement / maxMovement;
+
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && wontLeave) {
                 swipeOutEnabled = false;
 
-                //Limit swipe if it's not removed
-                int maxMovement = recyclerView.getWidth() * 2 / 5;
-                float sign = dx > 0 ? 1 : -1;
-                float limitMovement = Math.min(maxMovement, sign * dx);
-                float displacementPercentage = limitMovement / maxMovement;
-                swipeThresholdReached = displacementPercentage >= 0.7;
+                swipeThresholdReached = displacementPercentage == 1;
 
                 // Move slower when getting near the maxMovement
                 dx = sign * maxMovement * (float) Math.sin((Math.PI / 2) * displacementPercentage);
@@ -223,17 +226,16 @@ public class SwipeActions {
             //add color and icon (only if its not the very first time)
             if (hasSwipeActions) {
                 Context context = fragment.requireContext();
+                int themeColor = ThemeUtils.getColorFromAttr(context, R.attr.backgroundColor);
+                int actionColor = ContextCompat.getColor(context, dx > 0 ? right.actionColor() : left.actionColor());
                 RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(context, right.actionColor()))
                         .addSwipeRightActionIcon(right.actionIcon())
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, left.actionColor()))
-                        .addSwipeLeftActionIcon(left.actionIcon());
-                if (wontLeave) {
-                    int actionColor = ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color);
-                    builder.setActionIconTint(swipeThresholdReached
-                            ? actionColor : ((actionColor & 0xffffff) | 0x66000000));
-                }
+                        .addSwipeLeftActionIcon(left.actionIcon())
+                        .setActionIconTint(
+                                ColorUtils.blendARGB(themeColor,
+                                        actionColor,
+                                        Math.max(0.6f, displacementPercentage)));
                 builder.create().decorate();
             }
 
