@@ -47,10 +47,10 @@
 
         <include
             android:id="@+id/mockEpisodeRight"
-            layout="@layout/feeditemlist_item"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7" />
+            android:layout_weight="0.7"
+            layout="@layout/feeditemlist_item" />
 
     </LinearLayout>
 
@@ -77,10 +77,10 @@
 
         <include
             android:id="@+id/mockEpisodeLeft"
-            layout="@layout/feeditemlist_item"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7" />
+            android:layout_weight="0.7"
+            layout="@layout/feeditemlist_item" />
 
         <ImageView
             android:id="@+id/swipeactionIconLeft"

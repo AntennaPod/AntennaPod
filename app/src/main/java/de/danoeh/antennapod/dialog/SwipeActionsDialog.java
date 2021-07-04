@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import com.annimon.stream.Stream;
 
@@ -77,11 +78,13 @@ public class SwipeActionsDialog {
 
         spinnerRightAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
             rightIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            rightIcon.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+            int color = ContextCompat.getColor(context, SwipeActions.swipeActions.get(i).actionColor());
+            rightIcon.setColorFilter(color);
         }));
         spinnerLeftAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
             leftIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            leftIcon.setBackgroundResource(SwipeActions.swipeActions.get(i).actionColor());
+            int color = ContextCompat.getColor(context, SwipeActions.swipeActions.get(i).actionColor());
+            leftIcon.setColorFilter(color);
         }));
 
         enableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
