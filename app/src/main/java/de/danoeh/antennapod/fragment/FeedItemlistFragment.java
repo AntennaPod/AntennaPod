@@ -1,13 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
@@ -30,8 +32,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.leinardi.android.speeddial.SpeedDialView;
+
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+import java.util.Set;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -58,10 +71,10 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
-import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -72,19 +85,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener {
+        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnEndSelectModeListener {
     private static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -106,6 +112,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private View header;
     private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
+    private SpeedDialView speedDialView;
+
     private boolean displayUpArrow;
 
     private long feedID;
@@ -222,6 +230,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         loadItems();
+
+        // Init action UI (via a FAB Speed Dial)
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && adapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
+            onEndSelectMode();
+            adapter.endSelectMode();
+            return true;
+        });
         return root;
     }
 
@@ -292,17 +326,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         }
         switch (item.getItemId()) {
-            case R.id.episode_actions:
-                int actions = EpisodesApplyActionFragment.ACTION_ALL;
-                if (feed.isLocalFeed()) {
-                    // turn off download and delete actions for local feed
-                    actions ^= EpisodesApplyActionFragment.ACTION_DOWNLOAD;
-                    actions ^= EpisodesApplyActionFragment.ACTION_DELETE;
-                }
-                EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(feed.getItems(), actions);
-                ((MainActivity) getActivity()).loadChildFragment(fragment);
-                return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
@@ -317,10 +340,23 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getSelectedItem();
+        FeedItem selectedItem = adapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
+        }
+
+        if (item.getItemId() == R.id.multi_select) {
+            if (feed.isLocalFeed()) {
+                speedDialView.removeActionItemById(R.id.download_batch);
+                speedDialView.removeActionItemById(R.id.delete_batch);
+            }
+            speedDialView.setVisibility(View.VISIBLE);
+            refreshToolbarState();
+            // Do not return: Let adapter handle its actions, too.
+        }
+        if (adapter.onContextItemSelected(item)) {
+            return true;
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -393,6 +429,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
+    }
+
     private void updateUi() {
         loadItems();
         updateSyncProgressBarVisibility();
@@ -433,6 +475,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (adapter == null) {
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
+            adapter.setOnEndSelectModeListener(this);
             recyclerView.setAdapter(adapter);
         }
         progressBar.setVisibility(View.GONE);
@@ -591,6 +634,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            if (!inActionMode()) {
+                menu.findItem(R.id.multi_select).setVisible(true);
+            }
         }
     }
 }
