@@ -86,7 +86,7 @@ public class SwipeActionsDialog {
 
         enableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
             LinearLayout container = layout.findViewById(R.id.container);
-            for ( int i = 1; i < container.getChildCount();  i++ ){
+            for (int i = 1; i < container.getChildCount();  i++) {
                 View view = container.getChildAt(i);
                 view.setEnabled(b); // Or whatever you want to do with the view.
             }

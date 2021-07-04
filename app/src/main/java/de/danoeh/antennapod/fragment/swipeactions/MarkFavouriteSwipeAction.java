@@ -18,7 +18,7 @@ public class MarkFavouriteSwipeAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_yellow_200;
+        return R.color.swipe_yellow;
     }
 
     @Override

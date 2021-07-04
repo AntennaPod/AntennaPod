@@ -16,7 +16,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_light_blue_200;
+        return R.color.swipe_blue;
     }
 
     @Override

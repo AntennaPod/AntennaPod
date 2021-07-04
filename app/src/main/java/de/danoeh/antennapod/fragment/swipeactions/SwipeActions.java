@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment.swipeactions;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -223,7 +224,7 @@ public class SwipeActions {
             //add color and icon (only if its not the very first time)
             if (hasSwipeActions) {
                 Context context = fragment.requireContext();
-                int themeColor = ThemeUtils.getColorFromAttr(context, R.attr.backgroundColor);
+                int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
                 int actionColor = ContextCompat.getColor(context, dx > 0 ? right.actionColor() : left.actionColor());
                 RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
@@ -232,7 +233,7 @@ public class SwipeActions {
                         .setActionIconTint(
                                 ColorUtils.blendARGB(themeColor,
                                         actionColor,
-                                        Math.max(0.6f, displacementPercentage)));
+                                        Math.max(0.5f, displacementPercentage)));
                 builder.create().decorate();
             }
 
