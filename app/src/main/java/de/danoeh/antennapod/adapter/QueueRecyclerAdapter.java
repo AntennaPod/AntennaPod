@@ -44,7 +44,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             return false;
         };
 
-        if (!dragDropEnabled) {
+        if (!dragDropEnabled || inActionMode()) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);
@@ -59,9 +59,9 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
 
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.queue_context, menu);
-        super.onCreateContextMenu(menu, v, menuInfo);
 
         if (!inActionMode()) {
             menu.findItem(R.id.multi_select).setVisible(true);

@@ -5,12 +5,14 @@
     <item
         android:id="@+id/move_to_top_item"
         android:menuCategory="container"
-        android:title="@string/move_to_top_label" />
+        android:title="@string/move_to_top_label"
+        android:orderInCategory="80"/>
 
     <item
         android:id="@+id/move_to_bottom_item"
         android:menuCategory="container"
-        android:title="@string/move_to_bottom_label" />
+        android:title="@string/move_to_bottom_label"
+        android:orderInCategory="90"/>
     <!-- rest of the menu items can be found in the generic feeditemlist_context.xml -->
 
 </menu>
