@@ -34,7 +34,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -51,14 +50,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE;
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
-
 /**
  * Displays all completed downloads and provides a button to delete them.
  */
 public class CompletedDownloadsFragment extends Fragment implements
-        EpisodeItemListAdapter.OnEndSelectModeListener{
+        EpisodeItemListAdapter.OnEndSelectModeListener {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
@@ -143,17 +139,12 @@ public class CompletedDownloadsFragment extends Fragment implements
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         menu.findItem(R.id.clear_logs_item).setVisible(false);
-        menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.episode_actions) {
-            ((MainActivity) requireActivity())
-                    .loadChildFragment(EpisodesApplyActionFragment.newInstance(items, ACTION_DELETE | ACTION_ADD_TO_QUEUE));
-            return true;
-        } else if (item.getItemId() == R.id.refresh_item) {
+        if (item.getItemId() == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
             return true;
         }

@@ -50,7 +50,6 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -66,10 +65,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
-
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOWNLOAD;
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 
 /**
  * Shows all items in the queue.
@@ -283,11 +278,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     }
                 };
                 conDialog.createNewDialog().show();
-                return true;
-            case R.id.episode_actions:
-                ((MainActivity) requireActivity()).loadChildFragment(
-                        EpisodesApplyActionFragment.newInstance(queue,
-                                ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE  | ACTION_DOWNLOAD));
                 return true;
             case R.id.queue_sort_episode_title_asc:
                 setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
