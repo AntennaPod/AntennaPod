@@ -42,6 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
+            android:background="?attr/background_elevated"
             android:padding="20dp"
             app:srcCompat="@drawable/ic_add" />
 
@@ -87,6 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
+            android:background="?attr/background_elevated"
             android:padding="20dp"
             app:srcCompat="@drawable/ic_add" />
 

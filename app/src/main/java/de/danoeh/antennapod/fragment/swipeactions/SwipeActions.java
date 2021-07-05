@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -228,6 +229,8 @@ public class SwipeActions {
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
                         .addSwipeRightActionIcon(right.actionIcon())
                         .addSwipeLeftActionIcon(left.actionIcon())
+                        .addSwipeRightBackgroundColor(R.attr.background_elevated)
+                        .addSwipeLeftBackgroundColor(R.attr.background_elevated)
                         .setActionIconTint(
                                 ColorUtils.blendARGB(themeColor,
                                         actionColor,
