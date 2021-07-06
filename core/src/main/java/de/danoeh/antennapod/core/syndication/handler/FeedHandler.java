@@ -41,6 +41,7 @@ public class FeedHandler {
         feed.setItems(dedupItems(feed.getItems()));
         return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
     }
+
     public static List<FeedItem> dedupItems(List<FeedItem> items) {
         List<FeedItem> list = items;
         if (list == null) {
@@ -53,8 +54,8 @@ public class FeedHandler {
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
                 if (item.getMedia().getStreamUrl() != null && seen.indexOf(item.getMedia().getStreamUrl()) == -1) {
                     seen.add(item.getMedia().getDownload_url());
-                    if (item.getTitle() != null && seen.indexOf(item.getTitle()+item.getPubDate().toString()) == -1) {
-                        seen.add(item.getTitle()+item.getPubDate().toString());
+                    if (item.getTitle() != null && seen.indexOf(item.getTitle() + item.getPubDate().toString()) == -1) {
+                        seen.add(item.getTitle() + item.getPubDate().toString());
                     } else {
                         Log.d(TAG, "Removing duplicate episode title and pubDate "
                                 + item.getTitle()
