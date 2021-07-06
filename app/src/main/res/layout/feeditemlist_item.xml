@@ -14,8 +14,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:background="?android:attr/windowBackground"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:baselineAligned="false"
@@ -44,6 +42,13 @@
                 app:srcCompat="?attr/dragview_background"
                 tools:src="@drawable/ic_drag_darktheme"
                 tools:background="@android:color/holo_green_dark" />
+
+            <!-- Needs to have the same width as the action button. Otherwise, the screen jumps around. -->
+            <CheckBox
+                android:id="@+id/selectCheckBox"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
         </LinearLayout>
 

@@ -65,10 +65,10 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         final boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        if (getItem(0).getId() == getSelectedItem().getId() || keepSorted) {
+        if (getItem(0).getId() == getLongPressedItem().getId() || keepSorted) {
             menu.findItem(R.id.move_to_top_item).setVisible(false);
         }
-        if (getItem(getItemCount() - 1).getId() == getSelectedItem().getId() || keepSorted) {
+        if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
             menu.findItem(R.id.move_to_bottom_item).setVisible(false);
         }
     }

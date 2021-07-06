@@ -393,7 +393,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (!isVisible() || recyclerAdapter == null) {
             return false;
         }
-        FeedItem selectedItem = recyclerAdapter.getSelectedItem();
+        FeedItem selectedItem = recyclerAdapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item was null, ignoring selection");
             return super.onContextItemSelected(item);

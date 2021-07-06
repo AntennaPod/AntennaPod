@@ -135,8 +135,8 @@
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
-        <item quantity="one">%d selected</item>
-        <item quantity="other">%d selected</item>
+        <item quantity="one">%1$d/%2$d selected</item>
+        <item quantity="other">%1$d/%2$d selected</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d episode</item>

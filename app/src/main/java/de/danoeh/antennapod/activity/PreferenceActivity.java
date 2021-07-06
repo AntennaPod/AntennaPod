@@ -3,14 +3,15 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
-
-import android.provider.Settings;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
@@ -141,6 +142,10 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 finish();
             } else {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 getSupportFragmentManager().popBackStack();
             }
             return true;
