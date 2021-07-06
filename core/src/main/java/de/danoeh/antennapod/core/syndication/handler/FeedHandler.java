@@ -21,7 +21,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class FeedHandler {
-    public static String TAG = "FeedHandler";
+	private static final String TAG = "FeedHandler";
 
 	public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
 			ParserConfigurationException, UnsupportedFeedtypeException {
