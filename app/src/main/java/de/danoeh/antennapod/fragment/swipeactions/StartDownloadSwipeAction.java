@@ -26,7 +26,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
 
     @Override
     public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        if (!item.isDownloaded()) {
+        if (!item.isDownloaded() && !item.getFeed().isLocalFeed()) {
             new DownloadActionButton(item)
                     .onClick(fragment.requireContext());
         }

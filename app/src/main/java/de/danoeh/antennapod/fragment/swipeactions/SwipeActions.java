@@ -229,8 +229,8 @@ public class SwipeActions {
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
                         .addSwipeRightActionIcon(right.actionIcon())
                         .addSwipeLeftActionIcon(left.actionIcon())
-                        .addSwipeRightBackgroundColor(R.attr.background_elevated)
-                        .addSwipeLeftBackgroundColor(R.attr.background_elevated)
+                        .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
+                        .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
                         .setActionIconTint(
                                 ColorUtils.blendARGB(themeColor,
                                         actionColor,

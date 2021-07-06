@@ -122,7 +122,7 @@ public class SwipeActionsDialog {
         view.findViewById(R.id.secondaryActionButton).setVisibility(View.GONE);
         view.findViewById(R.id.drag_handle).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.statusUnread)).setText("███");
-        ((TextView) view.findViewById(R.id.txtvTitle)).setText("████████████");
+        ((TextView) view.findViewById(R.id.txtvTitle)).setText("████████");
         ((TextView) view.findViewById(R.id.txtvPosition)).setText("█████");
         ((TextView) view.findViewById(R.id.txtvDuration)).setText("█████");
     }

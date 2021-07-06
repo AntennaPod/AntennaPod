@@ -40,8 +40,8 @@
     <color name="dialog_filter_inactive_dark">#555555</color>
 
     <!-- swipe actions -->
-    <color name="swipe_green">#66bb6a</color>
-    <color name="swipe_red">#ef5350</color>
-    <color name="swipe_blue">#42a5f5</color>
-    <color name="swipe_yellow">#ffee58</color>
+    <color name="swipe_green">#08870E</color>
+    <color name="swipe_red">#E31F1C</color>
+    <color name="swipe_blue">@color/accent_light</color>
+    <color name="swipe_yellow">#FFAA00</color>
 </resources>
