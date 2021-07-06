@@ -41,6 +41,7 @@
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
     <string name="enable_swipeactions">Enable SwipeActions for this Screen</string>
+    <string name="change_setting">Change</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>

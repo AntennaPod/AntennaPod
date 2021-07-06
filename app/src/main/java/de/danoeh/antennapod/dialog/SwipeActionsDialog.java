@@ -2,33 +2,39 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-
-import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-
-import com.annimon.stream.Stream;
-
-import java.util.List;
-
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.gridlayout.widget.GridLayout;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.FeeditemlistItemBinding;
+import de.danoeh.antennapod.databinding.SwipeactionsDialogBinding;
+import de.danoeh.antennapod.databinding.SwipeactionsPickerBinding;
+import de.danoeh.antennapod.databinding.SwipeactionsPickerItemBinding;
+import de.danoeh.antennapod.databinding.SwipeactionsRowBinding;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+
+import java.util.List;
 
 public class SwipeActionsDialog {
+    private static final int LEFT = 1;
+    private static final int RIGHT = 0;
 
     private final Context context;
     private final String tag;
+
+    private int rightAction;
+    private int leftAction;
 
     public SwipeActionsDialog(Context context, String tag) {
         this.context = context;
@@ -36,6 +42,10 @@ public class SwipeActionsDialog {
     }
 
     public void show(Callback prefsChanged) {
+        int[] rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
+        leftAction = rightLeft[LEFT];
+        rightAction = rightLeft[RIGHT];
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         String forFragment = "";
@@ -56,75 +66,99 @@ public class SwipeActionsDialog {
         }
 
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
+        SwipeactionsDialogBinding viewBinding = SwipeactionsDialogBinding.inflate(LayoutInflater.from(context));
+        builder.setView(viewBinding.getRoot());
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View layout = inflater.inflate(R.layout.swipeactions_dialog, null, false);
-        populateMockEpisode(layout.findViewById(R.id.mockEpisodeLeft));
-        populateMockEpisode(layout.findViewById(R.id.mockEpisodeRight));
-
-        final ImageView rightIcon = layout.findViewById(R.id.swipeactionIconRight);
-        final ImageView leftIcon = layout.findViewById(R.id.swipeactionIconLeft);
-
-        final Spinner spinnerRightAction = layout.findViewById(R.id.spinnerRightAction);
-        final Spinner spinnerLeftAction = layout.findViewById(R.id.spinnerLeftAction);
-
-        final SwitchCompat enableSwitch = layout.findViewById(R.id.enableSwitch);
-
-        rightIcon.setOnClickListener(view -> spinnerRightAction.performClick());
-        leftIcon.setOnClickListener(view -> spinnerLeftAction.performClick());
-
-        spinnerRightAction.setAdapter(adapter());
-        spinnerLeftAction.setAdapter(adapter());
-
-        spinnerRightAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
-            rightIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            int color = ContextCompat.getColor(context, SwipeActions.swipeActions.get(i).actionColor());
-            rightIcon.setColorFilter(color);
-        }));
-        spinnerLeftAction.setOnItemSelectedListener(listener((a, v, i, l) -> {
-            leftIcon.setImageResource(SwipeActions.swipeActions.get(i).actionIcon());
-            int color = ContextCompat.getColor(context, SwipeActions.swipeActions.get(i).actionColor());
-            leftIcon.setColorFilter(color);
-        }));
-
-        enableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            LinearLayout container = layout.findViewById(R.id.swipeDialogContainer);
-            for (int i = 1; i < container.getChildCount();  i++) {
-                View view = container.getChildAt(i);
-                view.setEnabled(b); // Or whatever you want to do with the view.
-            }
+        viewBinding.enableSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            viewBinding.actionLeftContainer.getRoot().setAlpha(b ? 1.0f : 0.4f);
+            viewBinding.actionRightContainer.getRoot().setAlpha(b ? 1.0f : 0.4f);
         });
 
-        //load prefs and suggest defaults if swiped the first time
-        int[] rightleft = SwipeActions.getPrefsWithDefaults(context, tag);
-        int right = rightleft[0];
-        int left = rightleft[1];
-        enableSwitch.setChecked(!SwipeActions.getNoActionPref(context, tag));
+        viewBinding.enableSwitch.setChecked(!SwipeActions.getNoActionPref(context, tag));
 
-        spinnerRightAction.setSelection(right);
-        spinnerLeftAction.setSelection(left);
-
-        builder.setView(layout);
+        setupSwipeDirectionView(viewBinding.actionLeftContainer, LEFT);
+        setupSwipeDirectionView(viewBinding.actionRightContainer, RIGHT);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            int rightAction = spinnerRightAction.getSelectedItemPosition();
-            int leftAction = spinnerLeftAction.getSelectedItemPosition();
             savePrefs(tag, rightAction, leftAction);
-            saveNoActionsPrefs(!enableSwitch.isChecked());
+            saveNoActionsPrefs(!viewBinding.enableSwitch.isChecked());
             prefsChanged.onCall();
         });
-        builder.setNegativeButton(R.string.cancel_label, (dialogInterface, i) -> saveNoActionsPrefs(true));
+
+        builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }
 
-    private void populateMockEpisode(View view) {
-        view.setAlpha(0.3f);
-        view.findViewById(R.id.secondaryActionButton).setVisibility(View.GONE);
-        view.findViewById(R.id.drag_handle).setVisibility(View.GONE);
-        ((TextView) view.findViewById(R.id.statusUnread)).setText("███");
-        ((TextView) view.findViewById(R.id.txtvTitle)).setText("████████");
-        ((TextView) view.findViewById(R.id.txtvPosition)).setText("█████");
-        ((TextView) view.findViewById(R.id.txtvDuration)).setText("█████");
+    private void setupSwipeDirectionView(SwipeactionsRowBinding view, int direction) {
+        SwipeAction action = SwipeActions.swipeActions.get(direction == LEFT ? leftAction : rightAction);
+
+        view.swipeDirectionLabel.setText(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
+        view.swipeActionLabel.setText(action.title(context));
+        populateMockEpisode(view.mockEpisode);
+        if (direction == RIGHT && view.previewContainer.getChildAt(0) != view.swipeIcon) {
+            view.previewContainer.removeView(view.swipeIcon);
+            view.previewContainer.addView(view.swipeIcon, 0);
+        }
+
+        view.swipeIcon.setImageResource(action.actionIcon());
+        view.swipeIcon.setColorFilter(ContextCompat.getColor(context, action.actionColor()));
+
+        view.changeButton.setOnClickListener(v -> showPicker(view, direction));
+        view.previewContainer.setOnClickListener(v -> showPicker(view, direction));
+    }
+
+    private void showPicker(SwipeactionsRowBinding view, int direction) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
+
+        SwipeactionsPickerBinding picker = SwipeactionsPickerBinding.inflate(LayoutInflater.from(context));
+        builder.setView(picker.getRoot());
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog dialog = builder.show();
+
+        List<SwipeAction> swipeActions = SwipeActions.swipeActions;
+        for (int i = 0; i < swipeActions.size(); i++) {
+            final int actionIndex = i;
+            SwipeAction action = swipeActions.get(actionIndex);
+            SwipeactionsPickerItemBinding item = SwipeactionsPickerItemBinding.inflate(LayoutInflater.from(context));
+            item.swipeActionLabel.setText(action.title(context));
+
+            Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.actionIcon()));
+            DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
+            if ((direction == LEFT && leftAction == i) || (direction == RIGHT && rightAction == i)) {
+                DrawableCompat.setTint(icon, ContextCompat.getColor(context, action.actionColor()));
+                item.swipeActionLabel.setTextColor(ContextCompat.getColor(context, action.actionColor()));
+            } else {
+                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
+            }
+            item.swipeIcon.setImageDrawable(icon);
+
+            item.getRoot().setOnClickListener(v -> {
+                if (direction == LEFT) {
+                    leftAction = actionIndex;
+                } else {
+                    rightAction = actionIndex;
+                }
+                setupSwipeDirectionView(view, direction);
+                dialog.dismiss();
+            });
+            GridLayout.LayoutParams param = new GridLayout.LayoutParams(
+                    GridLayout.spec(GridLayout.UNDEFINED, GridLayout.BASELINE),
+                    GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f));
+            param.width  = 0;
+            picker.pickerGridLayout.addView(item.getRoot(), param);
+        }
+        picker.pickerGridLayout.setColumnCount(2);
+        picker.pickerGridLayout.setRowCount((swipeActions.size() + 1) / 2);
+    }
+
+    private void populateMockEpisode(FeeditemlistItemBinding view) {
+        view.container.setAlpha(0.3f);
+        view.secondaryActionButton.secondaryActionButton.setVisibility(View.GONE);
+        view.dragHandle.setVisibility(View.GONE);
+        view.statusUnread.setText("███");
+        view.txtvTitle.setText("███████");
+        view.txtvPosition.setText("█████");
     }
 
     private void savePrefs(String tag, int right, int left) {
@@ -136,30 +170,6 @@ public class SwipeActionsDialog {
     private void saveNoActionsPrefs(Boolean noActions) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(SwipeActions.PREF_NO_ACTION + tag, noActions).apply();
-    }
-
-    private AdapterView.OnItemSelectedListener listener(AdapterView.OnItemClickListener listener) {
-        return new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                listener.onItemClick(adapterView, view, i, l);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        };
-    }
-
-    private ArrayAdapter<String> adapter() {
-        final List<String> titles = Stream.of(SwipeActions.swipeActions)
-                .map(swa -> swa.title(context))
-                .toList();
-
-        return new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_dropdown_item,
-                titles);
     }
 
     public interface Callback {

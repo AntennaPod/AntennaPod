@@ -234,6 +234,7 @@
         </LinearLayout>
 
         <include
+            android:id="@+id/secondaryActionButton"
             layout="@layout/secondary_action" />
 
     </LinearLayout>

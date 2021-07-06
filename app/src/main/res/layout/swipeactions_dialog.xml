@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeDialogContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,85 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:text="@string/enable_swipeactions"
-        android:textSize="12sp" />
+        android:text="@string/enable_swipeactions" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/swipe_right"
-        android:textAlignment="textStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp" />
+    <include
+        android:id="@+id/actionLeftContainer"
+        layout="@layout/swipeactions_row" />
 
-    <Spinner
-        android:id="@+id/spinnerRightAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <ImageView
-            android:id="@+id/swipeactionIconRight"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:background="?attr/background_elevated"
-            android:padding="20dp"
-            app:srcCompat="@drawable/ic_add" />
-
-        <include
-            android:id="@+id/mockEpisodeRight"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            layout="@layout/feeditemlist_item" />
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/swipe_left"
-        android:textAlignment="textStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp" />
-
-    <Spinner
-        android:id="@+id/spinnerLeftAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <include
-            android:id="@+id/mockEpisodeLeft"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            layout="@layout/feeditemlist_item" />
-
-        <ImageView
-            android:id="@+id/swipeactionIconLeft"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:background="?attr/background_elevated"
-            android:padding="20dp"
-            app:srcCompat="@drawable/ic_add" />
-
-    </LinearLayout>
+    <include
+        android:id="@+id/actionRightContainer"
+        layout="@layout/swipeactions_row" />
 
 </LinearLayout>
