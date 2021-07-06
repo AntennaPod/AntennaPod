@@ -338,12 +338,22 @@ public final class DBTasks {
      */
     private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
+            Log.d(TAG, "guid " + item.getIdentifyingValue() + " guid 2 " + searchItem.getIdentifyingValue());
             if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
+                Log.d(TAG, "Removing duplicate episode guid " + item.getIdentifyingValue());
                 return item;
             }
-            if (!TextUtils.isEmpty(item.getLink())
-                    && !TextUtils.isEmpty(searchItem.getLink())
-                    && TextUtils.equals(item.getLink(), searchItem.getLink())) {
+
+            if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) continue;
+
+            if (TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
+                Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
+                return item;
+            }
+
+            if (TextUtils.equals(item.getTitle(), searchItem.getTitle()) &&
+                    item.getPubDate().equals(searchItem.getPubDate())) {
+                Log.d(TAG, "Removing duplicate episode title + pubDate " + item.getTitle() + " " + item.getPubDate());
                 return item;
             }
         }

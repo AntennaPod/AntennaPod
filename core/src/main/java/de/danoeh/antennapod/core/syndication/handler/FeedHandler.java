@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.util.Log;
+
 import org.apache.commons.io.input.XmlStreamReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -7,14 +9,19 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class FeedHandler {
+    public static String TAG = "FeedHandler";
 
 	public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
 			ParserConfigurationException, UnsupportedFeedtypeException {
@@ -31,6 +38,40 @@ public class FeedHandler {
 
 		saxParser.parse(inputSource, handler);
 		inputStreamReader.close();
+		feed.setItems(dedupItems(feed.getItems()));
 		return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
+	}
+	static public List<FeedItem> dedupItems(List<FeedItem> items) {
+		List<FeedItem> list = items;
+		if (list == null) {
+			return null;
+		}
+		ArrayList<String> seen = new ArrayList<>();
+		Iterator<FeedItem> it = list.iterator();
+		while (it.hasNext()) {
+			FeedItem item = it.next();
+			if (seen.indexOf(item.getItemIdentifier()) == -1) {
+				if (item.getMedia().getStreamUrl() != null && seen.indexOf(item.getMedia().getStreamUrl()) == -1) {
+					seen.add(item.getMedia().getDownload_url());
+					if (item.getTitle() != null && seen.indexOf(item.getTitle()+item.getPubDate().toString()) == -1) {
+						seen.add(item.getTitle()+item.getPubDate().toString());
+					} else {
+						Log.d(TAG, "Removing duplicate episode title and pubDate "
+								+ item.getTitle()
+								+ " " + item.getPubDate());
+						it.remove();
+					}
+				} else {
+					Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
+					it.remove();
+				}
+
+				seen.add(item.getItemIdentifier());
+			} else {
+			    Log.d(TAG, "Removing duplicate episode guid " + item.getItemIdentifier());
+				it.remove();
+			}
+		}
+		return list;
 	}
 }
