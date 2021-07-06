@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.commons.io.input.XmlStreamReader;
@@ -52,9 +53,15 @@ public class FeedHandler {
         while (it.hasNext()) {
             FeedItem item = it.next();
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
-                if (item.getMedia().getStreamUrl() != null && seen.indexOf(item.getMedia().getStreamUrl()) == -1) {
+                if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
+                    continue;
+                }
+                if (seen.indexOf(item.getMedia().getStreamUrl()) == -1) {
                     seen.add(item.getMedia().getDownload_url());
-                    if (item.getTitle() != null && seen.indexOf(item.getTitle() + item.getPubDate().toString()) == -1) {
+                    if (TextUtils.isEmpty(item.getTitle()) || TextUtils.isEmpty(item.getPubDate().toString())) {
+                        continue;
+                    }
+                    if (seen.indexOf(item.getTitle() + item.getPubDate().toString()) == -1) {
                         seen.add(item.getTitle() + item.getPubDate().toString());
                     } else {
                         Log.d(TAG, "Removing duplicate episode title and pubDate "
