@@ -202,8 +202,11 @@ public class DbTasksTest {
         final Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < 10; i++) {
-            feed.getItems().add(
-                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+            FeedItem item =
+                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed);
+            FeedMedia media = new FeedMedia(item, "download url " + i, 123, "media/mp3");
+            item.setMedia(media);
+            feed.getItems().add(item);
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -214,7 +217,7 @@ public class DbTasksTest {
         FeedItem item = feed.getItemAtIndex(0);
         item.setItemIdentifier("id 1-duplicate");
         Feed newFeed = DBTasks.updateFeed(context, feed, false);
-        assertEquals(10, newFeed.getItems().size()); // id1-duplicate should override id 1
+        assertEquals(10, newFeed.getItems().size()); // id 1-duplicate replaces because the stream url is the same
 
         Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         assertEquals(10, feedFromDB.getItems().size()); // id1-duplicate should override id 1
