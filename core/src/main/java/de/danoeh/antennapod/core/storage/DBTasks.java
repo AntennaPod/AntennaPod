@@ -344,15 +344,17 @@ public final class DBTasks {
                 return item;
             }
 
-            if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) continue;
+            if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
+                continue;
+            }
 
             if (TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
                 Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
                 return item;
             }
 
-            if (TextUtils.equals(item.getTitle(), searchItem.getTitle()) &&
-                    item.getPubDate().equals(searchItem.getPubDate())) {
+            if (TextUtils.equals(item.getTitle(), searchItem.getTitle())
+                    && item.getPubDate().equals(searchItem.getPubDate())) {
                 Log.d(TAG, "Removing duplicate episode title + pubDate " + item.getTitle() + " " + item.getPubDate());
                 return item;
             }
