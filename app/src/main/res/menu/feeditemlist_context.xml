@@ -1,93 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/multi_select"
-        android:menuCategory="container"
-        android:title="@string/multi_select"
-        android:visible="false"
-        android:orderInCategory="100" />
-
-    <item
         android:id="@id/skip_episode_item"
         android:menuCategory="container"
-        android:title="@string/skip_episode_label"
-        android:orderInCategory="200"/>
+        android:title="@string/skip_episode_label" />
 
     <item
         android:id="@+id/remove_new_flag_item"
         android:menuCategory="container"
-        android:title="@string/remove_new_flag_label"
-        android:orderInCategory="300"/>
+        android:title="@string/remove_new_flag_label" />
 
     <item
         android:id="@+id/mark_read_item"
         android:menuCategory="container"
-        android:title="@string/mark_read_label"
-        android:orderInCategory="400"/>
+        android:title="@string/mark_read_label" />
 
     <item
         android:id="@+id/mark_unread_item"
         android:menuCategory="container"
-        android:title="@string/mark_unread_label"
-        android:orderInCategory="500"/>
+        android:title="@string/mark_unread_label" />
 
     <item
         android:id="@+id/add_to_queue_item"
         android:menuCategory="container"
-        android:title="@string/add_to_queue_label"
-        android:orderInCategory="600"/>
+        android:title="@string/add_to_queue_label" />
 
     <item
         android:id="@+id/remove_from_queue_item"
         android:menuCategory="container"
-        android:title="@string/remove_from_queue_label"
-        android:orderInCategory="700"/>
+        android:title="@string/remove_from_queue_label" />
 
     <item
         android:id="@+id/remove_item"
         android:menuCategory="container"
-        android:title="@string/delete_label"
-        android:orderInCategory="800"/>
+        android:title="@string/delete_label" />
 
     <item
         android:id="@+id/add_to_favorites_item"
         android:menuCategory="container"
-        android:title="@string/add_to_favorite_label"
-        android:orderInCategory="900"/>
+        android:title="@string/add_to_favorite_label" />
 
     <item
         android:id="@+id/remove_from_favorites_item"
         android:menuCategory="container"
-        android:title="@string/remove_from_favorite_label"
-        android:orderInCategory="1000"/>
+        android:title="@string/remove_from_favorite_label" />
 
     <item
         android:id="@+id/reset_position"
         android:menuCategory="container"
-        android:title="@string/reset_position"
-        android:orderInCategory="1100"/>
+        android:title="@string/reset_position" />
 
     <item
         android:id="@+id/activate_auto_download"
         android:menuCategory="container"
-        android:title="@string/activate_auto_download"
-        android:orderInCategory="1200"/>
+        android:title="@string/activate_auto_download" />
 
     <item
         android:id="@+id/deactivate_auto_download"
         android:menuCategory="container"
-        android:title="@string/deactivate_auto_download"
-        android:orderInCategory="1300"/>
+        android:title="@string/deactivate_auto_download" />
 
     <item
         android:id="@+id/visit_website_item"
         android:menuCategory="container"
-        android:title="@string/visit_website_label"
-        android:orderInCategory="1400"/>
+        android:title="@string/visit_website_label" />
 
     <item
         android:id="@+id/share_item"
         android:menuCategory="container"
-        android:title="@string/share_label"
-        android:orderInCategory="1500"/>
+        android:title="@string/share_label" />
+
+    <item
+        android:id="@+id/multi_select"
+        android:menuCategory="container"
+        android:title="@string/multi_select"
+        android:visible="false" />
 </menu>
