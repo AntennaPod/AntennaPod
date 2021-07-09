@@ -5,19 +5,19 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        android:layout_alignParentTop="true"
-        android:id="@+id/toolbar" />
+        android:layout_alignParentTop="true" />
 
     <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-        android:layout_below="@id/toolbar"
-        android:id="@+id/recyclerView" />
+        android:layout_below="@id/toolbar" />
 
     <ProgressBar
         android:id="@+id/progLoading"
