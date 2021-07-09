@@ -727,24 +727,6 @@
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
     <string name="filter">Filter</string>
-
-    <!-- Episodes apply actions -->
-    <string name="all_label">All</string>
-    <string name="selected_all_label">Selected all Episodes</string>
-    <string name="select_none_label">None</string>
-    <string name="deselected_all_label">Deselected all Episodes</string>
-    <string name="played_label">Played</string>
-    <string name="selected_played_label">Selected played Episodes</string>
-    <string name="unplayed_label">Unplayed</string>
-    <string name="selected_unplayed_label">Selected unplayed Episodes</string>
-    <string name="downloaded_label">Downloaded</string>
-    <string name="selected_downloaded_label">Selected downloaded Episodes</string>
-    <string name="not_downloaded_label">Not downloaded</string>
-    <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
-    <string name="selected_queued_label">Selected queued Episodes</string>
-    <string name="selected_not_queued_label">Selected not queued Episodes</string>
-    <string name="selected_has_media_label">Selected episodes with media</string>
-
     <string name="hide_is_favorite_label">Is favorite</string>
     <string name="not_favorite">Not favorite</string>
     <string name="hide_downloaded_episodes_label">Downloaded</string>

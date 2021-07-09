@@ -402,6 +402,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (item.getItemId() == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             refreshToolbarState();
+            infoBar.setVisibility(View.GONE);
             // Do not return: Let adapter handle its actions, too.
         }
         if (recyclerAdapter.onContextItemSelected(item)) {
@@ -583,6 +584,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, itemTouchHelper);
+                recyclerAdapter.setOnEndSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }
@@ -651,5 +653,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
+        infoBar.setVisibility(View.VISIBLE);
     }
 }
