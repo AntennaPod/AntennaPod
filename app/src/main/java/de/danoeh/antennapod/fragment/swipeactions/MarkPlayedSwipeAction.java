@@ -12,6 +12,11 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
+    public String id() {
+        return MARK_PLAYED;
+    }
+
+    @Override
     public int actionIcon() {
         return R.drawable.ic_check;
     }

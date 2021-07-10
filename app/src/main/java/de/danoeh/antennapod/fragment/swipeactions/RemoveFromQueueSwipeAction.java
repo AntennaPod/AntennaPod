@@ -16,6 +16,11 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class RemoveFromQueueSwipeAction implements SwipeAction {
 
     @Override
+    public String id() {
+        return REMOVE_FROM_QUEUE;
+    }
+
+    @Override
     public int actionIcon() {
         return R.drawable.ic_delete;
     }

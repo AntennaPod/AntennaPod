@@ -12,6 +12,11 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class AddToQueueSwipeAction implements SwipeAction {
 
     @Override
+    public String id() {
+        return ADD_TO_QUEUE;
+    }
+
+    @Override
     public int actionIcon() {
         return R.drawable.ic_playlist;
     }

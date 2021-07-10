@@ -11,6 +11,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.gridlayout.widget.GridLayout;
+
+import com.annimon.stream.Stream;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.FeeditemlistItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsDialogBinding;
@@ -33,8 +36,9 @@ public class SwipeActionsDialog {
     private final Context context;
     private final String tag;
 
-    private int rightAction;
-    private int leftAction;
+    private SwipeAction rightAction;
+    private SwipeAction leftAction;
+    private List<SwipeAction> keys;
 
     public SwipeActionsDialog(Context context, String tag) {
         this.context = context;
@@ -42,11 +46,13 @@ public class SwipeActionsDialog {
     }
 
     public void show(Callback prefsChanged) {
-        int[] rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
-        leftAction = rightLeft[LEFT];
-        rightAction = rightLeft[RIGHT];
+        List<SwipeAction> rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
+        leftAction = rightLeft.get(LEFT);
+        rightAction = rightLeft.get(RIGHT);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        keys = SwipeActions.swipeActions;
 
         String forFragment = "";
         switch (tag) {
@@ -61,8 +67,13 @@ public class SwipeActionsDialog {
                 break;
             case QueueFragment.TAG:
                 forFragment = context.getString(R.string.queue_label);
+                keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.ADD_TO_QUEUE)).toList();
                 break;
             default: break;
+        }
+
+        if (!tag.equals(QueueFragment.TAG)) {
+            keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.REMOVE_FROM_QUEUE)).toList();
         }
 
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
@@ -80,7 +91,7 @@ public class SwipeActionsDialog {
         setupSwipeDirectionView(viewBinding.actionRightContainer, RIGHT);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            savePrefs(tag, rightAction, leftAction);
+            savePrefs(tag, rightAction.id(), leftAction.id());
             saveNoActionsPrefs(!viewBinding.enableSwitch.isChecked());
             prefsChanged.onCall();
         });
@@ -90,7 +101,7 @@ public class SwipeActionsDialog {
     }
 
     private void setupSwipeDirectionView(SwipeactionsRowBinding view, int direction) {
-        SwipeAction action = SwipeActions.swipeActions.get(direction == LEFT ? leftAction : rightAction);
+        SwipeAction action = direction == LEFT ? leftAction : rightAction;
 
         view.swipeDirectionLabel.setText(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
         view.swipeActionLabel.setText(action.title(context));
@@ -116,16 +127,15 @@ public class SwipeActionsDialog {
         builder.setNegativeButton(R.string.cancel_label, null);
         AlertDialog dialog = builder.show();
 
-        List<SwipeAction> swipeActions = SwipeActions.swipeActions;
-        for (int i = 0; i < swipeActions.size(); i++) {
+        for (int i = 0; i < keys.size(); i++) {
             final int actionIndex = i;
-            SwipeAction action = swipeActions.get(actionIndex);
+            SwipeAction action = keys.get(actionIndex);
             SwipeactionsPickerItemBinding item = SwipeactionsPickerItemBinding.inflate(LayoutInflater.from(context));
             item.swipeActionLabel.setText(action.title(context));
 
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.actionIcon()));
             DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
-            if ((direction == LEFT && leftAction == i) || (direction == RIGHT && rightAction == i)) {
+            if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
                 DrawableCompat.setTint(icon, ContextCompat.getColor(context, action.actionColor()));
                 item.swipeActionLabel.setTextColor(ContextCompat.getColor(context, action.actionColor()));
             } else {
@@ -135,9 +145,9 @@ public class SwipeActionsDialog {
 
             item.getRoot().setOnClickListener(v -> {
                 if (direction == LEFT) {
-                    leftAction = actionIndex;
+                    leftAction = keys.get(actionIndex);
                 } else {
-                    rightAction = actionIndex;
+                    rightAction = keys.get(actionIndex);
                 }
                 setupSwipeDirectionView(view, direction);
                 dialog.dismiss();
@@ -149,7 +159,7 @@ public class SwipeActionsDialog {
             picker.pickerGridLayout.addView(item.getRoot(), param);
         }
         picker.pickerGridLayout.setColumnCount(2);
-        picker.pickerGridLayout.setRowCount((swipeActions.size() + 1) / 2);
+        picker.pickerGridLayout.setRowCount((keys.size() + 1) / 2);
     }
 
     private void populateMockEpisode(FeeditemlistItemBinding view) {
@@ -161,10 +171,9 @@ public class SwipeActionsDialog {
         view.txtvPosition.setText("█████");
     }
 
-    private void savePrefs(String tag, int right, int left) {
+    private void savePrefs(String tag, String right, String left) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_RIGHT + tag, right).apply();
-        prefs.edit().putInt(SwipeActions.PREF_SWIPEACTION_LEFT + tag, left).apply();
+        prefs.edit().putString(SwipeActions.PREF_SWIPEACTIONS + tag, right + "," + left).apply();
     }
 
     private void saveNoActionsPrefs(Boolean noActions) {

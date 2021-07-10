@@ -556,8 +556,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
 
         @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                              RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getBindingAdapterPosition();
             int toPosition = target.getBindingAdapterPosition();
 
@@ -579,7 +579,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
 
         @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             if (disposable != null) {
                 disposable.dispose();
             }
@@ -599,7 +599,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
 
         @Override
-        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
             super.clearView(recyclerView, viewHolder);
             // Check if drag finished
             if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {

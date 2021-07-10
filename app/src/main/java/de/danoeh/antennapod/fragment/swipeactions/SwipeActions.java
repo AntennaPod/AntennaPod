@@ -13,6 +13,9 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.annimon.stream.Stream;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,17 +32,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class SwipeActions {
     public static final String PREF_NAME = "SwipeActionsPrefs";
-    public static final String PREF_SWIPEACTION_RIGHT = "PrefsSwipeActionRight";
-    public static final String PREF_SWIPEACTION_LEFT = "PrefsSwipeActionLeft";
+    public static final String PREF_SWIPEACTIONS = "PrefSwipeActions";
     public static final String PREF_NO_ACTION = "PrefsNoSwipeAction";
-
-    //indexes of swipeActions
-    public static final int ADD_TO_QUEUE = 0;
-    public static final int MARK_UNPLAYED = 1;
-    public static final int START_DOWNLOAD = 2;
-    public static final int MARK_FAV = 3;
-    public static final int MARK_PLAYED = 4;
-    public static final int REMOVE_FROM_QUEUE = 5;
 
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new MarkUnplayedSwipeAction(),
@@ -82,33 +76,39 @@ public class SwipeActions {
         itemTouchHelper = new ItemTouchHelper(newSwipeCallback.construct());
     }
 
-    private static int[] getPrefs(Context context, String tag, int[] defaultActions) {
+    private static List<SwipeAction> getPrefs(Context context, String tag, String defaultActions) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        int prefRight = prefs.getInt(PREF_SWIPEACTION_RIGHT + tag, defaultActions[0]);
-        int prefLeft = prefs.getInt(PREF_SWIPEACTION_LEFT + tag, defaultActions[1]);
-        if (prefRight == -1 || prefLeft == -1 || prefRight > swipeActions.size() || prefLeft > swipeActions.size()) {
-            //no prefs set or out of bounds
-            return new int[]{};
+        String prefsString = prefs.getString(PREF_SWIPEACTIONS + tag, defaultActions);
+
+        ArrayList<SwipeAction> actions = new ArrayList<>();
+
+        if (!prefsString.isEmpty()) {
+            String[] rightleft = prefsString.split(",");
+
+            for (String s : rightleft) {
+                actions.add(Stream.of(swipeActions).filter(a -> a.id().equals(s)).single());
+            }
         }
-        return new int[] {prefRight, prefLeft};
+
+        return actions;
     }
 
-    private static int[] getPrefs(Context context, String tag) {
-        return getPrefs(context, tag, new int[] {-1, -1});
+    private static List<SwipeAction> getPrefs(Context context, String tag) {
+        return getPrefs(context, tag, "");
     }
 
-    public static int[] getPrefsWithDefaults(Context context, String tag) {
-        int[] defaultActions;
+    public static List<SwipeAction> getPrefsWithDefaults(Context context, String tag) {
+        String defaultActions;
         switch (tag) {
             /*case InboxFragment.TAG:
                 defaultActions = new int[] {ADD_TO_QUEUE, MARK_UNPLAYED};
                 break;*/
             case QueueFragment.TAG:
-                defaultActions = new int[] {REMOVE_FROM_QUEUE, REMOVE_FROM_QUEUE};
+                defaultActions = SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE;
                 break;
             default:
             case EpisodesFragment.TAG:
-                defaultActions = new int[] {MARK_FAV, START_DOWNLOAD};
+                defaultActions = SwipeAction.MARK_FAV + "," + SwipeAction.START_DOWNLOAD;
                 break;
         }
 
@@ -148,7 +148,7 @@ public class SwipeActions {
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
-        int[] rightleft = getPrefs(fragment.requireContext(), tag);
+        List<SwipeAction> rightleft = getPrefs(fragment.requireContext(), tag);
         boolean swipeOutEnabled = true;
         int swipedOutTo = 0;
 
@@ -169,7 +169,7 @@ public class SwipeActions {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            if (rightleft.length == 0) {
+            if (rightleft.size() == 0) {
                 //open settings dialog if no prefs are set
                 showDialog(SwipeActions.this::resetItemTouchHelper);
                 return;
@@ -177,20 +177,22 @@ public class SwipeActions {
 
             FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
 
-            int index = rightleft[swipeDir == ItemTouchHelper.RIGHT ? 0 : 1];
-            swipeActions.get(index).action(item, fragment, filter);
+            rightleft.get(swipeDir == ItemTouchHelper.RIGHT ? 0 : 1)
+                    .action(item, fragment, filter);
         }
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder,
                                 float dx, float dy, int actionState, boolean isCurrentlyActive) {
-            SwipeAction right = null;
-            SwipeAction left = null;
-            boolean hasSwipeActions = rightleft.length > 0;
+            SwipeAction right;
+            SwipeAction left;
+            boolean hasSwipeActions = rightleft.size() > 0;
             if (hasSwipeActions) {
-                right = swipeActions.get(rightleft[0]);
-                left = swipeActions.get(rightleft[1]);
+                right = rightleft.get(0);
+                left = rightleft.get(1);
+            } else {
+                right = left = new ShowFirstSwipeDialogAction();
             }
 
             //check if it will be removed
