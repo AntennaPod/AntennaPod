@@ -1507,7 +1507,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (state != -1) {
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        pauseIfPauseOnDisconnect(AudioOutputMode.HEADPHONE);
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
