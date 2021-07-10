@@ -115,10 +115,4 @@
         android:title="@string/clear_queue_label"
         custom:showAsAction="collapseActionView"
         android:icon="@drawable/ic_check"/>
-
-    <item
-        android:id="@+id/episode_actions"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/multi_select" />
-
 </menu>
