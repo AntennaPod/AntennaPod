@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/multi_select"
-        android:menuCategory="container"
-        android:title="@string/multi_select"
-        android:visible="false"/>
-
-    <item
         android:id="@id/skip_episode_item"
         android:menuCategory="container"
         android:title="@string/skip_episode_label" />
@@ -75,4 +69,10 @@
         android:id="@+id/share_item"
         android:menuCategory="container"
         android:title="@string/share_label" />
+
+    <item
+        android:id="@+id/multi_select"
+        android:menuCategory="container"
+        android:title="@string/multi_select"
+        android:visible="false" />
 </menu>
