@@ -338,24 +338,31 @@ public final class DBTasks {
      */
     private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
-            Log.d(TAG, "guid " + item.getIdentifyingValue() + " guid 2 " + searchItem.getIdentifyingValue());
             if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
-                Log.d(TAG, "Removing duplicate episode guid " + item.getIdentifyingValue());
                 return item;
             }
-
+        }
+        // Did not find item with same ID. Try to guess duplicates based on other metadata.
+        for (FeedItem item : feed.getItems()) {
             if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
                 continue;
             }
 
+            boolean isDuplicate = false;
             if (TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
                 Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
-                return item;
-            }
-
-            if (TextUtils.equals(item.getTitle(), searchItem.getTitle())
+                isDuplicate = true;
+            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())
                     && item.getPubDate().equals(searchItem.getPubDate())) {
                 Log.d(TAG, "Removing duplicate episode title + pubDate " + item.getTitle() + " " + item.getPubDate());
+                isDuplicate = true;
+            }
+            if (isDuplicate) {
+                DBWriter.addDownloadStatus(new DownloadStatus(feed,
+                        searchItem.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
+                        "The podcast host changed the ID of an existing episode instead of just "
+                                + "updating the episode itself. AntennaPod attempted to repair it.", false));
+                item.setItemIdentifier(searchItem.getItemIdentifier());
                 return item;
             }
         }

@@ -215,12 +215,17 @@ public class DbTasksTest {
 
         // change the guid of the first item, but leave the download url the same
         FeedItem item = feed.getItemAtIndex(0);
-        item.setItemIdentifier("id 1-duplicate");
+        item.setItemIdentifier("id 0-duplicate");
+        item.setTitle("item 0 duplicate");
         Feed newFeed = DBTasks.updateFeed(context, feed, false);
         assertEquals(10, newFeed.getItems().size()); // id 1-duplicate replaces because the stream url is the same
 
         Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         assertEquals(10, feedFromDB.getItems().size()); // id1-duplicate should override id 1
+
+        FeedItem updatedItem = feedFromDB.getItemAtIndex(9);
+        assertEquals("item 0 duplicate", updatedItem.getTitle());
+        assertEquals("id 0-duplicate", updatedItem.getItemIdentifier()); // Should use the new ID for sync etc
     }
 
 
