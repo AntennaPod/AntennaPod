@@ -22,12 +22,12 @@ public class RemoveFromQueueSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {
-        return R.drawable.ic_delete;
+        return R.drawable.ic_playlist_remove;
     }
 
     @Override
     public int actionColor() {
-        return R.color.swipe_red;
+        return R.color.swipe_light_blue;
     }
 
     @Override
