@@ -184,8 +184,11 @@ public class SwipeActions {
 
             FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
 
-            (swipeDir == ItemTouchHelper.RIGHT ? rightleft.first : rightleft.second)
-                    .action(item, fragment, filter);
+            if (swipeDir == ItemTouchHelper.RIGHT && rightleft.first != null) {
+                rightleft.first.action(item, fragment, filter);
+            } else if (swipeDir == ItemTouchHelper.LEFT && rightleft.second != null) {
+                rightleft.second.action(item, fragment, filter);
+            }
         }
 
         @Override
@@ -194,17 +197,19 @@ public class SwipeActions {
                                 float dx, float dy, int actionState, boolean isCurrentlyActive) {
             SwipeAction right;
             SwipeAction left;
-            boolean hasSwipeActions = rightleft !=  null;
-            if (hasSwipeActions) {
+            if (rightleft != null) {
                 right = rightleft.first;
                 left = rightleft.second;
+                if (left == null || right == null) {
+                    return;
+                }
             } else {
                 right = left = new ShowFirstSwipeDialogAction();
             }
 
             //check if it will be removed
-            boolean rightWillRemove = hasSwipeActions && right.willRemove(filter);
-            boolean leftWillRemove = hasSwipeActions && left.willRemove(filter);
+            boolean rightWillRemove = right.willRemove(filter);
+            boolean leftWillRemove = left.willRemove(filter);
             boolean wontLeave = (dx > 0 && !rightWillRemove) || (dx < 0 && !leftWillRemove);
 
             //Limit swipe if it's not removed
