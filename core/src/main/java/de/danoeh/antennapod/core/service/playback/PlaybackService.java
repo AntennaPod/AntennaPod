@@ -216,11 +216,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private String autoSkippedFeedMediaId = null;
 
-    private enum AudioOutputMode {
-        BLUETOOTH,
-        HEADPHONE,
-        PHONE_SPEAKER
-    }
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
      */
@@ -1557,18 +1552,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onReceive(Context context, Intent intent) {
             // sound is about to change, eg. bluetooth -> speaker
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
-            pauseIfPauseOnDisconnect(AudioOutputMode.PHONE_SPEAKER);
+            pauseIfPauseOnDisconnect();
         }
     };
 
     /**
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
-    private void pauseIfPauseOnDisconnect(AudioOutputMode outputMode) {
-        Log.d(TAG, "pauseIfPauseOnDisconnect() " + outputMode);
-        if (UserPreferences.isPauseOnHeadsetDisconnect()
-                && outputMode == AudioOutputMode.PHONE_SPEAKER
-                && !isCasting()) {
+    private void pauseIfPauseOnDisconnect() {
+        Log.d(TAG, "pauseIfPauseOnDisconnect()");
+        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
             transientPause = true;
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
