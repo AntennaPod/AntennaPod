@@ -27,7 +27,7 @@ public class RemoveFromQueueSwipeAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_light_blue;
+        return R.attr.colorAccent;
     }
 
     @Override

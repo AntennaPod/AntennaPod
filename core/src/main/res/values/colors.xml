@@ -38,11 +38,4 @@
     <color name="dialog_filter_clear_inactive_dark">#bbbbbb</color>
     <color name="dialog_filter_inactive_light">#eeeeee</color>
     <color name="dialog_filter_inactive_dark">#555555</color>
-
-    <!-- swipe actions -->
-    <color name="swipe_green">#8537</color>
-    <color name="swipe_red">#CF1800</color>
-    <color name="swipe_light_blue">#007FFF</color>
-    <color name="swipe_yellow">#f59f00</color>
-    <color name="swipe_purple">#5F1984</color>
 </resources>

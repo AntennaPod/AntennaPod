@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment.swipeactions;
 
 import android.content.Context;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.fragment.app.Fragment;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -21,8 +23,10 @@ public interface SwipeAction {
 
     String title(Context context);
 
+    @DrawableRes
     int actionIcon();
 
+    @AttrRes
     int actionColor();
 
     void action(FeedItem item, Fragment fragment, FeedItemFilter filter);
