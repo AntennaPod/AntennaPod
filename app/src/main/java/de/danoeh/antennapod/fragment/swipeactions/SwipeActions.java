@@ -36,7 +36,7 @@ public class SwipeActions {
     public static final String PREF_NO_ACTION = "PrefNoSwipeAction";
 
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
-            Arrays.asList(new AddToQueueSwipeAction(), new MarkUnplayedSwipeAction(),
+            Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavouriteSwipeAction(),
                     new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
     );
@@ -82,6 +82,7 @@ public class SwipeActions {
 
         String[] rightleft = prefsString.split(",");
 
+        //no preferences set, no default (very fist swipe)
         if (rightleft.length != 2) {
             return null;
         }
@@ -91,9 +92,9 @@ public class SwipeActions {
         Optional<SwipeAction> left = Stream.of(swipeActions)
                 .filter(a -> a.id().equals(rightleft[1])).findFirst();
 
-        //no preferences set, no default (very fist swipe) or invalid ids
+        // invalid ids
         if (!right.isPresent() || !left.isPresent()) {
-            return null;
+            return new Pair<>(swipeActions.get(0), swipeActions.get(0));
         }
 
         return new Pair<>(right.get(), left.get());

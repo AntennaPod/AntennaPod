@@ -67,7 +67,8 @@ public class SwipeActionsDialog {
                 break;
             case QueueFragment.TAG:
                 forFragment = context.getString(R.string.queue_label);
-                keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.ADD_TO_QUEUE)).toList();
+                keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.ADD_TO_QUEUE)
+                        && !a.id().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
                 break;
             default: break;
         }

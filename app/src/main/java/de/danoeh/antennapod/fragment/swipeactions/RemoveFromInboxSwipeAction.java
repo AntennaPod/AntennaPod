@@ -9,11 +9,11 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkUnplayedSwipeAction implements SwipeAction {
+public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
     public String id() {
-        return MARK_UNPLAYED;
+        return REMOVE_FROM_INBOX;
     }
 
     @Override
