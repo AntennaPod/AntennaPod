@@ -23,7 +23,7 @@ public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_red;
+        return R.attr.icon_gray;
     }
 
     @Override

@@ -112,7 +112,7 @@ public class SwipeActionsDialog {
         }
 
         view.swipeIcon.setImageResource(action.actionIcon());
-        view.swipeIcon.setColorFilter(ContextCompat.getColor(context, action.actionColor()));
+        view.swipeIcon.setColorFilter(ThemeUtils.getColorFromAttr(context, action.actionColor()));
 
         view.changeButton.setOnClickListener(v -> showPicker(view, direction));
         view.previewContainer.setOnClickListener(v -> showPicker(view, direction));
@@ -136,8 +136,8 @@ public class SwipeActionsDialog {
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.actionIcon()));
             DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
             if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
-                DrawableCompat.setTint(icon, ContextCompat.getColor(context, action.actionColor()));
-                item.swipeActionLabel.setTextColor(ContextCompat.getColor(context, action.actionColor()));
+                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, action.actionColor()));
+                item.swipeActionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.actionColor()));
             } else {
                 DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
             }

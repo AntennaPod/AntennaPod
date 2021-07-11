@@ -226,7 +226,8 @@ public class SwipeActions {
             if (hasSwipeActions) {
                 Context context = fragment.requireContext();
                 int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
-                int actionColor = ContextCompat.getColor(context, dx > 0 ? right.actionColor() : left.actionColor());
+                int actionColor = ThemeUtils.getColorFromAttr(context,
+                        dx > 0 ? right.actionColor() : left.actionColor());
                 RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
                         c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
                         .addSwipeRightActionIcon(right.actionIcon())

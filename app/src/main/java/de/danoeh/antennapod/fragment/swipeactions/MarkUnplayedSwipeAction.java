@@ -23,7 +23,7 @@ public class MarkUnplayedSwipeAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.swipe_purple;
+        return R.attr.icon_purple;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ShowFirstSwipeDialogAction implements SwipeAction {
 
     @Override
     public int actionColor() {
-        return R.color.grey;
+        return R.attr.icon_gray;
     }
 
     @Override
