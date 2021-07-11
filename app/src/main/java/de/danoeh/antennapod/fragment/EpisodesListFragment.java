@@ -46,6 +46,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -85,7 +86,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     Toolbar toolbar;
 
-    //SwipeActions swipeActions;
+    SwipeActions swipeActions;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -297,7 +298,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     public void setSwipeActions(String tag) {
-        //swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
+        swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
     }
 
     private void loadMoreItems() {
