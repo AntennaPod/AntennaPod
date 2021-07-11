@@ -46,9 +46,9 @@ public class SwipeActionsDialog {
     }
 
     public void show(Callback prefsChanged) {
-        Pair<SwipeAction, SwipeAction> rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
-        leftAction = rightLeft.second;
-        rightAction = rightLeft.first;
+        SwipeActions.Actions actions = SwipeActions.getPrefsWithDefaults(context, tag);
+        leftAction = actions.left;
+        rightAction = actions.right;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
