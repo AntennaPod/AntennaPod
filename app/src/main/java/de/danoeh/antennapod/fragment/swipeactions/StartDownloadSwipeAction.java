@@ -10,17 +10,17 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class StartDownloadSwipeAction implements SwipeAction {
 
     @Override
-    public String id() {
+    public String getId() {
         return START_DOWNLOAD;
     }
 
     @Override
-    public int actionIcon() {
+    public int getActionIcon() {
         return R.drawable.ic_download;
     }
 
     @Override
-    public int actionColor() {
+    public int getActionColor() {
         return R.attr.icon_green;
     }
 
@@ -30,7 +30,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
     }
 
     @Override
-    public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+    public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (!item.isDownloaded() && !item.getFeed().isLocalFeed()) {
             new DownloadActionButton(item)
                     .onClick(fragment.requireContext());

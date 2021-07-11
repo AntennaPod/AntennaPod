@@ -67,14 +67,14 @@ public class SwipeActionsDialog {
                 break;
             case QueueFragment.TAG:
                 forFragment = context.getString(R.string.queue_label);
-                keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.ADD_TO_QUEUE)
-                        && !a.id().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.ADD_TO_QUEUE)
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
                 break;
             default: break;
         }
 
         if (!tag.equals(QueueFragment.TAG)) {
-            keys = Stream.of(keys).filter(a -> !a.id().equals(SwipeAction.REMOVE_FROM_QUEUE)).toList();
+            keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_QUEUE)).toList();
         }
 
         builder.setTitle(context.getString(R.string.swipeactions_label) + " - " + forFragment);
@@ -92,7 +92,7 @@ public class SwipeActionsDialog {
         setupSwipeDirectionView(viewBinding.actionRightContainer, RIGHT);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            savePrefs(tag, rightAction.id(), leftAction.id());
+            savePrefs(tag, rightAction.getId(), leftAction.getId());
             saveActionsEnabledPrefs(viewBinding.enableSwitch.isChecked());
             prefsChanged.onCall();
         });
@@ -112,8 +112,8 @@ public class SwipeActionsDialog {
             view.previewContainer.addView(view.swipeIcon, 0);
         }
 
-        view.swipeIcon.setImageResource(action.actionIcon());
-        view.swipeIcon.setColorFilter(ThemeUtils.getColorFromAttr(context, action.actionColor()));
+        view.swipeIcon.setImageResource(action.getActionIcon());
+        view.swipeIcon.setColorFilter(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
 
         view.changeButton.setOnClickListener(v -> showPicker(view, direction));
         view.previewContainer.setOnClickListener(v -> showPicker(view, direction));
@@ -134,11 +134,11 @@ public class SwipeActionsDialog {
             SwipeactionsPickerItemBinding item = SwipeactionsPickerItemBinding.inflate(LayoutInflater.from(context));
             item.swipeActionLabel.setText(action.getTitle(context));
 
-            Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.actionIcon()));
+            Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.getActionIcon()));
             DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
             if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
-                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, action.actionColor()));
-                item.swipeActionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.actionColor()));
+                DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, action.getActionColor()));
+                item.swipeActionLabel.setTextColor(ThemeUtils.getColorFromAttr(context, action.getActionColor()));
             } else {
                 DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, R.attr.action_icon_color));
             }

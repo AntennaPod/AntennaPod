@@ -12,17 +12,17 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class AddToQueueSwipeAction implements SwipeAction {
 
     @Override
-    public String id() {
+    public String getId() {
         return ADD_TO_QUEUE;
     }
 
     @Override
-    public int actionIcon() {
+    public int getActionIcon() {
         return R.drawable.ic_playlist;
     }
 
     @Override
-    public int actionColor() {
+    public int getActionColor() {
         return R.attr.colorAccent;
     }
 
@@ -32,11 +32,11 @@ public class AddToQueueSwipeAction implements SwipeAction {
     }
 
     @Override
-    public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+    public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (!item.isTagged(FeedItem.TAG_QUEUE)) {
             DBWriter.addQueueItem(fragment.requireContext(), item);
         } else {
-            new RemoveFromQueueSwipeAction().action(item, fragment, filter);
+            new RemoveFromQueueSwipeAction().performAction(item, fragment, filter);
         }
     }
 

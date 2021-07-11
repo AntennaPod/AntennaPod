@@ -88,9 +88,9 @@ public class SwipeActions {
         }
 
         Optional<SwipeAction> right = Stream.of(swipeActions)
-                .filter(a -> a.id().equals(rightleft[0])).findFirst();
+                .filter(a -> a.getId().equals(rightleft[0])).findFirst();
         Optional<SwipeAction> left = Stream.of(swipeActions)
-                .filter(a -> a.id().equals(rightleft[1])).findFirst();
+                .filter(a -> a.getId().equals(rightleft[1])).findFirst();
 
         // invalid ids
         if (!right.isPresent() || !left.isPresent()) {
@@ -190,9 +190,9 @@ public class SwipeActions {
             FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
 
             if (swipeDir == ItemTouchHelper.RIGHT && rightleft.first != null) {
-                rightleft.first.action(item, fragment, filter);
+                rightleft.first.performAction(item, fragment, filter);
             } else if (swipeDir == ItemTouchHelper.LEFT && rightleft.second != null) {
-                rightleft.second.action(item, fragment, filter);
+                rightleft.second.performAction(item, fragment, filter);
             }
         }
 
@@ -243,11 +243,11 @@ public class SwipeActions {
             Context context = fragment.requireContext();
             int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
             int actionColor = ThemeUtils.getColorFromAttr(context,
-                    dx > 0 ? right.actionColor() : left.actionColor());
+                    dx > 0 ? right.getActionColor() : left.getActionColor());
             RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
                     c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                    .addSwipeRightActionIcon(right.actionIcon())
-                    .addSwipeLeftActionIcon(left.actionIcon())
+                    .addSwipeRightActionIcon(right.getActionIcon())
+                    .addSwipeLeftActionIcon(left.getActionIcon())
                     .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
                     .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
                     .setActionIconTint(

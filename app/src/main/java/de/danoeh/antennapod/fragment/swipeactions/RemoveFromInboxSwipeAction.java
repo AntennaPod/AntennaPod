@@ -12,17 +12,17 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
-    public String id() {
+    public String getId() {
         return REMOVE_FROM_INBOX;
     }
 
     @Override
-    public int actionIcon() {
+    public int getActionIcon() {
         return R.drawable.ic_check;
     }
 
     @Override
-    public int actionColor() {
+    public int getActionColor() {
         return R.attr.icon_purple;
     }
 
@@ -32,7 +32,7 @@ public class RemoveFromInboxSwipeAction implements SwipeAction {
     }
 
     @Override
-    public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+    public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         FeedItemMenuHandler.markReadWithUndo(fragment,
                 item, FeedItem.UNPLAYED, willRemove(filter));
     }

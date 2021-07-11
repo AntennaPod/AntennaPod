@@ -18,17 +18,17 @@ public interface SwipeAction {
     String MARK_PLAYED = "MARK_PLAYED";
     String REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE";
 
-    String id();
+    String getId();
 
     String getTitle(Context context);
 
     @DrawableRes
-    int actionIcon();
+    int getActionIcon();
 
     @AttrRes
-    int actionColor();
+    int getActionColor();
 
-    void action(FeedItem item, Fragment fragment, FeedItemFilter filter);
+    void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter);
 
     boolean willRemove(FeedItemFilter filter);
 }

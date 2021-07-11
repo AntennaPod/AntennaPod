@@ -12,17 +12,17 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class MarkFavouriteSwipeAction implements SwipeAction {
 
     @Override
-    public String id() {
+    public String getId() {
         return MARK_FAV;
     }
 
     @Override
-    public int actionIcon() {
+    public int getActionIcon() {
         return R.drawable.ic_star;
     }
 
     @Override
-    public int actionColor() {
+    public int getActionColor() {
         return R.attr.icon_yellow;
     }
 
@@ -32,7 +32,7 @@ public class MarkFavouriteSwipeAction implements SwipeAction {
     }
 
     @Override
-    public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+    public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         DBWriter.toggleFavoriteItem(item);
     }
 

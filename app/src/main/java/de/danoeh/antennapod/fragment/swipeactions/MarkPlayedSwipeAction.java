@@ -12,17 +12,17 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
-    public String id() {
+    public String getId() {
         return MARK_PLAYED;
     }
 
     @Override
-    public int actionIcon() {
+    public int getActionIcon() {
         return R.drawable.ic_mark_played;
     }
 
     @Override
-    public int actionColor() {
+    public int getActionColor() {
         return R.attr.icon_gray;
     }
 
@@ -32,7 +32,7 @@ public class MarkPlayedSwipeAction implements SwipeAction {
     }
 
     @Override
-    public void action(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+    public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         int togglePlayState =
                 item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
         FeedItemMenuHandler.markReadWithUndo(fragment,
