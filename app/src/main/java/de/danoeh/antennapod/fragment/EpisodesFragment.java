@@ -42,8 +42,6 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public static final String PREF_FILTER = "filter";
 
-    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
-
     public EpisodesFragment() {
         super();
     }
@@ -79,13 +77,13 @@ public class EpisodesFragment extends EpisodesListFragment {
                     newFilter = getPrefFilter();
                     break;
                 case QUICKFILTER_NEW:
-                    newFilter = "unplayed";
+                    newFilter = FeedItemFilter.UNPLAYED;
                     break;
                 case QUICKFILTER_DOWNLOADED:
-                    newFilter = "downloaded";
+                    newFilter = FeedItemFilter.DOWNLOADED;
                     break;
                 case QUICKFILTER_FAV:
-                    newFilter = "is_favorite";
+                    newFilter = FeedItemFilter.IS_FAVORITE;
                     break;
             }
             updateFeedItemFilter(newFilter);
@@ -204,6 +202,7 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public void updateFeedItemFilter(String strings) {
         feedItemFilter = new FeedItemFilter(strings);
+        swipeActions.setFilter(feedItemFilter);
         loadItems();
     }
 

@@ -13,6 +13,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -30,10 +31,13 @@ public class InboxFragment extends EpisodesListFragment {
 
     public InboxFragment() {
         super();
+        this.feedItemFilter = new FeedItemFilter(
+                new String[]{FeedItemFilter.NOT_QUEUED, FeedItemFilter.NEW}
+                );
     }
 
     public InboxFragment(boolean hideToolbar) {
-        super();
+        this();
         this.hideToolbar = hideToolbar;
     }
 

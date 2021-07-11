@@ -50,6 +50,7 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -77,6 +78,8 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     protected boolean hasMoreItems = true;
     public boolean hideToolbar = false;
     private boolean displayUpArrow;
+
+    protected FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     EpisodeItemListRecyclerView recyclerView;
     EpisodeItemListAdapter listAdapter;
@@ -298,7 +301,9 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     }
 
     public void setSwipeActions(String tag) {
-        swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
+        swipeActions = new SwipeActions(this, tag)
+                .attachTo(recyclerView);
+        swipeActions.setFilter(feedItemFilter);
     }
 
     private void loadMoreItems() {
