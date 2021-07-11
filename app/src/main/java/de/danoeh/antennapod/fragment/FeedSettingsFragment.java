@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
@@ -384,8 +381,6 @@ public class FeedSettingsFragment extends Fragment {
                 feedPreferences.setAutoDownload(checked);
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
-                ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(getActivity(), checked);
-                dialog.createNewDialog().show();
                 pref.setChecked(checked);
                 return false;
             });
@@ -416,23 +411,6 @@ public class FeedSettingsFragment extends Fragment {
                 pref.setChecked(checked);
                 return false;
             });
-        }
-
-        private class ApplyToEpisodesDialog extends ConfirmationDialog {
-            private final boolean autoDownload;
-
-            ApplyToEpisodesDialog(Context context, boolean autoDownload) {
-                super(context, R.string.auto_download_apply_to_items_title,
-                        R.string.auto_download_apply_to_items_message);
-                this.autoDownload = autoDownload;
-                setPositiveText(R.string.yes);
-                setNegativeText(R.string.no);
-            }
-
-            @Override
-            public void onConfirmButtonPressed(DialogInterface dialog) {
-                DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
-            }
         }
     }
 }

@@ -3,7 +3,6 @@ package de.danoeh.antennapod.adapter.actionbutton;
 import android.content.Context;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
-import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -35,8 +34,8 @@ public class CancelDownloadActionButton extends ItemActionButton {
         FeedMedia media = item.getMedia();
         DownloadRequester.getInstance().cancelDownload(context, media);
         if (UserPreferences.isEnableAutodownload()) {
-            DBWriter.setFeedItemAutoDownload(media.getItem(), false);
-            Toast.makeText(context, R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
+            item.setAutoDownload(false);
+            DBWriter.setFeedItem(item);
         }
     }
 }
