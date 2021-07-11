@@ -32,7 +32,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/swipeDirectionLabel"
             android:textSize="14sp"
-            tools:text="@string/add_to_queue_label"/>
+            tools:text="@string/add_to_queue_label" />
 
         <Button
             android:id="@+id/changeButton"
