@@ -86,7 +86,7 @@ public class SwipeActions {
         Optional<SwipeAction> right = Stream.of(swipeActions)
                 .filter(a -> a.id().equals(rightleft[0])).findFirst();
         Optional<SwipeAction> left = Stream.of(swipeActions)
-                .filter(a -> a.id().equals(rightleft[0])).findFirst();
+                .filter(a -> a.id().equals(rightleft[1])).findFirst();
 
         if (rightleft.length < 2 || !right.isPresent() || !left.isPresent()) {
             return null;
