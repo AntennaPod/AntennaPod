@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.Pair;
 import androidx.gridlayout.widget.GridLayout;
 
 import com.annimon.stream.Stream;
@@ -45,9 +46,9 @@ public class SwipeActionsDialog {
     }
 
     public void show(Callback prefsChanged) {
-        List<SwipeAction> rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
-        leftAction = rightLeft.get(LEFT);
-        rightAction = rightLeft.get(RIGHT);
+        Pair<SwipeAction, SwipeAction> rightLeft = SwipeActions.getPrefsWithDefaults(context, tag);
+        leftAction = rightLeft.second;
+        rightAction = rightLeft.first;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -91,7 +92,7 @@ public class SwipeActionsDialog {
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             savePrefs(tag, rightAction.id(), leftAction.id());
-            saveNoActionsPrefs(!viewBinding.enableSwitch.isChecked());
+            saveActionsEnabledPrefs(viewBinding.enableSwitch.isChecked());
             prefsChanged.onCall();
         });
 
@@ -175,9 +176,9 @@ public class SwipeActionsDialog {
         prefs.edit().putString(SwipeActions.PREF_SWIPEACTIONS + tag, right + "," + left).apply();
     }
 
-    private void saveNoActionsPrefs(Boolean noActions) {
+    private void saveActionsEnabledPrefs(Boolean enabled) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(SwipeActions.PREF_NO_ACTION + tag, noActions).apply();
+        prefs.edit().putBoolean(SwipeActions.PREF_NO_ACTION + tag, enabled).apply();
     }
 
     public interface Callback {
