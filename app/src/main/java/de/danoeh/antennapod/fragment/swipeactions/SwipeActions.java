@@ -115,7 +115,7 @@ public class SwipeActions {
         return getPrefs(context, tag, defaultActions);
     }
 
-    public static Boolean getNoActionPref(Context context, String tag) {
+    public static boolean getNoActionPref(Context context, String tag) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getBoolean(PREF_NO_ACTION + tag, false);
     }
