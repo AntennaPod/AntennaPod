@@ -6,13 +6,15 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.util.Pair;
 import androidx.gridlayout.widget.GridLayout;
 
 import com.annimon.stream.Stream;
+
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.FeeditemlistItemBinding;
@@ -26,8 +28,6 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-
-import java.util.List;
 
 public class SwipeActionsDialog {
     private static final int LEFT = 1;
