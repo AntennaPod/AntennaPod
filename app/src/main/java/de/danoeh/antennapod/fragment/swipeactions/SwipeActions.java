@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +87,7 @@ public class SwipeActions {
         Optional<SwipeAction> left = Stream.of(swipeActions)
                 .filter(a -> a.id().equals(rightleft[1])).findFirst();
 
+        //no preferences set, no default (very fist swipe) or invalid ids
         if (rightleft.length < 2 || !right.isPresent() || !left.isPresent()) {
             return null;
         }
