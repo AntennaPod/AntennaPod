@@ -12,7 +12,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.swipeactions.RemoveFromQueueSwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 
