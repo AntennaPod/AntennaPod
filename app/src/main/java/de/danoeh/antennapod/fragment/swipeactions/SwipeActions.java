@@ -175,7 +175,7 @@ public class SwipeActions {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            if (rightleft != null) {
+            if (rightleft == null) {
                 //open settings dialog if no prefs are set
                 new SwipeActionsDialog(fragment.requireContext(), tag)
                         .show(SwipeActions.this::resetItemTouchHelper);
