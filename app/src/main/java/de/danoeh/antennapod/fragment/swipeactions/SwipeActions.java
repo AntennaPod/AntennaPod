@@ -82,13 +82,17 @@ public class SwipeActions {
 
         String[] rightleft = prefsString.split(",");
 
+        if (rightleft.length != 2) {
+            return null;
+        }
+
         Optional<SwipeAction> right = Stream.of(swipeActions)
                 .filter(a -> a.id().equals(rightleft[0])).findFirst();
         Optional<SwipeAction> left = Stream.of(swipeActions)
                 .filter(a -> a.id().equals(rightleft[1])).findFirst();
 
         //no preferences set, no default (very fist swipe) or invalid ids
-        if (rightleft.length < 2 || !right.isPresent() || !left.isPresent()) {
+        if (!right.isPresent() || !left.isPresent()) {
             return null;
         }
 
