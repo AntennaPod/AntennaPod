@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 
 import java.util.ArrayList;
@@ -80,20 +81,18 @@ public class SwipeActions {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String prefsString = prefs.getString(PREF_SWIPEACTIONS + tag, defaultActions);
 
-        ArrayList<SwipeAction> actions = new ArrayList<>();
+        String[] rightleft = prefsString.split(",");
 
-        if (prefsString.isEmpty()) {
+        Optional<SwipeAction> right = Stream.of(swipeActions)
+                .filter(a -> a.id().equals(rightleft[0])).findFirst();
+        Optional<SwipeAction> left = Stream.of(swipeActions)
+                .filter(a -> a.id().equals(rightleft[0])).findFirst();
+
+        if (rightleft.length < 2 || !right.isPresent() || !left.isPresent()) {
             return null;
         }
 
-        String[] rightleft = prefsString.split(",");
-
-        SwipeAction right = Stream.of(swipeActions)
-                .filter(a -> a.id().equals(rightleft[0])).single();
-        SwipeAction left = Stream.of(swipeActions)
-                .filter(a -> a.id().equals(rightleft[0])).single();
-
-        return new Pair<>(right, left);
+        return new Pair<>(right.get(), left.get());
     }
 
     private static Pair<SwipeAction, SwipeAction> getPrefs(Context context, String tag) {
