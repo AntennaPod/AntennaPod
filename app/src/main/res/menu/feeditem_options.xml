@@ -50,18 +50,6 @@
         custom:showAsAction="collapseActionView"
         android:title="@string/reset_position">
     </item>
-
-    <item
-        android:id="@+id/activate_auto_download"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/activate_auto_download">
-    </item>
-    <item
-        android:id="@+id/deactivate_auto_download"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/deactivate_auto_download">
-    </item>
-
     <item
         android:id="@+id/visit_website_item"
         android:icon="@drawable/ic_web"

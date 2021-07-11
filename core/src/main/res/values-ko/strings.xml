@@ -13,7 +13,6 @@
   <string name="new_label">최신</string>
   <string name="settings_label">설정</string>
   <string name="downloads_label">다운로드</string>
-  <string name="downloads_running_label">실행 중</string>
   <string name="downloads_completed_label">완료</string>
   <string name="downloads_log_label">기록</string>
   <string name="subscriptions_label">구독</string>
@@ -21,7 +20,6 @@
   <string name="cancel_download_label">다운로드 취소</string>
   <string name="playback_history_label">재생 기록</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net 로그인</string>
   <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
   <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
   <string name="playback_statistics_label">재생</string>
@@ -72,12 +70,9 @@
   <string name="yes">예</string>
   <string name="no">아니요</string>
   <string name="reset">초기화</string>
-  <string name="author_label">저자</string>
-  <string name="language_label">언어</string>
   <string name="url_label">URL</string>
   <string name="error_label">오류</string>
   <string name="error_msg_prefix">오류가 발생했습니다:</string>
-  <string name="needs_storage_permission">이 동작에 대해 저장소 권한이 필요합니다</string>
   <string name="refresh_label">새로 고침</string>
   <string name="external_storage_error_msg">외부 저장 장치가 없습니다. 앱이 제대로 동작하려면 외부 저장장치를 마운트하십시오.</string>
   <string name="chapters_label">챕터</string>
@@ -137,7 +132,6 @@
   <string name="remove_all_new_flags_confirmation_msg">모든 에피소드에서 \"신규\" 플래그를 제거하려면 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
   <string name="show_feed_settings_label">팟캐스트 설정 표시</string>
-  <string name="feed_info_label">팟캐스트 정보</string>
   <string name="feed_settings_label">팟캐스트 설정</string>
   <string name="rename_feed_label">팟캐스트 이름 바꾸기</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
@@ -153,10 +147,6 @@
   <string name="multi_select">다중 선택</string>
   <string name="select_all_above">위 모두 선택</string>
   <string name="select_all_below">아래 모두 선택</string>
-  <string name="hide_unplayed_episodes_label">재생 안 함</string>
-  <string name="hide_queued_episodes_label">대기열 추가함</string>
-  <string name="hide_not_queued_episodes_label">대기열 추가 안 함</string>
-  <string name="hide_has_media_label">미디어 있음</string>
   <string name="filtered_label">필터링함</string>
   <string name="open_podcast">팟캐스트 열기</string>
   <string name="please_wait_for_data">데이터를 읽어 들일 때까지 기다리십시오</string>
@@ -177,9 +167,7 @@
   <string name="remove_new_flag_label">\"신규\" 플래그 제거</string>
   <string name="removed_new_flag_label">\"신규\" 플래그 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>
-  <string name="marked_as_read_label">재생했다고 표시했습니다</string>
   <string name="mark_read_no_media_label">읽었다고 표시</string>
-  <string name="marked_as_read_no_media_label">읽었다고 표시했습니다</string>
   <string name="play_this_to_seek_position">특정 재생 위치로 이동하려면, 에피소드를 재생해야 합니다</string>
   <plurals name="marked_read_batch_label">
     <item quantity="other">%d개 에피소드를 재생한 것으로 표시했습니다.</item>
@@ -199,9 +187,7 @@
     <item quantity="other">%d개 에피소드를 대기열에서 제거했습니다.</item>
   </plurals>
   <string name="add_to_favorite_label">즐겨찾기에 추가</string>
-  <string name="added_to_favorites">즐겨찾기에 추가함</string>
   <string name="remove_from_favorite_label">즐겨찾기에서 제거</string>
-  <string name="removed_from_favorites">즐겨찾기에서 제거함</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
   <string name="activate_auto_download">자동 다운로드 활성화</string>
@@ -226,8 +212,6 @@
   <string name="download_canceled_autodownload_enabled_msg">다운로드 취소함\n이 항목에 <i>자동 다운로드</i>를 해제합니다</string>
   <string name="download_report_title">다운로드 마침 (오류 있음)</string>
   <string name="auto_download_report_title">자동 다운로드 마침</string>
-  <string name="download_report_content_title">다운로드 보고서</string>
-  <string name="download_error_malformed_url">URL 형식 틀림</string>
   <string name="download_error_io_error">입출력 오류</string>
   <string name="download_error_request_error">요청 오류</string>
   <string name="download_error_db_access">데이터베이스 접근 오류</string>
@@ -253,17 +237,12 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">임시로 허용</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">오류!</string>
-  <string name="player_stopped_msg">재생 중인 미디어 없음</string>
-  <string name="player_preparing_msg">준비하는 중</string>
-  <string name="player_ready_msg">준비 완료</string>
-  <string name="player_seeking_msg">이동 중</string>
   <string name="playback_error_server_died">서버가 죽었습니다</string>
   <string name="playback_error_unsupported">지원하지 않는 미디어 종류</string>
   <string name="playback_error_timeout">작업 시간 초과</string>
   <string name="playback_error_source">미디어 파일에 접근할 수 없습니다</string>
   <string name="playback_error_unknown">알 수 없는 오류</string>
   <string name="no_media_playing_label">재생 중인 미디어 없음</string>
-  <string name="player_buffering_msg">버퍼링 중</string>
   <string name="player_go_to_picture_in_picture">화면 속 화면 모드</string>
   <string name="unknown_media_key">안테나팟 - 알 수 없는 미디어 키: %1$d</string>
   <string name="error_file_not_found">파일이 없습니다</string>
@@ -287,23 +266,15 @@
   <string name="feed_title">팟캐스트 제목</string>
   <string name="random">임의 순서</string>
   <string name="smart_shuffle">똑똑한 무작위 순서</string>
-  <string name="ascending">오름차순</string>
-  <string name="descending">내림차순</string>
   <string name="clear_queue_confirmation_msg">내부의 모든 에피소드를 지울지 확인하십시오.</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">플러그인 다운로드</string>
-  <string name="no_playback_plugin_title">플러그인을 설치하지 않았습니다</string>
-  <string name="no_playback_plugin_or_sonic_msg">여러가지 속도로 재생이 동작하려면 내부의 소닉 미디어 플레이어 사용을 추천합니다.</string>
-  <string name="enable_sonic">소닉 사용</string>
   <string name="speed_presets">프리셋</string>
   <string name="preset_already_exists">%1$.2f배속이 이미 프리셋으로 저장되었습니다.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">대기열의 에피소드 없음</string>
   <string name="no_items_label">에피소드를 다운로드하면 추가합니다. 또는 에피소드를 길게 눌러 \"대기열에 추가\"를 선택합니다.</string>
   <string name="no_shownotes_label">이 에피소드에는 쇼노트가 없습니다.</string>
-  <string name="no_run_downloads_head_label">실행 중인 다운로드 없음</string>
-  <string name="no_run_downloads_label">팟캐스트 자세히 표시한 화면에서 에피소드를 다운로드할 수 있습니다.</string>
   <string name="no_comp_downloads_head_label">다운로드한 에피소드 없음</string>
   <string name="no_comp_downloads_label">팟캐스트 자세히 표시한 화면에서 에피소드를 다운로드할 수 있습니다.</string>
   <string name="no_log_downloads_head_label">다운로드 기록 없음</string>
@@ -316,8 +287,6 @@
   <string name="no_new_episodes_label">새 에피소드가 나오면, 여기에 표시됩니다.</string>
   <string name="no_fav_episodes_head_label">즐겨 찾기 에피소드 없음</string>
   <string name="no_fav_episodes_label">에피소드를 길게 눌러 즐겨 찾기에 추가할 수 있습니다.</string>
-  <string name="no_chapters_head_label">챕터 없음</string>
-  <string name="no_chapters_label">이 에피소드에 챕터가 없습니다.</string>
   <string name="no_subscriptions_head_label">구독 없음</string>
   <string name="no_subscriptions_label">팟캐스트에 구독하려면, 아래 더하기 아이콘을 누르십시오.</string>
   <!--Preferences-->
@@ -365,16 +334,6 @@
   <string name="playback_pref_sum">헤드폰 조작, 구간 넘기기, 대기열</string>
   <string name="network_pref">네트워크</string>
   <string name="network_pref_sum">업데이트 주기, 다운로드 조작, 휴대전화 데이터</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">업데이트 주기 또는 하루 중 시각</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">피드를 자동으로 새로 고칠 주기 또는 하루 중 특정 시각을 지정하십시오</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">\"매 2시간\"과 같이 <i>주기</i>를 지정할 수도 있고, \"오전 7:00\"와 같이 <i>하루 중 시각</i>을 지정할 수도 있고, 자동 업데이트를 모두 <i>사용 안 할</i> 수도 있습니다.\n\n<small>안내: 업데이트 시간은 정확하지 않습니다. 약간 늦게 업데이트할 수 있습니다.</small></string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">사용 안 함</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">주기 지정</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">하루 중 시각 지정</string>
-  <string name="pref_autoUpdateIntervallOrTime_at">%1$s에서</string>
-  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
-    <item quantity="other">매 %d시간</item>
-  </plurals>
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">헤드폰 또는 블루투스 연결 끊김</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 다시 연결</string>
@@ -416,9 +375,6 @@
   <string name="pref_theme_title_dark">어둡게</string>
   <string name="pref_theme_title_trueblack">검정 (AMOLED 화면에 좋음)</string>
   <string name="pref_episode_cache_unlimited">무제한</string>
-  <string name="pref_update_interval_hours_plural">시간</string>
-  <string name="pref_update_interval_hours_singular">시간</string>
-  <string name="pref_update_interval_hours_manual">수동 지정</string>
   <string name="pref_gpodnet_authenticate_title">로그인</string>
   <string name="pref_gpodnet_authenticate_sum">gpodder.net 계정으로 로그인해서 구독 정보를 동기화</string>
   <string name="pref_gpodnet_logout_title">로그아웃</string>
@@ -454,7 +410,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">최대 %1$d개 항목만 선택할 수 있습니다.</string>
   <string name="pref_lockscreen_background_title">잠금 화면 배경 설정</string>
   <string name="pref_lockscreen_background_sum">현재 에피소드의 이미지를 잠금 화면의 배경으로 설정합니다. 대신 이는 제3자 앱의 이미지도 표시하게 됩니다.</string>
-  <string name="pref_expand_notify_unsupport_toast">안드로이드 4.1 미만의 버전에서는 확장 알림을 지원하지 않습니다.</string>
   <string name="pref_enqueue_location_title">대기열 추가 위치</string>
   <string name="pref_enqueue_location_sum">에피소드 추가 위치: %1$s</string>
   <string name="enqueue_location_back">뒤</string>
@@ -467,7 +422,6 @@
   <string name="visit_user_forum">사용자 포럼</string>
   <string name="bug_report_title">문제점 보고</string>
   <string name="open_bug_tracker">버그 추적 사이트 열기</string>
-  <string name="export_logs">기록 내보내기</string>
   <string name="copy_to_clipboard">클립보드로 복사</string>
   <string name="copied_to_clipboard">클립보드에 복사함</string>
   <string name="experimental_pref">실험적 기능</string>
@@ -478,7 +432,7 @@
   <string name="pref_no_browser_found">웹브라우저가 없습니다.</string>
   <string name="pref_cast_title">크롬캐스트 지원</string>
   <string name="pref_cast_message_play_flavor">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
-  <string name="pref_cast_message_free_flavor">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
   <string name="pref_enqueue_downloaded_title">다운로드한 항목 대기열에 추가</string>
   <string name="pref_enqueue_downloaded_summary">다운로드한 에피소드를 대기열에 추가</string>
   <string name="media_player_builtin">내장 안드로이드 플레이어 (권장하지 않음) </string>
@@ -506,7 +460,6 @@
   <string name="pref_delete_removes_from_queue_sum">삭제된 항목을 대기열에서 자동으로 삭제합니다.</string>
   <string name="pref_filter_feed_title">구독 필터</string>
   <string name="pref_filter_feed_sum">네비게이션 드로어 및 구독 화면의 구독 내용을 필터링합니다.</string>
-  <string name="no_filter_label">없음</string>
   <string name="subscriptions_are_filtered">구독 필터 적용함.</string>
   <string name="subscriptions_counter_greater_zero">0보다 큰 개수</string>
   <string name="auto_downloaded">자동 다운로드</string>
@@ -595,7 +548,6 @@
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
   <string name="gpodnet_suggestions_header">추천</string>
   <string name="gpodnet_search_hint">gpodder.net 검색</string>
-  <string name="gpodnetauth_login_title">로그인</string>
   <string name="gpodnetauth_login_butLabel">로그인</string>
   <string name="create_account">계정 만들기</string>
   <string name="username_label">사용자 이름</string>
@@ -605,41 +557,21 @@
   <string name="gpodnetauth_server_custom">서버 사용자 지정</string>
   <string name="gpodnetauth_host">호스트 이름</string>
   <string name="gpodnetauth_select_server">서버 선택</string>
-  <string name="gpodnetauth_device_descr">gpodder.net 계정에서 사용할 장치를 새로 만들거나 기존 장치를 선택하십시오:</string>
   <string name="gpodnetauth_device_name">장치 이름</string>
   <string name="gpodnetauth_device_name_default">안테나팟, %1$s</string>
-  <string name="gpodnetauth_device_caption_errorEmpty">자막이 비어 있으면 안 됩니다</string>
   <string name="gpodnetauth_existing_devices">기존 장치</string>
   <string name="gpodnetauth_create_device">장치 만들기</string>
-  <string name="gpodnetauth_device_butChoose">선택</string>
   <string name="gpodnetauth_finish_descr">축하합니다! gpodder.net 계정이 장치와 연결되었습니다. 이제 안테나팟에서 gpodder.net 계정의 구독 정보와 자동으로 동기화합니다.</string>
   <string name="gpodnetauth_finish_butsyncnow">지금 동기화 시작</string>
-  <string name="gpodnetauth_finish_butgomainscreen">메인 화면으로 이동</string>
-  <string name="gpodnetsync_auth_error_title">gpodder.net 인증 오류</string>
-  <string name="gpodnetsync_auth_error_descr">잘못된 사용자 이름 또는 암호</string>
   <string name="gpodnetsync_error_title">gpodder.net 동기화 오류</string>
   <string name="gpodnetsync_error_descr">동기화 중에 오류가 발생했습니다:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">성공</string>
   <string name="gpodnetsync_pref_report_failed">실패</string>
   <string name="gpodnetsync_username_characters_error">사용자 이름은 알파벳, 숫자, 하이픈, 밑줄만 사용할 수 있습니다.</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">선택한 폴더:</string>
-  <string name="create_folder_label">폴더 만들기</string>
   <string name="choose_data_directory">데이터 폴더 선택</string>
   <string name="choose_data_directory_message">데이터 폴더를 선택하십시오. 안테나팟은 알아서 그 하위 디렉토리를 생성합니다.</string>
-  <string name="choose_data_directory_permission_rationale">데이터 폴더를 바꾸려면 외부 저장소 접근이 필요합니다</string>
   <string name="choose_data_directory_available_space">%1$s 비어 있음 (전체 %2$s)</string>
-  <string name="create_folder_msg">이름이 \"%1$s\"인 폴더를 만드시겠습니까?</string>
-  <string name="create_folder_success">새 폴더를 만들었습니다</string>
-  <string name="create_folder_error_no_write_access">이 폴더에 쓸 수 없습니다</string>
-  <string name="create_folder_error_already_exists">폴더가 이미 있습니다</string>
-  <string name="create_folder_error">폴더를 만들 수 없습니다</string>
-  <string name="folder_does_not_exist_error">\"%1$s\"이(가) 없습니다.</string>
-  <string name="folder_not_readable_error">\"%1$s\"에서 읽을 수 없습니다</string>
-  <string name="folder_not_writable_error">\"%1$s\"에 쓸 수 없습니다</string>
-  <string name="folder_not_empty_dialog_title">폴더가 비어 있지 않습니다</string>
-  <string name="folder_not_empty_dialog_msg">선택한 폴더가 비어 있지 않습니다. 다운로드한 미디어 파일 및 기타 파일이 이 폴더에 저장됩니다. 그래도 계속 하시겠습니까?</string>
-  <string name="set_to_default_folder">기본 폴더 선택</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
   <string name="pref_resumeAfterCall_sum">전화 통화가 끝난 후에 재생을 계속합니다.</string>
@@ -655,18 +587,15 @@
   <string name="fast_forward_label">앞으로 감기</string>
   <string name="increase_speed">속도 증가</string>
   <string name="decrease_speed">속도 감소</string>
-  <string name="media_type_audio_label">오디오</string>
   <string name="media_type_video_label">비디오</string>
   <string name="status_downloading_label">에피소드를 다운로드하는 중입니다</string>
   <string name="in_queue_label">에피소드가 대기열에 들어 있습니다</string>
   <string name="is_favorite_label">에피소드를 좋아한다고 표시되었습니다</string>
-  <string name="drag_handle_content_description">이 항목의 위치를 바꾸려면 드래그하십시오</string>
   <string name="load_next_page_label">다음 페이지 읽기</string>
-  <string name="switch_pages">페이지 전환</string>
   <string name="position">위치: %1$s</string>
   <string name="apply_action">동작 적용</string>
   <string name="play_chapter">챕터 재생</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
   <string name="auto_download_settings_label">자동 다운로드 설정</string>
@@ -682,8 +611,6 @@
   <string name="statistics_episodes_on_device">장치에 들어 있는 에피소드:</string>
   <string name="statistics_space_used">사용한 용량:</string>
   <string name="statistics_view_all">모든 팟캐스트에 대한 뷰 »</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">데이터베이스 업그레이드 중</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <!--Add podcast fragment-->
@@ -750,11 +677,11 @@
   <string name="sort_short_long">짧음 \u2192 김</string>
   <string name="sort_long_short">김 \u2192 짧음</string>
   <!--Rating dialog-->
-  <string name="rating_title">안테나팟이 마음에 드시나요?</string>
-  <string name="rating_message">안테나팟을 평가하는데 시간을 잠깐 내주시면 감사하겠습니다.</string>
-  <string name="rating_never_label">관심 없음</string>
-  <string name="rating_later_label">나중에 알림</string>
-  <string name="rating_now_label">해봅시다!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">안테나팟이 마음에 드시나요?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">안테나팟을 평가하는데 시간을 잠깐 내주시면 감사하겠습니다.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">관심 없음</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">나중에 알림</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">해봅시다!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">포함:</string>
   <string name="share_playback_position_dialog_label">재생 위치</string>

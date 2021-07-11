@@ -6,25 +6,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.ShareDialog;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -64,14 +65,6 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_read_item, !selectedItem.isPlayed());
         setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
         setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
-
-        if (!UserPreferences.isEnableAutodownload() || fileDownloaded || selectedItem.getFeed().isLocalFeed()) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        } else {
-            setItemVisibility(menu, R.id.activate_auto_download, !selectedItem.getAutoDownload());
-            setItemVisibility(menu, R.id.deactivate_auto_download, selectedItem.getAutoDownload());
-        }
 
         // Display proper strings when item has no media
         if (hasMedia) {
@@ -206,14 +199,6 @@ public class FeedItemMenuHandler {
                 }
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
                 break;
-            case R.id.activate_auto_download:
-                selectedItem.setAutoDownload(true);
-                DBWriter.setFeedItemAutoDownload(selectedItem, true);
-                break;
-            case R.id.deactivate_auto_download:
-                selectedItem.setAutoDownload(false);
-                DBWriter.setFeedItemAutoDownload(selectedItem, false);
-                break;
             case R.id.visit_website_item:
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
                 break;
@@ -236,15 +221,16 @@ public class FeedItemMenuHandler {
      * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
      * ,i.e., there is (context) menu item for add new flag
      */
-    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
+    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item,
+                                        int playState, boolean showSnackbar) {
         if (item == null) {
             return;
         }
 
-        Log.d(TAG, "removeNewFlagWithUndo(" + item.getId() + ")");
+        Log.d(TAG, "markReadWithUndo(" + item.getId() + ")");
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+        DBWriter.markItemPlayed(playState, item.getId());
 
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
@@ -254,15 +240,40 @@ public class FeedItemMenuHandler {
             }
         };
 
+        int playStateStringRes;
+        switch (playState) {
+            default:
+            case FeedItem.UNPLAYED:
+                if (item.getPlayState() == FeedItem.NEW) {
+                    //was new
+                    playStateStringRes = R.string.removed_new_flag_label;
+                } else {
+                    //was played
+                    playStateStringRes = R.string.marked_as_unplayed_label;
+                }
+                break;
+            case FeedItem.PLAYED:
+                playStateStringRes = R.string.marked_as_played_label;
+                break;
+        }
 
-        Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                R.string.removed_new_flag_label, Snackbar.LENGTH_LONG)
-                .setAction(fragment.getString(R.string.undo), v -> {
-                    DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
-                    // don't forget to cancel the thing that's going to remove the media
-                    h.removeCallbacks(r);
-                });
-        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+        int duration = Snackbar.LENGTH_LONG;
+
+        if (showSnackbar) {
+            ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
+                    playStateStringRes, duration)
+                    .setAction(fragment.getString(R.string.undo), v -> {
+                        DBWriter.markItemPlayed(item.getPlayState(), item.getId());
+                        // don't forget to cancel the thing that's going to remove the media
+                        h.removeCallbacks(r);
+                    });
+        }
+
+        h.postDelayed(r, (int) Math.ceil(duration * 1.05f));
+    }
+
+    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
+        markReadWithUndo(fragment, item, FeedItem.UNPLAYED, false);
     }
 
 }

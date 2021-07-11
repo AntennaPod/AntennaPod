@@ -349,7 +349,7 @@ public class ItemFragment extends Fragment {
             if (DownloadRequester.getInstance().isDownloadingFile(media)) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
-                actionButton2 = new DownloadActionButton(item, false);
+                actionButton2 = new DownloadActionButton(item);
             } else {
                 actionButton2 = new DeleteActionButton(item);
             }

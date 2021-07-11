@@ -120,7 +120,6 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
 
@@ -192,7 +191,7 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getSelectedItem();
+        FeedItem selectedItem = adapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);

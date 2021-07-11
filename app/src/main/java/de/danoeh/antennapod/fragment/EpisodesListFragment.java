@@ -192,11 +192,11 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             return false;
         }
 
-        if (listAdapter.getSelectedItem() == null) {
+        if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        FeedItem selectedItem = listAdapter.getSelectedItem();
+        FeedItem selectedItem = listAdapter.getLongPressedItem();
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -209,7 +209,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         txtvInformation = root.findViewById(R.id.txtvInformation);
 
         recyclerView = root.findViewById(android.R.id.list);
-        recyclerView.setVisibility(View.GONE);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
 

@@ -334,11 +334,36 @@ public final class DBTasks {
     }
 
     /**
-     * Get a FeedItem by its identifying value.
+     * Get a FeedItem by its identifying value or download_url.
+     * For de-duplicating items that are not stored yet, see also FeedHandler.dedupItems
      */
-    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, String identifier) {
+    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
-            if (TextUtils.equals(item.getIdentifyingValue(), identifier)) {
+            if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
+                return item;
+            }
+        }
+        // Did not find item with same ID. Try to guess duplicates based on other metadata.
+        for (FeedItem item : feed.getItems()) {
+            if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
+                continue;
+            }
+
+            boolean isDuplicate = false;
+            if (TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
+                Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
+                isDuplicate = true;
+            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())
+                    && item.getPubDate().equals(searchItem.getPubDate())) {
+                Log.d(TAG, "Removing duplicate episode title + pubDate " + item.getTitle() + " " + item.getPubDate());
+                isDuplicate = true;
+            }
+            if (isDuplicate) {
+                DBWriter.addDownloadStatus(new DownloadStatus(feed,
+                        searchItem.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
+                        "The podcast host changed the ID of an existing episode instead of just "
+                                + "updating the episode itself. AntennaPod attempted to repair it.", false));
+                item.setItemIdentifier(searchItem.getItemIdentifier());
                 return item;
             }
         }
@@ -411,11 +436,10 @@ public final class DBTasks {
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item.getIdentifyingValue());
+                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item);
                 if (oldItem == null) {
                     // item is new
                     item.setFeed(savedFeed);
-                    item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
 
                     if (idx >= savedFeed.getItems().size()) {
                         savedFeed.getItems().add(item);
@@ -445,7 +469,7 @@ public final class DBTasks {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
-                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem.getIdentifyingValue()) == null) {
+                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();
                     }

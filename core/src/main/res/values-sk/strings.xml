@@ -12,7 +12,6 @@
   <string name="new_label">Nové</string>
   <string name="settings_label">Nastavenia</string>
   <string name="downloads_label">Preberanie</string>
-  <string name="downloads_running_label">Bežiace</string>
   <string name="downloads_completed_label">Dokončené</string>
   <string name="downloads_log_label">Záznam</string>
   <string name="subscriptions_label">Odbery</string>
@@ -20,7 +19,6 @@
   <string name="cancel_download_label">Zrušiť preberanie</string>
   <string name="playback_history_label">História prehrávania</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">Prihlásenie do gpodder.net</string>
   <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
   <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti  vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zmeniť v Nastaveniach.</string>
   <string name="playback_statistics_label">Prehrávanie</string>
@@ -71,12 +69,9 @@
   <string name="yes">Áno</string>
   <string name="no">Nie</string>
   <string name="reset">Vynulovať</string>
-  <string name="author_label">Autor(i)</string>
-  <string name="language_label">Jazyk</string>
   <string name="url_label">Odkaz</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Vyskytla sa chyba:</string>
-  <string name="needs_storage_permission">Pre túto operáciu je potrebné povolenie prístupu k úložisku</string>
   <string name="refresh_label">Obnoviť</string>
   <string name="external_storage_error_msg">Nie je k dispozícii žiadne externé úložisko. Skontrolujte, či je externé úložisko pripojené tak, aby aplikácia mohla fungovať správne.</string>
   <string name="chapters_label">Kapitoly</string>
@@ -144,7 +139,6 @@
   <string name="remove_all_new_flags_confirmation_msg">Potvrďte, že chcete odstrániť značku „nové“ zo všetkých epizód.</string>
   <string name="show_info_label">Zobraziť informácie</string>
   <string name="show_feed_settings_label">Zobraziť nastavenia podcastu</string>
-  <string name="feed_info_label">Informácie o podcaste</string>
   <string name="feed_settings_label">Nastavenia podcastu</string>
   <string name="rename_feed_label">Premenovať podcast</string>
   <string name="remove_feed_label">Odstrániť podcast</string>
@@ -158,10 +152,6 @@
   <string name="multi_select">Viacnásobný výber</string>
   <string name="select_all_above">Vybrať všetky nad</string>
   <string name="select_all_below">Vybrať všetky pod</string>
-  <string name="hide_unplayed_episodes_label">Neprehraté</string>
-  <string name="hide_queued_episodes_label">V poradí</string>
-  <string name="hide_not_queued_episodes_label">Mimo poradia</string>
-  <string name="hide_has_media_label">S médiami</string>
   <string name="filtered_label">Filtrované</string>
   <string name="open_podcast">Otvoriť podcast</string>
   <string name="please_wait_for_data">Počkajte, kým sa dáta načítajú</string>
@@ -182,9 +172,7 @@
   <string name="remove_new_flag_label">Odstrániť značku „nové“</string>
   <string name="removed_new_flag_label">Značka „nové“ bola odstránená</string>
   <string name="mark_read_label">Označiť ako prehraté</string>
-  <string name="marked_as_read_label">Označené ako prehraté</string>
   <string name="mark_read_no_media_label">Označiť ako prečítané</string>
-  <string name="marked_as_read_no_media_label">Označené ako prečítané</string>
   <string name="play_this_to_seek_position">Preskočenie na určitú pozíciu funguje len pri prehrávaní epizódy.</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%depizóda bola označená ako prehraná.</item>
@@ -216,9 +204,7 @@
     <item quantity="other">%depizód bolo odstránených z poradia</item>
   </plurals>
   <string name="add_to_favorite_label">Pridať medzi obľúbené</string>
-  <string name="added_to_favorites">Pridané do obľúbených</string>
   <string name="remove_from_favorite_label">Odstrániť z obľúbených</string>
-  <string name="removed_from_favorites">Odstránené z obľúbených</string>
   <string name="visit_website_label">Navštíviť webovú stránku</string>
   <string name="skip_episode_label">Preskočiť epizódu</string>
   <string name="activate_auto_download">Aktivovať automatické sťahovanie</string>
@@ -241,8 +227,6 @@
   <string name="download_error_file_type_type">Chyba typu súboru</string>
   <string name="download_canceled_msg">Preberanie zrušené</string>
   <string name="download_report_title">Pri sťahovaní nastali chyby</string>
-  <string name="download_report_content_title">Hlásenie o preberaniach</string>
-  <string name="download_error_malformed_url">Chybný odkaz</string>
   <string name="download_error_io_error">Chyba IO</string>
   <string name="download_error_request_error">Chyba požiadavky</string>
   <string name="download_error_db_access">Chyba prístupu k databáze</string>
@@ -265,10 +249,6 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">Dočasne povoliť</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Chyba!</string>
-  <string name="player_stopped_msg">Nič sa neprehráva</string>
-  <string name="player_preparing_msg">Prebieha príprava</string>
-  <string name="player_ready_msg">Pripravený</string>
-  <string name="player_seeking_msg">Hľadá sa</string>
   <string name="playback_error_server_died">Server zomrel</string>
   <string name="playback_error_unsupported">Nepodporovaný typ média</string>
   <string name="playback_error_unknown">Neznáma chyba</string>
@@ -286,19 +266,13 @@
   <string name="episode_title">Názov epizódy</string>
   <string name="feed_title">Názov podcastu</string>
   <string name="random">Náhodne</string>
-  <string name="ascending">Vzostupne</string>
-  <string name="descending">Zostupne</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Stiahnuť doplnok</string>
-  <string name="no_playback_plugin_title">Doplnok nie je nainštalovaný</string>
   <!--Empty list labels-->
   <string name="no_comp_downloads_head_label">Žiadne stiahnuté epizódy</string>
   <string name="no_history_head_label">Žiadna história</string>
   <string name="no_all_episodes_head_label">Žiadne epizódy</string>
   <string name="no_new_episodes_head_label">Žiadne nové epizódy</string>
   <string name="no_fav_episodes_head_label">Žiadne obľúbené epizódy</string>
-  <string name="no_chapters_head_label">Žiadne kapitoly</string>
-  <string name="no_chapters_label">Táto epizóda nemá žiadne kapitoly.</string>
   <string name="no_subscriptions_head_label">Žiadne odbery</string>
   <!--Preferences-->
   <string name="storage_pref">Úložisko</string>
@@ -403,25 +377,19 @@
   </plurals>
   <!--gpodder.net-->
   <string name="password_label">Heslo</string>
-  <string name="gpodnetsync_auth_error_title">chyba overenia gpodder.net</string>
   <string name="gpodnetsync_error_title">chyba synchronizácie s gpodder.net</string>
   <string name="gpodnetsync_error_descr">Počas synchronizácie sa vyskytla chyba:\u0020</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Zvoľte priečinok s údajmi</string>
-  <string name="create_folder_msg">Vytvoriť nový priečinok s názvom \"%1$s\"?</string>
-  <string name="create_folder_success">Nový priečinok bol vytvorený</string>
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
-  <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="auto_download_settings_label">Nastavenia automatického preberania</string>
   <string name="episode_filters_label">Filter epizód</string>
   <string name="episode_filters_include">Pridať</string>
   <string name="episode_filters_exclude">Vylúčiť</string>
   <string name="keep_updated">Priebežne aktualizovať</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">Inovácia databázy</string>
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <string name="advanced">Pokročilé</string>
@@ -454,11 +422,11 @@
   <string name="sort_short_long">Krátke \u2192 Dlhé</string>
   <string name="sort_long_short">Dlhé \u2192 Krátke</string>
   <!--Rating dialog-->
-  <string name="rating_title">Páči sa vám AntennaPod?</string>
-  <string name="rating_message">Boli by sme radi, keby ste si našli čas a ohodnotili AntennaPod.</string>
-  <string name="rating_never_label">Dajte mi pokoj</string>
-  <string name="rating_later_label">Pripomenúť neskôr</string>
-  <string name="rating_now_label">Jasné, ideme na to!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">Páči sa vám AntennaPod?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Boli by sme radi, keby ste si našli čas a ohodnotili AntennaPod.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">Dajte mi pokoj</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">Pripomenúť neskôr</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">Jasné, ideme na to!</string>
   <!--Share episode dialog-->
   <!--Audio controls-->
   <string name="audio_controls">Ovládanie zvuku</string>

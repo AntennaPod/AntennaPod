@@ -11,8 +11,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2020195
-        versionName "2.2.1"
+        versionCode 2030002
+        versionName "2.3.0-beta2"
 
         def commit = ""
         try {
@@ -150,6 +150,8 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.9'
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
+    implementation 'com.annimon:stream:1.2.2'
 
     // Non-free dependencies:
     playImplementation 'com.google.android.play:core:1.8.0'

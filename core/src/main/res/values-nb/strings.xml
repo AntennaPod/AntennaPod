@@ -13,14 +13,12 @@
   <string name="new_label">Ny</string>
   <string name="settings_label">Innstillinger</string>
   <string name="downloads_label">Nedlastninger</string>
-  <string name="downloads_running_label">Kjører</string>
   <string name="downloads_completed_label">Fullført</string>
   <string name="downloads_log_label">Logg</string>
   <string name="subscriptions_label">Abonnementer</string>
   <string name="subscriptions_list_label">Abonnementliste</string>
   <string name="playback_history_label">Avspillingshistorikk</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net-innlogging</string>
   <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
   <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i innstillingene.</string>
   <string name="playback_statistics_label">Avspilling</string>
@@ -68,12 +66,9 @@
   <string name="yes">Ja</string>
   <string name="no">Nei</string>
   <string name="reset">Tilbakestill</string>
-  <string name="author_label">Forfatter(e)</string>
-  <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
   <string name="error_label">Feil</string>
   <string name="error_msg_prefix">Det oppsto en feil:</string>
-  <string name="needs_storage_permission">Lagringstillatelse er nødvendig for denne operasjonen</string>
   <string name="refresh_label">Oppdater</string>
   <string name="external_storage_error_msg">Finner ikke ekstern lagring. Sjekk at det eksterne lagringsmediet er montert.</string>
   <string name="chapters_label">Kapitler</string>
@@ -118,7 +113,6 @@
   <string name="remove_all_new_flags_confirmation_msg">Bekreft at du ønsker å fjerne \"Ny\"-markeringen fra alle episoder</string>
   <string name="show_info_label">Vis informasjon</string>
   <string name="show_feed_settings_label">Vis podkastinnstillinger</string>
-  <string name="feed_info_label">Podkastinfo</string>
   <string name="feed_settings_label">Podkastinnstillinger</string>
   <string name="rename_feed_label">Gi nytt navn til podkast</string>
   <string name="remove_feed_label">Fjern podkast</string>
@@ -133,10 +127,6 @@
   <string name="multi_select">Velg flere</string>
   <string name="select_all_above">Velg alle over</string>
   <string name="select_all_below">Velg alle under</string>
-  <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
-  <string name="hide_queued_episodes_label">I kø</string>
-  <string name="hide_not_queued_episodes_label">Ikke i kø</string>
-  <string name="hide_has_media_label">Har medier</string>
   <string name="filtered_label">Filtrert</string>
   <string name="open_podcast">Åpne podkast</string>
   <string name="please_wait_for_data">Vent til dataene er lastet inn</string>
@@ -155,9 +145,7 @@
   <string name="remove_new_flag_label">Fjern \"Ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"Ny\"-markering</string>
   <string name="mark_read_label">Marker som avspilt</string>
-  <string name="marked_as_read_label">Marker som avspilt</string>
   <string name="mark_read_no_media_label">Merk som lest</string>
-  <string name="marked_as_read_no_media_label">Merket som lest</string>
   <string name="play_this_to_seek_position">For å hoppe til posisjoner, må du spille episoden</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episode merket som avspilt.</item>
@@ -181,9 +169,7 @@
     <item quantity="other">%d episoder fjernet fra køen.</item>
   </plurals>
   <string name="add_to_favorite_label">Legg til i favoritter</string>
-  <string name="added_to_favorites">Legg til i favoritter</string>
   <string name="remove_from_favorite_label">Fjern fra favoritter</string>
-  <string name="removed_from_favorites">Fjernet fra favoritter</string>
   <string name="visit_website_label">Besøk nettside</string>
   <string name="skip_episode_label">Skip episode</string>
   <string name="activate_auto_download">Aktiver automatisk nedlasting</string>
@@ -208,8 +194,6 @@
   <string name="download_canceled_autodownload_enabled_msg">Nedlasting avbrutt\n<i>Automatisk nedlasting</i> for dette elementet er deaktivert</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
   <string name="auto_download_report_title">Auto-nedlasting fullført</string>
-  <string name="download_report_content_title">Nedlastingsrapport</string>
-  <string name="download_error_malformed_url">Ugyldig URL</string>
   <string name="download_error_io_error">IO feil</string>
   <string name="download_error_request_error">Forespørselfeil</string>
   <string name="download_error_db_access">Tilgangsfeil for database</string>
@@ -236,17 +220,12 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tillat midlertidig</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Feil</string>
-  <string name="player_stopped_msg">Ingen media spillende for øyeblikket.</string>
-  <string name="player_preparing_msg">Forbereder</string>
-  <string name="player_ready_msg">Klar</string>
-  <string name="player_seeking_msg">Oppsøker</string>
   <string name="playback_error_server_died">Serveren døde</string>
   <string name="playback_error_unsupported">Ikke støttet media-type</string>
   <string name="playback_error_timeout">Operasjon tidsavbrutt</string>
   <string name="playback_error_source">Kunne ikke hente media-fil</string>
   <string name="playback_error_unknown">Ukjent feil</string>
   <string name="no_media_playing_label">Ingen media spillende for øyeblikket.</string>
-  <string name="player_buffering_msg">Bufrer</string>
   <string name="player_go_to_picture_in_picture">Bilde-i-bilde-modus</string>
   <string name="unknown_media_key">AntennaPod - Ukjent medienøkkel: %1$d</string>
   <string name="error_file_not_found">Fil ikke funnet</string>
@@ -269,23 +248,15 @@
   <string name="feed_title">Podkast-tittel</string>
   <string name="random">Tilfeldig</string>
   <string name="smart_shuffle">Smart blanding</string>
-  <string name="ascending">Økende</string>
-  <string name="descending">Synkende</string>
   <string name="clear_queue_confirmation_msg">Vennligst bekreft at du ønsker å slette ALLE elementer i køen</string>
   <string name="time_left_label">Tid igjen:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Last ned programtillegg</string>
-  <string name="no_playback_plugin_title">Programtillegg er ikke installert</string>
-  <string name="no_playback_plugin_or_sonic_msg">For at avspilling med varierende hastighet skal virke, anbefaler vi å bruke den innebygde Sonic-mediespilleren.</string>
-  <string name="enable_sonic">Skru på Sonic</string>
   <string name="speed_presets">Ferdiginstillinger</string>
   <string name="preset_already_exists">%1$.2fx er allerede lagret som en ferdiginstilling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ingen episoder i kø</string>
   <string name="no_items_label">Legg til en episode ved å laste den ned, eller trykk og hold på en episode og velg \"Legg til i køen\".</string>
   <string name="no_shownotes_label">Denne episoden har ingen shownotater</string>
-  <string name="no_run_downloads_head_label">Ingen nedlastinger foregår</string>
-  <string name="no_run_downloads_label">Du kan laste ned episoder på en podkasts \"Detaljer\"-meny.</string>
   <string name="no_comp_downloads_head_label">Ingen nedlastede episoder</string>
   <string name="no_comp_downloads_label">Du kan laste ned episoder på en podkasts \"Detaljer\"-meny.</string>
   <string name="no_log_downloads_head_label">Ingen nedlastingshistorikk</string>
@@ -298,8 +269,6 @@
   <string name="no_new_episodes_label">Når nye episoder kommer, vil de vises her.</string>
   <string name="no_fav_episodes_head_label">Ingen favoritt-episoder</string>
   <string name="no_fav_episodes_label">Du kan markere en episode som favoritt ved å trykke og holde på den.</string>
-  <string name="no_chapters_head_label">Ingen kapitler</string>
-  <string name="no_chapters_label">Denne episoden har ingen kapitler.</string>
   <string name="no_subscriptions_head_label">Ingen abonnementer</string>
   <string name="no_subscriptions_label">Trykk på pluss-ikonet under for å abonnere på en podkast.</string>
   <!--Preferences-->
@@ -337,13 +306,6 @@
   <string name="playback_pref_sum">Hodetelefon-kontroller, spole-intervaller, kø</string>
   <string name="network_pref">Nettverk</string>
   <string name="network_pref_sum">Oppdater intervall, styr nedlasting, mobildata</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">Oppdateringsintervall eller tidspunkt</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Velg et intervall eller et klokkeslett å oppdatere podkastene automatisk på</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Du kan sette en <i>intervall</i> som «hver andre time», et <i>spesifikt tidspunkt</i> som «07:00» eller <i>skru av</i> automatiske oppdateringer helt.\n\n<small>Merk: Oppdateringstider er ikke eksakte; du kan oppleve små forsinkelser.</small></string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">Skru av</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">Sett intervall</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Angi klokkeslett</string>
-  <string name="pref_autoUpdateIntervallOrTime_at">ved %1$s</string>
   <string name="pref_followQueue_title">Kontinuerlig avspilling</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Koblet fra hodetelefoner eller Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Gjeninnkopling av hodetelefoner</string>
@@ -382,9 +344,6 @@
   <string name="pref_theme_title_dark">Mørkt</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ulimitert</string>
-  <string name="pref_update_interval_hours_plural">Timer</string>
-  <string name="pref_update_interval_hours_singular">Time</string>
-  <string name="pref_update_interval_hours_manual">Manuelt</string>
   <string name="pref_gpodnet_authenticate_title">Logg inn</string>
   <string name="pref_gpodnet_authenticate_sum">Logg inn med din gpodder.net konto for å synkronisere dine abonnementer.</string>
   <string name="pref_gpodnet_logout_title">Logg ut</string>
@@ -418,7 +377,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Du kan kun velge opp til %1$d ting.</string>
   <string name="pref_lockscreen_background_title">Angi som bakgrunn på låseskjermen</string>
   <string name="pref_lockscreen_background_sum">Angir låseskjermbakgrunnsbildet til å være den nåværende episodens bilde. Som en sideeffekt vil dette også vise bildet i tredjepartsapper.</string>
-  <string name="pref_expand_notify_unsupport_toast">Android-versjoner tidligere enn 4.1 støtter ikke utvidede varsler.</string>
   <string name="pref_enqueue_location_title">Plassering i køen</string>
   <string name="pref_enqueue_location_sum">Legg episoder til på: %1$s</string>
   <string name="enqueue_location_back">Tilbake</string>
@@ -430,7 +388,6 @@
   <string name="visit_user_forum">Bruker-forum</string>
   <string name="bug_report_title">Rapporter feil</string>
   <string name="open_bug_tracker">Åpne bug-tracker</string>
-  <string name="export_logs">Eksporter logg</string>
   <string name="copy_to_clipboard">Kopier til utklippstavle</string>
   <string name="copied_to_clipboard">Kopiert til utklippstavlen</string>
   <string name="experimental_pref">Eksperimentell</string>
@@ -441,7 +398,7 @@
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
   <string name="pref_cast_title">Chromecast støtte</string>
   <string name="pref_cast_message_play_flavor">Aktiver støtte for fjern-avspilling på Cast-enheter (som Chromecast, høyttalere eller Android TV)</string>
-  <string name="pref_cast_message_free_flavor">Chromecast krever proprietær tredjeparts programvare som er deaktivert i denne utgaven av AntennaPod</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast krever proprietær tredjeparts programvare som er deaktivert i denne utgaven av AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Legg til nedlastede i køen</string>
   <string name="pref_enqueue_downloaded_summary">Legg til nedlastede episoder i køen</string>
   <string name="media_player_switch_to_exoplayer">Bytt til ExoPlayer</string>
@@ -535,41 +492,20 @@
   <string name="gpodnet_toplist_header">TOPP-PODKASTER</string>
   <string name="gpodnet_suggestions_header">FORSLAG</string>
   <string name="gpodnet_search_hint">Søk på gpodder.net</string>
-  <string name="gpodnetauth_login_title">Logg inn</string>
   <string name="gpodnetauth_login_butLabel">Logg inn</string>
   <string name="username_label">Brukernavn</string>
   <string name="password_label">Passord</string>
-  <string name="gpodnetauth_device_descr">Lag en ny enhet til å bruke for din gpodder.net konto eller velg en som allerede eksisterer.</string>
-  <string name="gpodnetauth_device_caption_errorEmpty">Tittel kan ikke være tom</string>
-  <string name="gpodnetauth_device_butChoose">Velg</string>
   <string name="gpodnetauth_finish_descr">Gratulerer! Din gpodder.net konto er nå linket opp med din enhet. AntennaPod vil nå automatisk synkronisere abonnementer på din enhet med din gpodder.net konto.</string>
   <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nå.</string>
-  <string name="gpodnetauth_finish_butgomainscreen">Gå til hovedskjermen</string>
-  <string name="gpodnetsync_auth_error_title">gpodder.net-autentiseringsfeil</string>
-  <string name="gpodnetsync_auth_error_descr">Feil brukernavn eller passord.</string>
   <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfeil</string>
   <string name="gpodnetsync_error_descr">En feil oppsto under synkronisering av:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Vellykket</string>
   <string name="gpodnetsync_pref_report_failed">Mislyktes</string>
   <string name="gpodnetsync_username_characters_error">Brukernavn kan kun inneholde bokstaber, tall, bindestrek og understrek</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">Valgt mappe</string>
-  <string name="create_folder_label">Lag mappe</string>
   <string name="choose_data_directory">Velg datamappe</string>
   <string name="choose_data_directory_message">Vennligst velg basisen for datamappen din. AntennaPod vil lage de nødvendige submappene dine.</string>
-  <string name="choose_data_directory_permission_rationale">Tilgang til ekstern lagring er nødvendig for å endre data mappe</string>
   <string name="choose_data_directory_available_space">%1$s av %2$s ledig</string>
-  <string name="create_folder_msg">Lag en ny mappe med navn \"%1$s\"?</string>
-  <string name="create_folder_success">Lagde en ny mappe</string>
-  <string name="create_folder_error_no_write_access">Kan ikke skrive til denne mappen</string>
-  <string name="create_folder_error_already_exists">Mappe eksisterer allerede</string>
-  <string name="create_folder_error">Kunne ikke lage mappe</string>
-  <string name="folder_does_not_exist_error">%1$s eksisterer ikke</string>
-  <string name="folder_not_readable_error">%1$s kan ikke leses</string>
-  <string name="folder_not_writable_error">%1$s kan ikke skrives til</string>
-  <string name="folder_not_empty_dialog_title">Mappen er ikke tom</string>
-  <string name="folder_not_empty_dialog_msg">Mappen du har valgt er ikke tom. Nedlastet media og andre filer vil bli plassert direkte i denne mappen? Vil du fortsette?</string>
-  <string name="set_to_default_folder">Velg standardmappe</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sett pause på playback istedenfor å skru ned volumet når en annen app har lyst å spille av lyder</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pause for avbrytelser</string>
   <string name="pref_resumeAfterCall_sum">Gjenoppta avspilling etter at telefonsamtaler avsluttes</string>
@@ -585,13 +521,11 @@
   <string name="fast_forward_label">Spol fremover</string>
   <string name="increase_speed">Øk hastighet</string>
   <string name="decrease_speed">Reduser hastigheten</string>
-  <string name="media_type_audio_label">Lyd</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Episode lastes ned nå</string>
   <string name="in_queue_label">Episoden er i køen</string>
-  <string name="drag_handle_content_description">Dra for å endre posisjonen til dette objektet</string>
   <string name="load_next_page_label">Last inn neste side</string>
-  <!--Feed information screen-->
+  <!--Feed settings/information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Endre brukernavnet og passordet for denne podkasten og dens episoder</string>
   <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>
@@ -603,8 +537,6 @@
   <string name="keep_updated">Hold oppdatert</string>
   <string name="keep_updated_summary">Inkluder denne podkasten når alle podkaster oppdateres</string>
   <string name="auto_download_disabled_globally">Automatisk nedlasting er deaktivert i AntennaPod-innstillingene</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">Oppgraderer databasen</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltstående applikasjoner...</string>
   <!--Add podcast fragment-->
@@ -660,11 +592,11 @@
   <string name="sort_short_long">Kort \u2192 Lang</string>
   <string name="sort_long_short">Lang \u2192 Kort</string>
   <!--Rating dialog-->
-  <string name="rating_title">Liker du AntennaPod?</string>
-  <string name="rating_message">Vi ville satt pris på om du tok deg tid til å vurdere AntennaPod.</string>
-  <string name="rating_never_label">La meg være i fred</string>
-  <string name="rating_later_label">Minn meg på dette senere</string>
-  <string name="rating_now_label">Naturligvis, kom igjen!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">Liker du AntennaPod?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Vi ville satt pris på om du tok deg tid til å vurdere AntennaPod.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">La meg være i fred</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">Minn meg på dette senere</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">Naturligvis, kom igjen!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Inkluder:</string>
   <!--Audio controls-->

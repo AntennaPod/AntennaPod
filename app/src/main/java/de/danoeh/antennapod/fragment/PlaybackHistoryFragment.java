@@ -75,7 +75,6 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
         adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
@@ -173,7 +172,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getSelectedItem();
+        FeedItem selectedItem = adapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);

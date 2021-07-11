@@ -12,4 +12,9 @@
     <attr name="filter_dialog_clear" format="color"/>
     <attr name="filter_dialog_button_background" format="reference"/>
     <attr name="seek_background" format="color" />
+    <attr name="icon_red" format="color" />
+    <attr name="icon_yellow" format="color" />
+    <attr name="icon_green" format="color" />
+    <attr name="icon_purple" format="color" />
+    <attr name="icon_gray" format="color" />
 </resources>
