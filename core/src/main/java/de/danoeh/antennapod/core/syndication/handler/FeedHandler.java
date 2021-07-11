@@ -11,8 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -43,42 +45,45 @@ public class FeedHandler {
         return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
     }
 
+    /**
+     * For updating items that are stored in the database, see also: DBTasks.searchFeedItemByIdentifyingValue
+     */
     public static List<FeedItem> dedupItems(List<FeedItem> items) {
-        List<FeedItem> list = items;
-        if (list == null) {
+        if (items == null) {
             return null;
         }
-        ArrayList<String> seen = new ArrayList<>();
+        List<FeedItem> list = new ArrayList<>(items);
+        Set<String> seen = new HashSet<>();
         Iterator<FeedItem> it = list.iterator();
         while (it.hasNext()) {
             FeedItem item = it.next();
-            if (seen.indexOf(item.getItemIdentifier()) == -1) {
-                if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
-                    continue;
-                }
-                if (seen.indexOf(item.getMedia().getStreamUrl()) == -1) {
-                    seen.add(item.getMedia().getDownload_url());
-                    if (TextUtils.isEmpty(item.getTitle()) || TextUtils.isEmpty(item.getPubDate().toString())) {
-                        continue;
-                    }
-                    if (seen.indexOf(item.getTitle() + item.getPubDate().toString()) == -1) {
-                        seen.add(item.getTitle() + item.getPubDate().toString());
-                    } else {
-                        Log.d(TAG, "Removing duplicate episode title and pubDate "
-                                + item.getTitle()
-                                + " " + item.getPubDate());
-                        it.remove();
-                    }
-                } else {
-                    Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
-                    it.remove();
-                }
-
-                seen.add(item.getItemIdentifier());
-            } else {
+            if (seen.contains(item.getItemIdentifier())) {
                 Log.d(TAG, "Removing duplicate episode guid " + item.getItemIdentifier());
                 it.remove();
+                continue;
             }
+
+            if (item.getMedia() == null || TextUtils.isEmpty(item.getMedia().getStreamUrl())) {
+                continue;
+            }
+            if (seen.contains(item.getMedia().getStreamUrl())) {
+                Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
+                it.remove();
+            } else {
+                seen.add(item.getMedia().getStreamUrl());
+                if (TextUtils.isEmpty(item.getTitle()) || TextUtils.isEmpty(item.getPubDate().toString())) {
+                    continue;
+                }
+                if (!seen.contains(item.getTitle() + item.getPubDate().toString())) {
+                    seen.add(item.getTitle() + item.getPubDate().toString());
+                } else {
+                    Log.d(TAG, "Removing duplicate episode title and pubDate "
+                            + item.getTitle()
+                            + " " + item.getPubDate());
+                    it.remove();
+                }
+            }
+            seen.add(item.getItemIdentifier());
         }
         return list;
     }

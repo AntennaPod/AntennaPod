@@ -335,6 +335,7 @@ public final class DBTasks {
 
     /**
      * Get a FeedItem by its identifying value or download_url.
+     * For de-duplicating items that are not stored yet, see also FeedHandler.dedupItems
      */
     private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
