@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.util.ObjectsCompat;
 import androidx.core.view.ViewCompat;
@@ -47,8 +45,8 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
@@ -58,7 +56,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -71,7 +70,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,6 +118,7 @@ public class ItemFragment extends Fragment {
     private View butAction2;
     private ItemActionButton actionButton1;
     private ItemActionButton actionButton2;
+    private View noMediaLabel;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -169,6 +168,7 @@ public class ItemFragment extends Fragment {
         butAction2Icon = layout.findViewById(R.id.butAction2Icon);
         butAction1Text = layout.findViewById(R.id.butAction1Text);
         butAction2Text = layout.findViewById(R.id.butAction2Text);
+        noMediaLabel = layout.findViewById(R.id.noMediaLabel);
 
         butAction1.setOnClickListener(v -> {
             if (actionButton1 instanceof StreamActionButton && !UserPreferences.isStreamOverDownload()
@@ -238,7 +238,12 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        controller = new PlaybackController(getActivity());
+        controller = new PlaybackController(getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
     }
 
@@ -291,14 +296,19 @@ public class ItemFragment extends Fragment {
             txtvPublished.setContentDescription(DateUtils.formatForAccessibility(getContext(), item.getPubDate()));
         }
 
+        RequestOptions options = new RequestOptions()
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .transforms(new FitCenter(),
+                        new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
+                .dontAnimate();
+
         Glide.with(getActivity())
-                .load(ImageResourceUtils.getImageLocation(item))
-                .apply(new RequestOptions()
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .transforms(new FitCenter(),
-                            new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
-                    .dontAnimate())
+                .load(item.getImageLocation())
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(item))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
         updateButtons();
     }
@@ -319,13 +329,15 @@ public class ItemFragment extends Fragment {
         if (media == null) {
             actionButton1 = new MarkAsPlayedActionButton(item);
             actionButton2 = new VisitWebsiteActionButton(item);
+            noMediaLabel.setVisibility(View.VISIBLE);
         } else {
+            noMediaLabel.setVisibility(View.GONE);
             if (media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
                 txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
-            if (media.isCurrentlyPlaying()) {
+            if (FeedItemUtil.isCurrentlyPlaying(media)) {
                 actionButton1 = new PauseActionButton(item);
             } else if (item.getFeed().isLocalFeed()) {
                 actionButton1 = new PlayLocalActionButton(item);
@@ -337,7 +349,7 @@ public class ItemFragment extends Fragment {
             if (DownloadRequester.getInstance().isDownloadingFile(media)) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
-                actionButton2 = new DownloadActionButton(item, false);
+                actionButton2 = new DownloadActionButton(item);
             } else {
                 actionButton2 = new DeleteActionButton(item);
             }
@@ -345,15 +357,12 @@ public class ItemFragment extends Fragment {
 
         butAction1Text.setText(actionButton1.getLabel());
         butAction1Text.setTransformationMethod(null);
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(actionButton1.getDrawable(), typedValue, true);
-        butAction1Icon.setImageResource(typedValue.resourceId);
+        butAction1Icon.setImageResource(actionButton1.getDrawable());
         butAction1.setVisibility(actionButton1.getVisibility());
 
         butAction2Text.setText(actionButton2.getLabel());
         butAction2Text.setTransformationMethod(null);
-        getContext().getTheme().resolveAttribute(actionButton2.getDrawable(), typedValue, true);
-        butAction2Icon.setImageResource(typedValue.resourceId);
+        butAction2Icon.setImageResource(actionButton2.getDrawable());
         butAction2.setVisibility(actionButton2.getVisibility());
     }
 
@@ -427,7 +436,9 @@ public class ItemFragment extends Fragment {
         FeedItem feedItem = DBReader.getFeedItem(itemId);
         Context context = getContext();
         if (feedItem != null && context != null) {
-            Timeline t = new Timeline(context, feedItem);
+            int duration = feedItem.getMedia() != null ? feedItem.getMedia().getDuration() : Integer.MAX_VALUE;
+            DBReader.loadDescriptionOfFeedItem(feedItem);
+            Timeline t = new Timeline(context, feedItem.getDescription(), duration);
             webviewData = t.processShownotes();
         }
         return feedItem;

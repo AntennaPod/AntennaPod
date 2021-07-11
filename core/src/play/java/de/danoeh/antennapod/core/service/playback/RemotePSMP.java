@@ -28,12 +28,13 @@ import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.CastUtils;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
-import de.danoeh.antennapod.core.util.playback.RemoteMedia;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.model.playback.RemoteMedia;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
@@ -304,7 +305,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
      * Internal implementation of playMediaObject. This method has an additional parameter that allows the caller to force a media player reset even if
      * the given playable parameter is the same object as the currently playing media.
      *
-     * @see #playMediaObject(de.danoeh.antennapod.core.util.playback.Playable, boolean, boolean, boolean)
+     * @see #playMediaObject(Playable, boolean, boolean, boolean)
      */
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable)) {
@@ -353,16 +354,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         this.mediaType = media.getMediaType();
         this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
-        try {
-            media.loadMetadata();
-            callback.onMediaChanged(true);
-            setPlayerStatus(PlayerStatus.INITIALIZED, media);
-            if (prepareImmediately) {
-                prepare();
-            }
-        } catch (Playable.PlayableException e) {
-            Log.e(TAG, "Error while loading media metadata", e);
-            setPlayerStatus(PlayerStatus.STOPPED, null);
+        if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
+            ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
+        }
+        callback.onMediaChanged(true);
+        setPlayerStatus(PlayerStatus.INITIALIZED, media);
+        if (prepareImmediately) {
+            prepare();
         }
     }
 
@@ -511,13 +509,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void setStartWhenPrepared(boolean startWhenPrepared) {
         this.startWhenPrepared.set(startWhenPrepared);
-    }
-
-    // As things are right now, changing the return value of this function is not enough to ensure
-    // all other components recognize it.
-    @Override
-    public boolean canSetSpeed() {
-        return false;
     }
 
     @Override

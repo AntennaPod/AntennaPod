@@ -5,14 +5,13 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.LangUtils;
 import io.reactivex.Observable;
 
 /**
@@ -37,14 +36,11 @@ public class DocumentFileExportWorker {
             OutputStreamWriter writer = null;
             try {
                 Uri uri = output.getUri();
-                if (uri == null) {
-                    throw new FileNotFoundException("Export file not found.");
-                }
                 outputStream = context.getContentResolver().openOutputStream(uri);
                 if (outputStream == null) {
                     throw new IOException();
                 }
-                writer = new OutputStreamWriter(outputStream, LangUtils.UTF_8);
+                writer = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
                 exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {

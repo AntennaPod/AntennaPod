@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
+import de.danoeh.antennapod.model.playback.RemoteMedia;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -13,14 +14,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.danoeh.antennapod.core.feed.FeedComponent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedComponent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
@@ -105,7 +104,7 @@ public class ItemEnqueuePositionCalculatorTest {
                     {"case option after currently playing, no currentlyPlaying is null",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
                             AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
-                    {"case option after currently playing, currentlyPlaying is externalMedia",
+                    {"case option after currently playing, currentlyPlaying is not a feedMedia",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
                             AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
                     {"case empty queue, option after currently playing",
@@ -270,7 +269,7 @@ public class ItemEnqueuePositionCalculatorTest {
     }
 
     static Playable externalMedia() {
-        return new ExternalMedia("http://example.com/episode.mp3", MediaType.AUDIO);
+        return new RemoteMedia(createFeedItem(0));
     }
 
     static final long ID_CURRENTLY_PLAYING_NULL = -1L;

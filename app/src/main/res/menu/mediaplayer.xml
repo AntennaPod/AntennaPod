@@ -4,40 +4,40 @@
 
     <item
         android:id="@+id/add_to_favorites_item"
-        android:icon="?attr/ic_fav"
+        android:icon="@drawable/ic_star_border"
         android:title="@string/add_to_favorite_label"
         custom:showAsAction="always">
     </item>
     <item
         android:id="@+id/remove_from_favorites_item"
-        android:icon="?attr/ic_unfav"
+        android:icon="@drawable/ic_star"
         android:title="@string/remove_from_favorite_label"
         custom:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/disable_sleeptimer_item"
-        android:icon="?attr/ic_sleep_off"
+        android:icon="@drawable/ic_sleep_off"
         custom:showAsAction="always"
         android:title="@string/sleep_timer_label">
     </item>
     <item
         android:id="@+id/set_sleeptimer_item"
-        android:icon="?attr/ic_sleep"
+        android:icon="@drawable/ic_sleep"
         custom:showAsAction="always"
         android:title="@string/set_sleeptimer_label">
     </item>
 
     <item
         android:id="@+id/audio_controls"
-        android:icon="?attr/ic_sliders"
+        android:icon="@drawable/ic_sliders"
         android:title="@string/audio_controls"
         custom:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/open_feed_item"
-        android:icon="?attr/feed"
+        android:icon="@drawable/ic_feed"
         custom:showAsAction="collapseActionView"
         android:title="@string/open_podcast"
         android:visible="false">
@@ -45,7 +45,7 @@
 
     <item
         android:id="@+id/visit_website_item"
-        android:icon="?attr/location_web_site"
+        android:icon="@drawable/ic_web"
         custom:showAsAction="collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="false">

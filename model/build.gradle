@@ -1,0 +1,10 @@
+apply plugin: "com.android.library"
+apply from: "../common.gradle"
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.media:media:$mediaVersion"
+
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+}

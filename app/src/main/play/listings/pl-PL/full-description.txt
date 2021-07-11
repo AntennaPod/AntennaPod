@@ -24,8 +24,8 @@ Dodawaj i importuj kanały z iTunes i gPodder.net, plików OPML oraz z adresów 
 <b>Dołącz do społeczności AntennaPod</b>
 AntennaPod jest ciągle rozwijane przez ochotników. Ty też możesz pomóc, kodem lub komentarzem!
 
-Chcesz zgłosić błąd lub brakuje Ci jakiejś funkcji, a może programujesz? Odwiedź nasz GitHub:
-https://www.github.com/AntennaPod/AntennaPod
+Życzliwi użytkownicy forum chętnie odpowiedzą na twoje pytania. Zapraszamy do rozmów o funkcjach programu i generalnie o podcastingu.
+https://forum.antennapod.org/
 
 Chcesz pomóc tłumaczyć AntennaPod - możesz to zrobić na Transifex:
 https://www.transifex.com/antennapod/antennapod

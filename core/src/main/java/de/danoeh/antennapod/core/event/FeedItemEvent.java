@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class FeedItemEvent {
 

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.view;
 
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,10 +16,15 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 import androidx.core.view.ViewCompat;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -93,6 +99,19 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             Log.d(TAG, "Link of webview was long-pressed. Extra: " + r.getExtra());
             selectedUrl = r.getExtra();
             showContextMenu();
+            return true;
+        } else if (r != null && r.getType() == HitTestResult.EMAIL_TYPE) {
+            Log.d(TAG, "E-Mail of webview was long-pressed. Extra: " + r.getExtra());
+            ClipboardManager clipboardManager = ContextCompat.getSystemService(this.getContext(),
+                                                                               ClipboardManager.class);
+            if (clipboardManager != null) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
+            }
+            if (this.getContext() instanceof MainActivity) {
+                ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
+                        getResources().getString(R.string.copied_to_clipboard),
+                        Snackbar.LENGTH_SHORT);
+            }
             return true;
         }
         selectedUrl = null;

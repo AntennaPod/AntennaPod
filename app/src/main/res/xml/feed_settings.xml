@@ -5,32 +5,46 @@
 
     <SwitchPreferenceCompat
             android:key="keepUpdated"
-            android:icon="?attr/navigation_refresh"
+            android:icon="@drawable/ic_refresh"
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
 
+    <SwitchPreferenceCompat
+            android:key="episodeNotification"
+            android:defaultValue="false"
+            android:dependency="keepUpdated"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/episode_notification"
+            android:summary="@string/episode_notification_summary"/>
+
     <Preference
             android:key="authentication"
-            android:icon="?attr/ic_key"
+            android:icon="@drawable/ic_key"
             android:title="@string/authentication_label"
             android:summary="@string/authentication_descr"/>
 
+    <Preference
+            android:key="tags"
+            android:icon="@drawable/ic_folder"
+            android:title="@string/feed_folders_label"
+            android:summary="@string/feed_folders_summary"/>
+
     <ListPreference
             android:key="feedPlaybackSpeed"
-            android:icon="?attr/ic_settings_speed"
+            android:icon="@drawable/ic_playback_speed"
             android:title="@string/playback_speed"
             android:summary="@string/pref_feed_playback_speed_sum"/>
 
     <Preference
             android:key="feedAutoSkip"
-            android:icon="?attr/ic_settings_skip"
+            android:icon="@drawable/ic_skip_24dp"
             android:summary="@string/pref_feed_skip_sum"
             android:title="@string/pref_feed_skip" />
 
     <ListPreference
             android:entries="@array/spnAutoDeleteItems"
             android:entryValues="@array/spnAutoDeleteValues"
-            android:icon="?attr/ic_delete"
+            android:icon="@drawable/ic_delete"
             android:title="@string/auto_delete_label"
             android:summary="@string/feed_auto_download_global"
             android:key="autoDelete"/>
@@ -38,7 +52,7 @@
     <ListPreference
             android:entries="@array/spnVolumeReductionItems"
             android:entryValues="@array/spnVolumeReductionValues"
-            android:icon="?attr/ic_volume_adaption"
+            android:icon="@drawable/ic_volume_adaption"
             android:summary="@string/feed_volume_reduction_summary"
             android:title="@string/feed_volume_reduction"
             android:defaultValue="off"

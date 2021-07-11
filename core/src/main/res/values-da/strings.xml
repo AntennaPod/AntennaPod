@@ -6,26 +6,28 @@
   <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="episodes_label">Udsendelser</string>
+  <string name="queue_label">Kø</string>
   <string name="all_episodes_short_label">Alle</string>
   <string name="new_episodes_label">Nye</string>
   <string name="favorite_episodes_label">Foretrukne</string>
   <string name="new_label">Ny</string>
   <string name="settings_label">Indstillinger</string>
   <string name="downloads_label">Overførsler</string>
-  <string name="downloads_running_label">I gang</string>
+  <string name="open_autodownload_settings">Åbn indstillinger</string>
   <string name="downloads_completed_label">Færdige</string>
   <string name="downloads_log_label">Log</string>
   <string name="subscriptions_label">Abonnementer</string>
   <string name="subscriptions_list_label">Liste over abonnementer</string>
-  <string name="cancel_download_label">Annuller\noverførsel</string>
+  <string name="cancel_download_label">Annuller overførsel</string>
   <string name="playback_history_label">Afspilningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">Login til gpodder.net</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
   <string name="playback_statistics_label">Afspilning</string>
   <string name="download_statistics_label">Overførsler</string>
-  <string name="notification_pref_fragment">Påmindelser</string>
+  <string name="notification_pref_fragment">Notifikationer </string>
+  <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" ikke fundet</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet tid for afspillede udsendelser:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -53,6 +55,8 @@
   <string name="drawer_feed_counter_none">Ingen</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ingen kompatible apper fundet.</string>
+  <string name="export_logs_menu_title">Eksporter detaljeret log</string>
+  <string name="confirm_export_log_dialog_message">Detaljerede logger kan indeholde følsom information, såsom din abonnementsliste.</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Åbn i browser</string>
   <string name="copy_url_label">Kopier webadresse</string>
@@ -67,21 +71,20 @@
   <string name="yes">Ja</string>
   <string name="no">Nej</string>
   <string name="reset">Nulstil</string>
-  <string name="author_label">Forfatter(e)</string>
-  <string name="language_label">Sprog</string>
   <string name="url_label">Webadresse</string>
-  <string name="cover_label">Billede</string>
+  <string name="support_funding_label">Støt</string>
+  <string name="support_podcast">Støt denne podcast</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
-  <string name="needs_storage_permission">Tilladelse til lageradgang kræves for denne handling</string>
   <string name="refresh_label">Opdater</string>
   <string name="external_storage_error_msg">Ingen ekstern lagerenhed er tilgængelig. Sørg for at den eksterne lagerenhed er tilsluttet, så appen kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
   <string name="chapter_duration">Varighed: %1$s</string>
   <string name="description_label">Beskrivelse</string>
+  <string name="shownotes_label">Udsendelsesnoter</string>
+  <string name="shownotes_contentdescription">Stryg op for at læse beskrivelse af udsendelse</string>
   <string name="episodes_suffix">\u0020udsendelser</string>
   <string name="processing_label">Behandler</string>
-  <string name="save_username_password_label">Gem brugernavn og adgangskode</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
   <string name="auto_download_label">Inkludér i automatiske overførsler</string>
@@ -89,16 +92,17 @@
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk overførsel</i>-indstilling vil automatisk blive anvendt på nye udsendelser.\nVil du også anvende den på tidligere udsendelser?</string>
   <string name="auto_delete_label">Slet udsendelser automatisk</string>
   <string name="feed_volume_reduction">Lydstyrkereduktion</string>
-  <string name="feed_volume_reduction_summary">Skrug lyd ned for episoder i dette feed</string>
+  <string name="feed_volume_reduction_summary">Skru lyd ned for episoder i dette feed: %1$s</string>
   <string name="feed_volume_reduction_off">Fra</string>
   <string name="feed_volume_reduction_light">Lidt</string>
   <string name="feed_volume_reduction_heavy">Meget</string>
-  <string name="parallel_downloads_suffix">\u0020parallelle overførsler</string>
+  <string name="parallel_downloads">%1$d parallelle overførsler</string>
   <string name="feed_auto_download_global">Global standard</string>
   <string name="feed_auto_download_always">Altid</string>
   <string name="feed_auto_download_never">Aldrig</string>
   <string name="send_label">Send…</string>
   <string name="episode_cleanup_never">Aldrig</string>
+  <string name="episode_cleanup_except_favorite_removal">Hvis ikke en foretrukket</string>
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
   <string name="episode_cleanup_after_listening">Efter færdig afspilning</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -113,7 +117,22 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgte</item>
   </plurals>
+  <plurals name="num_episodes">
+    <item quantity="one">%d episode</item>
+    <item quantity="other">%d episoder</item>
+  </plurals>
   <string name="loading_more">Indlæser mere ...</string>
+  <string name="episode_notification">Notifikationer om udsendelser</string>
+  <string name="episode_notification_summary">Vis en notifikation når der er nye episoder</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="one">%2$s har en ny episode</item>
+    <item quantity="other">%2$s har %1$d nye udsendelser</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="one">Nye episoder</item>
+    <item quantity="other">Nye episoder</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">Dine abonnementer har nye udsendelser</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
@@ -124,14 +143,13 @@
   <string name="remove_all_new_flags_confirmation_msg">Bekræft venligst at du ønsker at fjerne \"ny\"-flaget fra alle udsendelser.</string>
   <string name="show_info_label">Vis information</string>
   <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
-  <string name="feed_info_label">Podcast-info</string>
   <string name="feed_settings_label">Podcast-indstillinger</string>
   <string name="rename_feed_label">Omdøb podcast</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del</string>
   <string name="share_label_with_ellipses">Del...</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_website_url_label">Netsted adresse</string>
+  <string name="share_website_url_label">Adresse på netsted</string>
   <string name="share_feed_url_label">Podcast-adresse</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
   <string name="feed_delete_confirmation_local_msg">Bekræft venligst at du vil fjerne podcasten \"%1$s\". Filerne i den lokale kildemappe vil ikke blive slettet.</string>
@@ -140,14 +158,11 @@
   <string name="multi_select">Vælg flere</string>
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
-  <string name="hide_unplayed_episodes_label">Uafspillede</string>
-  <string name="hide_queued_episodes_label">Sat i kø</string>
-  <string name="hide_not_queued_episodes_label">Ikke sat i kø</string>
-  <string name="hide_has_media_label">Har medier</string>
   <string name="filtered_label">Filtrerede</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Sidste opdatering fejlede</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Seneste opdatering mislykkedes. Tryk for at se detaljer.</string>
   <string name="open_podcast">Åbn podcast</string>
   <string name="please_wait_for_data">Vær venlig og vent til data\'et er indlæst</string>
+  <string name="updates_disabled_label">Opdateringer deaktiveret</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <plurals name="downloading_batch_label">
@@ -160,16 +175,14 @@
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
   <string name="delete_episode_label">Slet udsendelse</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d udsendelse slettet.</item>
-    <item quantity="other">%d udsendelser slettet.</item>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">%d udsendelse valgt, %d hentet udesendelse slettet.</item>
+    <item quantity="other">%dudsendelser valgt, %d hentede udsendelser slettet.</item>
   </plurals>
   <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
   <string name="mark_read_label">Marker som afspillet</string>
-  <string name="marked_as_read_label">Markeret som afspillet</string>
   <string name="mark_read_no_media_label">Marker som læst</string>
-  <string name="marked_as_read_no_media_label">Markeret som læst</string>
   <string name="play_this_to_seek_position">Skift til position, du bliver nødt til at afspille episode</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d udsendelse markeret som afspillet.</item>
@@ -193,10 +206,8 @@
     <item quantity="other">%d udsendelser fjernet fra køen.</item>
   </plurals>
   <string name="add_to_favorite_label">Føj til foretrukne</string>
-  <string name="added_to_favorites">Føjet til foretrukne</string>
   <string name="remove_from_favorite_label">Fjern fra foretrukne</string>
-  <string name="removed_from_favorites">Fjernet fra foretrukne</string>
-  <string name="visit_website_label">Besøg webside</string>
+  <string name="visit_website_label">Besøg netsted</string>
   <string name="skip_episode_label">Spring udsendelse over</string>
   <string name="activate_auto_download">Slå Automatisk overførsel til</string>
   <string name="deactivate_auto_download">Slå Automatisk overførsel fra</string>
@@ -209,23 +220,27 @@
   <string name="download_running">Overfører</string>
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
+  <string name="download_error_tap_for_details">Tryk for se detaljer.</string>
   <string name="download_error_device_not_found">Kan ikke finde lagerenhed</string>
-  <string name="download_error_insufficient_space">Ikke nok plads</string>
+  <string name="download_error_insufficient_space">Der er ikke nok plads tilbage på din enhed.</string>
   <string name="download_error_http_data_error">HTTP-datafejl</string>
   <string name="download_error_error_unknown">Ukendt fejl</string>
-  <string name="download_error_parser_exception">Parser-undtagelse</string>
+  <string name="download_error_parser_exception">Podcast-værtens server sendte et ubrugeligt podcast-feed.</string>
   <string name="download_error_unsupported_type">Feedets type er ikke understøttet</string>
+  <string name="download_error_unsupported_type_html">Podcast-værtens server sendte et netsted, ikke en podcast.</string>
+  <string name="download_error_not_found">Podcast-værtens server ved ikke, hvor filen skal findes. Den kan være blevet slettet.</string>
   <string name="download_error_connection_error">Forbindelsesfejl</string>
-  <string name="download_error_unknown_host">Ukendt vært</string>
+  <string name="download_error_unknown_host">Kan ikke finde serveren. Tjek om adressen er indtastet korrekt, og om du har en fungerende netværksforbindelse.</string>
   <string name="download_error_unauthorized">Godkendelsesfejl</string>
   <string name="download_error_file_type_type">Filtypefejl</string>
-  <string name="download_error_forbidden">Adgang nægtet</string>
+  <string name="download_error_forbidden">Podcast-værtens server nægter at svare.</string>
   <string name="download_canceled_msg">Overførsel annulleret</string>
+  <string name="download_error_wrong_size">Mistede serverforbindelsen før overførsel var komplet.</string>
+  <string name="download_error_blocked">Overførslen blev blokeret af en anden app på din enhed.</string>
+  <string name="download_error_certificate">Kunne ikke etablere en sikker forbindelse. Dette kan betyde, at en anden app på din enhed blokerede overførslen, eller at noget er galt med servercertifikaterne.</string>
   <string name="download_canceled_autodownload_enabled_msg">Overførsel annulleret\n<i>Automatisk overførsel</i> blev slået fra for dette element</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
   <string name="auto_download_report_title">Automatiske overførsler fuldført</string>
-  <string name="download_report_content_title">Rapport over overførsler</string>
-  <string name="download_error_malformed_url">Webadresse er forkert udformet</string>
   <string name="download_error_io_error">Læse- eller skrivefejl</string>
   <string name="download_error_request_error">Fejl i anmodning</string>
   <string name="download_error_db_access">Databaseadgangsfejl</string>
@@ -233,12 +248,8 @@
     <item quantity="one">%d overførsel mangler</item>
     <item quantity="other">%d overførsler mangler</item>
   </plurals>
-  <string name="downloads_processing">Bearbejder overførte data</string>
+  <string name="service_shutting_down">Tjeneste lukker ned</string>
   <string name="download_notification_title">Henter podcast-data</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d overførsel lykkedes, %d fejlede</item>
-    <item quantity="other">%d overførsler lykkedes, %d fejlede</item>
-  </plurals>
   <string name="download_log_title_unknown">Ukendt titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediefil</string>
@@ -257,20 +268,16 @@
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tillad midlertidigt</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fejl!</string>
-  <string name="player_stopped_msg">Ingen medier afspilles</string>
-  <string name="player_preparing_msg">Forbereder</string>
-  <string name="player_ready_msg">Klar</string>
-  <string name="player_seeking_msg">Søger</string>
   <string name="playback_error_server_died">Serveren døde</string>
   <string name="playback_error_unsupported">Kan ikke afspille denne medietype</string>
   <string name="playback_error_timeout">Handlingen annulleret fordi den tog for lang tid</string>
   <string name="playback_error_source">Kunne ikke tilgå mediefil</string>
   <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
-  <string name="player_buffering_msg">Henter data til buffer</string>
   <string name="player_go_to_picture_in_picture">Billed-i-billed-tilstand</string>
   <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
   <string name="error_file_not_found">Fil ikke fundet</string>
+  <string name="no_media_label">Element indeholder ikke en mediefil.</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås kø</string>
   <string name="unlock_queue">Lås kø op</string>
@@ -290,27 +297,19 @@
   <string name="feed_title">Titel på podcast</string>
   <string name="random">Tilfældig</string>
   <string name="smart_shuffle">Smart blanding</string>
-  <string name="ascending">Stigende</string>
-  <string name="descending">Faldende</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Hent plugin</string>
-  <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_or_sonic_msg">For ændring af afspilningshastighed, vi forslår at bruge den indbyggede Sonic medie afspiller.</string>
-  <string name="enable_sonic">Slå Sonic til</string>
   <string name="speed_presets">Forudindstillinger</string>
   <string name="preset_already_exists">%1$.2fx er allerede gemt som en forudindstilling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ingen udsendelser i køen</string>
   <string name="no_items_label">Tilføj en udsendelse ved at downloade den, eller tryk og hold på episoden og vælg \"Føj til kø\".</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
-  <string name="no_run_downloads_head_label">Ingen overførsler i gang</string>
-  <string name="no_run_downloads_label">Du kan downloade episode ved podcastens beskrivelse</string>
   <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
   <string name="no_comp_downloads_label">Du kan downloade episoden på podcastens detaljerede skærm. </string>
   <string name="no_log_downloads_head_label">Ingen overførselslog</string>
-  <string name="no_log_downloads_label">Download raport vil blive vist her når muligt</string>
+  <string name="no_log_downloads_label">Overførselslog vil blive vist her når tilgængelig.</string>
   <string name="no_history_head_label">Ingen historik</string>
   <string name="no_history_label">Når du har hørt en episode, vil den blive vist her.</string>
   <string name="no_all_episodes_head_label">Ingen udsendelser</string>
@@ -319,16 +318,13 @@
   <string name="no_new_episodes_label">Når nye udsendelser ankommer, vil de blive vist her.</string>
   <string name="no_fav_episodes_head_label">Ingen foretrukne udsendelser</string>
   <string name="no_fav_episodes_label">Du kan føje udsendelser til foretrukne ved at trykke længe på dem</string>
-  <string name="no_chapters_head_label">Ingen kapitler</string>
-  <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
   <string name="no_subscriptions_head_label">Ingen abonnementer</string>
   <string name="no_subscriptions_label">For at abonnere på en podcast, klik plus ikonet nedenfor</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
-  <string name="storage_sum">Automatisk sletning, Importer, Exporter af episoder</string>
+  <string name="storage_sum">Automatisk sletning af udsendelser, import, eksport</string>
   <string name="project_pref">Projekt</string>
-  <string name="queue_label">Kø</string>
-  <string name="synchronization_pref">synkronisering</string>
+  <string name="synchronization_pref">Synkronisering</string>
   <string name="synchronization_sum">Synkroniser med andre enheder ved hjælp af gpodder.net</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
@@ -338,19 +334,24 @@
   <string name="external_elements">Externe elementer</string>
   <string name="interruptions">Afbrydelser</string>
   <string name="playback_control">Afspilningskontrol</string>
+  <string name="reassign_hardware_buttons">Omfordel de fysiske knapper</string>
   <string name="preference_search_hint">Søg...</string>
   <string name="preference_search_no_results">Ingen resultater</string>
   <string name="preference_search_clear_history">Slet historik</string>
   <string name="media_player">Medieafspiller</string>
   <string name="pref_episode_cleanup_title">Oprydning i udsendelser</string>
-  <string name="pref_episode_cleanup_summary">Tillad at udsendelser, som ikke er i køen og som ikke er markeret som foretrukne, kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser</string>
+  <string name="pref_episode_cleanup_summary">Udsendelser der kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser.</string>
   <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth afkobles</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefonerne tilsluttes igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Genoptag afspilning når bluetooth forbinder igen</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Fremadknap springer over</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Når der trykkes på næste knappen på de tilsluttede høretelefoner, skift til næste episode istedet for at springe frem.</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Tilbageknap genstarter</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Når der trykkes på en fysisk tilbageknap, skal den aktuelle udsendelse afspilles forfra i stedet for at der spoles tilbage.</string>
+  <string name="pref_hardware_forward_button_title">Fremadknap</string>
+  <string name="pref_hardware_forward_button_summary">Konfigurer fremadknap</string>
+  <string name="pref_hardware_previous_button_title">Tilbageknap</string>
+  <string name="pref_hardware_previous_button_summary">Konfigurer tilbageknap</string>
+  <string name="button_action_fast_forward">Spol frem</string>
+  <string name="button_action_rewind">Spol tilbage</string>
+  <string name="button_action_skip_episode">Spring episode over</string>
+  <string name="button_action_restart_episode">Genstart udsendelse</string>
   <string name="pref_followQueue_sum">Gå til næste element i køen når afspilningen er færdig</string>
   <string name="pref_auto_delete_sum">Slet udsendelsen når afspilningen er færdig</string>
   <string name="pref_auto_delete_title">Slet automatisk</string>
@@ -361,17 +362,19 @@
   <string name="pref_favorite_keeps_episodes_sum">Behold udsendelser, som er markeret som foretrukne</string>
   <string name="pref_favorite_keeps_episodes_title">Behold foretrukne udsendelser</string>
   <string name="playback_pref">Afspilning</string>
-  <string name="playback_pref_sum">Hovedtelefon kontrol, Overspring intervaller, Kø</string>
+  <string name="playback_pref_sum">Hovedtelefonstyring, overspringsintervaller, kø</string>
   <string name="network_pref">Netværk</string>
   <string name="network_pref_sum">Opdateringsinterval, overførselsindstillinger, mobildata</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">Opdateringsinterval eller -klokkeslæt</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Angiv et tidsinterval eller et bestemt klokkeslæt hvor podcastene skal opdateres automatisk</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Du kan indstille et <i>interval</i> som \"hver 2. time\", indstille et bestemt <i>klokkeslæt</i> som \"7:00\", eller <i>slå</i> automatiske opdateringer helt <i>fra</i>.\n\n<small>Bemærk: Opdateringstider er ikke eksakte. Du kan opleve en kort forsinkelse.</small></string>
-  <string name="pref_autoUpdateIntervallOrTime_Disable">Slå fra</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">Indstil interval</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Indstil klokkeslæt</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">hver %1$s</string>
-  <string name="pref_autoUpdateIntervallOrTime_at">kl. %1$s</string>
+  <string name="feed_refresh_title">Opdater podcasts</string>
+  <string name="feed_refresh_sum">Specificer et interval eller et bestemt tidspunkt at automatisk tjekke for nye udsendelser</string>
+  <string name="feed_refresh_interval">Interval</string>
+  <string name="feed_refresh_time">Tid</string>
+  <string name="feed_refresh_never">Aldrig</string>
+  <string name="feed_refresh_interval_at">kl. %1$s</string>
+  <plurals name="feed_refresh_every_x_hours">
+    <item quantity="one">Hver time</item>
+    <item quantity="other">Hver %d time</item>
+  </plurals>
   <string name="pref_followQueue_title">Kontinuerlig afspilning</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Hovedtelefoner eller bluetooth afbrudt</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Tilslutning af hovedtelefoner igen</string>
@@ -405,15 +408,14 @@
   <string name="pref_episode_cache_title">Mellemlager for udsendelser</string>
   <string name="pref_episode_cache_summary">Total nummer af episoder downloades på din enhed. Stop automatisk download, når dette nummer nåes.</string>
   <string name="pref_episode_cover_title">Brug udsendelsesbillede</string>
-  <string name="pref_episode_cover_summary">Brug det udsendelsesspecifikke billede når muligt. Hvis dette slås fra, vil appen altid bruge podcastens billede.</string>
+  <string name="pref_episode_cover_summary">Brug det udsendelsesspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcast coverbilledet.</string>
+  <string name="pref_show_remain_time_title">Hvis tilbageværende tid</string>
+  <string name="pref_show_remain_time_summary">Vis resterende tid for udsendelser når valgt. Hvis ikke valgt vises den samlede varighed af udsendelser.</string>
   <string name="pref_theme_title_use_system">Brug systemtema</string>
   <string name="pref_theme_title_light">Lys</string>
   <string name="pref_theme_title_dark">Mørk</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED-klar)</string>
   <string name="pref_episode_cache_unlimited">Ubegrænset</string>
-  <string name="pref_update_interval_hours_plural">timer</string>
-  <string name="pref_update_interval_hours_singular">time</string>
-  <string name="pref_update_interval_hours_manual">Manuelt</string>
   <string name="pref_gpodnet_authenticate_title">Log ind</string>
   <string name="pref_gpodnet_authenticate_sum">Log ind på din gpodder.net-konto for at synkronisere dine abonnementer.</string>
   <string name="pref_gpodnet_logout_title">Log ud</string>
@@ -425,10 +427,8 @@
   <string name="pref_gpodnet_full_sync_title">Tving fuld synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser tilstande for alle abonnementer og udsendelser med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget ind som <i>%1$s</i> med enheden <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Synkronisering mislykkedes</string>
-  <string name="pref_gpodnet_notifications_sum">Denne indstilling vedrører ikke godkendelsesfejl.</string>
   <string name="pref_playback_speed_sum">Tilpas de tilgængelige hastigheder for afspilning med variabel hastighed</string>
-  <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes til afsnit i denne podcast</string>
+  <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes for udsendelser i denne podcast</string>
   <string name="pref_feed_skip">Overspring automatisk</string>
   <string name="pref_feed_skip_sum">Overspring introduktioner og slut kreditter.</string>
   <string name="pref_feed_skip_ending">Overspring sidste</string>
@@ -441,8 +441,6 @@
   <string name="pref_fast_forward_sum">Indstil antallet af sekunder, der skal springes fremad, når der trykkes på fremadspolingsknappen</string>
   <string name="pref_rewind">Tidshop for tilbagespoling</string>
   <string name="pref_rewind_sum">Indstil antallet af sekunder, der skal springes tilbage, når der trykkes på tilbagespolingsknappen</string>
-  <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Brug standardvært</string>
   <string name="pref_expandNotify_title">Høj prioritet for notifikation</string>
   <string name="pref_expandNotify_sum">Dette udvider normalt notifikationen til at vise afspilningsknapper.</string>
   <string name="pref_persistNotify_title">Vedholdende afspilningsknapper</string>
@@ -453,11 +451,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Du kan højst vælge %1$d knapper.</string>
   <string name="pref_lockscreen_background_title">Indstil baggrund på låseskærmen</string>
   <string name="pref_lockscreen_background_sum">Sæt baggrunden på låseskærmen til billedet for den aktuelle udsendelse. Som en sidevirkning vil det også vise billedet i tredjepartsapps.</string>
-  <string name="pref_showDownloadReport_title">Overførsel mislykkedes</string>
-  <string name="pref_showDownloadReport_sum">Lav en rapport, som viser detaljer om fejlene, hvis overførsler fejler</string>
-  <string name="pref_showAutoDownloadReport_title">Automatisk overførsel fuldført</string>
-  <string name="pref_showAutoDownloadReport_sum">Vis en notifikation for automatisk overførte udsendelser</string>
-  <string name="pref_expand_notify_unsupport_toast">Android-versioner før 4.1 understøtter ikke udvidede notifikationer.</string>
   <string name="pref_enqueue_location_title">Placering i kø</string>
   <string name="pref_enqueue_location_sum">Føj udsendelser til: %1$s</string>
   <string name="enqueue_location_back">Slutningen</string>
@@ -466,25 +459,26 @@
   <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
   <string name="pref_image_cache_size_title">Størrelse på mellemlager (cache) for billeder</string>
   <string name="pref_image_cache_size_sum">Størrelse på diskmellemlageret (disk cache) for billeder</string>
-  <string name="visit_user_forum">Bruger froum</string>
+  <string name="documentation_support">Dokumentation &amp; Support</string>
+  <string name="visit_user_forum">Brugerforum</string>
   <string name="bug_report_title">Rapportér fejl i appen</string>
   <string name="open_bug_tracker">Åbn programfejlsdatabase</string>
-  <string name="export_logs">Eksportere log</string>
   <string name="copy_to_clipboard">Kopier til udklipsholder</string>
   <string name="copied_to_clipboard">Kopieret til udklipsholder</string>
   <string name="experimental_pref">Eksperimentelt</string>
-  <string name="pref_media_player_message">Vlg hvilken medieafspiller der skal bruges for at afspille filer</string>
+  <string name="pref_media_player_message">Vælg hvilken medieafspiller der skal bruges for at afspille filer</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
-  <string name="pref_faq">Ofte Stillede Spørgsmål</string>
   <string name="pref_no_browser_found">Ingen webbrowser fundet</string>
   <string name="pref_cast_title">Chromecast-understøttelse</string>
   <string name="pref_cast_message_play_flavor">Aktiver understøttelse af fjernafspilning på Cast-enheder (såsom Chromecast, højttalere med indbygget Chromecast, eller Android TV)</string>
-  <string name="pref_cast_message_free_flavor">Chromecast kræver tredjeparts proprietære biblioteker, som er slået fra i denne version af AntennaPod</string>
+  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast kræver tredjeparts proprietære biblioteker, som er slået fra i denne version af AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Sæt overførte udsendelser i kø</string>
   <string name="pref_enqueue_downloaded_summary">Føj downloadede udsendelser til køen</string>
-  <string name="media_player_builtin">Indbygget Android-afspiller</string>
+  <string name="media_player_builtin">Indbygget Android-afspiller (deprekeret)</string>
+  <string name="media_player_sonic">Sonic-medieafspiller (deprekeret)</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (anbefalet)</string>
   <string name="media_player_switch_to_exoplayer">Skift til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Skiftet til ExoPlayer.</string>
   <string name="pref_skip_silence_title">Overspring stilhed i lyd</string>
@@ -504,20 +498,24 @@
   <string name="back_button_go_to_page">Gå til side ...</string>
   <string name="back_button_go_to_page_title">Vælg side</string>
   <string name="pref_delete_removes_from_queue_title">Slet fjernet fra kø</string>
-  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk afsnit fra køen, når den slettes.</string>
+  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk udsendelse fra køen, når den slettes.</string>
   <string name="pref_filter_feed_title">Abonnement filter</string>
   <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
-  <string name="no_filter_label">Ingen</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
+  <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
   <string name="auto_downloaded">Automatisk hentet</string>
   <string name="not_auto_downloaded">Ikke automatisk hentet</string>
   <string name="kept_updated">Holdt opdateret</string>
   <string name="not_kept_updated">Ikke holdt opdateret</string>
+  <string name="new_episode_notification_enabled">Notifikation aktiveret</string>
+  <string name="new_episode_notification_disabled">Notifikation deaktiveret</string>
+  <string name="pref_feed_settings_dialog_msg">Denne indstilling er unik for hver podcast. Du kan ændre den ved at åbne podcast-siden.</string>
+  <string name="pref_contribute">Bidrag</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
-  <string name="antennapod_version">AntennaPod version</string>
-  <string name="contributors">Bidragere</string>
-  <string name="contributors_summary">Alle kan hjælpe med at lave AntennaPod bedre - med kode, oversættelse eller hjælpe brugere i vores forum</string>
+  <string name="antennapod_version">AntennaPod-version</string>
+  <string name="contributors">Bidragydere</string>
+  <string name="contributors_summary">Alle kan hjælpe med at lave AntennaPod bedre - med kode, oversættelse eller ved at hjælpe brugere i vores forum</string>
   <string name="developers">Udviklere</string>
   <string name="translators">Oversættere</string>
   <string name="special_thanks">Særlig tak</string>
@@ -543,34 +541,35 @@
   <string name="html">HTML</string>
   <string name="html_export_summary">Vis abonnementer</string>
   <string name="opml_export_summary">Flyt abonnementer til anden podcast program</string>
-  <string name="opml_import_summary">Importerer abonnementer fra anden podcast program</string>
-  <string name="database_export_summary">Flyt abonnementer, aflyttede afsnit og kø til AntennaPod på en anden enhed</string>
-  <string name="database_import_summary">Importere AntennaPod database fra anden enhed</string>
+  <string name="opml_import_summary">Importér dine abonnementer fra et andet podcast-program</string>
+  <string name="database_export_summary">Flyt abonnementer, aflyttede udsendelser og kø til AntennaPod på en anden enhed</string>
+  <string name="database_import_summary">Importér AntennaPod-database fra en anden enhed</string>
   <string name="opml_import_label">OPML-import</string>
-  <string name="opml_add_podcast_label">Importere podcast liste (OPML)</string>
+  <string name="opml_add_podcast_label">Importér podcastliste (OPML)</string>
   <string name="opml_reader_error">Der opstod en fejl, da OPML-dokumentet blev forsøgt indlæst:</string>
   <string name="opml_import_error_no_file">Ingen fil valgt!</string>
   <string name="select_all_label">Vælg alle</string>
   <string name="deselect_all_label">Fravælg alle</string>
   <string name="opml_export_label">OPML-eksport</string>
   <string name="html_export_label">HTML-eksport</string>
-  <string name="database_export_label">Eksportere database</string>
-  <string name="database_import_label">Importere database</string>
-  <string name="database_import_warning">Importerong af ny database vil overskrive alle dine nuværende abonnenter og lytte historik. Du burde exportere din nuværende database som en backup. Vil du overskrive?</string>
+  <string name="database_export_label">Eksport af database</string>
+  <string name="database_import_label">Importér database</string>
+  <string name="database_import_warning">Import af database vil overskrive alle dine nuværende abonnementer og din afspilningshistorik. Du bør eksportere din nuværende database som en sikkerhedskopi først. Vil du overskrive?</string>
   <string name="please_wait">Vent...</string>
   <string name="export_error_label">Eksportfejl</string>
   <string name="export_success_title">Eksport lykkedes</string>
   <string name="export_success_sum">Den eksporterede fil blev skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
-  <string name="import_select_file">Vælg fil til import</string>
+  <string name="import_select_file">Vælg fil der skal importeres</string>
   <string name="successful_import_label">Importeret</string>
   <string name="import_ok">Tryk venligst OK for at genstarte AntennaPod</string>
-  <string name="import_no_downgrade">Databasen var exporteret af en nyere version af AntennaPod. Din nuværende installation ved ikke endnu hvordan den skal håndtere denne fil.</string>
-  <string name="favorites_export_label">Foretrukne eksport</string>
-  <string name="favorites_export_summary">Eksportere gemte foretrukne til fil</string>
+  <string name="import_no_downgrade">Databasen blev eksporteret fra en nyere version af AntennaPod. Din nuværende installation ved endnu ikke hvordan den skal håndtere denne fil.</string>
+  <string name="favorites_export_label">Eksport af foretrukne</string>
+  <string name="favorites_export_summary">Eksportér gemte foretrukne til fil</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
   <string name="disable_sleeptimer_label">Slå søvntimer fra</string>
+  <string name="extend_sleep_timer_label">+%d minutter</string>
   <string name="sleep_timer_label">Søvntimer</string>
   <string name="time_dialog_invalid_input">Ugyldig indtastning: tid skal være et heltal</string>
   <string name="shake_to_reset_label">Ryst for at nulstille</string>
@@ -597,51 +596,31 @@
   <string name="gpodnet_toplist_header">TOP-PODCASTS</string>
   <string name="gpodnet_suggestions_header">FORSLAG</string>
   <string name="gpodnet_search_hint">Søg på gpodder.net</string>
-  <string name="gpodnetauth_login_title">Log ind</string>
-  <string name="gpodnetauth_login_descr">Velkommen til gpodder.nets loginproces. Skriv først dine loginoplysninger:</string>
   <string name="gpodnetauth_login_butLabel">Log ind</string>
-  <string name="gpodnetauth_login_register">Hvis du ikke har en konto endnu, kan du oprette en her:\nhttps://gpodder.net/register/</string>
+  <string name="gpodnetauth_encryption_warning">Adgangskode og date er ikke krypteret!</string>
+  <string name="create_account">Opret konto</string>
   <string name="username_label">Brugernavn</string>
   <string name="password_label">Adgangskode</string>
-  <string name="gpodnetauth_device_title">Valg af enhed</string>
-  <string name="gpodnetauth_device_descr">Opret en ny enhed til at bruge med din gpodder.net-konto eller vælg en eksisterende:</string>
-  <string name="gpodnetauth_device_deviceID">Enheds-id:\u0020</string>
-  <string name="gpodnetauth_device_caption">Enhedsnavn</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Opret ny enhed</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Vælg en eksisterende enhed:</string>
-  <string name="gpodnetauth_device_errorEmpty">Enheds-id må ikke være tomt</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">Enheds-id er allerede i brug</string>
-  <string name="gpodnetauth_device_caption_errorEmpty">Enhedsnavn må ikke være tomt</string>
-  <string name="gpodnetauth_device_butChoose">Vælg</string>
-  <string name="gpodnetauth_finish_title">Login lykkedes!</string>
+  <string name="gpodnet_description">Gpodder.net er en open-source podcast-synkroniseringstjeneste, som er uafhængig af AntennaPod-projektet.</string>
+  <string name="gpodnetauth_server_official">Officiel gpodder.net server</string>
+  <string name="gpodnetauth_server_custom">Brugerdefineret server</string>
+  <string name="gpodnetauth_host">Værtsnavn</string>
+  <string name="gpodnetauth_select_server">Vælg server</string>
+  <string name="gpodnetauth_device_name">Enhedsnavn</string>
+  <string name="gpodnetauth_device_name_default">AntennaPod på %1$s</string>
+  <string name="gpodnetauth_existing_devices">Eksisterende enheder</string>
+  <string name="gpodnetauth_create_device">Opret ny enhed</string>
   <string name="gpodnetauth_finish_descr">Tillykke! Din gpodder.net-konto er nu forbundet med din enhed. AntennaPod vil fra nu af automatisk synkronisere dine abonnementer på din enhed med din gpodder.net-konto.</string>
   <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nu</string>
-  <string name="gpodnetauth_finish_butgomainscreen">Gå til hovedskærmen</string>
-  <string name="gpodnetsync_auth_error_title">gpodder.net-autentificeringfejl</string>
-  <string name="gpodnetsync_auth_error_descr">Forkert brugernavn eller adgangskode</string>
   <string name="gpodnetsync_error_title">gpodder.net-synkroniseringsfejl</string>
   <string name="gpodnetsync_error_descr">En fejl opstod under synkronisering:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Lykkedes</string>
   <string name="gpodnetsync_pref_report_failed">Fejlede</string>
   <string name="gpodnetsync_username_characters_error">Brugernavne kan kun indeholde bogstaver, tal, bindestreger og understreger.</string>
   <!--Directory chooser-->
-  <string name="selected_folder_label">Valgt mappe:</string>
-  <string name="create_folder_label">Opret mappe</string>
   <string name="choose_data_directory">Vælg datamappe</string>
   <string name="choose_data_directory_message">Vælg venligst roden af din datamappe. AntennaPod vil oprette passende undermapper.</string>
-  <string name="choose_data_directory_permission_rationale">Adgang til eksternt lager er kræver for at ændre datamappen</string>
   <string name="choose_data_directory_available_space">%1$s af %2$s ledig</string>
-  <string name="create_folder_msg">Opret en ny mappe med navnet \"%1$s\"?</string>
-  <string name="create_folder_success">Oprettede ny mappe</string>
-  <string name="create_folder_error_no_write_access">Kan ikke skrive til denne mappe</string>
-  <string name="create_folder_error_already_exists">Mappen eksisterer allerede</string>
-  <string name="create_folder_error">Kunne ikke oprette mappe</string>
-  <string name="folder_does_not_exist_error">\"%1$s\" findes ikke</string>
-  <string name="folder_not_readable_error">\"%1$s\" er ikke læsbar</string>
-  <string name="folder_not_writable_error">\"%1$s\" er ikke skrivbar</string>
-  <string name="folder_not_empty_dialog_title">Mappen er ikke tom</string>
-  <string name="folder_not_empty_dialog_msg">Mappen du har valgt er ikke tom. Overførte medier og andre filer vil blive placeret direkte i denne mappe. Fortsæt alligevel?</string>
-  <string name="set_to_default_folder">Vælg standardmappe</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet, når en anden app vil afspille lyde</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Sæt på pause ved afbrydelser</string>
   <string name="pref_resumeAfterCall_sum">Genoptag afspilning når et telefonkald afsluttes</string>
@@ -657,19 +636,22 @@
   <string name="fast_forward_label">Spol frem</string>
   <string name="increase_speed">Øg hastighed</string>
   <string name="decrease_speed">Mindsk hastighed</string>
-  <string name="media_type_audio_label">Lyd</string>
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Udsendelse overføres</string>
   <string name="in_queue_label">Udsendelse er i køen</string>
-  <string name="is_favorite_label">Afsnit er markeret som favorit</string>
-  <string name="drag_handle_content_description">Træk for at ændre dette elements placering</string>
+  <string name="is_favorite_label">Udsendelse er markeret som foretrukken</string>
   <string name="load_next_page_label">Indlæs næste side</string>
-  <string name="switch_pages">Skift sider</string>
   <string name="position">Position: %1$s</string>
   <string name="apply_action">Anvend handling</string>
-  <!--Feed information screen-->
+  <string name="play_chapter">Afspil kapitel</string>
+  <string name="prev_chapter">Forrige kapitel</string>
+  <string name="next_chapter">Næste kapitel</string>
+  <!--Feed settings/information screen-->
   <string name="authentication_label">Godkendelse</string>
   <string name="authentication_descr">Ændr dit brugernavn og adgangskode for denne podcast og dens udsendelser.</string>
+  <string name="feed_folders_label">Mapper</string>
+  <string name="feed_folders_summary">Ændr hvilke foldere denne podcast vises i.</string>
+  <string name="feed_folders_include_root">Vis i hovedlisten</string>
   <string name="auto_download_settings_label">Indstillinger for Automatisk overførsel</string>
   <string name="episode_filters_label">Udsendelsesfilter</string>
   <string name="episode_filters_description">Liste af ord, der bliver brugt til at beslutte, om en udsendelse skal medtages eller udelades ved automatisk overførsel</string>
@@ -679,12 +661,10 @@
   <string name="keep_updated">Hold opdateret</string>
   <string name="keep_updated_summary">Inkludere denne podcast når alle podcast genindlæses</string>
   <string name="auto_download_disabled_globally">Automatisk download slået fra i de generelle AntennaPod indstilinger</string>
-  <string name="statistics_listened_for">Lytter efter:</string>
-  <string name="statistics_episodes_on_device">Afsnit på enhed:</string>
+  <string name="statistics_listened_for">Lyttet i:</string>
+  <string name="statistics_episodes_on_device">Udsendelser på enheden:</string>
   <string name="statistics_space_used">Plads brugt:</string>
   <string name="statistics_view_all">Vis for alle podcasts »</string>
-  <!--Progress information-->
-  <string name="progress_upgrading_database">Opgraderer databasen</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
   <!--Add podcast fragment-->
@@ -693,7 +673,7 @@
   <string name="search_podcastindex_label">Søg på Podcastindex.org</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
   <string name="advanced">Avanceret</string>
-  <string name="add_podcast_by_url">Tilføj podcast via RSS adresse</string>
+  <string name="add_podcast_by_url">Tilføj podcast via RSS-adresse</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <string name="discover">Opdag</string>
   <string name="discover_hide">Gem</string>
@@ -703,9 +683,11 @@
   <string name="search_powered_by">Resultater fra %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Tilføj lokal mappe</string>
+  <string name="local_folder">Lokal mappe</string>
   <string name="reconnect_local_folder">Genforbind lokal mappe</string>
   <string name="reconnect_local_folder_warning">I tilfælde af nægtelse af tilladelse kan du bruge denne til at forbinde til præcis den samme mappe. Vælg ikke en anden mappe.</string>
   <string name="local_feed_description">Denne virtuelle podcast blev oprettet ved at en mappe blev føjet til AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Kunne ikke starte system filhåndtering</string>
   <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
@@ -749,16 +731,16 @@
   <string name="sort_short_long">Kort \u2192 Lang</string>
   <string name="sort_long_short">Lang \u2192 Kort</string>
   <!--Rating dialog-->
-  <string name="rating_title">Kan du lide AntennaPod?</string>
-  <string name="rating_message">Vi vil sætte pris på, hvis du vil bedømme AntennaPod.</string>
-  <string name="rating_never_label">Lad mig være</string>
-  <string name="rating_later_label">Påmind mig senere</string>
-  <string name="rating_now_label">Klart, lad os gøre det!</string>
+  <string name="rating_title" tools:ignore="UnusedResources">Kan du lide AntennaPod?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Vi vil sætte pris på, hvis du vil bedømme AntennaPod.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">Lad mig være</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">Påmind mig senere</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">Klart, lad os gøre det!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Medtag:</string>
   <string name="share_playback_position_dialog_label">Afspilningsposition</string>
   <string name="share_dialog_media_file_url_label">Adresse på mediefil</string>
-  <string name="share_dialog_episode_website_label">Afsnit netsted</string>
+  <string name="share_dialog_episode_website_label">Adresse på udsendelse</string>
   <string name="share_dialog_media_file_label">Mediefil</string>
   <!--Audio controls-->
   <string name="audio_controls">Lydknapper</string>
@@ -799,18 +781,22 @@
   <string name="cast_failed_receiver_player_error">Modtagerafspilleren er stødt på en alvorlig fejl</string>
   <string name="cast_failed_media_error_skipping">Fejl ved afspilning af medie. Springer over…</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">Fejl</string>
+  <string name="notification_group_news">Nyheder</string>
   <string name="notification_channel_user_action">Handling påkrævet</string>
   <string name="notification_channel_user_action_description">Vist hvis din handling er nødvendig, for eksempel hvis du skal skrive et kodeord.</string>
   <string name="notification_channel_downloading">Henter</string>
   <string name="notification_channel_downloading_description">Vises samtidig med den hentes.</string>
   <string name="notification_channel_playing">Spiller nu</string>
   <string name="notification_channel_playing_description">Giver adgang til at kontrollere afspilning. Dette er den mest normale notifikation du vil se, mens du afspiller en podcast.</string>
-  <string name="notification_channel_error">Fejl</string>
-  <string name="notification_channel_error_description">Vises hvis noget gik galt, for eksempel hvis en overførsel eller feed-opdatering fejlede.</string>
-  <string name="notification_channel_sync_error">Synkroniseringsfejl</string>
+  <string name="notification_channel_download_error">Overførsel mislykkedes</string>
+  <string name="notification_channel_download_error_description">Vis når overførsel eller opdatering af feed mislykkes.</string>
+  <string name="notification_channel_sync_error">Synkronisering mislykkedes</string>
   <string name="notification_channel_sync_error_description">Vises når gpodder-synkronisering fejler.</string>
-  <string name="notification_channel_auto_download">Automatisk hentninger</string>
+  <string name="notification_channel_auto_download">Automatisk overførsel fuldført</string>
   <string name="notification_channel_episode_auto_download">Vist når episoder automatisk var blevet downloaded.</string>
+  <string name="notification_channel_new_episode">Ny episode</string>
+  <string name="notification_channel_new_episode_description">Vis når en ny udsendelse af en podcast blev fundet, hvor notifikationer er aktiveret.</string>
   <!--Widget settings-->
   <string name="widget_settings">Kontrol opsætning</string>
   <string name="widget_create_button">Opret kontrol</string>

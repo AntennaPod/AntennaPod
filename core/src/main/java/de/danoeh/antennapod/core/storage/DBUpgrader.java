@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 class DBUpgrader {
     /**
@@ -305,10 +305,22 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT DEFAULT NULL");
         }
         if (oldVersion < 1090001) {
-            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS +
-                    " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0;");
-            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS +
-                    " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0;");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0;");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0;");
+        }
+        if (oldVersion < 2020000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0;");
+        }
+        if (oldVersion < 2030000) {
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " SET " + PodDBAdapter.KEY_DESCRIPTION + " = content_encoded, content_encoded = NULL "
+                    + "WHERE length(" + PodDBAdapter.KEY_DESCRIPTION + ") < length(content_encoded)");
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + " SET content_encoded = NULL");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_TAGS + " TEXT;");
         }
     }
 

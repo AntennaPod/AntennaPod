@@ -45,16 +45,6 @@
         <item>60</item>
     </integer-array>
 
-    <string-array name="update_intervall_values">
-        <item>1</item>
-        <item>2</item>
-        <item>4</item>
-        <item>8</item>
-        <item>12</item>
-        <item>24</item>
-        <item>72</item>
-    </string-array>
-
     <string-array name="episode_cache_size_entries">
         <item>5</item>
         <item>10</item>
@@ -96,6 +86,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_entries">
+        <item>@string/episode_cleanup_except_favorite_removal</item>
         <item>@string/episode_cleanup_queue_removal</item>
         <item>0</item>
         <item>1</item>
@@ -103,6 +94,20 @@
         <item>5</item>
         <item>7</item>
         <item>@string/episode_cleanup_never</item>
+    </string-array>
+
+    <string-array name="button_action_options">
+        <item>@string/button_action_fast_forward</item>
+        <item>@string/button_action_rewind</item>
+        <item>@string/button_action_skip_episode</item>
+        <item>@string/button_action_restart_episode</item>
+    </string-array>
+
+    <string-array name="button_action_values">
+        <item>@string/keycode_media_fast_forward</item>
+        <item>@string/keycode_media_rewind</item>
+        <item>@string/keycode_media_next</item>
+        <item>@string/keycode_media_previous</item>
     </string-array>
 
     <string-array name="enqueue_location_options">
@@ -119,6 +124,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_values">
+        <item>-3</item>
         <item>-1</item>
         <item>0</item>
         <item>12</item>
@@ -234,15 +240,15 @@
     </string-array>
 
     <string-array name="media_player_options">
+        <item>@string/media_player_exoplayer_recommended</item>
         <item>@string/media_player_builtin</item>
         <item>@string/media_player_sonic</item>
-        <item>@string/media_player_exoplayer_recommended</item>
     </string-array>
 
     <string-array name="media_player_values">
+        <item>exoplayer</item>
         <item>builtin</item>
         <item>sonic</item>
-        <item>exoplayer</item>
     </string-array>
 
     <!-- sort for podcast screen, not for queue -->
@@ -306,11 +312,6 @@
     <string-array name="video_background_behavior_values_without_pip">
         <item>stop</item>
         <item>continue</item>
-    </string-array>
-
-    <string-array name="batch_long_press_options">
-        <item>@string/select_all_above</item>
-        <item>@string/select_all_below</item>
     </string-array>
 
     <string-array name="back_button_behavior_options">

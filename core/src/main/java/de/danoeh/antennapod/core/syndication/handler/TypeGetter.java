@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 /** Gets the type of a specific feed by reading the root element. */
 public class TypeGetter {

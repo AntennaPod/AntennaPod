@@ -18,6 +18,7 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_DOWNLOAD_ERROR = "error";
     public static final String CHANNEL_ID_SYNC_ERROR = "sync_error";
     public static final String CHANNEL_ID_AUTO_DOWNLOAD = "auto_download";
+    public static final String CHANNEL_ID_EPISODE_NOTIFICATIONS = "episode_notifications";
 
     public static final String GROUP_ID_ERRORS = "group_errors";
     public static final String GROUP_ID_NEWS = "group_news";
@@ -38,6 +39,7 @@ public class NotificationUtils {
             mNotificationManager.createNotificationChannel(createChannelError(context));
             mNotificationManager.createNotificationChannel(createChannelSyncError(context));
             mNotificationManager.createNotificationChannel(createChannelAutoDownload(context));
+            mNotificationManager.createNotificationChannel(createChannelEpisodeNotification(context));
         }
     }
 
@@ -108,6 +110,15 @@ public class NotificationUtils {
             notificationChannel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
         }
         return notificationChannel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static NotificationChannel createChannelEpisodeNotification(Context c) {
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID_EPISODE_NOTIFICATIONS,
+                c.getString(R.string.notification_channel_new_episode), NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription(c.getString(R.string.notification_channel_new_episode_description));
+        channel.setGroup(GROUP_ID_NEWS);
+        return channel;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,27 +40,17 @@ public class VariableSpeedDialog extends DialogFragment {
         selectedSpeeds = new ArrayList<>(UserPreferences.getPlaybackSpeedArray());
     }
 
-    public static void showGetPluginDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.no_playback_plugin_title);
-        builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
-        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) ->
-                UserPreferences.enableSonic());
-        builder.setNeutralButton(R.string.close_label, null);
-        builder.show();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void setupGUI() {
+            public void onPlaybackSpeedChange() {
                 updateSpeed();
             }
 
             @Override
-            public void onPlaybackSpeedChange() {
+            public void loadMediaInfo() {
                 updateSpeed();
             }
         };
@@ -98,7 +87,7 @@ public class VariableSpeedDialog extends DialogFragment {
 
         addCurrentSpeedChip = root.findViewById(R.id.add_current_speed_chip);
         addCurrentSpeedChip.setCloseIconVisible(true);
-        addCurrentSpeedChip.setCloseIconResource(R.drawable.ic_add_black);
+        addCurrentSpeedChip.setCloseIconResource(R.drawable.ic_add);
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
 
@@ -126,7 +115,7 @@ public class VariableSpeedDialog extends DialogFragment {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
             chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_delete_black);
+            chip.setCloseIconResource(R.drawable.ic_delete);
             return new ViewHolder(chip);
         }
 

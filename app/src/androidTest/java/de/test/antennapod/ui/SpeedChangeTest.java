@@ -8,14 +8,14 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
 import org.awaitility.Awaitility;
@@ -37,8 +37,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
-import static de.test.antennapod.NthMatcher.first;
-import static org.hamcrest.Matchers.allOf;
 
 /**
  * User interface tests for changing the playback speed.
@@ -74,8 +72,13 @@ public class SpeedChangeTest {
         UserPreferences.setPlaybackSpeedArray(Arrays.asList(1.0f, 2.0f, 3.0f));
 
         EspressoTestUtils.tryKillPlaybackService();
-        activityRule.launchActivity(new Intent().putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
-        controller = new PlaybackController(activityRule.getActivity());
+        activityRule.launchActivity(new Intent().putExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, true));
+        controller = new PlaybackController(activityRule.getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
         controller.getMedia(); // To load media
     }

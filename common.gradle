@@ -1,0 +1,105 @@
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+
+        multiDexEnabled false
+        vectorDrawables.useSupportLibrary true
+        vectorDrawables.generatedDensities = []
+
+        testApplicationId "de.danoeh.antennapod.core.tests"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
+        }
+        debug {
+            // debug build has method count over 64k single-dex threshold.
+            // For building debug build to use on Android < 21 (pre-Android 5) devices,
+            // you need to manually change class
+            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication .
+            // See Issue #2813
+            multiDexEnabled true
+        }
+    }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/NOTICE.txt"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        animationsDisabled = true
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    lintOptions {
+        disable "GradleDependency"
+        checkDependencies true
+        warningsAsErrors true
+        abortOnError true
+        checkGeneratedSources = true
+    }
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+        displayGranularity 2
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint"
+    }
+}
+
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    effort = 'max'
+    reportLevel = 'medium'
+    excludeFilter = rootProject.file('config/spotbugs/exclude.xml')
+    ignoreFailures = true // Handled by printing task
+}
+
+gradle.taskGraph.beforeTask { task ->
+    if (task.name.toLowerCase().contains('spotbugs')) {
+        task.doLast {
+            def reportFile = task.project.file("build/reports/spotbugs/playDebug.xml")
+            if (!reportFile.exists()) return
+            def slurped = new XmlSlurper().parse(reportFile)
+
+            def foundErrors = false
+            slurped['BugInstance'].each { bug ->
+                logger.error "[SpotBugs] ${bug['LongMessage']} [${bug.@'type'}]"
+                bug['SourceLine'].each { line ->
+                    logger.error "[SpotBugs]     ${line['Message']}"
+                    foundErrors = true
+                }
+            }
+            if (foundErrors) {
+                throw new TaskExecutionException(task,
+                        new Exception("SpotBugs violations were found. See output above for details."))
+            }
+        }
+    }
+}

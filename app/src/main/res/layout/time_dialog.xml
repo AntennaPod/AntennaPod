@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:gravity="center"
               android:padding="16dp">
@@ -52,10 +53,11 @@
         <TextView
                 android:text="00:00:00"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textSize="32sp"
                 android:textColor="?android:attr/textColorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/time"/>
 
         <Button
@@ -63,6 +65,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/disableSleeptimerButton"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/extendSleepFiveMinutesButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    tools:text="+5 min" />
+
+            <Button
+                    android:id="@+id/extendSleepTenMinutesButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    tools:text="+10 min" />
+
+            <Button
+                    android:id="@+id/extendSleepTwentyMinutesButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
+                    tools:text="+20 min" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

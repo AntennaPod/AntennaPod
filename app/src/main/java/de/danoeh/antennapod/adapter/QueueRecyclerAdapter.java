@@ -6,7 +6,6 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -45,7 +44,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             return false;
         };
 
-        if (!dragDropEnabled) {
+        if (!dragDropEnabled || inActionMode()) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);
@@ -64,11 +63,17 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         inflater.inflate(R.menu.queue_context, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        final boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        if (getItem(0).getId() == getSelectedItem().getId() || keepSorted) {
+        if (!inActionMode()) {
+            menu.findItem(R.id.multi_select).setVisible(true);
+            final boolean keepSorted = UserPreferences.isQueueKeepSorted();
+            if (getItem(0).getId() == getLongPressedItem().getId() || keepSorted) {
+                menu.findItem(R.id.move_to_top_item).setVisible(false);
+            }
+            if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
+                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+            }
+        } else {
             menu.findItem(R.id.move_to_top_item).setVisible(false);
-        }
-        if (getItem(getItemCount() - 1).getId() == getSelectedItem().getId() || keepSorted) {
             menu.findItem(R.id.move_to_bottom_item).setVisible(false);
         }
     }

@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,42 +11,20 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.CastEnabledActivity;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.TimeSpeedConverter;
-import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
-import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
-import de.danoeh.antennapod.dialog.SleepTimerDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.PagerIndicatorView;
-import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
-import io.reactivex.Maybe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -57,39 +33,73 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.CastEnabledActivity;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
+import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
+import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
+import de.danoeh.antennapod.dialog.SleepTimerDialog;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
+import de.danoeh.antennapod.view.ChapterSeekBar;
+import de.danoeh.antennapod.view.PlayButton;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
+        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
-    private static final int POS_COVER = 0;
-    private static final int POS_DESCR = 1;
-    private static final int POS_CHAPTERS = 2;
-    private static final int NUM_CONTENT_FRAGMENTS = 3;
-    private static final String PREFS = "AudioPlayerFragmentPreferences";
-    private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
+    public static final int POS_COVER = 0;
+    public static final int POS_DESCRIPTION = 1;
+    private static final int NUM_CONTENT_FRAGMENTS = 2;
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
     private ViewPager2 pager;
-    private PagerIndicatorView pageIndicator;
     private TextView txtvPosition;
     private TextView txtvLength;
-    private SeekBar sbPosition;
+    private ChapterSeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
     private Toolbar toolbar;
     private ProgressBar progressIndicator;
+    private CardView cardViewSeek;
+    private TextView txtvSeek;
 
     private PlaybackController controller;
     private Disposable disposable;
     private boolean showTimeLeft;
+    private boolean seekedToChapterStart = false;
+    private int currentChapterIndex = -1;
+    private int duration;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -97,6 +107,7 @@ public class AudioPlayerFragment extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.audioplayer_fragment, container, false);
+        root.setOnTouchListener((v, event) -> true); // Avoid clicks going through player to fragments below
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v ->
@@ -120,6 +131,8 @@ public class AudioPlayerFragment extends Fragment implements
         txtvFF = root.findViewById(R.id.txtvFF);
         butSkip = root.findViewById(R.id.butSkip);
         progressIndicator = root.findViewById(R.id.progLoading);
+        cardViewSeek = root.findViewById(R.id.cardViewSeek);
+        txtvSeek = root.findViewById(R.id.txtvSeek);
 
         setupLengthTextView();
         setupControlButtons();
@@ -141,11 +154,28 @@ public class AudioPlayerFragment extends Fragment implements
                 });
             }
         });
-        pageIndicator = root.findViewById(R.id.page_indicator);
-        pageIndicator.setViewPager(pager);
-        pageIndicator.setOnClickListener(v ->
-                pager.setCurrentItem((pager.getCurrentItem() + 1) % NUM_CONTENT_FRAGMENTS));
+
         return root;
+    }
+
+    private void setChapterDividers(Playable media) {
+
+        if (media == null) {
+            return;
+        }
+
+        float[] dividerPos = null;
+
+        if (media.getChapters() != null && !media.getChapters().isEmpty()) {
+            List<Chapter> chapters = media.getChapters();
+            dividerPos = new float[chapters.size()];
+
+            for (int i = 0; i < chapters.size(); i++) {
+                dividerPos[i] = chapters.get(i).getStart() / (float) duration;
+            }
+        }
+
+        sbPosition.setDividerPos(dividerPos);
     }
 
     public View getExternalPlayerHolder() {
@@ -185,26 +215,38 @@ public class AudioPlayerFragment extends Fragment implements
                 IntentUtils.sendLocalBroadcast(getActivity(), PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsUpdate(UnreadItemsUpdateEvent event) {
+        if (controller == null) {
+            return;
+        }
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                controller.getDuration()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
     private void setupLengthTextView() {
-        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {
                 return;
             }
             showTimeLeft = !showTimeLeft;
-            prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft).apply();
-            updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+            UserPreferences.setShowRemainTimeSetting(showTimeLeft);
+            updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                    controller.getDuration()));
         });
     }
 
     private void setupPlaybackSpeedButton() {
         butPlaybackSpeed.setOnClickListener(v -> {
             if (controller == null) {
-                return;
-            }
-            if (!controller.canSetPlaybackSpeed()) {
-                VariableSpeedDialog.showGetPluginDialog(getContext());
                 return;
             }
             List<Float> availableSpeeds = UserPreferences.getPlaybackSpeedArray();
@@ -240,14 +282,10 @@ public class AudioPlayerFragment extends Fragment implements
         if (butPlaybackSpeed == null || controller == null) {
             return;
         }
-        float speed = 1.0f;
-        if (controller.canSetPlaybackSpeed()) {
-            speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
-        }
+        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
         butPlaybackSpeed.setSpeed(speed);
-        butPlaybackSpeed.setAlpha(controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
@@ -259,26 +297,21 @@ public class AudioPlayerFragment extends Fragment implements
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)),
-                        () -> updateUi(null));
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> updateUi((Playable) media),
+                error -> Log.e(TAG, Log.getStackTraceString(error)),
+                () -> updateUi(null));
     }
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
-
-            @Override
-            public void setupGUI() {
-                AudioPlayerFragment.this.loadMediaInfo();
-            }
-
             @Override
             public void onBufferStart() {
                 progressIndicator.setVisibility(View.VISIBLE);
@@ -321,19 +354,13 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
-            public boolean loadMediaInfo() {
+            public void loadMediaInfo() {
                 AudioPlayerFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
 
             @Override
@@ -345,11 +372,6 @@ public class AudioPlayerFragment extends Fragment implements
             public void onPlaybackSpeedChange() {
                 updatePlaybackSpeedButton(getMedia());
             }
-
-            @Override
-            public void onSetSpeedAbilityChanged() {
-                updatePlaybackSpeedButton(getMedia());
-            }
         };
     }
 
@@ -357,13 +379,11 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null) {
             return;
         }
-        updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+        duration = controller.getDuration();
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
         updatePlaybackSpeedButton(media);
+        setChapterDividers(media);
         setupOptionsMenu(media);
-    }
-
-    public void setHasChapters(boolean hasChapters) {
-        pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
     }
 
     @Override
@@ -404,20 +424,25 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(event.getDuration() - event.getPosition());
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
+        currentChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), currentPosition);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
-        float progress = ((float) event.getPosition()) / event.getDuration();
-        sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+
+        if (!sbPosition.isPressed()) {
+            float progress = ((float) event.getPosition()) / event.getDuration();
+            sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -430,32 +455,60 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null || txtvLength == null) {
             return;
         }
+
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-            int position = converter.convert((int) (prog * duration));
-            txtvPosition.setText(Converter.getDurationStringLong(position));
-
-            if (showTimeLeft && prog != 0) {
-                int timeLeft = converter.convert(duration - (int) (prog * duration));
-                String length = "-" + Converter.getDurationStringLong(timeLeft);
-                txtvLength.setText(length);
+            int position = converter.convert((int) (prog * controller.getDuration()));
+            int newChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), position);
+            if (newChapterIndex > -1) {
+                if (!sbPosition.isPressed() && currentChapterIndex != newChapterIndex) {
+                    currentChapterIndex = newChapterIndex;
+                    position = (int) controller.getMedia().getChapters().get(currentChapterIndex).getStart();
+                    seekedToChapterStart = true;
+                    controller.seekTo(position);
+                    updateUi(controller.getMedia());
+                    sbPosition.highlightCurrentChapter();
+                }
+                txtvSeek.setText(controller.getMedia().getChapters().get(newChapterIndex).getTitle()
+                                + "\n" + Converter.getDurationStringLong(position));
+            } else {
+                txtvSeek.setText(Converter.getDurationStringLong(position));
             }
+        } else if (duration != controller.getDuration()) {
+            updateUi(controller.getMedia());
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // interrupt position Observer, restart later
+        cardViewSeek.setScaleX(.8f);
+        cardViewSeek.setScaleY(.8f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(200)
+                .start();
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
-            float prog = seekBar.getProgress() / ((float) seekBar.getMax());
-            controller.seekTo((int) (prog * controller.getDuration()));
+            if (seekedToChapterStart) {
+                seekedToChapterStart = false;
+            } else {
+                float prog = seekBar.getProgress() / ((float) seekBar.getMax());
+                controller.seekTo((int) (prog * controller.getDuration()));
+            }
         }
+        cardViewSeek.setScaleX(1f);
+        cardViewSeek.setScaleY(1f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
     }
 
     public void setupOptionsMenu(Playable media) {
@@ -521,14 +574,13 @@ public class AudioPlayerFragment extends Fragment implements
         @Override
         public Fragment createFragment(int position) {
             Log.d(TAG, "getItem(" + position + ")");
+
             switch (position) {
                 case POS_COVER:
                     return new CoverFragment();
-                case POS_DESCR:
-                    return new ItemDescriptionFragment();
                 default:
-                case POS_CHAPTERS:
-                    return new ChaptersFragment();
+                case POS_DESCRIPTION:
+                    return new ItemDescriptionFragment();
             }
         }
 
@@ -536,5 +588,22 @@ public class AudioPlayerFragment extends Fragment implements
         public int getItemCount() {
             return NUM_CONTENT_FRAGMENTS;
         }
+    }
+
+    public void scrollToPage(int page, boolean smoothScroll) {
+        if (pager == null) {
+            return;
+        }
+
+        pager.setCurrentItem(page, smoothScroll);
+
+        Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + POS_DESCRIPTION);
+        if (visibleChild instanceof ItemDescriptionFragment) {
+            ((ItemDescriptionFragment) visibleChild).scrollToTop();
+        }
+    }
+
+    public void scrollToPage(int page) {
+        scrollToPage(page, false);
     }
 }

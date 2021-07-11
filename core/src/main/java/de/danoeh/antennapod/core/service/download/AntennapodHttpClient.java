@@ -1,19 +1,14 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
-import de.danoeh.antennapod.core.ssl.BackportTrustManager;
-import de.danoeh.antennapod.core.ssl.NoV1SslSocketFactory;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.Flavors;
+import de.danoeh.antennapod.net.ssl.SslClientSetup;
 import okhttp3.Cache;
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
 import okhttp3.Credentials;
 import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
@@ -21,8 +16,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.internal.http.StatusLine;
-
-import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -30,9 +23,6 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -128,40 +118,18 @@ public class AntennapodHttpClient {
         if (config.type != Proxy.Type.DIRECT) {
             int port = config.port > 0 ? config.port : ProxyConfig.DEFAULT_PORT;
             SocketAddress address = InetSocketAddress.createUnresolved(config.host, port);
-            Proxy proxy = new Proxy(config.type, address);
-            builder.proxy(proxy);
-            if (!TextUtils.isEmpty(config.username)) {
-                String credentials = Credentials.basic(config.username, config.password);
-                builder.interceptors().add(chain -> {
-                    Request request = chain.request().newBuilder()
-                            .header("Proxy-Authorization", credentials).build();
-                    return chain.proceed(request);
+            builder.proxy(new Proxy(config.type, address));
+            if (!TextUtils.isEmpty(config.username) && config.password != null) {
+                builder.proxyAuthenticator((route, response) -> {
+                    String credentials = Credentials.basic(config.username, config.password);
+                    return response.request().newBuilder()
+                            .header("Proxy-Authorization", credentials)
+                            .build();
                 });
             }
         }
 
-        if (Flavors.FLAVOR == Flavors.FREE) {
-            // The Free flavor bundles a modern conscrypt (security provider), so CustomSslSocketFactory
-            // is only used to make sure that modern protocols (TLSv1.3 and TLSv1.2) are enabled and
-            // that old, deprecated, protocols (like SSLv3, TLSv1.0 and TLSv1.1) are disabled.
-            X509TrustManager trustManager = BackportTrustManager.create();
-            builder.sslSocketFactory(new NoV1SslSocketFactory(trustManager), trustManager);
-        } else if (Build.VERSION.SDK_INT < 21) {
-            X509TrustManager trustManager = BackportTrustManager.create();
-            builder.sslSocketFactory(new NoV1SslSocketFactory(trustManager), trustManager);
-
-            // workaround for Android 4.x for certain web sites.
-            // see: https://github.com/square/okhttp/issues/4053#issuecomment-402579554
-            List<CipherSuite> cipherSuites = new ArrayList<>(ConnectionSpec.MODERN_TLS.cipherSuites());
-            cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA);
-            cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA);
-
-            ConnectionSpec legacyTls = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                    .cipherSuites(cipherSuites.toArray(new CipherSuite[0]))
-                    .build();
-            builder.connectionSpecs(Arrays.asList(legacyTls, ConnectionSpec.CLEARTEXT));
-        }
-
+        SslClientSetup.installCertificates(builder);
         return builder;
     }
 

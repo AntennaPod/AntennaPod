@@ -12,8 +12,8 @@ import android.view.SurfaceHolder;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
 
 
 /*
@@ -145,11 +145,6 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract void setStartWhenPrepared(boolean startWhenPrepared);
 
     /**
-     * Returns true if the playback speed can be adjusted.
-     */
-    public abstract boolean canSetSpeed();
-
-    /**
      * Sets the playback parameters.
      * - Speed
      * - SkipSilence (ExoPlayer only)
@@ -218,7 +213,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
      * @return the current player status
      */
-    public PlayerStatus getPlayerStatus() {
+    public synchronized PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
 
@@ -354,8 +349,6 @@ public abstract class PlaybackServiceMediaPlayer {
         void shouldStop();
 
         void playbackSpeedChanged(float s);
-
-        void setSpeedAbilityChanged();
 
         void onBufferingUpdate(int percent);
 

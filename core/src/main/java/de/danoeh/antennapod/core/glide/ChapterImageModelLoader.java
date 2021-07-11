@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.glide;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Options;
@@ -10,17 +9,13 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
@@ -40,7 +35,6 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
         }
     }
 
-    @Nullable
     @Override
     public LoadData<ByteBuffer> buildLoadData(@NonNull EmbeddedChapterImage model,
                                               int width,
@@ -69,9 +63,9 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
                 if (image.getMedia().localFileAvailable()) {
                     File localFile = new File(image.getMedia().getLocalMediaUrl());
                     stream = new BufferedInputStream(new FileInputStream(localFile));
-                    stream.skip(image.getPosition());
+                    IOUtils.skip(stream, image.getPosition());
                     byte[] imageContent = new byte[image.getLength()];
-                    stream.read(imageContent, 0, image.getLength());
+                    IOUtils.read(stream, imageContent, 0, image.getLength());
                     callback.onDataReady(ByteBuffer.wrap(imageContent));
                 } else {
                     Request.Builder httpReq = new Request.Builder();
@@ -92,10 +86,13 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
             }
         }
 
-        @Override public void cleanup() {
+        @Override
+        public void cleanup() {
             // nothing to clean up
         }
-        @Override public void cancel() {
+
+        @Override
+        public void cancel() {
             // cannot cancel
         }
 

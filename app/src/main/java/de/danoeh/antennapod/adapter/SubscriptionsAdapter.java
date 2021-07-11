@@ -13,28 +13,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
-import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
  * Adapter for subscriptions
  */
 public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
-
-    /** placeholder object that indicates item should be added */
-    public static final Object ADD_ITEM_OBJ = new Object();
-
     /** the position in the view that holds the add item; 0 is the first, -1 is the last position */
     private static final String TAG = "SubscriptionsAdapter";
 
@@ -63,7 +58,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        return itemAccess.getItem(position).getId();
+        return ((NavDrawerData.DrawerItem) getItem(position)).id;
     }
 
     @Override
@@ -86,11 +81,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder = (Holder) convertView.getTag();
         }
 
-        final Feed feed = (Feed) getItem(position);
-        if (feed == null) return null;
+        final NavDrawerData.DrawerItem drawerItem = (NavDrawerData.DrawerItem) getItem(position);
+        if (drawerItem == null) {
+            return null;
+        }
 
-        holder.feedTitle.setText(feed.getTitle());
-        holder.imageView.setContentDescription(feed.getTitle());
+        holder.feedTitle.setText(drawerItem.getTitle());
+        holder.imageView.setContentDescription(drawerItem.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
 
         // Fix TriangleLabelView corner for RTL
@@ -99,30 +96,46 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder.count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
         }
 
-        int count = itemAccess.getFeedCounter(feed.getId());
-        if(count > 0) {
-            holder.count.setPrimaryText(
-                    NumberFormat.getInstance().format(itemAccess.getFeedCounter(feed.getId())));
+        if (drawerItem.getCounter() > 0) {
+            holder.count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
             holder.count.setVisibility(View.VISIBLE);
         } else {
             holder.count.setVisibility(View.GONE);
         }
 
-        boolean textAndImageCombined = feed.isLocalFeed()
-                && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
-        new CoverLoader(mainActivityRef.get())
-                .withUri(feed.getImageLocation())
-                .withPlaceholderView(holder.feedTitle, textAndImageCombined)
-                .withCoverView(holder.imageView)
-                .load();
-
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+            boolean textAndImageCombined = feed.isLocalFeed()
+                    && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
+            new CoverLoader(mainActivityRef.get())
+                    .withUri(feed.getImageUrl())
+                    .withPlaceholderView(holder.feedTitle, textAndImageCombined)
+                    .withCoverView(holder.imageView)
+                    .load();
+        } else {
+            new CoverLoader(mainActivityRef.get())
+                    .withResource(R.drawable.ic_folder)
+                    .withPlaceholderView(holder.feedTitle, true)
+                    .withCoverView(holder.imageView)
+                    .load();
+        }
         return convertView;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Fragment fragment = FeedItemlistFragment.newInstance(getItemId(position));
-        mainActivityRef.get().loadChildFragment(fragment);
+        final NavDrawerData.DrawerItem drawerItem = (NavDrawerData.DrawerItem) getItem(position);
+        if (drawerItem == null) {
+            return;
+        }
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+            mainActivityRef.get().loadChildFragment(fragment);
+        } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+            Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
+            mainActivityRef.get().loadChildFragment(fragment);
+        }
     }
 
     static class Holder {
@@ -133,7 +146,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     public interface ItemAccess {
         int getCount();
-        Feed getItem(int position);
-        int getFeedCounter(long feedId);
+
+        NavDrawerData.DrawerItem getItem(int position);
     }
 }

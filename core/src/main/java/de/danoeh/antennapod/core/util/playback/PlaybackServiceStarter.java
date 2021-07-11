@@ -2,11 +2,11 @@ package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.model.playback.Playable;
 
 public class PlaybackServiceStarter {
     private final Context context;

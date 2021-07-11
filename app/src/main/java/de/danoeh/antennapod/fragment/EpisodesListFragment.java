@@ -40,7 +40,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -177,11 +177,11 @@ public abstract class EpisodesListFragment extends Fragment {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
-        if (listAdapter.getSelectedItem() == null) {
+        if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        FeedItem selectedItem = listAdapter.getSelectedItem();
+        FeedItem selectedItem = listAdapter.getLongPressedItem();
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -194,7 +194,6 @@ public abstract class EpisodesListFragment extends Fragment {
         txtvInformation = root.findViewById(R.id.txtvInformation);
 
         recyclerView = root.findViewById(android.R.id.list);
-        recyclerView.setVisibility(View.GONE);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
 
@@ -216,7 +215,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
-        emptyView.setIcon(R.attr.feed);
+        emptyView.setIcon(R.drawable.ic_feed);
         emptyView.setTitle(R.string.no_all_episodes_head_label);
         emptyView.setMessage(R.string.no_all_episodes_label);
 
@@ -383,6 +382,14 @@ public abstract class EpisodesListFragment extends Fragment {
     @NonNull
     protected abstract List<FeedItem> loadData();
 
+    /**
+     * Load a new page of data as defined by {@link #page} and {@link #EPISODES_PER_PAGE}.
+     * If the number of items returned is less than {@link #EPISODES_PER_PAGE},
+     * it will be assumed that the underlying data is exhausted
+     * and this method will not be called again.
+     *
+     * @return The items from the next page of data
+     */
     @NonNull
     protected abstract List<FeedItem> loadMoreData();
 }

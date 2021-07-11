@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
@@ -30,7 +30,6 @@ import java.util.List;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -123,7 +122,7 @@ public class NavigationDrawerTest {
         for (int i = 0; i < uiTestUtils.hostedFeeds.size(); i++) {
             Feed f = uiTestUtils.hostedFeeds.get(i);
             openNavDrawer();
-            onDrawerItem(withText(f.getTitle())).perform(scrollTo(), click());
+            onDrawerItem(withText(f.getTitle())).perform(click());
             onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.appBar)),
                     withText(f.getTitle()), isDisplayed()), 1000));
         }

@@ -1,15 +1,13 @@
 package de.danoeh.antennapod.dialog;
 
 import android.app.Activity;
-import android.text.InputType;
 
 import java.lang.ref.WeakReference;
 
 import android.view.View;
-import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 

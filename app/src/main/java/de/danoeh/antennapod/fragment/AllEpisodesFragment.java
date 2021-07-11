@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +27,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,13 +104,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, feedItemFilter);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
-                EPISODES_PER_PAGE));
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
     }
 }

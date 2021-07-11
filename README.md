@@ -18,11 +18,11 @@ You can use the [AntennaPod Forum](https://forum.antennapod.org/) for discussion
 Bug reports and feature requests can be submitted [here](https://github.com/AntennaPod/AntennaPod/issues) (please read the [instructions](https://github.com/AntennaPod/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
 
 ## Help to test AntennaPod
-AntennaPod has many users and we don't want them to run into trouble when we add a new feature. It's important that we have a significant group test our app, so that we know all possible combinations of phones, Android versions and use cases work as expected. Check out our wiki on how to join our [Alpha and Beta testing programmes](https://github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod)!
+AntennaPod has many users and we don't want them to run into trouble when we add a new feature. It's important that we have a significant group test our app, so that we know all possible combinations of phones, Android versions and use cases work as expected. Check out our wiki on how to join our [Beta testing program](https://antennapod.org/documentation/general/beta)! If a bug is reported during the beta period, chances are high that it will be fixed before the stable version. If it is reported later, fixing might take another full beta cycle. So definitely let us know if something is not right.
 
 ## License
 
-AntennaPod is licensed under the MIT License. You can find the license text in the LICENSE file.
+AntennaPod is licensed under the GNU General Public License (GPL-3.0). You can find the license text in the LICENSE file.
 
 ## Translating AntennaPod
 If you want to translate AntennaPod into another language, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/).

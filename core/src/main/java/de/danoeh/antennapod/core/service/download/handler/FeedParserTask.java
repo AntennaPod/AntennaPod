@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.core.service.download.handler;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -58,6 +58,9 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             e.printStackTrace();
             successful = false;
             reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
+            if ("html".equalsIgnoreCase(e.getRootElement())) {
+                reason = DownloadError.ERROR_UNSUPPORTED_TYPE_HTML;
+            }
             reasonDetailed = e.getMessage();
         } catch (InvalidFeedException e) {
             e.printStackTrace();

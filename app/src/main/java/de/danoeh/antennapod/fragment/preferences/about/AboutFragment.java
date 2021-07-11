@@ -28,16 +28,18 @@ public class AboutFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("about_contributors").setOnPreferenceClickListener((preference) -> {
-            getParentFragmentManager().beginTransaction().replace(R.id.content, new ContributorsPagerFragment())
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.settingsContainer, new ContributorsPagerFragment())
                     .addToBackStack(getString(R.string.contributors)).commit();
             return true;
         });
         findPreference("about_privacy_policy").setOnPreferenceClickListener((preference) -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/privacy.html");
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/privacy/");
             return true;
         });
         findPreference("about_licenses").setOnPreferenceClickListener((preference) -> {
-            getParentFragmentManager().beginTransaction().replace(R.id.content, new LicensesFragment())
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.settingsContainer, new LicensesFragment())
                     .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });

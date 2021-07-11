@@ -4,7 +4,7 @@
         name="AntennaPod"
         author="The AntennaPod team"
         website="https://github.com/AntennaPod/AntennaPod/"
-        license="MIT"
+        license="GPL-3.0"
         licenseText="LICENSE.txt" />
     <library
         name="AntennaPod-AudioPlayer"
@@ -88,12 +88,6 @@
         name="Okio"
         author="Square"
         website="https://github.com/square/okio"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
-        name="RecyclerView-FlexibleDivider"
-        author="yqritc"
-        website="https://github.com/yqritc/RecyclerView-FlexibleDivider"
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library

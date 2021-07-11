@@ -1,9 +1,7 @@
-This is a beta release for AntennaPod 2.1.0
-
-- A long-standing wish of many: playing local files! In the 'Add podcast' screen simply tap 'Add local folder' and select a location on your phone! (@ByteHamster, @igoralmeida & @damoasda)
-- Pick a country for the 'Discover' screen (@tonytamsf)
-- Keyboard shortcuts (@asdoi)
-- Search the PodcastIndex.org database (@edwinhere)
-- Pull to refresh (@asdoi)
-- Playback speed & filter dialogs (@ByteHamster & @bws9000)
-- Smooth sleep timer volume (@olivoto)
+* Support for tagging (grouping) subscriptions (@ByteHamster)
+* Redesigned player screen (@ueen, @jonasburian, @ByteHamster)
+* New dialog to set feed update interval/time (@FivelMttz, @peakvalleytech, @ByteHamster)
+* Chapter dividers & -navigation in the progress bar (@jonasburian)
+* Contribute entry in settings screen: see how you can help! (@peakvalleytech)
+* Support Podcasting 2.0 Funding tag: display as links on podcast info screen (@tonytamsf)
+* Pull-to-refresh on Queue screen (@datavizard)

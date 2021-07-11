@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -31,15 +32,16 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
@@ -60,6 +62,7 @@ public class UserPreferences {
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
+    public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
@@ -76,8 +79,8 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
-    private static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
-    private static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
+    public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
+    public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
@@ -136,6 +139,7 @@ public class UserPreferences {
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
+    public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
@@ -265,6 +269,23 @@ public class UserPreferences {
     }
 
     /**
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static boolean shouldShowRemainingTime() {
+        return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+    }
+
+    /**
+     * Sets the preference for whether we show the remain time, if not show the duration. This will
+     * send out events so the current playing screen, queue and the episode list would refresh
+     *
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static void setShowRemainTimeSetting(Boolean showRemain) {
+        prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showRemain).apply();
+    }
+
+    /**
      * Returns notification priority.
      *
      * @return NotificationCompat.PRIORITY_MAX or NotificationCompat.PRIORITY_DEFAULT
@@ -373,12 +394,14 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
     }
 
-    public static boolean shouldHardwareButtonSkip() {
-        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+    public static int getHardwareForwardButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD)));
     }
 
-    public static boolean shouldHardwarePreviousButtonRestart() {
-        return prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+    public static int getHardwarePreviousButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_PREVIOUS_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_REWIND)));
     }
 
 
@@ -879,7 +902,9 @@ public class UserPreferences {
             return new APNullCleanupAlgorithm();
         }
         int cleanupValue = getEpisodeCleanupValue();
-        if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
+        if (cleanupValue == EPISODE_CLEANUP_EXCEPT_FAVORITE) {
+            return new ExceptFavoriteCleanupAlgorithm();
+        } else if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
             return new APNullCleanupAlgorithm();

@@ -9,8 +9,8 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.util.List;
@@ -28,7 +28,10 @@ public class DownloadServiceNotification {
 
     private void setupNotificationBuilders() {
         notificationCompatBuilder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(true)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(context))
                 .setSmallIcon(R.drawable.ic_notification_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -50,7 +53,7 @@ public class DownloadServiceNotification {
         String contentTitle = context.getString(R.string.download_notification_title);
         String downloadsLeft = (numDownloads > 0)
                 ? context.getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads)
-                : context.getString(R.string.downloads_processing);
+                : context.getString(R.string.service_shutting_down);
         String bigText = compileNotificationString(downloads);
 
         notificationCompatBuilder.setContentTitle(contentTitle);
@@ -106,6 +109,23 @@ public class DownloadServiceNotification {
         return sb.toString();
     }
 
+    private String createFailedDownloadNotificationContent(List<DownloadStatus> statuses) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < statuses.size(); i++) {
+            if (statuses.get(i).isSuccessful()) {
+                continue;
+            }
+            sb.append("• ").append(statuses.get(i).getTitle());
+            sb.append(": ").append(statuses.get(i).getReason().getErrorString(context));
+            if (i != statuses.size() - 1) {
+                sb.append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
@@ -143,7 +163,7 @@ public class DownloadServiceNotification {
                 // We are generating an auto-download report
                 channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
                 titleId = R.string.auto_download_report_title;
-                iconId = R.drawable.ic_notification_auto_download_complete;
+                iconId = R.drawable.ic_notification_new;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
                 id = R.id.notification_auto_download_report;
                 content = createAutoDownloadNotificationContent(reportQueue);
@@ -153,11 +173,7 @@ public class DownloadServiceNotification {
                 iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
                 id = R.id.notification_download_report;
-                content = context.getResources()
-                        .getQuantityString(R.plurals.download_report_content,
-                                successfulDownloads,
-                                successfulDownloads,
-                                failedDownloads);
+                content = createFailedDownloadNotificationContent(reportQueue);
             }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
@@ -189,7 +205,7 @@ public class DownloadServiceNotification {
                 .setContentText(context.getText(R.string.authentication_notification_msg))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getText(R.string.authentication_notification_msg)
                         + ": " + resourceTitle))
-                .setSmallIcon(R.drawable.ic_key_white)
+                .setSmallIcon(R.drawable.ic_notification_key)
                 .setAutoCancel(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(context, downloadRequest));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

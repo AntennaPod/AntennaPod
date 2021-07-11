@@ -1,28 +1,24 @@
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
         classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.3'
+        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
-    }
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint"
-        }
+        jcenter()
     }
 }
 
@@ -42,10 +38,6 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 30
-    minSdkVersion = 16
-    targetSdkVersion = 30
-
     // AndroidX
     annotationVersion = "1.1.0"
     appcompatVersion = "1.2.0"
@@ -72,6 +64,7 @@ project.ext {
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
+    playServicesVersion = "8.4.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
@@ -79,15 +72,6 @@ project.ext {
     espressoVersion = "3.2.0"
     runnerVersion = "1.2.0"
     rulesVersion = "1.2.0"
-}
-
-wrapper {
-    gradleVersion = "6.3"
-}
-
-// free build hack: common functions
-def doFreeBuild() {
-    return hasProperty("freeBuild")
 }
 
 apply plugin: "checkstyle"

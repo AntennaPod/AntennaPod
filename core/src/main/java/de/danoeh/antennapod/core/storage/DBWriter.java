@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
@@ -32,11 +32,11 @@ import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -46,8 +46,9 @@ import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.SortOrder;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -71,6 +72,18 @@ public class DBWriter {
     }
 
     private DBWriter() {
+    }
+
+    /**
+     * Wait until all threads are finished to avoid the "Illegal connection pointer" error of
+     * Robolectric. Call this method only for unit tests.
+     */
+    public static void tearDownTests() {
+        try {
+            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
@@ -183,10 +196,17 @@ public class DBWriter {
             if (queue.remove(item)) {
                 removedFromQueue.add(item);
             }
-            if (item.getMedia() != null && item.getMedia().isDownloaded()) {
-                deleteFeedMediaSynchronous(context, item.getMedia());
-            } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
-                requester.cancelDownload(context, item.getMedia());
+            if (item.getMedia() != null) {
+                if (item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                    // Applies to both downloaded and streamed media
+                    PlaybackPreferences.writeNoMediaPlaying();
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                }
+                if (item.getMedia().isDownloaded()) {
+                    deleteFeedMediaSynchronous(context, item.getMedia());
+                } else if (requester.isDownloadingFile(item.getMedia())) {
+                    requester.cancelDownload(context, item.getMedia());
+                }
             }
         }
 
@@ -370,7 +390,7 @@ public class DBWriter {
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
-            Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
+            Playable currentlyPlaying = PlayableUtils.createInstanceFromPreferences(context);
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (long itemId : itemIds) {
                 if (!itemListContains(queue, itemId)) {
@@ -777,6 +797,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemlist(items);
             adapter.close();
+            EventBus.getDefault().post(FeedItemEvent.updated(items));
         });
     }
 

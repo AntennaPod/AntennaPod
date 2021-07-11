@@ -6,17 +6,14 @@ import android.util.Log;
 import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
- * SAX-Parser for reading RSS-Feeds
- *
- * @author daniel
- *
+ * SAX-Parser for reading RSS-Feeds.
  */
 public class NSRSS20 extends Namespace {
 
@@ -83,8 +80,7 @@ public class NSRSS20 extends Namespace {
             if (state.getCurrentItem() != null) {
                 FeedItem currentItem = state.getCurrentItem();
                 // the title tag is optional in RSS 2.0. The description is used
-                // as a
-                // title if the item has no title-tag.
+                // as a title if the item has no title-tag.
                 if (currentItem.getTitle() == null) {
                     currentItem.setTitle(currentItem.getDescription());
                 }
@@ -128,7 +124,7 @@ public class NSRSS20 extends Namespace {
                     state.getCurrentItem().setLink(content);
                 }
             } else if (PUBDATE.equals(top) && ITEM.equals(second) && state.getCurrentItem() != null) {
-                state.getCurrentItem().setPubDate(DateUtils.parse(content));
+                state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (URL.equals(top) && IMAGE.equals(second) && CHANNEL.equals(third)) {
                 // prefer itunes:image
                 if (state.getFeed() != null && state.getFeed().getImageUrl() == null) {
@@ -138,7 +134,7 @@ public class NSRSS20 extends Namespace {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
                     state.getFeed().setDescription(content);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setDescription(content);
+                    state.getCurrentItem().setDescriptionIfLonger(content);
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase());
