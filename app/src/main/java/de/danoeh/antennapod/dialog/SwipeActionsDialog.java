@@ -50,7 +50,7 @@ public class SwipeActionsDialog {
         leftAction = rightLeft.get(LEFT);
         rightAction = rightLeft.get(RIGHT);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         keys = SwipeActions.swipeActions;
 
