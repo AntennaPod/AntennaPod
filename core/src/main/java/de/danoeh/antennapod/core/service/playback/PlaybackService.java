@@ -1485,7 +1485,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received Auto Connection update: " + status);
             if (!isConnectedToCar) {
                 Log.d(TAG, "Car was unplugged during playback.");
-                pauseIfPauseOnDisconnect();
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
@@ -1519,11 +1518,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
+                Log.d(TAG, "Headset plug event. State is " + state);
                 if (state != -1) {
-                    Log.d(TAG, "Headset plug event. State is " + state);
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        pauseIfPauseOnDisconnect();
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
@@ -1556,18 +1554,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
             pauseIfPauseOnDisconnect();
         }
-        // android.media.AUDIO_BECOMING_NOISY
     };
 
     /**
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
     private void pauseIfPauseOnDisconnect() {
+        Log.d(TAG, "pauseIfPauseOnDisconnect()");
         if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                transientPause = true;
-            }
-            mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+            transientPause = true;
+            mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }
 
@@ -1575,6 +1571,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * @param bluetooth true if the event for unpausing came from bluetooth
      */
     private void unpauseIfPauseOnDisconnect(boolean bluetooth) {
+        if (mediaPlayer.isAudioChannelInUse()) {
+            Log.d(TAG, "unpauseIfPauseOnDisconnect() audio is in use");
+            return;
+        }
         if (transientPause) {
             transientPause = false;
             if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
