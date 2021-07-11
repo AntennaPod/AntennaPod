@@ -265,11 +265,11 @@ public class FeedItemMenuHandler {
                     playStateStringRes = R.string.removed_new_flag_label;
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_unread_label;
+                    playStateStringRes = R.string.marked_as_unplayed_label;
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_read_label;
+                playStateStringRes = R.string.marked_as_played_label;
                 break;
         }
 

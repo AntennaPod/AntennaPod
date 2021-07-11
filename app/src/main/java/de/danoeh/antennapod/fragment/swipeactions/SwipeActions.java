@@ -113,7 +113,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         return prefs.getBoolean(KEY_PREFIX_NO_ACTION + tag, true);
     }
 
-    private Boolean isSwipeActionEnabled() {
+    private boolean isSwipeActionEnabled() {
         return isSwipeActionEnabled(fragment.requireContext(), tag);
     }
 
