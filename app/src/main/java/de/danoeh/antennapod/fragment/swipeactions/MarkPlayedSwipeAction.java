@@ -18,7 +18,7 @@ public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
     public int actionIcon() {
-        return R.drawable.ic_check;
+        return R.drawable.ic_mark_played;
     }
 
     @Override
