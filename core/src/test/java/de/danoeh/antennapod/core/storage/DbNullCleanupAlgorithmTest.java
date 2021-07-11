@@ -92,7 +92,7 @@ public class DbNullCleanupAlgorithmTest {
         feed.setItems(items);
         List<File> files = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
-            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
+            FeedItem item = new FeedItem(0, "title", "id" + i, "link", new Date(), FeedItem.PLAYED, feed);
 
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
