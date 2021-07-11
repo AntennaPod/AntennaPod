@@ -51,15 +51,14 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -74,10 +73,14 @@ import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -90,12 +93,13 @@ import io.reactivex.schedulers.Schedulers;
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnEndSelectModeListener {
-    private static final String TAG = "ItemlistFragment";
+        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
+    public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private FeedItemListAdapter adapter;
+    private SwipeActions swipeActions;
     private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
@@ -166,6 +170,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
 
         progressBar = root.findViewById(R.id.progLoading);
+        progressBar.setVisibility(View.VISIBLE);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         txtvAuthor = root.findViewById(R.id.txtvAuthor);
         imgvBackground = root.findViewById(R.id.imgvBackground);
@@ -252,7 +257,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
             adapter.endSelectMode();
             return true;
         });
@@ -348,16 +352,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-
-        if (item.getItemId() == R.id.multi_select) {
-            if (feed.isLocalFeed()) {
-                speedDialView.removeActionItemById(R.id.download_batch);
-                speedDialView.removeActionItemById(R.id.delete_batch);
-            }
-            speedDialView.setVisibility(View.VISIBLE);
-            refreshToolbarState();
-            // Do not return: Let adapter handle its actions, too.
-        }
         if (adapter.onContextItemSelected(item)) {
             return true;
         }
@@ -432,10 +426,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void favoritesChanged(FavoritesEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onQueueChanged(QueueEvent event) {
+        updateUi();
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        swipeActions.detach();
+        if (feed.isLocalFeed()) {
+            speedDialView.removeActionItemById(R.id.download_batch);
+            speedDialView.removeActionItemById(R.id.delete_batch);
+        }
+        speedDialView.setVisibility(View.VISIBLE);
+        refreshToolbarState();
+    }
+
     @Override
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
+        swipeActions.attachTo(recyclerView);
     }
 
     private void updateUi() {
@@ -478,12 +494,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (adapter == null) {
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
-            adapter.setOnEndSelectModeListener(this);
+            adapter.setOnSelectModeListener(this);
             recyclerView.setAdapter(adapter);
+            swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         }
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
+            swipeActions.setFilter(feed.getItemFilter());
         }
 
         refreshToolbarState();
@@ -597,7 +615,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

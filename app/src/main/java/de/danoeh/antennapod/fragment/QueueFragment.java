@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -48,6 +49,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -70,7 +72,7 @@ import java.util.Locale;
  * Shows all items in the queue.
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
-        EpisodeItemListAdapter.OnEndSelectModeListener {
+        EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
@@ -90,7 +92,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
-    private ItemTouchHelper itemTouchHelper;
+    private SwipeActions swipeActions;
     private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
@@ -398,12 +400,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             Log.i(TAG, "Selected item no longer exist, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        if (item.getItemId() == R.id.multi_select) {
-            speedDialView.setVisibility(View.VISIBLE);
-            refreshToolbarState();
-            infoBar.setVisibility(View.GONE);
-            // Do not return: Let adapter handle its actions, too.
-        }
         if (recyclerAdapter.onContextItemSelected(item)) {
             return true;
         }
@@ -455,83 +451,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
-        itemTouchHelper = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-                // Position tracking whilst dragging
-                int dragFrom = -1;
-                int dragTo = -1;
-
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                      RecyclerView.ViewHolder target) {
-                    int fromPosition = viewHolder.getAdapterPosition();
-                    int toPosition = target.getAdapterPosition();
-
-                    // Update tracked position
-                    if (dragFrom == -1) {
-                        dragFrom =  fromPosition;
-                    }
-                    dragTo = toPosition;
-
-                    int from = viewHolder.getAdapterPosition();
-                    int to = target.getAdapterPosition();
-                    Log.d(TAG, "move(" + from + ", " + to + ") in memory");
-                    if (from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
-                        return false;
-                    }
-                    queue.add(to, queue.remove(from));
-                    recyclerAdapter.notifyItemMoved(from, to);
-                    return true;
-                }
-
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    if (disposable != null) {
-                        disposable.dispose();
-                    }
-                    final int position = viewHolder.getAdapterPosition();
-                    Log.d(TAG, "remove(" + position + ")");
-                    final FeedItem item = queue.get(position);
-                    DBWriter.removeQueueItem(getActivity(), true, item);
-
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            getResources().getQuantityString(R.plurals.removed_from_queue_batch_label, 1, 1),
-                            Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo), v ->
-                                    DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false));
-                }
-
-                @Override
-                public boolean isLongPressDragEnabled() {
-                    return false;
-                }
-
-                @Override
-                public boolean isItemViewSwipeEnabled() {
-                    return !UserPreferences.isQueueLocked();
-                }
-
-                @Override
-                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    super.clearView(recyclerView, viewHolder);
-                    // Check if drag finished
-                    if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
-                        reallyMoved(dragFrom, dragTo);
-                    }
-
-                    dragFrom = dragTo = -1;
-                }
-
-                private void reallyMoved(int from, int to) {
-                    // Write drag operation to database
-                    Log.d(TAG, "Write to database move(" + from + ", " + to + ")");
-                    DBWriter.moveQueueItem(from, to, true);
-                }
-            }
-        );
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        swipeActions = new QueueSwipeActions();
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.QUEUED));
+        swipeActions.attachTo(recyclerView);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -565,7 +487,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
             recyclerAdapter.endSelectMode();
             return true;
         });
@@ -582,8 +503,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (queue != null && queue.size() > 0) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, itemTouchHelper);
-                recyclerAdapter.setOnEndSelectModeListener(this);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
+                recyclerAdapter.setOnSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }
@@ -649,9 +570,90 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     }
 
     @Override
+    public void onStartSelectMode() {
+        swipeActions.detach();
+        speedDialView.setVisibility(View.VISIBLE);
+        refreshToolbarState();
+        infoBar.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
         infoBar.setVisibility(View.VISIBLE);
+        swipeActions.attachTo(recyclerView);
+    }
+
+    private class QueueSwipeActions extends SwipeActions {
+
+        // Position tracking whilst dragging
+        int dragFrom = -1;
+        int dragTo = -1;
+
+        public QueueSwipeActions() {
+            super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, QueueFragment.this, TAG);
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getBindingAdapterPosition();
+            int toPosition = target.getBindingAdapterPosition();
+
+            // Update tracked position
+            if (dragFrom == -1) {
+                dragFrom =  fromPosition;
+            }
+            dragTo = toPosition;
+
+            int from = viewHolder.getBindingAdapterPosition();
+            int to = target.getBindingAdapterPosition();
+            Log.d(TAG, "move(" + from + ", " + to + ") in memory");
+            if (from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
+                return false;
+            }
+            queue.add(to, queue.remove(from));
+            recyclerAdapter.notifyItemMoved(from, to);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            if (disposable != null) {
+                disposable.dispose();
+            }
+
+            //SwipeActions
+            super.onSwiped(viewHolder, direction);
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return !UserPreferences.isQueueLocked();
+        }
+
+        @Override
+        public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+            // Check if drag finished
+            if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                reallyMoved(dragFrom, dragTo);
+            }
+
+            dragFrom = dragTo = -1;
+        }
+
+        private void reallyMoved(int from, int to) {
+            // Write drag operation to database
+            Log.d(TAG, "Write to database move(" + from + ", " + to + ")");
+            DBWriter.moveQueueItem(from, to, true);
+        }
+
     }
 }

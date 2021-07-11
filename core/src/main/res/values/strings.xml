@@ -35,6 +35,14 @@
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
 
+    <!-- SwipeActions -->
+    <string name="swipeactions_label">Swipe Actions</string>
+    <string name="swipeactions_summary">Choose what happens when swiping an episode in a list</string>
+    <string name="swipe_right">Swipe Right</string>
+    <string name="swipe_left">Swipe Left</string>
+    <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
+    <string name="change_setting">Change</string>
+
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
@@ -195,6 +203,8 @@
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
+    <string name="marked_as_played_label">Marked as played</string>
+    <string name="marked_as_unplayed_label">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
     <plurals name="marked_read_batch_label">
