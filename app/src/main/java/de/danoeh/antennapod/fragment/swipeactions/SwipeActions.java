@@ -33,7 +33,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class SwipeActions {
     public static final String PREF_NAME = "SwipeActionsPrefs";
     public static final String PREF_SWIPEACTIONS = "PrefSwipeActions";
-    public static final String PREF_NO_ACTION = "PrefsNoSwipeAction";
+    public static final String PREF_NO_ACTION = "PrefNoSwipeAction";
 
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new MarkUnplayedSwipeAction(),
@@ -222,24 +222,23 @@ public class SwipeActions {
                 swipeOutEnabled = true;
             }
 
-            //add color and icon (only if its not the very first time)
-            if (hasSwipeActions) {
-                Context context = fragment.requireContext();
-                int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
-                int actionColor = ThemeUtils.getColorFromAttr(context,
-                        dx > 0 ? right.actionColor() : left.actionColor());
-                RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
-                        c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
-                        .addSwipeRightActionIcon(right.actionIcon())
-                        .addSwipeLeftActionIcon(left.actionIcon())
-                        .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
-                        .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
-                        .setActionIconTint(
-                                ColorUtils.blendARGB(themeColor,
-                                        actionColor,
-                                        Math.max(0.5f, displacementPercentage)));
-                builder.create().decorate();
-            }
+            //add color and icon
+            Context context = fragment.requireContext();
+            int themeColor = ThemeUtils.getColorFromAttr(context, android.R.attr.windowBackground);
+            int actionColor = ThemeUtils.getColorFromAttr(context,
+                    dx > 0 ? right.actionColor() : left.actionColor());
+            RecyclerViewSwipeDecorator.Builder builder = new RecyclerViewSwipeDecorator.Builder(
+                    c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive)
+                    .addSwipeRightActionIcon(right.actionIcon())
+                    .addSwipeLeftActionIcon(left.actionIcon())
+                    .addSwipeRightBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
+                    .addSwipeLeftBackgroundColor(ThemeUtils.getColorFromAttr(context, R.attr.background_elevated))
+                    .setActionIconTint(
+                            ColorUtils.blendARGB(themeColor,
+                                    actionColor,
+                                    Math.max(0.5f, displacementPercentage)));
+            builder.create().decorate();
+
 
             super.onChildDraw(c, recyclerView, viewHolder, dx, dy, actionState, isCurrentlyActive);
         }
