@@ -126,6 +126,14 @@ public class SwipeActions {
         return isSwipeActionEnabled(fragment.requireContext(), tag);
     }
 
+    public void detachItemTouchHelper() {
+        itemTouchHelper.attachToRecyclerView(null);
+    }
+
+    public void reattachItemTouchHelper() {
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
     public void resetItemTouchHelper() {
         //refresh itemTouchHelper after prefs changed
         if (itemTouchHelper != null) {
