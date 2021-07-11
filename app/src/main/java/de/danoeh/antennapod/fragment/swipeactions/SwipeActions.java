@@ -115,13 +115,13 @@ public class SwipeActions {
         return getPrefs(context, tag, defaultActions);
     }
 
-    public static Boolean getNoActionPref(Context context, String tag) {
+    public static Boolean isSwipeActionEnabled(Context context, String tag) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getBoolean(PREF_NO_ACTION + tag, false);
+        return prefs.getBoolean(PREF_NO_ACTION + tag, true);
     }
 
-    private Boolean getNoActionPref() {
-        return getNoActionPref(fragment.requireContext(), tag);
+    private Boolean isSwipeActionEnabled() {
+        return isSwipeActionEnabled(fragment.requireContext(), tag);
     }
 
     public void resetItemTouchHelper() {
@@ -140,10 +140,6 @@ public class SwipeActions {
     public void setNewSwipeCallback(NewSwipeCallback newSwipeCallback) {
         this.newSwipeCallback = newSwipeCallback;
         itemTouchHelper();
-    }
-
-    private void showDialog(SwipeActionsDialog.Callback prefsChanged) {
-        new SwipeActionsDialog(fragment.requireContext(), tag).show(prefsChanged);
     }
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
@@ -171,7 +167,8 @@ public class SwipeActions {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
             if (rightleft.size() == 0) {
                 //open settings dialog if no prefs are set
-                showDialog(SwipeActions.this::resetItemTouchHelper);
+                new SwipeActionsDialog(fragment.requireContext(), tag)
+                        .show(SwipeActions.this::resetItemTouchHelper);
                 return;
             }
 
@@ -270,7 +267,7 @@ public class SwipeActions {
 
         @Override
         public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-            if (getNoActionPref()) {
+            if (!isSwipeActionEnabled()) {
                 return makeMovementFlags(getDragDirs(recyclerView, viewHolder), 0);
             } else {
                 return super.getMovementFlags(recyclerView, viewHolder);

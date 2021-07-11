@@ -27,7 +27,7 @@ public class AddToQueueSwipeAction implements SwipeAction {
     }
 
     @Override
-    public String title(Context context) {
+    public String getTitle(Context context) {
         return context.getString(R.string.add_to_queue_label);
     }
 

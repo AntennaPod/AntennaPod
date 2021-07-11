@@ -27,7 +27,7 @@ public class MarkPlayedSwipeAction implements SwipeAction {
     }
 
     @Override
-    public String title(Context context) {
+    public String getTitle(Context context) {
         return context.getString(R.string.mark_read_label);
     }
 

@@ -25,7 +25,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
     }
 
     @Override
-    public String title(Context context) {
+    public String getTitle(Context context) {
         return context.getString(R.string.download_label);
     }
 

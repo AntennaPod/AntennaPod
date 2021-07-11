@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.gridlayout.widget.GridLayout;
 
@@ -85,7 +84,7 @@ public class SwipeActionsDialog {
             viewBinding.actionRightContainer.getRoot().setAlpha(b ? 1.0f : 0.4f);
         });
 
-        viewBinding.enableSwitch.setChecked(!SwipeActions.getNoActionPref(context, tag));
+        viewBinding.enableSwitch.setChecked(SwipeActions.isSwipeActionEnabled(context, tag));
 
         setupSwipeDirectionView(viewBinding.actionLeftContainer, LEFT);
         setupSwipeDirectionView(viewBinding.actionRightContainer, RIGHT);
@@ -104,7 +103,7 @@ public class SwipeActionsDialog {
         SwipeAction action = direction == LEFT ? leftAction : rightAction;
 
         view.swipeDirectionLabel.setText(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
-        view.swipeActionLabel.setText(action.title(context));
+        view.swipeActionLabel.setText(action.getTitle(context));
         populateMockEpisode(view.mockEpisode);
         if (direction == RIGHT && view.previewContainer.getChildAt(0) != view.swipeIcon) {
             view.previewContainer.removeView(view.swipeIcon);
@@ -131,7 +130,7 @@ public class SwipeActionsDialog {
             final int actionIndex = i;
             SwipeAction action = keys.get(actionIndex);
             SwipeactionsPickerItemBinding item = SwipeactionsPickerItemBinding.inflate(LayoutInflater.from(context));
-            item.swipeActionLabel.setText(action.title(context));
+            item.swipeActionLabel.setText(action.getTitle(context));
 
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.actionIcon()));
             DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
