@@ -232,14 +232,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
     }
 
-    private void resetViewState() {
-        recyclerAdapter = null;
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        resetViewState();
+        if (recyclerAdapter != null) {
+            recyclerAdapter.endSelectMode();
+        }
+        recyclerAdapter = null;
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =

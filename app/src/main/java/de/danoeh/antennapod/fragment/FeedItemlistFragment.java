@@ -267,6 +267,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
+        if (adapter != null) {
+            adapter.endSelectMode();
+        }
         adapter = null;
     }
 

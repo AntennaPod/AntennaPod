@@ -120,6 +120,7 @@ public class CompletedDownloadsFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
+        adapter.endSelectMode();
         super.onDestroyView();
     }
 
