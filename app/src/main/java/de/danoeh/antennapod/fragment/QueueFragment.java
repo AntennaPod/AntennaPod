@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -571,7 +572,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
     @Override
     public void onStartSelectMode() {
-        swipeActions.attachTo(recyclerView);
+        swipeActions.detach();
         speedDialView.setVisibility(View.VISIBLE);
         refreshToolbarState();
         infoBar.setVisibility(View.GONE);
@@ -582,7 +583,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
         infoBar.setVisibility(View.VISIBLE);
-        swipeActions.detach();
+        swipeActions.attachTo(recyclerView);
     }
 
     private class QueueSwipeActions extends SwipeActions {
@@ -592,7 +593,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         int dragTo = -1;
 
         public QueueSwipeActions() {
-            super(QueueFragment.this, TAG);
+            super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, QueueFragment.this, TAG);
         }
 
         @Override

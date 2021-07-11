@@ -51,12 +51,16 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     int swipedOutTo = 0;
     private final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(this);
 
-    public SwipeActions(Fragment fragment, String tag) {
-        super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
+    public SwipeActions(int dragDirs, Fragment fragment, String tag) {
+        super(dragDirs, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.fragment = fragment;
         this.tag = tag;
         reloadPreference();
         fragment.getLifecycle().addObserver(this);
+    }
+
+    public SwipeActions(Fragment fragment, String tag) {
+        this(0, fragment, tag);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
