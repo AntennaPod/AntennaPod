@@ -40,7 +40,7 @@
     <string name="swipeactions_summary">Choose what happens when swiping an episode in a list</string>
     <string name="swipe_right">Swipe Right</string>
     <string name="swipe_left">Swipe Left</string>
-    <string name="enable_swipeactions">Enable SwipeActions for this Screen</string>
+    <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
 
     <!-- Statistics fragment -->
