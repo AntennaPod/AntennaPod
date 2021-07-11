@@ -107,7 +107,6 @@ public class CompletedDownloadsFragment extends Fragment implements
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onSelectMode(true);
             adapter.endSelectMode();
             return true;
         });
@@ -169,9 +168,6 @@ public class CompletedDownloadsFragment extends Fragment implements
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
-        }
-        if (item.getItemId() == R.id.multi_select) {
-            speedDialView.setVisibility(View.VISIBLE);
         }
         if (adapter.onContextItemSelected(item)) {
             return true;
@@ -258,11 +254,14 @@ public class CompletedDownloadsFragment extends Fragment implements
     }
 
     @Override
-    public void onSelectMode(boolean didEnd) {
-        if (didEnd) {
-            speedDialView.close();
-            speedDialView.setVisibility(View.GONE);
-        }
+    public void onStartSelectMode() {
+        speedDialView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
     }
 
     private static class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {

@@ -401,12 +401,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             Log.i(TAG, "Selected item no longer exist, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        if (item.getItemId() == R.id.multi_select) {
-            speedDialView.setVisibility(View.VISIBLE);
-            refreshToolbarState();
-            infoBar.setVisibility(View.GONE);
-            // Do not return: Let adapter handle its actions, too.
-        }
         if (recyclerAdapter.onContextItemSelected(item)) {
             return true;
         }
@@ -495,7 +489,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onSelectMode(true);
             recyclerAdapter.endSelectMode();
             return true;
         });
@@ -579,15 +572,19 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     }
 
     @Override
-    public void onSelectMode(boolean didEnd) {
-        if (didEnd) {
-            speedDialView.close();
-            speedDialView.setVisibility(View.GONE);
-            infoBar.setVisibility(View.VISIBLE);
-            swipeActions.reattachItemTouchHelper();
-        } else {
-            swipeActions.detachItemTouchHelper();
-        }
+    public void onStartSelectMode() {
+        swipeActions.detachItemTouchHelper();
+        speedDialView.setVisibility(View.VISIBLE);
+        refreshToolbarState();
+        infoBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
+        infoBar.setVisibility(View.VISIBLE);
+        swipeActions.reattachItemTouchHelper();
     }
 
     private class SimpleQueueCallback extends SwipeActions.SimpleSwipeCallback {

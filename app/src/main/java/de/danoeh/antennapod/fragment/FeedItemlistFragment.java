@@ -257,7 +257,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onSelectMode(true);
             adapter.endSelectMode();
             return true;
         });
@@ -350,16 +349,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-
-        if (item.getItemId() == R.id.multi_select) {
-            if (feed.isLocalFeed()) {
-                speedDialView.removeActionItemById(R.id.download_batch);
-                speedDialView.removeActionItemById(R.id.delete_batch);
-            }
-            speedDialView.setVisibility(View.VISIBLE);
-            refreshToolbarState();
-            // Do not return: Let adapter handle its actions, too.
-        }
         if (adapter.onContextItemSelected(item)) {
             return true;
         }
@@ -445,14 +434,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onSelectMode(boolean didEnd) {
-        if (didEnd) {
-            speedDialView.close();
-            speedDialView.setVisibility(View.GONE);
-            swipeActions.reattachItemTouchHelper();
-        } else {
-            swipeActions.detachItemTouchHelper();
+    public void onStartSelectMode() {
+        swipeActions.detachItemTouchHelper();
+        if (feed.isLocalFeed()) {
+            speedDialView.removeActionItemById(R.id.download_batch);
+            speedDialView.removeActionItemById(R.id.delete_batch);
         }
+        speedDialView.setVisibility(View.VISIBLE);
+        refreshToolbarState();
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
+        swipeActions.reattachItemTouchHelper();
     }
 
     private void updateUi() {

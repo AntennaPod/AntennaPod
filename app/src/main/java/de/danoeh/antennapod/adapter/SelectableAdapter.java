@@ -30,7 +30,9 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             endSelectMode();
         }
 
-        callOnSelectMode(false);
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onStartSelectMode();
+        }
 
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
@@ -65,7 +67,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                callOnSelectMode(true);
+                callOnEndSelectMode();
                 actionMode = null;
                 selectedIds.clear();
                 notifyDataSetChanged();
@@ -79,7 +81,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      */
     public void endSelectMode() {
         if (inActionMode()) {
-            callOnSelectMode(true);
+            callOnEndSelectMode();
             actionMode.finish();
         }
     }
@@ -158,13 +160,15 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         this.onSelectModeListener = onSelectModeListener;
     }
 
-    private void callOnSelectMode(boolean didEnd) {
+    private void callOnEndSelectMode() {
         if (onSelectModeListener != null) {
-            onSelectModeListener.onSelectMode(didEnd);
+            onSelectModeListener.onEndSelectMode();
         }
     }
 
     public interface OnSelectModeListener {
-        void onSelectMode(boolean didEnd);
+        void onStartSelectMode();
+
+        void onEndSelectMode();
     }
 }
