@@ -40,7 +40,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         View.OnTouchListener startDragTouchListener = (v1, event) -> {
             if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                 Log.d(TAG, "startDrag()");
-                swipeActions.itemTouchHelper.startDrag(holder);
+                swipeActions.startDrag(holder);
             }
             return false;
         };

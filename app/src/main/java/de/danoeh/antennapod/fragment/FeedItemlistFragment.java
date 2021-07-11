@@ -435,7 +435,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onStartSelectMode() {
-        swipeActions.detachItemTouchHelper();
+        swipeActions.detach();
         if (feed.isLocalFeed()) {
             speedDialView.removeActionItemById(R.id.download_batch);
             speedDialView.removeActionItemById(R.id.delete_batch);
@@ -448,7 +448,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
-        swipeActions.reattachItemTouchHelper();
+        swipeActions.attachTo(recyclerView);
     }
 
     private void updateUi() {

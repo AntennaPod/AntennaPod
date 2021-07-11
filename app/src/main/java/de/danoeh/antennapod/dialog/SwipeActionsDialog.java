@@ -174,12 +174,12 @@ public class SwipeActionsDialog {
 
     private void savePrefs(String tag, String right, String left) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putString(SwipeActions.PREF_SWIPEACTIONS + tag, right + "," + left).apply();
+        prefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + tag, right + "," + left).apply();
     }
 
     private void saveActionsEnabledPrefs(Boolean enabled) {
         SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(SwipeActions.PREF_NO_ACTION + tag, enabled).apply();
+        prefs.edit().putBoolean(SwipeActions.KEY_PREFIX_NO_ACTION + tag, enabled).apply();
     }
 
     public interface Callback {
