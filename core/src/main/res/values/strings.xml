@@ -101,8 +101,6 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
-    <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
     <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: %1$s</string>
@@ -224,8 +222,6 @@
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="skip_episode_label">Skip episode</string>
-    <string name="activate_auto_download">Activate Auto Download</string>
-    <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
     <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>
@@ -254,7 +250,6 @@
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device.</string>
     <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
-    <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_error_io_error">IO Error</string>

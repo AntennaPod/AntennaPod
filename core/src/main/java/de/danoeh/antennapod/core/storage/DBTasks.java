@@ -440,7 +440,6 @@ public final class DBTasks {
                 if (oldItem == null) {
                     // item is new
                     item.setFeed(savedFeed);
-                    item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
 
                     if (idx >= savedFeed.getItems().size()) {
                         savedFeed.getItems().add(item);

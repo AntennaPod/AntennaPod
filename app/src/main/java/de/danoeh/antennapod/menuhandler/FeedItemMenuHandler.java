@@ -65,14 +65,6 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
         setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
 
-        if (!UserPreferences.isEnableAutodownload() || fileDownloaded || selectedItem.getFeed().isLocalFeed()) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        } else {
-            setItemVisibility(menu, R.id.activate_auto_download, !selectedItem.getAutoDownload());
-            setItemVisibility(menu, R.id.deactivate_auto_download, selectedItem.getAutoDownload());
-        }
-
         // Display proper strings when item has no media
         if (hasMedia) {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
@@ -205,14 +197,6 @@ public class FeedItemMenuHandler {
                     IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 }
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
-                break;
-            case R.id.activate_auto_download:
-                selectedItem.setAutoDownload(true);
-                DBWriter.setFeedItemAutoDownload(selectedItem, true);
-                break;
-            case R.id.deactivate_auto_download:
-                selectedItem.setAutoDownload(false);
-                DBWriter.setFeedItemAutoDownload(selectedItem, false);
                 break;
             case R.id.visit_website_item:
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
