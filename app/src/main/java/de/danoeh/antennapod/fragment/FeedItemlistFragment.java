@@ -170,6 +170,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
 
         progressBar = root.findViewById(R.id.progLoading);
+        progressBar.setVisibility(View.VISIBLE);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         txtvAuthor = root.findViewById(R.id.txtvAuthor);
         imgvBackground = root.findViewById(R.id.imgvBackground);
@@ -610,7 +611,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
