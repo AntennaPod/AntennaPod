@@ -93,7 +93,7 @@ import io.reactivex.schedulers.Schedulers;
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnEndSelectModeListener {
+        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -257,7 +257,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
+            onSelectMode(true);
             adapter.endSelectMode();
             return true;
         });
@@ -445,9 +445,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+    public void onSelectMode(boolean didEnd) {
+        if (didEnd) {
+            speedDialView.close();
+            speedDialView.setVisibility(View.GONE);
+            swipeActions.reattachItemTouchHelper();
+        } else {
+            swipeActions.detachItemTouchHelper();
+        }
     }
 
     private void updateUi() {
@@ -490,7 +495,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (adapter == null) {
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
-            adapter.setOnEndSelectModeListener(this);
+            adapter.setOnSelectModeListener(this);
             recyclerView.setAdapter(adapter);
             swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         }

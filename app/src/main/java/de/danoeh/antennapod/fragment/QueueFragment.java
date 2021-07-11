@@ -72,7 +72,7 @@ import java.util.Locale;
  * Shows all items in the queue.
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
-        EpisodeItemListAdapter.OnEndSelectModeListener {
+        EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
@@ -495,7 +495,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
+            onSelectMode(true);
             recyclerAdapter.endSelectMode();
             return true;
         });
@@ -513,7 +513,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
-                recyclerAdapter.setOnEndSelectModeListener(this);
+                recyclerAdapter.setOnSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }
@@ -579,10 +579,15 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     }
 
     @Override
-    public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
-        infoBar.setVisibility(View.VISIBLE);
+    public void onSelectMode(boolean didEnd) {
+        if (didEnd) {
+            speedDialView.close();
+            speedDialView.setVisibility(View.GONE);
+            infoBar.setVisibility(View.VISIBLE);
+            swipeActions.reattachItemTouchHelper();
+        } else {
+            swipeActions.detachItemTouchHelper();
+        }
     }
 
     private class SimpleQueueCallback extends SwipeActions.SimpleSwipeCallback {

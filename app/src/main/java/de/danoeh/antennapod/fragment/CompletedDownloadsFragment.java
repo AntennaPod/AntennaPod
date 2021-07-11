@@ -54,7 +54,7 @@ import java.util.List;
  * Displays all completed downloads and provides a button to delete them.
  */
 public class CompletedDownloadsFragment extends Fragment implements
-        EpisodeItemListAdapter.OnEndSelectModeListener {
+        EpisodeItemListAdapter.OnSelectModeListener {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
@@ -79,7 +79,7 @@ public class CompletedDownloadsFragment extends Fragment implements
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
-        adapter.setOnEndSelectModeListener(this);
+        adapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
 
@@ -107,7 +107,7 @@ public class CompletedDownloadsFragment extends Fragment implements
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
+            onSelectMode(true);
             adapter.endSelectMode();
             return true;
         });
@@ -258,9 +258,11 @@ public class CompletedDownloadsFragment extends Fragment implements
     }
 
     @Override
-    public void onEndSelectMode() {
-        speedDialView.close();
-        speedDialView.setVisibility(View.GONE);
+    public void onSelectMode(boolean didEnd) {
+        if (didEnd) {
+            speedDialView.close();
+            speedDialView.setVisibility(View.GONE);
+        }
     }
 
     private static class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {

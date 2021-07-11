@@ -19,7 +19,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private ActionMode actionMode;
     private final HashSet<Long> selectedIds = new HashSet<>();
     private final Activity activity;
-    private OnEndSelectModeListener onEndSelectModeListener;
+    private OnSelectModeListener onSelectModeListener;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -29,6 +29,8 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         if (inActionMode()) {
             endSelectMode();
         }
+
+        callOnSelectMode(false);
 
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
@@ -63,7 +65,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                callOnEndSelectMode();
+                callOnSelectMode(true);
                 actionMode = null;
                 selectedIds.clear();
                 notifyDataSetChanged();
@@ -77,7 +79,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
      */
     public void endSelectMode() {
         if (inActionMode()) {
-            callOnEndSelectMode();
+            callOnSelectMode(true);
             actionMode.finish();
         }
     }
@@ -152,17 +154,17 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedIds.size(), getItemCount()));
     }
 
-    public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
-        this.onEndSelectModeListener = onEndSelectModeListener;
+    public void setOnSelectModeListener(OnSelectModeListener onSelectModeListener) {
+        this.onSelectModeListener = onSelectModeListener;
     }
 
-    private void callOnEndSelectMode() {
-        if (onEndSelectModeListener != null) {
-            onEndSelectModeListener.onEndSelectMode();
+    private void callOnSelectMode(boolean didEnd) {
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onSelectMode(didEnd);
         }
     }
 
-    public interface OnEndSelectModeListener {
-        void onEndSelectMode();
+    public interface OnSelectModeListener {
+        void onSelectMode(boolean didEnd);
     }
 }
