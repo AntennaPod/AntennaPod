@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
@@ -75,28 +76,31 @@ public class SwipeActions {
         itemTouchHelper = new ItemTouchHelper(newSwipeCallback.construct());
     }
 
-    private static List<SwipeAction> getPrefs(Context context, String tag, String defaultActions) {
+    private static Pair<SwipeAction, SwipeAction> getPrefs(Context context, String tag, String defaultActions) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String prefsString = prefs.getString(PREF_SWIPEACTIONS + tag, defaultActions);
 
         ArrayList<SwipeAction> actions = new ArrayList<>();
 
-        if (!prefsString.isEmpty()) {
-            String[] rightleft = prefsString.split(",");
-
-            for (String s : rightleft) {
-                actions.add(Stream.of(swipeActions).filter(a -> a.id().equals(s)).single());
-            }
+        if (prefsString.isEmpty()) {
+            return null;
         }
 
-        return actions;
+        String[] rightleft = prefsString.split(",");
+
+        SwipeAction right = Stream.of(swipeActions)
+                .filter(a -> a.id().equals(rightleft[0])).single();
+        SwipeAction left = Stream.of(swipeActions)
+                .filter(a -> a.id().equals(rightleft[0])).single();
+
+        return new Pair<>(right, left);
     }
 
-    private static List<SwipeAction> getPrefs(Context context, String tag) {
+    private static Pair<SwipeAction, SwipeAction> getPrefs(Context context, String tag) {
         return getPrefs(context, tag, "");
     }
 
-    public static List<SwipeAction> getPrefsWithDefaults(Context context, String tag) {
+    public static Pair<SwipeAction, SwipeAction> getPrefsWithDefaults(Context context, String tag) {
         String defaultActions;
         switch (tag) {
             /*case InboxFragment.TAG:
@@ -143,7 +147,7 @@ public class SwipeActions {
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
 
-        List<SwipeAction> rightleft = getPrefs(fragment.requireContext(), tag);
+        Pair<SwipeAction, SwipeAction> rightleft = getPrefs(fragment.requireContext(), tag);
         boolean swipeOutEnabled = true;
         int swipedOutTo = 0;
 
@@ -164,7 +168,7 @@ public class SwipeActions {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            if (rightleft.size() == 0) {
+            if (rightleft != null) {
                 //open settings dialog if no prefs are set
                 new SwipeActionsDialog(fragment.requireContext(), tag)
                         .show(SwipeActions.this::resetItemTouchHelper);
@@ -173,7 +177,7 @@ public class SwipeActions {
 
             FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
 
-            rightleft.get(swipeDir == ItemTouchHelper.RIGHT ? 0 : 1)
+            (swipeDir == ItemTouchHelper.RIGHT ? rightleft.first : rightleft.second)
                     .action(item, fragment, filter);
         }
 
@@ -183,10 +187,10 @@ public class SwipeActions {
                                 float dx, float dy, int actionState, boolean isCurrentlyActive) {
             SwipeAction right;
             SwipeAction left;
-            boolean hasSwipeActions = rightleft.size() > 0;
+            boolean hasSwipeActions = rightleft !=  null;
             if (hasSwipeActions) {
-                right = rightleft.get(0);
-                left = rightleft.get(1);
+                right = rightleft.first;
+                left = rightleft.second;
             } else {
                 right = left = new ShowFirstSwipeDialogAction();
             }
