@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -52,7 +51,7 @@ public class SwipeActions {
     public SwipeActions(Fragment fragment, String tag) {
         this.fragment = fragment;
         this.tag = tag;
-        itemTouchHelper();
+        setItemTouchHelper();
     }
 
     public void setFilter(FeedItemFilter filter) {
@@ -72,7 +71,7 @@ public class SwipeActions {
         return this;
     }
 
-    public void itemTouchHelper() {
+    public void setItemTouchHelper() {
         itemTouchHelper = new ItemTouchHelper(newSwipeCallback.construct());
     }
 
@@ -129,7 +128,7 @@ public class SwipeActions {
         if (itemTouchHelper != null) {
             itemTouchHelper.attachToRecyclerView(null);
         }
-        itemTouchHelper();
+        setItemTouchHelper();
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -139,7 +138,7 @@ public class SwipeActions {
 
     public void setNewSwipeCallback(NewSwipeCallback newSwipeCallback) {
         this.newSwipeCallback = newSwipeCallback;
-        itemTouchHelper();
+        setItemTouchHelper();
     }
 
     public class SimpleSwipeCallback extends ItemTouchHelper.SimpleCallback {
