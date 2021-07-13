@@ -92,10 +92,13 @@
 
         <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
             android:id="@+id/floatingFilter"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:background="?attr/background_elevated"
             android:elevation="6dp"
@@ -110,37 +113,37 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/all_episodes_short_label"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_list"
                 android:tooltipText="@string/all_episodes_short_label"
-                android:contentDescription="@string/all_episodes_short_label" />
+                app:drawable="@drawable/ic_list" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/new_label"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_play_24dp"
                 android:tooltipText="@string/new_label"
-                android:contentDescription="@string/new_label" />
+                app:drawable="@drawable/ic_play_24dp" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/downloaded_label"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_download"
                 android:tooltipText="@string/downloaded_label"
-                android:contentDescription="@string/downloaded_label" />
+                app:drawable="@drawable/ic_download" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/favorite_episodes_label"
                 android:padding="8dp"
-                app:drawable="@drawable/ic_star"
                 android:tooltipText="@string/favorite_episodes_label"
-                android:contentDescription="@string/favorite_episodes_label" />
+                app:drawable="@drawable/ic_star" />
 
         </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
 

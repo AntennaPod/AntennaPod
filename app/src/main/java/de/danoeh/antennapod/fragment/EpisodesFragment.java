@@ -14,6 +14,7 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 
+import com.addisonelliott.segmentedbutton.SegmentedButton;
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
 import com.joanzapata.iconify.Iconify;
 
@@ -68,26 +69,8 @@ public class EpisodesFragment extends EpisodesListFragment {
         toolbar.setTitle(R.string.episodes_label);
 
         floatingQuickFilter = rootView.findViewById(R.id.floatingFilter);
-        floatingQuickFilter.setVisibility(View.VISIBLE);
-        floatingQuickFilter.setOnPositionChangedListener(position -> {
-            String newFilter;
-            switch (position) {
-                default:
-                case QUICKFILTER_ALL:
-                    newFilter = getPrefFilter();
-                    break;
-                case QUICKFILTER_NEW:
-                    newFilter = FeedItemFilter.UNPLAYED;
-                    break;
-                case QUICKFILTER_DOWNLOADED:
-                    newFilter = FeedItemFilter.DOWNLOADED;
-                    break;
-                case QUICKFILTER_FAV:
-                    newFilter = FeedItemFilter.IS_FAVORITE;
-                    break;
-            }
-            updateFeedItemFilter(newFilter);
-        });
+
+        setUpQuickFilter();
 
         setSwipeActions(TAG);
 
@@ -123,6 +106,52 @@ public class EpisodesFragment extends EpisodesListFragment {
         }
     }
 
+    private void setUpQuickFilter() {
+        floatingQuickFilter.setVisibility(View.VISIBLE);
+        floatingQuickFilter.setOnPositionChangedListener(position -> {
+            String newFilter;
+            switch (position) {
+                default:
+                case QUICKFILTER_ALL:
+                    newFilter = getPrefFilter();
+                    break;
+                case QUICKFILTER_NEW:
+                    newFilter = FeedItemFilter.UNPLAYED;
+                    break;
+                case QUICKFILTER_DOWNLOADED:
+                    newFilter = FeedItemFilter.DOWNLOADED;
+                    break;
+                case QUICKFILTER_FAV:
+                    newFilter = FeedItemFilter.IS_FAVORITE;
+                    break;
+            }
+
+            updateFeedItemFilter(newFilter);
+
+            //imitate expandable action button
+            for (int i = 0; i < floatingQuickFilter.getButtons().size(); i++) {
+                if (i != position) {
+                    floatingQuickFilter.getButton(i).setVisibility(View.GONE);
+                    floatingQuickFilter.getButton(i).setOnClickListener(null);
+                } else {
+                    floatingQuickFilter.getButton(i).setOnClickListener(new View.OnClickListener() {
+                        boolean collapsed = true;
+
+                        @Override
+                        public void onClick(View view) {
+                            for (int i1 = 0; i1 < floatingQuickFilter.getButtons().size(); i1++) {
+                                if (i1 != position) {
+                                    floatingQuickFilter.getButton(i1)
+                                            .setVisibility(collapsed ? View.VISIBLE : View.GONE);
+                                }
+                            }
+                            collapsed = !collapsed;
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     @Override
     protected String getPrefName() {
