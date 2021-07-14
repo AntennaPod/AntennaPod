@@ -195,6 +195,7 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
+    <string name="unplayed_label">Unplayed</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="delete_episode_label">Delete Episode</string>
     <plurals name="deleted_multi_episode_batch_label">

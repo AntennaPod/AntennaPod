@@ -30,27 +30,6 @@
             android:visibility="gone"
             tools:text="(i) Information" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/loadingMore"
-            android:layout_below="@+id/txtvInformation">
-
-            <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
-                android:id="@android:id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
-                android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-                android:paddingTop="@dimen/list_vertical_padding"
-                android:paddingBottom="@dimen/list_vertical_padding"
-                tools:itemCount="13"
-                tools:listitem="@layout/feeditemlist_item" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
         <ProgressBar
             android:id="@+id/progLoading"
             android:layout_width="wrap_content"
@@ -90,62 +69,57 @@
 
         </LinearLayout>
 
-        <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
-            android:id="@+id/floatingFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="?attr/background_elevated"
-            android:elevation="6dp"
-            android:visibility="gone"
-            app:position="0"
-            app:radius="30dp"
-            app:rippleColor="?attr/colorControlHighlight"
-            app:selectedBackground="@color/highlight_light"
-            app:selectionAnimationDuration="50">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/loadingMore"
+            android:layout_below="@+id/txtvInformation">
 
-            <com.addisonelliott.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+                    android:id="@android:id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:paddingHorizontal="@dimen/additional_horizontal_spacing"
+                    android:paddingTop="@dimen/list_vertical_padding"
+                    android:paddingBottom="@dimen/list_vertical_padding"
+                    tools:itemCount="13"
+                    tools:listitem="@layout/feeditemlist_item" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingFilterButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/all_episodes_short_label"
-                android:padding="8dp"
-                android:tooltipText="@string/all_episodes_short_label"
-                app:drawable="@drawable/ic_list" />
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_play_24dp" />
 
-            <com.addisonelliott.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/quickfiltermenu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/new_label"
-                android:padding="8dp"
-                android:tooltipText="@string/new_label"
-                app:drawable="@drawable/ic_play_24dp" />
+                android:layout_gravity="bottom"
+                android:paddingHorizontal="24dp"
+                android:visibility="gone"
+                app:backgroundTint="?attr/colorPrimary"
+                app:contentInsetStart="0dp"
+                app:fabCradleMargin="0dp"
+                app:fabCradleRoundedCornerRadius="0dp" />
 
-            <com.addisonelliott.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/downloaded_label"
-                android:padding="8dp"
-                android:tooltipText="@string/downloaded_label"
-                app:drawable="@drawable/ic_download" />
-
-            <com.addisonelliott.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/favorite_episodes_label"
-                android:padding="8dp"
-                android:tooltipText="@string/favorite_episodes_label"
-                app:drawable="@drawable/ic_star" />
-
-        </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </RelativeLayout>
 

@@ -2,20 +2,26 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ArcMotion;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 
-import com.addisonelliott.segmentedbutton.SegmentedButton;
-import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.transition.MaterialContainerTransform;
 import com.joanzapata.iconify.Iconify;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,9 +45,12 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "PowerEpisodesFragment";
     private static final String PREF_NAME = "PrefPowerEpisodesFragment";
-    private static final String PREF_POSITION = "position";
+    private static final String PREF_POSITION = "lastquickfilter";
 
     public static final String PREF_FILTER = "filter";
+
+    private FloatingActionButton floatingQuickFilterButton;
+    private BottomAppBar quickFilterBar;
 
     public EpisodesFragment() {
         super();
@@ -51,8 +60,6 @@ public class EpisodesFragment extends EpisodesListFragment {
         super();
         this.hideToolbar = hideToolbar;
     }
-
-    private SegmentedButtonGroup floatingQuickFilter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +75,8 @@ public class EpisodesFragment extends EpisodesListFragment {
 
         toolbar.setTitle(R.string.episodes_label);
 
-        floatingQuickFilter = rootView.findViewById(R.id.floatingFilter);
+        floatingQuickFilterButton = rootView.findViewById(R.id.floatingFilterButton);
+        quickFilterBar = rootView.findViewById(R.id.quickfiltermenu);
 
         setUpQuickFilter();
 
@@ -80,77 +88,117 @@ public class EpisodesFragment extends EpisodesListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        setQuickFilterPosition(prefs.getInt(PREF_POSITION, QUICKFILTER_ALL));
-        loadArgsIfAvailable();
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        updateFloatingFilterButton(prefs.getString(PREF_POSITION, QUICKFILTER_ALL));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putInt(PREF_POSITION, floatingQuickFilter.getPosition()).apply();
     }
 
     public String getPrefFilter() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(PREF_FILTER, "");
     }
 
-    private void loadArgsIfAvailable() {
-        if (getArguments() != null) {
-            int argumentsFilter = getArguments().getInt(PREF_FILTER, -1);
-            if (argumentsFilter >= 0) {
-                setQuickFilterPosition(argumentsFilter);
-            }
-        }
-    }
-
     private void setUpQuickFilter() {
-        floatingQuickFilter.setVisibility(View.VISIBLE);
-        floatingQuickFilter.setOnPositionChangedListener(position -> {
-            String newFilter;
-            switch (position) {
-                default:
-                case QUICKFILTER_ALL:
-                    newFilter = getPrefFilter();
-                    break;
-                case QUICKFILTER_NEW:
-                    newFilter = FeedItemFilter.UNPLAYED;
-                    break;
-                case QUICKFILTER_DOWNLOADED:
-                    newFilter = FeedItemFilter.DOWNLOADED;
-                    break;
-                case QUICKFILTER_FAV:
-                    newFilter = FeedItemFilter.IS_FAVORITE;
-                    break;
+        quickFilterBar.replaceMenu(R.menu.quickfilter);
+        quickFilterBar.setOnMenuItemClickListener(menuitem -> {
+            int id = menuitem.getItemId();
+            String stringId;
+            if (id == R.id.filter_all) {
+                stringId = EpisodesListFragment.QUICKFILTER_ALL;
+            } else if (id == R.id.filter_unplayed) {
+                stringId = EpisodesListFragment.QUICKFILTER_UNPLAYED;
+            } else if (id == R.id.filter_downloaded) {
+                stringId = EpisodesListFragment.QUICKFILTER_DOWNLOADED;
+            } else { //R.id.filter_favorites
+                stringId = EpisodesListFragment.QUICKFILTER_FAV;
             }
 
-            updateFeedItemFilter(newFilter);
+            updateFloatingFilterButton(stringId);
 
-            //imitate expandable action button
-            for (int i = 0; i < floatingQuickFilter.getButtons().size(); i++) {
-                if (i != position) {
-                    floatingQuickFilter.getButton(i).setVisibility(View.GONE);
-                    floatingQuickFilter.getButton(i).setOnClickListener(null);
-                } else {
-                    floatingQuickFilter.getButton(i).setOnClickListener(new View.OnClickListener() {
-                        boolean collapsed = true;
+            quickFilterBar.performHide();
+            floatingQuickFilterButton.show();
 
-                        @Override
-                        public void onClick(View view) {
-                            for (int i1 = 0; i1 < floatingQuickFilter.getButtons().size(); i1++) {
-                                if (i1 != position) {
-                                    floatingQuickFilter.getButton(i1)
-                                            .setVisibility(collapsed ? View.VISIBLE : View.GONE);
-                                }
-                            }
-                            collapsed = !collapsed;
-                        }
-                    });
-                }
+            return false;
+        });
+
+        if(quickFilterBar.getChildCount() > 0) {
+            ActionMenuView actionMenuView = (ActionMenuView) quickFilterBar.getChildAt(0);
+            actionMenuView.getLayoutParams().width = android.widget.ActionMenuView.LayoutParams.MATCH_PARENT;
+        }
+
+        floatingQuickFilterButton.setOnClickListener(view -> {
+            //show on first click
+            quickFilterBar.setVisibility(View.VISIBLE);
+
+            floatingQuickFilterButton.hide();
+            quickFilterBar.performShow();
+        });
+
+        floatingQuickFilterButton.setVisibility(View.VISIBLE);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                quickFilterBar.performHide();
+                floatingQuickFilterButton.show();
             }
         });
+    }
+
+    private void transform(View startView, View endView) {
+        MaterialContainerTransform transition = new MaterialContainerTransform();
+        transition.setContainerColor(floatingQuickFilterButton.getSolidColor());
+        transition.setScrimColor(Color.TRANSPARENT);
+        transition.setDuration(300);
+        transition.setPathMotion(new ArcMotion());
+        transition.setInterpolator(new AccelerateDecelerateInterpolator());
+        transition.setFadeMode(MaterialContainerTransform.FADE_MODE_IN);
+
+        transition.setStartView(startView);
+        transition.setEndView(endView);
+
+        transition.addTarget(endView);
+
+        TransitionManager.beginDelayedTransition((ViewGroup) startView.getParent(), transition);
+        startView.setVisibility(View.GONE);
+        endView.setVisibility(View.VISIBLE);
+    }
+
+    private void updateFloatingFilterButton(String id) {
+        String newFilter;
+        int menuitemId;
+        switch (id) {
+            default:
+            case EpisodesListFragment.QUICKFILTER_ALL:
+                newFilter = getPrefFilter();
+                menuitemId = R.id.filter_all;
+                break;
+            case EpisodesListFragment.QUICKFILTER_UNPLAYED:
+                newFilter = FeedItemFilter.UNPLAYED;
+                menuitemId = R.id.filter_unplayed;
+                break;
+            case EpisodesListFragment.QUICKFILTER_DOWNLOADED:
+                newFilter = FeedItemFilter.DOWNLOADED;
+                menuitemId = R.id.filter_downloaded;
+                break;
+            case EpisodesListFragment.QUICKFILTER_FAV:
+                newFilter = FeedItemFilter.IS_FAVORITE;
+                menuitemId = R.id.filter_favorites;
+                break;
+        }
+
+        floatingQuickFilterButton.setImageDrawable(
+                quickFilterBar.getMenu().findItem(menuitemId).getIcon());
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putString(PREF_POSITION, id).apply();
+
+        updateFeedItemFilter(newFilter);
     }
 
     @Override
@@ -158,16 +206,12 @@ public class EpisodesFragment extends EpisodesListFragment {
         return PREF_NAME;
     }
 
-    public void setQuickFilterPosition(int position) {
-        floatingQuickFilter.setPosition(position, false);
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (!super.onMenuItemClick(item)) {
             if (item.getItemId() == R.id.filter_items) {
                 AutoUpdateManager.runImmediate(requireContext());
-                setQuickFilterPosition(QUICKFILTER_ALL);
+                updateFloatingFilterButton(QUICKFILTER_ALL);
                 showFilterDialog();
             } else {
                 return false;
@@ -175,11 +219,6 @@ public class EpisodesFragment extends EpisodesListFragment {
         }
 
         return true;
-    }
-
-    private void savePrefsBoolean(String s, Boolean b) {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(s, b).apply();
     }
 
     @Override
@@ -198,7 +237,8 @@ public class EpisodesFragment extends EpisodesListFragment {
         auto.addTransition(new ChangeBounds());
         auto.excludeChildren(EmptyViewHandler.class, true);
         auto.excludeChildren(R.id.swipeRefresh, true);
-        auto.excludeChildren(R.id.floatingFilter, true);
+        auto.excludeChildren(R.id.floatingFilterButton, true);
+        auto.excludeChildren(R.id.quickfiltermenu, true);
         TransitionManager.beginDelayedTransition(
                 (ViewGroup) txtvInformation.getParent(),
                 auto);
@@ -211,11 +251,11 @@ public class EpisodesFragment extends EpisodesListFragment {
             txtvInformation.setVisibility(View.GONE);
         }
 
-        setEmptyView(TAG + floatingQuickFilter.getPosition());
+        setEmptyView(TAG); //default
     }
 
     private void showFilterDialog() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         FeedItemFilter prefFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
         FilterDialog filterDialog = new FilterDialog(getContext(), prefFilter) {
             @Override
@@ -237,10 +277,10 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     @Override
     protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         FeedItemFilter feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
 
-        if (feedItemFilter.isShowDownloaded() && (!item.hasMedia() || !item.getMedia().isDownloaded())) {
+        if (feedItemFilter.isShowDownloaded() && (!item.hasMedia() || !item.isDownloaded())) {
             return false;
         }
 

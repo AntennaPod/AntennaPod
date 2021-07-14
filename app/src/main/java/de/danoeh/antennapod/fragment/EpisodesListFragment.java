@@ -68,10 +68,10 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     protected static final int EPISODES_PER_PAGE = 150;
     private static final String KEY_UP_ARROW = "up_arrow";
 
-    public static final int QUICKFILTER_ALL = 0;
-    public static final int QUICKFILTER_NEW = 1;
-    public static final int QUICKFILTER_DOWNLOADED = 2;
-    public static final int QUICKFILTER_FAV = 3;
+    public static final String QUICKFILTER_ALL = "QUICKFILTER_ALL";
+    public static final String QUICKFILTER_UNPLAYED = "QUICKFILTER_UNPLAYED";
+    public static final String QUICKFILTER_DOWNLOADED = "QUICKFILTER_DOWNLOADED";
+    public static final String QUICKFILTER_FAV = "QUICKFILTER_FAV";
 
     protected int page = 1;
     protected boolean isLoadingMore = false;
@@ -262,7 +262,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         switch (tag) {
             default:
             case EpisodesFragment.TAG + QUICKFILTER_ALL:
-            case EpisodesFragment.TAG + QUICKFILTER_NEW:
+            case EpisodesFragment.TAG + QUICKFILTER_UNPLAYED:
                 emptyView.setIcon(R.drawable.ic_feed);
                 emptyView.setTitle(R.string.no_all_episodes_head_label);
                 emptyView.setMessage(R.string.no_all_episodes_label);
