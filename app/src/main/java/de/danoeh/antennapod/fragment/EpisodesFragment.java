@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.ActionMenuView;
@@ -119,35 +120,22 @@ public class EpisodesFragment extends EpisodesListFragment {
 
             updateFloatingFilterButton(stringId);
 
-            quickFilterBar.performHide();
-            floatingQuickFilterButton.show();
-
             return false;
         });
+        quickFilterBar.setNavigationOnClickListener(view -> ((MainActivity)requireActivity()).openDrawer());
 
         if(quickFilterBar.getChildCount() > 0) {
-            ActionMenuView actionMenuView = (ActionMenuView) quickFilterBar.getChildAt(0);
+            ActionMenuView actionMenuView = (ActionMenuView) quickFilterBar.getChildAt(1);
             actionMenuView.getLayoutParams().width = android.widget.ActionMenuView.LayoutParams.MATCH_PARENT;
         }
 
         floatingQuickFilterButton.setOnClickListener(view -> {
-            //show on first click
-            quickFilterBar.setVisibility(View.VISIBLE);
-
-            floatingQuickFilterButton.hide();
-            quickFilterBar.performShow();
+            Toast.makeText(requireContext(),"HOME",Toast.LENGTH_SHORT).show();
         });
 
         floatingQuickFilterButton.setVisibility(View.VISIBLE);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                quickFilterBar.performHide();
-                floatingQuickFilterButton.show();
-            }
-        });
+        quickFilterBar.setVisibility(View.VISIBLE);
+        //quickFilterBar.post(() -> quickFilterBar.performHide());
     }
 
     private void transform(View startView, View endView) {
@@ -192,8 +180,7 @@ public class EpisodesFragment extends EpisodesListFragment {
                 break;
         }
 
-        floatingQuickFilterButton.setImageDrawable(
-                quickFilterBar.getMenu().findItem(menuitemId).getIcon());
+        //floatingQuickFilterButton.setImageDrawable(quickFilterBar.getMenu().findItem(menuitemId).getIcon());
 
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(PREF_POSITION, id).apply();

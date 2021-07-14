@@ -98,26 +98,22 @@
                 android:id="@+id/floatingFilterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:backgroundTint="?attr/colorPrimary"
                 android:clickable="true"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_play_24dp" />
+                app:layout_anchor="@id/quickfiltermenu"
+                app:srcCompat="@drawable/ic_baseline_home_24" />
 
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:id="@+id/quickfiltermenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:paddingHorizontal="24dp"
-                android:visibility="gone"
+                android:paddingRight="72dp"
+                android:visibility="visible"
                 app:backgroundTint="?attr/colorPrimary"
-                app:contentInsetStart="0dp"
-                app:fabCradleMargin="0dp"
-                app:fabCradleRoundedCornerRadius="0dp" />
+                app:fabAlignmentMode="end"
+                app:hideOnScroll="true"
+                app:navigationIcon="@drawable/ic_menu" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

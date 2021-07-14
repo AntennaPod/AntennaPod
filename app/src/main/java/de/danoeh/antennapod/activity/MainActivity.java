@@ -331,6 +331,10 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    public void openDrawer() {
+        drawerLayout.openDrawer(navDrawer);
+    }
+
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
         Validate.notNull(fragment);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
