@@ -179,6 +179,7 @@ public class SubscriptionFragment extends Fragment
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
+
             onEndSelectMode();
             subscriptionAdapter.endSelectMode();
             return true;

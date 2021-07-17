@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
@@ -28,6 +30,7 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
@@ -109,6 +112,21 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             return true;
         }*/
         return false;
+    }
+
+
+    public List<Feed> getSelectedItems() {
+        List<Feed> items = new ArrayList<>();
+        for (int i = 0; i < getItemCount(); i++) {
+            if (isSelected(i)) {
+                NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(i);
+                if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+                    Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+                    items.add(feed);
+                }
+            }
+        }
+        return items;
     }
 
     public interface ItemAccess {
