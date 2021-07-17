@@ -22,6 +22,7 @@ jobs:
       uses: ReactiveCircus/android-emulator-runner@v2
       with:
         api-level: 28
+        target: google_apis
         disable-animations: true
         script: zsh .github/workflows/runTests.sh
     - uses: actions/upload-artifact@v2
