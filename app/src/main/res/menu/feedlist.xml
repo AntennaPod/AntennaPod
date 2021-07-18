@@ -63,13 +63,6 @@
     </item>
 
     <item
-        android:id="@+id/swipe_settings"
-        android:title="@string/swipeactions_label"
-        android:menuCategory="container"
-        custom:showAsAction="never" />
-
-
-    <item
         android:id="@+id/rename_item"
         android:menuCategory="container"
         android:title="@string/rename_feed_label"

@@ -39,8 +39,6 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public static final String PREF_FILTER = "filter";
 
-    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
-
     public EpisodesFragment() {
         super();
     }
@@ -156,8 +154,6 @@ public class EpisodesFragment extends EpisodesListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.mark_all_item).setVisible(true);
-        menu.findItem(R.id.swipe_settings).setVisible(true);
         menu.findItem(R.id.refresh_item).setVisible(false);
     }
 
@@ -203,6 +199,7 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public void updateFeedItemFilter(String strings) {
         feedItemFilter = new FeedItemFilter(strings);
+        swipeActions.setFilter(feedItemFilter);
         loadItems();
     }
 

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,9 +46,11 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -83,6 +84,8 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
     ProgressBar progLoading;
     View loadingMoreView;
     EmptyViewHandler emptyView;
+
+    protected FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     Toolbar toolbar;
 
@@ -147,8 +150,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         if (!super.onOptionsItemSelected(item)) {
             if (item.getItemId() == R.id.refresh_item) {
                 AutoUpdateManager.runImmediate(requireContext());
-            } else if (item.getItemId() == R.id.mark_all_read_item) {
-                markAllAs(FeedItem.PLAYED);
             } else if (item.getItemId() == R.id.remove_all_new_flags_item) {
                 ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
                         R.string.remove_all_new_flags_label,
@@ -163,32 +164,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                     }
                 };
                 removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-            } else if (item.getItemId() == R.id.mark_all_item) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setTitle(R.string.mark_all_label);
-                String[] options = requireActivity().getResources().getStringArray(R.array.mark_all_array);
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        switch (i) {
-                            case 0: //played
-                                markAllAs(FeedItem.PLAYED);
-                                break;
-                            case 1: //unplayed
-                                markAllAs(FeedItem.UNPLAYED);
-                                break;
-                            default: break;
-                            //TODO removeAllPositions
-                        }
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel_label, null);
-                builder.create().show();
-            } else if (item.getItemId() == R.id.swipe_settings && swipeActions != null) {
-                //null safe
-                swipeActions.show();
-            } else {
+            }  else {
                 return false;
             }
         }
@@ -222,11 +198,12 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
             return false;
         }
 
-        if (listAdapter.getLongPressedItem() == null) {
+        FeedItem selectedItem = listAdapter.getLongPressedItem();
+
+        if (selectedItem == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        FeedItem selectedItem = listAdapter.getLongPressedItem();
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -328,6 +305,7 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
 
     public void setSwipeActions(String tag) {
         swipeActions = new SwipeActions(this, tag).attachTo(recyclerView);
+        swipeActions.setFilter(feedItemFilter);
     }
 
     private void loadMoreItems() {
@@ -366,8 +344,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             onPrepareOptionsMenu(toolbar.getMenu());
         }
-
-        swipeActions.resetItemTouchHelper();
     }
 
     /**
@@ -428,7 +404,6 @@ public abstract class EpisodesListFragment extends Fragment implements Toolbar.O
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChangedCompat(pos);
-                    swipeActions.resetItemTouchHelper();
                 }
             }
         }

@@ -45,6 +45,16 @@
     <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
 
+    <!-- Home fragment -->
+    <string name="surprise_title">Get surprised</string>
+    <string name="classics_title">Check your classics</string>
+    <string name="continue_title">Continue listening</string>
+    <string name="rediscover_title">Rediscover podcasts</string>
+    <string name="new_title">Review the new</string>
+    <string name="navigate_arrows">%s »</string>
+    <string name="bottom_half">Bottom Half</string>
+    <string name="home_dialog_min_one_section">At least one section must be selected.</string>
+
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>

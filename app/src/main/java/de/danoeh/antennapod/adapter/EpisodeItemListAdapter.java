@@ -33,8 +33,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
+    public MutableLiveData<FeedItem> longPressedItem = new MutableLiveData<>();
     int longPressedPosition = 0; // used to init actionMode
-    public MutableLiveData<FeedItem> selectedItem = new MutableLiveData<>();
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -81,7 +81,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
-            selectedItem.setValue(item);
+            longPressedItem.setValue(item);
             longPressedPosition = pos;
             return false;
         });
@@ -134,8 +134,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     @Nullable
-    public FeedItem getSelectedItem() {
-        return selectedItem.getValue();
+    public FeedItem getLongPressedItem() {
+        return longPressedItem.getValue();
     }
 
     @Override
@@ -161,14 +161,14 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         inflater.inflate(R.menu.feeditemlist_context, menu);
-        menu.setHeaderTitle(getSelectedItem().getTitle());
-        FeedItemMenuHandler.onPrepareMenu(menu, getSelectedItem(), R.id.skip_episode_item);
+        menu.setHeaderTitle(getLongPressedItem().getTitle());
+        FeedItemMenuHandler.onPrepareMenu(menu, getLongPressedItem(), R.id.skip_episode_item);
         if (inActionMode()) {
             inflater.inflate(R.menu.multi_select_context_popup, menu);
         } else {
             inflater.inflate(R.menu.feeditemlist_context, menu);
-            menu.setHeaderTitle(longPressedItem.getTitle());
-            FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
+            menu.setHeaderTitle(getLongPressedItem().getTitle());
+            FeedItemMenuHandler.onPrepareMenu(menu, getLongPressedItem(), R.id.skip_episode_item);
         }
     }
 

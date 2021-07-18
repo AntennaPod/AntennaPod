@@ -20,7 +20,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
-import de.danoeh.antennapod.fragment.SwipeActions;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 
@@ -67,7 +67,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
         recyclerView.setAdapter(adapter);
 
-        adapter.selectedItem.observe(context, feedItem -> context.setSelectedItem(feedItem));
+        adapter.longPressedItem.observe(context, feedItem -> context.setSelectedItem(feedItem));
         super.addSectionTo(parent);
     }
 
@@ -80,7 +80,6 @@ public class InboxSection extends HomeSection<FeedItem> {
     @Override
     public void updateItems(UpdateEvents event) {
         adapter.updateItems(loadItems());
-        swipeActions.resetItemTouchHelper();
         super.updateItems(event);
     }
 }
