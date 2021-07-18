@@ -24,6 +24,7 @@ import de.danoeh.antennapod.databinding.SwipeactionsPickerItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsRowBinding;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -56,9 +57,9 @@ public class SwipeActionsDialog {
 
         String forFragment = "";
         switch (tag) {
-            /*case InboxFragment.TAG:
+            case InboxFragment.TAG:
                 forFragment = context.getString(R.string.inbox_label);
-                break;*/
+                break;
             case EpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
                 break;

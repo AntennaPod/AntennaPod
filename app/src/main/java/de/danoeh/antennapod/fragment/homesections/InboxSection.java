@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.fragment.homesections;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
@@ -31,8 +34,6 @@ public class InboxSection extends HomeSection<FeedItem> {
 
     private EpisodeItemListAdapter adapter;
 
-    private SwipeActions swipeActions;
-
     public InboxSection(HomeFragment context) {
         super(context);
         sectionTitle = context.getString(R.string.new_title);
@@ -40,7 +41,9 @@ public class InboxSection extends HomeSection<FeedItem> {
         updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.UNREAD);
 
         recyclerView.setPadding(0, 0, 0, 0);
-        swipeActions = new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
+
+        SwipeActions swipeActions = new SwipeActions(context, InboxFragment.TAG).attachTo(recyclerView);
+        swipeActions.setFilter(InboxFragment.inboxFeedItemFilter());
     }
 
     @NonNull
@@ -68,12 +71,20 @@ public class InboxSection extends HomeSection<FeedItem> {
         recyclerView.setAdapter(adapter);
 
         adapter.longPressedItem.observe(context, feedItem -> context.setSelectedItem(feedItem));
+
         super.addSectionTo(parent);
+    }
+
+    private void updateNewCount() {
+        TextView newCount = section.findViewById(R.id.numNewItems);
+        newCount.setVisibility(View.VISIBLE);
+        newCount.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
+        updateNewCount();
         return DBReader.getNewItemsList(0, 2);
     }
 

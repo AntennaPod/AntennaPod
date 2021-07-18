@@ -31,14 +31,34 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/sectionTitle"
         android:layout_alignParentTop="true"
+        android:layout_marginVertical="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginVertical="8dp"
         android:layout_toEndOf="@+id/sectionTitle"
         android:layout_toRightOf="@+id/sectionTitle"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_shuffle"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_shuffle" />
+
+    <TextView
+        android:id="@+id/numNewItems"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/sectionTitle"
+        android:layout_alignParentTop="true"
+        android:layout_marginVertical="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/sectionTitle"
+        android:layout_toRightOf="@+id/sectionTitle"
+        android:background="@drawable/blue_round"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="6" />
 
     <Button
         android:id="@+id/sectionNavigate"

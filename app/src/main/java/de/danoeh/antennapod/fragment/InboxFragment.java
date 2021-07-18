@@ -15,6 +15,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -32,11 +33,17 @@ public class InboxFragment extends EpisodesListFragment {
 
     public InboxFragment() {
         super();
+        this.feedItemFilter = inboxFeedItemFilter();
     }
 
     public InboxFragment(boolean hideToolbar) {
-        super();
+        this();
         this.hideToolbar = hideToolbar;
+    }
+
+    public static FeedItemFilter inboxFeedItemFilter() {
+        return new FeedItemFilter(
+                new String[]{FeedItemFilter.NOT_QUEUED, FeedItemFilter.NEW});
     }
 
     @Override

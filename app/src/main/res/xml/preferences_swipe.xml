@@ -8,4 +8,12 @@
         android:key="prefSwipeQueue"
         android:title="@string/queue_label"/>
 
+    <Preference
+        android:key="prefSwipeInbox"
+        android:title="@string/inbox_label"/>
+
+    <Preference
+        android:key="prefSwipeEpisodes"
+        android:title="@string/episodes_label"/>
+
 </PreferenceScreen>

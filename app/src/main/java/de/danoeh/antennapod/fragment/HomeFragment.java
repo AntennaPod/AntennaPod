@@ -84,13 +84,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.inflateMenu(R.menu.home);
         toolbar.setOnMenuItemClickListener(this);
 
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
-
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() > 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
         loadSections();
 
@@ -201,6 +201,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                         (dialogInterface, i) -> {
                             reloadSections();
                         });
+            } else if (item.getItemId() == R.id.discovery) {
+                ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
             }
         }
 
@@ -212,8 +214,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
     }
-
-
 
     public static class SectionTitle {
         public String tag;
