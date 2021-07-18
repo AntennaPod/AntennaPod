@@ -84,13 +84,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.inflateMenu(R.menu.home);
         toolbar.setOnMenuItemClickListener(this);
 
-        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() > 0;
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
+
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
-
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
 
         loadSections();
 
