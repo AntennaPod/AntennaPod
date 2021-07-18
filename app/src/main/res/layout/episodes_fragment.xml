@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:navigationIcon="?homeAsUpIndicator"
-            android:id="@+id/toolbar"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="?homeAsUpIndicator"
+        android:id="@+id/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,26 +30,26 @@
             android:visibility="gone"
             tools:text="(i) Information" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/txtvInformation"
-        android:layout_above="@id/loadingMore">
-
-        <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
-            android:id="@android:id/list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-            android:paddingTop="@dimen/list_vertical_padding"
-            android:paddingBottom="@dimen/list_vertical_padding"
-            tools:itemCount="13"
-            tools:listitem="@layout/feeditemlist_item" />
+            android:layout_below="@+id/txtvInformation"
+            android:layout_above="@id/loadingMore">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:paddingHorizontal="@dimen/additional_horizontal_spacing"
+                android:paddingTop="@dimen/list_vertical_padding"
+                android:paddingBottom="@dimen/list_vertical_padding"
+                tools:itemCount="13"
+                tools:listitem="@layout/feeditemlist_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
             android:id="@+id/progLoading"
