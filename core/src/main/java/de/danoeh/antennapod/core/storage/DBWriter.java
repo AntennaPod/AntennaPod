@@ -953,23 +953,6 @@ public class DBWriter {
         });
     }
 
-    /**
-     * Sets the 'auto_download'-attribute of specific FeedItem.
-     *
-     * @param feedItem     FeedItem.
-     * @param autoDownload true enables auto download, false disables it
-     */
-    public static Future<?> setFeedItemAutoDownload(final FeedItem feedItem,
-                                                    final boolean autoDownload) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
     public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
         return dbExec.submit(() -> {
             int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
@@ -988,25 +971,6 @@ public class DBWriter {
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
-
-    /**
-     * Sets the 'auto_download'-attribute of specific FeedItem.
-     *
-     * @param feed         This feed's episodes will be processed.
-     * @param autoDownload If true, auto download will be enabled for the feed's episodes. Else,
-     */
-    public static Future<?> setFeedsItemsAutoDownload(final Feed feed,
-                                                      final boolean autoDownload) {
-        Log.d(TAG, (autoDownload ? "Enabling" : "Disabling") + " auto download for items of feed " + feed.getId());
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedsItemsAutoDownload(feed, autoDownload);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
 
     /**
      * Set filter of the feed

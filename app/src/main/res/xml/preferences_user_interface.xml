@@ -78,5 +78,9 @@
                 android:title="@string/pref_back_button_behavior_title"
                 android:summary="@string/pref_back_button_behavior_sum"
                 android:defaultValue="default"/>
+        <Preference
+                android:key="prefSwipe"
+                android:summary="@string/swipeactions_summary"
+                android:title="@string/swipeactions_label"/>
     </PreferenceCategory>
 </PreferenceScreen>

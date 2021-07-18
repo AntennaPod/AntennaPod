@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
+    private static final String PREF_SWIPE = "prefSwipe";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -110,6 +111,11 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     FeedSortDialog.showDialog(requireContext());
                     return true;
                 }));
+        findPreference(PREF_SWIPE)
+                .setOnPreferenceClickListener(preference -> {
+                    ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
+                    return true;
+                });
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);

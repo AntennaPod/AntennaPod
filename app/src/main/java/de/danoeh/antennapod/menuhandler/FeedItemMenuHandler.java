@@ -66,14 +66,6 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
         setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
 
-        if (!UserPreferences.isEnableAutodownload() || fileDownloaded || selectedItem.getFeed().isLocalFeed()) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        } else {
-            setItemVisibility(menu, R.id.activate_auto_download, !selectedItem.getAutoDownload());
-            setItemVisibility(menu, R.id.deactivate_auto_download, selectedItem.getAutoDownload());
-        }
-
         // Display proper strings when item has no media
         if (hasMedia) {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
@@ -207,14 +199,6 @@ public class FeedItemMenuHandler {
                 }
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
                 break;
-            case R.id.activate_auto_download:
-                selectedItem.setAutoDownload(true);
-                DBWriter.setFeedItemAutoDownload(selectedItem, true);
-                break;
-            case R.id.deactivate_auto_download:
-                selectedItem.setAutoDownload(false);
-                DBWriter.setFeedItemAutoDownload(selectedItem, false);
-                break;
             case R.id.visit_website_item:
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
                 break;
@@ -237,7 +221,8 @@ public class FeedItemMenuHandler {
      * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
      * ,i.e., there is (context) menu item for add new flag
      */
-    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item, int playState) {
+    public static void markReadWithUndo(@NonNull Fragment fragment, FeedItem item,
+                                        int playState, boolean showSnackbar) {
         if (item == null) {
             return;
         }
@@ -264,30 +249,31 @@ public class FeedItemMenuHandler {
                     playStateStringRes = R.string.removed_new_flag_label;
                 } else {
                     //was played
-                    playStateStringRes = R.string.marked_unread_label;
+                    playStateStringRes = R.string.marked_as_unplayed_label;
                 }
                 break;
             case FeedItem.PLAYED:
-                playStateStringRes = R.string.marked_read_label;
+                playStateStringRes = R.string.marked_as_played_label;
                 break;
         }
 
-        Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
-                playStateStringRes, Snackbar.LENGTH_LONG)
-                .setAction(fragment.getString(R.string.undo), v -> {
-                    DBWriter.markItemPlayed(item.getPlayState(), item.getId());
-                    // don't forget to cancel the thing that's going to remove the media
-                    h.removeCallbacks(r);
-                });
-        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+        int duration = Snackbar.LENGTH_LONG;
+
+        if (showSnackbar) {
+            ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
+                    playStateStringRes, duration)
+                    .setAction(fragment.getString(R.string.undo), v -> {
+                        DBWriter.markItemPlayed(item.getPlayState(), item.getId());
+                        // don't forget to cancel the thing that's going to remove the media
+                        h.removeCallbacks(r);
+                    });
+        }
+
+        h.postDelayed(r, (int) Math.ceil(duration * 1.05f));
     }
 
     public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
-        markReadWithUndo(fragment, item, FeedItem.UNPLAYED);
-    }
-
-    public static void addToQueue(Context context, FeedItem item) {
-        DBWriter.addQueueItem(context, item);
+        markReadWithUndo(fragment, item, FeedItem.UNPLAYED, false);
     }
 
 }

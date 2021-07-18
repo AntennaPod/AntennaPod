@@ -3,12 +3,20 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -16,24 +24,20 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * List adapter for the list of new episodes.
  */
-public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemViewHolder>
+public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHolder>
         implements View.OnCreateContextMenuListener {
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
+    int longPressedPosition = 0; // used to init actionMode
     public MutableLiveData<FeedItem> selectedItem = new MutableLiveData<>();
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
-        super();
+        super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
     }
@@ -64,20 +68,35 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
         FeedItem item = episodes.get(pos);
         holder.bind(item);
-        holder.itemView.setOnLongClickListener(v -> {
-            //sync
-            selectedItem.setValue(item);
-            return false;
-        });
+
         holder.itemView.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
-            if (activity != null) {
+            if (activity != null && !inActionMode()) {
                 long[] ids = FeedItemUtil.getIds(episodes);
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
+            } else {
+                toggleSelection(pos);
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
+        holder.itemView.setOnLongClickListener(v -> {
+            selectedItem.setValue(item);
+            longPressedPosition = pos;
+            return false;
+        });
+
+        if (inActionMode()) {
+            holder.secondaryActionButton.setVisibility(View.GONE);
+            holder.selectCheckBox.setOnClickListener(v -> {
+                toggleSelection(pos);
+            });
+            holder.selectCheckBox.setChecked(isSelected(pos));
+            holder.selectCheckBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.selectCheckBox.setVisibility(View.GONE);
+        }
+
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
     }
@@ -144,5 +163,37 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         inflater.inflate(R.menu.feeditemlist_context, menu);
         menu.setHeaderTitle(getSelectedItem().getTitle());
         FeedItemMenuHandler.onPrepareMenu(menu, getSelectedItem(), R.id.skip_episode_item);
+        if (inActionMode()) {
+            inflater.inflate(R.menu.multi_select_context_popup, menu);
+        } else {
+            inflater.inflate(R.menu.feeditemlist_context, menu);
+            menu.setHeaderTitle(longPressedItem.getTitle());
+            FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
+        }
     }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.multi_select) {
+            startSelectMode(longPressedPosition);
+            return true;
+        } else if (item.getItemId() == R.id.select_all_above) {
+            setSelected(0, longPressedPosition, true);
+            return true;
+        } else if (item.getItemId() == R.id.select_all_below) {
+            setSelected(longPressedPosition + 1, getItemCount(), true);
+            return true;
+        }
+        return false;
+    }
+
+    public List<FeedItem> getSelectedItems() {
+        List<FeedItem> items = new ArrayList<>();
+        for (int i = 0; i < getItemCount(); i++) {
+            if (isSelected(i)) {
+                items.add(getItem(i));
+            }
+        }
+        return items;
+    }
+
 }

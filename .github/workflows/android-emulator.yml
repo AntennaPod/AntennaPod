@@ -21,7 +21,7 @@ jobs:
     - name: Android Emulator test
       uses: ReactiveCircus/android-emulator-runner@v2
       with:
-        api-level: 28
+        api-level: 27
         disable-animations: true
         script: zsh .github/workflows/runTests.sh
     - uses: actions/upload-artifact@v2

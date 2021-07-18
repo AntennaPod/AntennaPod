@@ -768,13 +768,6 @@ public class PodDBAdapter {
                 new String[]{String.valueOf(feedItem.getId())});
     }
 
-    public void setFeedsItemsAutoDownload(Feed feed, boolean autoDownload) {
-        final String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS
-                + " SET " + KEY_AUTO_DOWNLOAD + "=" + (autoDownload ? "1" : "0")
-                + " WHERE " + KEY_FEED + "=" + feed.getId();
-        db.execSQL(sql);
-    }
-
     public void setFavorites(List<FeedItem> favorites) {
         ContentValues values = new ContentValues();
         try {

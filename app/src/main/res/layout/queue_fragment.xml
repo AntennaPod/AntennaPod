@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true"
-        app:title="@string/queue_label"
-        android:id="@+id/toolbar"/>
+        app:title="@string/queue_label" />
 
     <TextView
-        android:layout_below="@id/toolbar"
         android:id="@+id/info_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:textSize="12sp"
         android:layout_marginTop="-8dp"
         android:layout_marginLeft="72dp"
         android:layout_marginStart="72dp"
         android:layout_marginBottom="4dp"
-        tools:text="12 Episodes - Time remaining: 12 hours"/>
+        tools:text="12 Episodes - Time remaining: 12 hours" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/info_bar"
-        android:background="?android:attr/listDivider"/>
+        android:background="?android:attr/listDivider" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/divider">
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/divider">
 
         <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
             android:id="@+id/recyclerView"
@@ -53,5 +55,8 @@
         android:layout_centerInParent="true"
         android:indeterminateOnly="true"
         android:visibility="gone" />
+
+    <include
+        layout="@layout/multi_select_speed_dial" />
 
 </RelativeLayout>

@@ -197,6 +197,38 @@ public class DbTasksTest {
         assertEquals(8, feedFromDB.getItems().size()); // 10 - 2 = 8 items
     }
 
+    @Test
+    public void testUpdateFeedSetDuplicate() {
+        final Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        for (int i = 0; i < 10; i++) {
+            FeedItem item =
+                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed);
+            FeedMedia media = new FeedMedia(item, "download url " + i, 123, "media/mp3");
+            item.setMedia(media);
+            feed.getItems().add(item);
+        }
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // change the guid of the first item, but leave the download url the same
+        FeedItem item = feed.getItemAtIndex(0);
+        item.setItemIdentifier("id 0-duplicate");
+        item.setTitle("item 0 duplicate");
+        Feed newFeed = DBTasks.updateFeed(context, feed, false);
+        assertEquals(10, newFeed.getItems().size()); // id 1-duplicate replaces because the stream url is the same
+
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        assertEquals(10, feedFromDB.getItems().size()); // id1-duplicate should override id 1
+
+        FeedItem updatedItem = feedFromDB.getItemAtIndex(9);
+        assertEquals("item 0 duplicate", updatedItem.getTitle());
+        assertEquals("id 0-duplicate", updatedItem.getItemIdentifier()); // Should use the new ID for sync etc
+    }
+
+
     @SuppressWarnings("SameParameterValue")
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs,
                                  int numItemsOld, int numItemsNew) {
@@ -285,7 +317,7 @@ public class DbTasksTest {
         if (numFeedItems > 0) {
             List<FeedItem> items = new ArrayList<>(numFeedItems);
             for (int i = 1; i <= numFeedItems; i++) {
-                FeedItem item = new FeedItem(0, "item " + i + " of " + title, "id", "link",
+                FeedItem item = new FeedItem(0, "item " + i + " of " + title, "id" + title + i, "link",
                         new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
             }
