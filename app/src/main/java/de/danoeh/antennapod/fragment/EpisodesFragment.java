@@ -2,27 +2,18 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ActionMenuView;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.ArcMotion;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.transition.MaterialContainerTransform;
 import com.joanzapata.iconify.Iconify;
 
 import org.apache.commons.lang3.StringUtils;
@@ -50,9 +41,6 @@ public class EpisodesFragment extends EpisodesListFragment {
 
     public static final String PREF_FILTER = "filter";
 
-    private FloatingActionButton floatingQuickFilterButton;
-    private BottomAppBar quickFilterBar;
-
     public EpisodesFragment() {
         super();
     }
@@ -76,10 +64,7 @@ public class EpisodesFragment extends EpisodesListFragment {
 
         toolbar.setTitle(R.string.episodes_label);
 
-        floatingQuickFilterButton = rootView.findViewById(R.id.floatingFilterButton);
-        quickFilterBar = rootView.findViewById(R.id.quickfiltermenu);
-
-        setUpQuickFilter();
+        //setUpQuickFilter();
 
         setSwipeActions(TAG);
 
@@ -101,60 +86,6 @@ public class EpisodesFragment extends EpisodesListFragment {
     public String getPrefFilter() {
         SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(PREF_FILTER, "");
-    }
-
-    private void setUpQuickFilter() {
-        quickFilterBar.replaceMenu(R.menu.quickfilter);
-        quickFilterBar.setOnMenuItemClickListener(menuitem -> {
-            int id = menuitem.getItemId();
-            String stringId;
-            if (id == R.id.filter_all) {
-                stringId = EpisodesListFragment.QUICKFILTER_ALL;
-            } else if (id == R.id.filter_unplayed) {
-                stringId = EpisodesListFragment.QUICKFILTER_UNPLAYED;
-            } else if (id == R.id.filter_downloaded) {
-                stringId = EpisodesListFragment.QUICKFILTER_DOWNLOADED;
-            } else { //R.id.filter_favorites
-                stringId = EpisodesListFragment.QUICKFILTER_FAV;
-            }
-
-            updateFloatingFilterButton(stringId);
-
-            return false;
-        });
-        quickFilterBar.setNavigationOnClickListener(view -> ((MainActivity)requireActivity()).openDrawer());
-
-        if(quickFilterBar.getChildCount() > 0) {
-            ActionMenuView actionMenuView = (ActionMenuView) quickFilterBar.getChildAt(1);
-            actionMenuView.getLayoutParams().width = android.widget.ActionMenuView.LayoutParams.MATCH_PARENT;
-        }
-
-        floatingQuickFilterButton.setOnClickListener(view -> {
-            Toast.makeText(requireContext(),"HOME",Toast.LENGTH_SHORT).show();
-        });
-
-        floatingQuickFilterButton.setVisibility(View.VISIBLE);
-        quickFilterBar.setVisibility(View.VISIBLE);
-        //quickFilterBar.post(() -> quickFilterBar.performHide());
-    }
-
-    private void transform(View startView, View endView) {
-        MaterialContainerTransform transition = new MaterialContainerTransform();
-        transition.setContainerColor(floatingQuickFilterButton.getSolidColor());
-        transition.setScrimColor(Color.TRANSPARENT);
-        transition.setDuration(300);
-        transition.setPathMotion(new ArcMotion());
-        transition.setInterpolator(new AccelerateDecelerateInterpolator());
-        transition.setFadeMode(MaterialContainerTransform.FADE_MODE_IN);
-
-        transition.setStartView(startView);
-        transition.setEndView(endView);
-
-        transition.addTarget(endView);
-
-        TransitionManager.beginDelayedTransition((ViewGroup) startView.getParent(), transition);
-        startView.setVisibility(View.GONE);
-        endView.setVisibility(View.VISIBLE);
     }
 
     private void updateFloatingFilterButton(String id) {
@@ -224,8 +155,6 @@ public class EpisodesFragment extends EpisodesListFragment {
         auto.addTransition(new ChangeBounds());
         auto.excludeChildren(EmptyViewHandler.class, true);
         auto.excludeChildren(R.id.swipeRefresh, true);
-        auto.excludeChildren(R.id.floatingFilterButton, true);
-        auto.excludeChildren(R.id.quickfiltermenu, true);
         TransitionManager.beginDelayedTransition(
                 (ViewGroup) txtvInformation.getParent(),
                 auto);
