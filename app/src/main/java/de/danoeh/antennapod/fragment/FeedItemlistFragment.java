@@ -223,6 +223,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         EventBus.getDefault().register(this);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        int distance = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
+        swipeRefreshLayout.setDistanceToTriggerSync(distance);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             try {
                 DBTasks.forceRefreshFeed(requireContext(), feed, true);

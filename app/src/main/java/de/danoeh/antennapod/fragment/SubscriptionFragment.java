@@ -148,6 +148,8 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        int distance = (int) (getResources().getDisplayMetrics().heightPixels * 0.3);
+        swipeRefreshLayout.setDistanceToTriggerSync(distance);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
