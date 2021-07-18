@@ -57,7 +57,7 @@ public class FeedHandler {
         Iterator<FeedItem> it = list.iterator();
         while (it.hasNext()) {
             FeedItem item = it.next();
-            if (seen.contains(item.getItemIdentifier())) {
+            if (!TextUtils.isEmpty(item.getItemIdentifier()) && seen.contains(item.getItemIdentifier())) {
                 Log.d(TAG, "Removing duplicate episode guid " + item.getItemIdentifier());
                 it.remove();
                 continue;
@@ -71,7 +71,7 @@ public class FeedHandler {
                 it.remove();
             } else {
                 seen.add(item.getMedia().getStreamUrl());
-                if (TextUtils.isEmpty(item.getTitle()) || TextUtils.isEmpty(item.getPubDate().toString())) {
+                if (TextUtils.isEmpty(item.getTitle()) || item.getPubDate() == null) {
                     continue;
                 }
                 if (!seen.contains(item.getTitle() + item.getPubDate().toString())) {

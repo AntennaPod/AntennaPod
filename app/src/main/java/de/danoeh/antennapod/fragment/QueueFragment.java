@@ -500,7 +500,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     }
 
     private void onFragmentLoaded(final boolean restoreScrollPosition) {
-        if (queue != null && queue.size() > 0) {
+        if (queue != null) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);

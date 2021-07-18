@@ -32,8 +32,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class SwipeActions extends ItemTouchHelper.SimpleCallback implements LifecycleObserver {
     public static final String PREF_NAME = "SwipeActionsPrefs";
-    public static final String KEY_PREFIX_SWIPEACTIONS = "PrefSwipeActions6543";
-    public static final String KEY_PREFIX_NO_ACTION = "PrefNoSwipeAction6543";
+    public static final String KEY_PREFIX_SWIPEACTIONS = "PrefSwipeActions";
+    public static final String KEY_PREFIX_NO_ACTION = "PrefNoSwipeAction";
 
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
