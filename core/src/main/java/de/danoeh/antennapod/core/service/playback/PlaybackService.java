@@ -971,6 +971,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
+
+                FeedMedia media = (FeedMedia) playable;
+                FeedItem item = media.getItem();
+                boolean smartMarkAsPlayed = FeedItemUtil.hasAlmostEnded(media);
+                if (smartMarkAsPlayed) {
+                    itemPlayed(item, true, media);
+                    DBWriter.addItemToPlaybackHistory(media);
+                }
             }
         }
 
@@ -1114,25 +1122,29 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (ended || smartMarkAsPlayed
                     || autoSkipped
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
-                // only mark the item as played if we're not keeping it anyways
-                DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
-                // don't know if it actually matters to not autodownload when smart mark as played is triggered
-                DBWriter.removeQueueItem(PlaybackService.this, ended, item);
-                // Delete episode if enabled
-                FeedPreferences.AutoDeleteAction action =
-                        item.getFeed().getPreferences().getCurrentAutoDelete();
-                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
-                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
-                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
-                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
-                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                    Log.d(TAG, "Episode Deleted");
-                }
+                itemPlayed(item, ended, media);
             }
         }
 
         if (ended || skipped || playingNext) {
             DBWriter.addItemToPlaybackHistory(media);
+        }
+    }
+
+    private void itemPlayed(FeedItem item, boolean ended, FeedMedia media) {
+        // only mark the item as played if we're not keeping it anyways
+        DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
+        // don't know if it actually matters to not autodownload when smart mark as played is triggered
+        DBWriter.removeQueueItem(PlaybackService.this, ended, item);
+        // Delete episode if enabled
+        FeedPreferences.AutoDeleteAction action =
+                item.getFeed().getPreferences().getCurrentAutoDelete();
+        boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
+                || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
+        if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                || !UserPreferences.shouldFavoriteKeepEpisode())) {
+            DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+            Log.d(TAG, "Episode Deleted");
         }
     }
 
