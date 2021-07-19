@@ -53,7 +53,7 @@ import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
  * Used to edit the settings of multiple feeds selected using multi select
  */
 public class BatchFeedSettingsFragment extends Fragment {
-    private static final String TAG = "FeedSettingsFragment";
+    public static final String TAG = "BatchFeedSettingsFrag";
     private static final String EXTRA_FEEDS = "de.danoeh.antennapod.extra.feeds";
 
     private Disposable disposable;
@@ -121,14 +121,15 @@ public class BatchFeedSettingsFragment extends Fragment {
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
+        private List<Feed> feeds;
         private Feed feed;
         private Disposable disposable;
         private FeedPreferences feedPreferences;
 
-        public static FeedSettingsPreferenceFragment newInstance(long feedId) {
+        public static FeedSettingsPreferenceFragment newInstance(List<Feed> feeds) {
             FeedSettingsPreferenceFragment fragment = new FeedSettingsPreferenceFragment();
             Bundle arguments = new Bundle();
-            arguments.putLong(EXTRA_FEEDS, feedId);
+            arguments.putSerializable(EXTRA_FEEDS, (Serializable) feeds);
             fragment.setArguments(arguments);
             return fragment;
         }
@@ -148,6 +149,8 @@ public class BatchFeedSettingsFragment extends Fragment {
             // To prevent displaying partially loaded data
             findPreference(PREF_SCREEN).setVisible(false);
 
+            feeds = (List<Feed>) getArguments().getSerializable(EXTRA_FEEDS);
+
 //            long feedId = getArguments().getLong(EXTRA_FEED_ID);
 //            disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
 //                Feed feed = DBReader.getFeed(feedId);
@@ -160,9 +163,9 @@ public class BatchFeedSettingsFragment extends Fragment {
 //                    .subscribeOn(Schedulers.io())
 //                    .observeOn(AndroidSchedulers.mainThread())
 //                    .subscribe(result -> {
-//                        feed = result;
 //                        feedPreferences = feed.getPreferences();
-
+                        feedPreferences = new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
+                                VolumeAdaptionSetting.OFF, null, null);
                         setupAutoDownloadGlobalPreference();
                         setupAutoDownloadPreference();
                         setupKeepUpdatedPreference();
@@ -180,11 +183,11 @@ public class BatchFeedSettingsFragment extends Fragment {
                         updateAutoDownloadEnabled();
                         updatePlaybackSpeedPreference();
 
-                        if (feed.isLocalFeed()) {
-                            findPreference(PREF_AUTHENTICATION).setVisible(false);
-                            findPreference(PREF_AUTO_DELETE).setVisible(false);
-                            findPreference(PREF_CATEGORY_AUTO_DOWNLOAD).setVisible(false);
-                        }
+//                        if (feed.isLocalFeed()) {
+//                            findPreference(PREF_AUTHENTICATION).setVisible(false);
+//                            findPreference(PREF_AUTO_DELETE).setVisible(false);
+//                            findPreference(PREF_CATEGORY_AUTO_DOWNLOAD).setVisible(false);
+//                        }
 
                         findPreference(PREF_SCREEN).setVisible(true);
 //                    }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });

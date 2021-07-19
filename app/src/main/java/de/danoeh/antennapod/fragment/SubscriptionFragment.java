@@ -175,6 +175,9 @@ public class SubscriptionFragment extends Fragment
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                             Snackbar.LENGTH_SHORT);
                     speedDialView.close();
+                } else if (isOpen) {
+                    Fragment batchFeedSettingsFragment = BatchFeedSettingsFragment.newInstance(subscriptionAdapter.getSelectedItems());
+                    ((MainActivity) getActivity()).loadChildFragment(batchFeedSettingsFragment, TransitionEffect.SLIDE);
                 }
             }
         });
