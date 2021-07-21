@@ -56,6 +56,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_synchronization);
         setupScreen();
+        updateScreen();
     }
 
     @Override
