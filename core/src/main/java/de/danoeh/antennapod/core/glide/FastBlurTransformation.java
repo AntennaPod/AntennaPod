@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 public class FastBlurTransformation extends BitmapTransformation {
-    private static final String ID="de.danoeh.antennapod.core.glide.FastBlurTransformation";
+    private static final String ID = "de.danoeh.antennapod.core.glide.FastBlurTransformation";
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
@@ -41,6 +41,11 @@ public class FastBlurTransformation extends BitmapTransformation {
     @Override
     public boolean equals(Object o) {
         return o instanceof FastBlurTransformation;
+    }
+
+    @Override
+    public int hashCode() {
+        return ID.hashCode();
     }
 
     @Override
@@ -285,10 +290,5 @@ public class FastBlurTransformation extends BitmapTransformation {
         }
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
         return bitmap;
-    }
-
-    @Override
-    public int hashCode() {
-        return ID.hashCode();
     }
 }
