@@ -9,8 +9,8 @@
         android:id="@+id/icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:paddingLeft="10dip"
-        android:paddingTop="10dip"
+        android:paddingLeft="8dip"
+        android:paddingTop="8dip"
         android:paddingRight="5dip"
         android:layout_gravity="left" />
 
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:padding="10dip"
+        android:padding="8dip"
         android:layout_gravity="center" />
 
 </LinearLayout>
