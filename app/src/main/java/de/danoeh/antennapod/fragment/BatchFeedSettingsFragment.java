@@ -125,6 +125,7 @@ public class BatchFeedSettingsFragment extends Fragment {
         private Feed feed;
         private Disposable disposable;
         private FeedPreferences feedPreferences;
+        private FeedSettingsPreferenceFragment feedSettingsPreferenceFragment = this;
 
         public static FeedSettingsPreferenceFragment newInstance(List<Feed> feeds) {
             FeedSettingsPreferenceFragment fragment = new FeedSettingsPreferenceFragment();
@@ -210,7 +211,13 @@ public class BatchFeedSettingsFragment extends Fragment {
                     protected void onConfirmed(int skipIntro, int skipEnding) {
                         feedPreferences.setFeedSkipIntro(skipIntro);
                         feedPreferences.setFeedSkipEnding(skipEnding);
-                        DBWriter.setFeedPreferences(feedPreferences);
+                        feedSettingsPreferenceFragment.saveFeedPreferences(new OnSetFeedPreferenceListener() {
+                            @Override
+                            public void onSetFeedPreferenceListener(FeedPreferences feedPreferences) {
+                                feedPreferences.setFeedSkipIntro(skipIntro);
+                                feedPreferences.setFeedSkipEnding(skipEnding);
+                            }
+                        });
                         EventBus.getDefault().post(
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
@@ -237,9 +244,14 @@ public class BatchFeedSettingsFragment extends Fragment {
             feedPlaybackSpeedPreference.setEntryValues(values);
             feedPlaybackSpeedPreference.setEntries(entries);
             feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
-                DBWriter.setFeedPreferences(feedPreferences);
-                updatePlaybackSpeedPreference();
+                feedSettingsPreferenceFragment.saveFeedPreferences(new OnSetFeedPreferenceListener() {
+                    @Override
+                    public void onSetFeedPreferenceListener(FeedPreferences feedPreferences) {
+                        feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
+
+                    }
+                });
+                updatePlaybackSpeedPreference(); // TODO
                 EventBus.getDefault().post(
                         new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
                 return false;
@@ -251,8 +263,13 @@ public class BatchFeedSettingsFragment extends Fragment {
                 new EpisodeFilterDialog(getContext(), feedPreferences.getFilter()) {
                     @Override
                     protected void onConfirmed(FeedFilter filter) {
-                        feedPreferences.setFilter(filter);
-                        DBWriter.setFeedPreferences(feedPreferences);
+                        feedPreferences.setFilter(filter); // need to update the default feed preferences
+                        feedSettingsPreferenceFragment.saveFeedPreferences(new OnSetFeedPreferenceListener() {
+                            @Override
+                            public void onSetFeedPreferenceListener(FeedPreferences feedPreferences) {
+                                feedPreferences.setFilter(filter);
+                            }
+                        });
                     }
                 }.show();
                 return false;
@@ -266,9 +283,11 @@ public class BatchFeedSettingsFragment extends Fragment {
                         feedPreferences.getUsername(), feedPreferences.getPassword()) {
                     @Override
                     protected void onConfirmed(String username, String password) {
-                        feedPreferences.setUsername(username);
-                        feedPreferences.setPassword(password);
-                        DBWriter.setFeedPreferences(feedPreferences);
+                        saveFeedPreferences(feedPreferences -> {
+                            feedPreferences.setUsername(username);
+                            feedPreferences.setPassword(password);
+                        });
+
                     }
                 }.show();
                 return false;
@@ -277,18 +296,22 @@ public class BatchFeedSettingsFragment extends Fragment {
 
         private void setupAutoDeletePreference() {
             findPreference(PREF_AUTO_DELETE).setOnPreferenceChangeListener((preference, newValue) -> {
+                FeedPreferences.AutoDeleteAction autoDeleteAction = null;
                 switch ((String) newValue) {
                     case "global":
-                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.GLOBAL);
+                        autoDeleteAction = FeedPreferences.AutoDeleteAction.GLOBAL;
                         break;
                     case "always":
-                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.YES);
+                        autoDeleteAction = FeedPreferences.AutoDeleteAction.YES;
                         break;
                     case "never":
-                        feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+                        autoDeleteAction = FeedPreferences.AutoDeleteAction.NO;
                         break;
                 }
-                DBWriter.setFeedPreferences(feedPreferences);
+                FeedPreferences.AutoDeleteAction finalAutoDeleteAction = autoDeleteAction;
+                saveFeedPreferences(feedPreferences -> {
+                    feedPreferences.setAutoDeleteAction(finalAutoDeleteAction);
+                });
                 updateAutoDeleteSummary();
                 return false;
             });
@@ -323,18 +346,22 @@ public class BatchFeedSettingsFragment extends Fragment {
         private void setupVolumeReductionPreferences() {
             ListPreference volumeReductionPreference = findPreference("volumeReduction");
             volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                VolumeAdaptionSetting volumeAdaptionSetting = null;
                 switch ((String) newValue) {
                     case "off":
-                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.OFF);
+                        volumeAdaptionSetting = VolumeAdaptionSetting.OFF;
                         break;
                     case "light":
-                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
+                        volumeAdaptionSetting = VolumeAdaptionSetting.LIGHT_REDUCTION;
                         break;
                     case "heavy":
-                        feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
+                        volumeAdaptionSetting = VolumeAdaptionSetting.HEAVY_REDUCTION;
                         break;
                 }
-                DBWriter.setFeedPreferences(feedPreferences);
+                VolumeAdaptionSetting finalVolumeAdaptionSetting = volumeAdaptionSetting;
+                saveFeedPreferences(feedPreferences -> {
+                    feedPreferences.setVolumeAdaptionSetting(finalVolumeAdaptionSetting);
+                });
                 updateVolumeReductionValue();
                 EventBus.getDefault().post(
                         new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
@@ -364,8 +391,9 @@ public class BatchFeedSettingsFragment extends Fragment {
             pref.setChecked(feedPreferences.getKeepUpdated());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
-                feedPreferences.setKeepUpdated(checked);
-                DBWriter.setFeedPreferences(feedPreferences);
+                saveFeedPreferences(feedPreferences -> {
+                    feedPreferences.setKeepUpdated(checked);
+                });
                 pref.setChecked(checked);
                 return false;
             });
@@ -395,8 +423,9 @@ public class BatchFeedSettingsFragment extends Fragment {
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
 
-                feedPreferences.setAutoDownload(checked);
-                DBWriter.setFeedPreferences(feedPreferences);
+                saveFeedPreferences(feedPreferences -> {
+                    feedPreferences.setAutoDownload(checked);
+                });
                 updateAutoDownloadEnabled();
                 ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(getActivity(), checked);
                 dialog.createNewDialog().show();
@@ -425,8 +454,9 @@ public class BatchFeedSettingsFragment extends Fragment {
             pref.setChecked(feedPreferences.getShowEpisodeNotification());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
-                feedPreferences.setShowEpisodeNotification(checked);
-                DBWriter.setFeedPreferences(feedPreferences);
+                saveFeedPreferences(feedPreferences ->{
+                    feedPreferences.setShowEpisodeNotification(checked);
+                });
                 pref.setChecked(checked);
                 return false;
             });
@@ -446,6 +476,15 @@ public class BatchFeedSettingsFragment extends Fragment {
             @Override
             public void onConfirmButtonPressed(DialogInterface dialog) {
                 DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
+            }
+        }
+        interface OnSetFeedPreferenceListener {
+            void onSetFeedPreferenceListener(FeedPreferences feedPreferences);
+        }
+        private void saveFeedPreferences(OnSetFeedPreferenceListener onSetFeedPreferenceListener) {
+            for (Feed feed : feeds) {
+                onSetFeedPreferenceListener.onSetFeedPreferenceListener(feed.getPreferences());
+                DBWriter.setFeedPreferences(feed.getPreferences());
             }
         }
     }

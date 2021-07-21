@@ -157,11 +157,21 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
             }
 
-            if (drawerItem.getCounter() > 0) {
-                count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
-                count.setVisibility(View.VISIBLE);
-            } else {
-                count.setVisibility(View.GONE);
+            if(!inActionMode())
+                if (drawerItem.getCounter() > 0) {
+                    count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
+                    count.setVisibility(View.VISIBLE);
+                    count.
+                } else {
+                    count.setVisibility(View.GONE);
+                }
+            else {
+                if (isSelected(position)) {
+                    count.setPrimaryText("\u2713");
+                    count.setVisibility(View.VISIBLE);
+                } else {
+                    count.setVisibility(View.GONE);
+                }
             }
 
         if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
