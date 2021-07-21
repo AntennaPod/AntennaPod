@@ -2,9 +2,6 @@ package de.danoeh.antennapod.net.sync.nextcloud;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.google.gson.GsonBuilder;
 import com.nextcloud.android.sso.AccountImporter;
@@ -35,13 +32,11 @@ import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.net.sync.model.SyncServiceException;
 import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 
-import static java.time.Instant.now;
-
 public class NextcloudSyncService implements ISyncService {
 
     private final Context context;
     private NextcloudAPI nextcloudApi;
-    private String userAgent;
+    private final String userAgent;
 
     public NextcloudSyncService(Context context, String userAgent) {
         this.context = context;
@@ -88,7 +83,6 @@ public class NextcloudSyncService implements ISyncService {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public SubscriptionChanges getSubscriptionChanges(long lastSync) throws SyncServiceException {
         try {
@@ -126,7 +120,6 @@ public class NextcloudSyncService implements ISyncService {
         return header;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public UploadChangesResponse uploadSubscriptionChanges(List<String> addedFeeds, List<String> removedFeeds) {
         try {
@@ -149,7 +142,7 @@ public class NextcloudSyncService implements ISyncService {
             e.printStackTrace();
         }
 
-        return new GpodnetUploadChangesResponse(now().getEpochSecond(), new HashMap<>());
+        return new GpodnetUploadChangesResponse(System.currentTimeMillis() / 1000, new HashMap<>());
     }
 
     @Override
@@ -181,7 +174,6 @@ public class NextcloudSyncService implements ISyncService {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> queuedEpisodeActions) {
         try {
@@ -203,7 +195,7 @@ public class NextcloudSyncService implements ISyncService {
         }
 
 
-        return new NextcloudGpodderEpisodeActionPostResponse(now().getEpochSecond());
+        return new NextcloudGpodderEpisodeActionPostResponse(System.currentTimeMillis() / 1000);
     }
 
     private String createBody(String data) {
