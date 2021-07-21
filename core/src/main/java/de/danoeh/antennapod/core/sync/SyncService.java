@@ -101,9 +101,8 @@ public class SyncService extends Worker {
                 .edit();
         String selectedService = getSelectedSyncProviderKey(getApplicationContext());
         ISyncService activeSyncProvider = getActiveSyncProvider(selectedService, this.syncServices);
-        getResultForService(prefs, activeSyncProvider);
 
-        return Result.success();
+        return getResultForService(prefs, activeSyncProvider);
     }
 
     private Result getResultForService(SharedPreferences.Editor prefs, ISyncService syncServiceImpl) {
