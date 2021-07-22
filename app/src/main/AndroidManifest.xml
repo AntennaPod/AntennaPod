@@ -353,4 +353,11 @@
             android:resource="@xml/actions" />
     </application>
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/*" />
+        </intent>
+    </queries>
+
 </manifest>
