@@ -1,7 +1,12 @@
 package de.test.antennapod.ui;
 
 import android.content.Intent;
+import android.view.View;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.espresso.matcher.PreferenceMatchers;
@@ -9,6 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.awaitility.Awaitility;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,6 +45,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
@@ -51,7 +58,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class BatchFeedSettingsTest {
     private UITestUtils uiTestUtils;
     private List<Feed> feeds;
-
+    FeedPreferences defaultFeedPreferences = new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
+            VolumeAdaptionSetting.OFF, null, null);
     @Rule
     public IntentsTestRule<MainActivity> activityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
@@ -66,9 +74,13 @@ public class BatchFeedSettingsTest {
         uiTestUtils.addLocalFeedData(false);
         feeds = new ArrayList<>();
         feeds.add(uiTestUtils.hostedFeeds.get(0));
+        feeds.get(0).setPreferences((defaultFeedPreferences));
         feeds.add(uiTestUtils.hostedFeeds.get(1));
+        feeds.get(1).setPreferences((defaultFeedPreferences));
         feeds.add(uiTestUtils.hostedFeeds.get(2));
+        feeds.get(2).setPreferences((defaultFeedPreferences));
         feeds.add(uiTestUtils.hostedFeeds.get(3));
+        feeds.get(3).setPreferences((defaultFeedPreferences));
 
         Intent intent = new Intent();
 //        intent.putExtra(MainActivity.EXTRA_FEED_ID, feeds.getId());
@@ -84,34 +96,39 @@ public class BatchFeedSettingsTest {
     }
 
     @Test
-    public void testClickFeedSettings() {
+    public void testClick_keepUpdatedPreference() {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        FeedPreferences defaultFeedPreferences = new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
-                VolumeAdaptionSetting.OFF, null, null);
+
         FeedPreferences expectedFeedPreferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
                 VolumeAdaptionSetting.OFF, null, null);
-        expectedFeedPreferences.setKeepUpdated(true);
-        Feed feed1 = feeds.get(0);
-
-//        Assert.assertEquals(feed1.getPreferences(), );
-
+        expectedFeedPreferences.setKeepUpdated(false);
 //        clickPreference(R.string.keep_updated);
-//
-//        clickPreference(R.string.keep_updated);
-        onData(PreferenceMatchers.withKey("keepUpdated")).perform();
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new CustomViewAction()));
+
         Awaitility.await().atMost(4000, MILLISECONDS)
                 .until(() -> {
                     for (Feed feed : feeds) {
-                        Assert.assertEquals(expectedFeedPreferences.getKeepUpdated(), true);
+                        Assert.assertEquals(expectedFeedPreferences.getKeepUpdated(), feed.getPreferences().getKeepUpdated());
+                    }
+                    return true;
+                });
+
+        expectedFeedPreferences.setKeepUpdated(true);
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, new CustomViewAction()));
+
+        Awaitility.await().atMost(4000, MILLISECONDS)
+                .until(() -> {
+                    for (Feed feed : feeds) {
+                        Assert.assertEquals(expectedFeedPreferences.getKeepUpdated(), feed.getPreferences().getKeepUpdated());
                     }
                     return true;
                 });
         try {
-            Thread.sleep(20000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -129,5 +146,45 @@ public class BatchFeedSettingsTest {
 //
 //        clickPreference(R.string.feed_volume_reduction);
 //        onView(withText(R.string.cancel_label)).perform(click());
+    }
+
+
+    @Test
+    public void testClick_playBackSpeed() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        clickPreference(R.string.playback_speed);
+//        final String[] speeds = activityRule.getActivity().getResources().getStringArray(R.array.playback_speed_values);
+//        String[] values = new String[speeds.length + 1];
+//        values[0] = BatchFeedSettingsFragment.FeedSettingsPreferenceFragment.SPEED_FORMAT.format(SPEED_USE_GLOBAL);
+        onData(allOf()).perform(click());
+//        onView(withText(R.string.cancel_label)).perform(click());
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    class CustomViewAction implements ViewAction {
+
+        @Override
+        public Matcher<View> getConstraints() {
+            return null;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+
+        @Override
+        public void perform(UiController uiController, View view) {
+            SwitchCompat switchCompat = view.findViewById(android.R.id.switch_widget);
+            view.performClick();
+        }
     }
 }

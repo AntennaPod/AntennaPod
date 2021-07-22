@@ -118,7 +118,7 @@ public class BatchFeedSettingsFragment extends Fragment {
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
-        private static final DecimalFormat SPEED_FORMAT =
+        public static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
         private List<Feed> feeds;

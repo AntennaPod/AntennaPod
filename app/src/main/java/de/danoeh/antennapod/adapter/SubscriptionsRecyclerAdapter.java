@@ -161,7 +161,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 if (drawerItem.getCounter() > 0) {
                     count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                     count.setVisibility(View.VISIBLE);
-                    count.
+//                    count.
                 } else {
                     count.setVisibility(View.GONE);
                 }
