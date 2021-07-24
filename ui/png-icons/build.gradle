@@ -4,7 +4,7 @@ apply from: "../../common.gradle"
 android {
     defaultConfig {
         vectorDrawables.useSupportLibrary false
-        vectorDrawables.generatedDensities = null
+        vectorDrawables.generatedDensities = ["xhdpi"]
     }
 }
 
