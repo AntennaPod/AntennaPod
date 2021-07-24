@@ -75,7 +75,6 @@ public class AudioPlayerFragment extends Fragment implements
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
     private static final int NUM_CONTENT_FRAGMENTS = 2;
-    private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
@@ -136,7 +135,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         setupLengthTextView();
         setupControlButtons();
-        setupPlaybackSpeedButton();
+        butPlaybackSpeed.setOnClickListener(v -> new VariableSpeedDialog().show(getChildFragmentManager(), null));
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
@@ -244,40 +243,6 @@ public class AudioPlayerFragment extends Fragment implements
         });
     }
 
-    private void setupPlaybackSpeedButton() {
-        butPlaybackSpeed.setOnClickListener(v -> {
-            if (controller == null) {
-                return;
-            }
-            List<Float> availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-            float currentSpeed = controller.getCurrentPlaybackSpeedMultiplier();
-
-            int newSpeedIndex = 0;
-            while (newSpeedIndex < availableSpeeds.size()
-                    && availableSpeeds.get(newSpeedIndex) < currentSpeed + EPSILON) {
-                newSpeedIndex++;
-            }
-
-            float newSpeed;
-            if (availableSpeeds.size() == 0) {
-                newSpeed = 1.0f;
-            } else if (newSpeedIndex == availableSpeeds.size()) {
-                newSpeed = availableSpeeds.get(0);
-            } else {
-                newSpeed = availableSpeeds.get(newSpeedIndex);
-            }
-
-            controller.setPlaybackSpeed(newSpeed);
-            loadMediaInfo();
-        });
-        butPlaybackSpeed.setOnLongClickListener(v -> {
-            new VariableSpeedDialog().show(getChildFragmentManager(), null);
-            return true;
-        });
-        butPlaybackSpeed.setVisibility(View.VISIBLE);
-        txtvPlaybackSpeed.setVisibility(View.VISIBLE);
-    }
-
     protected void updatePlaybackSpeedButton(Playable media) {
         if (butPlaybackSpeed == null || controller == null) {
             return;
@@ -286,8 +251,6 @@ public class AudioPlayerFragment extends Fragment implements
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
         butPlaybackSpeed.setSpeed(speed);
-        butPlaybackSpeed.setVisibility(View.VISIBLE);
-        txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     private void loadMediaInfo() {
