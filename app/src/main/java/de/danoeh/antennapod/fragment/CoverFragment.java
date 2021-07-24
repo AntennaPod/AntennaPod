@@ -161,7 +161,9 @@ public class CoverFragment extends Fragment {
             int animUnit = 1500;
             if (lines > txtvEpisodeTitle.getMaxLines()) {
                 ObjectAnimator verticalMarquee = ObjectAnimator.ofInt(
-                        txtvEpisodeTitle, "scrollY", 0, txtvEpisodeTitle.getHeight())
+                        txtvEpisodeTitle, "scrollY", 0, (lines - txtvEpisodeTitle.getMaxLines()) * (
+                                (txtvEpisodeTitle.getHeight() - txtvEpisodeTitle.getPaddingTop()
+                                        - txtvEpisodeTitle.getPaddingBottom()) / txtvEpisodeTitle.getMaxLines()))
                         .setDuration(lines * animUnit);
                 ObjectAnimator fadeOut = ObjectAnimator.ofFloat(
                         txtvEpisodeTitle, "alpha", 0);
