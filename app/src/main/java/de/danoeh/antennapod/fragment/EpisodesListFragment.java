@@ -204,8 +204,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
-        int distance = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
-        swipeRefreshLayout.setDistanceToTriggerSync(distance);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
