@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cover_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:id="@+id/cover_fragment"
     android:padding="8dp"
     android:gravity="center">
 
@@ -57,7 +57,6 @@
             android:id="@+id/txtvEpisodeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
             android:ellipsize="none"
             android:gravity="center_horizontal"
             android:maxLines="2"
@@ -125,6 +124,7 @@
                 android:text="@string/shownotes_label"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -168,6 +168,7 @@
                 android:contentDescription="@string/next_chapter"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_chapter_next" />
+
         </LinearLayout>
 
     </LinearLayout>

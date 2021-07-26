@@ -13,6 +13,7 @@
   <string name="new_label">Neu</string>
   <string name="settings_label">Einstellungen</string>
   <string name="downloads_label">Downloads</string>
+  <string name="open_autodownload_settings">Einstellungen öffnen</string>
   <string name="downloads_completed_label">Beendet</string>
   <string name="downloads_log_label">Log</string>
   <string name="subscriptions_label">Abonnements</string>
@@ -71,6 +72,8 @@
   <string name="no">Nein</string>
   <string name="reset">Reset</string>
   <string name="url_label">URL</string>
+  <string name="support_funding_label">Unterstützen</string>
+  <string name="support_podcast">Diesen Podcast unterstützen</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
   <string name="refresh_label">Aktualisieren</string>
@@ -79,6 +82,7 @@
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="description_label">Beschreibung</string>
   <string name="shownotes_label">Shownotes</string>
+  <string name="shownotes_contentdescription">Wische nach oben, um die Shownotes zu lesen</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="processing_label">Verarbeite</string>
   <string name="close_label">Schließen</string>
@@ -159,6 +163,7 @@
 Tippen, um Details anzuzeigen.</string>
   <string name="open_podcast">Podcast öffnen</string>
   <string name="please_wait_for_data">Bitte warte, bis die Daten geladen sind</string>
+  <string name="updates_disabled_label">Updates deaktiviert</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <plurals name="downloading_batch_label">
@@ -361,6 +366,16 @@ Tippen, um Details anzuzeigen.</string>
   <string name="playback_pref_sum">Kopfhörersteuerung, Sprungintervall, Warteschlange</string>
   <string name="network_pref">Netzwerk</string>
   <string name="network_pref_sum">Aktualisierungsintervall, Download-Steuerung, Mobile Daten</string>
+  <string name="feed_refresh_title">Podcasts aktualisieren</string>
+  <string name="feed_refresh_sum">Lege ein Intervall oder eine Tageszeit zur automatischen Aktualisierung der Podcasts fest</string>
+  <string name="feed_refresh_interval">Intervall</string>
+  <string name="feed_refresh_time">Zeit</string>
+  <string name="feed_refresh_never">Niemals</string>
+  <string name="feed_refresh_interval_at">um %1$s</string>
+  <plurals name="feed_refresh_every_x_hours">
+    <item quantity="one">Jede Stunde</item>
+    <item quantity="other">Alle %d Stunden</item>
+  </plurals>
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer oder Bluetooth getrennt</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
@@ -493,6 +508,10 @@ Tippen, um Details anzuzeigen.</string>
   <string name="not_auto_downloaded">Nicht automatisch heruntergeladen</string>
   <string name="kept_updated">Aktuell gehalten</string>
   <string name="not_kept_updated">Nicht aktuell gehalten</string>
+  <string name="new_episode_notification_enabled">Benachrichtigung aktiviert</string>
+  <string name="new_episode_notification_disabled">Benachrichtigung deaktiviert</string>
+  <string name="pref_feed_settings_dialog_msg">Diese Einstellung wird pro Podcast festgelegt. Du kannst sie ändern, indem du die Podcast-Seite öffnest.</string>
+  <string name="pref_contribute">Mitwirken</string>
   <!--About screen-->
   <string name="about_pref">Über</string>
   <string name="antennapod_version">AntennaPod-Version</string>
@@ -626,9 +645,14 @@ Tippen, um Details anzuzeigen.</string>
   <string name="position">Position: %1$s</string>
   <string name="apply_action">Aktion anwenden</string>
   <string name="play_chapter">Kapitel abspielen</string>
+  <string name="prev_chapter">Vorheriges Kapitel</string>
+  <string name="next_chapter">Nächstes Kapitel</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
+  <string name="feed_folders_label">Ordner</string>
+  <string name="feed_folders_summary">Ändere die Ordner, in denen dieser Podcast angezeigt wird.</string>
+  <string name="feed_folders_include_root">In Hauptliste anzeigen</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>
   <string name="episode_filters_description">Liste von Wörtern, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
