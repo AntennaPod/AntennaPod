@@ -74,7 +74,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
                 return R.drawable.nextcloud_logo_svg;
             default:
-                return R.drawable.ic_notification_sync;
+                return R.drawable.ic_cloud;
         }
     }
 
