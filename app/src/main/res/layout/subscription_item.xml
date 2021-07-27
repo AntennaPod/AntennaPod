@@ -10,8 +10,8 @@
 
     <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="fitCenter"
         android:background="@color/non_square_icon_background"
         tools:src="@mipmap/ic_launcher_round"
