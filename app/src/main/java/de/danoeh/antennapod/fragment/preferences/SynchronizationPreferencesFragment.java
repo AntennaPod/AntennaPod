@@ -68,10 +68,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         EventBus.getDefault().register(this);
     }
 
-    private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
-        return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
-    }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -210,11 +206,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         final boolean loggedIn = SyncService.isProviderConnected(getContext());
         findPreference(PREFERENCE_LOGIN).setVisible(!loggedIn);
 
-        int icon = getIconForSelectedSyncProvider(getSelectedSyncProviderKey());
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
-        preferenceHeader.setIcon(icon);
-        int headerSummary = getHeaderSummary(getSelectedSyncProviderKey());
-        preferenceHeader.setSummary(headerSummary);
+        preferenceHeader.setIcon(getIconForSelectedSyncProvider(getSelectedSyncProviderKey()));
+        preferenceHeader.setSummary(getHeaderSummary(getSelectedSyncProviderKey()));
 
         boolean isGpodderServiceSelected = isGpodnetSyncProviderSelected();
         Preference gpodnetSetLoginPreference = findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION);
@@ -254,6 +248,10 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                 return "";
         }
 
+    }
+
+    private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
+        return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
     }
 
     private int getHeaderSummary(String currentSyncProviderKey) {
