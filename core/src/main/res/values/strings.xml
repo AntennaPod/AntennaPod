@@ -452,7 +452,6 @@
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="pref_gpodnet_sync_changes_title">Synchronize now</string>
     <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
-    <string name="sync_provider_dialog_choice_nextcloud_description">Use Nextcloud to sync. You need an account on a nextcloud server that has gpoddersync app installed.</string>
     <string name="pref_nextcloud_gpodder_login_status"><![CDATA[Logged in as <i>%1$s</i>. <br/><br/>%2$s]]></string>
     <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
@@ -841,7 +840,7 @@
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
     <string name="synchronization">Synchronization</string>
     <string name="preference_synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
-    <string name="preference_synchronization_summary_nextcloud">Your subscriptions and episode states are synchronized via the gpoddersync app on a nextcloud server</string>
+    <string name="preference_synchronization_summary_nextcloud">Gpoddersync app which needs to be installed on a nextcloud server. Both of which are independent of the AntennaPod project</string>
     <string name="synchronization_choose_and_login_summary">Choose a sync provider and login</string>
     <string name="synchronization_choose_and_login_title">Choose sync provider</string>
     <string name="pref_synchronization_logout_summary">You can choose your sync provider again once you have logged out</string>
