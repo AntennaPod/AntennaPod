@@ -39,9 +39,9 @@ import jp.shts.android.library.TriangleLabelView;
 /**
  * Adapter for subscriptions
  */
-public class SubscriptionsRecyclerAdapter extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder> implements View.OnCreateContextMenuListener
-{
-    /** the position in the view that holds the add item; 0 is the first, -1 is the last position */
+public class SubscriptionsRecyclerAdapter
+        extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
+        implements View.OnCreateContextMenuListener {
     private static final String TAG = "SubscriptionsRecyclerAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
