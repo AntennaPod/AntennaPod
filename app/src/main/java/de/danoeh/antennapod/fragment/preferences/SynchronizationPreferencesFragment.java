@@ -24,9 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.nextcloud.android.sso.AccountImporter;
 import com.nextcloud.android.sso.exceptions.AccountImportCancelledException;
 import com.nextcloud.android.sso.exceptions.AndroidGetAccountsPermissionNotGranted;
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
 import com.nextcloud.android.sso.exceptions.NextcloudFilesAppNotInstalledException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
 import com.nextcloud.android.sso.helper.SingleAccountHelper;
 import com.nextcloud.android.sso.ui.UiExceptionManager;
 
@@ -42,7 +40,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
-import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -219,7 +216,12 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGOUT).setEnabled(loggedIn);
         if (loggedIn) {
             String format = getActivity().getString(R.string.pref_nextcloud_gpodder_login_status);
-            String summary = String.format(format, getUsernameFromSelectedSyncProvider(getSelectedSyncProviderKey()),
+            String summary = String.format(
+                    format,
+                    SynchronizationProviderViewData.getUsernameFromSelectedSyncProvider(
+                            getContext(),
+                            getSelectedSyncProviderKey()
+                    ),
                     getActivity().getString(R.string.pref_synchronization_logout_summary));
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
@@ -230,32 +232,17 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         }
     }
 
-    private String getUsernameFromSelectedSyncProvider(String currentSyncProviderKey) {
-        switch (currentSyncProviderKey) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
-                return GpodnetPreferences.getUsername();
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
-                try {
-                    return SingleAccountHelper.getCurrentSingleSignOnAccount(getContext()).name;
-                } catch (NextcloudFilesAppAccountNotFoundException e) {
-                    e.printStackTrace();
-                    return "";
-                } catch (NoCurrentAccountSelectedException e) {
-                    e.printStackTrace();
-                    return "";
-                }
-            default:
-                return "";
-        }
 
-    }
 
     private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
         return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
     }
 
     private int getHeaderSummary(String currentSyncProviderKey) {
-        return SynchronizationProviderViewData.getSynchronizationProviderHeaderSummary(getContext(), currentSyncProviderKey);
+        return SynchronizationProviderViewData.getSynchronizationProviderHeaderSummary(
+                getContext(),
+                currentSyncProviderKey
+        );
     }
 
     private boolean isGpodnetSyncProviderSelected() {
