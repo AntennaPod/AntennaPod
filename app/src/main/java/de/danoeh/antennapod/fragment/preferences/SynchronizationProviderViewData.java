@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
@@ -12,15 +11,20 @@ import de.danoeh.antennapod.R;
 public class SynchronizationProviderViewData {
 
     public static int getSynchronizationProviderHeaderSummary(Context context, String provider) {
+        return getSynchronizationProviderPropertyId(context, provider, R.array.sync_provider_summary, R.string.class);
+    }
 
+    public static int getSynchronizationProviderIcon(Context context, String provider) {
+        return getSynchronizationProviderPropertyId(context, provider, R.array.sync_provider_icon, R.drawable.class);
+    }
+
+    private static int getSynchronizationProviderPropertyId(Context context, String provider, int propertyArrayId, Class type) {
         final String[] availableProviders = context.getResources().getStringArray(R.array.sync_provider_keys);
-        int sync_provider_property = R.array.sync_provider_summary;
-        LinkedHashMap<String, String> syncProvidersSummary = getSyncProviderValuesByProperty(context, availableProviders, sync_provider_property);
-        String resourceKey = syncProvidersSummary.get(provider);
+        final LinkedHashMap<String, String> syncProvidersValues = getSyncProviderValuesByProperty(context, availableProviders, propertyArrayId);
+        String resourceKey = syncProvidersValues.get(provider);
         int stringId = 0;
         try {
-            Class res = R.string.class;
-            Field field = res.getField(resourceKey);
+            Field field = type.getField(resourceKey);
             stringId = field.getInt(null);
         } catch (Exception e) {
             Log.d("SyncService", "view data for syncprovider missing");

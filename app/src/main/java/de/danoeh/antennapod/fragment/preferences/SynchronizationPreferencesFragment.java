@@ -69,14 +69,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
-        switch (currentSyncProviderKey) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
-                return R.drawable.gpodder_icon;
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
-                return R.drawable.nextcloud_logo_svg;
-            default:
-                return R.drawable.ic_cloud;
-        }
+        return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
     }
 
     @Override
