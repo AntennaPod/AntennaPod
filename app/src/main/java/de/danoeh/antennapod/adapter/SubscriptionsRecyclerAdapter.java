@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -147,6 +150,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
         }
 
+        @SuppressLint("ResourceAsColor")
         public void onBind(NavDrawerData.DrawerItem drawerItem, int position) {
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
@@ -161,18 +165,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 if (drawerItem.getCounter() > 0) {
                     count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                     count.setVisibility(View.VISIBLE);
-//                    count.
                 } else {
                     count.setVisibility(View.GONE);
                 }
-            else {
-                if (isSelected(position)) {
-                    count.setPrimaryText("\u2713");
-                    count.setVisibility(View.VISIBLE);
-                } else {
-                    count.setVisibility(View.GONE);
-                }
-            }
 
         if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
             Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
@@ -190,22 +185,26 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                     .withCoverView(imageView)
                     .load();
         }
-
+        float imageViewSelectedAlpha = 0.4f;
         if (inActionMode()) {
             selectCheckbox.setVisibility(View.VISIBLE);
             if (isSelected(position)) {
                 selectCheckbox.setChecked(true);
+                imageView.setAlpha(imageViewSelectedAlpha);
             } else {
                 selectCheckbox.setChecked(false);
+                imageView.setAlpha(1f);
             }
             selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     setSelected(position, isChecked);
+                    imageView.setAlpha(isChecked ? imageViewSelectedAlpha : 1f);
                 }
             });
         } else {
             selectCheckbox.setVisibility(View.GONE);
+            imageView.setAlpha(1f);
         }
 
         itemView.setOnLongClickListener(v -> {
