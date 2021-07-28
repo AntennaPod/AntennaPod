@@ -325,4 +325,16 @@
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
     </string-array>
+
+    <string-array name="sync_provider_keys">
+        <item>unset</item>
+        <item>GPodder.net</item>
+        <item>Nextcloud</item>
+    </string-array>
+
+    <string-array name="sync_provider_summary">
+        <item>preference_synchronization_summary_unchoosen</item>
+        <item>gpodnet_description</item>
+        <item>preference_synchronization_summary_nextcloud</item>
+    </string-array>
 </resources>

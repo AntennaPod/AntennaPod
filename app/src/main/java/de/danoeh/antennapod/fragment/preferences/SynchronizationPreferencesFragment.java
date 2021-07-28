@@ -51,6 +51,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     private static final String PREFERENCE_SYNC = "pref_synchronization_sync";
     private static final String PREFERENCE_FORCE_FULL_SYNC = "pref_synchronization_force_full_sync";
     private static final String PREFERENCE_LOGOUT = "pref_synchronization_logout";
+    public static final String SYNC_PROVIDER_UNSET = "unset";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -198,7 +199,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             GpodnetPreferences.logout();
             Snackbar.make(getView(), R.string.pref_gpodnet_logout_toast, Snackbar.LENGTH_LONG).show();
             SyncService.setIsProviderConnected(getContext(), false);
-            setSelectedSyncProvider("n/a");
+            setSelectedSyncProvider(SYNC_PROVIDER_UNSET);
             updateScreen();
             return true;
         });
@@ -219,7 +220,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         int icon = getIconForSelectedSyncProvider(getSelectedSyncProviderKey());
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
         preferenceHeader.setIcon(icon);
-        preferenceHeader.setSummary(getHeaderSummary(getSelectedSyncProviderKey()));
+        int headerSummary = getHeaderSummary(getSelectedSyncProviderKey());
+        preferenceHeader.setSummary(headerSummary);
 
         boolean isGpodderServiceSelected = isGpodnetSyncProviderSelected();
         Preference gpodnetSetLoginPreference = findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION);
@@ -262,14 +264,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private int getHeaderSummary(String currentSyncProviderKey) {
-        switch (currentSyncProviderKey) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
-                return R.string.gpodnet_description;
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
-                return R.string.preference_synchronization_summary_nextcloud;
-            default:
-                return R.string.preference_synchronization_summary_unchoosen;
-        }
+        return SynchronizationProviderViewData.getSynchronizationProviderHeaderSummary(getContext(), currentSyncProviderKey);
     }
 
     private boolean isGpodnetSyncProviderSelected() {
@@ -279,7 +274,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     private String getSelectedSyncProviderKey() {
         return getActivity()
                 .getSharedPreferences(SyncService.SHARED_PREFERENCES_SYNCHRONIZATION, Activity.MODE_PRIVATE)
-                .getString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, "n/a");
+                .getString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, SYNC_PROVIDER_UNSET);
     }
 
     private void updateLastSyncReport(boolean successful, long lastTime) {
