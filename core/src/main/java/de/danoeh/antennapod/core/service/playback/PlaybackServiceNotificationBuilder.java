@@ -89,12 +89,20 @@ public class PlaybackServiceNotificationBuilder {
                         .apply(new RequestOptions().centerCrop())
                         .submit(iconSize, iconSize)
                         .get();
+            } catch (InterruptedException ignore) {
+                Log.e(TAG, "Media icon loader was interrupted");
             } catch (Throwable tr) {
                 Log.e(TAG, "Error loading the media icon for the notification", tr);
             }
+        } catch (InterruptedException ignore) {
+            Log.e(TAG, "Media icon loader was interrupted");
         } catch (Throwable tr) {
             Log.e(TAG, "Error loading the media icon for the notification", tr);
         }
+    }
+
+    public Bitmap getCachedIcon() {
+        return icon;
     }
 
     private Bitmap getDefaultIcon() {
