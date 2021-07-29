@@ -116,7 +116,6 @@ public class UserPreferences {
 
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
-    public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
     public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
@@ -129,8 +128,6 @@ public class UserPreferences {
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
-    private static final String IMAGE_CACHE_DEFAULT_VALUE = "100";
-    private static final int IMAGE_CACHE_SIZE_MINIMUM = 20;
     private static final String PREF_LEFT_VOLUME = "prefLeftVolume";
     private static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
@@ -614,18 +611,6 @@ public class UserPreferences {
 
     public static boolean isEnableAutodownloadWifiFilter() {
         return Build.VERSION.SDK_INT < 29 && prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
-    }
-
-    public static int getImageCacheSize() {
-        String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
-        int cacheSizeInt = Integer.parseInt(cacheSizeString);
-        // if the cache size is too small the user won't get any images at all
-        // that's bad, force it back to the default.
-        if (cacheSizeInt < IMAGE_CACHE_SIZE_MINIMUM) {
-            prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
-            cacheSizeInt = Integer.parseInt(IMAGE_CACHE_DEFAULT_VALUE);
-        }
-        return cacheSizeInt * 1024 * 1024;
     }
 
     public static int getFastForwardSecs() {
