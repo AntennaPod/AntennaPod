@@ -196,10 +196,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.OpmlFeedChooserActivity"
-            android:label="@string/opml_import_label">
-        </activity>
-        <activity
                 android:name=".activity.BugReportActivity"
                 android:label="@string/bug_report_title">
             <meta-data
