@@ -21,8 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -30,6 +30,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.io.ByteOrderMark;
@@ -53,6 +54,7 @@ public class OpmlImportActivity extends AppCompatActivity {
     private ArrayAdapter<String> listAdapter;
     private MenuItem selectAll;
     private MenuItem deselectAll;
+    private ArrayList<OpmlElement> readElements;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                     checkedCount++;
                 }
             }
-            if(checkedCount == listAdapter.getCount()) {
+            if (checkedCount == listAdapter.getCount()) {
                 selectAll.setVisible(false);
                 deselectAll.setVisible(true);
             } else {
@@ -92,7 +94,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                     if (!checked.valueAt(i)) {
                         continue;
                     }
-                    OpmlElement element = OpmlImportHolder.getReadElements().get(checked.keyAt(i));
+                    OpmlElement element = readElements.get(checked.keyAt(i));
                     Feed feed = new Feed(element.getXmlUrl(), null, element.getText());
                     try {
                         requester.downloadFeed(getApplicationContext(), feed);
@@ -151,8 +153,8 @@ public class OpmlImportActivity extends AppCompatActivity {
 
     private List<String> getTitleList() {
         List<String> result = new ArrayList<>();
-        if (OpmlImportHolder.getReadElements() != null) {
-            for (OpmlElement element : OpmlImportHolder.getReadElements()) {
+        if (readElements != null) {
+            for (OpmlElement element : readElements) {
                 result.add(element.getText());
             }
         }
@@ -220,39 +222,36 @@ public class OpmlImportActivity extends AppCompatActivity {
     /** Starts the import process. */
     private void startImport() {
         viewBinding.progressBar.setVisibility(View.VISIBLE);
-        try {
+
+        Observable.fromCallable(() -> {
             InputStream opmlFileStream = getContentResolver().openInputStream(uri);
             BOMInputStream bomInputStream = new BOMInputStream(opmlFileStream);
             ByteOrderMark bom = bomInputStream.getBOM();
             String charsetName = (bom == null) ? "UTF-8" : bom.getCharsetName();
             Reader reader = new InputStreamReader(bomInputStream, charsetName);
-
-            OpmlImportWorker importWorker = new OpmlImportWorker(this, reader) {
-
-                @Override
-                protected void onPostExecute(ArrayList<OpmlElement> result) {
-                    super.onPostExecute(result);
-                    if (result != null) {
-                        Log.d(TAG, "Parsing was successful");
-                        OpmlImportHolder.setReadElements(result);
-                        listAdapter = new ArrayAdapter<>(OpmlImportActivity.this,
-                                android.R.layout.simple_list_item_multiple_choice,
-                                getTitleList());
-                        viewBinding.feedlist.setAdapter(listAdapter);
-                    } else {
-                        Log.d(TAG, "Parser error occurred");
-                    }
-                    viewBinding.progressBar.setVisibility(View.GONE);
-                }
-            };
-            importWorker.executeAsync();
-        } catch (Exception e) {
-            Log.d(TAG, Log.getStackTraceString(e));
-            String message = getString(R.string.opml_reader_error);
-            new AlertDialog.Builder(this)
-                    .setMessage(message + " " + e.getMessage())
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();
-        }
+            OpmlReader opmlReader = new OpmlReader();
+            ArrayList<OpmlElement> result = opmlReader.readDocument(reader);
+            reader.close();
+            return result;
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            Log.d(TAG, "Parsing was successful");
+                            readElements = result;
+                            listAdapter = new ArrayAdapter<>(OpmlImportActivity.this,
+                                    android.R.layout.simple_list_item_multiple_choice,
+                                    getTitleList());
+                            viewBinding.feedlist.setAdapter(listAdapter);
+                        }, e -> {
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                            alert.setTitle(R.string.error_label);
+                            alert.setMessage(getString(R.string.opml_reader_error) + e.getMessage());
+                            alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+                            alert.create().show();
+                        });
     }
 }
