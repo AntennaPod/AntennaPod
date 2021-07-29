@@ -779,25 +779,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
-            float rightVolume = multiplicator * UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(multiplicator, multiplicator);
         }
 
         @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
         @Override
         public void onSleepTimerReset() {
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
         }
 
         @Override
@@ -1703,10 +1697,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void skipSilence(boolean skipSilence) {
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
-    }
-
-    public void setVolume(float leftVolume, float rightVolume) {
-        mediaPlayer.setVolume(leftVolume, rightVolume);
     }
 
     public float getCurrentPlaybackSpeed() {

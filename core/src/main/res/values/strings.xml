@@ -777,9 +777,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
-    <string name="volume">Volume</string>
-    <string name="left_short">L</string>
-    <string name="right_short">R</string>
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
