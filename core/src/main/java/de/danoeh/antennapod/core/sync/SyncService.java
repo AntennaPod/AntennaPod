@@ -429,16 +429,7 @@ public class SyncService extends Worker {
             return;
         }
 
-        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction = new ArrayMap<>();
-        for (EpisodeAction action : getQueuedEpisodeActions()) {
-            Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
-            EpisodeAction mostRecent = localMostRecentPlayAction.get(key);
-            if (mostRecent == null || mostRecent.getTimestamp() == null) {
-                localMostRecentPlayAction.put(key, action);
-            } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
-                localMostRecentPlayAction.put(key, action);
-            }
-        }
+        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction = createLocalMostRecentPlayActions();
 
         // make sure more recent local actions are not overwritten by older remote actions
         Map<Pair<String, String>, EpisodeAction> mostRecentPlayAction = new ArrayMap<>();
@@ -498,6 +489,21 @@ public class SyncService extends Worker {
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBReader.loadAdditionalFeedItemListData(updatedItems);
         DBWriter.setItemList(updatedItems);
+    }
+
+    private Map<Pair<String, String>, EpisodeAction> createLocalMostRecentPlayActions() {
+        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction;
+        localMostRecentPlayAction = new ArrayMap<>();
+        for (EpisodeAction action : getQueuedEpisodeActions()) {
+            Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
+            EpisodeAction mostRecent = localMostRecentPlayAction.get(key);
+            if (mostRecent == null || mostRecent.getTimestamp() == null) {
+                localMostRecentPlayAction.put(key, action);
+            } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
+                localMostRecentPlayAction.put(key, action);
+            }
+        }
+        return localMostRecentPlayAction;
     }
 
     private void clearErrorNotifications() {
