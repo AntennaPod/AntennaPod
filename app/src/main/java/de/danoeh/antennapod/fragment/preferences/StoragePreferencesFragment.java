@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -41,22 +40,6 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                         setDataFolderText();
                     });
                     return true;
-                }
-        );
-        findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE).setOnPreferenceChangeListener(
-                (preference, o) -> {
-                    if (o instanceof String) {
-                        int newValue = Integer.parseInt((String) o) * 1024 * 1024;
-                        if (newValue != UserPreferences.getImageCacheSize()) {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                            dialog.setTitle(android.R.string.dialog_alert_title);
-                            dialog.setMessage(R.string.pref_restart_required);
-                            dialog.setPositiveButton(android.R.string.ok, null);
-                            dialog.show();
-                        }
-                        return true;
-                    }
-                    return false;
                 }
         );
         findPreference(PREF_IMPORT_EXPORT).setOnPreferenceClickListener(
