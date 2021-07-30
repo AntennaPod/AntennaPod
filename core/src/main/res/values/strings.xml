@@ -111,7 +111,7 @@
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
-    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: %1$s</string>
+    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
