@@ -105,7 +105,6 @@
     <string name="shownotes_label">Shownotes</string>
     <string name="shownotes_contentdescription">swipe up to read shownotes</string>
     <string name="episodes_suffix">\u0020episodes</string>
-    <string name="processing_label">Processing</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
