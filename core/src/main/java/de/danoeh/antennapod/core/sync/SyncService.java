@@ -476,20 +476,19 @@ public class SyncService extends Worker {
                 case PLAY:
                     Pair<String, String> key = new Pair<>(remoteAction.getPodcast(), remoteAction.getEpisode());
                     EpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
-                    if (localMostRecent == null || localMostRecent.getTimestamp() == null
-                            || localMostRecent.getTimestamp().before(remoteAction.getTimestamp())
+                    if (localActionIsYoungerThenRemoteAction(remoteAction, localMostRecent)
                     ) {
-                        EpisodeAction mostRecentAction = resultingMostRecentPlayActions.get(key);
-                        if (
-                                mostRecentAction == null
-                                        || mostRecentAction.getTimestamp() == null
-                                        || (remoteAction.getTimestamp() != null
-                                        && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
-                        ) {
-                            resultingMostRecentPlayActions.put(key, remoteAction);
-                        }
+                        break;
                     }
-                    break;
+                    EpisodeAction mostRecentAction = resultingMostRecentPlayActions.get(key);
+                    if (
+                            mostRecentAction == null
+                                    || mostRecentAction.getTimestamp() == null
+                                    || (remoteAction.getTimestamp() != null
+                                    && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
+                    ) {
+                        resultingMostRecentPlayActions.put(key, remoteAction);
+                    }
                 case DELETE:
                     // NEVER EVER call DBWriter.deleteFeedMediaOfItem() here, leads to an infinite loop
                     break;
@@ -500,6 +499,12 @@ public class SyncService extends Worker {
         }
 
         return resultingMostRecentPlayActions;
+    }
+
+    private boolean localActionIsYoungerThenRemoteAction(EpisodeAction remoteAction, EpisodeAction localMostRecent) {
+        return localMostRecent != null
+                && localMostRecent.getTimestamp() != null
+                && localMostRecent.getTimestamp().after(remoteAction.getTimestamp());
     }
 
     private Map<Pair<String, String>, EpisodeAction> createLocalMostRecentPlayActions() {
