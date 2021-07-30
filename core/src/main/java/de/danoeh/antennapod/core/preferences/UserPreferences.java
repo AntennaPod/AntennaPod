@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
@@ -40,7 +39,6 @@ import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
@@ -468,24 +466,6 @@ public class UserPreferences {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
 
-    public static float getLeftVolume() {
-        int volume = prefs.getInt(PREF_LEFT_VOLUME, 100);
-        return Converter.getVolumeFromPercentage(volume);
-    }
-
-    public static float getRightVolume() {
-        int volume = prefs.getInt(PREF_RIGHT_VOLUME, 100);
-        return Converter.getVolumeFromPercentage(volume);
-    }
-
-    public static int getLeftVolumePercentage() {
-        return prefs.getInt(PREF_LEFT_VOLUME, 100);
-    }
-
-    public static int getRightVolumePercentage() {
-        return prefs.getInt(PREF_RIGHT_VOLUME, 100);
-    }
-
     public static boolean shouldPauseForFocusLoss() {
         return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
     }
@@ -709,14 +689,6 @@ public class UserPreferences {
         }
         prefs.edit()
              .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
-             .apply();
-    }
-
-    public static void setVolume(@IntRange(from = 0, to = 100) int leftVolume,
-                                 @IntRange(from = 0, to = 100) int rightVolume) {
-        prefs.edit()
-             .putInt(PREF_LEFT_VOLUME, leftVolume)
-             .putInt(PREF_RIGHT_VOLUME, rightVolume)
              .apply();
     }
 
