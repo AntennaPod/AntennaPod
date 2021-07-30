@@ -185,7 +185,7 @@ public class SubscriptionsRecyclerAdapter
                     .withCoverView(imageView)
                     .load();
         }
-        float imageViewSelectedAlpha = 0.4f;
+        float imageViewSelectedAlpha = 0.33f;
         if (inActionMode()) {
             selectCheckbox.setVisibility(View.VISIBLE);
             if (isSelected(position)) {

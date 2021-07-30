@@ -54,6 +54,7 @@ import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -146,7 +147,7 @@ public class SubscriptionFragment extends Fragment
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionGridLayout.setLayoutManager(gridLayoutManager);
-//        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
+        gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
@@ -175,15 +176,12 @@ public class SubscriptionFragment extends Fragment
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
                             Snackbar.LENGTH_SHORT);
                     speedDialView.close();
-                } else if (isOpen) {
-//                    Fragment batchFeedSettingsFragment = BatchFeedSettingsFragment.newInstance(subscriptionAdapter.getSelectedItems());
-//                    ((MainActivity) getActivity()).loadChildFragment(batchFeedSettingsFragment, TransitionEffect.SLIDE);
-
                 }
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-
+            new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
             onEndSelectMode();
             subscriptionAdapter.endSelectMode();
             return true;
@@ -237,7 +235,9 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void setColumnNumber(int columns) {
-//        subscriptionGridLayout.setNumColumns(columns);
+        GridLayoutManager gridLayoutManager = (GridLayoutManager) subscriptionGridLayout.getLayoutManager();
+        gridLayoutManager.setSpanCount(columns);
+        subscriptionAdapter.notifyDataSetChanged();
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }

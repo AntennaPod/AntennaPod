@@ -16,6 +16,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.fragment.BatchFeedSettingsFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -63,10 +64,7 @@ public class FeedMultiSelectActionHandler {
 
 
     private void deleteChecked() {
-        int countHasMedia = 0;
-        int countNoMedia = 0;
-        // TODO: 7/28/2021
-        showMessageMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
+        RemoveFeedDialog.show(activity, selectedItems, null);
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {

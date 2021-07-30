@@ -41,25 +41,25 @@ public class RemoveFeedDialog {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                Completable.fromCallable(() -> {
                     for (Feed feed : feeds) {
+                        Completable.fromCallable(() -> {
                                 DBWriter.deleteFeed(context, feed.getId()).get();
+                            return null;
+                        })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        () -> {
+                                            Log.d(TAG, "Feed(s) was deleted");
+                                            if (onSuccess != null) {
+                                                onSuccess.run();
+                                            }
+                                            progressDialog.dismiss();
+                                        }, error -> {
+                                            Log.e(TAG, Log.getStackTraceString(error));
+                                            progressDialog.dismiss();
+                                        });
                     }
-                    return null;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> {
-                            Log.d(TAG, "Feed(s) was deleted");
-                            if (onSuccess != null) {
-                                onSuccess.run();
-                            }
-                            progressDialog.dismiss();
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                            progressDialog.dismiss();
-                        });
                 }
         };
         dialog.createNewDialog().show();

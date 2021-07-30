@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/mark_all_read_item"
-        android:menuCategory="container"
-        android:title="@string/mark_all_read_label"
-        android:icon="@drawable/ic_mark_played"/>
-    <item
         android:id="@+id/remove_item"
         android:menuCategory="container"
         android:title="@string/remove_feed_label"
@@ -20,5 +15,9 @@
         android:menuCategory="container"
         android:title="@string/auto_download_label"
         android:icon="@drawable/ic_download"/>
-
+    <item
+        android:id="@+id/autoDeleteDownload"
+        android:menuCategory="container"
+        android:title="@string/auto_delete_label"
+        android:icon="@drawable/ic_delete_auto"/>
 </menu>
