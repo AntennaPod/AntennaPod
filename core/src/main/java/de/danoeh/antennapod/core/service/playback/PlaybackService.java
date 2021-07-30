@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -41,10 +40,6 @@ import android.view.SurfaceHolder;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +58,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -72,7 +66,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -779,25 +772,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
-            float rightVolume = multiplicator * UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(multiplicator, multiplicator);
         }
 
         @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
         @Override
         public void onSleepTimerReset() {
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
         }
 
         @Override
@@ -1286,81 +1273,43 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP));
     }
 
-    /**
-     * Used by updateMediaSessionMetadata to load notification data in another thread.
-     */
-    private Thread mediaSessionSetupThread;
-
     private void updateMediaSessionMetadata(final Playable p) {
         if (p == null || mediaSession == null) {
             return;
         }
-        if (mediaSessionSetupThread != null) {
-            mediaSessionSetupThread.interrupt();
+
+        MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+        builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
+
+        if (UserPreferences.setLockscreenBackground() && notificationBuilder.isIconCached()) {
+            builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, notificationBuilder.getCachedIcon());
+        } else if (isCasting && !TextUtils.isEmpty(p.getImageLocation())) {
+            // In the absence of metadata art, the controller dialog takes care of creating it.
+            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, p.getImageLocation());
         }
 
-        Runnable mediaSessionSetupTask = () -> {
-            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-            builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
-
-            String imageLocation = p.getImageLocation();
-
-            if (!TextUtils.isEmpty(imageLocation)) {
-                if (UserPreferences.setLockscreenBackground()) {
-                    Bitmap art;
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
-                    try {
-                        art = Glide.with(this)
-                                .asBitmap()
-                                .load(imageLocation)
-                                .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                .get();
-                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                    } catch (Throwable tr1) {
-                        try {
-                            art = Glide.with(this)
-                                    .asBitmap()
-                                    .load(ImageResourceUtils.getFallbackImageLocation(p))
-                                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                    .get();
-                            builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                        } catch (Throwable tr2) {
-                            Log.e(TAG, Log.getStackTraceString(tr2));
-                        }
-                    }
-                } else if (isCasting) {
-                    // In the absence of metadata art, the controller dialog takes care of creating it.
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
-                }
+        if (stateManager.hasReceivedValidStartCommand()) {
+            mediaSession.setSessionActivity(PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
+                    PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
+            try {
+                mediaSession.setMetadata(builder.build());
+            } catch (OutOfMemoryError e) {
+                Log.e(TAG, "Setting media session metadata", e);
+                builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
+                mediaSession.setMetadata(builder.build());
             }
-            if (!Thread.currentThread().isInterrupted() && stateManager.hasReceivedValidStartCommand()) {
-                mediaSession.setSessionActivity(PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
-                        PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
-                try {
-                    mediaSession.setMetadata(builder.build());
-                } catch (OutOfMemoryError e) {
-                    Log.e(TAG, "Setting media session metadata", e);
-                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
-                    mediaSession.setMetadata(builder.build());
-                }
-            }
-        };
-
-        mediaSessionSetupThread = new Thread(mediaSessionSetupTask);
-        mediaSessionSetupThread.start();
+        }
     }
 
     /**
      * Used by setupNotification to load notification data in another thread.
      */
-    private Thread notificationSetupThread;
+    private Thread playableIconLoaderThread;
 
     /**
      * Prepares notification and starts the service in the foreground.
@@ -1371,8 +1320,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private synchronized void setupNotification(final Playable playable) {
         Log.d(TAG, "setupNotification");
-        if (notificationSetupThread != null) {
-            notificationSetupThread.interrupt();
+        if (playableIconLoaderThread != null) {
+            playableIconLoaderThread.interrupt();
         }
         if (playable == null || mediaPlayer == null) {
             Log.d(TAG, "setupNotification: playable=" + playable);
@@ -1395,14 +1344,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         startForegroundIfPlaying(playerStatus);
 
         if (!notificationBuilder.isIconCached()) {
-            notificationSetupThread = new Thread(() -> {
+            playableIconLoaderThread = new Thread(() -> {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
                     notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    updateMediaSessionMetadata(playable);
                 }
             });
-            notificationSetupThread.start();
+            playableIconLoaderThread.start();
         }
     }
 
@@ -1703,10 +1653,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void skipSilence(boolean skipSilence) {
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
-    }
-
-    public void setVolume(float leftVolume, float rightVolume) {
-        mediaPlayer.setVolume(leftVolume, rightVolume);
     }
 
     public float getCurrentPlaybackSpeed() {

@@ -105,13 +105,12 @@
     <string name="shownotes_label">Shownotes</string>
     <string name="shownotes_contentdescription">Swipe ↑ to read shownotes</string>
     <string name="episodes_suffix">\u0020episodes</string>
-    <string name="processing_label">Processing</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto-downloads</string>
     <string name="auto_delete_label">Auto-delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
-    <string name="feed_volume_reduction_summary">Reduce the volume for this episode feed: %1$s</string>
+    <string name="feed_volume_reduction_summary">Reduce the volume for this episode feed: %1$s</strin
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
@@ -337,7 +336,7 @@
     <string name="no_log_downloads_head_label">No downloads yet</string>
     <string name="no_log_downloads_label">A history of downloads is displayed here.</string>
     <string name="no_history_head_label">No History</string>
-    <string name="no_history_label">heard episodes are displayed here.</string>
+    <string name="no_history_label">Heard episodes are displayed here.</string>
     <string name="no_all_episodes_head_label">No Episodes</string>
     <string name="no_all_episodes_label">Added podcasts are displayed here.</string>
     <string name="no_new_episodes_head_label">No new episodes</string>
@@ -417,7 +416,7 @@
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Interface</string>
     <string name="user_interface_sum">Appearance, subscriptions, lockscreen</string>
-    <string name="pref_set_theme_title">Select Theme</string>
+    <string name="pref_set_theme_title">Theme</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
@@ -449,7 +448,7 @@
     <string name="pref_gpodnet_logout_toast">Logged out</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change gpodder.net login info.</string>
-    <string name="pref_gpodnet_sync_changes_title">Synchronize now</string>
+    <string name="pref_gpodnet_sync_changes_title">Sync…</string>
     <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
     <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
@@ -484,11 +483,9 @@
     <string name="enqueue_location_front">Front</string>
     <string name="enqueue_location_after_current">After current episode</string>
     <string name="pref_smart_mark_as_played_disabled">Off</string>
-    <string name="pref_image_cache_size_title">Image Cache Size</string>
-    <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
     <string name="documentation_support">Documentation and Support</string>
     <string name="visit_user_forum">Forum</string>
-    <string name="bug_report_title">Report Bug</string>
+    <string name="bug_report_title">Report Bugs</string>
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -777,9 +774,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
-    <string name="volume">Volume</string>
-    <string name="left_short">L</string>
-    <string name="right_short">R</string>
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo in mono</string>
     <string name="sonic_only">Sonic only</string>
