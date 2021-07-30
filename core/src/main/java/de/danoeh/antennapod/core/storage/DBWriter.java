@@ -134,7 +134,7 @@ public class DBWriter {
             // Gpodder: queue delete action for synchronization
             if (GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
-                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE, guid)
+                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                         .currentTimestamp()
                         .build();
                 SyncService.enqueueEpisodeAction(context, action);
@@ -803,7 +803,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemlist(items);
+            adapter.storeFeedItemlist(items);
             adapter.close();
             EventBus.getDefault().post(FeedItemEvent.updated(items));
         });

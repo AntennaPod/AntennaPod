@@ -558,7 +558,7 @@ public class PodDBAdapter {
                 setFeed(feed);
                 if (feed.getItems() != null) {
                     for (FeedItem item : feed.getItems()) {
-                        setFeedItem(item, false);
+                        upsertFeedItem(item, false);
                     }
                 }
                 if (feed.getPreferences() != null) {
@@ -582,11 +582,11 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_DOWNLOAD_URL + "=?", new String[]{original});
     }
 
-    public void setFeedItemlist(List<FeedItem> items) {
+    public void storeFeedItemlist(List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             for (FeedItem item : items) {
-                setFeedItem(item, true);
+                upsertFeedItem(item, true);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -600,7 +600,7 @@ public class PodDBAdapter {
         long result = 0;
         try {
             db.beginTransactionNonExclusive();
-            result = setFeedItem(item, true);
+            result = upsertFeedItem(item, true);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -618,7 +618,7 @@ public class PodDBAdapter {
      *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
      */
-    private long setFeedItem(FeedItem item, boolean saveFeed) {
+    private long upsertFeedItem(FeedItem item, boolean saveFeed) {
         if (item.getId() == 0 && item.getPubDate() == null) {
             Log.e(TAG, "Newly saved item has no pubDate. Using current date as pubDate");
             item.setPubDate(new Date());

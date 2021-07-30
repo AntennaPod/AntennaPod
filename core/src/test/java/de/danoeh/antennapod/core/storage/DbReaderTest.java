@@ -218,7 +218,7 @@ public class DbReaderTest {
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.setFeedItemlist(downloaded);
+        adapter.storeFeedItemlist(downloaded);
         adapter.close();
         return downloaded;
     }
@@ -257,7 +257,7 @@ public class DbReaderTest {
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.setFeedItemlist(newItems);
+        adapter.storeFeedItemlist(newItems);
         adapter.close();
         return newItems;
     }
