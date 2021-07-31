@@ -47,8 +47,8 @@ public class NSMedia extends Namespace {
             String medium = attributes.getValue(MEDIUM);
             boolean validTypeMedia = false;
             boolean validTypeImage = false;
-
             boolean isDefault = "true".equals(defaultStr);
+            String guessedType = SyndTypeUtils.getMimeTypeFromUrl(url);
 
             if (MEDIUM_AUDIO.equals(medium)) {
                 validTypeMedia = true;
@@ -56,12 +56,14 @@ public class NSMedia extends Namespace {
             } else if (MEDIUM_VIDEO.equals(medium)) {
                 validTypeMedia = true;
                 type = "video/*";
-            } else if (MEDIUM_IMAGE.equals(medium)) {
+            } else if (MEDIUM_IMAGE.equals(medium) && (guessedType == null
+                    || (!guessedType.startsWith("audio/") && !guessedType.startsWith("video/")))) {
+                // Apparently, some publishers explicitly specify the audio file as an image
                 validTypeImage = true;
                 type = "image/*";
             } else {
                 if (type == null) {
-                    type = SyndTypeUtils.getMimeTypeFromUrl(url);
+                    type = guessedType;
                 }
 
                 if (SyndTypeUtils.enclosureTypeValid(type)) {

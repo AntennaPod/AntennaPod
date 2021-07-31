@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -103,7 +102,7 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     callback.onDataReady(stream);
                     Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
                             + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
 
                     try {
