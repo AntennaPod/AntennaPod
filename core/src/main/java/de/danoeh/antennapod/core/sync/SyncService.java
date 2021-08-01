@@ -437,28 +437,24 @@ public class SyncService extends Worker {
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {
-            if (action.getAction() == EpisodeAction.NEW) {
-                FeedItem newItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
-                if (newItem != null) {
-                    DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
-                } else {
-                    Log.i(TAG, "Unknown feed item: " + action);
-                }
+            FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(action.getGuid(), action.getEpisode());
+            if (feedItem == null) {
+                Log.i(TAG, "Unknown feed item: " + action);
                 continue;
             }
-            FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
+            if (action.getAction() == EpisodeAction.NEW) {
+                DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
+                continue;
+            }
             Log.d(TAG, "Most recent play action: " + action.toString());
-            if (playItem == null) {
-                break;
-            }
-            FeedMedia media = playItem.getMedia();
+            FeedMedia media = feedItem.getMedia();
             media.setPosition(action.getPosition() * 1000);
-            if (FeedItemUtil.hasAlmostEnded(playItem.getMedia())) {
+            if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
                 Log.d(TAG, "Marking as played");
-                playItem.setPlayed(true);
-                queueToBeRemoved.add(playItem.getId());
+                feedItem.setPlayed(true);
+                queueToBeRemoved.add(feedItem.getId());
             }
-            updatedItems.add(playItem);
+            updatedItems.add(feedItem);
 
         }
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
