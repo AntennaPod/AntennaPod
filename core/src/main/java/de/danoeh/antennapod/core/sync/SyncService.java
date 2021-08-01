@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.collection.ArrayMap;
 import androidx.core.app.NotificationCompat;
 import androidx.core.util.Pair;
 import androidx.work.BackoffPolicy;
@@ -71,6 +70,7 @@ public class SyncService extends Worker {
     private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
+    private static final EpisodeActionFilter episodeActionFilter = new EpisodeActionFilter();
 
     private ISyncService syncServiceImpl;
 
@@ -432,11 +432,20 @@ public class SyncService extends Worker {
             return;
         }
 
-        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction = createLocalMostRecentPlayActions();
-        Map<Pair<String, String>, EpisodeAction> mostRecentPlayActions = mergeRemoteAndLocalEpisodeActions(remoteActions, localMostRecentPlayAction);
+        Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = episodeActionFilter
+                .getRemoteActionsOverridingLocalActions(remoteActions, getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
-        for (EpisodeAction action : mostRecentPlayActions.values()) {
+        for (EpisodeAction action : playActionsToUpdate.values()) {
+            if (action.getAction() == EpisodeAction.NEW) {
+                FeedItem newItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
+                if (newItem != null) {
+                    DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
+                } else {
+                    Log.i(TAG, "Unknown feed item: " + action);
+                }
+                continue;
+            }
             FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
             Log.d(TAG, "Most recent play action: " + action.toString());
             if (playItem == null) {
@@ -457,70 +466,6 @@ public class SyncService extends Worker {
         DBWriter.setItemList(updatedItems);
     }
 
-    private Map<Pair<String, String>, EpisodeAction> mergeRemoteAndLocalEpisodeActions(List<EpisodeAction> remoteActions, Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction) {
-        // make sure more recent local actions are not overwritten by older remote actions
-        Map<Pair<String, String>, EpisodeAction> resultingMostRecentPlayActions = new ArrayMap<>();
-        for (EpisodeAction remoteAction : remoteActions) {
-            Log.d(TAG, "Processing remoteAction: " + remoteAction.toString());
-            switch (remoteAction.getAction()) {
-                case NEW:
-                    FeedItem newItem = DBReader.getFeedItemByUrl(remoteAction.getPodcast(), remoteAction.getEpisode());
-                    if (newItem != null) {
-                        DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
-                    } else {
-                        Log.i(TAG, "Unknown feed item: " + remoteAction);
-                    }
-                    break;
-                case DOWNLOAD:
-                    break;
-                case PLAY:
-                    Pair<String, String> key = new Pair<>(remoteAction.getPodcast(), remoteAction.getEpisode());
-                    EpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
-                    if (localActionIsYoungerThenRemoteAction(remoteAction, localMostRecent)
-                    ) {
-                        break;
-                    }
-                    EpisodeAction mostRecentAction = resultingMostRecentPlayActions.get(key);
-                    if (
-                            mostRecentAction == null
-                                    || mostRecentAction.getTimestamp() == null
-                                    || (remoteAction.getTimestamp() != null
-                                    && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
-                    ) {
-                        resultingMostRecentPlayActions.put(key, remoteAction);
-                    }
-                case DELETE:
-                    // NEVER EVER call DBWriter.deleteFeedMediaOfItem() here, leads to an infinite loop
-                    break;
-                default:
-                    Log.e(TAG, "Unknown remoteAction: " + remoteAction);
-                    break;
-            }
-        }
-
-        return resultingMostRecentPlayActions;
-    }
-
-    private boolean localActionIsYoungerThenRemoteAction(EpisodeAction remoteAction, EpisodeAction localMostRecent) {
-        return localMostRecent != null
-                && localMostRecent.getTimestamp() != null
-                && localMostRecent.getTimestamp().after(remoteAction.getTimestamp());
-    }
-
-    private Map<Pair<String, String>, EpisodeAction> createLocalMostRecentPlayActions() {
-        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction;
-        localMostRecentPlayAction = new ArrayMap<>();
-        for (EpisodeAction action : getQueuedEpisodeActions()) {
-            Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
-            EpisodeAction mostRecent = localMostRecentPlayAction.get(key);
-            if (mostRecent == null || mostRecent.getTimestamp() == null) {
-                localMostRecentPlayAction.put(key, action);
-            } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
-                localMostRecentPlayAction.put(key, action);
-            }
-        }
-        return localMostRecentPlayAction;
-    }
 
     private void clearErrorNotifications() {
         NotificationManager nm = (NotificationManager) getApplicationContext()

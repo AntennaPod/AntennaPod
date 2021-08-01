@@ -54,7 +54,6 @@ public class EpisodeAction {
         String podcast = object.optString("podcast", null);
         String episode = object.optString("episode", null);
         String actionString = object.optString("action", null);
-        String guid = object.optString("guid", null);
         if (TextUtils.isEmpty(podcast) || TextUtils.isEmpty(episode) || TextUtils.isEmpty(actionString)) {
             return null;
         }
@@ -75,6 +74,7 @@ public class EpisodeAction {
                 e.printStackTrace();
             }
         }
+        String guid = object.optString("guid", null);
         if (!TextUtils.isEmpty(guid)) {
             builder.guid(guid);
         }
