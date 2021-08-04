@@ -1110,14 +1110,19 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedItemCursor(final String podcastUrl, final String episodeUrl) {
-        String escapedPodcastUrl = DatabaseUtils.sqlEscapeString(podcastUrl);
+    public final Cursor getFeedItemCursor(final String guid, final String episodeUrl) {
         String escapedEpisodeUrl = DatabaseUtils.sqlEscapeString(episodeUrl);
+        String whereClauseCondition = TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl;
+
+        if (guid != null) {
+            String escapedGuid = DatabaseUtils.sqlEscapeString(guid);
+            whereClauseCondition = TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + "=" + escapedGuid;
+        }
+
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl
-                + " AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "=" + escapedPodcastUrl;
+                + " WHERE " + whereClauseCondition;
         Log.d(TAG, "SQL: " + query);
         return db.rawQuery(query, null);
     }

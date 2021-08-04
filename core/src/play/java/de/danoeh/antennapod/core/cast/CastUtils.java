@@ -192,8 +192,10 @@ public class CastUtils {
                 }
             }
             if (result == null) {
-                FeedItem feedItem = DBReader.getFeedItemByUrl(metadata.getString(KEY_FEED_URL),
-                        metadata.getString(KEY_EPISODE_IDENTIFIER));
+                FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(
+                        null,
+                        metadata.getString(KEY_EPISODE_IDENTIFIER)
+                );
                 if (feedItem != null) {
                     result = feedItem.getMedia();
                     Log.d(TAG, "Found episode that matches the MediaInfo provided. Using its media, if existing.");
