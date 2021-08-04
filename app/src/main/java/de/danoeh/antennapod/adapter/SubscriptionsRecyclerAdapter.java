@@ -2,7 +2,9 @@ package de.danoeh.antennapod.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -53,6 +55,8 @@ public class SubscriptionsRecyclerAdapter
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.itemAccess = itemAccess;
+        setHasStableIds(true);
+
     }
 
     public Object getItem(int position) {
@@ -76,6 +80,56 @@ public class SubscriptionsRecyclerAdapter
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
         holder.onBind(itemAccess.getItem(position), position);
         holder.itemView.setOnCreateContextMenuListener(this);
+        float imageViewSelectedAlpha = 0.33f;
+        if (inActionMode()) {
+            holder.selectCheckbox.setVisibility(View.VISIBLE);
+            if (isSelected(position)) {
+                holder.selectCheckbox.setChecked(true);
+                holder.imageView.setAlpha(imageViewSelectedAlpha);
+            } else {
+                holder.selectCheckbox.setChecked(false);
+                holder.imageView.setAlpha(1f);
+            }
+            holder.selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    setSelected(position, isChecked);
+                    holder.imageView.setAlpha(isChecked ? imageViewSelectedAlpha : 1f);
+                }
+            });
+        } else {
+            holder.selectCheckbox.setVisibility(View.GONE);
+            holder.imageView.setAlpha(1f);
+        }
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if(!inActionMode()) {
+                NavDrawerData.DrawerItem drawerItem1 = itemAccess.getItem(position);
+                if (drawerItem1.type == NavDrawerData.DrawerItem.Type.FEED) {
+                    selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem1).feed;
+                    longPressedPosition = position;
+                } else{
+                    selectedFeed = null;
+                }
+            }
+            return false;
+        });
+        NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(position);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (drawerItem == null) {
+                return;
+            } else if (inActionMode()) {
+                holder.selectCheckbox.setChecked(!isSelected(position));
+                return;
+            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+                Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
+                mainActivityRef.get().loadChildFragment(fragment);
+            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+                Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
+                mainActivityRef.get().loadChildFragment(fragment);
+            }
+        });
 
     }
 
@@ -161,7 +215,7 @@ public class SubscriptionsRecyclerAdapter
                 count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
             }
 
-            if(!inActionMode())
+            if (!inActionMode())
                 if (drawerItem.getCounter() > 0) {
                     count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                     count.setVisibility(View.VISIBLE);
@@ -169,68 +223,36 @@ public class SubscriptionsRecyclerAdapter
                     count.setVisibility(View.GONE);
                 }
 
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-            boolean textAndImageCombind = feed.isLocalFeed()
-                    && LocalFeedUpdater.getDefaultIconUrl(itemView.getContext()).equals(feed.getImageUrl());
-            new CoverLoader(mainActivityRef.get())
-                    .withUri(feed.getImageUrl())
-                    .withPlaceholderView(feedTitle, textAndImageCombind)
-                    .withCoverView(imageView)
-                    .load();
-        } else {
-            new CoverLoader(mainActivityRef.get())
-                    .withResource(R.drawable.ic_folder)
-                    .withPlaceholderView(feedTitle, true)
-                    .withCoverView(imageView)
-                    .load();
-        }
-        float imageViewSelectedAlpha = 0.33f;
-        if (inActionMode()) {
-            selectCheckbox.setVisibility(View.VISIBLE);
-            if (isSelected(position)) {
-                selectCheckbox.setChecked(true);
-                imageView.setAlpha(imageViewSelectedAlpha);
+            if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+                Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+                boolean textAndImageCombind = feed.isLocalFeed()
+                        && LocalFeedUpdater.getDefaultIconUrl(itemView.getContext()).equals(feed.getImageUrl());
+                new CoverLoader(mainActivityRef.get())
+                        .withUri(feed.getImageUrl())
+                        .withPlaceholderView(feedTitle, textAndImageCombind)
+                        .withCoverView(imageView)
+                        .load();
             } else {
-                selectCheckbox.setChecked(false);
-                imageView.setAlpha(1f);
+                new CoverLoader(mainActivityRef.get())
+                        .withResource(R.drawable.ic_folder)
+                        .withPlaceholderView(feedTitle, true)
+                        .withCoverView(imageView)
+                        .load();
             }
-            selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    setSelected(position, isChecked);
-                    imageView.setAlpha(isChecked ? imageViewSelectedAlpha : 1f);
-                }
-            });
-        } else {
-            selectCheckbox.setVisibility(View.GONE);
-            imageView.setAlpha(1f);
+        }
+    }
+
+    public static class DividerItemDecorator extends RecyclerView.ItemDecoration {
+        @Override
+        public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.onDraw(c, parent, state);
         }
 
-        itemView.setOnLongClickListener(v -> {
-            if(!inActionMode())
-                if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-                    selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-                    longPressedPosition = position;
-                } else{
-                    selectedFeed = null;
-                }
-            return false;
-        });
-        itemView.setOnClickListener(v -> {
-            if (drawerItem == null) {
-                return;
-            } else if (inActionMode()) {
-                selectCheckbox.setChecked(!isSelected(position));
-                return;
-            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-                Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
-                mainActivityRef.get().loadChildFragment(fragment);
-            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FOLDER) {
-                Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
-                mainActivityRef.get().loadChildFragment(fragment);
-            }
-        });
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.set(4, 4, 4, 4);
+
         }
     }
 }

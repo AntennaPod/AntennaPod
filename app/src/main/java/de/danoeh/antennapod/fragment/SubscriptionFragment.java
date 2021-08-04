@@ -20,6 +20,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -83,7 +84,7 @@ public class SubscriptionFragment extends Fragment
             R.id.subscription_num_columns_4,
             R.id.subscription_num_columns_5};
 
-    private RecyclerView subscriptionGridLayout;
+    private RecyclerView subscriptionRecycler;
     private List<NavDrawerData.DrawerItem> listItems;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
@@ -144,11 +145,12 @@ public class SubscriptionFragment extends Fragment
             }
         }
 
-        subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
-        subscriptionGridLayout.setLayoutManager(gridLayoutManager);
+        subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()), RecyclerView.VERTICAL, false);
+        subscriptionRecycler.setLayoutManager(gridLayoutManager);
+        subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.DividerItemDecorator());
         gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
-        registerForContextMenu(subscriptionGridLayout);
+        registerForContextMenu(subscriptionRecycler);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
 
@@ -235,7 +237,7 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void setColumnNumber(int columns) {
-        GridLayoutManager gridLayoutManager = (GridLayoutManager) subscriptionGridLayout.getLayoutManager();
+        GridLayoutManager gridLayoutManager = (GridLayoutManager) subscriptionRecycler.getLayoutManager();
         gridLayoutManager.setSpanCount(columns);
         subscriptionAdapter.notifyDataSetChanged();
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
@@ -257,7 +259,7 @@ public class SubscriptionFragment extends Fragment
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity(), itemAccess);
         subscriptionAdapter.setOnEndSelectModeListener(this);
 
-        subscriptionGridLayout.setAdapter(subscriptionAdapter);
+        subscriptionRecycler.setAdapter(subscriptionAdapter);
 //        subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
         setupEmptyView();
 

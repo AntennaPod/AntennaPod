@@ -6,18 +6,13 @@ import androidx.annotation.PluralsRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.fragment.BatchFeedSettingsFragment;
+import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -36,7 +31,7 @@ public class FeedMultiSelectActionHandler {
         if (id == R.id.remove_item) {
             deleteChecked();
         } else if (id == R.id.keep_updated) {
-            removeFromQueueChecked();
+            keepUpdatedChecked();
         } else if (id == R.id.autodownload) {
             deleteChecked();
         } else {
@@ -44,10 +39,17 @@ public class FeedMultiSelectActionHandler {
         }
     }
 
-    private void removeFromQueueChecked() {
-        long[] checkedIds = getSelectedIds();
-        DBWriter.removeQueueItem(activity, true, checkedIds);
-        showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
+    private void keepUpdatedChecked() {
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,activity.getString(R.string.kept_updated), activity.getString(R.string.keep_updated_summary));
+        preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
+            @Override
+            public void preferenceChanged(boolean enabled) {
+                if (enabled) {
+                    saveFeedPreferences(feedPreferences -> feedPreferences.setKeepUpdated(enabled));
+                }
+            }
+        });
+        preferenceSwitchDialog.openDialog();
     }
 
     private void markedCheckedPlayed() {
