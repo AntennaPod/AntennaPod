@@ -1,4 +1,4 @@
 package de.danoeh.antennapod.fragment.preferences.dialog;
 
-class PreferenceSwitchDialog {
+class PreferenceDialog {
 }
