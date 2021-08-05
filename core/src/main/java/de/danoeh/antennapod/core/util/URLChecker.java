@@ -5,9 +5,10 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import okhttp3.HttpUrl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public final class URLChecker {
     private static final String TAG = "URLChecker";
 
     private static final String AP_SUBSCRIBE = "antennapod-subscribe://";
+    private static final String AP_SUBSCRIBE_DEEPLINK = "antennapod.org/deeplink/subscribe?url=";
 
     /**
      * Checks if URL is valid and modifies it if necessary.
@@ -39,22 +41,30 @@ public final class URLChecker {
         url = url.trim();
         String lowerCaseUrl = url.toLowerCase(); // protocol names are case insensitive
         if (lowerCaseUrl.startsWith("feed://")) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
+            Log.d(TAG, "Replacing feed:// with http://");
             return prepareURL(url.substring("feed://".length()));
         } else if (lowerCaseUrl.startsWith("pcast://")) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
+            Log.d(TAG, "Removing pcast://");
             return prepareURL(url.substring("pcast://".length()));
         } else if (lowerCaseUrl.startsWith("pcast:")) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast:");
+            Log.d(TAG, "Removing pcast:");
             return prepareURL(url.substring("pcast:".length()));
         } else if (lowerCaseUrl.startsWith("itpc")) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
+            Log.d(TAG, "Replacing itpc:// with http://");
             return prepareURL(url.substring("itpc://".length()));
         } else if (lowerCaseUrl.startsWith(AP_SUBSCRIBE)) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Removing antennapod-subscribe://");
+            Log.d(TAG, "Removing antennapod-subscribe://");
             return prepareURL(url.substring(AP_SUBSCRIBE.length()));
+        } else if (lowerCaseUrl.contains(AP_SUBSCRIBE_DEEPLINK)) {
+            Log.d(TAG, "Removing " + AP_SUBSCRIBE_DEEPLINK);
+            String removedWebsite = url.substring(url.indexOf(AP_SUBSCRIBE_DEEPLINK) + AP_SUBSCRIBE_DEEPLINK.length());
+            try {
+                return prepareURL(URLDecoder.decode(removedWebsite, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                return prepareURL(removedWebsite);
+            }
         } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
+            Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;
         } else {
             return url;
