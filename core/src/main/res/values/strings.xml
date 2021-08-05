@@ -26,8 +26,8 @@
     <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
-    <string name="episode_cache_full_title">Episode cache full</string>
-    <string name="episode_cache_full_message">You can increase the size in the settings.</string>
+    <string name="episode_cache_full_title">No more room for episodes</string>
+    <string name="episode_cache_full_message">You can allocate more in the settings.</string>
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
     <string name="notification_pref_fragment">Notifications</string>
@@ -36,20 +36,20 @@
     <string name="app_action_not_found">\"%1$s\" not found</string>
 
     <!-- SwipeActions -->
-    <string name="swipeactions_label">Swiping Actions</string>
+    <string name="swipeactions_label">Effect of Swiping</string>
     <string name="swipeactions_summary">Choose the result of flicking an episode in a list</string>
-    <string name="swipe_right">Swipe →</string>
+    <string name="swipe_right">Swipe right</string>
     <string name="swipe_left">Swipe ←</string>
-    <string name="enable_swipeactions">Turn on swiping actions here</string>
+    <string name="enable_swipeactions">Allow swiping here</string>
     <string name="change_setting">Change</string>
 
     <!-- Statistics fragment -->
-    <string name="total_time_listened_to_podcasts">Elapsed episode time:</string>
+    <string name="total_time_listened_to_podcasts">Total playtime:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
     <string name="statistics_mode">Stats-mode</string>
-    <string name="statistics_mode_normal">Calculate actual playtime duration. Two plays are counted twice, marking as played is not.</string>
+    <string name="statistics_mode_normal">Calculate actual playtime duration. Two playthroughs are counted twice, marking as played is not.</string>
     <string name="statistics_mode_count_all">Sum up all episodes marked as played</string>
-    <string name="statistics_speed_not_counted">Notice: Playback speed is not taken into account.</string>
+    <string name="statistics_speed_not_counted">(Playback speed is never taken into account.)</string>
     <string name="statistics_reset_data">Reset stats</string>
     <string name="statistics_reset_data_msg">Erase playback history for all episodes?</string>
     <string name="statistics_counting_since">Since %s,\nyou played</string>
@@ -72,7 +72,7 @@
     <string name="drawer_feed_counter_none">None</string>
 
     <!-- Bug report activity -->
-    <string name="log_file_share_exception">Install an app that can open logs first</string>
+    <string name="log_file_share_exception">Install an app to send logs to first</string>
     <string name="export_logs_menu_title">Export detailed logs</string>
     <string name="confirm_export_log_dialog_message">Detailed logs may contain sensitive info, like your subscription list</string>
 
@@ -94,11 +94,11 @@
     <string name="reset">Reset</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
-    <string name="support_podcast">Support this Creator</string>
+    <string name="support_podcast">Support this</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
-    <string name="external_storage_error_msg">Please mount external storage so that the app access it first.</string>
+    <string name="external_storage_error_msg">Please ensure the app can access storage.</string>
     <string name="chapters_label">Chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
@@ -110,7 +110,7 @@
     <string name="auto_download_label">Include in auto-downloads</string>
     <string name="auto_delete_label">Auto-delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
-    <string name="feed_volume_reduction_summary">Reduce the volume for this episode feed: %1$s</strin
+    <string name="feed_volume_reduction_summary">Reduce the volume for this feed: %1$s</strings>
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
@@ -120,7 +120,7 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
-    <string name="episode_cleanup_except_favorite_removal">When not favourited</string>
+    <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -155,8 +155,8 @@
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
     <string name="mark_all_read_msg">Marked all episodes as played</string>
-    <string name="mark_all_read_confirmation_msg">Please confirm marking all episodes as played.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm marking all episodes in this podcast as played.</string>
+    <string name="mark_all_read_confirmation_msg">Mark all episodes as played?</string>
+    <string name="mark_all_read_feed_confirmation_msg">Mark all episodes in this podcast as played?</string>
     <string name="remove_all_new_flags_label">Remove all \"new\" flags</string>
     <string name="removed_all_new_flags_msg">Removed all \"new\" flags</string>
     <string name="remove_all_new_flags_confirmation_msg">Please confirm removal of the \"new\" flag from all episodes.</string>
@@ -170,7 +170,7 @@
     <string name="share_file_label">Share File</string>
     <string name="share_website_url_label">Website address</string>
     <string name="share_feed_url_label">Podcast feed URL</string>
-    <string name="feed_delete_confirmation_msg">Please confirm deletion of the \"%1$s\" podcast and ALL its episodes (including downloaded ones).</string>
+    <string name="feed_delete_confirmation_msg">Delete the \"%1$s\" podcast and ALL its episodes (including downloaded ones).</string>
     <string name="feed_delete_confirmation_local_msg">Please confirm removal of the \"%1$s\" podcast. Files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast…</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
@@ -178,7 +178,7 @@
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed. Tap to view details.</string>
+    <string name="refresh_failed_msg">Last refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open Podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded…</string>
     <string name="updates_disabled_label">Updates turned off</string>
@@ -197,7 +197,7 @@
     <string name="delete_episode_label">Delete Episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">One episode selected, %d download deleted.</item>
-        <item quantity="other">%d episodes selected, %d download(s) deleted.</item>
+        <item quantity="other">%d episodes selected, %d deleted.</item>
     </plurals>
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
@@ -228,7 +228,7 @@
         <item quantity="other">%d episodes removed from queue.</item>
     </plurals>
     <string name="add_to_favorite_label">Favourite…</string>
-    <string name="remove_from_favorite_label">Remove from \'Favourites\'</string>
+    <string name="remove_from_favorite_label">Remove from \'Favorites\'…</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset Playback Position</string>
@@ -242,7 +242,7 @@
     <string name="download_error_details">Details</string>
     <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
-    <string name="download_error_device_not_found">Could not find storage device</string>
+    <string name="download_error_device_not_found">Could not find storage</string>
     <string name="download_error_insufficient_space">Not enough space left on your device.</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
@@ -452,7 +452,7 @@
     <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
     <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
-    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>]]></string>
     <string name="pref_playback_speed_sum">Customize variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">Starting playback speed for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto-skip</string>
@@ -587,7 +587,7 @@
     <string name="export_error_label">Could not export database</string>
     <string name="export_success_title">Exported</string>
     <string name="export_success_sum">File exported to:\n\n%1$s</string>
-    <string name="opml_import_ask_read_permission">Grant access to external storage to read the OPML file first.</string>
+    <string name="opml_import_ask_read_permission">Grant access to storage to read the OPML file first.</string>
     <string name="import_select_file">Select a file to import</string>
     <string name="successful_import_label">Imported</string>
     <string name="import_ok">Please press \"OK\" to restart AntennaPod</string>
@@ -835,6 +835,6 @@
 
     <!-- On-Demand configuration -->
     <string name="on_demand_config_setting_changed">Settings updated.</string>
-    <string name="on_demand_config_stream_text">Do you want stream buttons in episode lists?</string>
+    <string name="on_demand_config_stream_text">Do you want stream buttons available in episode lists?</string>
     <string name="on_demand_config_download_text">Do you want download buttons in episode lists?</string>
 </resources>
