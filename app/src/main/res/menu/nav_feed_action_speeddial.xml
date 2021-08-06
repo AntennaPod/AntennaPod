@@ -20,4 +20,9 @@
         android:menuCategory="container"
         android:title="@string/auto_delete_label"
         android:icon="@drawable/ic_delete_auto"/>
+    <item
+        android:id="@+id/playback_speed"
+        android:menuCategory="container"
+        android:title="@string/playback_speed"
+        android:icon="@drawable/ic_playback_speed"/>
 </menu>

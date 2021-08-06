@@ -26,6 +26,12 @@
         android:layout_alignEnd="@+id/imgvCover"
         android:layout_alignRight="@+id/imgvCover"
         android:layout_alignBottom="@+id/imgvCover"
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/non_square_icon_background"
         android:ellipsize="end"
         android:gravity="center"
@@ -47,7 +53,11 @@
 
     <CheckBox
         android:id="@+id/selectCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:buttonTint="?attr/colorSecondary"/>
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="false"
+        android:drawableLeft="@drawable/grey_border"
+        android:drawablePadding="0dp"
+        android:background="#44FFFFFF"
+        app:buttonTint="?attr/colorSecondary" />
 </RelativeLayout>

@@ -209,7 +209,7 @@ public class SubscriptionsRecyclerAdapter
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
-
+//            selectCheckbox.
             if (TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
                     == ViewCompat.LAYOUT_DIRECTION_RTL) {
                 count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
