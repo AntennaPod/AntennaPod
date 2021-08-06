@@ -53,7 +53,7 @@ public class PreferenceSwitchDialog  {
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             if(onPreferenceChangedListener != null)
-                onPreferenceChangedListener.preferenceChanged(switchButton.isEnabled());
+                onPreferenceChangedListener.preferenceChanged(switchButton.isChecked());
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
@@ -62,6 +62,4 @@ public class PreferenceSwitchDialog  {
     public void setOnPreferenceChangedListener(OnPreferenceChangedListener onPreferenceChangedListener) {
         this.onPreferenceChangedListener = onPreferenceChangedListener;
     }
-
-    //    protected abstract void updateFilter(Set<String> filterValues);
 }

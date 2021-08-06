@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment.actions;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
@@ -13,8 +15,10 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.fragment.FeedSettingsFragment;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -39,7 +43,7 @@ public class FeedMultiSelectActionHandler {
         } else if (id == R.id.keep_updated) {
             keepUpdatedChecked();
         } else if (id == R.id.autodownload) {
-            deleteChecked();
+            autoDownloadChecked();
         } else if (id == R.id.autoDeleteDownload) {
             autoDeleteEpisodesChecked();
         } else if (id == R.id.playback_speed) {
@@ -48,6 +52,20 @@ public class FeedMultiSelectActionHandler {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
     }
+
+    private void autoDownloadChecked() {
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,activity.getString(R.string.auto_download_settings_label), activity.getString(R.string.auto_download_label));
+        preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
+            @Override
+            public void preferenceChanged(boolean enabled) {
+                    saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled));
+                    ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(activity, enabled);
+                    dialog.createNewDialog().show();
+            }
+        });
+        preferenceSwitchDialog.openDialog();
+    }
+
     public static final float SPEED_USE_GLOBAL = -1;
     private static final DecimalFormat SPEED_FORMAT =
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
@@ -101,9 +119,7 @@ public class FeedMultiSelectActionHandler {
         preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
             @Override
             public void preferenceChanged(boolean enabled) {
-                if (enabled) {
-                    saveFeedPreferences(feedPreferences -> feedPreferences.setKeepUpdated(enabled));
-                }
+                saveFeedPreferences(feedPreferences -> feedPreferences.setKeepUpdated(enabled));
             }
         });
         preferenceSwitchDialog.openDialog();
@@ -142,6 +158,25 @@ public class FeedMultiSelectActionHandler {
         for (Feed feed : selectedItems) {
             onSetFeedPreferenceListener.onSetFeedPreferenceListener(feed.getPreferences());
             DBWriter.setFeedPreferences(feed.getPreferences());
+        }
+    }
+
+    private class ApplyToEpisodesDialog extends ConfirmationDialog {
+        private final boolean autoDownload;
+
+        ApplyToEpisodesDialog(Context context, boolean autoDownload) {
+            super(context, R.string.auto_download_apply_to_items_title,
+                    R.string.auto_download_apply_to_items_message);
+            this.autoDownload = autoDownload;
+            setPositiveText(R.string.yes);
+            setNegativeText(R.string.no);
+        }
+
+        @Override
+        public void onConfirmButtonPressed(DialogInterface dialog) {
+            for (Feed feed : selectedItems) {
+                DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
+            }
         }
     }
 }
