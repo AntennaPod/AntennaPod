@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:paddingLeft="8dip"
         android:paddingTop="8dip"
-        android:paddingRight="5dip"
+        android:paddingRight="8dip"
         android:layout_gravity="left" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:padding="8dip"
+        android:padding="16dip"
         android:layout_gravity="center" />
 
 </LinearLayout>
