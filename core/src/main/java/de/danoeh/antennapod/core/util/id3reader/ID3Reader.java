@@ -96,6 +96,10 @@ public class ID3Reader {
         short version = readShort();
         byte flags = readByte();
         int size = unsynchsafe(readInt());
+        if ((flags & 0b01000000) != 0) {
+            int extendedHeaderSize = readInt();
+            skipBytes(extendedHeaderSize - 4);
+        }
         return new TagHeader("ID3", size, version, flags);
     }
 
