@@ -70,7 +70,6 @@ import io.reactivex.schedulers.Schedulers;
 public class SubscriptionFragment extends Fragment
         implements Toolbar.OnMenuItemClickListener, SubscriptionsRecyclerAdapter.OnEndSelectModeListener
 {
-
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
