@@ -8,6 +8,8 @@ import androidx.annotation.PluralsRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.fragment.FeedSettingsFragment;
@@ -86,7 +89,11 @@ public class FeedMultiSelectActionHandler {
         preferenceListDialog.setOnPreferenceChangedListener(pos -> {
             saveFeedPreferences(feedPreferences -> {
                 feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) values[pos]));
+                // TODO: 8/5/2021  
+//                EventBus.getDefault().post(
+//                        new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
             });
+            
         });
     }
 

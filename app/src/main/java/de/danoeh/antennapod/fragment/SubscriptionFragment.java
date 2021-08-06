@@ -259,7 +259,6 @@ public class SubscriptionFragment extends Fragment
         subscriptionAdapter.setOnEndSelectModeListener(this);
 
         subscriptionRecycler.setAdapter(subscriptionAdapter);
-//        subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
         setupEmptyView();
 
         subscriptionAddButton.setOnClickListener(view -> {
@@ -283,6 +282,12 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
+
+        if (subscriptionAdapter != null) {
+            subscriptionAdapter.endSelectMode();
+        }
+
+        subscriptionAdapter = null;
     }
 
     private void loadSubscriptions() {
@@ -425,4 +430,6 @@ public class SubscriptionFragment extends Fragment
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
     }
+
+
 }
