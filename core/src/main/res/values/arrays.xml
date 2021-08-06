@@ -341,6 +341,6 @@
     <string-array name="sync_provider_icon">
         <item>ic_cloud</item>
         <item>gpodder_icon</item>
-        <item>nextcloud_logo_svg</item>
+        <item>nextcloud_logo</item>
     </string-array>
 </resources>

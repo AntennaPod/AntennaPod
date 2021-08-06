@@ -97,7 +97,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     getString(R.string.gpodnet_description),
                     getString(R.string.preference_synchronization_summary_nextcloud)
             };
-            int[] syncProviderIcons = {R.drawable.gpodder_icon, R.drawable.nextcloud_logo_svg};
+            int[] syncProviderIcons = {R.drawable.gpodder_icon, R.drawable.nextcloud_logo};
 
             ListAdapter adapter = new ArrayAdapter<String>(
                     getContext(), R.layout.alertdialog_sync_provider_chooser, syncProviderDescriptions) {
