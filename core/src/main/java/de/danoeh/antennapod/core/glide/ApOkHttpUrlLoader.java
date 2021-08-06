@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
@@ -77,7 +76,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, new GlideUrl(model)));
+        return new LoadData<>(new ObjectKey(model), new ResizingOkHttpStreamFetcher(client, new GlideUrl(model)));
     }
 
     @Override
