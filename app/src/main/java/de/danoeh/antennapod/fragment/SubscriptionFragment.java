@@ -172,18 +172,18 @@ public class SubscriptionFragment extends Fragment
 
             @Override
             public void onToggleChanged(boolean isOpen) {
-                if (isOpen && subscriptionAdapter.getSelectedCount() == 0) {
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
-                            Snackbar.LENGTH_SHORT);
-                    speedDialView.close();
-                }
+//                if (isOpen && subscriptionAdapter.getSelectedCount() == 0) {
+//                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+//                            Snackbar.LENGTH_SHORT);
+//                    speedDialView.close();
+//                }
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
                     .handleAction(actionItem.getId());
-            onEndSelectMode();
-            subscriptionAdapter.endSelectMode();
+//            onEndSelectMode();
+//            subscriptionAdapter.endSelectMode();
             return true;
         });
 
