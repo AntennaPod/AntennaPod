@@ -77,6 +77,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -306,20 +307,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
-        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
-            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-            for (FeedItem feedItem : taskManager.getQueue()) {
-                if (feedItem.getMedia() != null) {
-                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
-                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
-                }
-            }
-            emitter.onSuccess(queueItems);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
-
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
 
@@ -365,6 +352,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return new BrowserRoot(
                 getResources().getString(R.string.app_name), // Name visible in Android Auto
                 null); // Bundle of optional extras
+    }
+
+    private void loadQueueForMediaSession() {
+        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+            for (FeedItem feedItem : taskManager.getQueue()) {
+                if (feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
+            }
+            emitter.onSuccess(queueItems);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
@@ -414,6 +417,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onLoadChildren(@NonNull String parentId,
                                @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
+        result.detach();
+
+        Completable.create(emitter -> {
+            result.sendResult(loadChildrenSynchronous(parentId));
+            emitter.onComplete();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> { }, Throwable::printStackTrace);
+    }
+
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
@@ -449,7 +464,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
         }
-        result.sendResult(mediaItems);
+        return mediaItems;
     }
 
     @Override
@@ -815,11 +830,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             mediaPlayer.getPSMPInfo().playerStatus, mediaPlayer.isStreaming());
                     setupNotification(newInfo);
                     break;
-
                 case PREPARED:
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
-
                 case PAUSED:
                     if ((UserPreferences.isPersistNotify() || isCasting) &&
                             android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -833,12 +846,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     cancelPositionObserver();
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     break;
-
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
                     //stopService();
                     break;
-
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     setupNotification(newInfo);
@@ -851,13 +862,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 PlaybackService.this::disableSleepTimer));
                     }
+                    loadQueueForMediaSession();
                     break;
-
                 case ERROR:
                     PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
                     break;
-
+                default:
+                    break;
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
