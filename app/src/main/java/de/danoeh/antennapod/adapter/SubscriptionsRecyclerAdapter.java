@@ -33,6 +33,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -253,6 +254,7 @@ public class SubscriptionsRecyclerAdapter
             Context context = parent.getContext();
             int insetOffset = (int) convertDpToPixel(context,4f);
             outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
+
         }
     }
 }
