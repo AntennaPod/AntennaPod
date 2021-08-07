@@ -20,7 +20,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -147,7 +146,7 @@ public class SubscriptionFragment extends Fragment
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()), RecyclerView.VERTICAL, false);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
-        subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.DividerItemDecorator());
+        subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         registerForContextMenu(subscriptionRecycler);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
@@ -248,7 +247,7 @@ public class SubscriptionFragment extends Fragment
         emptyView.setIcon(R.drawable.ic_folder);
         emptyView.setTitle(R.string.no_subscriptions_head_label);
         emptyView.setMessage(R.string.no_subscriptions_label);
-//        emptyView.attachToListView(subscriptionGridLayout);
+        emptyView.attachToRecyclerView(subscriptionRecycler);
     }
 
     @Override
@@ -286,8 +285,6 @@ public class SubscriptionFragment extends Fragment
         if (subscriptionAdapter != null) {
             subscriptionAdapter.endSelectMode();
         }
-
-        subscriptionAdapter = null;
     }
 
     private void loadSubscriptions() {

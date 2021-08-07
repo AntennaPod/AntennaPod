@@ -1,10 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -32,6 +35,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -78,35 +82,35 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        holder.onBind(itemAccess.getItem(position), position);
+        NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(position);
+        boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
+        holder.onBind(drawerItem, position);
         holder.itemView.setOnCreateContextMenuListener(this);
-        float imageViewSelectedAlpha = 0.33f;
         if (inActionMode()) {
-            holder.selectCheckbox.setVisibility(View.VISIBLE);
+            if(isFeed) {
+                holder.selectCheckbox.setVisibility(View.VISIBLE);
+                holder.selectView.setVisibility(View.VISIBLE);
+            }
             if (isSelected(position)) {
                 holder.selectCheckbox.setChecked(true);
-                holder.imageView.setAlpha(imageViewSelectedAlpha);
             } else {
                 holder.selectCheckbox.setChecked(false);
-                holder.imageView.setAlpha(1f);
             }
             holder.selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     setSelected(position, isChecked);
-                    holder.imageView.setAlpha(isChecked ? imageViewSelectedAlpha : 1f);
                 }
             });
         } else {
-            holder.selectCheckbox.setVisibility(View.GONE);
-            holder.imageView.setAlpha(1f);
+            holder.selectView.setVisibility(View.GONE);
+//            holder.selectCheckbox.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
             if(!inActionMode()) {
-                NavDrawerData.DrawerItem drawerItem1 = itemAccess.getItem(position);
-                if (drawerItem1.type == NavDrawerData.DrawerItem.Type.FEED) {
-                    selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem1).feed;
+                if (isFeed) {
+                    selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                     longPressedPosition = position;
                 } else{
                     selectedFeed = null;
@@ -114,18 +118,18 @@ public class SubscriptionsRecyclerAdapter
             }
             return false;
         });
-        NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(position);
 
         holder.itemView.setOnClickListener(v -> {
             if (drawerItem == null) {
                 return;
             } else if (inActionMode()) {
-                holder.selectCheckbox.setChecked(!isSelected(position));
+                if(isFeed)
+                    holder.selectCheckbox.setChecked(!isSelected(position));
                 return;
-            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            } else if (isFeed) {
                 Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
                 mainActivityRef.get().loadChildFragment(fragment);
-            } else if (drawerItem.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+            } else if (!isFeed) {
                 Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
                 mainActivityRef.get().loadChildFragment(fragment);
             }
@@ -161,13 +165,7 @@ public class SubscriptionsRecyclerAdapter
         if (item.getItemId() == R.id.multi_select) {
             startSelectMode(longPressedPosition);
             return true;
-        } /*else if (item.getItemId() == R.id.select_all_above) {
-            setSelected(0, longPressedPosition, true);
-            return true;
-        } else if (item.getItemId() == R.id.select_all_below) {
-            setSelected(longPressedPosition + 1, getItemCount(), true);
-            return true;
-        }*/
+        }
         return false;
     }
 
@@ -195,13 +193,16 @@ public class SubscriptionsRecyclerAdapter
         private TextView feedTitle;
         private ImageView imageView;
         private TriangleLabelView count;
+        private CoordinatorLayout selectView;
         private CheckBox selectCheckbox;
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             feedTitle = itemView.findViewById(R.id.txtvTitle);
             imageView = itemView.findViewById(R.id.imgvCover);
             count = itemView.findViewById(R.id.triangleCountView);
+            selectView = itemView.findViewById(R.id.selectView);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
+
         }
 
         @SuppressLint("ResourceAsColor")
@@ -209,19 +210,17 @@ public class SubscriptionsRecyclerAdapter
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
-//            selectCheckbox.
             if (TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
                     == ViewCompat.LAYOUT_DIRECTION_RTL) {
                 count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
             }
 
-            if (!inActionMode())
-                if (drawerItem.getCounter() > 0) {
-                    count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
-                    count.setVisibility(View.VISIBLE);
-                } else {
-                    count.setVisibility(View.GONE);
-                }
+            if (drawerItem.getCounter() > 0) {
+                count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
+                count.setVisibility(View.VISIBLE);
+            } else {
+                count.setVisibility(View.GONE);
+            }
 
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
@@ -242,7 +241,11 @@ public class SubscriptionsRecyclerAdapter
         }
     }
 
-    public static class DividerItemDecorator extends RecyclerView.ItemDecoration {
+    public static float convertDpToPixel(Context context, float dp) {
+        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public static class GridDividerItemDecorator extends RecyclerView.ItemDecoration {
         @Override
         public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.onDraw(c, parent, state);
@@ -251,8 +254,9 @@ public class SubscriptionsRecyclerAdapter
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
+            Context context = parent.getContext();
+            float insetOffset = convertDpToPixel(context,4f);
             outRect.set(4, 4, 4, 4);
-
         }
     }
 }

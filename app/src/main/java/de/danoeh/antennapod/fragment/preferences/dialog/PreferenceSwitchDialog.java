@@ -1,26 +1,15 @@
 package de.danoeh.antennapod.fragment.preferences.dialog;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Switch;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SwitchCompat;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import androidx.core.util.Consumer;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 public class PreferenceSwitchDialog  {
     protected Context context;

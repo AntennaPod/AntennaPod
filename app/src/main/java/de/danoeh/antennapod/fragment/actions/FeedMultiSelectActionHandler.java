@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
+import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,7 +43,7 @@ public class FeedMultiSelectActionHandler {
 
     public void handleAction(int id) {
         if (id == R.id.remove_item) {
-            deleteChecked();
+            RemoveFeedDialog.show(activity, selectedItems, null);
         } else if (id == R.id.keep_updated) {
             keepUpdatedChecked();
         } else if (id == R.id.autodownload) {
@@ -62,8 +63,6 @@ public class FeedMultiSelectActionHandler {
             @Override
             public void preferenceChanged(boolean enabled) {
                     saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled));
-                    ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(activity, enabled);
-                    dialog.createNewDialog().show();
             }
         });
         preferenceSwitchDialog.openDialog();
@@ -99,11 +98,12 @@ public class FeedMultiSelectActionHandler {
 
     private void autoDeleteEpisodesChecked() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity, "Auto delete episodes");
-        String[] items = new String[]{"global", "always", "never"};
+        String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
+        String[] values = activity.getResources().getStringArray(R.array.spnAutoDeleteValues);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
             FeedPreferences.AutoDeleteAction autoDeleteAction = null;
-            switch (items[which]) {
+            switch (values[which]) {
                 case "global":
                     autoDeleteAction = FeedPreferences.AutoDeleteAction.GLOBAL;
                     break;
@@ -123,19 +123,10 @@ public class FeedMultiSelectActionHandler {
 
     private void keepUpdatedChecked() {
         PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,activity.getString(R.string.kept_updated), activity.getString(R.string.keep_updated_summary));
-        preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
-            @Override
-            public void preferenceChanged(boolean enabled) {
-                saveFeedPreferences(feedPreferences -> feedPreferences.setKeepUpdated(enabled));
-            }
+        preferenceSwitchDialog.setOnPreferenceChangedListener(keepUpdated -> {
+            saveFeedPreferences(feedPreferences -> {feedPreferences.setKeepUpdated(keepUpdated);});
         });
         preferenceSwitchDialog.openDialog();
-    }
-
-
-
-    private void deleteChecked() {
-        RemoveFeedDialog.show(activity, selectedItems, null);
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
@@ -143,47 +134,10 @@ public class FeedMultiSelectActionHandler {
                 .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
     }
 
-    private void showMessageMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
-        activity.showSnackbarAbovePlayer(activity.getResources()
-                .getQuantityString(msgId,
-                        (countHasMedia + countNoMedia),
-                        (countHasMedia + countNoMedia), countHasMedia),
-                Snackbar.LENGTH_LONG);
-    }
-
-    private long[] getSelectedIds() {
-        long[] checkedIds = new long[selectedItems.size()];
-        for (int i = 0; i < selectedItems.size(); ++i) {
-            checkedIds[i] = selectedItems.get(i).getId();
-        }
-        return checkedIds;
-    }
-    interface OnSetFeedPreferenceListener {
-        void onSetFeedPreferenceListener(FeedPreferences feedPreferences);
-    }
-    private void saveFeedPreferences(OnSetFeedPreferenceListener onSetFeedPreferenceListener) {
+    private void saveFeedPreferences(Consumer<FeedPreferences> preferencesConsumer) {
         for (Feed feed : selectedItems) {
-            onSetFeedPreferenceListener.onSetFeedPreferenceListener(feed.getPreferences());
+            preferencesConsumer.accept(feed.getPreferences());
             DBWriter.setFeedPreferences(feed.getPreferences());
-        }
-    }
-
-    private class ApplyToEpisodesDialog extends ConfirmationDialog {
-        private final boolean autoDownload;
-
-        ApplyToEpisodesDialog(Context context, boolean autoDownload) {
-            super(context, R.string.auto_download_apply_to_items_title,
-                    R.string.auto_download_apply_to_items_message);
-            this.autoDownload = autoDownload;
-            setPositiveText(R.string.yes);
-            setNegativeText(R.string.no);
-        }
-
-        @Override
-        public void onConfirmButtonPressed(DialogInterface dialog) {
-            for (Feed feed : selectedItems) {
-                DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
-            }
         }
     }
 }
