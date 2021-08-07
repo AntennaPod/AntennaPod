@@ -32,6 +32,7 @@
         <item name="icon_green">#008537</item>
         <item name="icon_purple">#5F1984</item>
         <item name="icon_gray">#25365A</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -66,6 +67,7 @@
         <item name="icon_green">#008537</item>
         <item name="icon_purple">#AA55D8</item>
         <item name="icon_gray">#CDD9E4</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
