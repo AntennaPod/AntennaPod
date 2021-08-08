@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +48,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -121,46 +121,48 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
-            final int itemId = item.getItemId();
-            if (itemId == R.id.refresh_item) {
-                AutoUpdateManager.runImmediate(requireContext());
-                return true;
-            } else if (itemId == R.id.mark_all_read_item) {
-                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
-                        R.string.mark_all_read_label,
-                        R.string.mark_all_read_confirmation_msg) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        DBWriter.markAllItemsRead();
-                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                                R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
-                    }
-                };
-                markAllReadConfirmationDialog.createNewDialog().show();
-                return true;
-            } else if (itemId == R.id.remove_all_new_flags_item) {
-                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                        R.string.remove_all_new_flags_label,
-                        R.string.remove_all_new_flags_confirmation_msg) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        DBWriter.removeAllNewFlags();
-                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                                R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
-                    }
-                };
-                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-                return true;
-            }
-            return false;
-        } else {
+        if (super.onOptionsItemSelected(item)) {
             return true;
         }
+        final int itemId = item.getItemId();
+        if (itemId == R.id.refresh_item) {
+            AutoUpdateManager.runImmediate(requireContext());
+            return true;
+        } else if (itemId == R.id.mark_all_read_item) {
+            ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                    R.string.mark_all_read_label,
+                    R.string.mark_all_read_confirmation_msg) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    DBWriter.markAllItemsRead();
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                            R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
+                }
+            };
+            markAllReadConfirmationDialog.createNewDialog().show();
+            return true;
+        } else if (itemId == R.id.remove_all_new_flags_item) {
+            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
+                    R.string.remove_all_new_flags_label,
+                    R.string.remove_all_new_flags_confirmation_msg) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    DBWriter.removeAllNewFlags();
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                            R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
+                }
+            };
+            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            return true;
+        }
+        return false;
     }
 
     @Override
