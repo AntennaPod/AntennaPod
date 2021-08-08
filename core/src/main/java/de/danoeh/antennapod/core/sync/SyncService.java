@@ -70,7 +70,6 @@ public class SyncService extends Worker {
     private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
-    private static final EpisodeActionFilter episodeActionFilter = new EpisodeActionFilter();
 
     private ISyncService syncServiceImpl;
 
@@ -432,7 +431,7 @@ public class SyncService extends Worker {
             return;
         }
 
-        Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();

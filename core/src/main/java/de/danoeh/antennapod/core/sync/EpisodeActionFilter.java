@@ -14,7 +14,7 @@ public class EpisodeActionFilter {
 
     public static final String TAG = "EpisodeActionFilter";
 
-    public Map<Pair<String, String>, EpisodeAction> getRemoteActionsOverridingLocalActions(
+    public static Map<Pair<String, String>, EpisodeAction> getRemoteActionsOverridingLocalActions(
             List<EpisodeAction> remoteActions,
             List<EpisodeAction> queuedEpisodeActions) {
         // make sure more recent local actions are not overwritten by older remote actions
@@ -58,7 +58,7 @@ public class EpisodeActionFilter {
         return remoteActionsThatOverrideLocalActions;
     }
 
-    private Map<Pair<String, String>, EpisodeAction> createUniqueLocalMostRecentPlayActions(
+    private static Map<Pair<String, String>, EpisodeAction> createUniqueLocalMostRecentPlayActions(
             List<EpisodeAction> queuedEpisodeActions
     ) {
         Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction;
@@ -75,7 +75,7 @@ public class EpisodeActionFilter {
         return localMostRecentPlayAction;
     }
 
-    private boolean localActionHappenedAfterRemoteAction(EpisodeAction remoteAction, EpisodeAction localMostRecent) {
+    private static boolean localActionHappenedAfterRemoteAction(EpisodeAction remoteAction, EpisodeAction localMostRecent) {
         return localMostRecent != null
                 && localMostRecent.getTimestamp() != null
                 && localMostRecent.getTimestamp().after(remoteAction.getTimestamp());
