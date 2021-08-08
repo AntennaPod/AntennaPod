@@ -32,8 +32,7 @@ public class EpisodeActionFilter {
                     break;
                 case PLAY:
                     EpisodeAction localMostRecent = localMostRecentPlayActions.get(key);
-                    if (localActionHappenedAfterRemoteAction(remoteAction, localMostRecent)
-                    ) {
+                    if (localActionHappenedAfterRemoteAction(remoteAction, localMostRecent)) {
                         break;
                     }
                     EpisodeAction mostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
