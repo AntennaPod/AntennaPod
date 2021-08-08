@@ -437,7 +437,8 @@ public class SyncService extends Worker {
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {
-            FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(action.getGuid(), action.getEpisode());
+            String guid = GuidValidator.isValidGuid(action.getGuid()) ? action.getGuid() : null;
+            FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(guid, action.getEpisode());
             if (feedItem == null) {
                 Log.i(TAG, "Unknown feed item: " + action);
                 continue;
