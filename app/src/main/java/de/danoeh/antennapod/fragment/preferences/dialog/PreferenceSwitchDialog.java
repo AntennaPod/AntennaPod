@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AlertDialog;
+
 import de.danoeh.antennapod.R;
 
 public class PreferenceSwitchDialog  {

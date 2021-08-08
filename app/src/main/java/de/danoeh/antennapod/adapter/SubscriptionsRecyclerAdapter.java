@@ -2,10 +2,6 @@ package de.danoeh.antennapod.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-<<<<<<< HEAD
-=======
-import android.content.res.ColorStateList;
->>>>>>> 4300c7816... Latest update of feed multi select.
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
@@ -37,7 +33,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
