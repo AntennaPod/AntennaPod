@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AlertDialog;
+
 import de.danoeh.antennapod.R;
-import androidx.core.util.Consumer;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 public class PreferenceSwitchDialog  {
     protected Context context;
