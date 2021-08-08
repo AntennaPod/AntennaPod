@@ -532,6 +532,7 @@ public class SyncService extends Worker {
                 NotificationUtils.CHANNEL_ID_SYNC_ERROR)
                 .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
                 .setContentText(description)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(description))
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_notification_sync_error)
                 .setAutoCancel(true)
