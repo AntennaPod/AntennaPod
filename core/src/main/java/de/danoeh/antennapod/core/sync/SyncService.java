@@ -462,7 +462,6 @@ public class SyncService extends Worker {
         DBWriter.setItemList(updatedItems);
     }
 
-
     private void clearErrorNotifications() {
         NotificationManager nm = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
