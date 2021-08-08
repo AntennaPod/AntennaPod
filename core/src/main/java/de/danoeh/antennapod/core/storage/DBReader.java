@@ -573,11 +573,8 @@ public final class DBReader {
      *          Does NOT load additional attributes like feed or queue state.
      */
     @Nullable
-    private static FeedItem getFeedItemByGuidOrEpisodeUrl(
-            final String guid,
-            final String episodeUrl,
-            PodDBAdapter adapter
-    ) {
+    private static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl,
+            PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with guid " + guid + " or episode url " + episodeUrl);
         try (Cursor cursor = adapter.getFeedItemCursor(guid, episodeUrl)) {
             if (!cursor.moveToNext()) {
