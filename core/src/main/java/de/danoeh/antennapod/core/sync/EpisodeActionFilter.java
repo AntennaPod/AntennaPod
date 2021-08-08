@@ -37,11 +37,10 @@ public class EpisodeActionFilter {
                         break;
                     }
                     EpisodeAction mostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
-                    if (
-                            mostRecentAction == null
-                                    || mostRecentAction.getTimestamp() == null
-                                    || (remoteAction.getTimestamp() != null
-                                    && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
+                    if (mostRecentAction == null
+                            || mostRecentAction.getTimestamp() == null
+                            || (remoteAction.getTimestamp() != null
+                            && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
                     ) {
                         remoteActionsThatOverrideLocalActions.put(key, remoteAction);
                     }
