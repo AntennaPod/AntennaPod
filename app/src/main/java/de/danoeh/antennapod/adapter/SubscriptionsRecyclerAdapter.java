@@ -2,9 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
@@ -35,11 +33,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
@@ -255,8 +251,8 @@ public class SubscriptionsRecyclerAdapter
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             Context context = parent.getContext();
-            float insetOffset = convertDpToPixel(context,4f);
-            outRect.set(4, 4, 4, 4);
+            int insetOffset = (int) convertDpToPixel(context,4f);
+            outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
         }
     }
 }

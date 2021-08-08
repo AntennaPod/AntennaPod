@@ -177,7 +177,7 @@ public class SubscriptionFragment extends Fragment
 //                            Snackbar.LENGTH_SHORT);
 //                    speedDialView.close();
 //                }
-            }
+                }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
