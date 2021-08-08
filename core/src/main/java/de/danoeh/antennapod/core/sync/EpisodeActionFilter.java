@@ -73,7 +73,8 @@ public class EpisodeActionFilter {
         return localMostRecentPlayAction;
     }
 
-    private static boolean localActionHappenedAfterRemoteAction(EpisodeAction remoteAction, EpisodeAction localMostRecent) {
+    private static boolean localActionHappenedAfterRemoteAction(EpisodeAction remoteAction,
+                                                                EpisodeAction localMostRecent) {
         return localMostRecent != null
                 && localMostRecent.getTimestamp() != null
                 && localMostRecent.getTimestamp().after(remoteAction.getTimestamp());
