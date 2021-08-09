@@ -234,7 +234,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
 
-
     private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
         return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
     }
@@ -277,10 +276,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            AccountImporter.onActivityResult(
-                    requestCode,
-                    resultCode,
-                    data,
+            AccountImporter.onActivityResult(requestCode, resultCode, data,
                     SynchronizationPreferencesFragment.this,
                     singleSignOnAccount
                             -> {
