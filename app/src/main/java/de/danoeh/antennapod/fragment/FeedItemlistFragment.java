@@ -37,6 +37,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -77,7 +78,6 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -115,7 +115,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private ImageButton butShowSettings;
     private View header;
     private Toolbar toolbar;
-    private ToolbarIconTintManager iconTintManager;
     private SpeedDialView speedDialView;
 
     private boolean displayUpArrow;
@@ -184,7 +183,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
 
-        iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
+        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
@@ -294,8 +293,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed == null) {
             return;
         }
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), feedID, feed.getTitle());
-
         toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
@@ -313,9 +310,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            item.getActionView().post(() -> iconTintManager.updateTint());
-        }
         if (feed == null) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -339,6 +333,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else if (itemId == R.id.remove_item) {
             RemoveFeedDialog.show(getContext(), feed, () ->
                     ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null));
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
             return true;
         }
         return false;

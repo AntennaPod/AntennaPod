@@ -19,8 +19,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        custom:showAsAction="collapseActionView|ifRoom"
-        custom:actionViewClass="androidx.appcompat.widget.SearchView"
+        custom:showAsAction="ifRoom"
         android:title="@string/search_label"/>
 
     <item

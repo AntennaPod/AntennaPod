@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -51,7 +52,6 @@ import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -193,6 +193,9 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
             return true;
         } else if (itemId == R.id.subscription_num_columns_5) {
             setColumnNumber(5);
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
         return false;
