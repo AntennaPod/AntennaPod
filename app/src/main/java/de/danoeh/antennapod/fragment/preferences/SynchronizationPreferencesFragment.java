@@ -117,10 +117,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                                 R.layout.alertdialog_sync_provider_chooser, null);
 
                         holder = new ViewHolder();
-                        holder.icon = (ImageView) convertView
-                                .findViewById(R.id.icon);
-                        holder.title = (TextView) convertView
-                                .findViewById(R.id.title);
+                        holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+                        holder.title = (TextView) convertView.findViewById(R.id.title);
                         convertView.setTag(holder);
                     } else {
                         holder = (ViewHolder) convertView.getTag();
