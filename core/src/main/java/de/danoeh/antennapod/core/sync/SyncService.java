@@ -99,20 +99,15 @@ public class SyncService extends Worker {
     public Result doWork() {
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
-        String selectedService = getSelectedSyncProviderKey(getApplicationContext());
-        ISyncService activeSyncProvider = getActiveSyncProvider(selectedService, this.syncServices);
+        ISyncService activeSyncProvider = getActiveSyncProvider();
 
-        return getResultForService(prefs, activeSyncProvider);
-    }
-
-    private Result getResultForService(SharedPreferences.Editor prefs, ISyncService syncServiceImpl) {
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         try {
-            syncServiceImpl.login();
+            activeSyncProvider.login();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
-            syncSubscriptions(syncServiceImpl);
-            syncEpisodeActions(syncServiceImpl);
-            syncServiceImpl.logout();
+            syncSubscriptions(activeSyncProvider);
+            syncEpisodeActions(activeSyncProvider);
+            activeSyncProvider.logout();
             clearErrorNotifications();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
             prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
@@ -127,6 +122,14 @@ public class SyncService extends Worker {
             }
             return Result.retry();
         }
+
+
+    }
+
+    private ISyncService getActiveSyncProvider() {
+        String selectedService = getSelectedSyncProviderKey(getApplicationContext());
+        ISyncService activeSyncProvider = getActiveSyncProvider(selectedService, this.syncServices);
+        return activeSyncProvider;
     }
 
     public static void setIsProviderConnected(Context context, boolean isConnected) {
