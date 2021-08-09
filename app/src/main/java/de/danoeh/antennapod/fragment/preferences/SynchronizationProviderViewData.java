@@ -12,17 +12,15 @@ import java.util.LinkedHashMap;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-
-import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
-import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD;
+import de.danoeh.antennapod.core.sync.SyncService;
 
 public class SynchronizationProviderViewData {
 
     public static String getUsernameFromSelectedSyncProvider(Context context, String currentSyncProviderKey) {
         switch (currentSyncProviderKey) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
+            case SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET:
                 return GpodnetPreferences.getUsername();
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
+            case SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD:
                 try {
                     return SingleAccountHelper.getCurrentSingleSignOnAccount(context).name;
                 } catch (NextcloudFilesAppAccountNotFoundException e) {

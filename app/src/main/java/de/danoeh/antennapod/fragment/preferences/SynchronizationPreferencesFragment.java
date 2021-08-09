@@ -39,7 +39,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
 import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
@@ -132,7 +131,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             };
 
             builder.setAdapter(adapter, (dialog, which) -> {
-                String userSelect = SYNC_PROVIDER_CHOICE_GPODDER_NET;
+                String userSelect = SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
                 switch (which) {
                     case 0:
                         break;
@@ -143,7 +142,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                         break;
                 }
                 setSelectedSyncProvider(userSelect);
-                if (userSelect.equals(SYNC_PROVIDER_CHOICE_GPODDER_NET)) {
+                if (userSelect.equals(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET)) {
                     new GpodderAuthenticationFragment()
                             .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
                     updateScreen();
@@ -244,7 +243,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private boolean isGpodnetSyncProviderSelected() {
-        return getSelectedSyncProviderKey().equals(SYNC_PROVIDER_CHOICE_GPODDER_NET);
+        return getSelectedSyncProviderKey().equals(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET);
     }
 
     private String getSelectedSyncProviderKey() {
