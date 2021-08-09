@@ -75,9 +75,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void syncStatusChanged(SyncServiceEvent event) {
         updateScreen();
-        if (!GpodnetPreferences.loggedIn()) {
-            return;
-        }
         if (event.getMessageResId() == R.string.sync_status_error
                 || event.getMessageResId() == R.string.sync_status_success) {
             updateLastSyncReport(SyncService.isLastSyncSuccessful(getContext()),
