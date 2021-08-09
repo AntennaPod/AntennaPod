@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import static de.danoeh.antennapod.core.sync.SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
+import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -285,6 +286,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                             -> {
                         SingleAccountHelper.setCurrentAccount(getContext(), singleSignOnAccount.name);
                         SyncService.setIsProviderConnected(getContext(), true);
+                        SyncService.fullSync(getContext());
                         updateScreen();
                     });
         } catch (AccountImportCancelledException e) {
