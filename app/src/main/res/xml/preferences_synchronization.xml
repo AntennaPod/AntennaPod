@@ -14,7 +14,6 @@
             android:title="@string/pref_gpodnet_setlogin_information_title"
             android:summary="@string/pref_gpodnet_setlogin_information_sum"
             app:isPreferenceVisible="false"/>
-
     <Preference
             android:key="pref_synchronization_sync"
             android:title="@string/pref_gpodnet_sync_changes_title"
