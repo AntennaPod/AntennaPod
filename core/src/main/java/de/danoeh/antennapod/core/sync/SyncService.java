@@ -67,6 +67,7 @@ public class SyncService extends Worker {
     public static final String SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED = "provider_is_connected";
     public static final String SYNC_PROVIDER_CHOICE_GPODDER_NET = "GPodder.net";
     public static final String SYNC_PROVIDER_CHOICE_NEXTCLOUD = "Nextcloud";
+    public static final String TAG = "SyncService";
 
     private static final String PREF_NAME = "SyncService";
     private static final String PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP = "last_sync_timestamp";
@@ -76,7 +77,6 @@ public class SyncService extends Worker {
     private static final String PREF_QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
     private static final String PREF_LAST_SYNC_ATTEMPT_TIMESTAMP = "last_sync_attempt_timestamp";
     private static final String PREF_LAST_SYNC_ATTEMPT_SUCCESS = "last_sync_attempt_success";
-    private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
 

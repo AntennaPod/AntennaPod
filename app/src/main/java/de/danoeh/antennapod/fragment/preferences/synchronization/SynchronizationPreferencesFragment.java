@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,6 +34,7 @@ import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

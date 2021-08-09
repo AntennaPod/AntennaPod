@@ -28,7 +28,7 @@ import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NotificationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.StoragePreferencesFragment;
-import de.danoeh.antennapod.fragment.preferences.SynchronizationPreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.synchronization.SynchronizationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.SwipePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragment;
 

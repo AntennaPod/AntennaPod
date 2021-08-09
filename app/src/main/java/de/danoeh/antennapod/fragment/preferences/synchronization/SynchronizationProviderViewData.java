@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.content.Context;
 import android.util.Log;
