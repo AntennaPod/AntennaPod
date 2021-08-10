@@ -72,7 +72,10 @@ public class CoverLoader {
     }
 
     public void load() {
+        CoverTarget coverTarget = new CoverTarget(txtvPlaceholder, imgvCover, textAndImageCombined);
+
         if (resource != 0) {
+            Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
             CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined);
             return;
@@ -93,7 +96,7 @@ public class CoverLoader {
                     .apply(options));
         }
 
-        builder.into(new CoverTarget(txtvPlaceholder, imgvCover, textAndImageCombined));
+        builder.into(coverTarget);
     }
 
     static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
