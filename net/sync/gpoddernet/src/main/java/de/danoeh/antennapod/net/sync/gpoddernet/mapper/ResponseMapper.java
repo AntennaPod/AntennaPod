@@ -15,10 +15,6 @@ import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
 import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
 
 public class ResponseMapper {
-    public static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
 
     public static SubscriptionChanges readSubscriptionChangesFromJsonObject(@NonNull JSONObject object)
             throws JSONException {

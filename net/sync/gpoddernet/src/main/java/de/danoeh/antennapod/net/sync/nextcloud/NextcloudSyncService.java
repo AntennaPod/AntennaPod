@@ -12,6 +12,7 @@ import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
 import com.nextcloud.android.sso.helper.SingleAccountHelper;
 import com.nextcloud.android.sso.model.SingleSignOnAccount;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -98,7 +100,7 @@ public class NextcloudSyncService implements ISyncService {
                     .build();
 
             InputStream inputStream = this.nextcloudApi.performNetworkRequest(nextcloudRequest);
-            String responseString = ResponseMapper.convertStreamToString(inputStream);
+            String responseString = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
             JSONObject json = new JSONObject(responseString);
             inputStream.close();
             return ResponseMapper.readSubscriptionChangesFromJsonObject(json);
@@ -161,7 +163,7 @@ public class NextcloudSyncService implements ISyncService {
                     .build();
 
             InputStream inputStream = this.nextcloudApi.performNetworkRequest(nextcloudRequest);
-            String responseString = ResponseMapper.convertStreamToString(inputStream);
+            String responseString = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
             inputStream.close();
             JSONObject json = new JSONObject(responseString);
             return ResponseMapper.readEpisodeActionsFromJsonObject(json);
