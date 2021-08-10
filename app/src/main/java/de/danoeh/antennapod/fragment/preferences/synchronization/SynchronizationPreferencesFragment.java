@@ -40,6 +40,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
@@ -91,11 +93,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGIN).setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.dialog_choose_sync_service_title);
-            String[] syncProviderDescriptions = {
-                    getString(R.string.gpodnet_description),
-                    getString(R.string.preference_synchronization_summary_nextcloud)
-            };
-            int[] syncProviderIcons = {R.drawable.gpodder_icon, R.drawable.nextcloud_logo};
+            ArrayList<String> syncProviderDescriptions = getSyncProviderDescriptions();
+            ArrayList<Integer> syncProviderIcons = ViewDataProvider.getAllSynchronizationProviderIconResources();
 
             ListAdapter adapter = new ArrayAdapter<String>(
                     getContext(), R.layout.alertdialog_sync_provider_chooser, syncProviderDescriptions) {
@@ -121,9 +120,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                         holder = (ViewHolder) convertView.getTag();
                     }
 
-                    holder.title.setText(syncProviderDescriptions[position]);
+                    holder.title.setText(syncProviderDescriptions.get(position));
 
-                    holder.icon.setImageResource(syncProviderIcons[position]);
+                    holder.icon.setImageResource(syncProviderIcons.get(position));
                     return convertView;
                 }
             };
@@ -185,6 +184,17 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             updateScreen();
             return true;
         });
+    }
+
+    private ArrayList<String> getSyncProviderDescriptions() {
+        ArrayList<Integer> synchronizationProviderDescriptionResources = ViewDataProvider
+                .getAllSynchronizationProviderDescriptionResources();
+        ArrayList<String> synchronizationProviderDescriptions = new ArrayList<>();
+        for (int resource: synchronizationProviderDescriptionResources) {
+            synchronizationProviderDescriptions.add(getString(resource));
+        }
+
+        return synchronizationProviderDescriptions;
     }
 
     private void setSelectedSyncProvider(String userSelect) {
