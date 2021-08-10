@@ -214,7 +214,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             String format = getActivity().getString(R.string.pref_nextcloud_gpodder_login_status);
             String summary = String.format(
                     format,
-                    SynchronizationProviderViewData.getUsernameFromSelectedSyncProvider(
+                    ViewDataProvider.getUsernameFromSelectedSyncProvider(
                             getContext(),
                             getSelectedSyncProviderKey()
                     ),
@@ -230,14 +230,11 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
 
 
     private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
-        return SynchronizationProviderViewData.getSynchronizationProviderIcon(getContext(), currentSyncProviderKey);
+        return ViewDataProvider.getSynchronizationProviderIcon(currentSyncProviderKey);
     }
 
     private int getHeaderSummary(String currentSyncProviderKey) {
-        return SynchronizationProviderViewData.getSynchronizationProviderHeaderSummary(
-                getContext(),
-                currentSyncProviderKey
-        );
+        return ViewDataProvider.getSynchronizationProviderHeaderSummary(currentSyncProviderKey);
     }
 
     private boolean isGpodnetSyncProviderSelected() {
