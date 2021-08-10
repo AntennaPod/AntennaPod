@@ -55,7 +55,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -80,18 +79,8 @@ public class SyncService extends Worker {
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
 
-    private final Map<String, ISyncService> syncServices = new HashMap<>();
-
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
-        syncServices.put(SYNC_PROVIDER_CHOICE_GPODDER_NET, new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
-                GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword()));
-
-        syncServices.put(
-                SYNC_PROVIDER_CHOICE_NEXTCLOUD,
-                new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT)
-        );
     }
 
     @Override
@@ -128,8 +117,16 @@ public class SyncService extends Worker {
 
     private ISyncService getActiveSyncProvider() {
         String selectedService = getSelectedSyncProviderKey(getApplicationContext());
-        ISyncService activeSyncProvider = getActiveSyncProvider(selectedService, this.syncServices);
-        return activeSyncProvider;
+        switch (selectedService) {
+            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
+                return new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
+            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
+                return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
+            default:
+                return null;
+        }
     }
 
     public static void setIsProviderConnected(Context context, boolean isConnected) {
@@ -184,10 +181,6 @@ public class SyncService extends Worker {
                 Context.MODE_PRIVATE
         );
         return preferences.getString(SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, null);
-    }
-
-    private static ISyncService getActiveSyncProvider(String selectedService, Map<String, ISyncService> syncProvider) {
-        return syncProvider.get(selectedService);
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
