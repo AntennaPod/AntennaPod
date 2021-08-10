@@ -38,8 +38,7 @@ public class EpisodeActionFilter {
                     EpisodeAction mostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
                     if (mostRecentAction == null
                             || mostRecentAction.getTimestamp() == null
-                            || (remoteAction.getTimestamp() != null
-                            && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp()))
+                            || remoteActionHappendAfterLocalAction(remoteAction, mostRecentAction)
                     ) {
                         remoteActionsThatOverrideLocalActions.put(key, remoteAction);
                     }
@@ -54,6 +53,12 @@ public class EpisodeActionFilter {
         }
 
         return remoteActionsThatOverrideLocalActions;
+    }
+
+    private static boolean remoteActionHappendAfterLocalAction(EpisodeAction remoteAction,
+                                                               EpisodeAction mostRecentAction) {
+        return remoteAction.getTimestamp() != null
+                && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp());
     }
 
     private static Map<Pair<String, String>, EpisodeAction> createUniqueLocalMostRecentPlayActions(
