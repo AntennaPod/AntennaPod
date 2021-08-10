@@ -558,7 +558,7 @@ public class PodDBAdapter {
                 setFeed(feed);
                 if (feed.getItems() != null) {
                     for (FeedItem item : feed.getItems()) {
-                        upsertFeedItem(item, false);
+                        updateOrInsertFeedItem(item, false);
                     }
                 }
                 if (feed.getPreferences() != null) {
@@ -586,7 +586,7 @@ public class PodDBAdapter {
         try {
             db.beginTransactionNonExclusive();
             for (FeedItem item : items) {
-                upsertFeedItem(item, true);
+                updateOrInsertFeedItem(item, true);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -600,7 +600,7 @@ public class PodDBAdapter {
         long result = 0;
         try {
             db.beginTransactionNonExclusive();
-            result = upsertFeedItem(item, true);
+            result = updateOrInsertFeedItem(item, true);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -618,7 +618,7 @@ public class PodDBAdapter {
      *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
      */
-    private long upsertFeedItem(FeedItem item, boolean saveFeed) {
+    private long updateOrInsertFeedItem(FeedItem item, boolean saveFeed) {
         if (item.getId() == 0 && item.getPubDate() == null) {
             Log.e(TAG, "Newly saved item has no pubDate. Using current date as pubDate");
             item.setPubDate(new Date());
