@@ -121,7 +121,9 @@ public class NextcloudSyncService implements ISyncService {
     }
 
     @Override
-    public UploadChangesResponse uploadSubscriptionChanges(List<String> addedFeeds, List<String> removedFeeds) {
+    public UploadChangesResponse uploadSubscriptionChanges(List<String> addedFeeds,
+                                                           List<String> removedFeeds)
+            throws NextcloudSynchronizationServiceException {
         try {
             HashMap<String, List<String>> header = getHeaderWithUserAgent();
             header.put("Content-Type", Collections.singletonList("application/json"));
@@ -140,6 +142,7 @@ public class NextcloudSyncService implements ISyncService {
             this.nextcloudApi.performNetworkRequest(nextcloudRequest).close();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new NextcloudSynchronizationServiceException(e);
         }
 
         return new GpodnetUploadChangesResponse(System.currentTimeMillis() / 1000, new HashMap<>());
@@ -175,7 +178,8 @@ public class NextcloudSyncService implements ISyncService {
     }
 
     @Override
-    public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> queuedEpisodeActions) {
+    public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> queuedEpisodeActions)
+            throws NextcloudSynchronizationServiceException {
         try {
             HashMap<String, List<String>> header = getHeaderWithUserAgent();
             header.put("Content-Type", Collections.singletonList("application/json"));
@@ -188,10 +192,9 @@ public class NextcloudSyncService implements ISyncService {
                     .build();
 
             this.nextcloudApi.performNetworkRequest(nextcloudRequest);
-        } catch (NextcloudFilesAppAccountNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new NextcloudSynchronizationServiceException(e);
         }
 
 
@@ -204,7 +207,6 @@ public class NextcloudSyncService implements ISyncService {
 
     @Override
     public void logout() {
-
     }
 
     private static class NextcloudGpodderEpisodeActionPostResponse extends UploadChangesResponse {
