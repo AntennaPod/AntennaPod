@@ -128,24 +128,19 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             };
 
             builder.setAdapter(adapter, (dialog, which) -> {
-                String userSelect = SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET;
                 switch (which) {
                     case 0:
+                        setSelectedSyncProvider(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET);
+                        new GpodderAuthenticationFragment()
+                                .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
                         break;
                     case 1:
-                        userSelect = SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD;
+                        setSelectedSyncProvider(SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD);
+                        openNextcloudAccountChooser();
                         break;
                     default:
                         break;
                 }
-                setSelectedSyncProvider(userSelect);
-                if (userSelect.equals(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET)) {
-                    new GpodderAuthenticationFragment()
-                            .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
-                    updateScreen();
-                    return;
-                }
-                openNextcloudAccountChooser();
                 updateScreen();
             });
 
