@@ -155,7 +155,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                         @Override
                         protected void onConfirmed(String username, String password) {
                             GpodnetPreferences.setPassword(password);
-                            SyncService.setIsProviderConnected(true);
                         }
                     };
                     dialog.show();

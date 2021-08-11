@@ -290,6 +290,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
                     writeLoginCredentials();
+                    SyncService.setIsProviderConnected(true);
                     setupFinishView(view);
                 }
             }
