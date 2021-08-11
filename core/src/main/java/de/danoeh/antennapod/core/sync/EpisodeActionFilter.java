@@ -62,8 +62,7 @@ public class EpisodeActionFilter {
     }
 
     private static Map<Pair<String, String>, EpisodeAction> createUniqueLocalMostRecentPlayActions(
-            List<EpisodeAction> queuedEpisodeActions
-    ) {
+            List<EpisodeAction> queuedEpisodeActions) {
         Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction;
         localMostRecentPlayAction = new ArrayMap<>();
         for (EpisodeAction action : queuedEpisodeActions) {
