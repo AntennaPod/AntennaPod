@@ -841,9 +841,9 @@
     <string name="synchronization">Synchronization</string>
     <string name="preference_synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
     <string name="preference_synchronization_summary_nextcloud">Gpoddersync app which needs to be installed on a nextcloud server. Both of which are independent of the AntennaPod project</string>
-    <string name="synchronization_choose_and_login_summary">Choose a sync provider and login</string>
-    <string name="synchronization_choose_and_login_title">Choose sync provider</string>
-    <string name="pref_synchronization_logout_summary">You can choose your sync provider again once you have logged out</string>
-    <string name="pref_synchronization_force_sync_summary">Sync all subscriptions and episode states</string>
-    <string name="pref_synchronization_sync_summary">Sync subscription and episode state changes</string>
+    <string name="synchronization_choose_and_login_summary">Choose a synchronization provider and login</string>
+    <string name="synchronization_choose_and_login_title">Choose synchronization provider</string>
+    <string name="pref_synchronization_logout_summary">You can choose your synchronization provider again once you have logged out</string>
+    <string name="pref_synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
+    <string name="pref_synchronization_sync_summary">Synchronize subscription and episode state changes</string>
 </resources>
