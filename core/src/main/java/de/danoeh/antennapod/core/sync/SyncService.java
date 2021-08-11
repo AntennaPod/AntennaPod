@@ -129,23 +129,28 @@ public class SyncService extends Worker {
         }
     }
 
-    public static void setIsProviderConnected(Context context, boolean isConnected) {
-        context.getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE)
+    public static void setIsProviderConnected(boolean isConnected) {
+        getSyncServiceSharedPreferences()
                 .edit()
                 .putBoolean(SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED, isConnected)
                 .apply();
     }
 
-    public static boolean isProviderConnected(Context context) {
-        return context.getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE)
+    public static boolean isProviderConnected() {
+        return getSyncServiceSharedPreferences()
                 .getBoolean(SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED, false);
     }
 
-    public static void setSelectedSyncProvider(Context context, String userSelect) {
-        context.getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE)
+    public static void setSelectedSyncProvider(String userSelect) {
+        getSyncServiceSharedPreferences()
                 .edit()
                 .putString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, userSelect)
                 .apply();
+    }
+
+    private static SharedPreferences getSyncServiceSharedPreferences() {
+        return ClientConfig.applicationCallbacks.getApplicationInstance()
+                .getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE);
     }
 
     public static void clearQueue(Context context) {
@@ -179,7 +184,7 @@ public class SyncService extends Worker {
     }
 
     private static boolean hasActiveSyncProvider(Context context) {
-        return getSelectedSyncProviderKey(context) != null && isProviderConnected(context);
+        return getSelectedSyncProviderKey(context) != null && isProviderConnected();
     }
 
     private static String getSelectedSyncProviderKey(Context context) {

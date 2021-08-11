@@ -155,7 +155,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                         @Override
                         protected void onConfirmed(String username, String password) {
                             GpodnetPreferences.setPassword(password);
-                            SyncService.setIsProviderConnected(getContext(), true);
+                            SyncService.setIsProviderConnected(true);
                         }
                     };
                     dialog.show();
@@ -172,7 +172,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             GpodnetPreferences.logout();
             Snackbar.make(getView(), R.string.pref_gpodnet_logout_toast, Snackbar.LENGTH_LONG).show();
-            SyncService.setIsProviderConnected(getContext(), false);
+            SyncService.setIsProviderConnected(false);
             setSelectedSyncProvider(SYNC_PROVIDER_UNSET);
             updateScreen();
             return true;
@@ -191,11 +191,11 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private void setSelectedSyncProvider(String userSelect) {
-        SyncService.setSelectedSyncProvider(getContext(), userSelect);
+        SyncService.setSelectedSyncProvider(userSelect);
     }
 
     private void updateScreen() {
-        final boolean loggedIn = SyncService.isProviderConnected(getContext());
+        final boolean loggedIn = SyncService.isProviderConnected();
         findPreference(PREFERENCE_LOGIN).setVisible(!loggedIn);
 
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
@@ -272,7 +272,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     singleSignOnAccount
                             -> {
                         SingleAccountHelper.setCurrentAccount(getContext(), singleSignOnAccount.name);
-                        SyncService.setIsProviderConnected(getContext(), true);
+                        SyncService.setIsProviderConnected(true);
                         SyncService.fullSync(getContext());
                         updateScreen();
                     });
