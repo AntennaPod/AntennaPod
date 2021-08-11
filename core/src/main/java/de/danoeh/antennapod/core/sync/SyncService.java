@@ -141,6 +141,13 @@ public class SyncService extends Worker {
                 .getBoolean(SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED, false);
     }
 
+    public static void setSelectedSyncProvider(Context context, String userSelect) {
+        context.getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE)
+                .edit()
+                .putString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, userSelect)
+                .apply();
+    }
+
     public static void clearQueue(Context context) {
         executeLockedAsync(() ->
                 context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()

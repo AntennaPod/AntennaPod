@@ -2,14 +2,7 @@ package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.text.HtmlCompat;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -20,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.text.HtmlCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.nextcloud.android.sso.AccountImporter;
 import com.nextcloud.android.sso.exceptions.AccountImportCancelledException;
@@ -28,6 +26,12 @@ import com.nextcloud.android.sso.exceptions.NextcloudFilesAppNotInstalledExcepti
 import com.nextcloud.android.sso.helper.SingleAccountHelper;
 import com.nextcloud.android.sso.ui.UiExceptionManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
@@ -35,12 +39,6 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
 
 import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
 
@@ -193,11 +191,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private void setSelectedSyncProvider(String userSelect) {
-        SharedPreferences preferences = getActivity()
-                .getSharedPreferences(SyncService.SHARED_PREFERENCES_SYNCHRONIZATION, Activity.MODE_PRIVATE);
-        preferences.edit()
-                .putString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, userSelect)
-                .apply();
+        SyncService.setSelectedSyncProvider(getContext(), userSelect);
     }
 
     private void updateScreen() {
