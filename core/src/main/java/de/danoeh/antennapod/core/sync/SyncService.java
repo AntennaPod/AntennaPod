@@ -89,6 +89,9 @@ public class SyncService extends Worker {
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
         ISyncService activeSyncProvider = getActiveSyncProvider();
+        if (activeSyncProvider == null) {
+            return Result.success();
+        }
 
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         try {
