@@ -26,6 +26,12 @@
         android:layout_alignEnd="@+id/imgvCover"
         android:layout_alignRight="@+id/imgvCover"
         android:layout_alignBottom="@+id/imgvCover"
+        android:layout_marginStart="-3dp"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/non_square_icon_background"
         android:ellipsize="end"
         android:gravity="center"
@@ -44,4 +50,29 @@
         app:primaryText="Test"
         app:primaryTextColor="?attr/colorOnSecondary"
         app:primaryTextSize="12sp" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/selectView"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            android:translationX="-22dp"
+            android:translationY="-22dp"
+            app:srcCompat="@drawable/corner_view" />
+
+        <CheckBox
+            android:id="@+id/selectCheckBox"
+            android:layout_width="55dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="false"
+            android:drawablePadding="0dp"
+            app:buttonTint="?attr/colorSecondary" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </RelativeLayout>
