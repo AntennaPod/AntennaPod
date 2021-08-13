@@ -34,7 +34,7 @@ public class PreferenceSwitchDialog  {
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View layout = inflater.inflate(R.layout.dialog_switch_preference, null, false);
-        Switch switchButton = layout.findViewById(R.id.switch1);
+        Switch switchButton = layout.findViewById(R.id.dialogSwitch);
         switchButton.setText(text);
         builder.setView(layout);
 
