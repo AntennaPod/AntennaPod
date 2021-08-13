@@ -68,14 +68,13 @@ public class FeedMultiSelectActionHandler {
         preferenceSwitchDialog.openDialog();
     }
 
-    public static final float SPEED_USE_GLOBAL = -1;
     private static final DecimalFormat SPEED_FORMAT =
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
     private void playbackSpeedChecked() {
         final String[] speeds = activity.getResources().getStringArray(R.array.playback_speed_values);
         String[] values = new String[speeds.length + 1];
-        values[0] = SPEED_FORMAT.format(SPEED_USE_GLOBAL);
+        values[0] = SPEED_FORMAT.format(FeedPreferences.SPEED_USE_GLOBAL);
 
         String[] entries = new String[speeds.length + 1];
         entries[0] = activity.getString(R.string.feed_auto_download_global);
@@ -139,5 +138,6 @@ public class FeedMultiSelectActionHandler {
             preferencesConsumer.accept(feed.getPreferences());
             DBWriter.setFeedPreferences(feed.getPreferences());
         }
+        showMessage(R.plurals.updated_feeds_batch_label, selectedItems.size());
     }
 }
