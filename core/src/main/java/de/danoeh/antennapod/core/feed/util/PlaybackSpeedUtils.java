@@ -26,23 +26,24 @@ public final class PlaybackSpeedUtils {
     public static float getCurrentPlaybackSpeed(Playable media) {
         float playbackSpeed = SPEED_USE_GLOBAL;
         MediaType mediaType = null;
-
-        if (media != null) {
-            mediaType = media.getMediaType();
-            playbackSpeed = PlaybackPreferences.getCurrentlyPlayingTemporaryPlaybackSpeed();
-
-            if (playbackSpeed == SPEED_USE_GLOBAL && media instanceof FeedMedia) {
-                FeedItem item = ((FeedMedia) media).getItem();
-                if (item != null) {
-                    Feed feed = item.getFeed();
-                    if (feed != null && feed.getPreferences() != null) {
-                        playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
-                    } else {
-                        Log.d(TAG, "Can not get feed specific playback speed: " + feed);
-                    }
+        if (media == null)
+            return playbackSpeed;
+        if (media instanceof FeedMedia) {
+            FeedItem item = ((FeedMedia) media).getItem();
+            if (item != null) {
+                Feed feed = item.getFeed();
+                if (feed != null && feed.getPreferences() != null) {
+                    playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
                 }
             }
         }
+
+            mediaType = media.getMediaType();
+            float tmpPlaybackSpeed = PlaybackPreferences.getCurrentlyPlayingTemporaryPlaybackSpeed();
+
+            if (tmpPlaybackSpeed != SPEED_USE_GLOBAL) {
+                playbackSpeed = tmpPlaybackSpeed;
+            }
 
         if (playbackSpeed == SPEED_USE_GLOBAL) {
             playbackSpeed = UserPreferences.getPlaybackSpeed(mediaType);

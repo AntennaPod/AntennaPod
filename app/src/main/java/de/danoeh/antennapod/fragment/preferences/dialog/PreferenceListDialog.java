@@ -1,11 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences.dialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Switch;
 
 import androidx.appcompat.app.AlertDialog;
 
