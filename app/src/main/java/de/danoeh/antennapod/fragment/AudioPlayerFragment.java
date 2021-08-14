@@ -39,7 +39,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -277,15 +276,6 @@ public class AudioPlayerFragment extends Fragment implements
         });
         butPlaybackSpeed.setVisibility(View.VISIBLE);
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
-    }
-
-
-    @Subscribe
-    public void handlePlaybackSpeedEvent(SpeedPresetChangedEvent speedPresetChangedEvent) {
-        if (controller != null) {
-            Playable media = controller.getMedia();
-            updatePlaybackSpeedButton(media);
-        }
     }
 
     protected void updatePlaybackSpeedButton(Playable media) {
