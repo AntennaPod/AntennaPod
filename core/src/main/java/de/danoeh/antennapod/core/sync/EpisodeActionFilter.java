@@ -32,16 +32,15 @@ public class EpisodeActionFilter {
                     break;
                 case PLAY:
                     EpisodeAction localMostRecent = localMostRecentPlayActions.get(key);
-                    if (localActionHappenedAfterRemoteAction(remoteAction, localMostRecent)) {
+                    if (firstActionHappenedBeforeSecondAction(remoteAction, localMostRecent)) {
                         break;
                     }
-                    EpisodeAction mostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
-                    if (mostRecentAction == null
-                            || mostRecentAction.getTimestamp() == null
-                            || remoteActionHappendAfterLocalAction(remoteAction, mostRecentAction)
+                    EpisodeAction remoteMostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
+                    if (firstActionHappenedBeforeSecondAction(remoteAction, remoteMostRecentAction)
                     ) {
-                        remoteActionsThatOverrideLocalActions.put(key, remoteAction);
+                        break;
                     }
+                    remoteActionsThatOverrideLocalActions.put(key, remoteAction);
                     break;
                 case DELETE:
                     // NEVER EVER call DBWriter.deleteFeedMediaOfItem() here, leads to an infinite loop
@@ -53,12 +52,6 @@ public class EpisodeActionFilter {
         }
 
         return remoteActionsThatOverrideLocalActions;
-    }
-
-    private static boolean remoteActionHappendAfterLocalAction(EpisodeAction remoteAction,
-                                                               EpisodeAction mostRecentAction) {
-        return remoteAction.getTimestamp() != null
-                && mostRecentAction.getTimestamp().before(remoteAction.getTimestamp());
     }
 
     private static Map<Pair<String, String>, EpisodeAction> createUniqueLocalMostRecentPlayActions(
@@ -77,11 +70,11 @@ public class EpisodeActionFilter {
         return localMostRecentPlayAction;
     }
 
-    private static boolean localActionHappenedAfterRemoteAction(EpisodeAction remoteAction,
-                                                                EpisodeAction localMostRecent) {
-        return localMostRecent != null
-                && localMostRecent.getTimestamp() != null
-                && localMostRecent.getTimestamp().after(remoteAction.getTimestamp());
+    private static boolean firstActionHappenedBeforeSecondAction(EpisodeAction remoteAction,
+                                                                 EpisodeAction mostRecent) {
+        return mostRecent != null
+                && mostRecent.getTimestamp() != null
+                && mostRecent.getTimestamp().after(remoteAction.getTimestamp());
     }
 
 }
