@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -82,7 +83,6 @@ public class SubscriptionFragment extends Fragment
             R.id.subscription_num_columns_5};
 
     private RecyclerView subscriptionRecycler;
-    private List<NavDrawerData.DrawerItem> listItems;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
@@ -90,7 +90,6 @@ public class SubscriptionFragment extends Fragment
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
     private String displayedFolder = null;
-
     private Feed selectedFeed = null;
     private boolean isUpdatingFeeds = false;
     private boolean displayUpArrow;
@@ -196,7 +195,6 @@ public class SubscriptionFragment extends Fragment
                 R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -245,13 +243,10 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity(), itemAccess);
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
         subscriptionAdapter.setOnEndSelectModeListener(this);
-
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
-
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
@@ -300,7 +295,7 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
-                        listItems = result;
+                        subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
                         progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
@@ -394,31 +389,9 @@ public class SubscriptionFragment extends Fragment
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
-    private final SubscriptionsRecyclerAdapter.ItemAccess itemAccess = new SubscriptionsRecyclerAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            if (listItems != null) {
-                return listItems.size();
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public NavDrawerData.DrawerItem getItem(int position) {
-            if (listItems != null && 0 <= position && position < listItems.size()) {
-                return listItems.get(position);
-            } else {
-                return null;
-            }
-        }
-    };
-
     @Override
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
     }
-
-
 }

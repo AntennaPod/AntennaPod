@@ -87,9 +87,6 @@ public class FeedMultiSelectActionHandler {
         preferenceListDialog.setOnPreferenceChangedListener(pos -> {
             saveFeedPreferences(feedPreferences -> {
                 feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) values[pos]));
-                // TODO: 8/5/2021  
-//                EventBus.getDefault().post(
-//                        new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
             });
             
         });

@@ -67,11 +67,12 @@ public class RemoveFeedDialog {
 
     private static String getMessageId(Context context, List<Feed> feeds) {
         if (feeds.size() == 1) {
-            if(feeds.get(0).isLocalFeed())
+            if (feeds.get(0).isLocalFeed()) {
                 return context.getString(R.string.feed_delete_confirmation_local_msg);
-            else
+            }
+            else {
                 return context.getString(R.string.feed_delete_confirmation_msg, feeds.get(0).getTitle());
-
+            }
         } else {
             return context.getString(R.string.feed_delete_confirmation_msg_batch);
         }

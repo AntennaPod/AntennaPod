@@ -47,20 +47,20 @@ public class SubscriptionsRecyclerAdapter
     private static final String TAG = "SubscriptionsRecyclerAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
-    private final ItemAccess itemAccess;
+    private List<NavDrawerData.DrawerItem> listItems;
     private Feed selectedFeed = null;
     int longPressedPosition = 0; // used to init actionMode
 
-    public SubscriptionsRecyclerAdapter(MainActivity mainActivity, ItemAccess itemAccess) {
+    public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
-        this.itemAccess = itemAccess;
+        this.listItems = new ArrayList<>();
         setHasStableIds(true);
 
     }
 
     public Object getItem(int position) {
-        return itemAccess.getItem(position);
+        return listItems.get(position);
     }
 
     public Feed getSelectedFeed() {
@@ -78,7 +78,7 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(position);
+        NavDrawerData.DrawerItem drawerItem = listItems.get(position);
         boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
         holder.onBind(drawerItem, position);
         holder.itemView.setOnCreateContextMenuListener(this);
@@ -87,11 +87,7 @@ public class SubscriptionsRecyclerAdapter
                 holder.selectCheckbox.setVisibility(View.VISIBLE);
                 holder.selectView.setVisibility(View.VISIBLE);
             }
-            if (isSelected(position)) {
-                holder.selectCheckbox.setChecked(true);
-            } else {
-                holder.selectCheckbox.setChecked(false);
-            }
+            holder.selectCheckbox.setChecked((isSelected(position)));
             holder.selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -100,7 +96,6 @@ public class SubscriptionsRecyclerAdapter
             });
         } else {
             holder.selectView.setVisibility(View.GONE);
-//            holder.selectCheckbox.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
@@ -118,34 +113,35 @@ public class SubscriptionsRecyclerAdapter
         holder.itemView.setOnClickListener(v -> {
             if (drawerItem == null) {
                 return;
-            } else if (inActionMode()) {
-                if(isFeed)
-                    holder.selectCheckbox.setChecked(!isSelected(position));
-                return;
             } else if (isFeed) {
-                Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
-                mainActivityRef.get().loadChildFragment(fragment);
-            } else if (!isFeed) {
+                if(inActionMode())
+                    holder.selectCheckbox.setChecked(!isSelected(position));
+                else {
+                    Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
+                    mainActivityRef.get().loadChildFragment(fragment);
+                }
+                return;
+            } else if(!inActionMode()) {
                 Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
                 mainActivityRef.get().loadChildFragment(fragment);
             }
+
         });
 
     }
 
     @Override
     public int getItemCount() {
-        return itemAccess.getCount();
+        return listItems.size();
     }
 
     @Override
     public long getItemId(int position) {
-        NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(position);
-        if (drawerItem != null && drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+        NavDrawerData.DrawerItem drawerItem = listItems.get(position);
+        if (drawerItem != null) {
             return drawerItem.id;
-        } else {
-            return RecyclerView.NO_ID;
         }
+        return RecyclerView.NO_ID;
     }
 
     @Override
@@ -170,7 +166,7 @@ public class SubscriptionsRecyclerAdapter
         List<Feed> items = new ArrayList<>();
         for (int i = 0; i < getItemCount(); i++) {
             if (isSelected(i)) {
-                NavDrawerData.DrawerItem drawerItem = itemAccess.getItem(i);
+                NavDrawerData.DrawerItem drawerItem = listItems.get(i);
                 if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                     Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                     items.add(feed);
@@ -180,11 +176,10 @@ public class SubscriptionsRecyclerAdapter
         return items;
     }
 
-    public interface ItemAccess {
-        int getCount();
-
-        NavDrawerData.DrawerItem getItem(int position);
+    public void setItems(List<NavDrawerData.DrawerItem> listItems) {
+        this.listItems = listItems;
     }
+
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private TextView feedTitle;
         private ImageView imageView;
@@ -201,7 +196,6 @@ public class SubscriptionsRecyclerAdapter
 
         }
 
-        @SuppressLint("ResourceAsColor")
         public void onBind(NavDrawerData.DrawerItem drawerItem, int position) {
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
@@ -238,7 +232,7 @@ public class SubscriptionsRecyclerAdapter
     }
 
     public static float convertDpToPixel(Context context, float dp) {
-        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp * ((float) context.getResources().getDisplayMetrics().density);
     }
 
     public static class GridDividerItemDecorator extends RecyclerView.ItemDecoration {
