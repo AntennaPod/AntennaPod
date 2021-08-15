@@ -185,4 +185,25 @@ public class ChapterReaderTest {
         assertEquals(EmbeddedChapterImage.makeUrl(5330, 4015), chapters.get(0).getImageUrl());
         assertEquals(EmbeddedChapterImage.makeUrl(9498, 4364), chapters.get(1).getImageUrl());
     }
+
+    @Test
+    public void testRealFileMp3chapsPy() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("media-parser/mp3chaps-py.mp3").openStream());
+        ChapterReader reader = new ChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(4, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(7000, chapters.get(1).getStart());
+        assertEquals(9000, chapters.get(2).getStart());
+        assertEquals(11000, chapters.get(3).getStart());
+
+        assertEquals("Start", chapters.get(0).getTitle());
+        assertEquals("Chapter 1", chapters.get(1).getTitle());
+        assertEquals("Chapter 2", chapters.get(2).getTitle());
+        assertEquals("Chapter 3", chapters.get(3).getTitle());
+    }
 }
