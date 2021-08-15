@@ -32,11 +32,11 @@ public class EpisodeActionFilter {
                     break;
                 case PLAY:
                     EpisodeAction localMostRecent = localMostRecentPlayActions.get(key);
-                    if (firstActionHappenedBeforeSecondAction(remoteAction, localMostRecent)) {
+                    if (secondActionOverridesFirstAction(remoteAction, localMostRecent)) {
                         break;
                     }
                     EpisodeAction remoteMostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
-                    if (firstActionHappenedBeforeSecondAction(remoteAction, remoteMostRecentAction)
+                    if (secondActionOverridesFirstAction(remoteAction, remoteMostRecentAction)
                     ) {
                         break;
                     }
@@ -70,11 +70,11 @@ public class EpisodeActionFilter {
         return localMostRecentPlayAction;
     }
 
-    private static boolean firstActionHappenedBeforeSecondAction(EpisodeAction remoteAction,
-                                                                 EpisodeAction mostRecent) {
-        return mostRecent != null
-                && mostRecent.getTimestamp() != null
-                && mostRecent.getTimestamp().after(remoteAction.getTimestamp());
+    private static boolean secondActionOverridesFirstAction(EpisodeAction firstAction,
+                                                            EpisodeAction secondAction) {
+        return secondAction != null
+                && secondAction.getTimestamp() != null
+                && secondAction.getTimestamp().after(firstAction.getTimestamp());
     }
 
 }
