@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -156,18 +157,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             };
             removeAllNewFlagsConfirmationDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.mark_all_read_item) {
-            ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getContext(),
-                    R.string.mark_all_read_label,
-                    R.string.mark_all_read_confirmation_msg) {
-
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.markFeedRead(feed.getId());
-                }
-            };
-            markAllReadConfirmationDialog.createNewDialog().show();
+        } else if (itemId == R.id.add_to_folder) {
+            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
             new RenameFeedDialog(getActivity(), feed).show();
