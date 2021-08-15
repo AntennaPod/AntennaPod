@@ -47,26 +47,19 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/selectView"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:visibility="gone">
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:transformPivotX="0dp"
-            android:transformPivotY="0dp"
-            android:translationX="-22dp"
-            android:translationY="-22dp"
-            app:srcCompat="@drawable/corner_view" />
-
         <CheckBox
             android:id="@+id/selectCheckBox"
-            android:layout_width="55dp"
-            android:layout_height="32dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:paddingLeft="20dp"
             android:layout_centerVertical="false"
-            android:drawablePadding="0dp"
-            app:buttonTint="?attr/colorSecondary" />
+            app:buttonTint="?attr/colorSecondary"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_checkbox_background"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

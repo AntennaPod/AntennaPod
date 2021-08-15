@@ -132,7 +132,11 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        if (!inActionMode()) {
+            return listItems.size();
+        } else {
+            return 2;
+        }
     }
 
     @Override
@@ -179,6 +183,16 @@ public class SubscriptionsRecyclerAdapter
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
     }
+
+    @Override
+    public void setSelected(int pos, boolean selected) {
+        NavDrawerData.DrawerItem drawerItem = listItems.get(pos);
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            super.setSelected(pos, selected);
+        }
+    }
+
+
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private TextView feedTitle;
@@ -245,7 +259,7 @@ public class SubscriptionsRecyclerAdapter
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             Context context = parent.getContext();
-            int insetOffset = (int) convertDpToPixel(context,4f);
+            int insetOffset = (int) convertDpToPixel(context,2f);
             outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
         }
     }
