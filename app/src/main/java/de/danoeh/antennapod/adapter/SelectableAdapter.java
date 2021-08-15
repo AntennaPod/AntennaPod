@@ -19,6 +19,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private ActionMode actionMode;
     private final HashSet<Long> selectedIds = new HashSet<>();
     private final Activity activity;
+    private OnStartSelectModeListener onStartSelecModeListener;
     private OnEndSelectModeListener onEndSelectModeListener;
 
     public SelectableAdapter(Activity activity) {
@@ -31,6 +32,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
 
         selectedIds.clear();
+        callOnStartSelectMode();
         selectedIds.add(getItemId(pos));
         notifyDataSetChanged();
 
@@ -152,14 +154,29 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedIds.size(), getItemCount()));
     }
 
+    public void setOnStartSelecModeListener(OnStartSelectModeListener onStartSelecModeListener) {
+        this.onStartSelecModeListener = onStartSelecModeListener;
+    }
+
     public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
         this.onEndSelectModeListener = onEndSelectModeListener;
     }
+
 
     private void callOnEndSelectMode() {
         if (onEndSelectModeListener != null) {
             onEndSelectModeListener.onEndSelectMode();
         }
+    }
+
+    private void callOnStartSelectMode() {
+        if (onStartSelecModeListener != null) {
+            onStartSelecModeListener.onStartSelectMode();
+        }
+    }
+
+    public interface  OnStartSelectModeListener {
+        void onStartSelectMode();
     }
 
     public interface OnEndSelectModeListener {

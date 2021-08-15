@@ -132,11 +132,7 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public int getItemCount() {
-        if (!inActionMode()) {
             return listItems.size();
-        } else {
-            return 2;
-        }
     }
 
     @Override
@@ -193,6 +189,9 @@ public class SubscriptionsRecyclerAdapter
     }
 
 
+    public List<NavDrawerData.DrawerItem> getListItems() {
+        return listItems;
+    }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private TextView feedTitle;

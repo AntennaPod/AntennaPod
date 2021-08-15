@@ -67,7 +67,10 @@ import io.reactivex.schedulers.Schedulers;
  * Fragment for displaying feed subscriptions
  */
 public class SubscriptionFragment extends Fragment
-        implements Toolbar.OnMenuItemClickListener, SubscriptionsRecyclerAdapter.OnEndSelectModeListener
+        implements Toolbar.OnMenuItemClickListener,
+        SubscriptionsRecyclerAdapter.OnEndSelectModeListener,
+        SubscriptionsRecyclerAdapter.OnStartSelectModeListener
+
 {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
@@ -99,6 +102,7 @@ public class SubscriptionFragment extends Fragment
 
     private SpeedDialView speedDialView;
 
+    private List<NavDrawerData.DrawerItem> listItems;
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
         Bundle args = new Bundle();
@@ -244,6 +248,7 @@ public class SubscriptionFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
+        subscriptionAdapter.setOnStartSelecModeListener(this);
         subscriptionAdapter.setOnEndSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
@@ -295,6 +300,7 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        listItems = result;
                         subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
@@ -391,5 +397,19 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
+        subscriptionAdapter.setItems(listItems);
+        subscriptionAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
+        for(NavDrawerData.DrawerItem item : listItems) {
+            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                feedsOnly.add(item);
+            }
+        }
+        subscriptionAdapter.setItems(feedsOnly);
+        subscriptionAdapter.notifyDataSetChanged();
     }
 }
