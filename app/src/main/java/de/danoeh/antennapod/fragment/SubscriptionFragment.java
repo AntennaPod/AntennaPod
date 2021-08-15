@@ -344,9 +344,7 @@ public class SubscriptionFragment extends Fragment
                 return true;
             case R.id.multi_select:
                 speedDialView.setVisibility(View.VISIBLE);
-                if (subscriptionAdapter.onContextItemSelected(item)) {
-                    return true;
-                }
+                return subscriptionAdapter.onContextItemSelected(item);
             default:
                 return super.onContextItemSelected(item);
         }
