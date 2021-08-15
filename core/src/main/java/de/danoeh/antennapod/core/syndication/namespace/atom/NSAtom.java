@@ -81,7 +81,7 @@ public class NSAtom extends Namespace {
             String rel = attributes.getValue(LINK_REL);
             SyndElement parent = state.getTagstack().peek();
             if (parent.getName().matches(isFeedItem)) {
-                if (LINK_REL_ALTERNATE.equals(rel)) {
+                if (rel == null || LINK_REL_ALTERNATE.equals(rel)) {
                     state.getCurrentItem().setLink(href);
                 } else if (LINK_REL_ENCLOSURE.equals(rel)) {
                     String strSize = attributes.getValue(LINK_LENGTH);
@@ -107,7 +107,7 @@ public class NSAtom extends Namespace {
                     state.getCurrentItem().setPaymentLink(href);
                 }
             } else if (parent.getName().matches(isFeed)) {
-                if (LINK_REL_ALTERNATE.equals(rel)) {
+                if (rel == null || LINK_REL_ALTERNATE.equals(rel)) {
                     String type = attributes.getValue(LINK_TYPE);
                     /*
                      * Use as link if a) no type-attribute is given and

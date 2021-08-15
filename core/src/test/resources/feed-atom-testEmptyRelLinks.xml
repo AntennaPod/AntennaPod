@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+   <id>http://example.com/feed</id>
+   <title>title</title>
+   <link href="http://example.com" />
+   <subtitle>This is the description</subtitle>
+   <logo>http://example.com/picture</logo>
+   <entry>
+      <id>http://example.com/item-0</id>
+      <title>item-0</title>
+      <link href="http://example.com/items/0" />
+      <published>1970-01-01T00:00:00Z</published>
+   </entry>
+</feed>
