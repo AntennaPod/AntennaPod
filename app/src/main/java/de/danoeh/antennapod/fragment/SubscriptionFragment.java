@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -325,11 +326,8 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                     R.string.remove_all_new_flags_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
-        } else if (itemId == R.id.mark_all_read_item) {
-            displayConfirmationDialog(
-                    R.string.mark_all_read_label,
-                    R.string.mark_all_read_confirmation_msg,
-                    () -> DBWriter.markFeedRead(feed.getId()));
+        } else if (itemId == R.id.add_to_folder) {
+            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
             new RenameFeedDialog(getActivity(), feed).show();
