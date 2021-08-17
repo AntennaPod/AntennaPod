@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
 
 /**
  * Reads the ID3 Tag of a given file.
@@ -180,16 +181,29 @@ public class ID3Reader {
     private String readEncodedString2(Charset charset, int max) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         int bytesRead = 0;
+        boolean foundEnd = false;
         while (bytesRead + 1 < max) {
             byte c1 = readByte();
             byte c2 = readByte();
             if (c1 == 0 && c2 == 0) {
+                foundEnd = true;
                 break;
             }
             bytesRead += 2;
             bytes.write(c1);
             bytes.write(c2);
         }
-        return charset.newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
+        if (!foundEnd && bytesRead < max) {
+            // Last character
+            byte c = readByte();
+            if (c != 0) {
+                bytes.write(c);
+            }
+        }
+        try {
+            return charset.newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
+        } catch (MalformedInputException e) {
+            return "";
+        }
     }
 }
