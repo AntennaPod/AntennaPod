@@ -36,8 +36,7 @@ public class EpisodeActionFilter {
                         break;
                     }
                     EpisodeAction remoteMostRecentAction = remoteActionsThatOverrideLocalActions.get(key);
-                    if (secondActionOverridesFirstAction(remoteAction, remoteMostRecentAction)
-                    ) {
+                    if (secondActionOverridesFirstAction(remoteAction, remoteMostRecentAction)) {
                         break;
                     }
                     remoteActionsThatOverrideLocalActions.put(key, remoteAction);
