@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
      * Related Context
      */
     private final Context context;
-
+    int lastPos = -1;
     /**
      * List holding the podcasts found in the search
      */
@@ -42,6 +44,14 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         super(context, 0, objects);
         this.data = objects;
         this.context = context;
+    }
+
+    private void setAnimation(View itemView, int position) {
+        if (position > lastPos) {
+            Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), android.R.anim.slide_in_left);
+            itemView.setAnimation(animation);
+            lastPos = position;
+        }
     }
 
     @NonNull
@@ -67,6 +77,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder = (PodcastViewHolder) view.getTag();
         }
 
+        setAnimation(view,position);
         // Set the title
         viewHolder.titleView.setText(podcast.title);
         if (podcast.author != null && ! podcast.author.trim().isEmpty()) {
@@ -121,5 +132,6 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             titleView = view.findViewById(R.id.txtvTitle);
             authorView = view.findViewById(R.id.txtvAuthor);
         }
+
     }
 }
