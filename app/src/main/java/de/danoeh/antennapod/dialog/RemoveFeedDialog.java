@@ -69,8 +69,7 @@ public class RemoveFeedDialog {
         if (feeds.size() == 1) {
             if (feeds.get(0).isLocalFeed()) {
                 return context.getString(R.string.feed_delete_confirmation_local_msg);
-            }
-            else {
+            } else {
                 return context.getString(R.string.feed_delete_confirmation_msg, feeds.get(0).getTitle());
             }
         } else {

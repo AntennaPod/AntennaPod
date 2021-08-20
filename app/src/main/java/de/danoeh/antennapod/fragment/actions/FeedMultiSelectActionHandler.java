@@ -1,15 +1,11 @@
 package de.danoeh.antennapod.fragment.actions;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -18,18 +14,12 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.fragment.FeedSettingsFragment;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-
-import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";
