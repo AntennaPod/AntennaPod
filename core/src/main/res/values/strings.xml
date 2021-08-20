@@ -304,7 +304,6 @@
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
-    <string name="unlock_queue">Unlock Queue</string>
     <string name="queue_locked">Queue locked</string>
     <string name="queue_unlocked">Queue unlocked</string>
     <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
