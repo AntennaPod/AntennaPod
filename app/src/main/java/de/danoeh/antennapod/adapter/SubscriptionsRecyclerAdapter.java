@@ -3,10 +3,13 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,12 +42,26 @@ import jp.shts.android.library.TriangleLabelView;
 /**
  * Adapter for subscriptions
  */
-public class SubscriptionsRecyclerAdapter extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
-        implements View.OnCreateContextMenuListener {
+public class SubscriptionsRecyclerAdapter
+        extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
+        implements View.OnCreateContextMenuListener,
+        FeedsItemMoveCallback.ItemTouchHelperContract {
+    private static final String TAG = "SubscriptionsRecyclerAdapter";
     private final WeakReference<MainActivity> mainActivityRef;
     private List<NavDrawerData.DrawerItem> listItems;
     private Feed selectedFeed = null;
     int longPressedPosition = 0; // used to init actionMode
+
+    // Experimental
+    private boolean dragNDropMode = false;
+    private StartDragListener startDragListener;
+    public void setDragNDropMode(boolean dragNDropMode) {
+        this.dragNDropMode = dragNDropMode;
+    }
+
+    public boolean isDragNDropMode() {
+        return dragNDropMode;
+    }
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -72,7 +90,24 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         NavDrawerData.DrawerItem drawerItem = listItems.get(position);
         boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
         holder.bind(drawerItem);
-        holder.itemView.setOnCreateContextMenuListener(this);
+        if(!dragNDropMode) {
+            holder.itemView.setOnCreateContextMenuListener(this);
+            holder.selectView.setVisibility(View.GONE);
+            holder.dragHandle.setVisibility(View.GONE);
+            holder.dragHandle.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    startDragListener.requestDrag(holder);
+                }
+                return false;
+            });
+        }
+        else {
+            holder.itemView.setOnCreateContextMenuListener(null);
+            holder.selectView.setVisibility(View.VISIBLE);
+            holder.dragHandle.setVisibility(View.VISIBLE);
+            holder.selectCheckbox.setVisibility(View.GONE);
+        }
+
         if (inActionMode()) {
             if (isFeed) {
                 holder.selectCheckbox.setVisibility(View.VISIBLE);
@@ -84,6 +119,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             holder.imageView.setAlpha(0.6f);
             holder.count.setVisibility(View.GONE);
         } else {
+            if(!dragNDropMode)
             holder.selectView.setVisibility(View.GONE);
             holder.imageView.setAlpha(1.0f);
         }
@@ -171,12 +207,12 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
-        private final TextView feedTitle;
-        private final ImageView imageView;
-        private final TriangleLabelView count;
-        private final FrameLayout selectView;
-        private final CheckBox selectCheckbox;
-
+        private TextView feedTitle;
+        private ImageView imageView;
+        private TriangleLabelView count;
+        private FrameLayout selectView;
+        private CheckBox selectCheckbox;
+        private ImageView dragHandle;
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             feedTitle = itemView.findViewById(R.id.txtvTitle);
@@ -184,6 +220,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             count = itemView.findViewById(R.id.triangleCountView);
             selectView = itemView.findViewById(R.id.selectView);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
+            dragHandle = itemView.findViewById(R.id.dragHandle);
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
@@ -225,6 +262,38 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
+    @Override
+    public void onRowMoved(int fromPosition, int toPosition) {
+        Log.d("RowMoved", "from position " + fromPosition + " to position " + toPosition);
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(listItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(listItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onRowSelected(RecyclerView.ViewHolder myViewHolder) {
+    }
+
+    @Override
+    public void onRowClear(RecyclerView.ViewHolder myViewHolder) {
+
+    }
+
+    public void setStartDragListener(StartDragListener startDragListener) {
+        this.startDragListener = startDragListener;
+    }
+
+    public interface StartDragListener {
+        void requestDrag(RecyclerView.ViewHolder viewHolder);
+    }
+
     public static class GridDividerItemDecorator extends RecyclerView.ItemDecoration {
         @Override
         public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -242,4 +311,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
         }
     }
+
+
 }

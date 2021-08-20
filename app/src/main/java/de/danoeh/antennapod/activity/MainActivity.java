@@ -625,6 +625,9 @@ public class MainActivity extends CastEnabledActivity {
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
 
+        if (onKeyUpListener.onKeyUp(keyCode, event)) {
+            return true;
+        }
         switch (keyCode) {
             case KeyEvent.KEYCODE_P:
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
@@ -666,4 +669,15 @@ public class MainActivity extends CastEnabledActivity {
         }
         return super.onKeyUp(keyCode, event);
     }
+
+    private OnKeyUpListener onKeyUpListener;
+
+    public void setOnKeyUpListener(OnKeyUpListener onKeyUpListener) {
+        this.onKeyUpListener = onKeyUpListener;
+    }
+    public interface OnKeyUpListener {
+
+        boolean onKeyUp(int keyCode, KeyEvent event);
+    }
+
 }

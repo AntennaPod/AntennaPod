@@ -25,4 +25,8 @@
         android:id="@+id/multi_select"
         android:menuCategory="container"
         android:title="@string/multi_select" />
+    <item
+        android:id="@+id/reorder"
+        android:menuCategory="container"
+        android:title="Set Priority"/>
 </menu>

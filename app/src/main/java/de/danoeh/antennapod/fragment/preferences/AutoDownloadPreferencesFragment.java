@@ -165,6 +165,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         }
     }
 
+    // NOTE: should be moved to stoarge preferences
     private void buildEpisodeCleanupPreference() {
         final Resources res = getActivity().getResources();
 

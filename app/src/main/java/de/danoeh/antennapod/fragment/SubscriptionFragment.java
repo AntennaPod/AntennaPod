@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -39,6 +41,7 @@ import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.FeedsItemMoveCallback;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -98,7 +101,7 @@ public class SubscriptionFragment extends Fragment
     private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
-
+    SwipeRefreshLayout swipeRefreshLayout;
     private List<NavDrawerData.DrawerItem> listItems;
 
     public static SubscriptionFragment newInstance(String folderTitle) {
@@ -113,8 +116,19 @@ public class SubscriptionFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
         prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setOnKeyUpListener(new MainActivity.OnKeyUpListener() {
+            @Override
+            public boolean onKeyUp(int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && subscriptionAdapter.isDragNDropMode()) {
+                    endDragDropMode();
+                    subscriptionAdapter.notifyDataSetChanged();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -151,7 +165,6 @@ public class SubscriptionFragment extends Fragment
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
-        registerForContextMenu(subscriptionRecycler);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
 
@@ -175,8 +188,7 @@ public class SubscriptionFragment extends Fragment
             }
 
             @Override
-            public void onToggleChanged(boolean isOpen) {
-            }
+            public void onToggleChanged(boolean isOpen) {}
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
             new FeedMultiSelectActionHandler((MainActivity) getActivity(), subscriptionAdapter.getSelectedItems())
@@ -196,7 +208,6 @@ public class SubscriptionFragment extends Fragment
     private void refreshToolbarState() {
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
-
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
                 R.id.refresh_item, updateRefreshMenuItemChecker);
     }
@@ -254,12 +265,12 @@ public class SubscriptionFragment extends Fragment
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
         subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
-        setupEmptyView();
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
             }
         });
+        setupEmptyView();
     }
 
     @Override
@@ -303,7 +314,9 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        // End drag and drop state
                         listItems = result;
+                        endDragDropMode();
                         subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
@@ -351,6 +364,18 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
+        } else if (itemId == R.id.reorder) {
+            subscriptionAdapter.setDragNDropMode(true);
+            ItemTouchHelper.Callback callback =
+                    new FeedsItemMoveCallback(subscriptionAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(subscriptionRecycler);
+            subscriptionAdapter.setStartDragListener(viewHolder -> {
+                itemTouchHelper.startDrag(viewHolder);
+            });
+            subscriptionAdapter.notifyDataSetChanged();
+            swipeRefreshLayout.setEnabled(false);
+            return true;
         }
         return super.onContextItemSelected(item);
     }
@@ -371,6 +396,10 @@ public class SubscriptionFragment extends Fragment
         dialog.createNewDialog().show();
     }
 
+    private void endDragDropMode() {
+        subscriptionAdapter.setDragNDropMode(false);
+        swipeRefreshLayout.setEnabled(true);
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         loadSubscriptions();
