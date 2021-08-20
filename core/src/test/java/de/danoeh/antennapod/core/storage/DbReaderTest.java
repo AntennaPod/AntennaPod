@@ -218,7 +218,7 @@ public class DbReaderTest {
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.setFeedItemlist(downloaded);
+        adapter.storeFeedItemlist(downloaded);
         adapter.close();
         return downloaded;
     }
@@ -257,7 +257,7 @@ public class DbReaderTest {
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.setFeedItemlist(newItems);
+        adapter.storeFeedItemlist(newItems);
         adapter.close();
         return newItems;
     }
@@ -416,5 +416,24 @@ public class DbReaderTest {
         item2.setChapters(DBReader.loadChaptersOfFeedItem(item2));
         assertTrue(item2.hasChapters());
         assertEquals(item1.getChapters(), item2.getChapters());
+    }
+
+    @Test
+    public void testGetItemByEpisodeUrl() {
+        List<Feed> feeds = saveFeedlist(1, 1, true);
+        FeedItem item1 = feeds.get(0).getItems().get(0);
+        FeedItem feedItemByEpisodeUrl = DBReader.getFeedItemByGuidOrEpisodeUrl(null,
+                item1.getMedia().getDownload_url());
+        assertEquals(item1.getItemIdentifier(), feedItemByEpisodeUrl.getItemIdentifier());
+    }
+
+    @Test
+    public void testGetItemByGuid() {
+        List<Feed> feeds = saveFeedlist(1, 1, true);
+        FeedItem item1 = feeds.get(0).getItems().get(0);
+
+        FeedItem feedItemByGuid = DBReader.getFeedItemByGuidOrEpisodeUrl(item1.getItemIdentifier(),
+                item1.getMedia().getDownload_url());
+        assertEquals(item1.getItemIdentifier(), feedItemByGuid.getItemIdentifier());
     }
 }

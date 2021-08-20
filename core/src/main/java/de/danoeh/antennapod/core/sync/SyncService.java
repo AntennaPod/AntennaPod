@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
-import androidx.collection.ArrayMap;
 import androidx.core.app.NotificationCompat;
 import androidx.core.util.Pair;
 import androidx.work.BackoffPolicy;
@@ -19,6 +19,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -45,6 +46,7 @@ import de.danoeh.antennapod.net.sync.model.SyncServiceException;
 import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -112,13 +114,13 @@ public class SyncService extends Worker {
     public static void clearQueue(Context context) {
         executeLockedAsync(() ->
                 context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                    .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                    .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                    .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
-                    .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]")
-                    .putString(PREF_QUEUED_FEEDS_ADDED, "[]")
-                    .putString(PREF_QUEUED_FEEDS_REMOVED, "[]")
-                    .apply());
+                        .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
+                        .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
+                        .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
+                        .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]")
+                        .putString(PREF_QUEUED_FEEDS_ADDED, "[]")
+                        .putString(PREF_QUEUED_FEEDS_REMOVED, "[]")
+                        .apply());
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
@@ -258,7 +260,7 @@ public class SyncService extends Worker {
                     lock.unlock();
                 }
             }).subscribeOn(Schedulers.io())
-                .subscribe();
+                    .subscribe();
         }
     }
 
@@ -429,71 +431,31 @@ public class SyncService extends Worker {
             return;
         }
 
-        Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction = new ArrayMap<>();
-        for (EpisodeAction action : getQueuedEpisodeActions()) {
-            Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
-            EpisodeAction mostRecent = localMostRecentPlayAction.get(key);
-            if (mostRecent == null || mostRecent.getTimestamp() == null) {
-                localMostRecentPlayAction.put(key, action);
-            } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
-                localMostRecentPlayAction.put(key, action);
-            }
-        }
-
-        // make sure more recent local actions are not overwritten by older remote actions
-        Map<Pair<String, String>, EpisodeAction> mostRecentPlayAction = new ArrayMap<>();
-        for (EpisodeAction action : remoteActions) {
-            Log.d(TAG, "Processing action: " + action.toString());
-            switch (action.getAction()) {
-                case NEW:
-                    FeedItem newItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
-                    if (newItem != null) {
-                        DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
-                    } else {
-                        Log.i(TAG, "Unknown feed item: " + action);
-                    }
-                    break;
-                case DOWNLOAD:
-                    break;
-                case PLAY:
-                    Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
-                    EpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
-                    if (localMostRecent == null || localMostRecent.getTimestamp() == null
-                            || localMostRecent.getTimestamp().before(action.getTimestamp())) {
-                        EpisodeAction mostRecent = mostRecentPlayAction.get(key);
-                        if (mostRecent == null || mostRecent.getTimestamp() == null) {
-                            mostRecentPlayAction.put(key, action);
-                        } else if (action.getTimestamp() != null
-                                && mostRecent.getTimestamp().before(action.getTimestamp())) {
-                            mostRecentPlayAction.put(key, action);
-                        } else {
-                            Log.d(TAG, "No date information in action, skipping it");
-                        }
-                    }
-                    break;
-                case DELETE:
-                    // NEVER EVER call DBWriter.deleteFeedMediaOfItem() here, leads to an infinite loop
-                    break;
-                default:
-                    Log.e(TAG, "Unknown action: " + action);
-                    break;
-            }
-        }
+        Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
+                .getRemoteActionsOverridingLocalActions(remoteActions, getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
-        for (EpisodeAction action : mostRecentPlayAction.values()) {
-            FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
-            Log.d(TAG, "Most recent play action: " + action.toString());
-            if (playItem != null) {
-                FeedMedia media = playItem.getMedia();
-                media.setPosition(action.getPosition() * 1000);
-                if (FeedItemUtil.hasAlmostEnded(playItem.getMedia())) {
-                    Log.d(TAG, "Marking as played");
-                    playItem.setPlayed(true);
-                    queueToBeRemoved.add(playItem.getId());
-                }
-                updatedItems.add(playItem);
+        for (EpisodeAction action : playActionsToUpdate.values()) {
+            String guid = GuidValidator.isValidGuid(action.getGuid()) ? action.getGuid() : null;
+            FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(guid, action.getEpisode());
+            if (feedItem == null) {
+                Log.i(TAG, "Unknown feed item: " + action);
+                continue;
             }
+            if (action.getAction() == EpisodeAction.NEW) {
+                DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
+                continue;
+            }
+            Log.d(TAG, "Most recent play action: " + action.toString());
+            FeedMedia media = feedItem.getMedia();
+            media.setPosition(action.getPosition() * 1000);
+            if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
+                Log.d(TAG, "Marking as played");
+                feedItem.setPlayed(true);
+                queueToBeRemoved.add(feedItem.getId());
+            }
+            updatedItems.add(feedItem);
+
         }
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBReader.loadAdditionalFeedItemListData(updatedItems);
