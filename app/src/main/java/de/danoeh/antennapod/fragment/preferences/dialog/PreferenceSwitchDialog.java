@@ -9,24 +9,28 @@ import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
 
-public class PreferenceSwitchDialog  {
+public class PreferenceSwitchDialog {
     protected Context context;
     private String title;
     private String text;
     private OnPreferenceChangedListener onPreferenceChangedListener;
+
     public PreferenceSwitchDialog(Context context, String title, String text) {
         this.context = context;
         this.title = title;
         this.text = text;
     }
+
     public interface OnPreferenceChangedListener {
         /**
          * Notified when user confirms preference
+         *
          * @param enabled The preference
          */
 
         void preferenceChanged(boolean enabled);
     }
+
     public void openDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -39,7 +43,7 @@ public class PreferenceSwitchDialog  {
         builder.setView(layout);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            if(onPreferenceChangedListener != null)
+            if (onPreferenceChangedListener != null)
                 onPreferenceChangedListener.preferenceChanged(switchButton.isChecked());
         });
         builder.setNegativeButton(R.string.cancel_label, null);

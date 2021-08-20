@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -83,7 +81,7 @@ public class SubscriptionsRecyclerAdapter
         holder.onBind(drawerItem, position);
         holder.itemView.setOnCreateContextMenuListener(this);
         if (inActionMode()) {
-            if(isFeed) {
+            if (isFeed) {
                 holder.selectCheckbox.setVisibility(View.VISIBLE);
                 holder.selectView.setVisibility(View.VISIBLE);
             }
@@ -99,11 +97,11 @@ public class SubscriptionsRecyclerAdapter
         }
 
         holder.itemView.setOnLongClickListener(v -> {
-            if(!inActionMode()) {
+            if (!inActionMode()) {
                 if (isFeed) {
                     selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                     longPressedPosition = position;
-                } else{
+                } else {
                     selectedFeed = null;
                 }
             }
@@ -114,14 +112,14 @@ public class SubscriptionsRecyclerAdapter
             if (drawerItem == null) {
                 return;
             } else if (isFeed) {
-                if(inActionMode())
+                if (inActionMode())
                     holder.selectCheckbox.setChecked(!isSelected(position));
                 else {
                     Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
                     mainActivityRef.get().loadChildFragment(fragment);
                 }
                 return;
-            } else if(!inActionMode()) {
+            } else if (!inActionMode()) {
                 Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
                 mainActivityRef.get().loadChildFragment(fragment);
             }
@@ -132,7 +130,7 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public int getItemCount() {
-            return listItems.size();
+        return listItems.size();
     }
 
     @Override
@@ -146,7 +144,7 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if(selectedFeed != null && !inActionMode()) {
+        if (selectedFeed != null && !inActionMode()) {
             MenuInflater inflater = mainActivityRef.get().getMenuInflater();
             inflater.inflate(R.menu.nav_feed_context, menu);
             menu.setHeaderTitle(selectedFeed.getTitle());
@@ -199,6 +197,7 @@ public class SubscriptionsRecyclerAdapter
         private TriangleLabelView count;
         private CoordinatorLayout selectView;
         private CheckBox selectCheckbox;
+
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             feedTitle = itemView.findViewById(R.id.txtvTitle);
@@ -255,10 +254,13 @@ public class SubscriptionsRecyclerAdapter
         }
 
         @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+        public void getItemOffsets(@NonNull Rect outRect,
+                                   @NonNull View view,
+                                   @NonNull RecyclerView parent,
+                                   @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             Context context = parent.getContext();
-            int insetOffset = (int) convertDpToPixel(context,2f);
+            int insetOffset = (int) convertDpToPixel(context, 2f);
             outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
         }
     }

@@ -11,18 +11,22 @@ public class PreferenceListDialog {
     private String title;
     private OnPreferenceChangedListener onPreferenceChangedListener;
     private int selectedPos = 0;
+
     public PreferenceListDialog(Context context, String title) {
         this.context = context;
         this.title = title;
     }
+
     public interface OnPreferenceChangedListener {
         /**
          * Notified when user confirms preference
+         *
          * @param pos The index of the item that was selected
          */
 
         void preferenceChanged(int pos);
     }
+
     public void openDialog(String[] items) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -32,7 +36,7 @@ public class PreferenceListDialog {
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             if (onPreferenceChangedListener != null && selectedPos >= 0) {
-                    onPreferenceChangedListener.preferenceChanged(selectedPos);
+                onPreferenceChangedListener.preferenceChanged(selectedPos);
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);

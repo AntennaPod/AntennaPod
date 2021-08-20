@@ -1,5 +1,6 @@
-<?xml version='1.0' encoding='utf-8'?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version='1.0' encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
@@ -50,16 +51,17 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:visibility="gone">
+
         <CheckBox
             android:id="@+id/selectCheckBox"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:layout_centerVertical="false"
-            app:buttonTint="?attr/colorSecondary"
             android:backgroundTint="@color/white"
             android:background="@drawable/ic_checkbox_background"
-            />
+            app:buttonTint="?attr/colorSecondary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

@@ -1,15 +1,11 @@
 package de.danoeh.antennapod.fragment.actions;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -18,18 +14,12 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.fragment.FeedSettingsFragment;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-
-import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";
@@ -58,11 +48,11 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void autoDownloadChecked() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,activity.getString(R.string.auto_download_settings_label), activity.getString(R.string.auto_download_label));
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity, activity.getString(R.string.auto_download_settings_label), activity.getString(R.string.auto_download_label));
         preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
             @Override
             public void preferenceChanged(boolean enabled) {
-                    saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled));
+                saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDownload(enabled));
             }
         });
         preferenceSwitchDialog.openDialog();
@@ -88,7 +78,7 @@ public class FeedMultiSelectActionHandler {
             saveFeedPreferences(feedPreferences -> {
                 feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) values[pos]));
             });
-            
+
         });
     }
 
@@ -118,9 +108,11 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void keepUpdatedChecked() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,activity.getString(R.string.kept_updated), activity.getString(R.string.keep_updated_summary));
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity, activity.getString(R.string.kept_updated), activity.getString(R.string.keep_updated_summary));
         preferenceSwitchDialog.setOnPreferenceChangedListener(keepUpdated -> {
-            saveFeedPreferences(feedPreferences -> {feedPreferences.setKeepUpdated(keepUpdated);});
+            saveFeedPreferences(feedPreferences -> {
+                feedPreferences.setKeepUpdated(keepUpdated);
+            });
         });
         preferenceSwitchDialog.openDialog();
     }
