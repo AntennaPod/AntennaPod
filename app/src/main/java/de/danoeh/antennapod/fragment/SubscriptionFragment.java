@@ -43,6 +43,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -55,7 +56,6 @@ import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -358,7 +358,6 @@ public class SubscriptionFragment extends Fragment
                 return super.onContextItemSelected(item);
 
         }
-        return super.onContextItemSelected(item);
     }
 
     private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {
