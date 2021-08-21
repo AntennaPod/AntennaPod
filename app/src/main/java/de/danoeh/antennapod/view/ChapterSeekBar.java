@@ -62,6 +62,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         } else {
             this.dividerPos = null;
         }
+        invalidate();
     }
 
     public void highlightCurrentChapter() {

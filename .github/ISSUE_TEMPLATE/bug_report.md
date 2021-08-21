@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve existing features
-labels: 'possible bug'
+labels: 'Type: Possible bug'
 ---
 
 # Checklist

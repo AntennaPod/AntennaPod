@@ -6,13 +6,6 @@
     <Preference
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
-    <ListPreference
-            android:entryValues="@array/image_cache_size_values"
-            android:entries="@array/image_cache_size_options"
-            android:title="@string/pref_image_cache_size_title"
-            android:key="prefImageCacheSize"
-            android:summary="@string/pref_image_cache_size_sum"
-            android:defaultValue="100"/>
     <SwitchPreferenceCompat
             android:defaultValue="false"
             android:enabled="true"

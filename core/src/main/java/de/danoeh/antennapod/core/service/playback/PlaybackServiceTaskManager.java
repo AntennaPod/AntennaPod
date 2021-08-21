@@ -155,7 +155,10 @@ public class PlaybackServiceTaskManager {
     /**
      * Returns the queue or waits until the PSTM has loaded the queue from the database.
      */
-    public synchronized List<FeedItem> getQueue() throws InterruptedException {
+    public List<FeedItem> getQueue() throws InterruptedException {
+        if (queueFuture == null) {
+            loadQueue();
+        }
         try {
             return queueFuture.get();
         } catch (ExecutionException e) {

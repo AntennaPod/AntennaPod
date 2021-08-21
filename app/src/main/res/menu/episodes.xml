@@ -6,8 +6,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        custom:showAsAction="collapseActionView|always"
-        custom:actionViewClass="androidx.appcompat.widget.SearchView"
+        custom:showAsAction="always"
         android:title="@string/search_label"/>
 
     <item

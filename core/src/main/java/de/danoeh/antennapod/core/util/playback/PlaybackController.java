@@ -274,13 +274,13 @@ public abstract class PlaybackController {
      */
     private void handleStatus() {
         Log.d(TAG, "status: " + status.toString());
+        checkMediaInfoLoaded();
         switch (status) {
             case ERROR:
                 EventBus.getDefault().post(new MessageEvent(activity.getString(R.string.player_error_msg)));
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
-                checkMediaInfoLoaded();
                 onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
                 if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
@@ -288,7 +288,6 @@ public abstract class PlaybackController {
                 }
                 break;
             case PLAYING:
-                checkMediaInfoLoaded();
                 if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
@@ -296,25 +295,22 @@ public abstract class PlaybackController {
                 updatePlayButtonShowsPlay(false);
                 break;
             case PREPARING:
-                checkMediaInfoLoaded();
                 if (playbackService != null) {
                     updatePlayButtonShowsPlay(!playbackService.isStartWhenPrepared());
                 }
                 break;
-            case STOPPED:
-                updatePlayButtonShowsPlay(true);
-                break;
             case PREPARED:
-                checkMediaInfoLoaded();
                 updatePlayButtonShowsPlay(true);
                 onPositionObserverUpdate();
                 break;
             case SEEKING:
                 onPositionObserverUpdate();
                 break;
+            case STOPPED: // Fall-through
             case INITIALIZED:
-                checkMediaInfoLoaded();
                 updatePlayButtonShowsPlay(true);
+                break;
+            default:
                 break;
         }
     }
@@ -493,12 +489,6 @@ public abstract class PlaybackController {
     public void setSkipSilence(boolean skipSilence) {
         if (playbackService != null) {
             playbackService.skipSilence(skipSilence);
-        }
-    }
-
-    public void setVolume(float leftVolume, float rightVolume) {
-        if (playbackService != null) {
-            playbackService.setVolume(leftVolume, rightVolume);
         }
     }
 

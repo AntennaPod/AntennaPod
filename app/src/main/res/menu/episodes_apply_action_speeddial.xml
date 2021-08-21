@@ -14,21 +14,21 @@
         android:title="@string/download_label"
         />
     <item android:id="@+id/mark_unread_batch"
-        android:icon="@drawable/ic_cancel"
+        android:icon="@drawable/ic_mark_unplayed"
         android:title="@string/mark_unread_label"
         />
     <item
         android:id="@+id/mark_read_batch"
-        android:icon="@drawable/ic_check"
+        android:icon="@drawable/ic_mark_played"
         android:title="@string/mark_read_label"
         />
     <item android:id="@+id/remove_from_queue_batch"
-        android:icon="@drawable/ic_remove"
+        android:icon="@drawable/ic_playlist_remove"
         android:title="@string/remove_from_queue_label"
         />
     <item
         android:id="@+id/add_to_queue_batch"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_playlist"
         android:title="@string/add_to_queue_label"
         />
 </menu>

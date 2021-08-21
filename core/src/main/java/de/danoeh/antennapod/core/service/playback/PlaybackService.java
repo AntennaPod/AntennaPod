@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -41,10 +40,6 @@ import android.view.SurfaceHolder;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +58,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -72,7 +66,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -84,6 +77,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -313,20 +307,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
-        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
-            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-            for (FeedItem feedItem : taskManager.getQueue()) {
-                if (feedItem.getMedia() != null) {
-                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
-                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
-                }
-            }
-            emitter.onSuccess(queueItems);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
-
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
 
@@ -372,6 +352,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return new BrowserRoot(
                 getResources().getString(R.string.app_name), // Name visible in Android Auto
                 null); // Bundle of optional extras
+    }
+
+    private void loadQueueForMediaSession() {
+        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+            for (FeedItem feedItem : taskManager.getQueue()) {
+                if (feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
+            }
+            emitter.onSuccess(queueItems);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
@@ -421,6 +417,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onLoadChildren(@NonNull String parentId,
                                @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
+        result.detach();
+
+        Completable.create(emitter -> {
+            result.sendResult(loadChildrenSynchronous(parentId));
+            emitter.onComplete();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> { }, Throwable::printStackTrace);
+    }
+
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
@@ -456,7 +464,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
         }
-        result.sendResult(mediaItems);
+        return mediaItems;
     }
 
     @Override
@@ -743,7 +751,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             mediaPlayer.playMediaObject(playable, PlaybackPreferences.getCurrentEpisodeIsStream(),
                                     true, true);
                             stateManager.validStartCommandWasReceived();
-                            PlaybackService.this.updateMediaSessionMetadata(playable);
+                            updateNotificationAndMediaSession(playable);
                             addPlayableToQueue(playable);
                         }, error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
@@ -764,7 +772,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void notifyVideoSurfaceAbandoned() {
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
-        setupNotification(getPlayable());
+        updateNotificationAndMediaSession(getPlayable());
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
     }
 
@@ -779,25 +787,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
-            float rightVolume = multiplicator * UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(multiplicator, multiplicator);
         }
 
         @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
         @Override
         public void onSleepTimerReset() {
-            float leftVolume = UserPreferences.getLeftVolume();
-            float rightVolume = UserPreferences.getRightVolume();
-            mediaPlayer.setVolume(leftVolume, rightVolume);
+            mediaPlayer.setVolume(1.0f, 1.0f);
         }
 
         @Override
@@ -826,19 +828,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case INITIALIZED:
                     PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
                             mediaPlayer.getPSMPInfo().playerStatus, mediaPlayer.isStreaming());
-                    setupNotification(newInfo);
+                    updateNotificationAndMediaSession(newInfo.playable);
                     break;
-
                 case PREPARED:
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
-
                 case PAUSED:
                     if ((UserPreferences.isPersistNotify() || isCasting) &&
                             android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
-                        setupNotification(newInfo);
+                        updateNotificationAndMediaSession(newInfo.playable);
                     } else if (!UserPreferences.isPersistNotify() && !isCasting) {
                         // remove notification on pause
                         stateManager.stopForeground(true);
@@ -846,15 +846,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     cancelPositionObserver();
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     break;
-
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
                     //stopService();
                     break;
-
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
-                    setupNotification(newInfo);
+                    updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
@@ -864,13 +862,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 PlaybackService.this::disableSleepTimer));
                     }
+                    loadQueueForMediaSession();
                     break;
-
                 case ERROR:
                     PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
                     break;
-
+                default:
+                    break;
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
@@ -881,7 +880,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            setupNotification(getPlayable()); // Stops foreground if not playing
+            updateNotificationAndMediaSession(getPlayable()); // Stops foreground if not playing
         }
 
         @Override
@@ -900,7 +899,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (reloadUI) {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
             }
-            PlaybackService.this.updateMediaSessionMetadata(getPlayable());
+            updateNotificationAndMediaSession(getPlayable());
         }
 
         @Override
@@ -918,8 +917,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // Playable is being streamed and does not have a duration specified in the feed
                         playable.setDuration(mediaPlayer.getDuration());
                         DBWriter.setFeedMedia((FeedMedia) playable);
-                        updateMediaSessionMetadata(playable);
-                        setupNotification(playable);
+                        updateNotificationAndMediaSession(playable);
                     }
 
                     return true;
@@ -1010,6 +1008,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (nextItem == null || nextItem.getMedia() == null) {
+            return null;
+        }
+
+        if (!UserPreferences.isFollowQueue()) {
+            Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
+            updateNotificationAndMediaSession(nextItem.getMedia());
             return null;
         }
 
@@ -1286,93 +1290,56 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP));
     }
 
-    /**
-     * Used by updateMediaSessionMetadata to load notification data in another thread.
-     */
-    private Thread mediaSessionSetupThread;
+    private void updateNotificationAndMediaSession(final Playable p) {
+        updateMediaSessionMetadata(p);
+        setupNotification(p);
+    }
 
     private void updateMediaSessionMetadata(final Playable p) {
         if (p == null || mediaSession == null) {
             return;
         }
-        if (mediaSessionSetupThread != null) {
-            mediaSessionSetupThread.interrupt();
+
+        MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+        builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
+
+        if (UserPreferences.setLockscreenBackground() && notificationBuilder.isIconCached()) {
+            builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, notificationBuilder.getCachedIcon());
+        } else if (isCasting && !TextUtils.isEmpty(p.getImageLocation())) {
+            // In the absence of metadata art, the controller dialog takes care of creating it.
+            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, p.getImageLocation());
         }
 
-        Runnable mediaSessionSetupTask = () -> {
-            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-            builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
-
-            String imageLocation = p.getImageLocation();
-
-            if (!TextUtils.isEmpty(imageLocation)) {
-                if (UserPreferences.setLockscreenBackground()) {
-                    Bitmap art;
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
-                    try {
-                        art = Glide.with(this)
-                                .asBitmap()
-                                .load(imageLocation)
-                                .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                .get();
-                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                    } catch (Throwable tr1) {
-                        try {
-                            art = Glide.with(this)
-                                    .asBitmap()
-                                    .load(ImageResourceUtils.getFallbackImageLocation(p))
-                                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                    .get();
-                            builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                        } catch (Throwable tr2) {
-                            Log.e(TAG, Log.getStackTraceString(tr2));
-                        }
-                    }
-                } else if (isCasting) {
-                    // In the absence of metadata art, the controller dialog takes care of creating it.
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
-                }
+        if (stateManager.hasReceivedValidStartCommand()) {
+            mediaSession.setSessionActivity(PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
+                    PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
+            try {
+                mediaSession.setMetadata(builder.build());
+            } catch (OutOfMemoryError e) {
+                Log.e(TAG, "Setting media session metadata", e);
+                builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
+                mediaSession.setMetadata(builder.build());
             }
-            if (!Thread.currentThread().isInterrupted() && stateManager.hasReceivedValidStartCommand()) {
-                mediaSession.setSessionActivity(PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
-                        PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
-                try {
-                    mediaSession.setMetadata(builder.build());
-                } catch (OutOfMemoryError e) {
-                    Log.e(TAG, "Setting media session metadata", e);
-                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
-                    mediaSession.setMetadata(builder.build());
-                }
-            }
-        };
-
-        mediaSessionSetupThread = new Thread(mediaSessionSetupTask);
-        mediaSessionSetupThread.start();
+        }
     }
 
     /**
      * Used by setupNotification to load notification data in another thread.
      */
-    private Thread notificationSetupThread;
+    private Thread playableIconLoaderThread;
 
     /**
      * Prepares notification and starts the service in the foreground.
      */
-    private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
-        setupNotification(info.playable);
-    }
-
     private synchronized void setupNotification(final Playable playable) {
         Log.d(TAG, "setupNotification");
-        if (notificationSetupThread != null) {
-            notificationSetupThread.interrupt();
+        if (playableIconLoaderThread != null) {
+            playableIconLoaderThread.interrupt();
         }
         if (playable == null || mediaPlayer == null) {
             Log.d(TAG, "setupNotification: playable=" + playable);
@@ -1395,14 +1362,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         startForegroundIfPlaying(playerStatus);
 
         if (!notificationBuilder.isIconCached()) {
-            notificationSetupThread = new Thread(() -> {
+            playableIconLoaderThread = new Thread(() -> {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
                     notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
+                    updateMediaSessionMetadata(playable);
                 }
             });
-            notificationSetupThread.start();
+            playableIconLoaderThread.start();
         }
     }
 
@@ -1485,7 +1453,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received Auto Connection update: " + status);
             if (!isConnectedToCar) {
                 Log.d(TAG, "Car was unplugged during playback.");
-                pauseIfPauseOnDisconnect();
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
@@ -1519,11 +1486,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
+                Log.d(TAG, "Headset plug event. State is " + state);
                 if (state != -1) {
-                    Log.d(TAG, "Headset plug event. State is " + state);
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        pauseIfPauseOnDisconnect();
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
@@ -1556,18 +1522,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
             pauseIfPauseOnDisconnect();
         }
-        // android.media.AUDIO_BECOMING_NOISY
     };
 
     /**
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
     private void pauseIfPauseOnDisconnect() {
+        Log.d(TAG, "pauseIfPauseOnDisconnect()");
         if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                transientPause = true;
-            }
-            mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+            transientPause = true;
+            mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }
 
@@ -1575,6 +1539,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * @param bluetooth true if the event for unpausing came from bluetooth
      */
     private void unpauseIfPauseOnDisconnect(boolean bluetooth) {
+        if (mediaPlayer.isAudioChannelInUse()) {
+            Log.d(TAG, "unpauseIfPauseOnDisconnect() audio is in use");
+            return;
+        }
         if (transientPause) {
             transientPause = false;
             if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
@@ -1703,10 +1671,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void skipSilence(boolean skipSilence) {
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
-    }
-
-    public void setVolume(float leftVolume, float rightVolume) {
-        mediaPlayer.setVolume(leftVolume, rightVolume);
     }
 
     public float getCurrentPlaybackSpeed() {
@@ -1952,7 +1916,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
-                    updateMediaSessionMetadata(getPlayable());
+                    updateNotificationAndMediaSession(getPlayable());
                 } else {
                     flavorHelper.onSharedPreference(key);
                 }
@@ -2015,7 +1979,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
             if (connected) {
-                PlaybackService.this.setupNotification(info);
+                PlaybackService.this.updateNotificationAndMediaSession(info.playable);
             } else {
                 PlayerStatus status = info.playerStatus;
                 if ((status == PlayerStatus.PLAYING ||
@@ -2023,7 +1987,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         status == PlayerStatus.PREPARING ||
                         UserPreferences.isPersistNotify()) &&
                         android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    PlaybackService.this.setupNotification(info);
+                    PlaybackService.this.updateNotificationAndMediaSession(info.playable);
                 } else if (!UserPreferences.isPersistNotify()) {
                     stateManager.stopForeground(true);
                 }

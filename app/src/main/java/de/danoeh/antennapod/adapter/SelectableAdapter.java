@@ -31,6 +31,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             endSelectMode();
         }
 
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onStartSelectMode();
+        }
+
         selectedIds.clear();
         callOnStartSelectMode();
         selectedIds.add(getItemId(pos));
@@ -164,8 +168,8 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
 
     private void callOnEndSelectMode() {
-        if (onEndSelectModeListener != null) {
-            onEndSelectModeListener.onEndSelectMode();
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onEndSelectMode();
         }
     }
 

@@ -553,7 +553,7 @@
   <string name="choose_data_directory_available_space">%1$s de %2$s grátis</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de abaixar o volume quando outro aplicativo reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausar em interrupções</string>
-  <string name="pref_resumeAfterCall_sum">Continuar a reprodução depois que uma ligação telefonica for concluida</string>
+  <string name="pref_resumeAfterCall_sum">Continuar a reprodução depois que uma ligação telefônica for concluída</string>
   <string name="pref_resumeAfterCall_title">Continuar após ligação</string>
   <string name="pref_restart_required">AntennaPod deve ser reiniciado para que esta mudanças tenha efeito.</string>
   <!--Online feed view-->
@@ -625,7 +625,7 @@
   <string name="downloaded_label">Baixados</string>
   <string name="selected_downloaded_label">Episódios baixados selecionados</string>
   <string name="not_downloaded_label">Não baixados</string>
-  <string name="selected_not_downloaded_label">Episídios não baixados selecionados</string>
+  <string name="selected_not_downloaded_label">Episódios não baixados selecionados</string>
   <string name="selected_queued_label">Episódios enfileirados selecionados</string>
   <string name="selected_not_queued_label">Episódios não enfileirados selecionados</string>
   <string name="selected_has_media_label">Episódios selecionados com mídia</string>
@@ -667,7 +667,7 @@
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>
   <string name="share_dialog_media_file_label">Arquivo de media</string>
   <!--Audio controls-->
-  <string name="audio_controls">Controles de Àudio</string>
+  <string name="audio_controls">Controles de Áudio</string>
   <string name="playback_speed">Velocidade da Reprodução</string>
   <string name="volume">Volume</string>
   <string name="left_short">E</string>

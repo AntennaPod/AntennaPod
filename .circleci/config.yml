@@ -106,5 +106,5 @@ workflows:
                   branchBaseCommit=`git merge-base origin/develop HEAD`
                   echo "Comparing to $branchBaseCommit"
                   curl -s -L https://github.com/ByteHamster/android-xml-formatter/releases/download/1.1.0/android-xml-formatter.jar > android-xml-formatter.jar
-                  git diff --name-only $branchBaseCommit | { grep "res/layout/" || true; } | xargs java -jar android-xml-formatter.jar
+                  git diff --name-only $branchBaseCommit --diff-filter=AM | { grep "res/layout/" || true; } | xargs java -jar android-xml-formatter.jar
                   test $(git diff | wc -l) -eq 0 || (echo -e "\n\n===== Found XML code style violations! See output below how to fix them. =====\n\n" && git --no-pager diff --color=always && false)
