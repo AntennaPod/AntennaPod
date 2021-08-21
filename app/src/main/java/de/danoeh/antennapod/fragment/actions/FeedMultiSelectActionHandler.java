@@ -48,7 +48,9 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void autoDownloadChecked() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity, activity.getString(R.string.auto_download_settings_label), activity.getString(R.string.auto_download_label));
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
+                activity.getString(R.string.auto_download_settings_label),
+                activity.getString(R.string.auto_download_label));
         preferenceSwitchDialog.setOnPreferenceChangedListener(new PreferenceSwitchDialog.OnPreferenceChangedListener() {
             @Override
             public void preferenceChanged(boolean enabled) {
@@ -83,7 +85,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void autoDeleteEpisodesChecked() {
-        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity, "Auto delete episodes");
+        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
+                "Auto delete episodes");
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
         String[] values = activity.getResources().getStringArray(R.array.spnAutoDeleteValues);
         preferenceListDialog.openDialog(items);
@@ -99,6 +102,7 @@ public class FeedMultiSelectActionHandler {
                 case "never":
                     autoDeleteAction = FeedPreferences.AutoDeleteAction.NO;
                     break;
+                default:
             }
             FeedPreferences.AutoDeleteAction finalAutoDeleteAction = autoDeleteAction;
             saveFeedPreferences(feedPreferences -> {
@@ -108,7 +112,9 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void keepUpdatedChecked() {
-        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity, activity.getString(R.string.kept_updated), activity.getString(R.string.keep_updated_summary));
+        PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
+                activity.getString(R.string.kept_updated),
+                activity.getString(R.string.keep_updated_summary));
         preferenceSwitchDialog.setOnPreferenceChangedListener(keepUpdated -> {
             saveFeedPreferences(feedPreferences -> {
                 feedPreferences.setKeepUpdated(keepUpdated);

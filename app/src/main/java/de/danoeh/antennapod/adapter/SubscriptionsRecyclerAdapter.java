@@ -112,10 +112,11 @@ public class SubscriptionsRecyclerAdapter
             if (drawerItem == null) {
                 return;
             } else if (isFeed) {
-                if (inActionMode())
+                if (inActionMode()) {
                     holder.selectCheckbox.setChecked(!isSelected(position));
-                else {
-                    Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
+                } else {
+                    Fragment fragment = FeedItemlistFragment
+                            .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
                     mainActivityRef.get().loadChildFragment(fragment);
                 }
                 return;

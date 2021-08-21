@@ -69,9 +69,7 @@ import io.reactivex.schedulers.Schedulers;
 public class SubscriptionFragment extends Fragment
         implements Toolbar.OnMenuItemClickListener,
         SubscriptionsRecyclerAdapter.OnEndSelectModeListener,
-        SubscriptionsRecyclerAdapter.OnStartSelectModeListener
-
-{
+        SubscriptionsRecyclerAdapter.OnStartSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
@@ -103,6 +101,7 @@ public class SubscriptionFragment extends Fragment
     private SpeedDialView speedDialView;
 
     private List<NavDrawerData.DrawerItem> listItems;
+
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
         Bundle args = new Bundle();
@@ -146,7 +145,10 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()), RecyclerView.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
+                prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()),
+                RecyclerView.VERTICAL,
+                false);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
@@ -408,7 +410,7 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onStartSelectMode() {
         List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
-        for(NavDrawerData.DrawerItem item : listItems) {
+        for (NavDrawerData.DrawerItem item : listItems) {
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 feedsOnly.add(item);
             }

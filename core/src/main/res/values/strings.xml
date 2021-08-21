@@ -187,7 +187,7 @@
         <item quantity="one">%d subscription updated.</item>
         <item quantity="other">%d subscriptions updated.</item>
     </plurals>
-
+    <string name="add_to_folder">Add to folder</string>
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
     <plurals name="downloading_batch_label">
