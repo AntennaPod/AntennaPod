@@ -70,4 +70,5 @@
 
     <include
         layout="@layout/multi_select_speed_dial" />
+
 </RelativeLayout>

@@ -158,7 +158,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedIds.size(), getItemCount()));
     }
 
-    public void setOnStartSelecModeListener(OnStartSelectModeListener onStartSelecModeListener) {
+    public void setOnStartSelectModeListener(OnStartSelectModeListener onStartSelecModeListener) {
         this.onStartSelecModeListener = onStartSelecModeListener;
     }
 

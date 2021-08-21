@@ -74,7 +74,8 @@ public class FeedMultiSelectActionHandler {
         System.arraycopy(speeds, 0, values, 1, speeds.length);
         System.arraycopy(speeds, 0, entries, 1, speeds.length);
 
-        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity, activity.getString(R.string.playback_speed));
+        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
+                activity.getString(R.string.playback_speed));
         preferenceListDialog.openDialog(entries);
         preferenceListDialog.setOnPreferenceChangedListener(pos -> {
             saveFeedPreferences(feedPreferences -> {

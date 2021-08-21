@@ -62,6 +62,7 @@
             android:backgroundTint="@color/white"
             android:background="@drawable/ic_checkbox_background"
             app:buttonTint="?attr/colorSecondary" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

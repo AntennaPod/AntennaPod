@@ -72,7 +72,8 @@ import java.util.Locale;
  * Shows all items in the queue.
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
-        EpisodeItemListAdapter.OnSelectModeListener {
+        EpisodeItemListAdapter.OnStartSelectModeListener,
+        EpisodeItemListAdapter.OnEndSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
@@ -512,7 +513,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
-                recyclerAdapter.setOnSelectModeListener(this);
+                recyclerAdapter.setOnStartSelectModeListener(this);
+                recyclerAdapter.setOnEndSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }

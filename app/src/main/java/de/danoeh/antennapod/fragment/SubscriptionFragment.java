@@ -253,7 +253,7 @@ public class SubscriptionFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
-        subscriptionAdapter.setOnStartSelecModeListener(this);
+        subscriptionAdapter.setOnStartSelectModeListener(this);
         subscriptionAdapter.setOnEndSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();

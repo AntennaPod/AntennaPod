@@ -54,7 +54,8 @@ import java.util.List;
  * Displays all completed downloads and provides a button to delete them.
  */
 public class CompletedDownloadsFragment extends Fragment implements
-        EpisodeItemListAdapter.OnSelectModeListener {
+        EpisodeItemListAdapter.OnStartSelectModeListener,
+        EpisodeItemListAdapter.OnEndSelectModeListener {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
@@ -79,7 +80,8 @@ public class CompletedDownloadsFragment extends Fragment implements
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
-        adapter.setOnSelectModeListener(this);
+        adapter.setOnStartSelectModeListener(this);
+        adapter.setOnEndSelectModeListener(this);
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
 
