@@ -270,22 +270,6 @@
         <item>DURATION_LONG_SHORT</item>
     </string-array>
 
-    <string-array name="image_cache_size_options">
-        <item>20 MiB</item>
-        <item>50 MiB</item>
-        <item>100 MiB</item>
-        <item>250 MiB</item>
-        <item>500 MiB</item>
-    </string-array>
-
-    <string-array name="image_cache_size_values">
-        <item>20</item>
-        <item>50</item>
-        <item>100</item>
-        <item>250</item>
-        <item>500</item>
-    </string-array>
-
     <string-array name="compact_notification_buttons_options">
         <item>@string/rewind_label</item>
         <item>@string/fast_forward_label</item>
@@ -312,11 +296,6 @@
     <string-array name="video_background_behavior_values_without_pip">
         <item>stop</item>
         <item>continue</item>
-    </string-array>
-
-    <string-array name="batch_long_press_options">
-        <item>@string/select_all_above</item>
-        <item>@string/select_all_below</item>
     </string-array>
 
     <string-array name="back_button_behavior_options">

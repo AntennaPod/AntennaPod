@@ -7,9 +7,9 @@
         android:title="@string/remove_all_new_flags_label" />
 
     <item
-        android:id="@+id/mark_all_read_item"
+        android:id="@+id/add_to_folder"
         android:menuCategory="container"
-        android:title="@string/mark_all_read_label" />
+        android:title="@string/add_to_folder" />
 
     <item
         android:id="@+id/rename_item"

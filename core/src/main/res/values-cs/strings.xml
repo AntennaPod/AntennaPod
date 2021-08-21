@@ -13,6 +13,7 @@
   <string name="new_label">Nový</string>
   <string name="settings_label">Nastavení</string>
   <string name="downloads_label">Stahování</string>
+  <string name="open_autodownload_settings">Otevřít nastavení</string>
   <string name="downloads_completed_label">Dokončeno</string>
   <string name="downloads_log_label">Log</string>
   <string name="subscriptions_label">Odběry</string>
@@ -72,6 +73,8 @@
 </string>
   <string name="reset">Reset</string>
   <string name="url_label">URL</string>
+  <string name="support_funding_label">Podpořit</string>
+  <string name="support_podcast">Podpořit tento podcast</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Došlo k chybě:</string>
   <string name="refresh_label">Obnovit</string>
@@ -80,6 +83,7 @@
   <string name="chapter_duration">Délka: %1$s</string>
   <string name="description_label">Popis</string>
   <string name="shownotes_label">Poznámky</string>
+  <string name="shownotes_contentdescription">přejet prstem nahoru pro čtení poznámek</string>
   <string name="episodes_suffix">\u0020epizod</string>
   <string name="processing_label">Zpracovávám</string>
   <string name="close_label">Zavřít</string>
@@ -171,6 +175,7 @@
   <string name="refresh_failed_msg">{fa-exclamation-circle} Poslední aktualizace selhala. Klikněte pro více informací.</string>
   <string name="open_podcast">Otevřít podcast</string>
   <string name="please_wait_for_data">Počkejte prosím na dokončení načítání</string>
+  <string name="updates_disabled_label">Aktualizování vypnuto</string>
   <!--actions on feeditems-->
   <string name="download_label">Stáhnout</string>
   <plurals name="downloading_batch_label">
@@ -387,6 +392,18 @@
   <string name="playback_pref_sum">Ovládání tlačítky sluchátek, přeskakování, fronta</string>
   <string name="network_pref">Síť</string>
   <string name="network_pref_sum">Četnost aktualizací, ovládání stahování, mobilní data</string>
+  <string name="feed_refresh_title">Aktualizovat podcasty</string>
+  <string name="feed_refresh_sum">Zvolit interval nebo čas pro automatické hledání nových epizod</string>
+  <string name="feed_refresh_interval">Interval</string>
+  <string name="feed_refresh_time">Čas</string>
+  <string name="feed_refresh_never">Nikdy</string>
+  <string name="feed_refresh_interval_at">na %1$s</string>
+  <plurals name="feed_refresh_every_x_hours">
+    <item quantity="one">Každou hodinu</item>
+    <item quantity="few">Každé %d hodiny</item>
+    <item quantity="many">Každých %d hodin</item>
+    <item quantity="other">Každých %d hodin</item>
+  </plurals>
   <string name="pref_followQueue_title">Kontinuální přehrávání</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Sluchátka nebo Bluetooth odpojeno</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Sluchátka připojena</string>
@@ -519,6 +536,10 @@
   <string name="not_auto_downloaded">Nebylo automaticky staženo</string>
   <string name="kept_updated">Udržováno aktuální</string>
   <string name="not_kept_updated">Neaktualizováno</string>
+  <string name="new_episode_notification_enabled">Upozornění zapnuta</string>
+  <string name="new_episode_notification_disabled">Upozornění vypnuta</string>
+  <string name="pref_feed_settings_dialog_msg">Toto nastavení je specifické pro každý podcast zvlášť. Lze ho měnit otevřením přehledové stránky podcastu.</string>
+  <string name="pref_contribute">Pomozte</string>
   <!--About screen-->
   <string name="about_pref">O aplikaci</string>
   <string name="antennapod_version">Verze aplikace AntennaPod</string>
@@ -658,9 +679,14 @@
   <string name="position">Pozice: %1$s</string>
   <string name="apply_action">Vykonat</string>
   <string name="play_chapter">Přehrát kapitolu</string>
+  <string name="prev_chapter">Předchozí kapitola</string>
+  <string name="next_chapter">Další kapitola</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Ověření</string>
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
+  <string name="feed_folders_label">Adresáře</string>
+  <string name="feed_folders_summary">Upravit adresáře pod kterými je tento podcast zobrazen.</string>
+  <string name="feed_folders_include_root">Zobrazit v hlavním seznamu</string>
   <string name="auto_download_settings_label">Nastavení automatického stahování</string>
   <string name="episode_filters_label">Filtr epizod</string>
   <string name="episode_filters_description">Seznam pravidel použitých při rozhodování, jestli má být epizoda zahrnuta nebo vyřazena při automatickém stahování</string>

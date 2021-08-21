@@ -558,7 +558,7 @@ public class PodDBAdapter {
                 setFeed(feed);
                 if (feed.getItems() != null) {
                     for (FeedItem item : feed.getItems()) {
-                        setFeedItem(item, false);
+                        updateOrInsertFeedItem(item, false);
                     }
                 }
                 if (feed.getPreferences() != null) {
@@ -582,11 +582,11 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_DOWNLOAD_URL + "=?", new String[]{original});
     }
 
-    public void setFeedItemlist(List<FeedItem> items) {
+    public void storeFeedItemlist(List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             for (FeedItem item : items) {
-                setFeedItem(item, true);
+                updateOrInsertFeedItem(item, true);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -600,7 +600,7 @@ public class PodDBAdapter {
         long result = 0;
         try {
             db.beginTransactionNonExclusive();
-            result = setFeedItem(item, true);
+            result = updateOrInsertFeedItem(item, true);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -618,7 +618,7 @@ public class PodDBAdapter {
      *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
      */
-    private long setFeedItem(FeedItem item, boolean saveFeed) {
+    private long updateOrInsertFeedItem(FeedItem item, boolean saveFeed) {
         if (item.getId() == 0 && item.getPubDate() == null) {
             Log.e(TAG, "Newly saved item has no pubDate. Using current date as pubDate");
             item.setPubDate(new Date());
@@ -766,13 +766,6 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD, autoDownload);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
                 new String[]{String.valueOf(feedItem.getId())});
-    }
-
-    public void setFeedsItemsAutoDownload(Feed feed, boolean autoDownload) {
-        final String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS
-                + " SET " + KEY_AUTO_DOWNLOAD + "=" + (autoDownload ? "1" : "0")
-                + " WHERE " + KEY_FEED + "=" + feed.getId();
-        db.execSQL(sql);
     }
 
     public void setFavorites(List<FeedItem> favorites) {
@@ -1117,14 +1110,19 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedItemCursor(final String podcastUrl, final String episodeUrl) {
-        String escapedPodcastUrl = DatabaseUtils.sqlEscapeString(podcastUrl);
+    public final Cursor getFeedItemCursor(final String guid, final String episodeUrl) {
         String escapedEpisodeUrl = DatabaseUtils.sqlEscapeString(episodeUrl);
+        String whereClauseCondition = TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl;
+
+        if (guid != null) {
+            String escapedGuid = DatabaseUtils.sqlEscapeString(guid);
+            whereClauseCondition = TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + "=" + escapedGuid;
+        }
+
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl
-                + " AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "=" + escapedPodcastUrl;
+                + " WHERE " + whereClauseCondition;
         Log.d(TAG, "SQL: " + query);
         return db.rawQuery(query, null);
     }

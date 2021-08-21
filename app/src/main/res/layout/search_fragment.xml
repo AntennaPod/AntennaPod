@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:navigationIcon="?homeAsUpIndicator"
-            app:title="@string/search_label"
-            android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="?homeAsUpIndicator"
+        app:title="@string/search_label" />
 
     <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:id="@+id/feed_title_chip"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="0dp"
-            app:closeIconVisible="true"/>
+        android:id="@+id/feed_title_chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="0dp"
+        android:visibility="gone"
+        app:closeIconVisible="true" />
 
     <ProgressBar
-            android:layout_centerInParent="true"
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyle" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@id/feed_title_chip"
-            android:id="@+id/recyclerViewFeeds"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:clipToPadding="false"/>
+        android:id="@+id/recyclerViewFeeds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/feed_title_chip"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:clipToPadding="false" />
 
     <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_below="@id/recyclerViewFeeds"
-            android:layout_marginTop="-4dp"
-            android:paddingTop="12dp"
-            android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recyclerViewFeeds"
+        android:layout_marginTop="-4dp"
+        android:paddingTop="12dp"
+        android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
+
 </RelativeLayout>

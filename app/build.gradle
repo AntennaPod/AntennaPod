@@ -1,7 +1,7 @@
 plugins {
     id('com.android.application')
     id('com.getkeepsafe.dexcount')
-    id('com.github.triplet.play') version '2.7.5' apply false
+    id('com.github.triplet.play') version '3.4.0' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -11,8 +11,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2030002
-        versionName "2.3.0-beta2"
+        versionCode 2030295
+        versionName "2.3.2"
 
         def commit = ""
         try {
@@ -149,6 +149,8 @@ dependencies {
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
+    implementation 'com.annimon:stream:1.2.2'
 
     // Non-free dependencies:
     playImplementation 'com.google.android.play:core:1.8.0'
@@ -168,8 +170,8 @@ dependencies {
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     apply plugin: 'com.github.triplet.play'
     play {
-        track = 'alpha'
-        serviceAccountCredentials = file(antennaPodPlayPublisherCredentials)
+        track.set('alpha')
+        serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }
 

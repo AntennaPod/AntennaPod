@@ -158,6 +158,7 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
@@ -201,31 +202,33 @@ public class SubscriptionFragment extends Fragment
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh_item:
-                AutoUpdateManager.runImmediate(requireContext());
-                return true;
-            case R.id.subscriptions_filter:
-                SubscriptionsFilterDialog.showDialog(requireContext());
-                return true;
-            case R.id.subscriptions_sort:
-                FeedSortDialog.showDialog(requireContext());
-                return true;
-            case R.id.subscription_num_columns_2:
-                setColumnNumber(2);
-                return true;
-            case R.id.subscription_num_columns_3:
-                setColumnNumber(3);
-                return true;
-            case R.id.subscription_num_columns_4:
-                setColumnNumber(4);
-                return true;
-            case R.id.subscription_num_columns_5:
-                setColumnNumber(5);
-                return true;
-            default:
-                return false;
+        final int itemId = item.getItemId();
+        if (itemId == R.id.refresh_item) {
+            AutoUpdateManager.runImmediate(requireContext());
+            return true;
+        } else if (itemId == R.id.subscriptions_filter) {
+            SubscriptionsFilterDialog.showDialog(requireContext());
+            return true;
+        } else if (itemId == R.id.subscriptions_sort) {
+            FeedSortDialog.showDialog(requireContext());
+            return true;
+        } else if (itemId == R.id.subscription_num_columns_2) {
+            setColumnNumber(2);
+            return true;
+        } else if (itemId == R.id.subscription_num_columns_3) {
+            setColumnNumber(3);
+            return true;
+        } else if (itemId == R.id.subscription_num_columns_4) {
+            setColumnNumber(4);
+            return true;
+        } else if (itemId == R.id.subscription_num_columns_5) {
+            setColumnNumber(5);
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            return true;
         }
+        return false;
     }
 
     private void setColumnNumber(int columns) {
@@ -353,7 +356,9 @@ public class SubscriptionFragment extends Fragment
                 return subscriptionAdapter.onContextItemSelected(item);
             default:
                 return super.onContextItemSelected(item);
+
         }
+        return super.onContextItemSelected(item);
     }
 
     private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {

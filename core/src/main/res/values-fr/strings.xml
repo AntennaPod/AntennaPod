@@ -366,7 +366,7 @@
   <string name="network_pref">Réseau</string>
   <string name="network_pref_sum">Intervalle / Heure de mise à jour, contrôle des téléchargements, utilisation de la connexion mobile</string>
   <string name="feed_refresh_title">Actualiser les podcasts</string>
-  <string name="feed_refresh_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des épisodes</string>
+  <string name="feed_refresh_sum">Indiquer la récurrence ou l\'heure de mise à jour des listes d\'épisodes</string>
   <string name="feed_refresh_interval">Intervalle</string>
   <string name="feed_refresh_time">Heure</string>
   <string name="feed_refresh_never">Jamais</string>
@@ -509,7 +509,7 @@
   <string name="not_kept_updated">Non maintenu à jour</string>
   <string name="new_episode_notification_enabled">Notification activée</string>
   <string name="new_episode_notification_disabled">Notification désactivée</string>
-  <string name="pref_feed_settings_dialog_msg">Cette préférence est unique à chaque podcast. Vous pouvez la changer en ouvrant la page du podcast.</string>
+  <string name="pref_feed_settings_dialog_msg">Ce paramètre est spécifique à chaque podcast. Vous pouvez le changer en ouvrant la page du podcast.</string>
   <string name="pref_contribute">Contribuer</string>
   <!--About screen-->
   <string name="about_pref">À propos</string>
@@ -650,7 +650,7 @@
   <string name="authentication_label">Authentification</string>
   <string name="authentication_descr">Identifiant et mot de passe pour ce podcast.</string>
   <string name="feed_folders_label">Dossiers</string>
-  <string name="feed_folders_summary">Changer le dossier dans lequel ce podcast est affiché.</string>
+  <string name="feed_folders_summary">Changer les dossiers dans lesquels ce podcast est affiché.</string>
   <string name="feed_folders_include_root">Montrer dans la liste principale</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
