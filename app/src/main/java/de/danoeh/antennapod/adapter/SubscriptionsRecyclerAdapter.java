@@ -130,11 +130,7 @@ public class SubscriptionsRecyclerAdapter
 
     @Override
     public long getItemId(int position) {
-        NavDrawerData.DrawerItem drawerItem = listItems.get(position);
-        if (drawerItem != null) {
-            return drawerItem.id;
-        }
-        return RecyclerView.NO_ID;
+        return listItems.get(position).id;
     }
 
     @Override
@@ -153,7 +149,6 @@ public class SubscriptionsRecyclerAdapter
         }
         return false;
     }
-
 
     public List<Feed> getSelectedItems() {
         List<Feed> items = new ArrayList<>();
@@ -179,11 +174,6 @@ public class SubscriptionsRecyclerAdapter
         if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
             super.setSelected(pos, selected);
         }
-    }
-
-
-    public List<NavDrawerData.DrawerItem> getListItems() {
-        return listItems;
     }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
