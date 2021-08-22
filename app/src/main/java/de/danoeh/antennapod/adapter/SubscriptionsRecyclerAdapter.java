@@ -78,7 +78,7 @@ public class SubscriptionsRecyclerAdapter
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
         NavDrawerData.DrawerItem drawerItem = listItems.get(position);
         boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
-        holder.onBind(drawerItem, position);
+        holder.bind(drawerItem);
         holder.itemView.setOnCreateContextMenuListener(this);
         if (inActionMode()) {
             if (isFeed) {
@@ -86,14 +86,13 @@ public class SubscriptionsRecyclerAdapter
                 holder.selectView.setVisibility(View.VISIBLE);
             }
             holder.selectCheckbox.setChecked((isSelected(position)));
-            holder.selectCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    setSelected(position, isChecked);
-                }
-            });
+            holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                    -> setSelected(position, isChecked));
+            holder.imageView.setAlpha(0.6f);
+            holder.count.setVisibility(View.GONE);
         } else {
             holder.selectView.setVisibility(View.GONE);
+            holder.imageView.setAlpha(1.0f);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
@@ -209,7 +208,7 @@ public class SubscriptionsRecyclerAdapter
 
         }
 
-        public void onBind(NavDrawerData.DrawerItem drawerItem, int position) {
+        public void bind(NavDrawerData.DrawerItem drawerItem) {
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
