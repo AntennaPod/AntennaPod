@@ -247,16 +247,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     private void refreshToolbarState() {
-        final MenuItem queueLock = toolbar.getMenu().findItem(R.id.queue_lock);
-        if (UserPreferences.isQueueLocked()) {
-            queueLock.setTitle(de.danoeh.antennapod.R.string.unlock_queue);
-            queueLock.setIcon(R.drawable.ic_lock_open);
-        } else {
-            queueLock.setTitle(de.danoeh.antennapod.R.string.lock_queue);
-            queueLock.setIcon(R.drawable.ic_lock_closed);
-        }
+        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
-
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
