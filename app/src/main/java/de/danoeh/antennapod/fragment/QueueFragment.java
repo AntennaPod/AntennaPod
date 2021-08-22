@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +26,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -38,11 +46,8 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
-import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -50,10 +55,13 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -61,19 +69,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Shows all items in the queue.
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
-        EpisodeItemListAdapter.OnStartSelectModeListener,
-        EpisodeItemListAdapter.OnEndSelectModeListener {
+        EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
@@ -513,8 +514,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
-                recyclerAdapter.setOnStartSelectModeListener(this);
-                recyclerAdapter.setOnEndSelectModeListener(this);
+                recyclerAdapter.setOnSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }

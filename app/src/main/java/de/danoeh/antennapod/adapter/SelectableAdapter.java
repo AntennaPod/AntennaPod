@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
@@ -19,8 +20,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private ActionMode actionMode;
     private final HashSet<Long> selectedIds = new HashSet<>();
     private final Activity activity;
-    private OnStartSelectModeListener onStartSelecModeListener;
-    private OnEndSelectModeListener onEndSelectModeListener;
+    private OnSelectModeListener onSelectModeListener;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -31,8 +31,8 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             endSelectMode();
         }
 
-        if (onStartSelecModeListener != null) {
-            onStartSelecModeListener.onStartSelectMode();
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onStartSelectMode();
         }
 
         selectedIds.clear();
@@ -158,32 +158,24 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
                 selectedIds.size(), getItemCount()));
     }
 
-    public void setOnStartSelectModeListener(OnStartSelectModeListener onStartSelecModeListener) {
-        this.onStartSelecModeListener = onStartSelecModeListener;
+    public void setOnSelectModeListener(OnSelectModeListener onSelectModeListener) {
+        this.onSelectModeListener = onSelectModeListener;
     }
-
-    public void setOnEndSelectModeListener(OnEndSelectModeListener onEndSelectModeListener) {
-        this.onEndSelectModeListener = onEndSelectModeListener;
-    }
-
 
     private void callOnEndSelectMode() {
-        if (onEndSelectModeListener != null) {
-            onEndSelectModeListener.onEndSelectMode();
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onEndSelectMode();
         }
     }
 
     private void callOnStartSelectMode() {
-        if (onStartSelecModeListener != null) {
-            onStartSelecModeListener.onStartSelectMode();
+        if (onSelectModeListener != null) {
+            onSelectModeListener.onStartSelectMode();
         }
     }
 
-    public interface  OnStartSelectModeListener {
+    public interface OnSelectModeListener {
         void onStartSelectMode();
-    }
-
-    public interface OnEndSelectModeListener {
         void onEndSelectMode();
     }
 }

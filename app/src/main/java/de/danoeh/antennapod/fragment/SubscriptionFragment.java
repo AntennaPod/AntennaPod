@@ -68,8 +68,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class SubscriptionFragment extends Fragment
         implements Toolbar.OnMenuItemClickListener,
-        SubscriptionsRecyclerAdapter.OnEndSelectModeListener,
-        SubscriptionsRecyclerAdapter.OnStartSelectModeListener {
+        SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
@@ -253,8 +252,7 @@ public class SubscriptionFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
-        subscriptionAdapter.setOnStartSelectModeListener(this);
-        subscriptionAdapter.setOnEndSelectModeListener(this);
+        subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
         subscriptionAddButton.setOnClickListener(view -> {
