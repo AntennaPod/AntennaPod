@@ -87,7 +87,7 @@ public class SubscriptionsRecyclerAdapter
             }
             holder.selectCheckbox.setChecked((isSelected(position)));
             holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
-                    -> setSelected(position, isChecked));
+                    -> setSelected(holder.getBindingAdapterPosition(), isChecked));
             holder.imageView.setAlpha(0.6f);
             holder.count.setVisibility(View.GONE);
         } else {
@@ -98,8 +98,8 @@ public class SubscriptionsRecyclerAdapter
         holder.itemView.setOnLongClickListener(v -> {
             if (!inActionMode()) {
                 if (isFeed) {
-                    selectedFeed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-                    longPressedPosition = position;
+                    selectedFeed = ((NavDrawerData.FeedDrawerItem) getItem(holder.getBindingAdapterPosition())).feed;
+                    longPressedPosition = holder.getBindingAdapterPosition();
                 } else {
                     selectedFeed = null;
                 }
@@ -108,22 +108,18 @@ public class SubscriptionsRecyclerAdapter
         });
 
         holder.itemView.setOnClickListener(v -> {
-            if (drawerItem == null) {
-                return;
-            } else if (isFeed) {
+            if (isFeed) {
                 if (inActionMode()) {
-                    holder.selectCheckbox.setChecked(!isSelected(position));
+                    holder.selectCheckbox.setChecked(!isSelected(holder.getBindingAdapterPosition()));
                 } else {
                     Fragment fragment = FeedItemlistFragment
                             .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
                     mainActivityRef.get().loadChildFragment(fragment);
                 }
-                return;
             } else if (!inActionMode()) {
                 Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());
                 mainActivityRef.get().loadChildFragment(fragment);
             }
-
         });
 
     }

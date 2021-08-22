@@ -76,21 +76,19 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 int position = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             } else {
-                toggleSelection(pos);
+                toggleSelection(holder.getBindingAdapterPosition());
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
-            longPressedItem = item;
-            longPressedPosition = pos;
+            longPressedItem = getItem(holder.getBindingAdapterPosition());
+            longPressedPosition = holder.getBindingAdapterPosition();
             return false;
         });
 
         if (inActionMode()) {
             holder.secondaryActionButton.setVisibility(View.GONE);
-            holder.selectCheckBox.setOnClickListener(v -> {
-                toggleSelection(pos);
-            });
+            holder.selectCheckBox.setOnClickListener(v -> toggleSelection(holder.getBindingAdapterPosition()));
             holder.selectCheckBox.setChecked(isSelected(pos));
             holder.selectCheckBox.setVisibility(View.VISIBLE);
         } else {
