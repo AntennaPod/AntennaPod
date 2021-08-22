@@ -261,7 +261,7 @@ public class SubscriptionsRecyclerAdapter
                                    @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             Context context = parent.getContext();
-            int insetOffset = (int) convertDpToPixel(context, 2f);
+            int insetOffset = (int) convertDpToPixel(context, 1f);
             outRect.set(insetOffset, insetOffset, insetOffset, insetOffset);
         }
     }
