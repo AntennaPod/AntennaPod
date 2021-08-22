@@ -3,7 +3,6 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -140,7 +139,10 @@ public class SubscriptionsRecyclerAdapter
             if (isFeed) {
                 if (inActionMode()) {
                     holder.selectCheckbox.setChecked(!isSelected(holder.getBindingAdapterPosition()));
-                } else {
+                } else if(!isDragNDropMode()) {
+                    Fragment fragment = FeedItemlistFragment.newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
+                            mainActivityRef.get().loadChildFragment(fragment);
+                }else  {
                     Fragment fragment = FeedItemlistFragment
                             .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
                     mainActivityRef.get().loadChildFragment(fragment);
