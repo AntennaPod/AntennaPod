@@ -334,32 +334,35 @@ public class SubscriptionFragment extends Fragment
         if (feed == null) {
             return false;
         }
-        switch (item.getItemId()) {
-            case R.id.remove_all_new_flags_item:
-                displayConfirmationDialog(
-                        R.string.remove_all_new_flags_label,
-                        R.string.remove_all_new_flags_confirmation_msg,
-                        () -> DBWriter.removeFeedNewFlag(feed.getId()));
-                return true;
-            case R.id.mark_all_read_item:
-                displayConfirmationDialog(
-                        R.string.mark_all_read_label,
-                        R.string.mark_all_read_confirmation_msg,
-                        () -> DBWriter.markFeedRead(feed.getId()));
-                return true;
-            case R.id.rename_item:
-                new RenameFeedDialog(getActivity(), feed).show();
-                return true;
-            case R.id.remove_item:
-                RemoveFeedDialog.show(getContext(), feed, null);
-                return true;
-            case R.id.multi_select:
-                speedDialView.setVisibility(View.VISIBLE);
-                return subscriptionAdapter.onContextItemSelected(item);
-            default:
-                return super.onContextItemSelected(item);
-
+        int itemId = item.getItemId();
+        if (itemId ==  R.id.remove_all_new_flags_item) {
+            displayConfirmationDialog(
+                    R.string.remove_all_new_flags_label,
+                    R.string.remove_all_new_flags_confirmation_msg,
+                    () -> DBWriter.removeFeedNewFlag(feed.getId()));
+            return true;
         }
+        if (itemId ==  R.id.mark_all_read_item) {
+            displayConfirmationDialog(
+                    R.string.mark_all_read_label,
+                    R.string.mark_all_read_confirmation_msg,
+                    () -> DBWriter.markFeedRead(feed.getId()));
+            return true;
+        }
+        if (itemId ==  R.id.rename_item) {
+            new RenameFeedDialog(getActivity(), feed).show();
+            return true;
+        }
+        if (itemId ==  R.id.remove_item) {
+            RemoveFeedDialog.show(getContext(), feed, null);
+            return true;
+        }
+        if (itemId ==  R.id.multi_select) {
+            speedDialView.setVisibility(View.VISIBLE);
+            return subscriptionAdapter.onContextItemSelected(item);
+        }
+            return super.onContextItemSelected(item);
+
     }
 
     private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {

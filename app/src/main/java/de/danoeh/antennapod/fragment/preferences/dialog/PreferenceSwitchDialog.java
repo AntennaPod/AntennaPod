@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 
 import de.danoeh.antennapod.R;
 
@@ -38,7 +39,7 @@ public class PreferenceSwitchDialog {
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View layout = inflater.inflate(R.layout.dialog_switch_preference, null, false);
-        Switch switchButton = layout.findViewById(R.id.dialogSwitch);
+        SwitchCompat switchButton = layout.findViewById(R.id.dialogSwitch);
         switchButton.setText(text);
         builder.setView(layout);
 
