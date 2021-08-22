@@ -339,23 +339,19 @@ public class SubscriptionFragment extends Fragment
                     R.string.remove_all_new_flags_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
-        }
-        if (itemId ==  R.id.mark_all_read_item) {
+        } else if (itemId ==  R.id.mark_all_read_item) {
             displayConfirmationDialog(
                     R.string.mark_all_read_label,
                     R.string.mark_all_read_confirmation_msg,
                     () -> DBWriter.markFeedRead(feed.getId()));
             return true;
-        }
-        if (itemId ==  R.id.rename_item) {
+        } else if (itemId ==  R.id.rename_item) {
             new RenameFeedDialog(getActivity(), feed).show();
             return true;
-        }
-        if (itemId ==  R.id.remove_item) {
+        } else if (itemId ==  R.id.remove_item) {
             RemoveFeedDialog.show(getContext(), feed, null);
             return true;
-        }
-        if (itemId ==  R.id.multi_select) {
+        } else if (itemId ==  R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
