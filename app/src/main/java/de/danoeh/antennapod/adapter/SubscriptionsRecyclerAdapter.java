@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -196,7 +196,7 @@ public class SubscriptionsRecyclerAdapter
         private TextView feedTitle;
         private ImageView imageView;
         private TriangleLabelView count;
-        private CoordinatorLayout selectView;
+        private FrameLayout selectView;
         private CheckBox selectCheckbox;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
