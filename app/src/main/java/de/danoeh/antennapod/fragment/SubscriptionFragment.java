@@ -361,7 +361,7 @@ public class SubscriptionFragment extends Fragment
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
-            return super.onContextItemSelected(item);
+        return super.onContextItemSelected(item);
 
     }
 
