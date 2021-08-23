@@ -21,4 +21,8 @@
         android:menuCategory="container"
         android:title="@string/remove_feed_label" />
 
+    <item
+        android:id="@+id/multi_select"
+        android:menuCategory="container"
+        android:title="@string/multi_select" />
 </menu>
