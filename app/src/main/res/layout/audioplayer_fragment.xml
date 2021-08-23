@@ -131,23 +131,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp">
 
-            <de.danoeh.antennapod.view.PlayButton
-                    android:id="@+id/butPlay"
-                    android:layout_width="@dimen/audioplayer_playercontrols_length_big"
-                    android:layout_height="@dimen/audioplayer_playercontrols_length_big"
-                    android:layout_marginLeft="@dimen/audioplayer_playercontrols_margin"
-                    android:layout_marginStart="@dimen/audioplayer_playercontrols_margin"
-                    android:layout_marginRight="@dimen/audioplayer_playercontrols_margin"
-                    android:layout_marginEnd="@dimen/audioplayer_playercontrols_margin"
-                    android:padding="8dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/pause_label"
-                    app:srcCompat="@drawable/ic_play_48dp"
-                    android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_play_48dp"/>
-
+            <RelativeLayout
+                android:id="@+id/butPlayLayout"
+                android:layout_width="@dimen/audioplayer_playercontrols_length_big"
+                android:layout_height="@dimen/audioplayer_playercontrols_length_big"
+                android:layout_marginLeft="@dimen/audioplayer_playercontrols_margin"
+                android:layout_marginStart="@dimen/audioplayer_playercontrols_margin"
+                android:layout_marginRight="@dimen/audioplayer_playercontrols_margin"
+                android:layout_marginEnd="@dimen/audioplayer_playercontrols_margin"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter">
+                <de.danoeh.antennapod.view.PlayButton
+                        android:id="@+id/butPlay"
+                        android:layout_width="@dimen/audioplayer_playercontrols_length_big"
+                        android:layout_height="@dimen/audioplayer_playercontrols_length_big"
+                        android:padding="8dp"
+                        android:layout_marginRight="@dimen/audioplayer_playercontrols_margin"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/pause_label"
+                        app:srcCompat="@drawable/ic_play_48dp"
+                        android:scaleType="fitCenter"
+                        tools:srcCompat="@drawable/ic_play_48dp"/>
+                <ImageView
+                    android:id="@+id/repeat_episode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_repeat"
+                    android:layout_alignParentEnd="true"
+                    />
+            </RelativeLayout>
             <de.danoeh.antennapod.ui.common.CircularProgressBar
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"
@@ -172,8 +187,8 @@
                     android:id="@+id/butRev"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
-                    android:layout_toLeftOf="@id/butPlay"
-                    android:layout_toStartOf="@id/butPlay"
+                    android:layout_toLeftOf="@id/butPlayLayout"
+                    android:layout_toStartOf="@id/butPlayLayout"
                     android:layout_marginLeft="@dimen/audioplayer_playercontrols_margin"
                     android:layout_marginStart="@dimen/audioplayer_playercontrols_margin"
                     android:layout_centerVertical="true"
@@ -229,8 +244,8 @@
                     android:id="@+id/butFF"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
-                    android:layout_toRightOf="@id/butPlay"
-                    android:layout_toEndOf="@id/butPlay"
+                    android:layout_toRightOf="@id/butPlayLayout"
+                    android:layout_toEndOf="@id/butPlayLayout"
                     android:layout_marginRight="@dimen/audioplayer_playercontrols_margin"
                     android:layout_marginEnd="@dimen/audioplayer_playercontrols_margin"
                     android:layout_centerVertical="true"
