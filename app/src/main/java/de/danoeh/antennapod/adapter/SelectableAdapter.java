@@ -6,12 +6,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.danoeh.antennapod.R;
-
 import java.util.HashSet;
+
+import de.danoeh.antennapod.R;
 
 /**
  * Used by Recyclerviews that need to provide ability to select items.
