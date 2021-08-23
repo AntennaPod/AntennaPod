@@ -204,6 +204,7 @@ public class SubscriptionFragment extends Fragment
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
+
         if (itemId == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
             return true;

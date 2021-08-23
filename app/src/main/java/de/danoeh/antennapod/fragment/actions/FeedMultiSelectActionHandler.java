@@ -35,19 +35,19 @@ public class FeedMultiSelectActionHandler {
         if (id == R.id.remove_item) {
             RemoveFeedDialog.show(activity, selectedItems, null);
         } else if (id == R.id.keep_updated) {
-            keepUpdatedChecked();
+            keepUpdatedPrefHandler();
         } else if (id == R.id.autodownload) {
-            autoDownloadChecked();
+            autoDownloadPrefHandler();
         } else if (id == R.id.autoDeleteDownload) {
-            autoDeleteEpisodesChecked();
+            autoDeleteEpisodesPrefHandler();
         } else if (id == R.id.playback_speed) {
-            playbackSpeedChecked();
+            playbackSpeedPrefHandler();
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
     }
 
-    private void autoDownloadChecked() {
+    private void autoDownloadPrefHandler() {
         PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
                 activity.getString(R.string.auto_download_settings_label),
                 activity.getString(R.string.auto_download_label));
@@ -63,7 +63,7 @@ public class FeedMultiSelectActionHandler {
     private static final DecimalFormat SPEED_FORMAT =
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
-    private void playbackSpeedChecked() {
+    private void playbackSpeedPrefHandler() {
         final String[] speeds = activity.getResources().getStringArray(R.array.playback_speed_values);
         String[] values = new String[speeds.length + 1];
         values[0] = SPEED_FORMAT.format(FeedPreferences.SPEED_USE_GLOBAL);
@@ -85,7 +85,7 @@ public class FeedMultiSelectActionHandler {
         });
     }
 
-    private void autoDeleteEpisodesChecked() {
+    private void autoDeleteEpisodesPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
                 "Auto delete episodes");
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
@@ -112,7 +112,7 @@ public class FeedMultiSelectActionHandler {
         });
     }
 
-    private void keepUpdatedChecked() {
+    private void keepUpdatedPrefHandler() {
         PreferenceSwitchDialog preferenceSwitchDialog = new PreferenceSwitchDialog(activity,
                 activity.getString(R.string.kept_updated),
                 activity.getString(R.string.keep_updated_summary));
