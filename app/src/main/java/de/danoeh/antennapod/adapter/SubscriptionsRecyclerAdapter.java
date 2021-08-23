@@ -38,11 +38,8 @@ import jp.shts.android.library.TriangleLabelView;
 /**
  * Adapter for subscriptions
  */
-public class SubscriptionsRecyclerAdapter
-        extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
+public class SubscriptionsRecyclerAdapter extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
         implements View.OnCreateContextMenuListener {
-    private static final String TAG = "SubscriptionsRecyclerAdapter";
-
     private final WeakReference<MainActivity> mainActivityRef;
     private List<NavDrawerData.DrawerItem> listItems;
     private Feed selectedFeed = null;
@@ -53,7 +50,6 @@ public class SubscriptionsRecyclerAdapter
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.listItems = new ArrayList<>();
         setHasStableIds(true);
-
     }
 
     public Object getItem(int position) {
@@ -68,9 +64,7 @@ public class SubscriptionsRecyclerAdapter
     @Override
     public SubscriptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mainActivityRef.get()).inflate(R.layout.subscription_item, parent, false);
-        SubscriptionViewHolder viewHolder = new SubscriptionViewHolder(itemView);
-
-        return viewHolder;
+        return new SubscriptionViewHolder(itemView);
     }
 
     @Override
@@ -177,11 +171,11 @@ public class SubscriptionsRecyclerAdapter
     }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
-        private TextView feedTitle;
-        private ImageView imageView;
-        private TriangleLabelView count;
-        private FrameLayout selectView;
-        private CheckBox selectCheckbox;
+        private final TextView feedTitle;
+        private final ImageView imageView;
+        private final TriangleLabelView count;
+        private final FrameLayout selectView;
+        private final CheckBox selectCheckbox;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -190,7 +184,6 @@ public class SubscriptionsRecyclerAdapter
             count = itemView.findViewById(R.id.triangleCountView);
             selectView = itemView.findViewById(R.id.selectView);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
-
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
@@ -229,7 +222,7 @@ public class SubscriptionsRecyclerAdapter
     }
 
     public static float convertDpToPixel(Context context, float dp) {
-        return dp * ((float) context.getResources().getDisplayMetrics().density);
+        return dp * context.getResources().getDisplayMetrics().density;
     }
 
     public static class GridDividerItemDecorator extends RecyclerView.ItemDecoration {

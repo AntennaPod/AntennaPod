@@ -8,9 +8,9 @@ import android.view.MenuItem;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashSet;
-
 import de.danoeh.antennapod.R;
+
+import java.util.HashSet;
 
 /**
  * Used by Recyclerviews that need to provide ability to select items.
@@ -35,7 +35,6 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
 
         selectedIds.clear();
-        callOnStartSelectMode();
         selectedIds.add(getItemId(pos));
         notifyDataSetChanged();
 
@@ -164,12 +163,6 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private void callOnEndSelectMode() {
         if (onSelectModeListener != null) {
             onSelectModeListener.onEndSelectMode();
-        }
-    }
-
-    private void callOnStartSelectMode() {
-        if (onSelectModeListener != null) {
-            onSelectModeListener.onStartSelectMode();
         }
     }
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -20,8 +20,7 @@ public class RemoveFeedDialog {
     private static final String TAG = "RemoveFeedDialog";
 
     public static void show(Context context, Feed feed, Runnable onSuccess) {
-        List feeds = new ArrayList();
-        feeds.add(feed);
+        List<Feed> feeds = Collections.singletonList(feed);
         String message = getMessageId(context, feeds);
         showDialog(context, feeds, message, onSuccess);
     }
@@ -52,16 +51,16 @@ public class RemoveFeedDialog {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                () -> {
-                                    Log.d(TAG, "Feed(s) deleted");
-                                    if (onSuccess != null) {
-                                        onSuccess.run();
-                                    }
-                                    progressDialog.dismiss();
-                                }, error -> {
-                                    Log.e(TAG, Log.getStackTraceString(error));
-                                    progressDialog.dismiss();
-                                });
+                            () -> {
+                                Log.d(TAG, "Feed(s) deleted");
+                                if (onSuccess != null) {
+                                    onSuccess.run();
+                                }
+                                progressDialog.dismiss();
+                            }, error -> {
+                                Log.e(TAG, Log.getStackTraceString(error));
+                                progressDialog.dismiss();
+                            });
             }
         };
         dialog.createNewDialog().show();
