@@ -40,9 +40,6 @@
             android:id="@+id/subscriptions_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="3"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="2dp"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="88dp"
             android:clipToPadding="false" />
