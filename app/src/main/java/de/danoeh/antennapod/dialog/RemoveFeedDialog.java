@@ -53,7 +53,7 @@ public class RemoveFeedDialog {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 () -> {
-                                    Log.d(TAG, "Feed(s) was deleted");
+                                    Log.d(TAG, "Feed(s) deleted");
                                     if (onSuccess != null) {
                                         onSuccess.run();
                                     }
