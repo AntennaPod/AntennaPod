@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
-import de.danoeh.antennapod.model.feed.FeedItem;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class EpisodeAction {
     private static final String TAG = "EpisodeAction";
@@ -238,6 +240,7 @@ public class EpisodeAction {
 
         public Builder(FeedItem item, Action action) {
             this(item.getFeed().getDownload_url(), item.getMedia().getDownload_url(), action);
+            this.guid(item.getItemIdentifier());
         }
 
         public Builder(String podcast, String episode, Action action) {
