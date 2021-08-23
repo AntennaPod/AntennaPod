@@ -175,6 +175,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
 
     public interface OnSelectModeListener {
         void onStartSelectMode();
+
         void onEndSelectMode();
     }
 }
