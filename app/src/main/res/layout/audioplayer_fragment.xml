@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -177,12 +178,12 @@
 
             <ProgressBar
                 android:id="@+id/progLoading"
-                style="?android:attr/progressBarStyle"
                 android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                 android:layout_height="@dimen/audioplayer_playercontrols_length_big"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle" />
 
             <ImageButton
                 android:id="@+id/butRev"
@@ -283,6 +284,7 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_skip_48dp"
                 tools:srcCompat="@drawable/ic_skip_48dp" />
+
         </RelativeLayout>
 
     </LinearLayout>
