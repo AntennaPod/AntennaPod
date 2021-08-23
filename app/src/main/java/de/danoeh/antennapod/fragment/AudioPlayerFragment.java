@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,10 +40,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -51,13 +49,16 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
 import de.danoeh.antennapod.view.ChapterSeekBar;
 import de.danoeh.antennapod.view.PlayButton;
@@ -93,6 +94,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
     private TextView txtvSeek;
+    private ImageView imgvRepeat;
 
     private PlaybackController controller;
     private Disposable disposable;
@@ -133,6 +135,8 @@ public class AudioPlayerFragment extends Fragment implements
         progressIndicator = root.findViewById(R.id.progLoading);
         cardViewSeek = root.findViewById(R.id.cardViewSeek);
         txtvSeek = root.findViewById(R.id.txtvSeek);
+        imgvRepeat = root.findViewById(R.id.repeat_episode);
+        imgvRepeat.setVisibility(UserPreferences.repeatEpisode() ? View.VISIBLE : View.GONE);
 
         setupLengthTextView();
         setupControlButtons();
@@ -551,6 +555,13 @@ public class AudioPlayerFragment extends Fragment implements
                 return true;
             case R.id.audio_controls:
                 PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
+                dialog.setOnRepeatChanged(repeat -> {
+                    if (repeat) {
+                        imgvRepeat.setVisibility(View.VISIBLE);
+                    } else {
+                        imgvRepeat.setVisibility(View.GONE);
+                    }
+                });
                 dialog.show(getChildFragmentManager(), "playback_controls");
                 return true;
             case R.id.open_feed_item:

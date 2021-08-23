@@ -5,25 +5,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.util.Consumer;
+import androidx.fragment.app.DialogFragment;
+
+import java.util.List;
+import java.util.Locale;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.view.PlaybackSpeedSeekBar;
 
-import java.util.List;
-import java.util.Locale;
-
 public class PlaybackControlsDialog extends DialogFragment {
     private PlaybackController controller;
     private AlertDialog dialog;
+    private Consumer<Boolean> onRepeatChanged;
 
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
@@ -149,6 +153,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         });
         repeatEpisode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.repeatEpisode(isChecked);
+            onRepeatChanged.accept(isChecked);
         });
     }
 
@@ -167,5 +172,9 @@ public class PlaybackControlsDialog extends DialogFragment {
             controller.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
             new Handler(Looper.getMainLooper()).postDelayed(this::setupAudioTracks, 500);
         });
+    }
+
+    public void setOnRepeatChanged(Consumer<Boolean> onRepeatChanged) {
+        this.onRepeatChanged = onRepeatChanged;
     }
 }
