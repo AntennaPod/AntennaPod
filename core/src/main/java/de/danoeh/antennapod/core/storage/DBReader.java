@@ -14,7 +14,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import de.danoeh.antennapod.core.feed.TagFilter;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -163,7 +165,7 @@ public final class DBReader {
      *
      * @param feed The Feed whose items should be loaded
      * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
-     *         The method does NOT change the items-attribute of the feed.
+     * The method does NOT change the items-attribute of the feed.
      */
     public static List<FeedItem> getFeedItemList(final Feed feed) {
         return getFeedItemList(feed, FeedItemFilter.unfiltered());
@@ -322,7 +324,7 @@ public final class DBReader {
      * Excludes items from feeds that do not have keep updated enabled.
      *
      * @param offset The first episode that should be loaded.
-     * @param limit The maximum number of episodes that should be loaded.
+     * @param limit  The maximum number of episodes that should be loaded.
      * @return A list of FeedItems that are considered new.
      */
     public static List<FeedItem> getNewItemsList(int offset, int limit) {
@@ -343,7 +345,7 @@ public final class DBReader {
      * Loads a list of favorite items.
      *
      * @param offset The first episode that should be loaded.
-     * @param limit The maximum number of episodes that should be loaded.
+     * @param limit  The maximum number of episodes that should be loaded.
      * @return A list of FeedItems that are marked as favorite.
      */
     public static List<FeedItem> getFavoriteItemsList(int offset, int limit) {
@@ -380,7 +382,7 @@ public final class DBReader {
      * Loads a filtered list of FeedItems sorted by pubDate in descending order.
      *
      * @param offset The first episode that should be loaded.
-     * @param limit The maximum number of episodes that should be loaded.
+     * @param limit  The maximum number of episodes that should be loaded.
      * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
@@ -489,7 +491,7 @@ public final class DBReader {
      *
      * @param feedId The ID of the Feed
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     *         database and the items-attribute will be set correctly.
+     * database and the items-attribute will be set correctly.
      */
     @Nullable
     public static Feed getFeed(final long feedId) {
@@ -499,10 +501,10 @@ public final class DBReader {
     /**
      * Loads a specific Feed from the database.
      *
-     * @param feedId The ID of the Feed
+     * @param feedId   The ID of the Feed
      * @param filtered <code>true</code> if only the visible items should be loaded according to the feed filter.
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     *         database and the items-attribute will be set correctly.
+     * database and the items-attribute will be set correctly.
      */
     @Nullable
     public static Feed getFeed(final long feedId, boolean filtered) {
@@ -567,14 +569,14 @@ public final class DBReader {
     /**
      * Loads a specific FeedItem from the database.
      *
-     * @param guid feed item guid
+     * @param guid       feed item guid
      * @param episodeUrl the feed item's url
      * @return The FeedItem or null if the FeedItem could not be found.
-     *          Does NOT load additional attributes like feed or queue state.
+     * Does NOT load additional attributes like feed or queue state.
      */
     @Nullable
     private static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl,
-            PodDBAdapter adapter) {
+                                                          PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with guid " + guid + " or episode url " + episodeUrl);
         try (Cursor cursor = adapter.getFeedItemCursor(guid, episodeUrl)) {
             if (!cursor.moveToNext()) {
@@ -627,10 +629,10 @@ public final class DBReader {
     /**
      * Loads a specific FeedItem from the database.
      *
-     * @param guid feed item guid
+     * @param guid       feed item guid
      * @param episodeUrl the feed item's url
      * @return The FeedItem or null if the FeedItem could not be found.
-     *          Does NOT load additional attributes like feed or queue state.
+     * Does NOT load additional attributes like feed or queue state.
      */
     public static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl) {
         Log.d(TAG, "getFeedItem() called with: " + "guid = [" + guid + "], episodeUrl = [" + episodeUrl + "]");
@@ -824,12 +826,42 @@ public final class DBReader {
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
-        Comparator<Feed> comparator;
+
+        int queueSize = adapter.getQueueSize();
+        int numNewItems = adapter.getNumberOfNewItems();
+        int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
+
+        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
+        Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
+        for (Feed feed : feeds) {
+            for (String tag : feed.getPreferences().getTags()) {
+                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
+                        feedCounters.get(feed.getId()));
+//                if (FeedPreferences.TAG_ROOT.equals(tag)) {
+//                    items.add(drawerItem);
+//                    continue;
+//                }
+                NavDrawerData.FolderDrawerItem folder;
+                if (folders.containsKey(tag)) {
+                    folder = folders.get(tag);
+                } else {
+                    folder = new NavDrawerData.FolderDrawerItem(tag);
+                    folders.put(tag, folder);
+                }
+                drawerItem.id |= folder.id;
+                folder.children.add(drawerItem);
+            }
+        }
+
+        List<NavDrawerData.DrawerItem> tagFilteredFeeds = getTagFilteredFeeds(folders);
+        Comparator<NavDrawerData.DrawerItem> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
         if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
             comparator = (lhs, rhs) -> {
-                long counterLhs = feedCounters.get(lhs.getId());
-                long counterRhs = feedCounters.get(rhs.getId());
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = feedCounters.get(_lhs.feed.getId());
+                long counterRhs = feedCounters.get(_rhs.feed.getId());
                 if (counterLhs > counterRhs) {
                     // reverse natural order: podcast with most unplayed episodes first
                     return -1;
@@ -855,8 +887,10 @@ public final class DBReader {
             final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
-                long counterLhs = playedCounters.get(lhs.getId());
-                long counterRhs = playedCounters.get(rhs.getId());
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = playedCounters.get(_lhs.feed.getId());
+                long counterRhs = playedCounters.get(_rhs.feed.getId());
                 if (counterLhs > counterRhs) {
                     // podcast with most played episodes first
                     return -1;
@@ -869,45 +903,37 @@ public final class DBReader {
         } else {
             final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
             comparator = (lhs, rhs) -> {
-                long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
-                long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long dateLhs = recentPubDates.containsKey(_lhs.feed.getId()) ? recentPubDates.get(_lhs.feed.getId()) : 0;
+                long dateRhs = recentPubDates.containsKey(_rhs.feed.getId()) ? recentPubDates.get(_rhs.feed.getId()) : 0;
                 return Long.compare(dateRhs, dateLhs);
             };
         }
 
-        Collections.sort(feeds, comparator);
-        int queueSize = adapter.getQueueSize();
-        int numNewItems = adapter.getNumberOfNewItems();
-        int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
-
-        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
-        Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
-        for (Feed feed : feeds) {
-            for (String tag : feed.getPreferences().getTags()) {
-                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
-                        feedCounters.get(feed.getId()));
-                if (FeedPreferences.TAG_ROOT.equals(tag)) {
-                    items.add(drawerItem);
-                    continue;
-                }
-                NavDrawerData.FolderDrawerItem folder;
-                if (folders.containsKey(tag)) {
-                    folder = folders.get(tag);
-                } else {
-                    folder = new NavDrawerData.FolderDrawerItem(tag);
-                    folders.put(tag, folder);
-                }
-                drawerItem.id |= folder.id;
-                folder.children.add(drawerItem);
-            }
-        }
+        Collections.sort(tagFilteredFeeds, comparator);
         List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
-        items.addAll(foldersSorted);
 
-        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
+        tagFilteredFeeds.addAll(foldersSorted);
+
+        NavDrawerData result = new NavDrawerData(tagFilteredFeeds, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
     }
+
+    private static List<NavDrawerData.DrawerItem> getTagFilteredFeeds(Map<String, NavDrawerData.FolderDrawerItem> folders) {
+        Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
+        TagFilter tagFilter = new TagFilter(tagFilterIds);
+        List<NavDrawerData.FolderDrawerItem> folderValues = new ArrayList<>();
+        for (NavDrawerData.FolderDrawerItem folder : folders.values()) {
+            folderValues.add(folder);
+        }
+        List<NavDrawerData.DrawerItem> tagFilteredItems = tagFilter.filter(folderValues);
+
+        return tagFilteredItems;
+    }
+
+
 }

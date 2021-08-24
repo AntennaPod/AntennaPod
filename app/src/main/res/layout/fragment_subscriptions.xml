@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,25 +11,69 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        android:layout_alignParentTop="true"
-        app:title="@string/subscriptions_label"
-        app:navigationIcon="?homeAsUpIndicator" />
+        app:navigationIcon="?homeAsUpIndicator"
+        app:title="@string/subscriptions_label" />
 
-    <TextView
-        android:id="@+id/feeds_filtered_message"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tagBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="start"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="8dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small" />
+        android:background="@color/accent_dark"
+        android:descendantFocusability="blocksDescendants"
+        android:outlineAmbientShadowColor="@color/accent_dark">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tagRecycler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            app:layout_constraintEnd_toStartOf="@id/expandTagsButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/expandTagsButton"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:clickable="true"
+            android:text="More"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/feedChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandTagsButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/feeds_filtered_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="start"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size_small"
+                android:layout_below="@id/tagBar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -36,6 +81,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/feeds_filtered_message">
 
+<!--        <Button-->
+<!--            android:id="@+id/expandTagsButton"-->
+<!--            android:layout_width="88dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:text="More"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subscriptions_grid"
             android:layout_width="match_parent"

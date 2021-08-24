@@ -12,17 +12,23 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -35,15 +41,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.FeedTagAdapter;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.feed.TagFilter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -100,6 +109,12 @@ public class SubscriptionFragment extends Fragment
     private SpeedDialView speedDialView;
 
     private List<NavDrawerData.DrawerItem> listItems;
+
+    private RecyclerView tagRecycler;
+    private FeedTagAdapter feedTagAdapter;
+    private ChipGroup folderChipGroup;
+
+    private List<NavDrawerData.FolderDrawerItem> selectedFolders;
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -184,7 +199,30 @@ public class SubscriptionFragment extends Fragment
             return true;
         });
 
+        ConstraintLayout tagBarLayout = root.findViewById(R.id.tagBar);
+
+        Button expandTagsButton = root.findViewById(R.id.expandTagsButton);
+        expandTagsButton.setOnClickListener(v -> {
+            if(folderChipGroup.getVisibility() == View.GONE) {
+                folderChipGroup.setVisibility(View.VISIBLE);
+            } else {
+                folderChipGroup.setVisibility(View.GONE);
+            }
+        });
+
+        tagRecycler = root.findViewById(R.id.tagRecycler);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        tagRecycler.setLayoutManager(linearLayoutManager);
+
+        folderChipGroup = root.findViewById(R.id.feedChipGroup);
+
+
         return root;
+    }
+
+    public static float convertDpToPixel(Context context, float dp) {
+        return dp * ((float) context.getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -254,6 +292,7 @@ public class SubscriptionFragment extends Fragment
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
         subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
+
         setupEmptyView();
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
@@ -302,16 +341,65 @@ public class SubscriptionFragment extends Fragment
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    result -> {
-                        listItems = result;
-                        subscriptionAdapter.setItems(result);
-                        subscriptionAdapter.notifyDataSetChanged();
-                        emptyView.updateVisibility();
-                        progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
-                    });
+                        result -> {
+                            listItems = result;
+                            List<NavDrawerData.FolderDrawerItem> feedFolders = new ArrayList<>();
+                            for (NavDrawerData.DrawerItem drawerItem : listItems) {
+                                if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
+                                    feedFolders.add((NavDrawerData.FolderDrawerItem) drawerItem);
+                                }
+
+
+                            feedTagAdapter = new FeedTagAdapter(new ArrayList<>());
+                            }
+                            Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
+
+                            for (NavDrawerData.FolderDrawerItem folder : feedFolders) {
+                                if (tagFilterIds.contains(String.valueOf(folder.id))) {
+                                    feedTagAdapter.addItem(folder);
+                                }
+                            }
+                            folderChipGroup.removeAllViews();
+                            for (NavDrawerData.FolderDrawerItem folderItem : feedFolders) {
+                                Chip folderChip = new Chip(getActivity());
+                                folderChip.setText(folderItem.name);
+                                folderChip.setCheckable(true);
+                                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
+                                folderChip.setChipIconVisible(true);
+                                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
+                                folderChip.setOnClickListener(v ->  {
+                                    if (folderChip.isChecked()) {
+                                        UserPreferences.addTagFilterId(String.valueOf(folderItem.id));
+                                        feedTagAdapter.addItem(folderItem);
+                                    } else {
+                                        UserPreferences.removeTagFilterId(String.valueOf(folderItem.id));
+                                        feedTagAdapter.removeItem(folderItem);
+                                    }
+                                    List<NavDrawerData.DrawerItem> allChildren = new ArrayList<>();
+                                    for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
+                                        allChildren.addAll(item.children);
+                                    }
+                                    if (feedTagAdapter.getItemCount() > 0) {
+                                        subscriptionAdapter.setItems(allChildren);
+                                    } else {
+                                        subscriptionAdapter.setItems(listItems);
+                                    }
+
+                                });
+
+                                folderChip.setChecked(tagFilterIds.contains(String.valueOf(folderItem.id)));
+
+                                folderChipGroup.addView(folderChip);
+                            }
+
+                            tagRecycler.setAdapter(feedTagAdapter);
+                            subscriptionAdapter.setItems(listItems);
+                            emptyView.updateVisibility();
+                            progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            progressBar.setVisibility(View.GONE);
+                        });
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
@@ -339,8 +427,11 @@ public class SubscriptionFragment extends Fragment
                     R.string.remove_all_new_flags_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
-        } else if (itemId == R.id.add_to_folder) {
-            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+        } else if (itemId == R.id.mark_all_read_item) {
+            displayConfirmationDialog(
+                    R.string.mark_all_read_label,
+                    R.string.mark_all_read_confirmation_msg,
+                    () -> DBWriter.markFeedRead(feed.getId()));
             return true;
         } else if (itemId == R.id.rename_item) {
             new RenameFeedDialog(getActivity(), feed).show();

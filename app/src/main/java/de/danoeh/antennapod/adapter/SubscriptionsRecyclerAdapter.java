@@ -160,6 +160,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
+        notifyDataSetChanged();
     }
 
     @Override

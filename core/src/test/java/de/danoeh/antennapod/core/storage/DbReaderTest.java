@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -13,11 +16,15 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static de.danoeh.antennapod.core.storage.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertEquals;
@@ -31,6 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 @SuppressWarnings("ConstantConditions")
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class DbReaderTest {
 
     @Before
@@ -355,6 +363,44 @@ public class DbReaderTest {
         assertEquals(numFeeds, navDrawerData.items.size());
         assertEquals(numNew, navDrawerData.numNewItems);
         assertEquals(numQueue, navDrawerData.queueSize);
+    }
+
+    @Test
+    public void testGetNavDrawerDataWithSingleTagFilter() {
+        final int numFeeds = 10;
+        final int numItems = 10;
+        String tag1 = "tag1", tag2 = "tag2";
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+
+        NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tag1);
+        NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tag2);
+
+        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
+
+        List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
+        adapter.open();
+        for (int i = 0; i < numFeeds; i++) {
+            FeedPreferences feedPreferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
+                    VolumeAdaptionSetting.OFF, "", "");
+            feedPreferences.setFeedID(feeds.get(i).getId());
+            Set<String> tags = new HashSet<>();
+            if (i % 2 == 0) {
+                tags.add(tag1);
+            } else {
+                tags.add(tag2);
+            }
+            feedPreferences.setTags(tags);
+            adapter.setFeedPreferences(feedPreferences);
+        }
+
+        NavDrawerData navDrawerData = DBReader.getNavDrawerData();
+        assertEquals(numFeeds / 2, navDrawerData.items.size());
+
+        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem2.id));
+
+        navDrawerData = DBReader.getNavDrawerData();
+        assertEquals(numFeeds, navDrawerData.items.size());
     }
 
     @Test

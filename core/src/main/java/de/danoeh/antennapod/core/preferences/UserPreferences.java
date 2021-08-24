@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.TagFilter;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
@@ -69,7 +70,7 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
-
+    public static final String PREF_TAG_FILTER = "prefTagFilter";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
@@ -1083,5 +1084,25 @@ public class UserPreferences {
 
     public static void unsetUsageCountingDate() {
         setUsageCountingDateMillis(-1);
+    }
+
+    public static Set<String> getTagFilterIds() {
+        return prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
+    }
+
+    public static void addTagFilterId(String tagFilterId) {
+        Set<String> tagFilterIds = prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
+        tagFilterIds.add(tagFilterId);
+        prefs.edit()
+                .putStringSet(PREF_TAG_FILTER, tagFilterIds)
+                .apply();
+    }
+
+    public static void removeTagFilterId(String tagFilterId) {
+        Set<String> tagFilterIds = prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
+        tagFilterIds.remove(tagFilterId);
+        prefs.edit()
+                .putStringSet(PREF_TAG_FILTER, tagFilterIds)
+                .apply();
     }
 }
