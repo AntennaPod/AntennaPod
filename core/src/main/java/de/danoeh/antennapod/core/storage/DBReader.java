@@ -567,15 +567,16 @@ public final class DBReader {
     /**
      * Loads a specific FeedItem from the database.
      *
-     * @param podcastUrl the corresponding feed's url
+     * @param guid feed item guid
      * @param episodeUrl the feed item's url
      * @return The FeedItem or null if the FeedItem could not be found.
      *          Does NOT load additional attributes like feed or queue state.
      */
     @Nullable
-    private static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
-        Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
-        try (Cursor cursor = adapter.getFeedItemCursor(podcastUrl, episodeUrl)) {
+    private static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl,
+            PodDBAdapter adapter) {
+        Log.d(TAG, "Loading feeditem with guid " + guid + " or episode url " + episodeUrl);
+        try (Cursor cursor = adapter.getFeedItemCursor(guid, episodeUrl)) {
             if (!cursor.moveToNext()) {
                 return null;
             }
@@ -626,18 +627,18 @@ public final class DBReader {
     /**
      * Loads a specific FeedItem from the database.
      *
-     * @param podcastUrl the corresponding feed's url
+     * @param guid feed item guid
      * @param episodeUrl the feed item's url
      * @return The FeedItem or null if the FeedItem could not be found.
      *          Does NOT load additional attributes like feed or queue state.
      */
-    public static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl) {
-        Log.d(TAG, "getFeedItem() called with: " + "podcastUrl = [" + podcastUrl + "], episodeUrl = [" + episodeUrl + "]");
+    public static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl) {
+        Log.d(TAG, "getFeedItem() called with: " + "guid = [" + guid + "], episodeUrl = [" + episodeUrl + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try {
-            return getFeedItemByUrl(podcastUrl, episodeUrl, adapter);
+            return getFeedItemByGuidOrEpisodeUrl(guid, episodeUrl, adapter);
         } finally {
             adapter.close();
         }

@@ -77,6 +77,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -306,20 +307,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
-        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
-            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-            for (FeedItem feedItem : taskManager.getQueue()) {
-                if (feedItem.getMedia() != null) {
-                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
-                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
-                }
-            }
-            emitter.onSuccess(queueItems);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
-
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
 
@@ -365,6 +352,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return new BrowserRoot(
                 getResources().getString(R.string.app_name), // Name visible in Android Auto
                 null); // Bundle of optional extras
+    }
+
+    private void loadQueueForMediaSession() {
+        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+            for (FeedItem feedItem : taskManager.getQueue()) {
+                if (feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
+            }
+            emitter.onSuccess(queueItems);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
@@ -414,6 +417,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onLoadChildren(@NonNull String parentId,
                                @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
+        result.detach();
+
+        Completable.create(emitter -> {
+            result.sendResult(loadChildrenSynchronous(parentId));
+            emitter.onComplete();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> { }, Throwable::printStackTrace);
+    }
+
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
@@ -449,7 +464,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
         }
-        result.sendResult(mediaItems);
+        return mediaItems;
     }
 
     @Override
@@ -736,7 +751,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             mediaPlayer.playMediaObject(playable, PlaybackPreferences.getCurrentEpisodeIsStream(),
                                     true, true);
                             stateManager.validStartCommandWasReceived();
-                            PlaybackService.this.updateMediaSessionMetadata(playable);
+                            updateNotificationAndMediaSession(playable);
                             addPlayableToQueue(playable);
                         }, error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
@@ -757,7 +772,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void notifyVideoSurfaceAbandoned() {
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
-        setupNotification(getPlayable());
+        updateNotificationAndMediaSession(getPlayable());
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
     }
 
@@ -813,19 +828,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case INITIALIZED:
                     PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
                             mediaPlayer.getPSMPInfo().playerStatus, mediaPlayer.isStreaming());
-                    setupNotification(newInfo);
+                    updateNotificationAndMediaSession(newInfo.playable);
                     break;
-
                 case PREPARED:
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
-
                 case PAUSED:
                     if ((UserPreferences.isPersistNotify() || isCasting) &&
                             android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
-                        setupNotification(newInfo);
+                        updateNotificationAndMediaSession(newInfo.playable);
                     } else if (!UserPreferences.isPersistNotify() && !isCasting) {
                         // remove notification on pause
                         stateManager.stopForeground(true);
@@ -833,15 +846,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     cancelPositionObserver();
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     break;
-
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
                     //stopService();
                     break;
-
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
-                    setupNotification(newInfo);
+                    updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
@@ -851,13 +862,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 PlaybackService.this::disableSleepTimer));
                     }
+                    loadQueueForMediaSession();
                     break;
-
                 case ERROR:
                     PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
                     break;
-
+                default:
+                    break;
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
@@ -868,7 +880,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            setupNotification(getPlayable()); // Stops foreground if not playing
+            updateNotificationAndMediaSession(getPlayable()); // Stops foreground if not playing
         }
 
         @Override
@@ -887,7 +899,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (reloadUI) {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
             }
-            PlaybackService.this.updateMediaSessionMetadata(getPlayable());
+            updateNotificationAndMediaSession(getPlayable());
         }
 
         @Override
@@ -905,8 +917,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // Playable is being streamed and does not have a duration specified in the feed
                         playable.setDuration(mediaPlayer.getDuration());
                         DBWriter.setFeedMedia((FeedMedia) playable);
-                        updateMediaSessionMetadata(playable);
-                        setupNotification(playable);
+                        updateNotificationAndMediaSession(playable);
                     }
 
                     return true;
@@ -997,6 +1008,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (nextItem == null || nextItem.getMedia() == null) {
+            return null;
+        }
+
+        if (!UserPreferences.isFollowQueue()) {
+            Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
+            updateNotificationAndMediaSession(nextItem.getMedia());
             return null;
         }
 
@@ -1273,6 +1290,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP));
     }
 
+    private void updateNotificationAndMediaSession(final Playable p) {
+        updateMediaSessionMetadata(p);
+        setupNotification(p);
+    }
+
     private void updateMediaSessionMetadata(final Playable p) {
         if (p == null || mediaSession == null) {
             return;
@@ -1314,10 +1336,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Prepares notification and starts the service in the foreground.
      */
-    private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
-        setupNotification(info.playable);
-    }
-
     private synchronized void setupNotification(final Playable playable) {
         Log.d(TAG, "setupNotification");
         if (playableIconLoaderThread != null) {
@@ -1898,7 +1916,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
-                    updateMediaSessionMetadata(getPlayable());
+                    updateNotificationAndMediaSession(getPlayable());
                 } else {
                     flavorHelper.onSharedPreference(key);
                 }
@@ -1961,7 +1979,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
             if (connected) {
-                PlaybackService.this.setupNotification(info);
+                PlaybackService.this.updateNotificationAndMediaSession(info.playable);
             } else {
                 PlayerStatus status = info.playerStatus;
                 if ((status == PlayerStatus.PLAYING ||
@@ -1969,7 +1987,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         status == PlayerStatus.PREPARING ||
                         UserPreferences.isPersistNotify()) &&
                         android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    PlaybackService.this.setupNotification(info);
+                    PlaybackService.this.updateNotificationAndMediaSession(info.playable);
                 } else if (!UserPreferences.isPersistNotify()) {
                     stateManager.stopForeground(true);
                 }

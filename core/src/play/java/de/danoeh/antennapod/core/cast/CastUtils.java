@@ -192,7 +192,7 @@ public class CastUtils {
                 }
             }
             if (result == null) {
-                FeedItem feedItem = DBReader.getFeedItemByUrl(metadata.getString(KEY_FEED_URL),
+                FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(null,
                         metadata.getString(KEY_EPISODE_IDENTIFIER));
                 if (feedItem != null) {
                     result = feedItem.getMedia();

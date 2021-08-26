@@ -803,7 +803,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemlist(items);
+            adapter.storeFeedItemlist(items);
             adapter.close();
             EventBus.getDefault().post(FeedItemEvent.updated(items));
         });

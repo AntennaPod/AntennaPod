@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -53,7 +54,6 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -247,9 +247,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     private void refreshToolbarState() {
-        MenuItemUtils.refreshLockItem(getActivity(), toolbar.getMenu());
+        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
-
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
@@ -325,6 +324,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                 recyclerAdapter.updateDragDropEnabled();
             }
             refreshToolbarState();
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
         return false;
@@ -430,7 +432,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
         refreshToolbarState();
 
         infoBar = root.findViewById(R.id.info_bar);
@@ -443,6 +444,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         registerForContextMenu(recyclerView);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
