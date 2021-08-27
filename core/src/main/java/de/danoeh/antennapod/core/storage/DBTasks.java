@@ -354,16 +354,23 @@ public final class DBTasks {
                     && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
                 Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
                 isDuplicate = true;
-            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())
-                    && item.getPubDate().equals(searchItem.getPubDate())) {
-                Log.d(TAG, "Removing duplicate episode title + pubDate " + item.getTitle() + " " + item.getPubDate());
-                isDuplicate = true;
+            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())) {
+                Log.d(TAG, "Found same title. Checking pubdate: " + item.getTitle());
+                long dateOriginal = item.getPubDate().getTime();
+                long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
+                if (Math.abs(dateOriginal - dateNew) < 24L * 3600L * 1000L) { // Same day
+                    Log.d(TAG, "Same pubDate. Removing. " + item.getPubDate() + ", " + searchItem.getPubDate());
+                    isDuplicate = true;
+                }
             }
             if (isDuplicate) {
                 DBWriter.addDownloadStatus(new DownloadStatus(feed,
                         searchItem.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
                         "The podcast host changed the ID of an existing episode instead of just "
-                                + "updating the episode itself. AntennaPod attempted to repair it.", false));
+                                + "updating the episode itself. AntennaPod attempted to repair it.\n\n"
+                                + "{" + item.getTitle() + "} with ID " + item.getItemIdentifier()
+                                + " seems to be the same as {" + searchItem.getTitle() + "} with ID "
+                                + searchItem.getItemIdentifier(), false));
                 item.setItemIdentifier(searchItem.getItemIdentifier());
 
                 if (item.isPlayed() && item.getMedia() != null) {
