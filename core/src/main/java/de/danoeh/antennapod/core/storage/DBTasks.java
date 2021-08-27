@@ -24,6 +24,7 @@ import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -337,7 +338,7 @@ public final class DBTasks {
      * Get a FeedItem by its identifying value or download_url.
      * For de-duplicating items that are not stored yet, see also FeedHandler.dedupItems
      */
-    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, FeedItem searchItem) {
+    private static FeedItem searchFeedItemByIdentifyingValue(Context context, Feed feed, FeedItem searchItem) {
         for (FeedItem item : feed.getItems()) {
             if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
                 return item;
@@ -364,6 +365,16 @@ public final class DBTasks {
                         "The podcast host changed the ID of an existing episode instead of just "
                                 + "updating the episode itself. AntennaPod attempted to repair it.", false));
                 item.setItemIdentifier(searchItem.getItemIdentifier());
+
+                if (item.isPlayed() && item.getMedia() != null) {
+                    EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
+                            .currentTimestamp()
+                            .started(item.getMedia().getDuration() / 1000)
+                            .position(item.getMedia().getDuration() / 1000)
+                            .total(item.getMedia().getDuration() / 1000)
+                            .build();
+                    SyncService.enqueueEpisodeAction(context, action);
+                }
                 return item;
             }
         }
@@ -436,7 +447,7 @@ public final class DBTasks {
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item);
+                FeedItem oldItem = searchFeedItemByIdentifyingValue(context, savedFeed, item);
                 if (oldItem == null) {
                     // item is new
                     item.setFeed(savedFeed);
@@ -469,7 +480,7 @@ public final class DBTasks {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
-                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem) == null) {
+                    if (searchFeedItemByIdentifyingValue(context, newFeed, feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();
                     }
