@@ -62,7 +62,7 @@ public class GpodnetService implements ISyncService {
     private final OkHttpClient httpClient;
 
     // split into schema, host and port - missing parts are null
-    private static Pattern urlsplit_regex = Pattern.compile("(?:(https?)://)?([^:]+)(?::(\\d+))?");
+    private static final Pattern URLSPLIT_REGEX = Pattern.compile("(?:(https?)://)?([^:]+)(?::(\\d+))?");
 
     public GpodnetService(OkHttpClient httpClient, String baseHosturl,
                           String deviceId, String username, String password)  {
@@ -71,7 +71,7 @@ public class GpodnetService implements ISyncService {
         this.username = username;
         this.password = password;
 
-        Matcher m = urlsplit_regex.matcher(baseHosturl);
+        Matcher m = URLSPLIT_REGEX.matcher(baseHosturl);
         if (m.matches()) {
             this.baseScheme = m.group(1);
             this.baseHost = m.group(2);
@@ -180,37 +180,6 @@ public class GpodnetService implements ISyncService {
             JSONArray jsonArray = new JSONArray(response);
             return readPodcastListFromJsonArray(jsonArray);
 
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Returns a list of suggested podcasts for the user that is currently
-     * logged in.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @param count The
-     *              number of elements that should be returned. Must be in range
-     *              1..100.
-     * @throws IllegalArgumentException              if count is out of range.
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public List<GpodnetPodcast> getSuggestions(int count) throws GpodnetServiceException {
-        if (count < 1 || count > 100) {
-            throw new IllegalArgumentException("Count must be in range 1..100");
-        }
-
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format(Locale.US, "/suggestions/%d.json", count), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-
-            JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJsonArray(jsonArray);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
@@ -372,50 +341,6 @@ public class GpodnetService implements ISyncService {
             Request.Builder request = new Request.Builder().post(body).url(url);
             executeRequest(request);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Returns the subscriptions of a specific device.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @param deviceId The ID of the device whose subscriptions should be returned.
-     * @return A list of subscriptions in OPML format.
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public String getSubscriptionsOfDevice(@NonNull String deviceId) throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/subscriptions/%s/%s.opml", username, deviceId), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            return executeRequest(request);
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Returns all subscriptions of a specific user.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @return A list of subscriptions in OPML format.
-     * @throws IllegalArgumentException              If username is null.
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public String getSubscriptionsOfUser() throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/subscriptions/%s.opml", username), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            return executeRequest(request);
-        } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
