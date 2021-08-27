@@ -30,7 +30,6 @@ public class GpodnetMainFragment extends Fragment {
     private static final int NUM_PAGES = 2;
     private static final int POS_TOPLIST = 0;
     private static final int POS_TAGS = 1;
-    private static final int POS_SUGGESTIONS = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,12 +49,9 @@ public class GpodnetMainFragment extends Fragment {
                 case POS_TAGS:
                     tab.setText(R.string.gpodnet_taglist_header);
                     break;
-                case POS_TOPLIST:
-                    tab.setText(R.string.gpodnet_toplist_header);
-                    break;
+                case POS_TOPLIST: // Fall-through
                 default:
-                case POS_SUGGESTIONS:
-                    tab.setText(R.string.gpodnet_suggestions_header);
+                    tab.setText(R.string.gpodnet_toplist_header);
                     break;
             }
         }).attach();
@@ -102,11 +98,9 @@ public class GpodnetMainFragment extends Fragment {
             switch (position) {
                 case POS_TAGS:
                     return new TagListFragment();
-                case POS_TOPLIST:
-                    return new PodcastTopListFragment();
+                case POS_TOPLIST: // Fall-through
                 default:
-                case POS_SUGGESTIONS:
-                    return new SuggestionListFragment();
+                    return new PodcastTopListFragment();
             }
         }
 
