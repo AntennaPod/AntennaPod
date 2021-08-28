@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.id3reader.model;
+package de.danoeh.antennapod.parser.media.id3.model;
 
 import androidx.annotation.NonNull;
 

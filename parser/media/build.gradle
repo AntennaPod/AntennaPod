@@ -1,0 +1,12 @@
+apply plugin: "com.android.library"
+apply from: "../../common.gradle"
+
+dependencies {
+    implementation project(':model')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+
+    testImplementation 'junit:junit:4.13'
+}

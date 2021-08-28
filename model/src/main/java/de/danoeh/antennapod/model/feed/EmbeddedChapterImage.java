@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
 import de.danoeh.antennapod.model.playback.Playable;

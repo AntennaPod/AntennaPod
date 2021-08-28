@@ -1,12 +1,11 @@
-package de.danoeh.antennapod.core.util.id3reader;
+package de.danoeh.antennapod.parser.media.id3;
 
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.parser.media.id3.model.FrameHeader;
 import org.apache.commons.io.input.CountingInputStream;
 
 import java.io.IOException;

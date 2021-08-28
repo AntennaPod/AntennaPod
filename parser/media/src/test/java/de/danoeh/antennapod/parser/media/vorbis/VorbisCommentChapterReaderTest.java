@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.vorbiscommentreader;
+package de.danoeh.antennapod.parser.media.vorbis;
 
 import de.danoeh.antennapod.model.feed.Chapter;
 import org.junit.Test;
@@ -13,8 +13,8 @@ public class VorbisCommentChapterReaderTest {
 
     @Test
     public void testRealFilesAuphonic() throws IOException, VorbisCommentReaderException {
-        testRealFileAuphonic("media-parser/auphonic.ogg");
-        testRealFileAuphonic("media-parser/auphonic.opus");
+        testRealFileAuphonic("auphonic.ogg");
+        testRealFileAuphonic("auphonic.opus");
     }
 
     public void testRealFileAuphonic(String filename) throws IOException, VorbisCommentReaderException {
