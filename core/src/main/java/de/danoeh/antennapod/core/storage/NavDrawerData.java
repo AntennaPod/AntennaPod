@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
+import androidx.annotation.Nullable;
+
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.util.LongIntMap;
 
@@ -53,6 +55,7 @@ public class NavDrawerData {
         public abstract String getTitle();
 
         public abstract int getCounter();
+
     }
 
     public static class FolderDrawerItem extends DrawerItem {
@@ -77,16 +80,34 @@ public class NavDrawerData {
             }
             return sum;
         }
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (obj instanceof NavDrawerData.FolderDrawerItem) {
+                NavDrawerData.FolderDrawerItem drawerItem = (FolderDrawerItem) obj;
+                return drawerItem.name.equals(name);
+            }
+            return false;
+        }
     }
 
     public static class FeedDrawerItem extends DrawerItem {
         public final Feed feed;
         public final int counter;
-
+        public final int playedCounter;
+        public final long mostRecentPubDate;
         public FeedDrawerItem(Feed feed, long id, int counter) {
             super(DrawerItem.Type.FEED, id);
             this.feed = feed;
             this.counter = counter;
+            this.playedCounter = 0;
+            this.mostRecentPubDate = 0;
+        }
+        public FeedDrawerItem(Feed feed, long id, int counter, int playedCounter, long mostRecentPubDate) {
+            super(DrawerItem.Type.FEED, id);
+            this.feed = feed;
+            this.counter = counter;
+            this.playedCounter = playedCounter;
+            this.mostRecentPubDate = mostRecentPubDate;
         }
 
         public String getTitle() {
@@ -96,5 +117,15 @@ public class NavDrawerData {
         public int getCounter() {
             return counter;
         }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (obj instanceof FeedDrawerItem) {
+                FeedDrawerItem drawerItem = (FeedDrawerItem) obj;
+                return drawerItem.feed.getId() == feed.getId();
+            }
+            return false;
+        }
     }
+
 }

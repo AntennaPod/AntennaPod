@@ -366,41 +366,69 @@ public class DbReaderTest {
     }
 
     @Test
-    public void testGetNavDrawerDataWithSingleTagFilter() {
+    public void testGetNavDrawerDataWithTags() {
         final int numFeeds = 10;
         final int numItems = 10;
-        String tag1 = "tag1", tag2 = "tag2";
+        String[] tagsArray = {"tag1", "tag2"};
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
 
-        NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tag1);
-        NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tag2);
+        NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tagsArray[0]);
+        NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tagsArray[1]);
 
         UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
 
         List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         adapter.open();
-        for (int i = 0; i < numFeeds; i++) {
+        for (int i = 0; i < numFeeds -2; i++) {
             FeedPreferences feedPreferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
                     VolumeAdaptionSetting.OFF, "", "");
             feedPreferences.setFeedID(feeds.get(i).getId());
             Set<String> tags = new HashSet<>();
             if (i % 2 == 0) {
-                tags.add(tag1);
+                tags.add(tagsArray[0]);
             } else {
-                tags.add(tag2);
+                tags.add(tagsArray[1]);
             }
             feedPreferences.setTags(tags);
             adapter.setFeedPreferences(feedPreferences);
         }
 
         NavDrawerData navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(numFeeds / 2, navDrawerData.items.size());
+        assertEquals(numFeeds / 2 - 1, navDrawerData.items.size() - (tagsArray.length + 1));
 
         UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem2.id));
 
         navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(numFeeds, navDrawerData.items.size());
+        assertEquals(numFeeds - 2, navDrawerData.items.size() -  (tagsArray.length + 1));
+    }
+
+    @Test
+    public void testGetNavDrawerDataWithTagsShouldNotReturnRedundantFeeds() {
+        final int numFeeds = 10;
+        final int numItems = 10;
+        String[] tagsArray = {"tag1", "tag2"};
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+
+        NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tagsArray[0]);
+        NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tagsArray[1]);
+
+        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
+
+        List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
+        adapter.open();
+            FeedPreferences feedPreferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
+                    VolumeAdaptionSetting.OFF, "", "");
+            feedPreferences.setFeedID(feeds.get(0).getId());
+            Set<String> tags = new HashSet<>();
+            tags.add(tagsArray[0]);
+            tags.add(tagsArray[1]);
+            feedPreferences.setTags(tags);
+            adapter.setFeedPreferences(feedPreferences);
+
+        NavDrawerData navDrawerData = DBReader.getNavDrawerData();
+        assertEquals(1, navDrawerData.items.size() - (tagsArray.length + 1));
     }
 
     @Test

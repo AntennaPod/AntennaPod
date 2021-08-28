@@ -823,6 +823,8 @@ public final class DBReader {
         adapter.open();
 
         final LongIntMap feedCounters = adapter.getFeedCounters();
+        LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
+        final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
@@ -831,12 +833,14 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
+
         List<NavDrawerData.DrawerItem> items = new ArrayList<>();
         Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
+                long recentPubDate = recentPubDates.containsKey(feed.getId()) ? recentPubDates.get(feed.getId()) : -1;
                 NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
-                        feedCounters.get(feed.getId()));
+                        feedCounters.get(feed.getId()), playedCounters.get(feed.getId(), -1), recentPubDate);
 //                if (FeedPreferences.TAG_ROOT.equals(tag)) {
 //                    items.add(drawerItem);
 //                    continue;
@@ -854,64 +858,8 @@ public final class DBReader {
         }
 
         List<NavDrawerData.DrawerItem> tagFilteredFeeds = getTagFilteredFeeds(folders);
-        Comparator<NavDrawerData.DrawerItem> comparator;
-        int feedOrder = UserPreferences.getFeedOrder();
-        if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long counterLhs = feedCounters.get(_lhs.feed.getId());
-                long counterRhs = feedCounters.get(_rhs.feed.getId());
-                if (counterLhs > counterRhs) {
-                    // reverse natural order: podcast with most unplayed episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
-            comparator = (lhs, rhs) -> {
-                String t1 = lhs.getTitle();
-                String t2 = rhs.getTitle();
-                if (t1 == null) {
-                    return 1;
-                } else if (t2 == null) {
-                    return -1;
-                } else {
-                    return t1.compareToIgnoreCase(t2);
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long counterLhs = playedCounters.get(_lhs.feed.getId());
-                long counterRhs = playedCounters.get(_rhs.feed.getId());
-                if (counterLhs > counterRhs) {
-                    // podcast with most played episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else {
-            final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long dateLhs = recentPubDates.containsKey(_lhs.feed.getId()) ? recentPubDates.get(_lhs.feed.getId()) : 0;
-                long dateRhs = recentPubDates.containsKey(_rhs.feed.getId()) ? recentPubDates.get(_rhs.feed.getId()) : 0;
-                return Long.compare(dateRhs, dateLhs);
-            };
-        }
-
-        Collections.sort(tagFilteredFeeds, comparator);
+        tagFilteredFeeds = sortFeeds(tagFilteredFeeds);
         List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
@@ -934,6 +882,62 @@ public final class DBReader {
 
         return tagFilteredItems;
     }
+    private static List<NavDrawerData.DrawerItem> sortFeeds(List<NavDrawerData.DrawerItem> items) {
+        Comparator<NavDrawerData.DrawerItem> comparator;
+        int feedOrder = UserPreferences.getFeedOrder();
+        if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = _lhs.counter;
+                long counterRhs = _rhs.counter;
+                if (counterLhs > counterRhs) {
+                    // reverse natural order: podcast with most unplayed episodes first
+                    return -1;
+                } else if (counterLhs == counterRhs) {
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            };
+        } else if (feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
+            comparator = (lhs, rhs) -> {
+                String t1 = lhs.getTitle();
+                String t2 = rhs.getTitle();
+                if (t1 == null) {
+                    return 1;
+                } else if (t2 == null) {
+                    return -1;
+                } else {
+                    return t1.compareToIgnoreCase(t2);
+                }
+            };
+        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = _lhs.counter;
+                long counterRhs = _rhs.counter;
+                if (counterLhs > counterRhs) {
+                    // podcast with most played episodes first
+                    return -1;
+                } else if (counterLhs == counterRhs) {
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            };
+        } else {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long dateLhs = _lhs.mostRecentPubDate > 0 ? _lhs.mostRecentPubDate : 0;
+                long dateRhs = _rhs.mostRecentPubDate > 0 ? _rhs.mostRecentPubDate : 0;
+                return Long.compare(dateRhs, dateLhs);
+            };
+        }
 
-
+        Collections.sort(items, comparator);
+        return items;
+    }
 }

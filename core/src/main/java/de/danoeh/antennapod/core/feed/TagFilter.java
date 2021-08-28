@@ -1,15 +1,11 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.text.TextUtils;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.core.util.LongIntMap;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 
 public class TagFilter {

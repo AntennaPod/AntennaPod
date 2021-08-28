@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,8 +38,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -52,7 +55,6 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.TagFilter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -60,6 +62,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
@@ -108,7 +111,7 @@ public class SubscriptionFragment extends Fragment
 
     private SpeedDialView speedDialView;
 
-    private List<NavDrawerData.DrawerItem> listItems;
+    private List<NavDrawerData.DrawerItem> feedItems;
 
     private RecyclerView tagRecycler;
     private FeedTagAdapter feedTagAdapter;
@@ -342,16 +345,16 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            listItems = result;
+                            feedItems = new ArrayList<>();
                             List<NavDrawerData.FolderDrawerItem> feedFolders = new ArrayList<>();
-                            for (NavDrawerData.DrawerItem drawerItem : listItems) {
+                            for (NavDrawerData.DrawerItem drawerItem : result) {
                                 if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
                                     feedFolders.add((NavDrawerData.FolderDrawerItem) drawerItem);
+                                } else {
+                                    feedItems.add(drawerItem);
                                 }
-
-
-                            feedTagAdapter = new FeedTagAdapter(new ArrayList<>());
                             }
+                            feedTagAdapter = new FeedTagAdapter(new ArrayList<>());
                             Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
 
                             for (NavDrawerData.FolderDrawerItem folder : feedFolders) {
@@ -375,14 +378,15 @@ public class SubscriptionFragment extends Fragment
                                         UserPreferences.removeTagFilterId(String.valueOf(folderItem.id));
                                         feedTagAdapter.removeItem(folderItem);
                                     }
-                                    List<NavDrawerData.DrawerItem> allChildren = new ArrayList<>();
+                                    Set<NavDrawerData.DrawerItem> allChildren = new HashSet<>();
                                     for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
                                         allChildren.addAll(item.children);
                                     }
                                     if (feedTagAdapter.getItemCount() > 0) {
-                                        subscriptionAdapter.setItems(allChildren);
+                                        subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
                                     } else {
-                                        subscriptionAdapter.setItems(listItems);
+
+                                        subscriptionAdapter.setItems(sortFeeds(feedItems));
                                     }
 
                                 });
@@ -393,7 +397,7 @@ public class SubscriptionFragment extends Fragment
                             }
 
                             tagRecycler.setAdapter(feedTagAdapter);
-                            subscriptionAdapter.setItems(listItems);
+                            subscriptionAdapter.setItems(feedItems);
                             emptyView.updateVisibility();
                             progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
                         }, error -> {
@@ -487,19 +491,78 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
-        subscriptionAdapter.setItems(listItems);
+        subscriptionAdapter.setItems(feedItems);
         subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStartSelectMode() {
         List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
-        for (NavDrawerData.DrawerItem item : listItems) {
+        for (NavDrawerData.DrawerItem item : feedItems) {
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 feedsOnly.add(item);
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
         subscriptionAdapter.notifyDataSetChanged();
+    }
+
+    private List<NavDrawerData.DrawerItem> sortFeeds(List<NavDrawerData.DrawerItem> items) {
+        Comparator<NavDrawerData.DrawerItem> comparator;
+        int feedOrder = UserPreferences.getFeedOrder();
+        if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = _lhs.counter;
+                long counterRhs = _rhs.counter;
+                if (counterLhs > counterRhs) {
+                    // reverse natural order: podcast with most unplayed episodes first
+                    return -1;
+                } else if (counterLhs == counterRhs) {
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            };
+        } else if (feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
+            comparator = (lhs, rhs) -> {
+                String t1 = lhs.getTitle();
+                String t2 = rhs.getTitle();
+                if (t1 == null) {
+                    return 1;
+                } else if (t2 == null) {
+                    return -1;
+                } else {
+                    return t1.compareToIgnoreCase(t2);
+                }
+            };
+        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long counterLhs = _lhs.counter;
+                long counterRhs = _rhs.counter;
+                if (counterLhs > counterRhs) {
+                    // podcast with most played episodes first
+                    return -1;
+                } else if (counterLhs == counterRhs) {
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            };
+        } else {
+            comparator = (lhs, rhs) -> {
+                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
+                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
+                long dateLhs = _lhs.mostRecentPubDate >= 0 ? _lhs.mostRecentPubDate : 0;
+                long dateRhs = _rhs.mostRecentPubDate >= 0 ? _rhs.mostRecentPubDate : 0;
+                return Long.compare(dateRhs, dateLhs);
+            };
+        }
+
+        Collections.sort(items, comparator);
+        return items;
     }
 }
