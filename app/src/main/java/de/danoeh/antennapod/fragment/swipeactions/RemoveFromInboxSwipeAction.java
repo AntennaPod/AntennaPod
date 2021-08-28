@@ -33,8 +33,9 @@ public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        FeedItemMenuHandler.markReadWithUndo(fragment,
-                item, FeedItem.UNPLAYED, willRemove(filter));
+        if (item.isNew()) {
+            FeedItemMenuHandler.markReadWithUndo(fragment, item, FeedItem.UNPLAYED, willRemove(filter));
+        }
     }
 
     @Override
