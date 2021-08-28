@@ -9,7 +9,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
+import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 
 public class FeedSyncTask {
     private static final String TAG = "FeedParserTask";

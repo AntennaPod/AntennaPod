@@ -24,6 +24,7 @@ dependencies {
     implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
+    implementation project(':parser:feed')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:png-icons')

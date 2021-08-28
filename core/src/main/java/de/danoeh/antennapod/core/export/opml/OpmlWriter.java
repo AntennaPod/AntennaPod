@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 
+import de.danoeh.antennapod.core.util.DateFormatter;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.util.DateUtils;
 
 /** Writes OPML documents. */
 public class OpmlWriter implements ExportWriter {
@@ -44,7 +44,7 @@ public class OpmlWriter implements ExportWriter {
         xs.text(OPML_TITLE);
         xs.endTag(null, OpmlSymbols.TITLE);
         xs.startTag(null, OpmlSymbols.DATE_CREATED);
-        xs.text(DateUtils.formatRFC822Date(new Date()));
+        xs.text(DateFormatter.formatRfc822Date(new Date()));
         xs.endTag(null, OpmlSymbols.DATE_CREATED);
         xs.endTag(null, OpmlSymbols.HEAD);
 

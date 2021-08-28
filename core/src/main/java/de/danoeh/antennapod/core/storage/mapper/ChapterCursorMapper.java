@@ -4,7 +4,7 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.feed.SimpleChapter;
+import de.danoeh.antennapod.parser.feed.element.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
