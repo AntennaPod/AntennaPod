@@ -10,5 +10,4 @@ android {
 
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
 }
