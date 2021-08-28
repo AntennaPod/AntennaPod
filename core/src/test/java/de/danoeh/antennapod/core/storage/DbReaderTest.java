@@ -415,6 +415,7 @@ public class DbReaderTest {
         NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tagsArray[1]);
 
         UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
+        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem2.id));
 
         List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         adapter.open();

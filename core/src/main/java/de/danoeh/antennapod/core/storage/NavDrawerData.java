@@ -88,6 +88,11 @@ public class NavDrawerData {
             }
             return false;
         }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
     }
 
     public static class FeedDrawerItem extends DrawerItem {
@@ -99,8 +104,8 @@ public class NavDrawerData {
             super(DrawerItem.Type.FEED, id);
             this.feed = feed;
             this.counter = counter;
-            this.playedCounter = 0;
-            this.mostRecentPubDate = 0;
+            this.playedCounter = -1;
+            this.mostRecentPubDate = -1;
         }
         public FeedDrawerItem(Feed feed, long id, int counter, int playedCounter, long mostRecentPubDate) {
             super(DrawerItem.Type.FEED, id);
@@ -125,6 +130,11 @@ public class NavDrawerData {
                 return drawerItem.feed.getId() == feed.getId();
             }
             return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return feed.getFeedTitle().hashCode() + (int) feed.getId() % Integer.MAX_VALUE;
         }
     }
 

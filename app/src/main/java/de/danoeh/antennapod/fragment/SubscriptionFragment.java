@@ -70,6 +70,8 @@ import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.util.FeedSorter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -111,13 +113,11 @@ public class SubscriptionFragment extends Fragment
 
     private SpeedDialView speedDialView;
 
-    private List<NavDrawerData.DrawerItem> feedItems;
-
+    private List<NavDrawerData.DrawerItem> tagFilteredFeedItems;
+    private NavDrawerData.FolderDrawerItem rootFolder;
     private RecyclerView tagRecycler;
     private FeedTagAdapter feedTagAdapter;
     private ChipGroup folderChipGroup;
-
-    private List<NavDrawerData.FolderDrawerItem> selectedFolders;
 
     public static SubscriptionFragment newInstance(String folderTitle) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -345,13 +345,16 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            feedItems = new ArrayList<>();
+                            tagFilteredFeedItems = new ArrayList<>();
                             List<NavDrawerData.FolderDrawerItem> feedFolders = new ArrayList<>();
                             for (NavDrawerData.DrawerItem drawerItem : result) {
                                 if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
                                     feedFolders.add((NavDrawerData.FolderDrawerItem) drawerItem);
+                                    if (((NavDrawerData.FolderDrawerItem) drawerItem).name.equals(FeedPreferences.TAG_ROOT)) {
+                                        rootFolder = (NavDrawerData.FolderDrawerItem) drawerItem;
+                                    }
                                 } else {
-                                    feedItems.add(drawerItem);
+                                    tagFilteredFeedItems.add(drawerItem);
                                 }
                             }
                             feedTagAdapter = new FeedTagAdapter(new ArrayList<>());
@@ -362,32 +365,63 @@ public class SubscriptionFragment extends Fragment
                                     feedTagAdapter.addItem(folder);
                                 }
                             }
+                            Chip rootChip = null;
                             folderChipGroup.removeAllViews();
                             for (NavDrawerData.FolderDrawerItem folderItem : feedFolders) {
                                 Chip folderChip = new Chip(getActivity());
-                                folderChip.setText(folderItem.name);
-                                folderChip.setCheckable(true);
-                                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
-                                folderChip.setChipIconVisible(true);
-                                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
-                                folderChip.setOnClickListener(v ->  {
-                                    if (folderChip.isChecked()) {
-                                        UserPreferences.addTagFilterId(String.valueOf(folderItem.id));
-                                        feedTagAdapter.addItem(folderItem);
-                                    } else {
-                                        UserPreferences.removeTagFilterId(String.valueOf(folderItem.id));
-                                        feedTagAdapter.removeItem(folderItem);
-                                    }
-                                    Set<NavDrawerData.DrawerItem> allChildren = new HashSet<>();
-                                    for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
-                                        allChildren.addAll(item.children);
-                                    }
-                                    if (feedTagAdapter.getItemCount() > 0) {
-                                        subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
-                                    } else {
+                                if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
+                                    folderChip.setText("All");
+                                    rootChip = folderChip;
+                                } else {
+                                    folderChip.setText(folderItem.name);
+                                    folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
+                                    folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
 
-                                        subscriptionAdapter.setItems(sortFeeds(feedItems));
+                                }
+                                folderChip.setCheckable(true);
+                                folderChip.setChipIconVisible(true);
+
+                                Chip finalRootChip = rootChip;
+                                Chip finalRootChip1 = rootChip;
+                                folderChip.setOnClickListener(v ->  {
+                                    if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
+                                        if (folderChip.isChecked()) {
+                                            feedTagAdapter.clear();
+                                            for (int i = 0; i < folderChipGroup.getChildCount(); ++i) {
+                                                Chip chip = (Chip) folderChipGroup.getChildAt(i);
+                                                if (!chip.equals(finalRootChip1)) {
+
+                                                chip.setChecked(false);
+                                                }
+                                            }
+                                            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
+                                            folderChip.setEnabled(false);
+
+                                        }
+                                    } else {
+                                        if (folderChip.isChecked()) {
+                                            UserPreferences.addTagFilterId(folderItem.id);
+                                            feedTagAdapter.addItem(folderItem);
+                                        } else {
+                                            UserPreferences.removeTagFilterId(folderItem.id);
+                                            feedTagAdapter.removeItem(folderItem);
+                                        }
+                                        Set<NavDrawerData.DrawerItem> allChildren = new HashSet<>();
+                                        for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
+                                            allChildren.addAll(item.children);
+                                        }
+                                        if (!feedTagAdapter.isEmpyty())  {
+                                            subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
+                                            finalRootChip.setEnabled(true);
+                                            finalRootChip.setChecked(false);
+
+                                        } else {
+                                            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
+                                            finalRootChip.setChecked(true);
+                                            finalRootChip.setEnabled(false);
+                                        }
                                     }
+
 
                                 });
 
@@ -397,7 +431,7 @@ public class SubscriptionFragment extends Fragment
                             }
 
                             tagRecycler.setAdapter(feedTagAdapter);
-                            subscriptionAdapter.setItems(feedItems);
+                            subscriptionAdapter.setItems(sortFeeds(tagFilteredFeedItems));
                             emptyView.updateVisibility();
                             progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
                         }, error -> {
@@ -491,14 +525,14 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
-        subscriptionAdapter.setItems(feedItems);
+        subscriptionAdapter.setItems(tagFilteredFeedItems);
         subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStartSelectMode() {
         List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
-        for (NavDrawerData.DrawerItem item : feedItems) {
+        for (NavDrawerData.DrawerItem item : tagFilteredFeedItems) {
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 feedsOnly.add(item);
             }
@@ -508,61 +542,6 @@ public class SubscriptionFragment extends Fragment
     }
 
     private List<NavDrawerData.DrawerItem> sortFeeds(List<NavDrawerData.DrawerItem> items) {
-        Comparator<NavDrawerData.DrawerItem> comparator;
-        int feedOrder = UserPreferences.getFeedOrder();
-        if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long counterLhs = _lhs.counter;
-                long counterRhs = _rhs.counter;
-                if (counterLhs > counterRhs) {
-                    // reverse natural order: podcast with most unplayed episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
-            comparator = (lhs, rhs) -> {
-                String t1 = lhs.getTitle();
-                String t2 = rhs.getTitle();
-                if (t1 == null) {
-                    return 1;
-                } else if (t2 == null) {
-                    return -1;
-                } else {
-                    return t1.compareToIgnoreCase(t2);
-                }
-            };
-        } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long counterLhs = _lhs.counter;
-                long counterRhs = _rhs.counter;
-                if (counterLhs > counterRhs) {
-                    // podcast with most played episodes first
-                    return -1;
-                } else if (counterLhs == counterRhs) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else {
-                    return 1;
-                }
-            };
-        } else {
-            comparator = (lhs, rhs) -> {
-                NavDrawerData.FeedDrawerItem _lhs = (NavDrawerData.FeedDrawerItem) lhs;
-                NavDrawerData.FeedDrawerItem _rhs = (NavDrawerData.FeedDrawerItem) rhs;
-                long dateLhs = _lhs.mostRecentPubDate >= 0 ? _lhs.mostRecentPubDate : 0;
-                long dateRhs = _rhs.mostRecentPubDate >= 0 ? _rhs.mostRecentPubDate : 0;
-                return Long.compare(dateRhs, dateLhs);
-            };
-        }
-
-        Collections.sort(items, comparator);
-        return items;
+        return FeedSorter.sortFeeds(items);
     }
 }

@@ -1090,19 +1090,19 @@ public class UserPreferences {
         return prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
     }
 
-    public static void addTagFilterId(String tagFilterId) {
+    public static void addTagFilterId(long tagFilterId) {
         Set<String> tagFilterIds = prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
-        tagFilterIds.add(tagFilterId);
-        prefs.edit()
-                .putStringSet(PREF_TAG_FILTER, tagFilterIds)
+        tagFilterIds.add(String.valueOf(tagFilterId));
+        prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
+        prefs.edit().putStringSet(PREF_TAG_FILTER, tagFilterIds)
                 .apply();
     }
 
-    public static void removeTagFilterId(String tagFilterId) {
+    public static void removeTagFilterId(long tagFilterId) {
         Set<String> tagFilterIds = prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
-        tagFilterIds.remove(tagFilterId);
-        prefs.edit()
-                .putStringSet(PREF_TAG_FILTER, tagFilterIds)
+        tagFilterIds.remove(String.valueOf(tagFilterId));
+        prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
+        prefs.edit().putStringSet(PREF_TAG_FILTER, tagFilterIds)
                 .apply();
     }
 }

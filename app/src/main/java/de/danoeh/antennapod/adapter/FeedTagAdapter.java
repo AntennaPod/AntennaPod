@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,9 @@ public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewH
     public FeedTagAdapter(List<NavDrawerData.FolderDrawerItem> feedFolders) {
         this.feedFolders = feedFolders;
         defaultAll.id = -1;
+        init();
+    }
+    private void init() {
         if (this.feedFolders.size() == 0) {
             this.feedFolders.add(defaultAll);
         }
@@ -42,19 +44,20 @@ public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewH
 
     @Override
     public int getItemCount() {
+        return feedFolders.size();
+    }
+
+    public boolean isEmpyty() {
         if (feedFolders.size() == 1 && feedFolders.get(0).id == defaultAll.id) {
-            return 0;
+            return true;
+
         } else {
-            return feedFolders.size();
+            return false;
         }
     }
 
     public List<NavDrawerData.FolderDrawerItem> getFeedFolders() {
         return feedFolders;
-    }
-
-    public void setFeedFolders(List<NavDrawerData.FolderDrawerItem> feedFolders) {
-        this.feedFolders = feedFolders;
     }
 
     public void addItem(NavDrawerData.FolderDrawerItem folderDrawerItem) {
@@ -70,6 +73,12 @@ public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewH
         if (feedFolders.size() == 0) {
             feedFolders.add(defaultAll);
         }
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        feedFolders.clear();
+        init();
         notifyDataSetChanged();
     }
 
