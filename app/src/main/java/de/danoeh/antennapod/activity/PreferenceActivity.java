@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.ActionBar;
@@ -141,9 +142,12 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 finish();
             } else {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (imm.isActive()) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+                View view = getCurrentFocus();
+                //If no view currently has focus, create a new one, just so we can grab a window token from it
+                if (view == null) {
+                    view = new View(this);
                 }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 getSupportFragmentManager().popBackStack();
             }
             return true;
