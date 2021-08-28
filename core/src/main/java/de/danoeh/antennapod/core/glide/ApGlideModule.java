@@ -14,7 +14,7 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.StringLoader;
 import com.bumptech.glide.module.AppGlideModule;
 
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import java.io.InputStream;
 
 import com.bumptech.glide.request.RequestOptions;

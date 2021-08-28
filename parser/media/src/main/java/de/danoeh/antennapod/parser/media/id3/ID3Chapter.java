@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.parser.media.id3;
 
 import de.danoeh.antennapod.model.feed.Chapter;
 

@@ -1,13 +1,12 @@
-package de.danoeh.antennapod.core.util.vorbiscommentreader;
+package de.danoeh.antennapod.parser.media.vorbis;
 
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
+import de.danoeh.antennapod.parser.media.BuildConfig;
 
 public class VorbisCommentChapterReader extends VorbisCommentReader {
     private static final String TAG = "VorbisCommentChptrReadr";

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.id3reader.model;
+package de.danoeh.antennapod.parser.media.id3.model;
 
 import androidx.annotation.NonNull;
 
@@ -15,5 +15,4 @@ public class FrameHeader extends Header {
     public String toString() {
         return String.format("FrameHeader [flags=%s, id=%s, size=%s]", Integer.toBinaryString(flags), id, size);
     }
-
 }

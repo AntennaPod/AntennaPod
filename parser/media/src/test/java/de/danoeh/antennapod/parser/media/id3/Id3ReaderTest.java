@@ -1,7 +1,7 @@
-package de.danoeh.antennapod.core.util.id3reader;
+package de.danoeh.antennapod.parser.media.id3;
 
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
+import de.danoeh.antennapod.parser.media.id3.model.FrameHeader;
+import de.danoeh.antennapod.parser.media.id3.model.TagHeader;
 import org.apache.commons.io.input.CountingInputStream;
 import org.junit.Test;
 

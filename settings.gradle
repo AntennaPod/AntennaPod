@@ -7,6 +7,7 @@ include ':net:sync:gpoddernet'
 include ':net:sync:model'
 
 include ':parser:feed'
+include ':parser:media'
 
 include ':ui:app-start-intent'
 include ':ui:common'

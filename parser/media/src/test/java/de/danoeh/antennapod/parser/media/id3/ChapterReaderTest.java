@@ -1,9 +1,8 @@
-package de.danoeh.antennapod.core.util.id3reader;
+package de.danoeh.antennapod.parser.media.id3;
 
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.parser.media.id3.model.FrameHeader;
 import org.apache.commons.io.input.CountingInputStream;
 import org.junit.Test;
 
@@ -11,9 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static de.danoeh.antennapod.core.util.id3reader.Id3ReaderTest.concat;
-import static de.danoeh.antennapod.core.util.id3reader.Id3ReaderTest.generateFrameHeader;
-import static de.danoeh.antennapod.core.util.id3reader.Id3ReaderTest.generateId3Header;
 import static org.junit.Assert.assertEquals;
 
 public class ChapterReaderTest {
@@ -28,11 +24,11 @@ public class ChapterReaderTest {
 
     @Test
     public void testReadFullTagWithChapter() throws IOException, ID3ReaderException {
-        byte[] chapter = concat(
-                generateFrameHeader(ChapterReader.FRAME_ID_CHAPTER, CHAPTER_WITHOUT_SUBFRAME.length),
+        byte[] chapter = Id3ReaderTest.concat(
+                Id3ReaderTest.generateFrameHeader(ChapterReader.FRAME_ID_CHAPTER, CHAPTER_WITHOUT_SUBFRAME.length),
                 CHAPTER_WITHOUT_SUBFRAME);
-        byte[] data = concat(
-                generateId3Header(chapter.length),
+        byte[] data = Id3ReaderTest.concat(
+                Id3ReaderTest.generateId3Header(chapter.length),
                 chapter);
         CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
         ChapterReader reader = new ChapterReader(inputStream);
@@ -43,11 +39,11 @@ public class ChapterReaderTest {
 
     @Test
     public void testReadFullTagWithMultipleChapters() throws IOException, ID3ReaderException {
-        byte[] chapter = concat(
-                generateFrameHeader(ChapterReader.FRAME_ID_CHAPTER, CHAPTER_WITHOUT_SUBFRAME.length),
+        byte[] chapter = Id3ReaderTest.concat(
+                Id3ReaderTest.generateFrameHeader(ChapterReader.FRAME_ID_CHAPTER, CHAPTER_WITHOUT_SUBFRAME.length),
                 CHAPTER_WITHOUT_SUBFRAME);
-        byte[] data = concat(
-                generateId3Header(2 * chapter.length),
+        byte[] data = Id3ReaderTest.concat(
+                Id3ReaderTest.generateId3Header(2 * chapter.length),
                 chapter,
                 chapter);
         CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
@@ -74,9 +70,9 @@ public class ChapterReaderTest {
             'H', 'e', 'l', 'l', 'o', // Title
             0 // Null-terminated
         };
-        byte[] chapterData = concat(
+        byte[] chapterData = Id3ReaderTest.concat(
             CHAPTER_WITHOUT_SUBFRAME,
-            generateFrameHeader(ChapterReader.FRAME_ID_TITLE, title.length),
+            Id3ReaderTest.generateFrameHeader(ChapterReader.FRAME_ID_TITLE, title.length),
             title);
         FrameHeader header = new FrameHeader(ChapterReader.FRAME_ID_CHAPTER, chapterData.length, (short) 0);
         CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(chapterData));
@@ -108,7 +104,7 @@ public class ChapterReaderTest {
     @Test
     public void testRealFileUltraschall() throws IOException, ID3ReaderException {
         CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
-                .getResource("media-parser/ultraschall5.mp3").openStream());
+                .getResource("ultraschall5.mp3").openStream());
         ChapterReader reader = new ChapterReader(inputStream);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
@@ -135,7 +131,7 @@ public class ChapterReaderTest {
     @Test
     public void testRealFileAuphonic() throws IOException, ID3ReaderException {
         CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
-                .getResource("media-parser/auphonic.mp3").openStream());
+                .getResource("auphonic.mp3").openStream());
         ChapterReader reader = new ChapterReader(inputStream);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
@@ -166,7 +162,7 @@ public class ChapterReaderTest {
     @Test
     public void testRealFileHindenburgJournalistPro() throws IOException, ID3ReaderException {
         CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
-                .getResource("media-parser/hindenburg-journalist-pro.mp3").openStream());
+                .getResource("hindenburg-journalist-pro.mp3").openStream());
         ChapterReader reader = new ChapterReader(inputStream);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
@@ -189,7 +185,7 @@ public class ChapterReaderTest {
     @Test
     public void testRealFileMp3chapsPy() throws IOException, ID3ReaderException {
         CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
-                .getResource("media-parser/mp3chaps-py.mp3").openStream());
+                .getResource("mp3chaps-py.mp3").openStream());
         ChapterReader reader = new ChapterReader(inputStream);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
