@@ -1291,8 +1291,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void updateNotificationAndMediaSession(final Playable p) {
-        updateMediaSessionMetadata(p);
         setupNotification(p);
+        updateMediaSessionMetadata(p);
     }
 
     private void updateMediaSessionMetadata(final Playable p) {
