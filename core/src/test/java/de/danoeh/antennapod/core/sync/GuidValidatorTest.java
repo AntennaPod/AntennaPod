@@ -14,5 +14,6 @@ public class GuidValidatorTest extends TestCase {
         assertFalse(GuidValidator.isValidGuid("\n"));
         assertFalse(GuidValidator.isValidGuid(" \n"));
         assertFalse(GuidValidator.isValidGuid(null));
+        assertFalse(GuidValidator.isValidGuid("null"));
     }
 }
