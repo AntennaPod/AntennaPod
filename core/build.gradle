@@ -32,6 +32,7 @@ dependencies {
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.core:core:$coreVersion"
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.media:media:$mediaVersion"
     implementation "androidx.preference:preference:$preferenceVersion"

@@ -12,7 +12,7 @@ dependencies {
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 
-    implementation "androidx.core:core:$appcompatVersion"
+    implementation "androidx.core:core:$coreVersion"
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
