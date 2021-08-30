@@ -46,18 +46,6 @@ public class NextcloudSyncService implements ISyncService {
     }
 
     @Override
-    public boolean isAuthenticated() {
-        try {
-            SingleAccountHelper.getCurrentSingleSignOnAccount(context);
-            return true;
-        } catch (NextcloudFilesAppAccountNotFoundException e) {
-            return false;
-        } catch (NoCurrentAccountSelectedException e) {
-            return false;
-        }
-    }
-
-    @Override
     public void login() {
         SingleSignOnAccount ssoAccount = null;
         try {

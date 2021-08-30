@@ -1,27 +1,9 @@
 package de.danoeh.antennapod.net.sync.gpoddernet;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.net.sync.model.ISyncService;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
-import okhttp3.Credentials;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,9 +21,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.model.ISyncService;
+import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.model.SyncServiceException;
+import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Communicates with the gpodder.net service.
@@ -525,12 +526,6 @@ public class GpodnetService implements ISyncService {
             throw new SyncServiceException(e);
         }
 
-    }
-
-
-    @Override
-    public boolean isAuthenticated() {
-        return this.deviceId != null;
     }
 
     /**
