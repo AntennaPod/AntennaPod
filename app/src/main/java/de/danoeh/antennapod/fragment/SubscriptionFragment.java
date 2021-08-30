@@ -202,8 +202,6 @@ public class SubscriptionFragment extends Fragment
             return true;
         });
 
-        ConstraintLayout tagBarLayout = root.findViewById(R.id.tagBar);
-
         Button expandTagsButton = root.findViewById(R.id.expandTagsButton);
         expandTagsButton.setOnClickListener(v -> {
             if(folderChipGroup.getVisibility() == View.GONE) {
@@ -222,10 +220,6 @@ public class SubscriptionFragment extends Fragment
 
 
         return root;
-    }
-
-    public static float convertDpToPixel(Context context, float dp) {
-        return dp * ((float) context.getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -376,27 +370,16 @@ public class SubscriptionFragment extends Fragment
                                     folderChip.setText(folderItem.name);
                                     folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
                                     folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
-
                                 }
                                 folderChip.setCheckable(true);
-                                folderChip.setChipIconVisible(true);
-
                                 Chip finalRootChip = rootChip;
-                                Chip finalRootChip1 = rootChip;
                                 folderChip.setOnClickListener(v ->  {
                                     if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
                                         if (folderChip.isChecked()) {
                                             feedTagAdapter.clear();
-                                            for (int i = 0; i < folderChipGroup.getChildCount(); ++i) {
-                                                Chip chip = (Chip) folderChipGroup.getChildAt(i);
-                                                if (!chip.equals(finalRootChip1)) {
-
-                                                chip.setChecked(false);
-                                                }
-                                            }
+                                            folderChipGroup.clearCheck();
+                                            activateAllChip(folderChip, true);
                                             subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
-                                            folderChip.setEnabled(false);
-
                                         }
                                     } else {
                                         if (folderChip.isChecked()) {
@@ -406,23 +389,11 @@ public class SubscriptionFragment extends Fragment
                                             UserPreferences.removeTagFilterId(folderItem.id);
                                             feedTagAdapter.removeItem(folderItem);
                                         }
-                                        Set<NavDrawerData.DrawerItem> allChildren = new HashSet<>();
-                                        for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
-                                            allChildren.addAll(item.children);
-                                        }
-                                        if (!feedTagAdapter.isEmpyty())  {
-                                            subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
-                                            finalRootChip.setEnabled(true);
-                                            finalRootChip.setChecked(false);
 
-                                        } else {
-                                            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
-                                            finalRootChip.setChecked(true);
-                                            finalRootChip.setEnabled(false);
-                                        }
+                                        boolean tagsSelected = !feedTagAdapter.isEmpyty();
+                                        updateDisplayedSubscriptions(tagsSelected);
+                                        activateAllChip(finalRootChip, !tagsSelected);
                                     }
-
-
                                 });
 
                                 folderChip.setChecked(tagFilterIds.contains(String.valueOf(folderItem.id)));
@@ -445,6 +416,18 @@ public class SubscriptionFragment extends Fragment
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateDisplayedSubscriptions(boolean tagsSelected) {
+        if (tagsSelected)  {
+            Set<NavDrawerData.DrawerItem> allChildren = new HashSet<>();
+            for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
+                allChildren.addAll(item.children);
+            }
+            subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
+        } else {
+            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
         }
     }
 
@@ -543,5 +526,10 @@ public class SubscriptionFragment extends Fragment
 
     private List<NavDrawerData.DrawerItem> sortFeeds(List<NavDrawerData.DrawerItem> items) {
         return FeedSorter.sortFeeds(items);
+    }
+
+    private void activateAllChip(Chip chip, boolean enabled) {
+        chip.setChecked(enabled);
+        chip.setEnabled(!enabled);
     }
 }

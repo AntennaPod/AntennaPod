@@ -22,19 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:background="@color/accent_dark"
         android:descendantFocusability="blocksDescendants"
-        android:outlineAmbientShadowColor="@color/accent_dark">
+        android:outlineAmbientShadowColor="@color/accent_dark"
+        android:padding="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tagRecycler"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintEnd_toStartOf="@id/expandTagsButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
