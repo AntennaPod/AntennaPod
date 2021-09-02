@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,7 @@ import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.dialog.TagDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -341,6 +343,11 @@ public class SubscriptionFragment extends Fragment
             return true;
         } else if (itemId == R.id.add_to_folder) {
             TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+        } else if (itemId ==  R.id.mark_all_read_item) {
+            displayConfirmationDialog(
+                    R.string.mark_all_read_label,
+                    R.string.mark_all_read_confirmation_msg,
+                    () -> DBWriter.markFeedRead(feed.getId()));
             return true;
         } else if (itemId == R.id.rename_item) {
             new RenameFeedDialog(getActivity(), feed).show();

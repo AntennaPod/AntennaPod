@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.PluralsRes;
 import androidx.core.util.Consumer;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,7 +43,10 @@ public class FeedMultiSelectActionHandler {
             autoDeleteEpisodesPrefHandler();
         } else if (id == R.id.playback_speed) {
             playbackSpeedPrefHandler();
-        } else {
+        } else if (id == R.id.add_to_folder) {
+            DialogFragment TagDialog = new TagDialog(selectedItems());
+        }
+        else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
     }
