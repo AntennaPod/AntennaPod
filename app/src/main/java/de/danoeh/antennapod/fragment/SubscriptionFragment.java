@@ -93,6 +93,8 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private String displayedFolder = null;
     private boolean isUpdatingFeeds = false;
     private boolean displayUpArrow;
@@ -101,7 +103,6 @@ public class SubscriptionFragment extends Fragment
     private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
-    SwipeRefreshLayout swipeRefreshLayout;
     private List<NavDrawerData.DrawerItem> listItems;
 
     public static SubscriptionFragment newInstance(String folderTitle) {
@@ -171,7 +172,7 @@ public class SubscriptionFragment extends Fragment
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
@@ -398,7 +399,8 @@ public class SubscriptionFragment extends Fragment
 
     private void endDragDropMode() {
         subscriptionAdapter.setDragNDropMode(false);
-        swipeRefreshLayout.setEnabled(true);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setEnabled(true);
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
