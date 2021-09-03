@@ -292,9 +292,9 @@ public class SubscriptionFragment extends Fragment
                     NavDrawerData data = DBReader.getNavDrawerData();
                     List<NavDrawerData.DrawerItem> items = data.items;
                     for (NavDrawerData.DrawerItem item : items) {
-                        if (item.type == NavDrawerData.DrawerItem.Type.FOLDER
+                        if (item.type == NavDrawerData.DrawerItem.Type.TAG
                                 && item.getTitle().equals(displayedFolder)) {
-                            return ((NavDrawerData.FolderDrawerItem) item).children;
+                            return ((NavDrawerData.TagDrawerItem) item).children;
                         }
                     }
                     return items;
@@ -339,7 +339,7 @@ public class SubscriptionFragment extends Fragment
                     R.string.remove_all_new_flags_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
-        } else if (itemId == R.id.add_to_folder) {
+        } else if (itemId == R.id.edit_tags) {
             TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
