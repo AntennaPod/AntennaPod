@@ -79,13 +79,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/feeds_filtered_message">
 
-<!--        <Button-->
-<!--            android:id="@+id/expandTagsButton"-->
-<!--            android:layout_width="88dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:text="More"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subscriptions_grid"
             android:layout_width="match_parent"

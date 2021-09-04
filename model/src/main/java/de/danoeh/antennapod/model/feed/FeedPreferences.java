@@ -212,10 +212,7 @@ public class FeedPreferences implements Serializable {
         this.showEpisodeNotification = showEpisodeNotification;
     }
 
-    public void setTags(Set<String> tags) {
-        Set<String> newTags = new HashSet<>();
-        newTags.addAll(this.tags);
-        newTags.addAll(tags);
-        this.tags = newTags;
+    public void addTags(Set<String> tags) {
+        this.tags.addAll(tags);
     }
 }

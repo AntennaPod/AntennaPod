@@ -491,7 +491,7 @@ public final class DBReader {
      *
      * @param feedId The ID of the Feed
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     * database and the items-attribute will be set correctly.
+     *         database and the items-attribute will be set correctly.
      */
     @Nullable
     public static Feed getFeed(final long feedId) {

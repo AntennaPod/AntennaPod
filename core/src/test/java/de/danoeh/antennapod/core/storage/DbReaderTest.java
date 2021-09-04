@@ -376,7 +376,7 @@ public class DbReaderTest {
         NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tagsArray[0]);
         NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tagsArray[1]);
 
-        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
+        UserPreferences.addTagFilterId(folderDrawerItem1.id);
 
         List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         adapter.open();
@@ -390,14 +390,14 @@ public class DbReaderTest {
             } else {
                 tags.add(tagsArray[1]);
             }
-            feedPreferences.setTags(tags);
+            feedPreferences.addTags(tags);
             adapter.setFeedPreferences(feedPreferences);
         }
 
         NavDrawerData navDrawerData = DBReader.getNavDrawerData();
         assertEquals(numFeeds / 2 - 1, navDrawerData.items.size() - (tagsArray.length + 1));
 
-        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem2.id));
+        UserPreferences.addTagFilterId(folderDrawerItem2.id);
 
         navDrawerData = DBReader.getNavDrawerData();
         assertEquals(numFeeds - 2, navDrawerData.items.size() -  (tagsArray.length + 1));
@@ -414,8 +414,8 @@ public class DbReaderTest {
         NavDrawerData.FolderDrawerItem folderDrawerItem1 = new NavDrawerData.FolderDrawerItem(tagsArray[0]);
         NavDrawerData.FolderDrawerItem folderDrawerItem2 = new NavDrawerData.FolderDrawerItem(tagsArray[1]);
 
-        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem1.id));
-        UserPreferences.addTagFilterId(String.valueOf(folderDrawerItem2.id));
+        UserPreferences.addTagFilterId(folderDrawerItem1.id);
+        UserPreferences.addTagFilterId(folderDrawerItem2.id);
 
         List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         adapter.open();
@@ -425,7 +425,7 @@ public class DbReaderTest {
             Set<String> tags = new HashSet<>();
             tags.add(tagsArray[0]);
             tags.add(tagsArray[1]);
-            feedPreferences.setTags(tags);
+            feedPreferences.addTags(tags);
             adapter.setFeedPreferences(feedPreferences);
 
         NavDrawerData navDrawerData = DBReader.getNavDrawerData();

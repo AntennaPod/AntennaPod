@@ -64,6 +64,7 @@ import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -340,17 +341,8 @@ public class SubscriptionFragment extends Fragment
                                     extractFeedAndTags(result);
                             tagFilteredFeeds = feedsAndTags.first;
                             List<NavDrawerData.FolderDrawerItem> tags = feedsAndTags.second;
-                            feedTagAdapter = new FeedTagAdapter(getContext(), new ArrayList<>());
-                            Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
 
-                            for (NavDrawerData.FolderDrawerItem folder : tags) {
-                                if (tagFilterIds.contains(String.valueOf(folder.id))) {
-                                    feedTagAdapter.addItem(folder);
-                                }
-                            }
-                            tagRecycler.setAdapter(feedTagAdapter);
-
-                            initTagViews(tags, tagFilterIds);
+                            initTagViews(tags);
 
                             subscriptionAdapter.setItems(sortFeeds(tagFilteredFeeds));
                             emptyView.updateVisibility();
@@ -367,6 +359,21 @@ public class SubscriptionFragment extends Fragment
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);
         }
+    }
+
+    private void initTagViews(List<NavDrawerData.FolderDrawerItem> tags) {
+        feedTagAdapter = new FeedTagAdapter(getContext(), new ArrayList<>());
+        Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
+
+        for (NavDrawerData.FolderDrawerItem folder : tags) {
+            if (tagFilterIds.contains(String.valueOf(folder.id))) {
+                feedTagAdapter.addItem(folder);
+            }
+        }
+
+        tagRecycler.setAdapter(feedTagAdapter);
+
+        initTagChipView(tags, tagFilterIds);
     }
 
     public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> extractFeedAndTags(List<NavDrawerData.DrawerItem> feeds) {
@@ -386,7 +393,7 @@ public class SubscriptionFragment extends Fragment
         return feedsAndTags;
     }
 
-    private void initTagViews(List<NavDrawerData.FolderDrawerItem> feedFolders, Set<String> tagFilterIds) {
+    private void initTagChipView(List<NavDrawerData.FolderDrawerItem> feedFolders, Set<String> tagFilterIds) {
         Chip rootChip = null;
         folderChipGroup.removeAllViews();
         for (NavDrawerData.FolderDrawerItem folderItem : feedFolders) {
@@ -463,8 +470,9 @@ public class SubscriptionFragment extends Fragment
                     R.string.remove_all_new_flags_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
-        } else if (itemId == R.id.mark_all_read_item) {
-            displayConfirmationDialog(
+        } else if (itemId == R.id.add_to_folder) {
+            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+        } else if (itemId == R.id.mark_all_read_item) { displayConfirmationDialog(
                     R.string.mark_all_read_label,
                     R.string.mark_all_read_confirmation_msg,
                     () -> DBWriter.markFeedRead(feed.getId()));
@@ -524,7 +532,6 @@ public class SubscriptionFragment extends Fragment
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
         subscriptionAdapter.setItems(tagFilteredFeeds);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -536,7 +543,6 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 
     private List<NavDrawerData.DrawerItem> sortFeeds(List<NavDrawerData.DrawerItem> items) {
