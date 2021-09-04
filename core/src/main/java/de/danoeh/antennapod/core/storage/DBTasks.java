@@ -361,7 +361,7 @@ public final class DBTasks {
             } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
                 long dateOriginal = item.getPubDate().getTime();
                 long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
-                if (Math.abs(dateOriginal - dateNew) < 24L * 3600L * 1000L) { // Same day
+                if (Math.abs(dateOriginal - dateNew) < 7L * 24L * 3600L * 1000L) { // Same week
                     return item;
                 }
             }
@@ -381,6 +381,7 @@ public final class DBTasks {
                 .trim()
                 .replace('“', '"')
                 .replace('”', '"')
+                .replace('„', '"')
                 .replace('—', '-');
     }
 
