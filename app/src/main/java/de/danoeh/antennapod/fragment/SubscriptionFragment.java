@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,18 +33,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -62,7 +59,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
@@ -113,7 +109,7 @@ public class SubscriptionFragment extends Fragment
 
     private SpeedDialView speedDialView;
 
-    private List<NavDrawerData.DrawerItem> tagFilteredFeedItems;
+    private List<NavDrawerData.DrawerItem> tagFilteredFeeds;
     private NavDrawerData.FolderDrawerItem rootFolder;
     private RecyclerView tagRecycler;
     private FeedTagAdapter feedTagAdapter;
@@ -339,70 +335,24 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            tagFilteredFeedItems = new ArrayList<>();
-                            List<NavDrawerData.FolderDrawerItem> feedFolders = new ArrayList<>();
-                            for (NavDrawerData.DrawerItem drawerItem : result) {
-                                if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
-                                    feedFolders.add((NavDrawerData.FolderDrawerItem) drawerItem);
-                                    if (((NavDrawerData.FolderDrawerItem) drawerItem).name.equals(FeedPreferences.TAG_ROOT)) {
-                                        rootFolder = (NavDrawerData.FolderDrawerItem) drawerItem;
-                                    }
-                                } else {
-                                    tagFilteredFeedItems.add(drawerItem);
-                                }
-                            }
-                            feedTagAdapter = new FeedTagAdapter(new ArrayList<>());
+                            Pair<List<NavDrawerData.DrawerItem>,
+                                    List<NavDrawerData.FolderDrawerItem>> feedsAndTags =
+                                    extractFeedAndTags(result);
+                            tagFilteredFeeds = feedsAndTags.first;
+                            List<NavDrawerData.FolderDrawerItem> tags = feedsAndTags.second;
+                            feedTagAdapter = new FeedTagAdapter(getContext(), new ArrayList<>());
                             Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
 
-                            for (NavDrawerData.FolderDrawerItem folder : feedFolders) {
+                            for (NavDrawerData.FolderDrawerItem folder : tags) {
                                 if (tagFilterIds.contains(String.valueOf(folder.id))) {
                                     feedTagAdapter.addItem(folder);
                                 }
                             }
-                            Chip rootChip = null;
-                            folderChipGroup.removeAllViews();
-                            for (NavDrawerData.FolderDrawerItem folderItem : feedFolders) {
-                                Chip folderChip = new Chip(getActivity());
-                                if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
-                                    folderChip.setText("All");
-                                    rootChip = folderChip;
-                                } else {
-                                    folderChip.setText(folderItem.name);
-                                    folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
-                                    folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
-                                }
-                                folderChip.setCheckable(true);
-                                Chip finalRootChip = rootChip;
-                                folderChip.setOnClickListener(v ->  {
-                                    if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
-                                        if (folderChip.isChecked()) {
-                                            feedTagAdapter.clear();
-                                            folderChipGroup.clearCheck();
-                                            activateAllChip(folderChip, true);
-                                            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
-                                        }
-                                    } else {
-                                        if (folderChip.isChecked()) {
-                                            UserPreferences.addTagFilterId(folderItem.id);
-                                            feedTagAdapter.addItem(folderItem);
-                                        } else {
-                                            UserPreferences.removeTagFilterId(folderItem.id);
-                                            feedTagAdapter.removeItem(folderItem);
-                                        }
-
-                                        boolean tagsSelected = !feedTagAdapter.isEmpyty();
-                                        updateDisplayedSubscriptions(tagsSelected);
-                                        activateAllChip(finalRootChip, !tagsSelected);
-                                    }
-                                });
-
-                                folderChip.setChecked(tagFilterIds.contains(String.valueOf(folderItem.id)));
-
-                                folderChipGroup.addView(folderChip);
-                            }
-
                             tagRecycler.setAdapter(feedTagAdapter);
-                            subscriptionAdapter.setItems(sortFeeds(tagFilteredFeedItems));
+
+                            initTagViews(tags, tagFilterIds);
+
+                            subscriptionAdapter.setItems(sortFeeds(tagFilteredFeeds));
                             emptyView.updateVisibility();
                             progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
                         }, error -> {
@@ -416,6 +366,71 @@ public class SubscriptionFragment extends Fragment
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);
+        }
+    }
+
+    public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> extractFeedAndTags(List<NavDrawerData.DrawerItem> feeds) {
+        List<NavDrawerData.DrawerItem> tagFilteredFeeds = new ArrayList<>();
+        List<NavDrawerData.FolderDrawerItem> tags = new ArrayList<>();
+        for (NavDrawerData.DrawerItem drawerItem : feeds) {
+            if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
+                tags.add((NavDrawerData.FolderDrawerItem) drawerItem);
+                if (((NavDrawerData.FolderDrawerItem) drawerItem).name.equals(FeedPreferences.TAG_ROOT)) {
+                    rootFolder = (NavDrawerData.FolderDrawerItem) drawerItem;
+                }
+            } else {
+                tagFilteredFeeds.add(drawerItem);
+            }
+        }
+        Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> feedsAndTags = new Pair(tagFilteredFeeds, tags);
+        return feedsAndTags;
+    }
+
+    private void initTagViews(List<NavDrawerData.FolderDrawerItem> feedFolders, Set<String> tagFilterIds) {
+        Chip rootChip = null;
+        folderChipGroup.removeAllViews();
+        for (NavDrawerData.FolderDrawerItem folderItem : feedFolders) {
+            Chip folderChip = new Chip(getActivity());
+            if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
+                folderChip.setText("All");
+                rootChip = folderChip;
+            } else {
+                folderChip.setText(folderItem.name);
+                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
+                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
+            }
+            folderChip.setCheckable(true);
+            Chip finalRootChip = rootChip;
+            folderChip.setOnClickListener(v ->  {
+                tagChipOnClickListener(folderItem, folderChip, finalRootChip);
+            });
+
+            folderChip.setChecked(tagFilterIds.contains(String.valueOf(folderItem.id)));
+
+            folderChipGroup.addView(folderChip);
+        }
+    }
+
+    private void tagChipOnClickListener(NavDrawerData.FolderDrawerItem folderItem, Chip folderChip, Chip finalRootChip) {
+        if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
+            if (folderChip.isChecked()) {
+                feedTagAdapter.clear();
+                folderChipGroup.clearCheck();
+                activateAllChip(folderChip, true);
+                subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
+            }
+        } else {
+            if (folderChip.isChecked()) {
+                UserPreferences.addTagFilterId(folderItem.id);
+                feedTagAdapter.addItem(folderItem);
+            } else {
+                UserPreferences.removeTagFilterId(folderItem.id);
+                feedTagAdapter.removeItem(folderItem);
+            }
+
+            boolean tagsSelected = !feedTagAdapter.isEmpyty();
+            updateDisplayedSubscriptions(tagsSelected);
+            activateAllChip(finalRootChip, !tagsSelected);
         }
     }
 
@@ -508,14 +523,14 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
-        subscriptionAdapter.setItems(tagFilteredFeedItems);
+        subscriptionAdapter.setItems(tagFilteredFeeds);
         subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStartSelectMode() {
         List<NavDrawerData.DrawerItem> feedsOnly = new ArrayList<>();
-        for (NavDrawerData.DrawerItem item : tagFilteredFeedItems) {
+        for (NavDrawerData.DrawerItem item : tagFilteredFeeds) {
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 feedsOnly.add(item);
             }

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 
 public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewHolder> {
     private List<NavDrawerData.FolderDrawerItem> feedFolders;
-    private NavDrawerData.FolderDrawerItem defaultAll = new NavDrawerData.FolderDrawerItem("All");
-    public FeedTagAdapter(List<NavDrawerData.FolderDrawerItem> feedFolders) {
+    private NavDrawerData.FolderDrawerItem defaultAll;
+    public FeedTagAdapter(Context context, List<NavDrawerData.FolderDrawerItem> feedFolders) {
+        this.defaultAll = new NavDrawerData.FolderDrawerItem(context.getString(R.string.tag_all));
         this.feedFolders = feedFolders;
-        defaultAll.id = -1;
+        defaultAll.id = RecyclerView.NO_ID;
         init();
     }
     private void init() {
