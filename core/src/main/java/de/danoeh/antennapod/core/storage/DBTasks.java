@@ -357,14 +357,11 @@ public final class DBTasks {
                     && !TextUtils.isEmpty(item.getMedia().getStreamUrl())
                     && !TextUtils.isEmpty(searchItem.getMedia().getStreamUrl())
                     && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
-                Log.d(TAG, "Assuming duplicate url: " + item.getMedia().getStreamUrl());
                 return item;
             } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
-                Log.d(TAG, "Found same title. Checking pubdate: " + item.getTitle());
                 long dateOriginal = item.getPubDate().getTime();
                 long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
                 if (Math.abs(dateOriginal - dateNew) < 24L * 3600L * 1000L) { // Same day
-                    Log.d(TAG, "Assuming duplicate date: " + item.getPubDate() + ", " + searchItem.getPubDate());
                     return item;
                 }
             }
@@ -467,6 +464,7 @@ public final class DBTasks {
                 if (oldItem == null) {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
+                        Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
                         DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
