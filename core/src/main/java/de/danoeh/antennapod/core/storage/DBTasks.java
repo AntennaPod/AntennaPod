@@ -359,7 +359,7 @@ public final class DBTasks {
                     && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
                 Log.d(TAG, "Assuming duplicate url: " + item.getMedia().getStreamUrl());
                 return item;
-            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())) {
+            } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
                 Log.d(TAG, "Found same title. Checking pubdate: " + item.getTitle());
                 long dateOriginal = item.getPubDate().getTime();
                 long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
@@ -370,6 +370,21 @@ public final class DBTasks {
             }
         }
         return null;
+    }
+
+    private static boolean titlesLookSimilar(String title1, String title2) {
+        if (TextUtils.isEmpty(title1) || TextUtils.isEmpty(title2)) {
+            return false;
+        }
+        return canonicalizeTitle(title1).equals(canonicalizeTitle(title2));
+    }
+
+    private static String canonicalizeTitle(String title) {
+        return title
+                .trim()
+                .replace('“', '"')
+                .replace('”', '"')
+                .replace('—', '-');
     }
 
     /**
