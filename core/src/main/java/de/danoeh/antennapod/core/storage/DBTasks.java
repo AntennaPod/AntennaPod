@@ -453,7 +453,7 @@ public final class DBTasks {
                 final FeedItem item = newFeed.getItems().get(idx);
 
                 if (item != searchFeedItemGuessDuplicate(newFeed.getItems(), item)) {
-                    // Canonical episode is the first one returned (usually latest)
+                    // Canonical episode is the first one returned (usually oldest)
                     DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
