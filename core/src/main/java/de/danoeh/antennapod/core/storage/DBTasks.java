@@ -455,7 +455,7 @@ public final class DBTasks {
                 if (item != searchFeedItemGuessDuplicate(newFeed.getItems(), item)) {
                     // Canonical episode is the first one returned (usually latest)
                     DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
-                            item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
+                            item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod attempted to repair it.", false));
                     continue;
@@ -467,7 +467,7 @@ public final class DBTasks {
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
                         DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
-                                item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
+                                item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod attempted to repair it.\n\n"
                                         + "{" + oldItem.getTitle() + "} with ID " + oldItem.getItemIdentifier()
