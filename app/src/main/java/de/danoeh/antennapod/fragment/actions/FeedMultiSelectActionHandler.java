@@ -17,8 +17,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
-import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
+import de.danoeh.antennapod.dialog.preferences.PreferenceListDialog;
+import de.danoeh.antennapod.dialog.preferences.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 

@@ -1,42 +1,50 @@
-package de.danoeh.antennapod.fragment.preferences.dialog;
+package de.danoeh.antennapod.dialog.preferences;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 
 import de.danoeh.antennapod.R;
 
-public class PreferenceListDialog {
+public class PreferenceSwitchDialog {
     protected Context context;
     private String title;
+    private String text;
     private OnPreferenceChangedListener onPreferenceChangedListener;
-    private int selectedPos = 0;
 
-    public PreferenceListDialog(Context context, String title) {
+    public PreferenceSwitchDialog(Context context, String title, String text) {
         this.context = context;
         this.title = title;
+        this.text = text;
     }
 
     public interface OnPreferenceChangedListener {
         /**
          * Notified when user confirms preference
          *
-         * @param pos The index of the item that was selected
+         * @param enabled The preference
          */
 
-        void preferenceChanged(int pos);
+        void preferenceChanged(boolean enabled);
     }
 
-    public void openDialog(String[] items) {
+    public void openDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
-        builder.setSingleChoiceItems(items, selectedPos, (dialog, which) -> {
-            selectedPos = which;
-        });
+
+        LayoutInflater inflater = LayoutInflater.from(this.context);
+        View layout = inflater.inflate(R.layout.dialog_switch_preference, null, false);
+        SwitchCompat switchButton = layout.findViewById(R.id.dialogSwitch);
+        switchButton.setText(text);
+        builder.setView(layout);
+
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            if (onPreferenceChangedListener != null && selectedPos >= 0) {
-                onPreferenceChangedListener.preferenceChanged(selectedPos);
+            if (onPreferenceChangedListener != null) {
+                onPreferenceChangedListener.preferenceChanged(switchButton.isChecked());
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);
