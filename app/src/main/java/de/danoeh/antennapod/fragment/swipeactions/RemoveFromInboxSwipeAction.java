@@ -40,6 +40,6 @@ public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter) {
-        return filter.showUnplayed;
+        return filter.showNew;
     }
 }
