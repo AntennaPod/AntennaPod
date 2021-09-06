@@ -1,21 +1,14 @@
 package de.danoeh.antennapod.activity;
 
-import android.Manifest;
-import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
@@ -51,7 +44,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
             finish();
         }
 
-        displayDeviceBackground();
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
@@ -100,16 +92,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
-    }
-
-    private void displayDeviceBackground() {
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (Build.VERSION.SDK_INT < 27 || permission == PackageManager.PERMISSION_GRANTED) {
-            final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-            final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-            ImageView background = findViewById(R.id.widget_config_background);
-            background.setImageDrawable(wallpaperDrawable);
-        }
     }
 
     private void confirmCreateWidget(View v) {
