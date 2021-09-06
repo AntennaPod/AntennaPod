@@ -205,6 +205,7 @@ public class OpmlImportActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode != PERMISSION_REQUEST_READ_EXTERNAL_STORAGE) {
             return;
         }
