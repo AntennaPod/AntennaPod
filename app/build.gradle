@@ -122,6 +122,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation "androidx.core:core:$coreVersion"
+    implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
     implementation "androidx.preference:preference:$preferenceVersion"

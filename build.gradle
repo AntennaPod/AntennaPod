@@ -42,6 +42,7 @@ project.ext {
     annotationVersion = "1.2.0"
     appcompatVersion = "1.3.1"
     coreVersion = "1.5.0"
+    fragmentVersion = "1.3.6"
     mediaVersion = "1.1.0"
     preferenceVersion = "1.1.1"
     workManagerVersion = "2.3.4"
