@@ -841,10 +841,9 @@ public final class DBReader {
                 long recentPubDate = recentPubDates.containsKey(feed.getId()) ? recentPubDates.get(feed.getId()) : -1;
                 NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
                         feedCounters.get(feed.getId()), playedCounters.get(feed.getId(), -1), recentPubDate);
-//                if (FeedPreferences.TAG_ROOT.equals(tag)) {
-//                    items.add(drawerItem);
-//                    continue;
-//                }
+                if (FeedPreferences.TAG_ROOT.equals(tag)) {
+                    items.add(drawerItem);
+                }
                 NavDrawerData.FolderDrawerItem folder;
                 if (folders.containsKey(tag)) {
                     folder = folders.get(tag);
@@ -857,28 +856,16 @@ public final class DBReader {
             }
         }
 
-        List<NavDrawerData.DrawerItem> tagFilteredFeeds = getTagFilteredFeeds(folders);
 
         List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
-        tagFilteredFeeds.addAll(foldersSorted);
+        items.addAll(foldersSorted);
 
-        NavDrawerData result = new NavDrawerData(tagFilteredFeeds, queueSize, numNewItems, numDownloadedItems,
+        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
     }
 
-    private static List<NavDrawerData.DrawerItem> getTagFilteredFeeds(Map<String, NavDrawerData.FolderDrawerItem> folders) {
-        Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
-        TagFilter tagFilter = new TagFilter(tagFilterIds);
-        List<NavDrawerData.FolderDrawerItem> folderValues = new ArrayList<>();
-        for (NavDrawerData.FolderDrawerItem folder : folders.values()) {
-            folderValues.add(folder);
-        }
-        List<NavDrawerData.DrawerItem> tagFilteredItems = tagFilter.filter(folderValues);
-
-        return tagFilteredItems;
-    }
 }

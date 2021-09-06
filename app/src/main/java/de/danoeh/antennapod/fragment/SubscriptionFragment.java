@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -52,6 +53,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.feed.TagFilter;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -84,6 +86,7 @@ public class SubscriptionFragment extends Fragment
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
+    public static final String PREF_TAG_FILTER = "prefTagFilter";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
@@ -338,7 +341,7 @@ public class SubscriptionFragment extends Fragment
                         result -> {
                             Pair<List<NavDrawerData.DrawerItem>,
                                     List<NavDrawerData.FolderDrawerItem>> feedsAndTags =
-                                    extractFeedAndTags(result);
+                                    extractFeedsAndTags(result);
                             tagFilteredFeeds = feedsAndTags.first;
                             List<NavDrawerData.FolderDrawerItem> tags = feedsAndTags.second;
 
@@ -363,7 +366,7 @@ public class SubscriptionFragment extends Fragment
 
     private void initTagViews(List<NavDrawerData.FolderDrawerItem> tags) {
         feedTagAdapter = new FeedTagAdapter(getContext(), new ArrayList<>());
-        Set<String> tagFilterIds = UserPreferences.getTagFilterIds();
+        Set<String> tagFilterIds = getTagFilterIds();
 
         for (NavDrawerData.FolderDrawerItem folder : tags) {
             if (tagFilterIds.contains(String.valueOf(folder.id))) {
@@ -376,21 +379,32 @@ public class SubscriptionFragment extends Fragment
         initTagChipView(tags, tagFilterIds);
     }
 
-    public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> extractFeedAndTags(List<NavDrawerData.DrawerItem> feeds) {
-        List<NavDrawerData.DrawerItem> tagFilteredFeeds = new ArrayList<>();
+    public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> extractFeedsAndTags(List<NavDrawerData.DrawerItem> drawerItems) {
+        List<NavDrawerData.DrawerItem> feeds = new ArrayList<>();
         List<NavDrawerData.FolderDrawerItem> tags = new ArrayList<>();
-        for (NavDrawerData.DrawerItem drawerItem : feeds) {
+        for (NavDrawerData.DrawerItem drawerItem : drawerItems) {
             if (drawerItem.type.equals(NavDrawerData.DrawerItem.Type.FOLDER)) {
                 tags.add((NavDrawerData.FolderDrawerItem) drawerItem);
                 if (((NavDrawerData.FolderDrawerItem) drawerItem).name.equals(FeedPreferences.TAG_ROOT)) {
                     rootFolder = (NavDrawerData.FolderDrawerItem) drawerItem;
                 }
             } else {
-                tagFilteredFeeds.add(drawerItem);
+                feeds.add(drawerItem);
             }
         }
+
+        List<NavDrawerData.DrawerItem> tagFilteredFeeds = getTagFilteredFeeds(tags);
+
         Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> feedsAndTags = new Pair(tagFilteredFeeds, tags);
         return feedsAndTags;
+    }
+
+    private List<NavDrawerData.DrawerItem> getTagFilteredFeeds(List<NavDrawerData.FolderDrawerItem> tags) {
+        Set<String> tagFilterIds = getTagFilterIds();
+        TagFilter tagFilter = new TagFilter(tagFilterIds);
+        List<NavDrawerData.DrawerItem> tagFilteredFeeds = tagFilter.filter(tags);
+
+        return tagFilteredFeeds;
     }
 
     private void initTagChipView(List<NavDrawerData.FolderDrawerItem> feedFolders, Set<String> tagFilterIds) {
@@ -403,8 +417,8 @@ public class SubscriptionFragment extends Fragment
                 rootChip = folderChip;
             } else {
                 folderChip.setText(folderItem.name);
-                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
-                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
+//                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
+//                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
             }
             folderChip.setCheckable(true);
             Chip finalRootChip = rootChip;
@@ -428,10 +442,10 @@ public class SubscriptionFragment extends Fragment
             }
         } else {
             if (folderChip.isChecked()) {
-                UserPreferences.addTagFilterId(folderItem.id);
+                addTagFilterId(folderItem.id);
                 feedTagAdapter.addItem(folderItem);
             } else {
-                UserPreferences.removeTagFilterId(folderItem.id);
+                removeTagFilterId(folderItem.id);
                 feedTagAdapter.removeItem(folderItem);
             }
 
@@ -552,5 +566,23 @@ public class SubscriptionFragment extends Fragment
     private void activateAllChip(Chip chip, boolean enabled) {
         chip.setChecked(enabled);
         chip.setEnabled(!enabled);
+    }
+    public Set<String> getTagFilterIds() {
+        return prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>());
+    }
+    public void addTagFilterId(long tagFilterId) {
+        Set<String> tagFilterIds = new HashSet<>(prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>()));
+        tagFilterIds.add(String.valueOf(tagFilterId));
+        prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
+        prefs.edit().putStringSet(PREF_TAG_FILTER, tagFilterIds)
+                .apply();
+    }
+
+    public void removeTagFilterId(long tagFilterId) {
+        Set<String> tagFilterIds = new HashSet<>(prefs.getStringSet(PREF_TAG_FILTER, new HashSet<>()));
+        tagFilterIds.remove(String.valueOf(tagFilterId));
+        prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
+        prefs.edit().putStringSet(PREF_TAG_FILTER, tagFilterIds)
+                .apply();
     }
 }
