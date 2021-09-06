@@ -27,7 +27,8 @@ public enum DownloadError {
     ERROR_IO_BLOCKED(18, R.string.download_error_blocked),
     ERROR_UNSUPPORTED_TYPE_HTML(19, R.string.download_error_unsupported_type_html),
     ERROR_NOT_FOUND(20, R.string.download_error_not_found),
-    ERROR_CERTIFICATE(21, R.string.download_error_certificate);
+    ERROR_CERTIFICATE(21, R.string.download_error_certificate),
+    ERROR_PARSER_EXCEPTION_DUPLICATE(22, R.string.download_error_parser_exception);
 
     private final int code;
     private final int resId;

@@ -335,57 +335,54 @@ public final class DBTasks {
     }
 
     /**
-     * Get a FeedItem by its identifying value or download_url.
-     * For de-duplicating items that are not stored yet, see also FeedHandler.dedupItems
+     * Get a FeedItem by its identifying value.
      */
-    private static FeedItem searchFeedItemByIdentifyingValue(Context context, Feed feed, FeedItem searchItem) {
-        for (FeedItem item : feed.getItems()) {
+    private static FeedItem searchFeedItemByIdentifyingValue(List<FeedItem> items, FeedItem searchItem) {
+        for (FeedItem item : items) {
             if (TextUtils.equals(item.getIdentifyingValue(), searchItem.getIdentifyingValue())) {
                 return item;
             }
         }
-        // Did not find item with same ID. Try to guess duplicates based on other metadata.
-        for (FeedItem item : feed.getItems()) {
-            boolean isDuplicate = false;
+        return null;
+    }
+
+    /**
+     * Guess if one of the items could actually mean the searched item, even if it uses another identifying value.
+     * This is to work around podcasters breaking their GUIDs.
+     */
+    private static FeedItem searchFeedItemGuessDuplicate(List<FeedItem> items, FeedItem searchItem) {
+        for (FeedItem item : items) {
             if ((item.getMedia() != null)
                     && (searchItem.getMedia() != null)
                     && !TextUtils.isEmpty(item.getMedia().getStreamUrl())
                     && !TextUtils.isEmpty(searchItem.getMedia().getStreamUrl())
                     && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
-                Log.d(TAG, "Removing duplicate episode stream url " + item.getMedia().getStreamUrl());
-                isDuplicate = true;
-            } else if (TextUtils.equals(item.getTitle(), searchItem.getTitle())) {
-                Log.d(TAG, "Found same title. Checking pubdate: " + item.getTitle());
+                return item;
+            } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
                 long dateOriginal = item.getPubDate().getTime();
                 long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
-                if (Math.abs(dateOriginal - dateNew) < 24L * 3600L * 1000L) { // Same day
-                    Log.d(TAG, "Same pubDate. Removing. " + item.getPubDate() + ", " + searchItem.getPubDate());
-                    isDuplicate = true;
+                if (Math.abs(dateOriginal - dateNew) < 7L * 24L * 3600L * 1000L) { // Same week
+                    return item;
                 }
-            }
-            if (isDuplicate) {
-                DBWriter.addDownloadStatus(new DownloadStatus(feed,
-                        searchItem.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION, false,
-                        "The podcast host changed the ID of an existing episode instead of just "
-                                + "updating the episode itself. AntennaPod attempted to repair it.\n\n"
-                                + "{" + item.getTitle() + "} with ID " + item.getItemIdentifier()
-                                + " seems to be the same as {" + searchItem.getTitle() + "} with ID "
-                                + searchItem.getItemIdentifier(), false));
-                item.setItemIdentifier(searchItem.getItemIdentifier());
-
-                if (item.isPlayed() && item.getMedia() != null) {
-                    EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
-                            .currentTimestamp()
-                            .started(item.getMedia().getDuration() / 1000)
-                            .position(item.getMedia().getDuration() / 1000)
-                            .total(item.getMedia().getDuration() / 1000)
-                            .build();
-                    SyncService.enqueueEpisodeAction(context, action);
-                }
-                return item;
             }
         }
         return null;
+    }
+
+    private static boolean titlesLookSimilar(String title1, String title2) {
+        if (TextUtils.isEmpty(title1) || TextUtils.isEmpty(title2)) {
+            return false;
+        }
+        return canonicalizeTitle(title1).equals(canonicalizeTitle(title2));
+    }
+
+    private static String canonicalizeTitle(String title) {
+        return title
+                .trim()
+                .replace('“', '"')
+                .replace('”', '"')
+                .replace('„', '"')
+                .replace('—', '-');
     }
 
     /**
@@ -454,8 +451,45 @@ public final class DBTasks {
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(context, savedFeed, item);
+
+                if (item != searchFeedItemGuessDuplicate(newFeed.getItems(), item)) {
+                    // Canonical episode is the first one returned (usually oldest)
+                    DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                            item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
+                            "The podcast host appears to have added the same episode twice. "
+                                    + "AntennaPod attempted to repair it.", false));
+                    continue;
+                }
+
+                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed.getItems(), item);
                 if (oldItem == null) {
+                    oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
+                    if (oldItem != null) {
+                        Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
+                        DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
+                                item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
+                                "The podcast host changed the ID of an existing episode instead of just "
+                                        + "updating the episode itself. AntennaPod attempted to repair it.\n\n"
+                                        + "{" + oldItem.getTitle() + "} with ID " + oldItem.getItemIdentifier()
+                                        + " seems to be the same as {" + item.getTitle() + "} with ID "
+                                        + item.getItemIdentifier(), false));
+                        oldItem.setItemIdentifier(item.getItemIdentifier());
+
+                        if (oldItem.isPlayed() && oldItem.getMedia() != null) {
+                            EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
+                                    .currentTimestamp()
+                                    .started(oldItem.getMedia().getDuration() / 1000)
+                                    .position(oldItem.getMedia().getDuration() / 1000)
+                                    .total(oldItem.getMedia().getDuration() / 1000)
+                                    .build();
+                            SyncService.enqueueEpisodeAction(context, action);
+                        }
+                    }
+                }
+
+                if (oldItem != null) {
+                    oldItem.updateFromOther(item);
+                } else {
                     // item is new
                     item.setFeed(savedFeed);
 
@@ -477,8 +511,6 @@ public final class DBTasks {
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();
                     }
-                } else {
-                    oldItem.updateFromOther(item);
                 }
             }
 
@@ -487,7 +519,7 @@ public final class DBTasks {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
-                    if (searchFeedItemByIdentifyingValue(context, newFeed, feedItem) == null) {
+                    if (searchFeedItemByIdentifyingValue(newFeed.getItems(), feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();
                     }
