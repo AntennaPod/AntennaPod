@@ -954,7 +954,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 // Start playback immediately if continuous playback is enabled
 
                 // Repeat episode implementation
-                if (UserPreferences.repeatEpisode() && !wasSkipped) {
+                if (UserPreferences.getShouldRepeatEpisode() && !wasSkipped) {
                     nextMedia = currentMedia;
                     nextMedia.setPosition(0);
                 } else {

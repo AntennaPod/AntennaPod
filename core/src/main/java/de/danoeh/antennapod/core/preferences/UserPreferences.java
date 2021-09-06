@@ -889,11 +889,11 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static boolean repeatEpisode() {
+    public static boolean getShouldRepeatEpisode() {
         return prefs.getBoolean(PREF_REPEAT_EPISODE, false);
     }
 
-    public static void repeatEpisode(boolean enable) {
+    public static void setShouldRepeatEpisode(boolean enable) {
         prefs.edit()
                 .putBoolean(PREF_REPEAT_EPISODE, enable)
                 .apply();

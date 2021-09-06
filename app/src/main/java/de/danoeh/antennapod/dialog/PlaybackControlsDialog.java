@@ -90,7 +90,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
         final CheckBox repeatEpisode = dialog.findViewById(R.id.repeat_episode);
-        repeatEpisode.setChecked(UserPreferences.repeatEpisode());
+        repeatEpisode.setChecked(UserPreferences.getShouldRepeatEpisode());
         if (controller != null && !controller.canDownmix()) {
             stereoToMono.setEnabled(false);
             String sonicOnly = getString(R.string.sonic_only);
@@ -152,7 +152,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             }
         });
         repeatEpisode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            UserPreferences.repeatEpisode(isChecked);
+            UserPreferences.setShouldRepeatEpisode(isChecked);
             onRepeatChanged.accept(isChecked);
         });
     }

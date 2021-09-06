@@ -136,7 +136,7 @@ public class AudioPlayerFragment extends Fragment implements
         cardViewSeek = root.findViewById(R.id.cardViewSeek);
         txtvSeek = root.findViewById(R.id.txtvSeek);
         imgvRepeat = root.findViewById(R.id.repeat_episode);
-        imgvRepeat.setVisibility(UserPreferences.repeatEpisode() ? View.VISIBLE : View.GONE);
+        imgvRepeat.setVisibility(UserPreferences.getShouldRepeatEpisode() ? View.VISIBLE : View.GONE);
 
         setupLengthTextView();
         setupControlButtons();
@@ -556,6 +556,7 @@ public class AudioPlayerFragment extends Fragment implements
             case R.id.audio_controls:
                 PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
                 dialog.setOnRepeatChanged(repeat -> {
+                    repeat = UserPreferences.getShouldRepeatEpisode();
                     if (repeat) {
                         imgvRepeat.setVisibility(View.VISIBLE);
                     } else {
