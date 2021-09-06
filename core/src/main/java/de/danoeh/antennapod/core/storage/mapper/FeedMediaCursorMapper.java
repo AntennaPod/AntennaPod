@@ -36,7 +36,7 @@ public abstract class FeedMediaCursorMapper {
         }
 
         Boolean hasEmbeddedPicture;
-        switch (cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
+        switch (cursor.getInt(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
             case 1:
                 hasEmbeddedPicture = Boolean.TRUE;
                 break;
