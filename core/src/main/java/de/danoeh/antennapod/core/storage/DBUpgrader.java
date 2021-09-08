@@ -257,6 +257,9 @@ class DBUpgrader {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_EXCLUDE_FILTER + " TEXT DEFAULT ''");
 
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_MINIMAL_DURATION_FILTER + " INTEGER DEFAULT -1");
+
             // and now auto refresh
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_KEEP_UPDATED + " INTEGER DEFAULT 1");

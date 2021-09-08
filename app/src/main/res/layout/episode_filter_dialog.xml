@@ -40,4 +40,33 @@
         android:minLines="1"
         android:scrollbars="vertical" />
 
+    <RadioGroup
+        android:id="@+id/radio_filter_duration_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_filter_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/episode_filters_duration" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/etxtEpisodeFilterDurationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="numberSigned"
+        android:hint="@string/episode_filters_duration_hint"
+        android:lines="1"
+        android:maxLines="1"
+        android:minLines="1"
+        android:scrollbars="vertical" />
+
 </LinearLayout>

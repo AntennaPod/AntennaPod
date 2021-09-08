@@ -10,9 +10,10 @@ import java.util.regex.Pattern;
 public class FeedFilter implements Serializable {
     private final String includeFilter;
     private final String excludeFilter;
+    private final int minimalDuration;
 
     public FeedFilter() {
-        this("", "");
+        this("", "", -1);
     }
 
     public FeedFilter(String includeFilter, String excludeFilter) {
@@ -22,6 +23,17 @@ public class FeedFilter implements Serializable {
         // 2. We don't know if we'll actually be asked to parse anything anyways.
         this.includeFilter = includeFilter;
         this.excludeFilter = excludeFilter;
+        this.minimalDuration = -1;
+    }
+
+    public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
+        // We're storing the strings and not the parsed terms because
+        // 1. It's easier to show the user exactly what they typed in this way
+        //    (we don't have to recreate it)
+        // 2. We don't know if we'll actually be asked to parse anything anyways.
+        this.includeFilter = includeFilter;
+        this.excludeFilter = excludeFilter;
+        this.minimalDuration = minimalDuration;
     }
 
     /**
@@ -49,10 +61,25 @@ public class FeedFilter implements Serializable {
         List<String> includeTerms = parseTerms(includeFilter);
         List<String> excludeTerms = parseTerms(excludeFilter);
 
-        if (includeTerms.size() == 0 && excludeTerms.size() == 0) {
+        if (includeTerms.size() == 0 && excludeTerms.size() == 0 && minimalDuration <= -1) {
             // nothing has been specified, so include everything
             return true;
         }
+
+        // Check if the episode is long enough if minimal duration filter is on
+        boolean longEnough = true;
+        if (minimalDuration > -1 && item.getMedia() != null) {
+            int duration = item.getMedia().getDuration();
+            int h = 60 * (duration / 3600000);
+            int rest = duration - h * 3600000;
+            int m = rest / 60000;
+            int durationMinutes = 60 * h + m;
+            System.out.println(Integer.valueOf(durationMinutes).toString());
+            System.out.println(Integer.valueOf(minimalDuration).toString());
+            longEnough = (durationMinutes >= minimalDuration);
+            System.out.println(longEnough);
+        }
+        System.out.println(longEnough);
 
         // check using lowercase so the users don't have to worry about case.
         String title = item.getTitle().toLowerCase(Locale.getDefault());
@@ -67,7 +94,7 @@ public class FeedFilter implements Serializable {
 
         for (String term : includeTerms) {
             if (title.contains(term.trim().toLowerCase(Locale.getDefault()))) {
-                return true;
+                return longEnough;
             }
         }
 
@@ -75,10 +102,10 @@ public class FeedFilter implements Serializable {
         // if they haven't set an include filter, but they have set an exclude filter
         // default to including, but if they've set both, then exclude
         if (!hasIncludeFilter() && hasExcludeFilter()) {
-            return true;
+            return longEnough;
         }
 
-        return false;
+        return longEnough;
     }
 
     public String getIncludeFilter() {
@@ -87,6 +114,10 @@ public class FeedFilter implements Serializable {
 
     public String getExcludeFilter() {
         return excludeFilter;
+    }
+
+    public int getMinimalDurationFilter() {
+        return minimalDuration;
     }
 
     /**
@@ -109,5 +140,9 @@ public class FeedFilter implements Serializable {
 
     public boolean hasExcludeFilter() {
         return excludeFilter.length() > 0;
+    }
+
+    public boolean hasMinimalDurationFilter() {
+        return minimalDuration > -1;
     }
 }
