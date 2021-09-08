@@ -74,12 +74,8 @@ public class FeedFilter implements Serializable {
             int rest = duration - h * 3600000;
             int m = rest / 60000;
             int durationMinutes = 60 * h + m;
-            System.out.println(Integer.valueOf(durationMinutes).toString());
-            System.out.println(Integer.valueOf(minimalDuration).toString());
             longEnough = (durationMinutes >= minimalDuration);
-            System.out.println(longEnough);
         }
-        System.out.println(longEnough);
 
         // check using lowercase so the users don't have to worry about case.
         String title = item.getTitle().toLowerCase(Locale.getDefault());
@@ -105,7 +101,11 @@ public class FeedFilter implements Serializable {
             return longEnough;
         }
 
-        return longEnough;
+        if (hasMinimalDurationFilter() && longEnough) {
+            return true;
+        }
+
+        return false;
     }
 
     public String getIncludeFilter() {

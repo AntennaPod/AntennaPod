@@ -12,7 +12,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class FeedFilterTest {
-    // TODO : Add Minimal Duration Filter
+
     @Test
     public void testNullFilter() {
         FeedFilter filter = new FeedFilter();
@@ -130,9 +130,6 @@ public class FeedFilterTest {
 
     @Test
     public void testMinimalDurationFilter() {
-        int minimalDurationFilter = 3;
-        FeedFilter filter = new FeedFilter("", "", minimalDurationFilter);
-
         FeedItem download = new FeedItem();
         download.setTitle("Hello friend!");
         FeedMedia downloadMedia = FeedMediaMother.anyFeedMedia();
@@ -144,6 +141,8 @@ public class FeedFilterTest {
         doNotDownloadMedia.setDuration(Converter.durationStringShortToMs("02:00", false));
         doNotDownload.setMedia(doNotDownloadMedia);
 
+        int minimalDurationFilter = 3;
+        FeedFilter filter = new FeedFilter("", "", minimalDurationFilter);
 
         assertTrue(filter.hasMinimalDurationFilter());
         assertTrue(filter.shouldAutoDownload(download));

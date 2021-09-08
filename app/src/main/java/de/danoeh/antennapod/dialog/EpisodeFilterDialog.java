@@ -14,8 +14,8 @@ import de.danoeh.antennapod.model.feed.FeedFilter;
  * Displays a dialog with a text box for filtering episodes and two radio buttons for exclusion/inclusion
  */
 public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
-
     private final FeedFilter initialFilter;
+
     public EpisodeFilterDialog(Context context, FeedFilter filter) {
 
         super(context);
@@ -59,9 +59,7 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
                     if (radioDuration.isChecked()) {
                         try {
                             minimalDuration = Integer.parseInt(etxtEpisodeFilterDurationText.getText().toString());
-                        }
-                        catch (NumberFormatException e)
-                        {
+                        } catch (NumberFormatException e) {
                             minimalDuration = -1;
                         }
                     }
