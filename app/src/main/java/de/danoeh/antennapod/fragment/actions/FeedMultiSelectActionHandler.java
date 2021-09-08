@@ -57,9 +57,9 @@ public class FeedMultiSelectActionHandler {
     private void addTagPrefHandler() {
         DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Add tag", () -> {
             return new ArrayList<>();
-        }, text -> {
+        }, tag -> {
             saveFeedPreferences(feedPreferences -> {
-
+              feedPreferences.addTag(tag);
             });
         });
         TagDialog.show(activity.getSupportFragmentManager(), null);
