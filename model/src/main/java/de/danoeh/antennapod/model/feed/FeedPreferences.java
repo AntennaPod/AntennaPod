@@ -200,6 +200,14 @@ public class FeedPreferences implements Serializable {
         return TextUtils.join(TAG_SEPARATOR, tags);
     }
 
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+
     /**
      * getter for preference if notifications should be display for new episodes.
      * @return true for displaying notifications
