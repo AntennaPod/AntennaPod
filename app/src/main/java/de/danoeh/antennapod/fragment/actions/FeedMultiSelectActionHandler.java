@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.preferences.PreferenceAutoCompleteTextDialog;
 import de.danoeh.antennapod.dialog.preferences.PreferenceListDialog;
 import de.danoeh.antennapod.dialog.preferences.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -44,11 +46,23 @@ public class FeedMultiSelectActionHandler {
         } else if (id == R.id.playback_speed) {
             playbackSpeedPrefHandler();
         } else if (id == R.id.add_to_folder) {
-            DialogFragment TagDialog = new TagDialog(selectedItems());
+            addTagPrefHandler();
+
         }
         else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
+    }
+
+    private void addTagPrefHandler() {
+        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Add tag", () -> {
+            return new ArrayList<>();
+        }, text -> {
+            saveFeedPreferences(feedPreferences -> {
+
+            });
+        });
+        TagDialog.show(activity.getSupportFragmentManager(), null);
     }
 
     private void autoDownloadPrefHandler() {

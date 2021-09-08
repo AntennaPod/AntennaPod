@@ -25,4 +25,8 @@
         android:menuCategory="container"
         android:title="@string/playback_speed"
         android:icon="@drawable/ic_playback_speed"/>
+    <item
+        android:id="@+id/add_to_folder"
+        android:menuCategory="container"
+        android:title="Add tag" />
 </menu>

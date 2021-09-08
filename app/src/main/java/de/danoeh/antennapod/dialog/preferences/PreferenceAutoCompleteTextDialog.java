@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog.preferences;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,14 +38,21 @@ public class PreferenceAutoCompleteTextDialog extends DialogFragment {
     private static final String ARG_FEED_PREFERENCES = "feed_preferences";
     private List<String> displayedTags;
     private @NonNull TagDialogBinding viewBinding;
-
-
+    private String title;
+    private AutoCompleteTextCallback autoCompleteTextCallback;
+    private OnTextInputListener onTextInputListener;
+    public PreferenceAutoCompleteTextDialog(String title, AutoCompleteTextCallback callback,
+                                            OnTextInputListener onTextInputListener) {
+        this.title = title;
+        this.autoCompleteTextCallback = callback;
+        this.onTextInputListener = onTextInputListener;
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        FeedPreferences preferences = (FeedPreferences) getArguments().getSerializable(ARG_FEED_PREFERENCES);
-        displayedTags = new ArrayList<>(preferences.getTags());
-        displayedTags.remove(FeedPreferences.TAG_ROOT);
+//        FeedPreferences preferences = (FeedPreferences) getArguments().getSerializable(ARG_FEED_PREFERENCES);
+//        displayedTags = new ArrayList<>(preferences.getTags());
+//        displayedTags.remove(FeedPreferences.TAG_ROOT);
 
         viewBinding = TagDialogBinding.inflate(getLayoutInflater());
 
@@ -61,21 +69,28 @@ public class PreferenceAutoCompleteTextDialog extends DialogFragment {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
-        dialog.setTitle(R.string.feed_folders_label);
+        dialog.setTitle(title);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {
-            addTag(viewBinding.newTagEditText.getText().toString().trim());
-            preferences.getTags().clear();
-            preferences.getTags().addAll(displayedTags);
-            DBWriter.setFeedPreferences(preferences);
+//            addTag();
+            String text = viewBinding.newTagEditText.getText().toString().trim();
+            if (onTextInputListener != null) {
+                onTextInputListener.onTextInputListener(text);
+            }
+//            preferences.getTags().clear();
+//            preferences.getTags().addAll(displayedTags);
+//            DBWriter.setFeedPreferences(preferences);
         });
         dialog.setNegativeButton(R.string.cancel_label, null);
         return dialog.create();
     }
 
-    interface AutoCompleteTextCallback {
+    public interface AutoCompleteTextCallback {
         List<String> loadAutoCompleteText();
     }
-    AutoCompleteTextCallback autoCompleteTextCallback;
+
+    public interface OnTextInputListener {
+        void onTextInputListener(String text);
+    }
     private void loadTags() {
         Observable.fromCallable(
                 () -> {
@@ -88,16 +103,21 @@ public class PreferenceAutoCompleteTextDialog extends DialogFragment {
 //                        }
 //                    }
 //                    return folders;
+                    if (autoCompleteTextCallback != null) {
+                        return  autoCompleteTextCallback.loadAutoCompleteText();
+                    }
 
-                    return  autoCompleteTextCallback.loadAutoCompleteText();
+                    return null;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            ArrayAdapter<String> acAdapter = new ArrayAdapter<String>(getContext(),
-                                    R.layout.single_tag_text_view, result);
-                            viewBinding.newTagEditText.setAdapter(acAdapter);
+                            if (result != null) {
+                                ArrayAdapter<String> acAdapter = new ArrayAdapter<String>(getContext(),
+                                        R.layout.single_tag_text_view, result);
+                                viewBinding.newTagEditText.setAdapter(acAdapter);
+                            }
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
                         });
