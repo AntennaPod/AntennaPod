@@ -47,9 +47,9 @@ public class FeedMultiSelectActionHandler {
             playbackSpeedPrefHandler();
         } else if (id == R.id.add_to_folder) {
             addTagPrefHandler();
-
-        }
-        else {
+        } else if (id == R.id.remove_tag) {
+            removeTagPrefHandler();
+        } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
     }
@@ -60,6 +60,17 @@ public class FeedMultiSelectActionHandler {
         }, tag -> {
             saveFeedPreferences(feedPreferences -> {
               feedPreferences.addTag(tag);
+            });
+        });
+        TagDialog.show(activity.getSupportFragmentManager(), null);
+    }
+
+    private void removeTagPrefHandler() {
+        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Remove tag", () -> {
+            return new ArrayList<>();
+        }, tag -> {
+            saveFeedPreferences(feedPreferences -> {
+                feedPreferences.removeTag(tag);
             });
         });
         TagDialog.show(activity.getSupportFragmentManager(), null);

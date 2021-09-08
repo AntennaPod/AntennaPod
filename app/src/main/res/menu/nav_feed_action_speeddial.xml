@@ -29,4 +29,9 @@
         android:id="@+id/add_to_folder"
         android:menuCategory="container"
         android:title="Add tag" />
+    <item
+        android:id="@+id/remove_tag"
+        android:menuCategory="container"
+        android:title="Remove tag" />
+
 </menu>
