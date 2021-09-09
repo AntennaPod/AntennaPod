@@ -16,7 +16,9 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.preferences.PreferenceAutoCompleteTextDialog;
 import de.danoeh.antennapod.dialog.preferences.PreferenceListDialog;
@@ -55,9 +57,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void addTagPrefHandler() {
-        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Add tag", () -> {
-            return new ArrayList<>();
-        }, tag -> {
+        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Add tag",
+                this::loadAutoCompleteTags, tag -> {
             saveFeedPreferences(feedPreferences -> {
               feedPreferences.addTag(tag);
             });
@@ -66,9 +67,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     private void removeTagPrefHandler() {
-        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Remove tag", () -> {
-            return new ArrayList<>();
-        }, tag -> {
+        DialogFragment TagDialog = new PreferenceAutoCompleteTextDialog("Remove tag",
+                this::loadAutoCompleteTags, tag -> {
             saveFeedPreferences(feedPreferences -> {
                 feedPreferences.removeTag(tag);
             });
@@ -151,6 +151,18 @@ public class FeedMultiSelectActionHandler {
             });
         });
         preferenceSwitchDialog.openDialog();
+    }
+
+    private List<String> loadAutoCompleteTags() {
+        NavDrawerData data = DBReader.getNavDrawerData();
+        List<NavDrawerData.DrawerItem> items = data.items;
+        List<String> folders = new ArrayList<String>();
+        for (NavDrawerData.DrawerItem item : items) {
+            if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+                folders.add(item.getTitle());
+            }
+        }
+        return folders;
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
