@@ -436,6 +436,7 @@ public class SubscriptionFragment extends Fragment
         if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
             if (folderChip.isChecked()) {
                 feedTagAdapter.clear();
+                clearTagFilterIds();
                 folderChipGroup.clearCheck();
                 activateAllChip(folderChip, true);
                 updateDisplayedSubscriptions(false);
@@ -585,5 +586,10 @@ public class SubscriptionFragment extends Fragment
         prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
         prefs.edit().putStringSet(PREF_TAG_FILTER, tagFilterIds)
                 .apply();
+    }
+
+    public void clearTagFilterIds() {
+        prefs.edit().putStringSet(PREF_TAG_FILTER, null).apply();
+        prefs.edit().putStringSet(PREF_TAG_FILTER, new HashSet<>()).apply();
     }
 }
