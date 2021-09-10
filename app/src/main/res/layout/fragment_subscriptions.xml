@@ -59,19 +59,19 @@
             app:layout_constraintTop_toBottomOf="@id/expandTagsButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-            <TextView
-                android:id="@+id/feeds_filtered_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="start"
-                android:paddingStart="8dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size_small"
-                android:layout_below="@id/tagBar"/>
+    <TextView
+        android:id="@+id/feeds_filtered_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="start"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"
+        android:layout_below="@id/tagBar"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
