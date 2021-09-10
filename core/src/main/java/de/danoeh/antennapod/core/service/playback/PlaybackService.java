@@ -1120,16 +1120,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 boolean shouldRepeat = UserPreferences.getShouldRepeatEpisode();
                 if (!shouldRepeat) {
                     DBWriter.removeQueueItem(PlaybackService.this, ended, item);
-                }
-                // Delete episode if enabled
-                FeedPreferences.AutoDeleteAction action =
-                        item.getFeed().getPreferences().getCurrentAutoDelete();
-                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
-                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
-                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
-                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
-                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                    Log.d(TAG, "Episode Deleted");
+                    // Delete episode if enabled
+                    FeedPreferences.AutoDeleteAction action =
+                            item.getFeed().getPreferences().getCurrentAutoDelete();
+                    boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.YES
+                            || (action == FeedPreferences.AutoDeleteAction.GLOBAL && UserPreferences.isAutoDelete());
+                    if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                            || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                        DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+                        Log.d(TAG, "Episode Deleted");
+                    }
                 }
             }
         }
