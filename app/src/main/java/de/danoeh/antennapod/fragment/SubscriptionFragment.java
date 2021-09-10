@@ -438,7 +438,7 @@ public class SubscriptionFragment extends Fragment
                 feedTagAdapter.clear();
                 folderChipGroup.clearCheck();
                 activateAllChip(folderChip, true);
-                subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
+                updateDisplayedSubscriptions(false);
             }
         } else {
             if (folderChip.isChecked()) {
@@ -461,10 +461,11 @@ public class SubscriptionFragment extends Fragment
             for (NavDrawerData.FolderDrawerItem item : feedTagAdapter.getFeedFolders()) {
                 allChildren.addAll(item.children);
             }
-            subscriptionAdapter.setItems(sortFeeds(new ArrayList(allChildren)));
+            tagFilteredFeeds = new ArrayList(allChildren);
         } else {
-            subscriptionAdapter.setItems(sortFeeds(rootFolder.children));
+            tagFilteredFeeds = new ArrayList(rootFolder.children);
         }
+        subscriptionAdapter.setItems(sortFeeds(tagFilteredFeeds));
     }
 
     private int getDefaultNumOfColumns() {
