@@ -18,12 +18,14 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewHolder> {
     private List<NavDrawerData.FolderDrawerItem> feedFolders;
     private NavDrawerData.FolderDrawerItem defaultAll;
+
     public FeedTagAdapter(Context context, List<NavDrawerData.FolderDrawerItem> feedFolders) {
         this.defaultAll = new NavDrawerData.FolderDrawerItem(context.getString(R.string.tag_all));
         this.feedFolders = feedFolders;
         defaultAll.id = RecyclerView.NO_ID;
         init();
     }
+
     private void init() {
         if (this.feedFolders.size() == 0) {
             this.feedFolders.add(defaultAll);
@@ -86,6 +88,7 @@ public class FeedTagAdapter extends RecyclerView.Adapter<FeedTagAdapter.TagViewH
 
     public class TagViewHolder extends RecyclerView.ViewHolder {
         private Chip chip;
+
         public TagViewHolder(@NonNull View itemView) {
             super(itemView);
             chip = itemView.findViewById(R.id.feedChip);

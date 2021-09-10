@@ -202,7 +202,7 @@ public class SubscriptionFragment extends Fragment
 
         Button expandTagsButton = root.findViewById(R.id.expandTagsButton);
         expandTagsButton.setOnClickListener(v -> {
-            if(folderChipGroup.getVisibility() == View.GONE) {
+            if (folderChipGroup.getVisibility() == View.GONE) {
                 folderChipGroup.setVisibility(View.VISIBLE);
             } else {
                 folderChipGroup.setVisibility(View.GONE);
@@ -377,7 +377,8 @@ public class SubscriptionFragment extends Fragment
         initTagChipView(tags, tagFilterIds);
     }
 
-    public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> extractFeedsAndTags(List<NavDrawerData.DrawerItem> drawerItems) {
+    public Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>>
+    extractFeedsAndTags(List<NavDrawerData.DrawerItem> drawerItems) {
         List<NavDrawerData.DrawerItem> feeds = new ArrayList<>();
         List<NavDrawerData.FolderDrawerItem> tags = new ArrayList<>();
         for (NavDrawerData.DrawerItem drawerItem : drawerItems) {
@@ -393,7 +394,8 @@ public class SubscriptionFragment extends Fragment
 
         List<NavDrawerData.DrawerItem> tagFilteredFeeds = getTagFilteredFeeds(tags);
 
-        Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> feedsAndTags = new Pair(tagFilteredFeeds, tags);
+        Pair<List<NavDrawerData.DrawerItem>, List<NavDrawerData.FolderDrawerItem>> feedsAndTags =
+                new Pair(tagFilteredFeeds, tags);
         return feedsAndTags;
     }
 
@@ -415,8 +417,6 @@ public class SubscriptionFragment extends Fragment
                 rootChip = folderChip;
             } else {
                 folderChip.setText(folderItem.name);
-//                folderChip.setChipIcon(getResources().getDrawable(android.R.drawable.ic_input_add));
-//                folderChip.setCheckedIcon(getResources().getDrawable(android.R.drawable.ic_delete));
             }
             folderChip.setCheckable(true);
             Chip finalRootChip = rootChip;
@@ -430,7 +430,9 @@ public class SubscriptionFragment extends Fragment
         }
     }
 
-    private void tagChipOnClickListener(NavDrawerData.FolderDrawerItem folderItem, Chip folderChip, Chip finalRootChip) {
+    private void tagChipOnClickListener(NavDrawerData.FolderDrawerItem folderItem,
+                                        Chip folderChip,
+                                        Chip finalRootChip) {
         if (folderItem.name.equals(FeedPreferences.TAG_ROOT)) {
             if (folderChip.isChecked()) {
                 feedTagAdapter.clear();
@@ -486,7 +488,8 @@ public class SubscriptionFragment extends Fragment
             return true;
         } else if (itemId == R.id.add_to_folder) {
             TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
-        } else if (itemId == R.id.mark_all_read_item) { displayConfirmationDialog(
+        } else if (itemId == R.id.mark_all_read_item) {
+            displayConfirmationDialog(
                     R.string.mark_all_read_label,
                     R.string.mark_all_read_confirmation_msg,
                     () -> DBWriter.markFeedRead(feed.getId()));
