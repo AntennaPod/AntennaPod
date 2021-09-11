@@ -47,7 +47,7 @@ public class FeedMultiSelectActionHandler {
             autoDeleteEpisodesPrefHandler();
         } else if (id == R.id.playback_speed) {
             playbackSpeedPrefHandler();
-        } else if (id == R.id.add_to_folder) {
+        } else if (id == R.id.add_tag) {
             addTagPrefHandler();
         } else if (id == R.id.remove_tag) {
             removeTagPrefHandler();

@@ -26,12 +26,14 @@
         android:title="@string/playback_speed"
         android:icon="@drawable/ic_playback_speed"/>
     <item
-        android:id="@+id/add_to_folder"
+        android:id="@+id/add_tag"
         android:menuCategory="container"
-        android:title="Add tag" />
+        android:title="Add tag"
+        android:icon="@drawable/ic_tag"/>
     <item
         android:id="@+id/remove_tag"
         android:menuCategory="container"
-        android:title="Remove tag" />
+        android:title="Remove tag"
+        android:icon="@drawable/ic_tag_remove"/>
 
 </menu>
