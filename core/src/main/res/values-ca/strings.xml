@@ -24,6 +24,7 @@
   <string name="playback_statistics_label">Reproducció</string>
   <string name="download_statistics_label">Baixades</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d de %2$depisodis començats.\n\nReproduïts %3$s de %4$s.</string>
   <string name="statistics_mode">Mode d\'estadístiques</string>
@@ -69,15 +70,11 @@
   <string name="chapter_duration">Durada: %1$s</string>
   <string name="description_label">Descripció</string>
   <string name="episodes_suffix">\u0020episodis</string>
-  <string name="processing_label">S\'està processant</string>
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
-  <string name="auto_download_apply_to_items_title">Aplica als episodis previs</string>
-  <string name="auto_download_apply_to_items_message">El nou ajustament de <i>baixada automàtica</i> s\'aplicarà als nous episodis.\nVols que també sigui aplicat als episodis publicats prèviament?</string>
   <string name="auto_delete_label">Esborra episodi automàticament</string>
   <string name="feed_volume_reduction">Reducció de volum</string>
-  <string name="feed_volume_reduction_summary">Baixa el volum per a episodis d\'aquest feed: %1$s</string>
   <string name="feed_volume_reduction_off">Off</string>
   <string name="feed_volume_reduction_light">Lleuger</string>
   <string name="feed_volume_reduction_heavy">Fort</string>
@@ -95,10 +92,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dia després d\'acabar</item>
     <item quantity="other">%d dies després d\'acabar</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d seleccionat</item>
-    <item quantity="other">%dseleccionats</item>
   </plurals>
   <string name="loading_more">Carregant més...</string>
   <!--Actions on feeds-->
@@ -166,8 +159,6 @@
   <string name="remove_from_favorite_label">Suprimeix de preferits</string>
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
-  <string name="activate_auto_download">Activa baixades automàtiques</string>
-  <string name="deactivate_auto_download">Desactiva les baixades automàtiques</string>
   <string name="reset_position">Restablir posició de reproducció</string>
   <string name="removed_item">S\'ha suprimit l\'element</string>
   <string name="no_items_selected">Cap item seleccionat.</string>
@@ -185,7 +176,6 @@
   <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="download_error_file_type_type">Error de tipus de fitxer</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
-  <string name="download_canceled_autodownload_enabled_msg">Baixada cancel·lada\nDesactivada les <i>baixades automàtiques</i> per aquest element</string>
   <string name="download_report_title">Baixades completades amb error(s)</string>
   <string name="auto_download_report_title">Auto-baixades completades.</string>
   <string name="download_error_io_error">Error d\'E/S</string>
@@ -223,7 +213,6 @@
   <string name="error_file_not_found">Arxiu no trobat</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloqueja la cua</string>
-  <string name="unlock_queue">Desbloqueja la cua</string>
   <string name="queue_locked">Cua bloquejada</string>
   <string name="queue_unlocked">Cua no bloquejada</string>
   <string name="queue_lock_warning">Si bloqueges la cua no podràs arrastrar o reordenar episodis.</string>
@@ -370,8 +359,6 @@
   <string name="enqueue_location_front">Principi</string>
   <string name="enqueue_location_after_current">Després de l\'episodi actual</string>
   <string name="pref_smart_mark_as_played_disabled">Desactivat</string>
-  <string name="pref_image_cache_size_title">Mida de la memòria cau de les imatges</string>
-  <string name="pref_image_cache_size_sum">Mida de la memòria cau en el disc de les imatges.</string>
   <string name="visit_user_forum">Fòrum d\'usuaris</string>
   <string name="bug_report_title">Informa d\'un bug</string>
   <string name="open_bug_tracker">Obri rastrejador de bugs</string>
@@ -487,7 +474,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
-  <string name="gpodnet_suggestions_header">SUGGERÈNCIES</string>
   <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
   <string name="username_label">Nom d\'usuari</string>
@@ -549,21 +535,6 @@
   <string name="discover_more">més »</string>
   <!--Local feeds-->
   <string name="filter">Filtra</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Tot</string>
-  <string name="selected_all_label">Selecciona tots els episodis</string>
-  <string name="deselected_all_label">Deselecciona tots els episodis</string>
-  <string name="played_label">Reproduit</string>
-  <string name="selected_played_label">Selecciona episodis reproduits</string>
-  <string name="unplayed_label">No reproduïts</string>
-  <string name="selected_unplayed_label">Selecciona episodis sense reproduir</string>
-  <string name="downloaded_label">Baixat</string>
-  <string name="selected_downloaded_label">Selecciona episodis descarregats</string>
-  <string name="not_downloaded_label">No baixat</string>
-  <string name="selected_not_downloaded_label">Selecciona episodis sense descarregar</string>
-  <string name="selected_queued_label">Episodis en cua seleccionats</string>
-  <string name="selected_not_queued_label">Episodis seleccionats i no a la cua</string>
-  <string name="selected_has_media_label">Episodis amb mitjans seleccionats</string>
   <string name="hide_is_favorite_label">És preferint</string>
   <string name="hide_downloaded_episodes_label">Baixat</string>
   <string name="hide_not_downloaded_episodes_label">No baixat</string>
@@ -595,9 +566,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controls d\'audio</string>
   <string name="playback_speed">Velocitat de reproducció</string>
-  <string name="volume">Volum</string>
-  <string name="left_short">E</string>
-  <string name="right_short">D</string>
   <string name="audio_effects">Efectes de so</string>
   <string name="stereo_to_mono">Downmix: D\'estereo a mono</string>
   <string name="sonic_only">Només Sonic</string>

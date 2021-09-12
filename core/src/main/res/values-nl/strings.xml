@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Meldingen</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\'%1$s\' is niet aangetroffen</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Veegacties</string>
+  <string name="swipeactions_summary">Kies de actie die moet worden uitgevoerd door te vegen over een aflevering</string>
+  <string name="swipe_right">Naar rechts vegen</string>
+  <string name="swipe_left">Naar links vegen</string>
+  <string name="enable_swipeactions">Veegacties inschakelen op dit scherm</string>
+  <string name="change_setting">Wijzigen</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Totaalduur van afgespeelde afleveringen:</string>
   <string name="statistics_details_dialog">%1$d van %2$d afleveringen gestart.\n\n%3$s van %4$s afgespeeld.</string>
@@ -84,15 +91,12 @@
   <string name="shownotes_label">Notities</string>
   <string name="shownotes_contentdescription">veeg omhoog om het wijzigingslog te bekijken</string>
   <string name="episodes_suffix">\u0020afleveringen</string>
-  <string name="processing_label">Bezig met verwerken...</string>
   <string name="close_label">Sluiten</string>
   <string name="retry_label">Opnieuw</string>
   <string name="auto_download_label">Meenemen bij automatisch downloaden</string>
-  <string name="auto_download_apply_to_items_title">Toepassen op vorige afleveringen</string>
-  <string name="auto_download_apply_to_items_message">De instelling voor <i>Automatisch downloaden</i> wordt automatisch toegepast op toekomstige afleveringen.\nWil je deze ook toepassen op eerder gepubliceerde afleveringen?</string>
   <string name="auto_delete_label">Aflevering automatisch verwijderen</string>
   <string name="feed_volume_reduction">Volumebeperking</string>
-  <string name="feed_volume_reduction_summary">Volume verlagen voor afleveringen uit deze feed: %1$s</string>
+  <string name="feed_volume_reduction_summary">Volume verlagen voor afleveringen uit deze podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Uit</string>
   <string name="feed_volume_reduction_light">Gematigd</string>
   <string name="feed_volume_reduction_heavy">Aanzienlijk</string>
@@ -114,8 +118,8 @@
     <item quantity="other">%d dagen na afronden</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d geselecteerd</item>
-    <item quantity="other">%d geselecteerd</item>
+    <item quantity="one">%1$d/%2$d geselecteerd</item>
+    <item quantity="other">%1$d/%2$d geselecteerd</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d aflevering</item>
@@ -152,6 +156,7 @@
   <string name="share_website_url_label">Website-adres</string>
   <string name="share_feed_url_label">Podcast-feedurl</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \'%1$s\' en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
+  <string name="feed_delete_confirmation_msg_batch">Bevestig dat je de geselecteerde podcasts en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
   <string name="feed_delete_confirmation_local_msg">Bevestig dat je de podcast \'%1$s\' wilt verwijderen. De bestanden in de lokale bronmap worden bewaard.</string>
   <string name="feed_remover_msg">Podcast verwijderen</string>
   <string name="load_complete_feed">Gehele podcast verversen</string>
@@ -163,6 +168,11 @@
   <string name="open_podcast">Podcast openen</string>
   <string name="please_wait_for_data">Wacht tot de gegevens geladen zijn</string>
   <string name="updates_disabled_label">Updates zijn uitgeschakeld</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d aflevering bijgewerkt.</item>
+    <item quantity="other">%d afleveringen bijgewerkt.</item>
+  </plurals>
+  <string name="add_to_folder">Toevoegen aan map</string>
   <!--actions on feeditems-->
   <string name="download_label">Downloaden</string>
   <plurals name="downloading_batch_label">
@@ -182,6 +192,8 @@
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
+  <string name="marked_as_played_label">Gemarkeerd als afgespeeld</string>
+  <string name="marked_as_unplayed_label">Gemarkeerd als niet-afgespeeld</string>
   <string name="mark_read_no_media_label">Markeren als gelezen</string>
   <string name="play_this_to_seek_position">Begin met afspelen om door te spoelen</string>
   <plurals name="marked_read_batch_label">
@@ -209,8 +221,6 @@
   <string name="remove_from_favorite_label">Verwijderen uit favorieten</string>
   <string name="visit_website_label">Website openen</string>
   <string name="skip_episode_label">Aflevering overslaan</string>
-  <string name="activate_auto_download">Automatisch downloaden inschakelen</string>
-  <string name="deactivate_auto_download">Automatisch downloaden uitschakelen</string>
   <string name="reset_position">Afspeelpositie herstellen</string>
   <string name="removed_item">Item verwijderd</string>
   <string name="no_items_selected">Geen items geselecteerd</string>
@@ -238,7 +248,6 @@
   <string name="download_error_wrong_size">De serververbinding werd verbroken voordat de download kon worden afgerond</string>
   <string name="download_error_blocked">Het downloaden is geblokkeerd door een andere app.</string>
   <string name="download_error_certificate">Er kan geen beveiligde verbinding worden opgezet. Mogelijk blokkeert een andere app de download of is er een probleem met de servercertificaten.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Download afgebroken\n<i>Automatisch downloaden</i> uitgeschakeld voor deze aflevering</string>
   <string name="download_report_title">Downloads afgerond, maar met fout(en)</string>
   <string name="auto_download_report_title">Automatisch downloaden afgerond</string>
   <string name="download_error_io_error">In-/Uitvoerfout</string>
@@ -248,7 +257,7 @@
     <item quantity="one">Nog %d download</item>
     <item quantity="other">Nog %d downloads</item>
   </plurals>
-  <string name="service_shutting_down">De dienst wordt afgesloten</string>
+  <string name="completing">Bezig met voltooien…</string>
   <string name="download_notification_title">Bezig met downloaden van podcastgegevens</string>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
@@ -280,7 +289,6 @@
   <string name="no_media_label">Het item bevat geen mediabestand</string>
   <!--Queue operations-->
   <string name="lock_queue">Wachtrij vergrendelen</string>
-  <string name="unlock_queue">Wachtrij ontgrendelen</string>
   <string name="queue_locked">Wachtrij vergrendeld</string>
   <string name="queue_unlocked">Wachtrij ontgrendeld</string>
   <string name="queue_lock_warning">Als je de wachtrij vergrendelt, dan kun je afleveringen niet meer herordenen of wegvegen.</string>
@@ -457,8 +465,6 @@
   <string name="enqueue_location_front">Begin</string>
   <string name="enqueue_location_after_current">Na huidige aflevering</string>
   <string name="pref_smart_mark_as_played_disabled">Uitgeschakeld</string>
-  <string name="pref_image_cache_size_title">Grootte van afbeeldingscache</string>
-  <string name="pref_image_cache_size_sum">Pas de grootte aan van het cachegeheugen voor afbeeldingen.</string>
   <string name="documentation_support">Documentatie en ondersteuning</string>
   <string name="visit_user_forum">Gebruikersforum</string>
   <string name="bug_report_title">Bug melden</string>
@@ -524,6 +530,7 @@
   <string name="licenses_summary">AntennaPod maakt gebruik van andere geweldige software</string>
   <!--Search-->
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
+  <string name="type_to_search">Typ een zoekopdracht</string>
   <string name="search_label">Zoeken</string>
   <string name="no_results_for_query">Geen resultaten gevonden voor  \"%1$s\"</string>
   <!--Synchronization-->
@@ -594,7 +601,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIEËN</string>
   <string name="gpodnet_toplist_header">POPULAIRE PODCASTS</string>
-  <string name="gpodnet_suggestions_header">SUGGESTIES</string>
   <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
   <string name="gpodnetauth_login_butLabel">Inloggen</string>
   <string name="gpodnetauth_encryption_warning">Het wachtwoord en de gegevens zijn onversleuteld!</string>
@@ -689,22 +695,6 @@
   <string name="local_feed_description">De virtuele podcast is aangemaakt door een aan AntennaPod toegevoegde map.</string>
   <string name="unable_to_start_system_file_manager">De bestandsbeheerder-app kan niet worden geopend</string>
   <string name="filter">Filter</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Alle</string>
-  <string name="selected_all_label">Alle afleveringen geselecteerd</string>
-  <string name="select_none_label">Geen</string>
-  <string name="deselected_all_label">Alle afleveringen gede-selecteerd</string>
-  <string name="played_label">Afgespeeld</string>
-  <string name="selected_played_label">Alle afgespeelde afleveringen geselecteerd</string>
-  <string name="unplayed_label">Niet afgespeeld</string>
-  <string name="selected_unplayed_label">Niet-afgespeelde afleveringen geselecteerd</string>
-  <string name="downloaded_label">Gedownload</string>
-  <string name="selected_downloaded_label">Gedownloade afleveringen geselecteerd</string>
-  <string name="not_downloaded_label">Niet gedownload</string>
-  <string name="selected_not_downloaded_label">Niet-gedownloade afleveringen geselecteerd</string>
-  <string name="selected_queued_label">Afleveringen in de wachtrij geselecteerd</string>
-  <string name="selected_not_queued_label">Afleveringen geselecteerd die niet in de wachtrij staan</string>
-  <string name="selected_has_media_label">Afleveringen met media geselecteerd</string>
   <string name="hide_is_favorite_label">Gemarkeerd als favoriet</string>
   <string name="not_favorite">Geen favoriet</string>
   <string name="hide_downloaded_episodes_label">Gedownload</string>
@@ -745,9 +735,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio-instellingen</string>
   <string name="playback_speed">Afspeelsnelheid</string>
-  <string name="volume">Volume</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">Audio-effecten</string>
   <string name="stereo_to_mono">Stereo terugmixen tot monogeluid op beide kanalen</string>
   <string name="sonic_only">Sonic vereist</string>

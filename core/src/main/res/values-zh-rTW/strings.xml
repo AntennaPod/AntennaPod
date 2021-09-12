@@ -26,6 +26,7 @@
   <string name="download_statistics_label">下載</string>
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">總播放時長：</string>
   <string name="statistics_details_dialog">聽過 %1$d/%2$d集。\n\n播過%3$s/%4$s集。</string>
@@ -78,15 +79,11 @@
   <string name="chapter_duration">時長： %1$s</string>
   <string name="description_label">描述</string>
   <string name="episodes_suffix">\u0020單集</string>
-  <string name="processing_label">處理中</string>
   <string name="close_label">關閉</string>
   <string name="retry_label">重試</string>
   <string name="auto_download_label">加入自動下載</string>
-  <string name="auto_download_apply_to_items_title">套用至先前的單集</string>
-  <string name="auto_download_apply_to_items_message">往後各集將採用新的 <i>自動下載</i> 設定，\n您希望先前已經發佈的各集也使用同樣的設定嗎？</string>
   <string name="auto_delete_label">自動刪除單集</string>
   <string name="feed_volume_reduction">降低音量</string>
-  <string name="feed_volume_reduction_summary">將此單集的音量調降：%1$s</string>
   <string name="feed_volume_reduction_off">關閉</string>
   <string name="feed_volume_reduction_light">輕</string>
   <string name="feed_volume_reduction_heavy">重</string>
@@ -104,9 +101,6 @@
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">聽完後 %d 天</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="other">選取了 %d 集</item>
   </plurals>
   <string name="loading_more">載入更多…</string>
   <string name="episode_notification">單集通知</string>
@@ -184,8 +178,6 @@
   <string name="remove_from_favorite_label">移出最愛</string>
   <string name="visit_website_label">訪問網站</string>
   <string name="skip_episode_label">跳過這一集</string>
-  <string name="activate_auto_download">啟用自動下載</string>
-  <string name="deactivate_auto_download">停用自動下載</string>
   <string name="reset_position">重置播放進度</string>
   <string name="removed_item">項目已移除</string>
   <string name="no_items_selected">未選擇任何項目</string>
@@ -206,7 +198,6 @@
   <string name="download_error_unauthorized">驗證失敗</string>
   <string name="download_error_file_type_type">文件格式錯誤</string>
   <string name="download_canceled_msg">下載已取消</string>
-  <string name="download_canceled_autodownload_enabled_msg">下載已取消\n這一項的 <i>自動下載</i> 已停用</string>
   <string name="download_report_title">下載已完成，但可能有錯誤</string>
   <string name="auto_download_report_title">自動下載完畢</string>
   <string name="download_error_io_error">IO 錯誤</string>
@@ -245,7 +236,6 @@
   <string name="error_file_not_found">找不到檔案</string>
   <!--Queue operations-->
   <string name="lock_queue">鎖定待播清單</string>
-  <string name="unlock_queue">解鎖待播清單</string>
   <string name="queue_locked">待播清單已鎖定</string>
   <string name="queue_unlocked">待播清單已解鎖</string>
   <string name="queue_lock_warning">一旦鎖定待播清單，就無法調整各集次序或使用滑動選單</string>
@@ -411,8 +401,6 @@
   <string name="enqueue_location_front">放到清單最前</string>
   <string name="enqueue_location_after_current">當前這集以後</string>
   <string name="pref_smart_mark_as_played_disabled">停用</string>
-  <string name="pref_image_cache_size_title">圖片快取容量</string>
-  <string name="pref_image_cache_size_sum">設定圖片的快取容量</string>
   <string name="documentation_support">文件與支援資訊</string>
   <string name="visit_user_forum">使用者論壇</string>
   <string name="bug_report_title">回報錯誤</string>
@@ -541,7 +529,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">分類</string>
   <string name="gpodnet_toplist_header">最夯 Podcast</string>
-  <string name="gpodnet_suggestions_header">建議</string>
   <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">登入</string>
   <string name="gpodnetauth_encryption_warning">密碼與資料都沒有加密！</string>
@@ -630,22 +617,6 @@
   <string name="local_feed_description">此虛擬 Podcast 是在 AntennaPod 裡增加資料夾而產生的。</string>
   <string name="unable_to_start_system_file_manager">無法啟用系統的檔案管理工具</string>
   <string name="filter">篩選</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">全部</string>
-  <string name="selected_all_label">全選</string>
-  <string name="select_none_label">不選</string>
-  <string name="deselected_all_label">不選</string>
-  <string name="played_label">播過的</string>
-  <string name="selected_played_label">選擇播放過的單集</string>
-  <string name="unplayed_label">未播過的</string>
-  <string name="selected_unplayed_label">選擇沒播過的單集</string>
-  <string name="downloaded_label">已下載的</string>
-  <string name="selected_downloaded_label">選擇下載過的單集</string>
-  <string name="not_downloaded_label">未下載的</string>
-  <string name="selected_not_downloaded_label">選擇沒下載過的單集</string>
-  <string name="selected_queued_label">選擇待播清單中的單集</string>
-  <string name="selected_not_queued_label">選擇不在待播清單中的單集</string>
-  <string name="selected_has_media_label">選擇包含額外媒體的單集</string>
   <string name="hide_is_favorite_label">為最愛</string>
   <string name="not_favorite">未標記為最愛的</string>
   <string name="hide_downloaded_episodes_label">已下載</string>
@@ -686,9 +657,6 @@
   <!--Audio controls-->
   <string name="audio_controls">聲音控制</string>
   <string name="playback_speed">播放速度</string>
-  <string name="volume">音量</string>
-  <string name="left_short">左</string>
-  <string name="right_short">右</string>
   <string name="audio_effects">音效調整</string>
   <string name="stereo_to_mono">將雙聲道降混為單聲道</string>
   <string name="sonic_only">僅用 Sonic</string>

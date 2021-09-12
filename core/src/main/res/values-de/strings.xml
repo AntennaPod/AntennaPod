@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Benachrichtigungen</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nicht gefunden</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Wisch-Aktionen</string>
+  <string name="swipeactions_summary">Legen Sie fest, was passiert, wenn Sie in einer Liste über eine Episode swipen</string>
+  <string name="swipe_right">Nach rechts wischen</string>
+  <string name="swipe_left">Nach Links wischen</string>
+  <string name="enable_swipeactions">Swipe-Aktionen für diesen Bildschirm aktivieren</string>
+  <string name="change_setting">Ändern</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Gesamtzeit aller gespielten Episoden</string>
   <string name="statistics_details_dialog">%1$d von %2$d Episoden gestartet.\n\n%3$s von %4$s Episoden gespielt.</string>
@@ -84,15 +91,12 @@
   <string name="shownotes_label">Shownotes</string>
   <string name="shownotes_contentdescription">Wische nach oben, um die Shownotes zu lesen</string>
   <string name="episodes_suffix">\u0020Episoden</string>
-  <string name="processing_label">Verarbeite</string>
   <string name="close_label">Schließen</string>
   <string name="retry_label">Erneut versuchen</string>
   <string name="auto_download_label">Automatisch herunterladen</string>
-  <string name="auto_download_apply_to_items_title">Auf bisherige Episoden anwenden</string>
-  <string name="auto_download_apply_to_items_message">Die neue <i>Auto-Download</i>-Einstellung wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf schon veröffentlichte Episoden anwenden?</string>
   <string name="auto_delete_label">Episode automatisch löschen</string>
   <string name="feed_volume_reduction">Lautstärke reduzieren</string>
-  <string name="feed_volume_reduction_summary">Lautstärke verringern für Episoden aus diesem Podcast: %1$s</string>
+  <string name="feed_volume_reduction_summary">Stellen Sie die Lautstärke für Episoden dieses Podcasts leiser: %1$s</string>
   <string name="feed_volume_reduction_off">Aus</string>
   <string name="feed_volume_reduction_light">Schwach</string>
   <string name="feed_volume_reduction_heavy">Stark</string>
@@ -114,8 +118,8 @@
     <item quantity="other">%d Tage nachdem fertig gespielt</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d ausgewählt</item>
-    <item quantity="other">%d ausgewählt</item>
+    <item quantity="one">%1$d/%2$d ausgewählt</item>
+    <item quantity="other">%1$d/%2$d ausgewählt</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d Episode</item>
@@ -152,6 +156,7 @@
   <string name="share_website_url_label">Adresse der Website</string>
   <string name="share_feed_url_label">Podcast feed URL</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALL dessen Episoden entfernen möchtest (auch heruntergeladene).</string>
+  <string name="feed_delete_confirmation_msg_batch">Bitte bestätigen Sie, dass Sie die ausgewählten Podcasts und ALLE ihre Episoden (einschließlich heruntergeladener Episoden) entfernen möchten.</string>
   <string name="feed_delete_confirmation_local_msg">Bitte bestätigen Sie, dass Sie den Podcast \"%1$s\" entfernen möchten. Die Dateien im lokalen Quellordner werden nicht gelöscht.</string>
   <string name="feed_remover_msg">Podcast wird entfernt</string>
   <string name="load_complete_feed">Kompletten Podcast aktualisieren</string>
@@ -164,6 +169,11 @@ Tippen, um Details anzuzeigen.</string>
   <string name="open_podcast">Podcast öffnen</string>
   <string name="please_wait_for_data">Bitte warte, bis die Daten geladen sind</string>
   <string name="updates_disabled_label">Updates deaktiviert</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d Abonnement aktualisiert.</item>
+    <item quantity="other">%d Abonnemnts aktualisiert.</item>
+  </plurals>
+  <string name="add_to_folder">Zum Ordner hinzufügen</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <plurals name="downloading_batch_label">
@@ -183,6 +193,8 @@ Tippen, um Details anzuzeigen.</string>
   <string name="remove_new_flag_label">\"Neu\"-Markierung entfernen</string>
   <string name="removed_new_flag_label">\"Neu\"-Markierung entfernt</string>
   <string name="mark_read_label">Als gespielt markieren</string>
+  <string name="marked_as_played_label">Als gespielt markieren</string>
+  <string name="marked_as_unplayed_label">Als ungespielt markieren</string>
   <string name="mark_read_no_media_label">Als gelesen markieren</string>
   <string name="play_this_to_seek_position">Um auf eine Position zu springen, musst du die Episode abspielen</string>
   <plurals name="marked_read_batch_label">
@@ -210,8 +222,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="skip_episode_label">Episode überspringen</string>
-  <string name="activate_auto_download">Automatischen Download aktivieren</string>
-  <string name="deactivate_auto_download">Automatischen Download deaktivieren</string>
   <string name="reset_position">Wiedergabe-Position zurücksetzen</string>
   <string name="removed_item">Element entfernt</string>
   <string name="no_items_selected">Keine Einträge ausgewählt</string>
@@ -239,7 +249,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="download_error_wrong_size">Die Serververbindung wurde unterbrochen bevor der Download fertiggestellt wurde</string>
   <string name="download_error_blocked">Der Download wurde von einer anderen App auf deinem Gerät blockiert.</string>
   <string name="download_error_certificate">Es kann keine sichere Verbindung hergestellt werden. Dies kann bedeuten, dass eine andere App auf deinem Gerät den Download blockiert oder dass etwas mit dem Zertifikat des Servers nicht stimmt.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Download abgebrochen\n<i>Automatischen Download</i> für diese Episode deaktiviert</string>
   <string name="download_report_title">Downloads endeten mit Fehler(n)</string>
   <string name="auto_download_report_title">Automatisches Herunterladen abgeschlossen</string>
   <string name="download_error_io_error">E/A Error</string>
@@ -249,7 +258,7 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">%d Download übrig</item>
     <item quantity="other">%d Downloads übrig</item>
   </plurals>
-  <string name="service_shutting_down">Dienst wird gestoppt</string>
+  <string name="completing">Fertigstellen...</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_log_title_unknown">Unbekannter Titel</string>
   <string name="download_type_feed">Feed</string>
@@ -281,7 +290,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="no_media_label">Element enthält keine Mediendatei</string>
   <!--Queue operations-->
   <string name="lock_queue">Warteschlange sperren</string>
-  <string name="unlock_queue">Warteschlange entsperren</string>
   <string name="queue_locked">Warteschlange gesperrt</string>
   <string name="queue_unlocked">Warteschlange entsperrt</string>
   <string name="queue_lock_warning">Wenn du die Warteschlange sperrst, kannst du Episoden nicht mehr verschieben oder wegwischen.</string>
@@ -301,7 +309,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass ALLE Episoden aus der Warteschlange entfernt werden sollen</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <!--Variable Speed-->
-  <string name="speed_presets">Voreinstellung</string>
+  <string name="speed_presets">Voreinstellungen</string>
   <string name="preset_already_exists">%1$.2fx ist bereits als Voreinstellung gespeichert.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Leere Warteschlange</string>
@@ -458,8 +466,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="enqueue_location_front">Vorne</string>
   <string name="enqueue_location_after_current">Hinter der aktuell gespielten Episode</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
-  <string name="pref_image_cache_size_title">Größe des Bilder-Zwischenspeichers</string>
-  <string name="pref_image_cache_size_sum">Größe des Zwischenspeichers für Bilder</string>
   <string name="documentation_support">Dokumentation + Support</string>
   <string name="visit_user_forum">Benutzerforum</string>
   <string name="bug_report_title">Fehler melden</string>
@@ -525,6 +531,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
   <!--Search-->
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
+  <string name="type_to_search">Geben Sie eine Suchanfrage ein</string>
   <string name="search_label">Suchen</string>
   <string name="no_results_for_query">Es wurden keine Ergebnisse für \"%1$s\" gefunden</string>
   <!--Synchronization-->
@@ -595,7 +602,6 @@ Tippen, um Details anzuzeigen.</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIEN</string>
   <string name="gpodnet_toplist_header">BESTE PODCASTS</string>
-  <string name="gpodnet_suggestions_header">VORSCHLÄGE</string>
   <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
   <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
@@ -690,22 +696,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="local_feed_description">Dieser virtuelle Podcast wurde durch einen lokalen Ordner hinzugefügt.</string>
   <string name="unable_to_start_system_file_manager">System-Dateimanager kann nicht gestartet werden</string>
   <string name="filter">Filtern</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Alle</string>
-  <string name="selected_all_label">Alle Episoden ausgewählt</string>
-  <string name="select_none_label">Keine</string>
-  <string name="deselected_all_label">Alle Episoden abgewählt</string>
-  <string name="played_label">Gespielt</string>
-  <string name="selected_played_label">Gespielte Episoden ausgewählt</string>
-  <string name="unplayed_label">Ungespielt</string>
-  <string name="selected_unplayed_label">Ungespielte Episoden ausgewählt</string>
-  <string name="downloaded_label">Heruntergeladen</string>
-  <string name="selected_downloaded_label">Heruntergeladene Episoden ausgewählt</string>
-  <string name="not_downloaded_label">Nicht heruntergeladen</string>
-  <string name="selected_not_downloaded_label">Nicht heruntergeladene Episoden ausgewählt</string>
-  <string name="selected_queued_label">Episoden in der Warteschlange ausgewählt</string>
-  <string name="selected_not_queued_label">Episoden nicht in der Warteschlange ausgewählt</string>
-  <string name="selected_has_media_label">Episoden mit Medien ausgewählt</string>
   <string name="hide_is_favorite_label">Favorit</string>
   <string name="not_favorite">Nicht favorisiert</string>
   <string name="hide_downloaded_episodes_label">Heruntergeladen</string>
@@ -738,7 +728,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">Erinnere mich später</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Sicher, los geht\'s!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Beinhaltet</string>
+  <string name="share_dialog_include_label">Einschließen:</string>
   <string name="share_playback_position_dialog_label">Abspielposition</string>
   <string name="share_dialog_media_file_url_label">Adresse der Mediendatei</string>
   <string name="share_dialog_episode_website_label">Webseite der Episode</string>
@@ -746,9 +736,6 @@ Tippen, um Details anzuzeigen.</string>
   <!--Audio controls-->
   <string name="audio_controls">Audioregler</string>
   <string name="playback_speed">Abspielgeschwindigkeit</string>
-  <string name="volume">Lautstärke</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">Audioeffekte</string>
   <string name="stereo_to_mono">Heruntermischen: Stereo zu Mono</string>
   <string name="sonic_only">nur Sonic</string>

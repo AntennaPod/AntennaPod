@@ -26,6 +26,7 @@
   <string name="notification_pref_fragment">Oznámenia</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nebol nájdený</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas prehrávaných podcastov:</string>
   <string name="statistics_details_dialog">%1$d z %2$d epizód sa začala prehrávať.\n\nPrehrávané %3$s z %4$s.</string>
@@ -78,15 +79,11 @@
   <string name="chapter_duration">Trvanie: %1$s</string>
   <string name="description_label">Popis</string>
   <string name="episodes_suffix">\u0020epizódy</string>
-  <string name="processing_label">Spracováva sa</string>
   <string name="close_label">Ukončiť</string>
   <string name="retry_label">Skúsiť znova</string>
   <string name="auto_download_label">Pridať do automatického sťahovania</string>
-  <string name="auto_download_apply_to_items_title">Použiť aj na predchádzajúce epizódy</string>
-  <string name="auto_download_apply_to_items_message">Nové nastavenie <i>Automatické preberanie</i> sa automaticky použije pre nové epizódy.\nChcete ho tiež použiť pre už vydané epizódy?</string>
   <string name="auto_delete_label">Automaticky vymazať epizódu</string>
   <string name="feed_volume_reduction">Redukcia hlasitosti</string>
-  <string name="feed_volume_reduction_summary">Redukcia hlasitosti pre všetky epizódy tohoto odberu: %1$s</string>
   <string name="feed_volume_reduction_off">Vypnutá</string>
   <string name="feed_volume_reduction_light">Slabá</string>
   <string name="feed_volume_reduction_heavy">Silná</string>
@@ -109,12 +106,6 @@
     <item quantity="few">%d dni po dokončení</item>
     <item quantity="many">%d dní po dokončení</item>
     <item quantity="other">%d dní po dokončení</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d vybraná</item>
-    <item quantity="few">%d vybrané</item>
-    <item quantity="many">%d vybraných</item>
-    <item quantity="other">%d vybraných</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d epizóda</item>
@@ -207,8 +198,6 @@
   <string name="remove_from_favorite_label">Odstrániť z obľúbených</string>
   <string name="visit_website_label">Navštíviť webovú stránku</string>
   <string name="skip_episode_label">Preskočiť epizódu</string>
-  <string name="activate_auto_download">Aktivovať automatické sťahovanie</string>
-  <string name="deactivate_auto_download">Deaktivovať automatické sťahovanie</string>
   <string name="reset_position">Obnoviť pozíciu prehrávania</string>
   <string name="removed_item">Položka bola odstránená</string>
   <string name="no_items_selected">Nie sú vybrané žiadne položky</string>
@@ -257,8 +246,8 @@
   <!--Queue operations-->
   <string name="checkbox_do_not_show_again">Znovu nezobrazovať</string>
   <string name="undo">Späť</string>
-  <string name="move_to_top_label">Presunúť sa na začiatok</string>
-  <string name="move_to_bottom_label">Presunúť sa na koniec</string>
+  <string name="move_to_top_label">Presunúť na začiatok</string>
+  <string name="move_to_bottom_label">Presunúť na koniec</string>
   <string name="sort">Zoradiť</string>
   <string name="keep_sorted">Udržať zoradené</string>
   <string name="date">Dátum</string>
@@ -316,8 +305,6 @@
   <string name="pref_feed_skip_intro">Preskočiť prvých</string>
   <string name="pref_feed_skip_ending_toast">Posledných %d sekúnd bolo preskočených</string>
   <string name="pref_feed_skip_intro_toast">Prvých %d sekúnd bolo preskočených</string>
-  <string name="pref_image_cache_size_title">Veľkosť vyrovnávacej pamäte pre obrázky</string>
-  <string name="pref_image_cache_size_sum">Veľkosť vyrovnávacej pamäte disku pre ukladanie obrázkov.</string>
   <string name="bug_report_title">Nahlásiť chybu</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (odporúčané)</string>
@@ -398,8 +385,6 @@
   <string name="discover_more">viac »</string>
   <!--Local feeds-->
   <string name="filter">Filter</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Všetko</string>
   <string name="hide_is_favorite_label">Je v obľúbených</string>
   <string name="not_favorite">Nie je v obľúbených</string>
   <string name="hide_downloaded_episodes_label">Stiahnuté</string>
@@ -431,9 +416,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Ovládanie zvuku</string>
   <string name="playback_speed">Rýchlosť prehrávania</string>
-  <string name="volume">Zvuk</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">Zvukové efekty</string>
   <string name="sonic_only">Iba Sonic</string>
   <string name="exoplayer_only">Iba ExoPlayer</string>

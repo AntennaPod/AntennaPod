@@ -28,6 +28,7 @@
   <string name="notification_pref_fragment">Jakinarazpenak</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ezin da aurkitu</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Ikusitako saio denen denbora:</string>
   <string name="statistics_details_dialog">%1$d kanpo %2$d hasitako saioetatik. %3$s \n\nErreproduzituak %4$setatik.</string>
@@ -84,15 +85,11 @@
   <string name="shownotes_label">Programaren oharrak</string>
   <string name="shownotes_contentdescription">Igo eta irakurri notak.</string>
   <string name="episodes_suffix">\u0020saio</string>
-  <string name="processing_label">Prozesatzen</string>
   <string name="close_label">Itxi</string>
   <string name="retry_label">Saiatu berriro</string>
   <string name="auto_download_label">Deskarga automatikoetan sartu</string>
-  <string name="auto_download_apply_to_items_title">Aplikatu aurreko saioei</string>
-  <string name="auto_download_apply_to_items_message">Aukera berria <i>deskarga automatikoa</i> automatikoki aplikatuko zaie saio berriei. Nahi duzu aurreko saioei ere aplikatzea?</string>
   <string name="auto_delete_label">Ezabatu saioa automatikoki</string>
   <string name="feed_volume_reduction">Bolumenaren kudeaketa</string>
-  <string name="feed_volume_reduction_summary">Podcast hauen bolumena gutxitu: %1$s</string>
   <string name="feed_volume_reduction_off">Itzalita</string>
   <string name="feed_volume_reduction_light">Gozoa</string>
   <string name="feed_volume_reduction_heavy">Indartsua</string>
@@ -112,10 +109,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 egun bukatu ondoren</item>
     <item quantity="other">%d bukatu ondoren</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d aukeratua</item>
-    <item quantity="other">%d aukeratua</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d saio</item>
@@ -209,8 +202,6 @@
   <string name="remove_from_favorite_label">Kendu gogokoetatik</string>
   <string name="visit_website_label">Bisitatu web gunea</string>
   <string name="skip_episode_label">Baztertu saioa</string>
-  <string name="activate_auto_download">Aktibatu deskarga automatikoa</string>
-  <string name="deactivate_auto_download">Desaktibatu deskarga automatikoa</string>
   <string name="reset_position">Berrezarri erreprodukzioaren tokia</string>
   <string name="removed_item">Ezabatutako elementua</string>
   <string name="no_items_selected">Ez da elementurik hautatu</string>
@@ -238,7 +229,6 @@
   <string name="download_error_wrong_size">Zerbitzariaren konexioa galdu egin da deskarga amaitu aurretik</string>
   <string name="download_error_blocked">Deskarga zure gailuko beste aplikazio batek blokeatu du.</string>
   <string name="download_error_certificate">Ezin da konexio segururik ezarri. Horrek esan nahi du zure gailuko beste aplikazio batek deskarga blokeatu duela edo zerbitzariaren ziurtagiriekin zerbait gaizki dagoela.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Deskarga ezeztatua\aktibatu da <i>Auto deskarga</i> elementu honetan</string>
   <string name="download_report_title">Deskarga(k) osatu d(ir)a errorea(k) d(it)uela</string>
   <string name="auto_download_report_title">Deskargatu automatikoak osatuta</string>
   <string name="download_error_io_error">E/S errorea</string>
@@ -248,7 +238,6 @@
     <item quantity="one">%d deskarga zain</item>
     <item quantity="other">%d deskarga zain</item>
   </plurals>
-  <string name="service_shutting_down">Zerbitzua itzaltzen</string>
   <string name="download_notification_title">Podcastaren datuak deskargatzen</string>
   <string name="download_log_title_unknown">Izenburu ezezaguna</string>
   <string name="download_type_feed">Kanala</string>
@@ -280,7 +269,6 @@
   <string name="no_media_label">Elementuak ez du multimedia fitxategirik</string>
   <!--Queue operations-->
   <string name="lock_queue">Blokeatu ilara</string>
-  <string name="unlock_queue">Desblokeatu ilara</string>
   <string name="queue_locked">Ilara blokeaturik</string>
   <string name="queue_unlocked">Ilara desblokeaturik</string>
   <string name="queue_lock_warning">Ilara blokeatzen baduzu, ezin izango dituzu saioak mugitu edo markatu.</string>
@@ -459,8 +447,6 @@
   <string name="enqueue_location_front">Hasiera</string>
   <string name="enqueue_location_after_current">Oraingo saioaren ondoren</string>
   <string name="pref_smart_mark_as_played_disabled">Desgaitua</string>
-  <string name="pref_image_cache_size_title">Irudiak biltegiratzeko tamaina</string>
-  <string name="pref_image_cache_size_sum">Diskoko irudien biltegiratze tamaina</string>
   <string name="documentation_support">Dokumentazioa &amp; Laguntza</string>
   <string name="visit_user_forum">Erabiltzaileen foroa</string>
   <string name="bug_report_title">Errorearen berri eman</string>
@@ -596,7 +582,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIAK</string>
   <string name="gpodnet_toplist_header">PODCASTIK ONENAK</string>
-  <string name="gpodnet_suggestions_header">IRADOKIZUNAK</string>
   <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="gpodnetauth_login_butLabel">Hasi saioa</string>
   <string name="gpodnetauth_encryption_warning">Pasahitza eta datuak ez daude enkriptaturik!</string>
@@ -691,22 +676,6 @@
   <string name="local_feed_description">Podcast birtual hau AntennaPod-i karpeta bat gehituta sortu da</string>
   <string name="unable_to_start_system_file_manager">Ezin da sistemaren fitxategi kudeatzailea abiarazi</string>
   <string name="filter">Iragazia</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Denak</string>
-  <string name="selected_all_label">Aukeratutako saio denak</string>
-  <string name="select_none_label">Bat ere ez</string>
-  <string name="deselected_all_label">Ez dago aukeratutako saiorik</string>
-  <string name="played_label">Ikusita</string>
-  <string name="selected_played_label">Ikusitako saio denak</string>
-  <string name="unplayed_label">Ikusi gabe</string>
-  <string name="selected_unplayed_label">Ikusi gabeko saio aukeratuak</string>
-  <string name="downloaded_label">Deskargatuta</string>
-  <string name="selected_downloaded_label">Deskargatutako saio aukeratuak</string>
-  <string name="not_downloaded_label">Deskargatu gabe</string>
-  <string name="selected_not_downloaded_label">Deskargatu gabeko saio aukeratuak</string>
-  <string name="selected_queued_label">Ilarako saio aukeratuak</string>
-  <string name="selected_not_queued_label">Ilaran ez dauden saio aukeratuak</string>
-  <string name="selected_has_media_label">Media duten saio aukeratuak</string>
   <string name="hide_is_favorite_label">Gogokoa da</string>
   <string name="not_favorite">Ez da gogokoa</string>
   <string name="hide_downloaded_episodes_label">Deskargatuta</string>
@@ -747,9 +716,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio kontrolak</string>
   <string name="playback_speed">Erreprodukzio abiadura</string>
-  <string name="volume">Bolumena</string>
-  <string name="left_short">Ezk</string>
-  <string name="right_short">Esk</string>
   <string name="audio_effects">Audio efektuak</string>
   <string name="stereo_to_mono">Nahastu: estereotik monora</string>
   <string name="sonic_only">Sonic baino ez</string>

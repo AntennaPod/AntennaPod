@@ -25,6 +25,7 @@
   <string name="download_statistics_label">بارگیری‌ها</string>
   <string name="notification_pref_fragment">اعلان ها</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">مجموع زمان پادکست‌های پخش‌شده:</string>
   <string name="statistics_details_dialog">%1$d از %2$d قسمت‌ها شروع شده است.\n\n%3$s از %4$s پخش.</string>
@@ -75,15 +76,11 @@
   <string name="chapter_duration">مدت زمان:%1$s</string>
   <string name="description_label">شرح</string>
   <string name="episodes_suffix">\u0020قسمت</string>
-  <string name="processing_label">در حال پردازش</string>
   <string name="close_label">بستن</string>
   <string name="retry_label">تلاش مجدد</string>
   <string name="auto_download_label">شامل بارگیری خودکار شود</string>
-  <string name="auto_download_apply_to_items_title">اعمال بر قسمت‌های قبلی</string>
-  <string name="auto_download_apply_to_items_message">تنظیمات جدید <i>بارگیری خودکار</i> به طور خودکار بر قسمت‌های جدید اعمال خواهد شد.\nآیا می‌خواهید بر قسمت‌هایی قبلاً منتشر شده هم اعمال شود؟</string>
   <string name="auto_delete_label">حذف خودکار قسمت</string>
   <string name="feed_volume_reduction">کم کردن صدا</string>
-  <string name="feed_volume_reduction_summary">برای قسمت‌های این خوراک، صدا کم شود: %1$s</string>
   <string name="feed_volume_reduction_off">خاموش</string>
   <string name="feed_volume_reduction_light">سبک</string>
   <string name="feed_volume_reduction_heavy">سنگین</string>
@@ -101,10 +98,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">%dروز بعد از اتمام</item>
     <item quantity="other">%dروز بعد از اتمام</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d گزیده</item>
-    <item quantity="other">%dگزیده</item>
   </plurals>
   <string name="loading_more">بارگیری بیشتر…</string>
   <!--Actions on feeds-->
@@ -177,8 +170,6 @@
   <string name="remove_from_favorite_label">از علاقه‌مندی‌ها حذف شود</string>
   <string name="visit_website_label">مشاهده تارنما</string>
   <string name="skip_episode_label">رد شدن از قسمت</string>
-  <string name="activate_auto_download">فعال کردن بارگیری خودکار</string>
-  <string name="deactivate_auto_download">غیر فعال کردن بارگیری خودکار</string>
   <string name="reset_position">تنظیم مجدد موقعیت پخش</string>
   <string name="removed_item">مورد حذف شده است</string>
   <string name="no_items_selected">چیزی انتخاب نشده است</string>
@@ -196,7 +187,6 @@
   <string name="download_error_unauthorized">خطای احراز هویت</string>
   <string name="download_error_file_type_type">خطای نوع پرونده</string>
   <string name="download_canceled_msg">بارگیری لغو شد</string>
-  <string name="download_canceled_autodownload_enabled_msg">بارگیری لغو شد\nغیر فعال  کردن <i>بارگیری خودکار</i> برای این مورد </string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
   <string name="auto_download_report_title">بارگیری‌های خودکار کامل شد</string>
   <string name="download_error_io_error">خطای ورودی/خروجی</string>
@@ -236,7 +226,6 @@
   <string name="error_file_not_found">پرونده یافت نشد</string>
   <!--Queue operations-->
   <string name="lock_queue">صف را قفل کن</string>
-  <string name="unlock_queue">قفل صف را باز کن</string>
   <string name="queue_locked">صف قفل شده است</string>
   <string name="queue_unlocked">قفل صف باز شده است</string>
   <string name="queue_lock_warning">اگر صف را قفل کنید دیگر نمی‌توانید قسمت‌ها را به کنار کشیده یا ترتیبشان را جابجا کنید.</string>
@@ -390,8 +379,6 @@
   <string name="enqueue_location_front">جلو</string>
   <string name="enqueue_location_after_current">بعد از اپیزود فعلی</string>
   <string name="pref_smart_mark_as_played_disabled">غیرفعال</string>
-  <string name="pref_image_cache_size_title">اندازه حافظه پنهان تصویر</string>
-  <string name="pref_image_cache_size_sum">اندازه حافظه پنهان دیسک برای تصاویر.</string>
   <string name="visit_user_forum">تالار گفتمان کاربر</string>
   <string name="bug_report_title">گزارش مشکل</string>
   <string name="open_bug_tracker">باز کردن ردیاب اشکال</string>
@@ -519,7 +506,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">دسته‌ها</string>
   <string name="gpodnet_toplist_header">پادکست‌های برتر</string>
-  <string name="gpodnet_suggestions_header">پیشنهادها</string>
   <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
   <string name="username_label">نام کاربری</string>
@@ -597,22 +583,6 @@
   <string name="local_feed_description">این پادکست مجازی با افزودن پوشه ای به  آنتن پاد ایجاد شده است.</string>
   <string name="unable_to_start_system_file_manager">مدیریت فایل سیستم امکان پذیر نیست</string>
   <string name="filter">فیلتر</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">همه</string>
-  <string name="selected_all_label">همه قسمت ها انتخاب شد</string>
-  <string name="select_none_label">هیچ یک</string>
-  <string name="deselected_all_label">لغو انتخاب همه قسمت ها</string>
-  <string name="played_label">اجرا شد</string>
-  <string name="selected_played_label">قسمتهای پخش شده انتخاب شده</string>
-  <string name="unplayed_label">اجرا نشده</string>
-  <string name="selected_unplayed_label">قسمتهای پخش نشده انتخاب شده</string>
-  <string name="downloaded_label">بارگیری شد</string>
-  <string name="selected_downloaded_label">قسمتهای بارگیری شده انتخاب شد</string>
-  <string name="not_downloaded_label">دانلود نشده</string>
-  <string name="selected_not_downloaded_label">قسمتهای بارگیری نشده انتخاب شد</string>
-  <string name="selected_queued_label">قسمتهای در صف انتخاب شده</string>
-  <string name="selected_not_queued_label">قسمتهای خارج صف انتخاب شده</string>
-  <string name="selected_has_media_label">قسمتهای با رسانه انتخاب شده</string>
   <string name="hide_is_favorite_label">مورد علاقه</string>
   <string name="not_favorite">مورد علاقه نیست</string>
   <string name="hide_downloaded_episodes_label">بارگیری‌شده</string>
@@ -653,9 +623,6 @@
   <!--Audio controls-->
   <string name="audio_controls">کنترل های صوتی</string>
   <string name="playback_speed">سرعت پخش</string>
-  <string name="volume">درجه صدا</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">جلوه های صوتی</string>
   <string name="stereo_to_mono">Downmix: استریو به مونو</string>
   <string name="sonic_only">فقط صوتی</string>

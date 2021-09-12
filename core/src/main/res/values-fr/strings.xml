@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Notifications</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" non trouvé</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Actions associées au balayage</string>
+  <string name="swipeactions_summary">Choisir les actions lors du balayage dans une liste d\'un épisode</string>
+  <string name="swipe_right">Balayage Droit</string>
+  <string name="swipe_left">Balayage Gauche</string>
+  <string name="enable_swipeactions">Activer le balayage pour cet écran</string>
+  <string name="change_setting">Modifier</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Durée totale d\'écoute :</string>
   <string name="statistics_details_dialog">%1$d épisodes démarrés sur %2$d\nsoit %3$s de lues sur %4$s.</string>
@@ -84,12 +91,9 @@
   <string name="shownotes_label">Notes</string>
   <string name="shownotes_contentdescription">Glisser vers le haut pour lire les notes d\'épisode</string>
   <string name="episodes_suffix">\u0020épisodes</string>
-  <string name="processing_label">Traitement en cours</string>
   <string name="close_label">Fermer</string>
   <string name="retry_label">Réessayer</string>
   <string name="auto_download_label">Télécharger automatiquement</string>
-  <string name="auto_download_apply_to_items_title">Appliquer aux épisodes précédents</string>
-  <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique des épisodes</string>
   <string name="feed_volume_reduction">Réduction du volume</string>
   <string name="feed_volume_reduction_summary">Réduction du volume des épisodes : %1$s</string>
@@ -114,8 +118,8 @@
     <item quantity="other">%d jours après avoir été écouté</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d sélectionné</item>
-    <item quantity="other">%d sélectionnés</item>
+    <item quantity="one">%1$d/%2$d sélectionné</item>
+    <item quantity="other">%1$d/%2$d sélectionnés</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d épisode</item>
@@ -134,7 +138,7 @@
   </plurals>
   <string name="new_episode_notification_group_text">Vos abonnements disposent de nouveaux épisodes.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marquer tous les épisodes comme lus</string>
+  <string name="mark_all_read_label">Tout marquer comme lu</string>
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
   <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
   <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisodes de ce podcast comme lus</string>
@@ -152,6 +156,7 @@
   <string name="share_website_url_label">Lien du site web</string>
   <string name="share_feed_url_label">Lien du flux</string>
   <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le podcast \"%1$s\" et TOUS ses épisodes téléchargés.</string>
+  <string name="feed_delete_confirmation_msg_batch">Confirmer que vous voulez supprimer les podcasts sélectionnés et TOUS leurs épisodes (y compris ceux téléchargés).</string>
   <string name="feed_delete_confirmation_local_msg">Merci de confirmer que vous voulez supprimer le podcast \"%1$s\". Les fichiers du dossier local  / source ne seront pas effacés.</string>
   <string name="feed_remover_msg">Podcast en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le podcast</string>
@@ -163,6 +168,11 @@
   <string name="open_podcast">Ouvrir le podcast</string>
   <string name="please_wait_for_data">Merci d\'attendre la fin du téléchargement des données</string>
   <string name="updates_disabled_label">Mises à jour désactivées</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d abonnement mis à jour.</item>
+    <item quantity="other">%d abonnements mis à jour.</item>
+  </plurals>
+  <string name="add_to_folder">Ajouter à des dossiers</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
   <plurals name="downloading_batch_label">
@@ -182,6 +192,8 @@
   <string name="remove_new_flag_label">Ne plus considérer nouveau</string>
   <string name="removed_new_flag_label">Le statut \"nouveau\" a été supprimé</string>
   <string name="mark_read_label">Marquer comme lu</string>
+  <string name="marked_as_played_label">Marqué comme lu</string>
+  <string name="marked_as_unplayed_label">Marqué comme non lu</string>
   <string name="mark_read_no_media_label">Marquer comme lu</string>
   <string name="play_this_to_seek_position">Pour changer la position l\'épisode doit être en cours de lecture</string>
   <plurals name="marked_read_batch_label">
@@ -209,8 +221,6 @@
   <string name="remove_from_favorite_label">Supprimer des Favoris</string>
   <string name="visit_website_label">Visiter le site</string>
   <string name="skip_episode_label">Passer cet épisode</string>
-  <string name="activate_auto_download">Activer téléchargement automatique</string>
-  <string name="deactivate_auto_download">Désactiver téléchargement automatique</string>
   <string name="reset_position">Réinitialiser la position de lecture</string>
   <string name="removed_item">Élément retiré</string>
   <string name="no_items_selected">Rien n\'a été sélectionné</string>
@@ -238,7 +248,6 @@
   <string name="download_error_wrong_size">La connexion au serveur a été coupée avant la fin du téléchargement</string>
   <string name="download_error_blocked">Le téléchargement a été bloqué par une application sur l\'appareil.</string>
   <string name="download_error_certificate">Impossible d\'établir une connexion sécurisée. Une application sur l\'appareil bloque peut-être le téléchargement ou le certificat du serveur peut avoir un problème.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
   <string name="download_report_title">Téléchargements terminés avec des erreurs</string>
   <string name="auto_download_report_title">Téléchargement automatique terminé</string>
   <string name="download_error_io_error">Erreur d\'E/S</string>
@@ -248,7 +257,7 @@
     <item quantity="one">%d téléchargement restant</item>
     <item quantity="other">%d téléchargements restants</item>
   </plurals>
-  <string name="service_shutting_down">Service en cours de fermeture</string>
+  <string name="completing">En cours...</string>
   <string name="download_notification_title">Téléchargement des podcasts</string>
   <string name="download_log_title_unknown">Titre inconnu</string>
   <string name="download_type_feed">Flux</string>
@@ -280,7 +289,6 @@
   <string name="no_media_label">Aucun fichier média disponible</string>
   <!--Queue operations-->
   <string name="lock_queue">Verrouiller la liste de lecture</string>
-  <string name="unlock_queue">Déverrouiller la liste de lecture</string>
   <string name="queue_locked">Liste de lecture verrouillée</string>
   <string name="queue_unlocked">Liste de lecture déverrouillée</string>
   <string name="queue_lock_warning">Quand la liste est verrouillée il n\'est plus possible d\'utiliser le swipe ou de changer l\'ordre des épisodes.</string>
@@ -457,8 +465,6 @@
   <string name="enqueue_location_front">en début de liste</string>
   <string name="enqueue_location_after_current">après l\'épisode courant</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
-  <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
-  <string name="pref_image_cache_size_sum">Taille de l’espace de stockage temporaire des images.</string>
   <string name="documentation_support">Documentation et support</string>
   <string name="visit_user_forum">Forum des utilisateurs</string>
   <string name="bug_report_title">Signaler un bug</string>
@@ -524,6 +530,7 @@
   <string name="licenses_summary">AntennaPod utilise le code d\'autres logiciels</string>
   <!--Search-->
   <string name="search_status_no_results">Aucun résultat trouvé</string>
+  <string name="type_to_search">Entrer une requête pour chercher</string>
   <string name="search_label">Recherche</string>
   <string name="no_results_for_query">Aucun résultat trouvé pour \"%1$s\"</string>
   <!--Synchronization-->
@@ -594,7 +601,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">PODCASTS POPULAIRES</string>
-  <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
   <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
   <string name="gpodnetauth_encryption_warning">Le mot de passe et les données ne sont pas cryptés !</string>
@@ -689,22 +695,6 @@
   <string name="local_feed_description">Ce podcast a été crée à partir d\'un dossier ajouté à AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Impossible d\'ouvrir le gestionnaire de fichier</string>
   <string name="filter">Filtrer</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Tous</string>
-  <string name="selected_all_label">Tous les épisodes ont été sélectionné</string>
-  <string name="select_none_label">Aucun</string>
-  <string name="deselected_all_label">Tous les épisodes ont été désélectionné</string>
-  <string name="played_label">Lus</string>
-  <string name="selected_played_label">Episodes lus sélectionnés</string>
-  <string name="unplayed_label">Non lus</string>
-  <string name="selected_unplayed_label">Episodes non lus sélectionnés</string>
-  <string name="downloaded_label">Téléchargés</string>
-  <string name="selected_downloaded_label">Episodes téléchargés sélectionnés</string>
-  <string name="not_downloaded_label">Non téléchargés</string>
-  <string name="selected_not_downloaded_label">Episodes non téléchargés sélectionnés</string>
-  <string name="selected_queued_label">Episodes présents dans la liste de lecture sélectionnés</string>
-  <string name="selected_not_queued_label">Episodes absents de la liste de lecture sélectionnés</string>
-  <string name="selected_has_media_label">Sélectionner les épisodes avec des médias</string>
   <string name="hide_is_favorite_label">Est un favori</string>
   <string name="not_favorite">N\'est pas un favori</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
@@ -745,9 +735,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Contrôles audio</string>
   <string name="playback_speed">Vitesse de lecture</string>
-  <string name="volume">Volume</string>
-  <string name="left_short">G</string>
-  <string name="right_short">D</string>
   <string name="audio_effects">Effets audio</string>
   <string name="stereo_to_mono">Mixage : stéréo à mono</string>
   <string name="sonic_only">Sonic seulement</string>

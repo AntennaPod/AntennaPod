@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Notifieringar</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" hittades inte</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Svepåtgärder</string>
+  <string name="swipeactions_summary">Välj vad som händer när du sveper över en episod i en lista</string>
+  <string name="swipe_right">Svepning Höger</string>
+  <string name="swipe_left">Svepning Vänster</string>
+  <string name="enable_swipeactions">Aktivera svepåtgärder för denna skärm</string>
+  <string name="change_setting">Ändra</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
   <string name="statistics_details_dialog">%1$d av %2$d episoder startade.\n\nSpelat %3$s av %4$s.</string>
@@ -85,15 +92,12 @@
   <string name="shownotes_contentdescription">svep uppåt för att läsa shownotes
 </string>
   <string name="episodes_suffix">\u0020episoder</string>
-  <string name="processing_label">Bearbetar</string>
   <string name="close_label">Stäng</string>
   <string name="retry_label">Försök igen</string>
   <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
-  <string name="auto_download_apply_to_items_title">Applicera på tidigare episoder</string>
-  <string name="auto_download_apply_to_items_message">Den nya inställningen <i>Automatisk nedladdning</i> kommer automatiskt att appliceras på nya episoder.\nVill du även applicera det på tidigare publicerade episoder?</string>
   <string name="auto_delete_label">Automatisk episodborttagning</string>
   <string name="feed_volume_reduction">Volymreducering</string>
-  <string name="feed_volume_reduction_summary">Sänk volymen för episoder i detta flöde: %1$s</string>
+  <string name="feed_volume_reduction_summary">Sänk volymen för episoder av denna podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Av</string>
   <string name="feed_volume_reduction_light">Lätt</string>
   <string name="feed_volume_reduction_heavy">Tungt</string>
@@ -115,8 +119,8 @@
     <item quantity="other">%d dagar efter färdigspelad</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d vald</item>
-    <item quantity="other">%d vald</item>
+    <item quantity="one">%1$d/%2$d vald</item>
+    <item quantity="other">%1$d/%2$d valda</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episod</item>
@@ -153,6 +157,7 @@
   <string name="share_website_url_label">Webbsideadress</string>
   <string name="share_feed_url_label">Podcasflödes URL</string>
   <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort podcast \"%1$s\" och ALLA dess episoder (inklusive nedladdade episoder).</string>
+  <string name="feed_delete_confirmation_msg_batch">Bekräfta att du vill ta bort valda podcasts och ALLA deras episoder (inklusive nedladdade episoder).</string>
   <string name="feed_delete_confirmation_local_msg">Bekräfta att du vill ta bort alla podcasts \"%1$s\". Filerna i den lokala källkatalogen kommer inte att raderas.</string>
   <string name="feed_remover_msg">Tar bort podcast</string>
   <string name="load_complete_feed">Uppdatera hela podcasten</string>
@@ -164,6 +169,11 @@
   <string name="open_podcast">Öppna podcast</string>
   <string name="please_wait_for_data">Vänta tills datan laddats</string>
   <string name="updates_disabled_label">Uppdateringar avstängt</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d prenumeration uppdaterad.</item>
+    <item quantity="other">%d prenumerationer uppdaterade.</item>
+  </plurals>
+  <string name="add_to_folder">Lägg till i katalog</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <plurals name="downloading_batch_label">
@@ -183,6 +193,8 @@
   <string name="remove_new_flag_label">Ta bort \"ny\"-flagga</string>
   <string name="removed_new_flag_label">Tog bort \"ny\"-flagga</string>
   <string name="mark_read_label">Markera som spelad</string>
+  <string name="marked_as_played_label">Markera som spelad</string>
+  <string name="marked_as_unplayed_label">Markera som ospelad</string>
   <string name="mark_read_no_media_label">Markera som spelad</string>
   <string name="play_this_to_seek_position">Spela episoden för att kunna hoppa till olika positioner</string>
   <plurals name="marked_read_batch_label">
@@ -210,8 +222,6 @@
   <string name="remove_from_favorite_label">Ta bort från favoriter</string>
   <string name="visit_website_label">Besök websidan</string>
   <string name="skip_episode_label">Hoppa över episoden</string>
-  <string name="activate_auto_download">Aktivera automatisk nedladdning</string>
-  <string name="deactivate_auto_download">Avaktivera automatisk nedladdning</string>
   <string name="reset_position">Nollställ uppspelningspositionen</string>
   <string name="removed_item">Borttagen</string>
   <string name="no_items_selected">Inget valt</string>
@@ -239,7 +249,6 @@
   <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar.</string>
   <string name="download_error_blocked">Nedladdningen blockerades av en annan app på enheten.</string>
   <string name="download_error_certificate">Kunde inte etablera en säker anslutning. Detta kan betyda att en annan app på din enhet har blockerat nedladdningen eller att något är fel på serverns certifikat.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Nedladdning avbruten\nStängde av <i>Automatisk nedladdning</i> för detta föremål</string>
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="auto_download_report_title">Automatiska nedladdningar klara</string>
   <string name="download_error_io_error">IO fel</string>
@@ -249,7 +258,7 @@
     <item quantity="one">%d nedladdning kvar</item>
     <item quantity="other">%d nedladdningar kvar</item>
   </plurals>
-  <string name="service_shutting_down">Tjänsten avslutas</string>
+  <string name="completing">Färdigställer...</string>
   <string name="download_notification_title">Laddar ner podcastdata</string>
   <string name="download_log_title_unknown">Okänd titel</string>
   <string name="download_type_feed">Flöde</string>
@@ -281,7 +290,6 @@
   <string name="no_media_label">Artikeln innehåller ingen mediafil</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås Kön</string>
-  <string name="unlock_queue">Lås upp Kön</string>
   <string name="queue_locked">Kön låst</string>
   <string name="queue_unlocked">Kön upplåst</string>
   <string name="queue_lock_warning">Om du låser kön kan du inte längre svepa eller ordna om episoder.</string>
@@ -458,8 +466,6 @@
   <string name="enqueue_location_front">Början</string>
   <string name="enqueue_location_after_current">Efter nuvarande episod</string>
   <string name="pref_smart_mark_as_played_disabled">Avaktiverad</string>
-  <string name="pref_image_cache_size_title">Bildcachestorlek</string>
-  <string name="pref_image_cache_size_sum">Storleken på bildcachen på disken.</string>
   <string name="documentation_support">Dokumentation &amp; Support</string>
   <string name="visit_user_forum">Användarforum</string>
   <string name="bug_report_title">Rapportera bugg</string>
@@ -525,6 +531,7 @@
   <string name="licenses_summary">AntennaPod förlitar sig på annan bra programvara</string>
   <!--Search-->
   <string name="search_status_no_results">Inga resultat hittades</string>
+  <string name="type_to_search">Skriv en fråga för att söka</string>
   <string name="search_label">Sök</string>
   <string name="no_results_for_query">Inga resultat hittades för \"%1$s\"</string>
   <!--Synchronization-->
@@ -595,7 +602,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER</string>
   <string name="gpodnet_toplist_header">BÄSTA PODCASTS</string>
-  <string name="gpodnet_suggestions_header">FÖRSLAG</string>
   <string name="gpodnet_search_hint">Sök på gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Logga in</string>
   <string name="gpodnetauth_encryption_warning">Lösenord och data är inte krypterade!</string>
@@ -690,22 +696,6 @@
   <string name="local_feed_description">Denna virtuella podcast skapades genom att lägga till en katalog till AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Kunde inte starta systemets filhanterare</string>
   <string name="filter">Filtrera</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Alla</string>
-  <string name="selected_all_label">Välj alla episoder</string>
-  <string name="select_none_label">Inga</string>
-  <string name="deselected_all_label">Avmarkera alla episoder</string>
-  <string name="played_label">Spelade</string>
-  <string name="selected_played_label">Valde spelade episoder</string>
-  <string name="unplayed_label">Ospelade</string>
-  <string name="selected_unplayed_label">Valde ospelade episoder</string>
-  <string name="downloaded_label">Nedladdade</string>
-  <string name="selected_downloaded_label">Valde nedladdade episoder</string>
-  <string name="not_downloaded_label">Ej nedladdade</string>
-  <string name="selected_not_downloaded_label">Valde ej nedladdade episoder</string>
-  <string name="selected_queued_label">Valde köade episoder</string>
-  <string name="selected_not_queued_label">Välj ej köade episoder</string>
-  <string name="selected_has_media_label">Valde episoder med media</string>
   <string name="hide_is_favorite_label">Är favorit</string>
   <string name="not_favorite">Ej favorit</string>
   <string name="hide_downloaded_episodes_label">Nedladdade</string>
@@ -746,9 +736,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Ljudkontroller</string>
   <string name="playback_speed">Uppspelningshastighet</string>
-  <string name="volume">Volym</string>
-  <string name="left_short">V</string>
-  <string name="right_short">H</string>
   <string name="audio_effects">Ljudeffekter</string>
   <string name="stereo_to_mono">Nedmixning: stereo till mono</string>
   <string name="sonic_only">Bara Sonic</string>
