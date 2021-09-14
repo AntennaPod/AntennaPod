@@ -103,7 +103,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
         } else if (preferences == R.xml.preferences_user_interface) {
             return R.string.user_interface_label;
         } else if (preferences == R.xml.preferences_synchronization) {
-            return R.string.gpodnet_main_label;
+            return R.string.synchronization;
         } else if (preferences == R.xml.preferences_notifications) {
             return R.string.notification_pref_fragment;
         } else if (preferences == R.xml.feed_settings) {
