@@ -50,10 +50,8 @@ public class NextcloudSyncService implements ISyncService {
         SingleSignOnAccount ssoAccount = null;
         try {
             try {
-                ssoAccount = AccountImporter.getSingleSignOnAccount(
-                        context,
-                        SingleAccountHelper.getCurrentSingleSignOnAccount(context).name
-                );
+                ssoAccount = AccountImporter.getSingleSignOnAccount(context,
+                        SingleAccountHelper.getCurrentSingleSignOnAccount(context).name);
             } catch (NoCurrentAccountSelectedException e) {
                 e.printStackTrace();
             }
