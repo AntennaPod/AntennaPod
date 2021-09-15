@@ -223,6 +223,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     SyncService.getLastSyncAttempt(getContext()));
         } else {
             findPreference(PREFERENCE_LOGOUT).setSummary(null);
+            ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(null);
         }
     }
 
