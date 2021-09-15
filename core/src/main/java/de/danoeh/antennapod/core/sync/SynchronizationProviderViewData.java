@@ -4,8 +4,16 @@ import de.danoeh.antennapod.core.R;
 
 public enum SynchronizationProviderViewData {
     NONE("unset", R.string.preference_synchronization_summary_unchoosen, R.drawable.ic_cloud),
-    GPODDER_NET("GPodder.net", R.string.gpodnet_description, R.drawable.gpodder_icon),
-    NEXTCLOUD_GPODDER("Nextcloud", R.string.preference_synchronization_summary_nextcloud, R.drawable.nextcloud_logo),
+    GPODDER_NET(
+            SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET,
+            R.string.gpodnet_description,
+            R.drawable.gpodder_icon
+    ),
+    NEXTCLOUD_GPODDER(
+            SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD,
+            R.string.preference_synchronization_summary_nextcloud,
+            R.drawable.nextcloud_logo
+    ),
     ;
 
     private final String name;
