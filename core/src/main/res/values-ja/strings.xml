@@ -337,7 +337,7 @@
   <string name="pref_gpodnet_authenticate_title">ログイン</string>
   <string name="pref_gpodnet_authenticate_sum">購読を同期するために、あなたのgpodder.netアカウントにログインします。</string>
   <string name="pref_gpodnet_logout_title">ログアウト</string>
-  <string name="pref_gpodnet_logout_toast">ログアウトしました</string>
+  <string name="pref_synchronization_logout_toast">ログアウトしました</string>
   <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
   <string name="pref_gpodnet_sync_changes_sum">購読とエピソードの状態の変更を gpodder.net で同期します。</string>

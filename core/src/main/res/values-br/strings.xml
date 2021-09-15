@@ -446,12 +446,12 @@
   <string name="pref_gpodnet_authenticate_title">Anv arveriad</string>
   <string name="pref_gpodnet_authenticate_sum">Kennaskit gant ho kont gpodder evit goubredañ ho koumanantoù.</string>
   <string name="pref_gpodnet_logout_title">Digennaskañ</string>
-  <string name="pref_gpodnet_logout_toast">Digennasket gant berzh</string>
+  <string name="pref_synchronization_logout_toast">Digennasket gant berzh</string>
   <string name="pref_gpodnet_setlogin_information_title">Kemmañ an titouroù kennaskañ</string>
   <string name="pref_gpodnet_setlogin_information_sum">Kemmañ ho titouroù kennaskañ evit ho kont gpodder.net.</string>
-  <string name="pref_gpodnet_sync_changes_title">Goubredañ bremañ</string>
+  <string name="pref_synchronization_sync_changes_title">Goubredañ bremañ</string>
   <string name="pref_gpodnet_sync_changes_sum">Goubredañ stad ar c\'houmanantoù hag ar rannoù gant gpodder.net</string>
-  <string name="pref_gpodnet_full_sync_title">Rediañ ur goubredañ klok</string>
+  <string name="pref_synchronization_full_sync_title">Rediañ ur goubredañ klok</string>
   <string name="pref_gpodnet_full_sync_sum">Goubredañ an holl goumanantoù ha stadoù ar rannoù gant gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Kennasket evel <i>%1$s</i> gant ar benveg <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Dibab an tizhioù a c\'haller dibab pa vez lennet ar son</string>

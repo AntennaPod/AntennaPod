@@ -413,12 +413,12 @@
   <string name="pref_gpodnet_authenticate_title">登录</string>
   <string name="pref_gpodnet_authenticate_sum">登录 gpodder.net 账户同步订阅</string>
   <string name="pref_gpodnet_logout_title">注销</string>
-  <string name="pref_gpodnet_logout_toast">注销成功</string>
+  <string name="pref_synchronization_logout_toast">注销成功</string>
   <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
-  <string name="pref_gpodnet_sync_changes_title">现在同步</string>
+  <string name="pref_synchronization_sync_changes_title">现在同步</string>
   <string name="pref_gpodnet_sync_changes_sum">和gpodder.net同步订阅和节目状态</string>
-  <string name="pref_gpodnet_full_sync_title">强制完整同步</string>
+  <string name="pref_synchronization_full_sync_title">强制完整同步</string>
   <string name="pref_gpodnet_full_sync_sum">与gpodder.net同步所有订阅和节目状态</string>
   <string name="pref_gpodnet_login_status"><![CDATA[在设备 <i>%2$s</i> 上以 <i>%1$s</i> 身份登录]]></string>
   <string name="pref_playback_speed_sum">自定义可用于变速播放的速度</string>

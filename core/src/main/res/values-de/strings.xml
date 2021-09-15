@@ -428,12 +428,12 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_gpodnet_authenticate_title">Anmelden</string>
   <string name="pref_gpodnet_authenticate_sum">Melde dich mit deinem gpodder.net Profil an, um deine Abonnements zu synchronisieren</string>
   <string name="pref_gpodnet_logout_title">Abmelden</string>
-  <string name="pref_gpodnet_logout_toast">Abmeldung war erfolgreich</string>
+  <string name="pref_synchronization_logout_toast">Abmeldung war erfolgreich</string>
   <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
-  <string name="pref_gpodnet_sync_changes_title">Jetzt synchronisieren</string>
+  <string name="pref_synchronization_sync_changes_title">Jetzt synchronisieren</string>
   <string name="pref_gpodnet_sync_changes_sum">Änderungen an Abonnement- und Episoden-Status mit gpodder.net synchronisieren.</string>
-  <string name="pref_gpodnet_full_sync_title">Komplette Synchronisation erzwingen</string>
+  <string name="pref_synchronization_full_sync_title">Komplette Synchronisation erzwingen</string>
   <string name="pref_gpodnet_full_sync_sum">Kompletten Abonnement- und Episoden-Status mit gpodder.net synchronisieren.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Eingeloggt als <i>%1$s</i> mit dem Gerät <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Anpassen der verfügbaren Geschwindigkeiten für die Wiedergabe mit variabler Geschwindigkeit</string>

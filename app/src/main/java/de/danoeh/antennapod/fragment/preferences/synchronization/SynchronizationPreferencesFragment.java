@@ -173,7 +173,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             GpodnetPreferences.logout();
-            Snackbar.make(getView(), R.string.pref_gpodnet_logout_toast, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SyncService.setIsProviderConnected(false);
             setSelectedSyncProvider(SYNC_PROVIDER_UNSET);
             updateScreen();
@@ -212,7 +212,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_LOGOUT).setEnabled(loggedIn);
         if (loggedIn) {
-            String format = getActivity().getString(R.string.pref_nextcloud_gpodder_login_status);
+            String format = getActivity().getString(R.string.pref_synchronization_login_status);
             String summary = String.format(
                     format,
                     ViewDataProvider.getUsernameFromSelectedSyncProvider(

@@ -407,12 +407,12 @@
   <string name="pref_gpodnet_authenticate_title">Hasi saioa</string>
   <string name="pref_gpodnet_authenticate_sum">Hasi saioa zure gpodder.net kontuan zure harpidetzak sinkronizatzeko</string>
   <string name="pref_gpodnet_logout_title">Itxi saioa</string>
-  <string name="pref_gpodnet_logout_toast">Saioa ongi itxi duzu</string>
+  <string name="pref_synchronization_logout_toast">Saioa ongi itxi duzu</string>
   <string name="pref_gpodnet_setlogin_information_title">Aldatu saio hasieraren informazioa</string>
   <string name="pref_gpodnet_setlogin_information_sum">Aldatu saio hasierako datuak zure gpodder.net-en kontuan.</string>
-  <string name="pref_gpodnet_sync_changes_title">Sinkronizatu orain</string>
+  <string name="pref_synchronization_sync_changes_title">Sinkronizatu orain</string>
   <string name="pref_gpodnet_sync_changes_sum">Sinkronizatu harpidetza aldaketak eta saioak gpodder.net-ekin</string>
-  <string name="pref_gpodnet_full_sync_title">Sinkronizazio osoa behartu</string>
+  <string name="pref_synchronization_full_sync_title">Sinkronizazio osoa behartu</string>
   <string name="pref_gpodnet_full_sync_sum">Sinkronizatu harpidetza denak eta saioak gpodder.net-ekin</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Horrela hasi du saioa <i>%1$s</i> gailu honekin <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Pertsonalizatu abiadura aldakorreko erreprodukzioan dauden abiadurak</string>

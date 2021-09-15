@@ -368,12 +368,12 @@
   <string name="pref_gpodnet_authenticate_title">로그인</string>
   <string name="pref_gpodnet_authenticate_sum">gpodder.net 계정으로 로그인해서 구독 정보를 동기화</string>
   <string name="pref_gpodnet_logout_title">로그아웃</string>
-  <string name="pref_gpodnet_logout_toast">로그아웃 성공</string>
+  <string name="pref_synchronization_logout_toast">로그아웃 성공</string>
   <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
-  <string name="pref_gpodnet_sync_changes_title">지금 동기화</string>
+  <string name="pref_synchronization_sync_changes_title">지금 동기화</string>
   <string name="pref_gpodnet_sync_changes_sum">gpodder.net의 구독과 에피소드 상태 변화를 동기화합니다.</string>
-  <string name="pref_gpodnet_full_sync_title">전체 동기화 강제</string>
+  <string name="pref_synchronization_full_sync_title">전체 동기화 강제</string>
   <string name="pref_gpodnet_full_sync_sum">gpodder.net의 모든 구독과 에피소드 상태를 동기화합니다.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> 사용자로 로그인, <i>%2$s</i> 장치]]></string>
   <string name="pref_playback_speed_sum">재생 속도를 다양하게 할 경우 속도를 직접 설정</string>

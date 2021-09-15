@@ -294,7 +294,7 @@
   <string name="pref_gpodnet_authenticate_title">Aniciar sesión</string>
   <string name="pref_gpodnet_authenticate_sum">Anicia sesión en gpodder.net pa sincronizar les soscripciones.</string>
   <string name="pref_gpodnet_logout_title">Zarrar sesión</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronizar agora</string>
+  <string name="pref_synchronization_sync_changes_title">Sincronizar agora</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Aniciesti sesión como <i>%1$s</i> col preséu <i>%2$s</i>]]></string>
   <string name="pref_feed_playback_speed_sum">La velocidá que s\'usa al aniciar la reproducción de los episodios d\'esti podcast</string>
   <string name="pref_feed_skip">Saltu automáticu</string>

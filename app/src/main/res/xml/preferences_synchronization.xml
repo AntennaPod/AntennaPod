@@ -16,11 +16,11 @@
             app:isPreferenceVisible="false"/>
     <Preference
             android:key="pref_synchronization_sync"
-            android:title="@string/pref_gpodnet_sync_changes_title"
+            android:title="@string/pref_synchronization_sync_changes_title"
             android:summary="@string/pref_synchronization_sync_summary"/>
     <Preference
             android:key="pref_synchronization_force_full_sync"
-            android:title="@string/pref_gpodnet_full_sync_title"
+            android:title="@string/pref_synchronization_full_sync_title"
             android:summary="@string/pref_synchronization_force_sync_summary"/>
     <Preference
             android:key="pref_synchronization_logout"

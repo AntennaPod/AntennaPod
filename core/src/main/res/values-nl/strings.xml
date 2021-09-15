@@ -427,12 +427,12 @@
   <string name="pref_gpodnet_authenticate_title">Inloggen</string>
   <string name="pref_gpodnet_authenticate_sum">Log in met je gpodder.net-account om je abonnementen te synchroniseren.</string>
   <string name="pref_gpodnet_logout_title">Uitloggen</string>
-  <string name="pref_gpodnet_logout_toast">Uitgelogd</string>
+  <string name="pref_synchronization_logout_toast">Uitgelogd</string>
   <string name="pref_gpodnet_setlogin_information_title">Inloggegevens wijzigen</string>
   <string name="pref_gpodnet_setlogin_information_sum">Wijzig de inloggegevens van je gpodder.net-account.</string>
-  <string name="pref_gpodnet_sync_changes_title">Nu synchroniseren</string>
+  <string name="pref_synchronization_sync_changes_title">Nu synchroniseren</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchroniseer gewijzigde abonnementen en afleveringsstatussen met gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Volledige synchronisatie afdwingen</string>
+  <string name="pref_synchronization_full_sync_title">Volledige synchronisatie afdwingen</string>
   <string name="pref_gpodnet_full_sync_sum">Synchroniseer alle abonnementen en afleveringsstatussen met gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ingelogd als <i>%1$s</i> met apparaat <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele afspeelsnelheid</string>

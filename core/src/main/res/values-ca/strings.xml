@@ -324,12 +324,12 @@
   <string name="pref_gpodnet_authenticate_title">Inici de sessió</string>
   <string name="pref_gpodnet_authenticate_sum">Inicieu sessió a gpodder.net per tal de sincronitzar les vostres subscripcions.</string>
   <string name="pref_gpodnet_logout_title">Surt</string>
-  <string name="pref_gpodnet_logout_toast">Heu sortit de la sessió</string>
+  <string name="pref_synchronization_logout_toast">Heu sortit de la sessió</string>
   <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronitza ara</string>
+  <string name="pref_synchronization_sync_changes_title">Sincronitza ara</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronitza amb gpodder.net les subscripcions i els estats dels episodis.</string>
-  <string name="pref_gpodnet_full_sync_title">Força sincronització completa</string>
+  <string name="pref_synchronization_full_sync_title">Força sincronització completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronitza amb gpodder.net totes les subscripcions i els estats dels episodis.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connectat com a <i>%1$s</i> amb el dispositiu <i>%2$s</i>]]></string>
   <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>

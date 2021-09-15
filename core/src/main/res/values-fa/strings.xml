@@ -341,12 +341,12 @@
   <string name="pref_gpodnet_authenticate_title">ورود</string>
   <string name="pref_gpodnet_authenticate_sum">برای همگام سازی اشتراک های خود با حساب gpodder.net وارد شوید.</string>
   <string name="pref_gpodnet_logout_title">خروج</string>
-  <string name="pref_gpodnet_logout_toast">خروج موفقیت‌آمیز بود</string>
+  <string name="pref_synchronization_logout_toast">خروج موفقیت‌آمیز بود</string>
   <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
   <string name="pref_gpodnet_setlogin_information_sum">اطلاعات ورود به سیستم حساب gpodder.net خود را تغییر دهید.</string>
-  <string name="pref_gpodnet_sync_changes_title">اکنون همگام سازی کنید</string>
+  <string name="pref_synchronization_sync_changes_title">اکنون همگام سازی کنید</string>
   <string name="pref_gpodnet_sync_changes_sum">تغییرات اشتراک و وضعیت اپیزود را با gpodder.net همگام سازی کنید.</string>
-  <string name="pref_gpodnet_full_sync_title">همگام سازی کامل را اجبار کن</string>
+  <string name="pref_synchronization_full_sync_title">همگام سازی کامل را اجبار کن</string>
   <string name="pref_gpodnet_full_sync_sum">همه اشتراک ها و حالت های قسمت را با gpodder.net همگام سازی کنید.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[وارد شد به عنوان <i>%1$s</i> با وسیله <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
