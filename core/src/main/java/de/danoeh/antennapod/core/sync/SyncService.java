@@ -114,22 +114,6 @@ public class SyncService extends Worker {
             }
             return Result.retry();
         }
-
-
-    }
-
-    private ISyncService getActiveSyncProvider() {
-        String selectedService = getSelectedSyncProviderKey(getApplicationContext());
-        switch (selectedService) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
-                return new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
-                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
-                return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
-            default:
-                return null;
-        }
     }
 
     public static void setIsProviderConnected(boolean isConnected) {
@@ -149,11 +133,6 @@ public class SyncService extends Worker {
                 .edit()
                 .putString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, userSelect)
                 .apply();
-    }
-
-    private static SharedPreferences getSyncServiceSharedPreferences() {
-        return ClientConfig.applicationCallbacks.getApplicationInstance()
-                .getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE);
     }
 
     public static void clearQueue(Context context) {
@@ -184,18 +163,6 @@ public class SyncService extends Worker {
             }
             sync(context);
         });
-    }
-
-    private static boolean hasActiveSyncProvider(Context context) {
-        return getSelectedSyncProviderKey(context) != null && isProviderConnected();
-    }
-
-    private static String getSelectedSyncProviderKey(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                SHARED_PREFERENCES_SYNCHRONIZATION,
-                Context.MODE_PRIVATE
-        );
-        return preferences.getString(SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, null);
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
@@ -281,44 +248,6 @@ public class SyncService extends Worker {
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
         });
-    }
-
-    private static OneTimeWorkRequest.Builder getWorkRequest() {
-        Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileFeedRefresh()) {
-            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
-        } else {
-            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
-        }
-
-        return new OneTimeWorkRequest.Builder(SyncService.class)
-                .setConstraints(constraints.build())
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
-                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
-    }
-
-    /**
-     * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is
-     * in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
-     */
-    private static void executeLockedAsync(Runnable runnable) {
-        if (lock.tryLock()) {
-            try {
-                runnable.run();
-            } finally {
-                lock.unlock();
-            }
-        } else {
-            Completable.fromRunnable(() -> {
-                lock.lock();
-                try {
-                    runnable.run();
-                } finally {
-                    lock.unlock();
-                }
-            }).subscribeOn(Schedulers.io())
-                    .subscribe();
-        }
     }
 
     public static boolean isLastSyncSuccessful(Context context) {
@@ -552,5 +481,74 @@ public class SyncService extends Worker {
         NotificationManager nm = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(R.id.notification_gpodnet_sync_error, notification);
+    }
+
+    private static OneTimeWorkRequest.Builder getWorkRequest() {
+        Constraints.Builder constraints = new Constraints.Builder();
+        if (UserPreferences.isAllowMobileFeedRefresh()) {
+            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
+        } else {
+            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
+        }
+
+        return new OneTimeWorkRequest.Builder(SyncService.class)
+                .setConstraints(constraints.build())
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
+                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+    }
+
+    /**
+     * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is
+     * in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
+     */
+    private static void executeLockedAsync(Runnable runnable) {
+        if (lock.tryLock()) {
+            try {
+                runnable.run();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            Completable.fromRunnable(() -> {
+                lock.lock();
+                try {
+                    runnable.run();
+                } finally {
+                    lock.unlock();
+                }
+            }).subscribeOn(Schedulers.io())
+                    .subscribe();
+        }
+    }
+
+    private static SharedPreferences getSyncServiceSharedPreferences() {
+        return ClientConfig.applicationCallbacks.getApplicationInstance()
+                .getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE);
+    }
+
+    private ISyncService getActiveSyncProvider() {
+        String selectedService = getSelectedSyncProviderKey(getApplicationContext());
+        switch (selectedService) {
+            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
+                return new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
+            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
+                return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
+            default:
+                return null;
+        }
+    }
+
+    private static boolean hasActiveSyncProvider(Context context) {
+        return getSelectedSyncProviderKey(context) != null && isProviderConnected();
+    }
+
+    private static String getSelectedSyncProviderKey(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                SHARED_PREFERENCES_SYNCHRONIZATION,
+                Context.MODE_PRIVATE
+        );
+        return preferences.getString(SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, null);
     }
 }
