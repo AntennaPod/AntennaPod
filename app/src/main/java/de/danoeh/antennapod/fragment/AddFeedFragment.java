@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,11 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
@@ -57,10 +57,10 @@ public class AddFeedFragment extends Fragment {
     private MainActivity activity;
     private boolean displayUpArrow;
 
-    private final ActivityResultLauncher<Intent> chooseOpmlImportPathLauncher =
-            registerForActivityResult(new StartActivityForResult(), this::chooseOpmlImportPathResult);
-    private final ActivityResultLauncher<Intent> addLocalFolderLauncher =
-            registerForActivityResult(new StartActivityForResult(), this::addLocalFolderResult);
+    private final ActivityResultLauncher<String> chooseOpmlImportPathLauncher =
+            registerForActivityResult(new GetContent(), this::chooseOpmlImportPathResult);
+    private final ActivityResultLauncher<Uri> addLocalFolderLauncher =
+            registerForActivityResult(new AddLocalFolder(), this::addLocalFolderResult);
 
     @Override
     @Nullable
@@ -97,10 +97,7 @@ public class AddFeedFragment extends Fragment {
 
         viewBinding.opmlImportButton.setOnClickListener(v -> {
             try {
-                Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
-                intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
-                intentGetContentAction.setType("*/*");
-                chooseOpmlImportPathLauncher.launch(intentGetContentAction);
+                chooseOpmlImportPathLauncher.launch("*/*");
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 ((MainActivity) getActivity())
@@ -113,9 +110,7 @@ public class AddFeedFragment extends Fragment {
                 return;
             }
             try {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                addLocalFolderLauncher.launch(intent);
+                addLocalFolderLauncher.launch(null);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 ((MainActivity) getActivity())
@@ -177,21 +172,19 @@ public class AddFeedFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    private void chooseOpmlImportPathResult(final ActivityResult result) {
-        if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
+    private void chooseOpmlImportPathResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        final Uri uri = result.getData().getData();
         final Intent intent = new Intent(getContext(), OpmlImportActivity.class);
         intent.setData(uri);
         startActivity(intent);
     }
 
-    private void addLocalFolderResult(final ActivityResult result) {
-        if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
+    private void addLocalFolderResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        final Uri uri = result.getData().getData();
         Observable.fromCallable(() -> addLocalFolder(uri))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -226,5 +219,15 @@ public class AddFeedFragment extends Fragment {
         Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
         DBTasks.forceRefreshFeed(getContext(), fromDatabase, true);
         return fromDatabase;
+    }
+
+    private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
+            return super.createIntent(context, input)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
     }
 }

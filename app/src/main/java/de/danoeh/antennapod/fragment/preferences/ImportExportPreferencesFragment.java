@@ -15,7 +15,10 @@ import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
@@ -67,10 +70,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             registerForActivityResult(new StartActivityForResult(), this::chooseFavoritesExportPathResult);
     private final ActivityResultLauncher<Intent> restoreDatabaseLauncher =
             registerForActivityResult(new StartActivityForResult(), this::restoreDatabaseResult);
-    private final ActivityResultLauncher<Intent> backupDatabaseLauncher =
-            registerForActivityResult(new StartActivityForResult(), this::backupDatabaseResult);
-    private final ActivityResultLauncher<Intent> chooseOpmlImportPathLauncher =
-            registerForActivityResult(new StartActivityForResult(), this::chooseOpmlImportPathResult);
+    private final ActivityResultLauncher<String> backupDatabaseLauncher =
+            registerForActivityResult(new BackupDatabase(), this::backupDatabaseResult);
+    private final ActivityResultLauncher<String> chooseOpmlImportPathLauncher =
+            registerForActivityResult(new GetContent(), this::chooseOpmlImportPathResult);
     private Disposable disposable;
     private ProgressDialog progressDialog;
 
@@ -118,10 +121,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
                 preference -> {
                     try {
-                        Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
-                        intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
-                        intentGetContentAction.setType("*/*");
-                        chooseOpmlImportPathLauncher.launch(intentGetContentAction);
+                        chooseOpmlImportPathLauncher.launch("*/*");
                     } catch (ActivityNotFoundException e) {
                         Log.e(TAG, "No activity found. Should never happen...");
                     }
@@ -170,12 +170,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private void exportDatabase() {
         if (Build.VERSION.SDK_INT >= 19) {
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType("application/x-sqlite3")
-                    .putExtra(Intent.EXTRA_TITLE, dateStampFilename(DATABASE_EXPORT_FILENAME));
-
-            backupDatabaseLauncher.launch(intent);
+            backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
         } else {
             File sd = Environment.getExternalStorageDirectory();
             File backupDB = new File(sd, dateStampFilename(DATABASE_EXPORT_FILENAME));
@@ -299,11 +294,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 }, this::showExportErrorDialog);
     }
 
-    private void backupDatabaseResult(final ActivityResult result) {
-        if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
+    private void backupDatabaseResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        final Uri uri = result.getData().getData();
         progressDialog.show();
         disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
                 .subscribeOn(Schedulers.io())
@@ -314,11 +308,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 }, this::showExportErrorDialog);
     }
 
-    private void chooseOpmlImportPathResult(final ActivityResult result) {
-        if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
+    private void chooseOpmlImportPathResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        final Uri uri = result.getData().getData();
         final Intent intent = new Intent(getContext(), OpmlImportActivity.class);
         intent.setData(uri);
         startActivity(intent);
@@ -345,5 +338,15 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         // If we are using a SDK lower than API 21 or the implicit intent failed
         // fallback to the legacy export process
         exportWithWriter(writer, null);
+    }
+
+    private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @NonNull final String input) {
+            return super.createIntent(context, input)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType("application/x-sqlite3");
+        }
     }
 }
