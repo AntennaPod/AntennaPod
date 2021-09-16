@@ -36,19 +36,21 @@ import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
+import de.danoeh.antennapod.core.sync.SynchronizationSharedPreferenceKeys;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
 import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
+    public static final String SYNC_PROVIDER_UNSET = "unset";
+
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
     private static final String PREFERENCE_LOGIN = "pref_synchronization_authenticate";
     private static final String PREFERENCE_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREFERENCE_SYNC = "pref_synchronization_sync";
     private static final String PREFERENCE_FORCE_FULL_SYNC = "pref_synchronization_force_full_sync";
     private static final String PREFERENCE_LOGOUT = "pref_synchronization_logout";
-    public static final String SYNC_PROVIDER_UNSET = "unset";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -95,7 +97,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             builder.setTitle(R.string.dialog_choose_sync_service_title);
 
             ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
-                    getContext(), R.layout.alertdialog_sync_provider_chooser, SynchronizationProviderViewData.values()) {
+                    getContext(), R.layout.alertdialog_sync_provider_chooser, SynchronizationProviderViewData.values()
+            ) {
 
                 ViewHolder holder;
 
@@ -230,8 +233,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
 
     private String getSelectedSyncProviderKey() {
         return getActivity()
-                .getSharedPreferences(SyncService.SHARED_PREFERENCES_SYNCHRONIZATION, Activity.MODE_PRIVATE)
-                .getString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, SYNC_PROVIDER_UNSET);
+                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Activity.MODE_PRIVATE)
+                .getString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, SYNC_PROVIDER_UNSET);
     }
 
     private void updateLastSyncReport(boolean successful, long lastTime) {

@@ -61,21 +61,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SyncService extends Worker {
-    public static final String SHARED_PREFERENCES_SYNCHRONIZATION = "synchronization";
-    public static final String SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER = "selected_sync_provider";
-    public static final String SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED = "provider_is_connected";
     public static final String SYNC_PROVIDER_CHOICE_GPODDER_NET = "GPodder.net";
     public static final String SYNC_PROVIDER_CHOICE_NEXTCLOUD = "Nextcloud";
     public static final String TAG = "SyncService";
 
-    private static final String PREF_NAME = "SyncService";
-    private static final String PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP = "last_sync_timestamp";
-    private static final String PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP = "last_episode_actions_sync_timestamp";
-    private static final String PREF_QUEUED_FEEDS_ADDED = "sync_added";
-    private static final String PREF_QUEUED_FEEDS_REMOVED = "sync_removed";
-    private static final String PREF_QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
-    private static final String PREF_LAST_SYNC_ATTEMPT_TIMESTAMP = "last_sync_attempt_timestamp";
-    private static final String PREF_LAST_SYNC_ATTEMPT_SUCCESS = "last_sync_attempt_success";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
 
@@ -86,14 +75,15 @@ public class SyncService extends Worker {
     @Override
     @NonNull
     public Result doWork() {
-        SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        SharedPreferences.Editor prefs = getSharedPreferencesSynchronization()
                 .edit();
         ISyncService activeSyncProvider = getActiveSyncProvider();
         if (activeSyncProvider == null) {
             return Result.success();
         }
 
-        prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
+        prefs.putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis())
+                .apply();
         try {
             activeSyncProvider.login();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
@@ -102,11 +92,11 @@ public class SyncService extends Worker {
             activeSyncProvider.logout();
             clearErrorNotifications();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
-            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
+            prefs.putBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
             return Result.success();
         } catch (SyncServiceException e) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
-            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
+            prefs.putBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
             Log.e(TAG, Log.getStackTraceString(e));
             if (getRunAttemptCount() % 3 == 2) {
                 // Do not spam users with notification and retry before notifying
@@ -119,31 +109,31 @@ public class SyncService extends Worker {
     public static void setIsProviderConnected(boolean isConnected) {
         getSyncServiceSharedPreferences()
                 .edit()
-                .putBoolean(SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED, isConnected)
+                .putBoolean(SynchronizationSharedPreferenceKeys.IS_SYNC_PROVIDER_CONNECTED, isConnected)
                 .apply();
     }
 
     public static boolean isProviderConnected() {
         return getSyncServiceSharedPreferences()
-                .getBoolean(SHARED_PREFERENCE_IS_SYNC_PROVIDER_CONNECTED, false);
+                .getBoolean(SynchronizationSharedPreferenceKeys.IS_SYNC_PROVIDER_CONNECTED, false);
     }
 
     public static void setSelectedSyncProvider(String userSelect) {
         getSyncServiceSharedPreferences()
                 .edit()
-                .putString(SyncService.SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, userSelect)
+                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelect)
                 .apply();
     }
 
     public static void clearQueue(Context context) {
         executeLockedAsync(() ->
-                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                        .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                        .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                        .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
-                        .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]")
-                        .putString(PREF_QUEUED_FEEDS_ADDED, "[]")
-                        .putString(PREF_QUEUED_FEEDS_REMOVED, "[]")
+                context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE).edit()
+                        .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
+                        .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
+                        .putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]")
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
                         .apply());
     }
 
@@ -153,11 +143,13 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, "[]");
+                SharedPreferences prefs = context.getSharedPreferences(
+                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
                 JSONArray queue = new JSONArray(json);
                 queue.put(downloadUrl);
-                prefs.edit().putString(PREF_QUEUED_FEEDS_ADDED, queue.toString()).apply();
+                prefs.edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, queue.toString())
+                        .apply();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -171,11 +163,13 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, "[]");
+                SharedPreferences prefs = context.getSharedPreferences(
+                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
                 JSONArray queue = new JSONArray(json);
                 queue.put(downloadUrl);
-                prefs.edit().putString(PREF_QUEUED_FEEDS_REMOVED, queue.toString()).apply();
+                prefs.edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, queue.toString())
+                        .apply();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -189,11 +183,14 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
+                SharedPreferences prefs = context.getSharedPreferences(
+                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
                 JSONArray queue = new JSONArray(json);
                 queue.put(action.writeToJsonObject());
-                prefs.edit().putString(PREF_QUEUED_EPISODE_ACTIONS, queue.toString()).apply();
+                prefs.edit().putString(
+                        SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, queue.toString()
+                ).apply();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -236,10 +233,10 @@ public class SyncService extends Worker {
 
     public static void fullSync(Context context) {
         executeLockedAsync(() -> {
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                    .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                    .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                    .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
+            context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE).edit()
+                    .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
+                    .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
+                    .putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
                     .apply();
 
             OneTimeWorkRequest workRequest = getWorkRequest()
@@ -251,20 +248,20 @@ public class SyncService extends Worker {
     }
 
     public static boolean isLastSyncSuccessful(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false);
+        return context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE)
+                .getBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, false);
     }
 
     public static long getLastSyncAttempt(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
+        return context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE)
+                .getLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
     }
 
     private List<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
+            SharedPreferences prefs = getSharedPreferencesSynchronization();
+            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
@@ -275,11 +272,16 @@ public class SyncService extends Worker {
         return actions;
     }
 
+    private SharedPreferences getSharedPreferencesSynchronization() {
+        return getApplicationContext()
+                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
+    }
+
     private List<String> getQueuedRemovedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, "[]");
+            SharedPreferences prefs = getSharedPreferencesSynchronization();
+            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 actions.add(queue.getString(i));
@@ -293,8 +295,8 @@ public class SyncService extends Worker {
     private List<String> getQueuedAddedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, "[]");
+            SharedPreferences prefs = getSharedPreferencesSynchronization();
+            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 actions.add(queue.getString(i));
@@ -306,8 +308,8 @@ public class SyncService extends Worker {
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
-        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
+        final long lastSync = getSharedPreferencesSynchronization()
+                .getLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
@@ -349,22 +351,22 @@ public class SyncService extends Worker {
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                        .putString(PREF_QUEUED_FEEDS_ADDED, "[]").apply();
-                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                        .putString(PREF_QUEUED_FEEDS_REMOVED, "[]").apply();
+                getSharedPreferencesSynchronization().edit()
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]").apply();
+                getSharedPreferencesSynchronization().edit()
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]").apply();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
                 lock.unlock();
             }
         }
-        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
+        getSharedPreferencesSynchronization().edit()
+                .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
-        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
+        final long lastSync = getSharedPreferencesSynchronization()
+                .getLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_download));
         EpisodeActionChanges getResponse = syncServiceImpl.getEpisodeActionChanges(lastSync);
         long newTimeStamp = getResponse.getTimestamp();
@@ -400,14 +402,14 @@ public class SyncService extends Worker {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                        .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]").apply();
+                getSharedPreferencesSynchronization().edit()
+                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]").apply();
             } finally {
                 lock.unlock();
             }
         }
-        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, newTimeStamp).apply();
+        getSharedPreferencesSynchronization().edit()
+                .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, newTimeStamp).apply();
     }
 
 
@@ -523,7 +525,7 @@ public class SyncService extends Worker {
 
     private static SharedPreferences getSyncServiceSharedPreferences() {
         return ClientConfig.applicationCallbacks.getApplicationInstance()
-                .getSharedPreferences(SHARED_PREFERENCES_SYNCHRONIZATION, Context.MODE_PRIVATE);
+                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
     }
 
     private ISyncService getActiveSyncProvider() {
@@ -546,9 +548,9 @@ public class SyncService extends Worker {
 
     private static String getSelectedSyncProviderKey(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(
-                SHARED_PREFERENCES_SYNCHRONIZATION,
+                SynchronizationSharedPreferenceKeys.NAME,
                 Context.MODE_PRIVATE
         );
-        return preferences.getString(SHARED_PREFERENCE_SELECTED_SYNC_PROVIDER, null);
+        return preferences.getString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, null);
     }
 }
