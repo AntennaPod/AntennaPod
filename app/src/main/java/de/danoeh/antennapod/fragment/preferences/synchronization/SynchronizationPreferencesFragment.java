@@ -30,13 +30,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
@@ -94,11 +93,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGIN).setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.dialog_choose_sync_service_title);
-            ArrayList<String> syncProviderDescriptions = getSyncProviderDescriptions();
-            ArrayList<Integer> syncProviderIcons = ViewDataProvider.getAllSynchronizationProviderIconResources();
 
-            ListAdapter adapter = new ArrayAdapter<String>(
-                    getContext(), R.layout.alertdialog_sync_provider_chooser, syncProviderDescriptions) {
+            ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
+                    getContext(), R.layout.alertdialog_sync_provider_chooser, SynchronizationProviderViewData.values()) {
 
                 ViewHolder holder;
 
@@ -120,10 +117,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     } else {
                         holder = (ViewHolder) convertView.getTag();
                     }
-
-                    holder.title.setText(syncProviderDescriptions.get(position));
-
-                    holder.icon.setImageResource(syncProviderIcons.get(position));
+                    SynchronizationProviderViewData synchronizationProviderViewData = getItem(position);
+                    holder.title.setText(synchronizationProviderViewData.getSummaryResource());
+                    holder.icon.setImageResource(synchronizationProviderViewData.getIconResource());
                     return convertView;
                 }
             };
@@ -179,17 +175,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             updateScreen();
             return true;
         });
-    }
-
-    private ArrayList<String> getSyncProviderDescriptions() {
-        ArrayList<Integer> synchronizationProviderDescriptionResources = ViewDataProvider
-                .getAllSynchronizationProviderDescriptionResources();
-        ArrayList<String> synchronizationProviderDescriptions = new ArrayList<>();
-        for (int resource: synchronizationProviderDescriptionResources) {
-            synchronizationProviderDescriptions.add(getString(resource));
-        }
-
-        return synchronizationProviderDescriptions;
     }
 
     private void setSelectedSyncProvider(String userSelect) {

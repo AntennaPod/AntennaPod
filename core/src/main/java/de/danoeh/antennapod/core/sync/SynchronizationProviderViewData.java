@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.sync;
 import de.danoeh.antennapod.core.R;
 
 public enum SynchronizationProviderViewData {
-    NONE("unset", R.string.preference_synchronization_summary_unchoosen, R.drawable.ic_cloud),
     GPODDER_NET(
             SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET,
             R.string.gpodnet_description,

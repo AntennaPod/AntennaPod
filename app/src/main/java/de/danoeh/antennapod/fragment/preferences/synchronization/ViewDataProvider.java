@@ -6,9 +6,9 @@ import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundExce
 import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
 import com.nextcloud.android.sso.helper.SingleAccountHelper;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
@@ -32,15 +32,24 @@ public class ViewDataProvider {
             default:
                 return "";
         }
-
     }
 
     public static int getSynchronizationProviderHeaderSummary(String providerName) {
-        return getSelectedSynchronizationProviderViewData(providerName).getSummaryResource();
+        SynchronizationProviderViewData selectedSynchronizationProviderViewData =
+                getSelectedSynchronizationProviderViewData(providerName);
+        if (selectedSynchronizationProviderViewData == null) {
+            return R.string.preference_synchronization_summary_unchoosen;
+        }
+        return selectedSynchronizationProviderViewData.getSummaryResource();
     }
 
     public static int getSynchronizationProviderIcon(String providerName) {
-        return getSelectedSynchronizationProviderViewData(providerName).getIconResource();
+        SynchronizationProviderViewData selectedSynchronizationProviderViewData =
+                getSelectedSynchronizationProviderViewData(providerName);
+        if (selectedSynchronizationProviderViewData == null) {
+            return R.drawable.ic_cloud;
+        }
+        return selectedSynchronizationProviderViewData.getIconResource();
     }
 
     private static SynchronizationProviderViewData getSelectedSynchronizationProviderViewData(String provider) {
@@ -53,35 +62,5 @@ public class ViewDataProvider {
             }
         }
         return null;
-    }
-
-    public static ArrayList<Integer> getAllSynchronizationProviderDescriptionResources() {
-        EnumSet<SynchronizationProviderViewData> allProviderViewData =
-                getAllImplementedSynchronizationProviderViewData();
-        ArrayList<Integer> descriptionResources = new ArrayList<>();
-        for (SynchronizationProviderViewData synchronizationProviderViewData : allProviderViewData) {
-            descriptionResources.add(synchronizationProviderViewData.getSummaryResource());
-        }
-
-        return descriptionResources;
-    }
-
-    public static ArrayList<Integer> getAllSynchronizationProviderIconResources() {
-        EnumSet<SynchronizationProviderViewData> allProviderViewData =
-                getAllImplementedSynchronizationProviderViewData();
-        ArrayList<Integer> iconResources = new ArrayList<>();
-        for (SynchronizationProviderViewData synchronizationProviderViewData : allProviderViewData) {
-            iconResources.add(synchronizationProviderViewData.getIconResource());
-        }
-
-        return iconResources;
-    }
-
-
-    private static EnumSet<SynchronizationProviderViewData> getAllImplementedSynchronizationProviderViewData() {
-        EnumSet<SynchronizationProviderViewData> allProviderViewData =
-                EnumSet.allOf(SynchronizationProviderViewData.class);
-        allProviderViewData.remove(SynchronizationProviderViewData.NONE);
-        return allProviderViewData;
     }
 }
