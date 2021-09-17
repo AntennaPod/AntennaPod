@@ -359,8 +359,11 @@ public final class DBTasks {
                     && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
                 return item;
             } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
+                if (searchItem.getPubDate() == null || item.getPubDate() == null) {
+                    continue;
+                }
                 long dateOriginal = item.getPubDate().getTime();
-                long dateNew = searchItem.getPubDate() == null ? 0 : searchItem.getPubDate().getTime();
+                long dateNew = searchItem.getPubDate().getTime();
                 if (Math.abs(dateOriginal - dateNew) < 7L * 24L * 3600L * 1000L) { // Same week
                     return item;
                 }
