@@ -273,8 +273,10 @@ public class CompletedDownloadsFragment extends Fragment implements
 
         @Override
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
-            actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+            if (!inActionMode()) {
+                DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+                actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+            }
         }
 
         @Override
