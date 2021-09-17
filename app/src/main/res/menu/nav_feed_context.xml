@@ -24,5 +24,6 @@
     <item
         android:id="@+id/multi_select"
         android:menuCategory="container"
-        android:title="@string/multi_select" />
+        android:title="@string/multi_select"
+        android:visible="false" />
 </menu>
