@@ -13,10 +13,12 @@
   <string name="new_label">Ny</string>
   <string name="settings_label">Innstillinger</string>
   <string name="downloads_label">Nedlastninger</string>
+  <string name="open_autodownload_settings">Åpne instillingene</string>
   <string name="downloads_completed_label">Fullført</string>
   <string name="downloads_log_label">Logg</string>
   <string name="subscriptions_label">Abonnementer</string>
   <string name="subscriptions_list_label">Abonnementliste</string>
+  <string name="cancel_download_label">Avbryt nedlastingen</string>
   <string name="playback_history_label">Avspillingshistorikk</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
@@ -25,7 +27,12 @@
   <string name="download_statistics_label">Nedlastinger</string>
   <string name="notification_pref_fragment">Varslinger</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" ikke funnet</string>
   <!--SwipeActions-->
+  <string name="swipeactions_summary">Velg hva som skjer når du drar en episode i ei liste</string>
+  <string name="swipe_right">Dra til høyre</string>
+  <string name="swipe_left">Dra til venstre</string>
+  <string name="change_setting">Endre</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total tid, avspilte episoder</string>
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
@@ -53,6 +60,7 @@
   <string name="drawer_feed_counter_none">Ingen</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Fant ingen kompatible apper</string>
+  <string name="export_logs_menu_title">Eksport detaljert logfiler</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Åpne i nettleser</string>
   <string name="copy_url_label">Kopier URL</string>
@@ -68,6 +76,8 @@
   <string name="no">Nei</string>
   <string name="reset">Tilbakestill</string>
   <string name="url_label">URL</string>
+  <string name="support_funding_label">Brukerstøtte</string>
+  <string name="support_podcast">Støtt denne podkasten</string>
   <string name="error_label">Feil</string>
   <string name="error_msg_prefix">Det oppsto en feil:</string>
   <string name="refresh_label">Oppdater</string>
@@ -75,6 +85,8 @@
   <string name="chapters_label">Kapitler</string>
   <string name="chapter_duration">Varighet: %1$s</string>
   <string name="description_label">Beskrivelse</string>
+  <string name="shownotes_label">Shownotater</string>
+  <string name="shownotes_contentdescription">Dra opp å lese shownotatene</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
@@ -574,6 +586,7 @@
   <string name="rating_now_label" tools:ignore="UnusedResources">Naturligvis, kom igjen!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Inkluder:</string>
+  <string name="share_dialog_media_file_label">Media fil</string>
   <!--Audio controls-->
   <string name="audio_controls">Lyd-kontroller</string>
   <string name="playback_speed">Avspillingshastighet</string>
@@ -610,12 +623,15 @@
   <string name="cast_failed_receiver_player_error">En alvorlig feil har oppstått på mottaker-apilleren</string>
   <string name="cast_failed_media_error_skipping">Feil ved avspilling av media. Hopper over...</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">Feiler</string>
+  <string name="notification_group_news">Nyheter</string>
   <string name="notification_channel_user_action">Handling kreves</string>
   <string name="notification_channel_user_action_description">Vises hvis handling kreves, for eksempel hvis et passord må skrives inn.</string>
   <string name="notification_channel_downloading">Laster ned</string>
   <string name="notification_channel_downloading_description">Vises mens nedlasting foregår.</string>
   <string name="notification_channel_playing">Spilles nå</string>
   <string name="notification_channel_playing_description">Kan styrre avspilling. Dette er hoved-varslingen du vil se mens en podkast spilles.</string>
+  <string name="notification_channel_download_error">Nedlastingen feilet</string>
   <string name="notification_channel_sync_error_description">Vises når synkronisering mot gpodder feiler</string>
   <string name="notification_channel_episode_auto_download">Vises når episoder har blitt lastet ned automatisk</string>
   <!--Widget settings-->

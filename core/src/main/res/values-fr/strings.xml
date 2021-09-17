@@ -30,7 +30,7 @@
   <string name="app_action_not_found">\"%1$s\" non trouvé</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">Actions associées au balayage</string>
-  <string name="swipeactions_summary">Choisir les actions lors du balayage dans une liste d\'un épisode</string>
+  <string name="swipeactions_summary">Choisir les actions lors du balayage d\'un épisode</string>
   <string name="swipe_right">Balayage Droit</string>
   <string name="swipe_left">Balayage Gauche</string>
   <string name="enable_swipeactions">Activer le balayage pour cet écran</string>
@@ -288,12 +288,12 @@
   <string name="error_file_not_found">Fichier non trouvé</string>
   <string name="no_media_label">Aucun fichier média disponible</string>
   <!--Queue operations-->
-  <string name="lock_queue">Verrouiller la liste de lecture</string>
-  <string name="queue_locked">Liste de lecture verrouillée</string>
-  <string name="queue_unlocked">Liste de lecture déverrouillée</string>
+  <string name="lock_queue">Verrouiller la liste</string>
+  <string name="queue_locked">Liste verrouillée</string>
+  <string name="queue_unlocked">Liste déverrouillée</string>
   <string name="queue_lock_warning">Quand la liste est verrouillée il n\'est plus possible d\'utiliser le swipe ou de changer l\'ordre des épisodes.</string>
   <string name="checkbox_do_not_show_again">Ne pas réafficher</string>
-  <string name="clear_queue_label">Effacer la liste de lecture</string>
+  <string name="clear_queue_label">Effacer la liste</string>
   <string name="undo">Annuler</string>
   <string name="move_to_top_label">Déplacer en haut de la liste</string>
   <string name="move_to_bottom_label">Déplacer en bas de la liste</string>
