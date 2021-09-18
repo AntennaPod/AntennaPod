@@ -25,6 +25,13 @@ public class SynchronizationSettings {
         return getSharedPreferences().getLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
     }
 
+    public static void setSelectedSyncProvider(String userSelect) {
+        getSharedPreferences()
+                .edit()
+                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelect)
+                .apply();
+    }
+
     public static String getSelectedSyncProviderKey() {
         return getSharedPreferences().getString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, null);
     }
@@ -39,13 +46,6 @@ public class SynchronizationSettings {
     public static boolean isProviderConnected() {
         return getSharedPreferences()
                 .getBoolean(SynchronizationSharedPreferenceKeys.IS_SYNC_PROVIDER_CONNECTED, false);
-    }
-
-    public static void setSelectedSyncProvider(String userSelect) {
-        getSharedPreferences()
-                .edit()
-                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelect)
-                .apply();
     }
 
     public static void updateLastSynchronizationAttempt() {
@@ -64,13 +64,6 @@ public class SynchronizationSettings {
         return getSharedPreferences().getLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
     }
 
-    public static void clearFeedQueues() {
-        getSharedPreferences().edit()
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
-                .apply();
-    }
-
     public static void setLastSubscriptionSynchronizationAttemptTimestamp(long newTimeStamp) {
         getSharedPreferences().edit()
                 .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
@@ -81,16 +74,9 @@ public class SynchronizationSettings {
                 .getLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
     }
 
-    public static void clearEpisodeActionQueue() {
-        getSharedPreferences().edit()
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]").apply();
-
-    }
-
     public static void setLastEpisodeActionSynchronizationAttemptTimestamp(long timestamp) {
         getSharedPreferences().edit()
                 .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, timestamp).apply();
-
     }
 
     private static SharedPreferences getSharedPreferences() {

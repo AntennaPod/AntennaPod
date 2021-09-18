@@ -93,4 +93,17 @@ public class SynchronizationQueue {
 
         return addedFeedUrls;
     }
+
+    public static void clearEpisodeActionQueue() {
+        getSharedPreferences().edit()
+                .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]").apply();
+
+    }
+
+    public static void clearFeedQueues() {
+        getSharedPreferences().edit()
+                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
+                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
+                .apply();
+    }
 }

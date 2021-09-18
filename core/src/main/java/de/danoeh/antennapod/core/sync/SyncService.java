@@ -264,7 +264,7 @@ public class SyncService extends Worker {
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                SynchronizationSettings.clearFeedQueues();
+                SynchronizationQueue.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
                 lock.unlock();
@@ -310,7 +310,7 @@ public class SyncService extends Worker {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                SynchronizationSettings.clearEpisodeActionQueue();
+                SynchronizationQueue.clearEpisodeActionQueue();
             } finally {
                 lock.unlock();
             }
