@@ -363,12 +363,12 @@
   <string name="pref_gpodnet_authenticate_title">登入</string>
   <string name="pref_gpodnet_authenticate_sum">登入您的 gpodder.net 帳戶以同步訂閱資訊</string>
   <string name="pref_gpodnet_logout_title">登出</string>
-  <string name="pref_synchronization_logout_toast">成功登出</string>
+  <string name="pref_gpodnet_logout_toast">成功登出</string>
   <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
   <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
-  <string name="synchronization_sync_changes_title">馬上同步</string>
+  <string name="pref_gpodnet_sync_changes_title">馬上同步</string>
   <string name="pref_gpodnet_sync_changes_sum">與 gpodder.net 同步訂閱及聆聽狀態。</string>
-  <string name="synchronization_full_sync_title">強制全部同步</string>
+  <string name="pref_gpodnet_full_sync_title">強制全部同步</string>
   <string name="pref_gpodnet_full_sync_sum">與 gpodder.net 同步所有的訂閱及聆聽狀態。</string>
   <string name="pref_gpodnet_login_status"><![CDATA[以 <i>%1$s</i> 登入，設備為 <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">自訂可選用的播放速度</string>

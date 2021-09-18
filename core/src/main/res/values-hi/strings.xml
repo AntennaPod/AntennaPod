@@ -253,7 +253,7 @@
   <string name="pref_gpodnet_authenticate_title">लॉगिन</string>
   <string name="pref_gpodnet_authenticate_sum">अपनी सदस्यता सिंक करने के क्रम में अपने gpodder.net खाते के साथ लॉगिन करें .</string>
   <string name="pref_gpodnet_logout_title">लॉगआउट</string>
-  <string name="pref_synchronization_logout_toast">लॉगआउट सफल रहा था</string>
+  <string name="pref_gpodnet_logout_toast">लॉगआउट सफल रहा था</string>
   <string name="pref_gpodnet_setlogin_information_title">प्रवेश जानकारी बदलें</string>
   <string name="pref_gpodnet_setlogin_information_sum">अपने gpodder.net खाते के लिए प्रवेश जानकारी बदलें.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[ <i>%1$s</i> के रूप में <i>%2$s</i> डिवाइस के साथ लॉगिन किया गया ]]></string>

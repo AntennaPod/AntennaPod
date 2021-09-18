@@ -375,12 +375,12 @@
   <string name="pref_gpodnet_authenticate_title">Giriş</string>
   <string name="pref_gpodnet_authenticate_sum">Üyeliklerinizi senkronize etmek için gpodder.net hesabınızla oturum açın.</string>
   <string name="pref_gpodnet_logout_title">Çıkış</string>
-  <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
+  <string name="pref_gpodnet_logout_toast">Çıkış başarılı</string>
   <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
-  <string name="synchronization_sync_changes_title">Synchronize now</string>
+  <string name="pref_gpodnet_sync_changes_title">Synchronize now</string>
   <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
-  <string name="synchronization_full_sync_title">Force full synchronization</string>
+  <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
   <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>

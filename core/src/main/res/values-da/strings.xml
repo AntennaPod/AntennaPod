@@ -427,12 +427,12 @@
   <string name="pref_gpodnet_authenticate_title">Log ind</string>
   <string name="pref_gpodnet_authenticate_sum">Log ind på din gpodder.net-konto for at synkronisere dine abonnementer.</string>
   <string name="pref_gpodnet_logout_title">Log ud</string>
-  <string name="pref_synchronization_logout_toast">Loggede ud</string>
+  <string name="pref_gpodnet_logout_toast">Loggede ud</string>
   <string name="pref_gpodnet_setlogin_information_title">Ændr loginoplysninger</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ændr din gpodder.net-kontos loginoplysninger.</string>
-  <string name="synchronization_sync_changes_title">Synkroniser nu</string>
+  <string name="pref_gpodnet_sync_changes_title">Synkroniser nu</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkroniser tilstandsændringer for abonnementer og udsendelser med gpodder.net.</string>
-  <string name="synchronization_full_sync_title">Tving fuld synkronisering</string>
+  <string name="pref_gpodnet_full_sync_title">Tving fuld synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser tilstande for alle abonnementer og udsendelser med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget ind som <i>%1$s</i> med enheden <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Tilpas de tilgængelige hastigheder for afspilning med variabel hastighed</string>

@@ -433,12 +433,12 @@
   <string name="pref_gpodnet_authenticate_title">Войти</string>
   <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации подписок.</string>
   <string name="pref_gpodnet_logout_title">Выход из gpodder.net</string>
-  <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
+  <string name="pref_gpodnet_logout_toast">Выход успешно выполнен</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
+  <string name="pref_gpodnet_sync_changes_title">Синхронизировать сейчас</string>
   <string name="pref_gpodnet_sync_changes_sum">Синхронизировать изменения подписок и выпусков при помощи gpodder.net.</string>
-  <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
+  <string name="pref_gpodnet_full_sync_title">Выполнить полную синхронизацию</string>
   <string name="pref_gpodnet_full_sync_sum">Синхронизировать состояния всех подписок и выпусков при помощи gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Вход как <i>%1$s</i> с устройства <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>

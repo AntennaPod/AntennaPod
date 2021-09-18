@@ -356,7 +356,7 @@
   <string name="pref_gpodnet_authenticate_title">Sisäänkirjautuminen</string>
   <string name="pref_gpodnet_authenticate_sum">Kirjaudu gpodder.net tililläsi jotta voit synkronoida tilauksesi.</string>
   <string name="pref_gpodnet_logout_title">Kirjaudu ulos</string>
-  <string name="pref_synchronization_logout_toast">Uloskirjautuminen onnistui</string>
+  <string name="pref_gpodnet_logout_toast">Uloskirjautuminen onnistui</string>
   <string name="pref_gpodnet_setlogin_information_title">Vaihda kirjautumistietoja</string>
   <string name="pref_gpodnet_setlogin_information_sum">Vaihda kirjautumistietoja gpodder.net tiliisi.</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkronoi tilaukset ja jaksojen tilojen muutokset gpodder.net.</string>

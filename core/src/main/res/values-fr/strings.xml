@@ -427,12 +427,12 @@
   <string name="pref_gpodnet_authenticate_title">Identifiant</string>
   <string name="pref_gpodnet_authenticate_sum">Identifiez vous avec votre compte gpodder.net afin de synchroniser vos abonnements</string>
   <string name="pref_gpodnet_logout_title">Se déconnecter</string>
-  <string name="pref_synchronization_logout_toast">Vous êtes maintenant déconnecté</string>
+  <string name="pref_gpodnet_logout_toast">Vous êtes maintenant déconnecté</string>
   <string name="pref_gpodnet_setlogin_information_title">Modifier les informations de connexion</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Synchroniser maintenant</string>
+  <string name="pref_gpodnet_sync_changes_title">Synchroniser maintenant</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchroniser l\'état des abonnements et des épisodes avec gpodder.net</string>
-  <string name="synchronization_full_sync_title">Forcer une synchronisation totale</string>
+  <string name="pref_gpodnet_full_sync_title">Forcer une synchronisation totale</string>
   <string name="pref_gpodnet_full_sync_sum">Synchroniser tous les abonnements et tous les états des épisodes avec gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connecté comme <i>%1$s</i> avec l\'appareil <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture</string>

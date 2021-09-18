@@ -442,12 +442,12 @@
   <string name="pref_gpodnet_authenticate_title">Zaloguj</string>
   <string name="pref_gpodnet_authenticate_sum">Zaloguj się swoim kontem na gpodder.net w celu synchronizacji Twoich subskrypcji.</string>
   <string name="pref_gpodnet_logout_title">Wyloguj</string>
-  <string name="pref_synchronization_logout_toast">Wylogowanie się powiodło</string>
+  <string name="pref_gpodnet_logout_toast">Wylogowanie się powiodło</string>
   <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
   <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
-  <string name="synchronization_sync_changes_title">Synchronizuj teraz</string>
+  <string name="pref_gpodnet_sync_changes_title">Synchronizuj teraz</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchronizuj subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
-  <string name="synchronization_full_sync_title">Wymuś pełną synchronizację</string>
+  <string name="pref_gpodnet_full_sync_title">Wymuś pełną synchronizację</string>
   <string name="pref_gpodnet_full_sync_sum">Synchronizuj wszystkie subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Zalogowano jako <i>%1$s</i> na urządzeniu <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania o zmiennej prędkości</string>

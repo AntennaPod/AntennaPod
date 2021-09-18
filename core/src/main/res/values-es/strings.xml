@@ -407,12 +407,12 @@
   <string name="pref_gpodnet_authenticate_title">Iniciar sesión</string>
   <string name="pref_gpodnet_authenticate_sum">Iniciar sesión en su cuenta de gpodder.net para sincronizar sus suscripciones.</string>
   <string name="pref_gpodnet_logout_title">Cerrar sesión</string>
-  <string name="pref_synchronization_logout_toast">Ha cerrado la sesión correctamente</string>
+  <string name="pref_gpodnet_logout_toast">Ha cerrado la sesión correctamente</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambiar información de inicio de sesión</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
-  <string name="synchronization_sync_changes_title">Sincronizar ahora</string>
+  <string name="pref_gpodnet_sync_changes_title">Sincronizar ahora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar cambios de suscripción y episodios con gpodder.net.</string>
-  <string name="synchronization_full_sync_title">Forzar la sincronización completa</string>
+  <string name="pref_gpodnet_full_sync_title">Forzar la sincronización completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar todas las suscripciones y episodios con gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Identificado como <i>%1$s</i> con dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles en la reproducción a velocidad variable</string>
