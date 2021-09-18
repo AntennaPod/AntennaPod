@@ -3,25 +3,24 @@ package de.danoeh.antennapod.fragment.preferences.synchronization;
 import junit.framework.TestCase;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 
 public class ViewDataProviderTest extends TestCase {
 
     public void testGetSynchronizationProviderHeaderSummary() {
         assertEquals(R.string.synchronization_summary_nextcloud,
                 ViewDataProvider.getSynchronizationProviderHeaderSummary(
-                        SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD));
+                        SynchronizationProviderViewData.NEXTCLOUD_GPODDER.getName()));
 
         assertEquals(R.string.synchronization_summary_unchoosen,
                 ViewDataProvider.getSynchronizationProviderHeaderSummary(
-                        SynchronizationPreferencesFragment.SYNC_PROVIDER_UNSET));
+                        "unset"));
     }
 
     public void testGetSynchronizationProviderIcon() {
         assertEquals(R.drawable.nextcloud_logo, ViewDataProvider.getSynchronizationProviderIcon(
-                SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD));
+                SynchronizationProviderViewData.NEXTCLOUD_GPODDER.getName()));
 
-        assertEquals(R.drawable.ic_cloud, ViewDataProvider.getSynchronizationProviderIcon(
-                SynchronizationPreferencesFragment.SYNC_PROVIDER_UNSET));
+        assertEquals(R.drawable.ic_cloud, ViewDataProvider.getSynchronizationProviderIcon(null));
     }
 }

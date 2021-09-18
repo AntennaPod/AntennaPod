@@ -10,16 +10,17 @@ import java.util.EnumSet;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 
 public class ViewDataProvider {
 
     public static String getUsernameFromSelectedSyncProvider(Context context, String currentSyncProviderKey) {
-        switch (currentSyncProviderKey) {
-            case SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET:
+        SynchronizationProviderViewData currentSyncProvider = SynchronizationProviderViewData
+                .valueOf(currentSyncProviderKey);
+        switch (currentSyncProvider) {
+            case GPODDER_NET:
                 return GpodnetPreferences.getUsername();
-            case SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD:
+            case NEXTCLOUD_GPODDER:
                 try {
                     return SingleAccountHelper.getCurrentSingleSignOnAccount(context).name;
                 } catch (NextcloudFilesAppAccountNotFoundException e) {

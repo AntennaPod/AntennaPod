@@ -41,8 +41,6 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
-    public static final String SYNC_PROVIDER_UNSET = "unset";
-
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
     private static final String PREFERENCE_LOGIN = "pref_synchronization_authenticate";
     private static final String PREFERENCE_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
@@ -128,12 +126,12 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             builder.setAdapter(adapter, (dialog, which) -> {
                 switch (which) {
                     case 0:
-                        setSelectedSyncProvider(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET);
+                        setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
                         new GpodderAuthenticationFragment()
                                 .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
                         break;
                     case 1:
-                        setSelectedSyncProvider(SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD);
+                        setSelectedSyncProvider(SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
                         openNextcloudAccountChooser();
                         break;
                     default:
@@ -172,13 +170,13 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             GpodnetPreferences.logout();
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setIsProviderConnected(false);
-            setSelectedSyncProvider(SYNC_PROVIDER_UNSET);
+            setSelectedSyncProvider(null);
             updateScreen();
             return true;
         });
     }
 
-    private void setSelectedSyncProvider(String userSelect) {
+    private void setSelectedSyncProvider(SynchronizationProviderViewData userSelect) {
         SynchronizationSettings.setSelectedSyncProvider(userSelect);
     }
 
@@ -225,16 +223,15 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private boolean isGpodnetSyncProviderSelected() {
-        return getSelectedSyncProviderKey().equals(SyncService.SYNC_PROVIDER_CHOICE_GPODDER_NET);
+        String selectedSyncProviderKey = getSelectedSyncProviderKey();
+        if (selectedSyncProviderKey == null) {
+            return false;
+        }
+        return selectedSyncProviderKey.equals(SynchronizationProviderViewData.GPODDER_NET.getName());
     }
 
     private String getSelectedSyncProviderKey() {
-        String selectedKey = SynchronizationSettings.getSelectedSyncProviderKey();
-        if (selectedKey == null) {
-            return SYNC_PROVIDER_UNSET;
-        }
-
-        return selectedKey;
+        return SynchronizationSettings.getSelectedSyncProviderKey();
     }
 
     private void updateLastSyncReport(boolean successful, long lastTime) {

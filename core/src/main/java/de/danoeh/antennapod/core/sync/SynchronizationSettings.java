@@ -25,10 +25,15 @@ public class SynchronizationSettings {
         return getSharedPreferences().getLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
     }
 
-    public static void setSelectedSyncProvider(String userSelect) {
+    public static void setSelectedSyncProvider(SynchronizationProviderViewData userSelect) {
+        String userSelectName = null;
+        if (userSelect != null) {
+            userSelectName = userSelect.getName();
+        }
+
         getSharedPreferences()
                 .edit()
-                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelect)
+                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelectName)
                 .apply();
     }
 

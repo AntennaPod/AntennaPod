@@ -59,8 +59,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SyncService extends Worker {
-    public static final String SYNC_PROVIDER_CHOICE_GPODDER_NET = "GPodder.net";
-    public static final String SYNC_PROVIDER_CHOICE_NEXTCLOUD = "Nextcloud";
     public static final String TAG = "SyncService";
 
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
@@ -430,13 +428,15 @@ public class SyncService extends Worker {
     }
 
     private ISyncService getActiveSyncProvider() {
-        String selectedService = SynchronizationSettings.getSelectedSyncProviderKey();
+        String selectedSyncProviderKey = SynchronizationSettings.getSelectedSyncProviderKey();
+        SynchronizationProviderViewData selectedService = SynchronizationProviderViewData
+                .valueOf(selectedSyncProviderKey);
         switch (selectedService) {
-            case SYNC_PROVIDER_CHOICE_GPODDER_NET:
+            case GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),
                         GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
                         GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
-            case SYNC_PROVIDER_CHOICE_NEXTCLOUD:
+            case NEXTCLOUD_GPODDER:
                 return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
             default:
                 return null;
