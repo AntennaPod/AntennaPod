@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -74,15 +73,12 @@ public class SyncService extends Worker {
     @Override
     @NonNull
     public Result doWork() {
-        SharedPreferences.Editor prefs = getSharedPreferencesSynchronization()
-                .edit();
         ISyncService activeSyncProvider = getActiveSyncProvider();
         if (activeSyncProvider == null) {
             return Result.success();
         }
 
-        prefs.putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis())
-                .apply();
+        SynchronizationSettings.updateLastSynchronizationAttempt();
         try {
             activeSyncProvider.login();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
@@ -91,11 +87,11 @@ public class SyncService extends Worker {
             activeSyncProvider.logout();
             clearErrorNotifications();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
-            prefs.putBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
+            SynchronizationSettings.setLastSynchronizationAttemptSuccess(true);
             return Result.success();
         } catch (SyncServiceException e) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
-            prefs.putBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
+            SynchronizationSettings.setLastSynchronizationAttemptSuccess(false);
             Log.e(TAG, Log.getStackTraceString(e));
             if (getRunAttemptCount() % 3 == 2) {
                 // Do not spam users with notification and retry before notifying
@@ -105,31 +101,12 @@ public class SyncService extends Worker {
         }
     }
 
-    public static void setIsProviderConnected(boolean isConnected) {
-        getSyncServiceSharedPreferences()
-                .edit()
-                .putBoolean(SynchronizationSharedPreferenceKeys.IS_SYNC_PROVIDER_CONNECTED, isConnected)
-                .apply();
-    }
-
-    public static boolean isProviderConnected() {
-        return getSyncServiceSharedPreferences()
-                .getBoolean(SynchronizationSharedPreferenceKeys.IS_SYNC_PROVIDER_CONNECTED, false);
-    }
-
-    public static void setSelectedSyncProvider(String userSelect) {
-        getSyncServiceSharedPreferences()
-                .edit()
-                .putString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, userSelect)
-                .apply();
-    }
-
     public static void clearQueue() {
         executeLockedAsync(SynchronizationQueue::clearQueue);
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
-        if (!hasActiveSyncProvider(context)) {
+        if (!hasActiveSyncProvider()) {
             return;
         }
         executeLockedAsync(() -> {
@@ -143,7 +120,7 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
-        if (!hasActiveSyncProvider(context)) {
+        if (!hasActiveSyncProvider()) {
             return;
         }
         executeLockedAsync(() -> {
@@ -157,7 +134,7 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
-        if (!hasActiveSyncProvider(context)) {
+        if (!hasActiveSyncProvider()) {
             return;
         }
         executeLockedAsync(() -> {
@@ -171,7 +148,7 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
-        if (!hasActiveSyncProvider(context)) {
+        if (!hasActiveSyncProvider()) {
             return;
         }
         if (media.getItem() == null) {
@@ -205,28 +182,13 @@ public class SyncService extends Worker {
 
     public static void fullSync(Context context) {
         executeLockedAsync(() -> {
-            context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE).edit()
-                    .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                    .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                    .putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
-                    .apply();
-
+            SynchronizationSettings.resetTimestamps();
             OneTimeWorkRequest workRequest = getWorkRequest()
                     .setInitialDelay(0L, TimeUnit.SECONDS)
                     .build();
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
         });
-    }
-
-    public static boolean isLastSyncSuccessful(Context context) {
-        return context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE)
-                .getBoolean(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_SUCCESS, false);
-    }
-
-    public static long getLastSyncAttempt(Context context) {
-        return context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE)
-                .getLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
     }
 
     private List<EpisodeAction> getQueuedEpisodeActions() {
@@ -237,11 +199,6 @@ public class SyncService extends Worker {
             e.printStackTrace();
         }
         return actions;
-    }
-
-    private SharedPreferences getSharedPreferencesSynchronization() {
-        return getApplicationContext()
-                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
     }
 
     private List<String> getQueuedRemovedFeeds() {
@@ -265,8 +222,7 @@ public class SyncService extends Worker {
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
-        final long lastSync = getSharedPreferencesSynchronization()
-                .getLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
+        final long lastSync = SynchronizationSettings.getLastSubscriptionSynchronizationTimestamp();
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
@@ -308,22 +264,17 @@ public class SyncService extends Worker {
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                getSharedPreferencesSynchronization().edit()
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]").apply();
-                getSharedPreferencesSynchronization().edit()
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]").apply();
+                SynchronizationSettings.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
                 lock.unlock();
             }
         }
-        getSharedPreferencesSynchronization().edit()
-                .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
+        SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
-        final long lastSync = getSharedPreferencesSynchronization()
-                .getLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
+        final long lastSync = SynchronizationSettings.getLastEpisodeActionSynchronizationTimestamp();
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_download));
         EpisodeActionChanges getResponse = syncServiceImpl.getEpisodeActionChanges(lastSync);
         long newTimeStamp = getResponse.getTimestamp();
@@ -359,14 +310,12 @@ public class SyncService extends Worker {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                getSharedPreferencesSynchronization().edit()
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]").apply();
+                SynchronizationSettings.clearEpisodeActionQueue();
             } finally {
                 lock.unlock();
             }
         }
-        getSharedPreferencesSynchronization().edit()
-                .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, newTimeStamp).apply();
+        SynchronizationSettings.setLastEpisodeActionSynchronizationAttemptTimestamp(newTimeStamp);
     }
 
 
@@ -480,13 +429,8 @@ public class SyncService extends Worker {
         }
     }
 
-    private static SharedPreferences getSyncServiceSharedPreferences() {
-        return ClientConfig.applicationCallbacks.getApplicationInstance()
-                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
-    }
-
     private ISyncService getActiveSyncProvider() {
-        String selectedService = getSelectedSyncProviderKey(getApplicationContext());
+        String selectedService = SynchronizationSettings.getSelectedSyncProviderKey();
         switch (selectedService) {
             case SYNC_PROVIDER_CHOICE_GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),
@@ -499,15 +443,8 @@ public class SyncService extends Worker {
         }
     }
 
-    private static boolean hasActiveSyncProvider(Context context) {
-        return getSelectedSyncProviderKey(context) != null && isProviderConnected();
-    }
-
-    private static String getSelectedSyncProviderKey(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(
-                SynchronizationSharedPreferenceKeys.NAME,
-                Context.MODE_PRIVATE
-        );
-        return preferences.getString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, null);
+    private static boolean hasActiveSyncProvider() {
+        return SynchronizationSettings.getSelectedSyncProviderKey() != null
+                && SynchronizationSettings.isProviderConnected();
     }
 }

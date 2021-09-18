@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.sync;
 
 public interface SynchronizationSharedPreferenceKeys {
-    String NAME = "synchronization";
     String SELECTED_SYNC_PROVIDER = "selected_sync_provider";
     String IS_SYNC_PROVIDER_CONNECTED = "provider_is_connected";
     String LAST_SUBSCRIPTION_SYNC_TIMESTAMP = "last_sync_timestamp";

@@ -36,7 +36,7 @@ import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
-import de.danoeh.antennapod.core.sync.SynchronizationSharedPreferenceKeys;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
@@ -74,14 +74,14 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void syncStatusChanged(SyncServiceEvent event) {
-        if (!SyncService.isProviderConnected()) {
+        if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
         updateScreen();
         if (event.getMessageResId() == R.string.sync_status_error
                 || event.getMessageResId() == R.string.sync_status_success) {
-            updateLastSyncReport(SyncService.isLastSyncSuccessful(getContext()),
-                    SyncService.getLastSyncAttempt(getContext()));
+            updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
+                    SynchronizationSettings.getLastSyncAttempt());
         } else {
             ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(event.getMessageResId());
         }
@@ -171,7 +171,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             GpodnetPreferences.logout();
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
-            SyncService.setIsProviderConnected(false);
+            SynchronizationSettings.setIsProviderConnected(false);
             setSelectedSyncProvider(SYNC_PROVIDER_UNSET);
             updateScreen();
             return true;
@@ -179,11 +179,11 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private void setSelectedSyncProvider(String userSelect) {
-        SyncService.setSelectedSyncProvider(userSelect);
+        SynchronizationSettings.setSelectedSyncProvider(userSelect);
     }
 
     private void updateScreen() {
-        final boolean loggedIn = SyncService.isProviderConnected();
+        final boolean loggedIn = SynchronizationSettings.isProviderConnected();
         findPreference(PREFERENCE_LOGIN).setVisible(!loggedIn);
 
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
@@ -208,8 +208,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     getActivity().getString(R.string.synchronization_logout_summary));
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
-            updateLastSyncReport(SyncService.isLastSyncSuccessful(getContext()),
-                    SyncService.getLastSyncAttempt(getContext()));
+            updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
+                    SynchronizationSettings.getLastSyncAttempt());
         } else {
             findPreference(PREFERENCE_LOGOUT).setSummary(null);
             ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(null);
@@ -230,9 +230,12 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private String getSelectedSyncProviderKey() {
-        return getActivity()
-                .getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Activity.MODE_PRIVATE)
-                .getString(SynchronizationSharedPreferenceKeys.SELECTED_SYNC_PROVIDER, SYNC_PROVIDER_UNSET);
+        String selectedKey = SynchronizationSettings.getSelectedSyncProviderKey();
+        if (selectedKey == null) {
+            return SYNC_PROVIDER_UNSET;
+        }
+
+        return selectedKey;
     }
 
     private void updateLastSyncReport(boolean successful, long lastTime) {
@@ -261,7 +264,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     singleSignOnAccount
                             -> {
                         SingleAccountHelper.setCurrentAccount(getContext(), singleSignOnAccount.name);
-                        SyncService.setIsProviderConnected(true);
+                        SynchronizationSettings.setIsProviderConnected(true);
                         SyncService.fullSync(getContext());
                         updateScreen();
                     });
