@@ -530,7 +530,8 @@ public class UserPreferences {
     private static void setAllowMobileFor(String type, boolean allow) {
         HashSet<String> defaultValue = new HashSet<>();
         defaultValue.add("images");
-        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        final Set<String> getValueStringSet = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        final Set<String> allowed = new HashSet<>(getValueStringSet);
         if (allow) {
             allowed.add(type);
         } else {
