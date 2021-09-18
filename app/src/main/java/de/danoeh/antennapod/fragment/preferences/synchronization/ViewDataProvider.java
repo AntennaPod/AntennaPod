@@ -38,7 +38,7 @@ public class ViewDataProvider {
         SynchronizationProviderViewData selectedSynchronizationProviderViewData =
                 getSelectedSynchronizationProviderViewData(providerName);
         if (selectedSynchronizationProviderViewData == null) {
-            return R.string.preference_synchronization_summary_unchoosen;
+            return R.string.synchronization_summary_unchoosen;
         }
         return selectedSynchronizationProviderViewData.getSummaryResource();
     }

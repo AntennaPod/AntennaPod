@@ -460,9 +460,9 @@
   <string name="pref_synchronization_logout_toast">הצלחת לצאת</string>
   <string name="pref_gpodnet_setlogin_information_title">שינוי פרטי הכניסה</string>
   <string name="pref_gpodnet_setlogin_information_sum">שינוי פרטי הכניסה לחשבון ה־gpodder.net שלך.</string>
-  <string name="pref_synchronization_sync_changes_title">לסנכרן כעת</string>
+  <string name="synchronization_sync_changes_title">לסנכרן כעת</string>
   <string name="pref_gpodnet_sync_changes_sum">סנכרון שינויי מצב במינויים ובפרקים מול gpodder.net.</string>
-  <string name="pref_synchronization_full_sync_title">לכפות סנכרון מלא</string>
+  <string name="synchronization_full_sync_title">לכפות סנכרון מלא</string>
   <string name="pref_gpodnet_full_sync_sum">סנכרון כל המינויים ומצבי הפרקים עם gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[נכנסת בשם <i>%1$s</i> עם ההתקן <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">התאמת המהירויות הזמינות למהירות נגינה משתנה</string>

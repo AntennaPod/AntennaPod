@@ -198,14 +198,14 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_LOGOUT).setEnabled(loggedIn);
         if (loggedIn) {
-            String format = getActivity().getString(R.string.pref_synchronization_login_status);
+            String format = getActivity().getString(R.string.synchronization_login_status);
             String summary = String.format(
                     format,
                     ViewDataProvider.getUsernameFromSelectedSyncProvider(
                             getContext(),
                             getSelectedSyncProviderKey()
                     ),
-                    getActivity().getString(R.string.pref_synchronization_logout_summary));
+                    getActivity().getString(R.string.synchronization_logout_summary));
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
             updateLastSyncReport(SyncService.isLastSyncSuccessful(getContext()),

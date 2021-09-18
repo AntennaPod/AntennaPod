@@ -430,9 +430,9 @@
   <string name="pref_synchronization_logout_toast">Desconectouse correctamente</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambiar a información de conexión</string>
   <string name="pref_gpodnet_setlogin_information_sum">Cambiar a información de conexión da súa conta gpodder.net</string>
-  <string name="pref_synchronization_sync_changes_title">Sincronizar agora</string>
+  <string name="synchronization_sync_changes_title">Sincronizar agora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar os datos de subscrición e estado dos episodios con gpodder.net</string>
-  <string name="pref_synchronization_full_sync_title">Forzar sincronización completa</string>
+  <string name="synchronization_full_sync_title">Forzar sincronización completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar todas as subscricións e estados de episodios con gpodder.net</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Conectada como <i>%1$s</i> co dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Personaliza as velocidades dispoñibles para reprodución de velocidade variable</string>

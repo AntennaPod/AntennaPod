@@ -430,9 +430,9 @@
   <string name="pref_synchronization_logout_toast">Saiu com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
-  <string name="pref_synchronization_sync_changes_title">Sincronizar agora</string>
+  <string name="synchronization_sync_changes_title">Sincronizar agora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar as alterações de estado da inscrição e de episódios com o gpodder.net.</string>
-  <string name="pref_synchronization_full_sync_title">Forçar sincronização completa</string>
+  <string name="synchronization_full_sync_title">Forçar sincronização completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar os estados das inscrições e episódios com o gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Entrou como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Personalize as velocidades disponíveis para reprodução de áudio.</string>

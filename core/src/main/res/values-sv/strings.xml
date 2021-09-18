@@ -431,9 +431,9 @@
   <string name="pref_synchronization_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
-  <string name="pref_synchronization_sync_changes_title">Synkronisera nu</string>
+  <string name="synchronization_sync_changes_title">Synkronisera nu</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkronisera ändringar i prenumerationer och episodstatus med gpodder.net.</string>
-  <string name="pref_synchronization_full_sync_title">Tvinga full synkronisering</string>
+  <string name="synchronization_full_sync_title">Tvinga full synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkronisera alla prenumerationer och episodstatus med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet</string>

@@ -460,9 +460,9 @@
   <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
   <string name="pref_gpodnet_setlogin_information_title">Keisti prisijungimo duomenis</string>
   <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
-  <string name="pref_synchronization_sync_changes_title">Sinchronizuoti dabar</string>
+  <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>
   <string name="pref_gpodnet_sync_changes_sum">Sinchronizuoti prenumeratų bei epizodų būsenų pasikeitimus su „gpodder.net“.</string>
-  <string name="pref_synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
+  <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
   <string name="pref_gpodnet_full_sync_sum">Sinchronizuoti visas prenumeratas bei epizodų būsenas su „gpodder.net“.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> naudojant įrenginį <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Derinkite prieinamas garso atkūrimo spartas</string>

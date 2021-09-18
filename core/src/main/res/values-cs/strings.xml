@@ -437,9 +437,9 @@
   <string name="pref_synchronization_logout_toast">Úspěšně odhlášeno</string>
   <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
-  <string name="pref_synchronization_sync_changes_title">Synchronizovat ihned</string>
+  <string name="synchronization_sync_changes_title">Synchronizovat ihned</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchronizovat odběr a změny stavu epizody s gpodder.net.</string>
-  <string name="pref_synchronization_full_sync_title">Synchronizovat vše ihned</string>
+  <string name="synchronization_full_sync_title">Synchronizovat vše ihned</string>
   <string name="pref_gpodnet_full_sync_sum">Synchronizovat všechny odběry a stav epizod s gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> z přístroje <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Upravit předvybrané možnosti pro přehrávání zvuku různými rychlostmi</string>

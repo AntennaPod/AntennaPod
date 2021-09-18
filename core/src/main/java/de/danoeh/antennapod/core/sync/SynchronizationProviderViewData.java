@@ -10,7 +10,7 @@ public enum SynchronizationProviderViewData {
     ),
     NEXTCLOUD_GPODDER(
             SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD,
-            R.string.preference_synchronization_summary_nextcloud,
+            R.string.synchronization_summary_nextcloud,
             R.drawable.nextcloud_logo
     ),
     ;

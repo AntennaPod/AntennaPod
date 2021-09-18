@@ -8,11 +8,11 @@ import de.danoeh.antennapod.core.sync.SyncService;
 public class ViewDataProviderTest extends TestCase {
 
     public void testGetSynchronizationProviderHeaderSummary() {
-        assertEquals(R.string.preference_synchronization_summary_nextcloud,
+        assertEquals(R.string.synchronization_summary_nextcloud,
                 ViewDataProvider.getSynchronizationProviderHeaderSummary(
                         SyncService.SYNC_PROVIDER_CHOICE_NEXTCLOUD));
 
-        assertEquals(R.string.preference_synchronization_summary_unchoosen,
+        assertEquals(R.string.synchronization_summary_unchoosen,
                 ViewDataProvider.getSynchronizationProviderHeaderSummary(
                         SynchronizationPreferencesFragment.SYNC_PROVIDER_UNSET));
     }

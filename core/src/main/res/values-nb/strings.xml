@@ -343,9 +343,9 @@
   <string name="pref_synchronization_logout_toast">Utloggelse lyktes</string>
   <string name="pref_gpodnet_setlogin_information_title">Endre innloggingsinformasjon</string>
   <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
-  <string name="pref_synchronization_sync_changes_title">Synkroniser nå</string>
+  <string name="synchronization_sync_changes_title">Synkroniser nå</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkroniser abonnement og episoder med gpodder.net.</string>
-  <string name="pref_synchronization_full_sync_title">Tving fram full synkronisering</string>
+  <string name="synchronization_full_sync_title">Tving fram full synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser alle abonnement og episoder med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget inn som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_feed_playback_speed_sum">Hastigheten som brukes når episoder av denne podkasten spilles av</string>

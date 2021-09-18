@@ -4,7 +4,7 @@
     <Preference
             android:key="preference_synchronization_description"
             android:icon="@drawable/ic_notification_sync"
-            android:summary="@string/preference_synchronization_summary_unchoosen"/>
+            android:summary="@string/synchronization_summary_unchoosen"/>
     <Preference
             android:key="pref_synchronization_authenticate"
             android:title="@string/synchronization_choose_and_login_title"
@@ -16,15 +16,15 @@
             app:isPreferenceVisible="false"/>
     <Preference
             android:key="pref_synchronization_sync"
-            android:title="@string/pref_synchronization_sync_changes_title"
-            android:summary="@string/pref_synchronization_sync_summary"/>
+            android:title="@string/synchronization_sync_changes_title"
+            android:summary="@string/synchronization_sync_summary"/>
     <Preference
             android:key="pref_synchronization_force_full_sync"
-            android:title="@string/pref_synchronization_full_sync_title"
-            android:summary="@string/pref_synchronization_force_sync_summary"/>
+            android:title="@string/synchronization_full_sync_title"
+            android:summary="@string/synchronization_force_sync_summary"/>
     <Preference
             android:key="pref_synchronization_logout"
             android:title="Logout"
-            android:summary="@string/pref_synchronization_logout_summary"/>
+            android:summary="@string/synchronization_logout_summary"/>
 
 </PreferenceScreen>

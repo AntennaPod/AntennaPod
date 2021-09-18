@@ -430,9 +430,9 @@
   <string name="pref_synchronization_logout_toast">Kijelentkezés sikeres</string>
   <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
   <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
-  <string name="pref_synchronization_sync_changes_title">Szinkronizálás most</string>
+  <string name="synchronization_sync_changes_title">Szinkronizálás most</string>
   <string name="pref_gpodnet_sync_changes_sum">A feliratkozásai és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
-  <string name="pref_synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
+  <string name="synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
   <string name="pref_gpodnet_full_sync_sum">Az összes feliratkozásának és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, a(z) <i>%2$s</i> eszközzel]]></string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>

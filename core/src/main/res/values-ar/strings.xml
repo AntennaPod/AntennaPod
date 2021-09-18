@@ -465,9 +465,9 @@
   <string name="pref_synchronization_logout_toast">نجح تسجيل الخروج</string>
   <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
   <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
-  <string name="pref_synchronization_sync_changes_title">قم بعملية التزامن الآن</string>
+  <string name="synchronization_sync_changes_title">قم بعملية التزامن الآن</string>
   <string name="pref_gpodnet_sync_changes_sum">زامن الإشتراكات وتغير حالة الحلقات مع gpodder.net </string>
-  <string name="pref_synchronization_full_sync_title">ابدأ مزامنة كاملة</string>
+  <string name="synchronization_full_sync_title">ابدأ مزامنة كاملة</string>
   <string name="pref_gpodnet_full_sync_sum">زامن كل الإشتراكات وحالة الحلقات مع gpodder.net</string>
   <string name="pref_gpodnet_login_status"><![CDATA[تم الدخول بسم <i>%1$s</i> بجهاز <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>

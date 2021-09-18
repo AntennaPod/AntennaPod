@@ -394,9 +394,9 @@
   <string name="pref_synchronization_logout_toast">Väljalogimine oli edukas</string>
   <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
   <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
-  <string name="pref_synchronization_sync_changes_title">Sünkroniseeri kohe</string>
+  <string name="synchronization_sync_changes_title">Sünkroniseeri kohe</string>
   <string name="pref_gpodnet_sync_changes_sum">Sünkroniseeri oma tellimuste ja saadete olekute muutuseid gpodder.net-iga</string>
-  <string name="pref_synchronization_full_sync_title">Nõua täielikku sünkroonimist</string>
+  <string name="synchronization_full_sync_title">Nõua täielikku sünkroonimist</string>
   <string name="pref_gpodnet_full_sync_sum">Sünkroniseeri kõiki tellimusi ja saate olekuid gpodder.net-iga.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sisseloginud kui <i>%1$s</i> seadmega <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Kohanda kiiruseid, mis on esitamisel saadaval</string>
