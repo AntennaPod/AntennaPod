@@ -204,8 +204,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                     ViewDataProvider.getUsernameFromSelectedSyncProvider(
                             getContext(),
                             getSelectedSyncProviderKey()
-                    ),
-                    getActivity().getString(R.string.synchronization_logout_summary));
+                    ));
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
             updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
