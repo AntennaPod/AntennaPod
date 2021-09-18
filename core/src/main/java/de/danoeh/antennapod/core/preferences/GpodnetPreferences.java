@@ -108,7 +108,7 @@ public class GpodnetPreferences {
         setUsername(null);
         setPassword(null);
         setDeviceID(null);
-        SyncService.clearQueue(ClientConfig.applicationCallbacks.getApplicationInstance());
+        SyncService.clearQueue();
         UserPreferences.setGpodnetNotificationsEnabled();
     }
 

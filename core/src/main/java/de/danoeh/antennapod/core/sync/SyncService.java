@@ -51,7 +51,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -125,16 +124,8 @@ public class SyncService extends Worker {
                 .apply();
     }
 
-    public static void clearQueue(Context context) {
-        executeLockedAsync(() ->
-                context.getSharedPreferences(SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE).edit()
-                        .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                        .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                        .putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]")
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
-                        .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
-                        .apply());
+    public static void clearQueue() {
+        executeLockedAsync(SynchronizationQueue::clearQueue);
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
@@ -143,13 +134,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(
-                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
-                JSONArray queue = new JSONArray(json);
-                queue.put(downloadUrl);
-                prefs.edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, queue.toString())
-                        .apply();
+                SynchronizationQueue.enqueueFeedAdded(downloadUrl);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -163,13 +148,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(
-                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
-                JSONArray queue = new JSONArray(json);
-                queue.put(downloadUrl);
-                prefs.edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, queue.toString())
-                        .apply();
+                SynchronizationQueue.enqueueFeedRemoved(downloadUrl);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -183,14 +162,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SharedPreferences prefs = context.getSharedPreferences(
-                        SynchronizationSharedPreferenceKeys.NAME, Context.MODE_PRIVATE);
-                String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
-                JSONArray queue = new JSONArray(json);
-                queue.put(action.writeToJsonObject());
-                prefs.edit().putString(
-                        SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, queue.toString()
-                ).apply();
+                SynchronizationQueue.enqueueEpisodeAction(action);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -260,12 +232,7 @@ public class SyncService extends Worker {
     private List<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferencesSynchronization();
-            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
-            JSONArray queue = new JSONArray(json);
-            for (int i = 0; i < queue.length(); i++) {
-                actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
-            }
+            actions = SynchronizationQueue.getQueuedEpisodeActions();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -280,12 +247,7 @@ public class SyncService extends Worker {
     private List<String> getQueuedRemovedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferencesSynchronization();
-            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
-            JSONArray queue = new JSONArray(json);
-            for (int i = 0; i < queue.length(); i++) {
-                actions.add(queue.getString(i));
-            }
+            actions = SynchronizationQueue.getQueuedRemovedFeeds();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -293,18 +255,13 @@ public class SyncService extends Worker {
     }
 
     private List<String> getQueuedAddedFeeds() {
-        ArrayList<String> actions = new ArrayList<>();
+        ArrayList<String> addedFeedUrls = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferencesSynchronization();
-            String json = prefs.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
-            JSONArray queue = new JSONArray(json);
-            for (int i = 0; i < queue.length(); i++) {
-                actions.add(queue.getString(i));
-            }
+            addedFeedUrls = SynchronizationQueue.getQueuedAddedFeeds();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return actions;
+        return addedFeedUrls;
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
