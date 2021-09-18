@@ -40,8 +40,6 @@ import de.danoeh.antennapod.core.sync.SynchronizationSharedPreferenceKeys;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
-import static de.danoeh.antennapod.core.sync.SyncService.fullSync;
-
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     public static final String SYNC_PROVIDER_UNSET = "unset";
 
@@ -62,7 +60,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.synchronization);
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.synchronization_pref);
         updateScreen();
         EventBus.getDefault().register(this);
     }
