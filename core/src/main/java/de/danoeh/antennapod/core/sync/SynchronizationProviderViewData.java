@@ -15,18 +15,18 @@ public enum SynchronizationProviderViewData {
     ),
     ;
 
-    private final String name;
+    private final String identifier;
     private final int iconResource;
     private final int summaryResource;
 
-    SynchronizationProviderViewData(String name, int summaryResource, int iconResource) {
-        this.name = name;
+    SynchronizationProviderViewData(String identifier, int summaryResource, int iconResource) {
+        this.identifier = identifier;
         this.iconResource = iconResource;
         this.summaryResource = summaryResource;
     }
 
-    public String getName() {
-        return name;
+    public String getIdentifier() {
+        return identifier;
     }
 
     public int getIconResource() {

@@ -58,7 +58,7 @@ public class ViewDataProvider {
                 EnumSet.allOf(SynchronizationProviderViewData.class);
         for (SynchronizationProviderViewData synchronizationProvider :
                 availableSynchronizationProviders) {
-            if (synchronizationProvider.getName().equals(provider)) {
+            if (synchronizationProvider.getIdentifier().equals(provider)) {
                 return synchronizationProvider;
             }
         }

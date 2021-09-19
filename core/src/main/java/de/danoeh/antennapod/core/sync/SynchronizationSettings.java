@@ -28,7 +28,7 @@ public class SynchronizationSettings {
     public static void setSelectedSyncProvider(SynchronizationProviderViewData userSelect) {
         String userSelectName = null;
         if (userSelect != null) {
-            userSelectName = userSelect.getName();
+            userSelectName = userSelect.getIdentifier();
         }
 
         getSharedPreferences()

@@ -227,7 +227,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         if (selectedSyncProviderKey == null) {
             return false;
         }
-        return selectedSyncProviderKey.equals(SynchronizationProviderViewData.GPODDER_NET.getName());
+        return selectedSyncProviderKey.equals(SynchronizationProviderViewData.GPODDER_NET.getIdentifier());
     }
 
     private String getSelectedSyncProviderKey() {
