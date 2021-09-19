@@ -96,9 +96,9 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         });
         selectHost.setOnClickListener(v -> {
             if (serverRadioGroup.getCheckedRadioButtonId() == R.id.customServerRadio) {
-                GpodnetPreferences.setHosturl(serverUrlText.getText().toString());
+                GpodnetPreferences.setHosturl(serverUrlText.getText().toString(), getContext());
             } else {
-                GpodnetPreferences.setHosturl(GpodnetService.DEFAULT_BASE_HOST);
+                GpodnetPreferences.setHosturl(GpodnetService.DEFAULT_BASE_HOST, getContext());
             }
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
                     GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),

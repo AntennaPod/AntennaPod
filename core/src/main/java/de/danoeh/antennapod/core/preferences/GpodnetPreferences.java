@@ -87,9 +87,9 @@ public class GpodnetPreferences {
         return hosturl;
     }
 
-    public static void setHosturl(String value) {
+    public static void setHosturl(String value, Context context) {
         if (!value.equals(hosturl)) {
-            logout();
+            logout(context);
             writePreference(PREF_GPODNET_HOSTNAME, value);
             hosturl = value;
         }
@@ -103,12 +103,12 @@ public class GpodnetPreferences {
         return deviceID != null && username != null && password != null;
     }
 
-    public static synchronized void logout() {
+    public static synchronized void logout(Context context) {
         if (BuildConfig.DEBUG) Log.d(TAG, "Logout: Clearing preferences");
         setUsername(null);
         setPassword(null);
         setDeviceID(null);
-        SyncService.clearQueue();
+        SyncService.clearQueue(context);
         UserPreferences.setGpodnetNotificationsEnabled();
     }
 

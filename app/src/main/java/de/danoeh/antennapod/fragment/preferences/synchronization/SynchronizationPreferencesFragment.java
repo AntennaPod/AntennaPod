@@ -167,7 +167,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
-            GpodnetPreferences.logout();
+            GpodnetPreferences.logout(getContext());
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setIsProviderConnected(false);
             setSelectedSyncProvider(null);

@@ -63,9 +63,11 @@ public class SyncService extends Worker {
 
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final ReentrantLock lock = new ReentrantLock();
+    private final SynchronizationQueue synchronizationQueue;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
+        synchronizationQueue = new SynchronizationQueue(context);
     }
 
     @Override
@@ -99,8 +101,9 @@ public class SyncService extends Worker {
         }
     }
 
-    public static void clearQueue() {
-        executeLockedAsync(SynchronizationQueue::clearQueue);
+    public static void clearQueue(Context context) {
+        SynchronizationQueue synchronizationQueue = new SynchronizationQueue(context);
+        executeLockedAsync(synchronizationQueue::clearQueue);
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
@@ -109,7 +112,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SynchronizationQueue.enqueueFeedAdded(downloadUrl);
+                new SynchronizationQueue(context).enqueueFeedAdded(downloadUrl);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -123,7 +126,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SynchronizationQueue.enqueueFeedRemoved(downloadUrl);
+                new SynchronizationQueue(context).enqueueFeedRemoved(downloadUrl);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -137,7 +140,7 @@ public class SyncService extends Worker {
         }
         executeLockedAsync(() -> {
             try {
-                SynchronizationQueue.enqueueEpisodeAction(action);
+                new SynchronizationQueue(context).enqueueEpisodeAction(action);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -192,7 +195,7 @@ public class SyncService extends Worker {
     private List<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
         try {
-            actions = SynchronizationQueue.getQueuedEpisodeActions();
+            actions = synchronizationQueue.getQueuedEpisodeActions();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -202,7 +205,7 @@ public class SyncService extends Worker {
     private List<String> getQueuedRemovedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            actions = SynchronizationQueue.getQueuedRemovedFeeds();
+            actions = synchronizationQueue.getQueuedRemovedFeeds();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -212,7 +215,7 @@ public class SyncService extends Worker {
     private List<String> getQueuedAddedFeeds() {
         ArrayList<String> addedFeedUrls = new ArrayList<>();
         try {
-            addedFeedUrls = SynchronizationQueue.getQueuedAddedFeeds();
+            addedFeedUrls = synchronizationQueue.getQueuedAddedFeeds();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -262,7 +265,7 @@ public class SyncService extends Worker {
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                SynchronizationQueue.clearFeedQueues();
+                synchronizationQueue.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
                 lock.unlock();
@@ -308,7 +311,7 @@ public class SyncService extends Worker {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                SynchronizationQueue.clearEpisodeActionQueue();
+                synchronizationQueue.clearEpisodeActionQueue();
             } finally {
                 lock.unlock();
             }
