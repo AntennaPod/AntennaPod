@@ -192,44 +192,14 @@ public class SyncService extends Worker {
         });
     }
 
-    private List<EpisodeAction> getQueuedEpisodeActions() {
-        ArrayList<EpisodeAction> actions = new ArrayList<>();
-        try {
-            actions = synchronizationQueue.getQueuedEpisodeActions();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return actions;
-    }
-
-    private List<String> getQueuedRemovedFeeds() {
-        ArrayList<String> actions = new ArrayList<>();
-        try {
-            actions = synchronizationQueue.getQueuedRemovedFeeds();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return actions;
-    }
-
-    private List<String> getQueuedAddedFeeds() {
-        ArrayList<String> addedFeedUrls = new ArrayList<>();
-        try {
-            addedFeedUrls = synchronizationQueue.getQueuedAddedFeeds();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return addedFeedUrls;
-    }
-
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
         final long lastSync = SynchronizationSettings.getLastSubscriptionSynchronizationTimestamp();
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
 
-        List<String> queuedRemovedFeeds = getQueuedRemovedFeeds();
-        List<String> queuedAddedFeeds = getQueuedAddedFeeds();
+        List<String> queuedRemovedFeeds = synchronizationQueue.getQueuedRemovedFeeds();
+        List<String> queuedAddedFeeds = synchronizationQueue.getQueuedAddedFeeds();
 
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
@@ -284,7 +254,7 @@ public class SyncService extends Worker {
 
         // upload local actions
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_upload));
-        List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
+        List<EpisodeAction> queuedEpisodeActions = synchronizationQueue.getQueuedEpisodeActions();
         if (lastSync == 0) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
             List<FeedItem> readItems = DBReader.getPlayedItems();
@@ -327,7 +297,7 @@ public class SyncService extends Worker {
         }
 
         Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
-                .getRemoteActionsOverridingLocalActions(remoteActions, getQueuedEpisodeActions());
+                .getRemoteActionsOverridingLocalActions(remoteActions, synchronizationQueue.getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {

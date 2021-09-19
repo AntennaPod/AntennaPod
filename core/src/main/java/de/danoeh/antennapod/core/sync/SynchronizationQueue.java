@@ -63,37 +63,49 @@ public class SynchronizationQueue {
         ).apply();
     }
 
-    public ArrayList<EpisodeAction> getQueuedEpisodeActions() throws JSONException {
+    public ArrayList<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
-        String json = getSharedPreferences()
-                .getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
-        JSONArray queue = new JSONArray(json);
-        for (int i = 0; i < queue.length(); i++) {
-            actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
+        try {
+            String json = getSharedPreferences()
+                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
         return actions;
     }
 
-    public ArrayList<String> getQueuedRemovedFeeds() throws JSONException {
+    public ArrayList<String> getQueuedRemovedFeeds() {
         ArrayList<String> removedFeedUrls = new ArrayList<>();
-        String json = getSharedPreferences().getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
-        JSONArray queue = new JSONArray(json);
-        for (int i = 0; i < queue.length(); i++) {
-            removedFeedUrls.add(queue.getString(i));
+        try {
+            String json = getSharedPreferences()
+                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                removedFeedUrls.add(queue.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
         return removedFeedUrls;
+
     }
 
-    public ArrayList<String> getQueuedAddedFeeds() throws JSONException {
+    public ArrayList<String> getQueuedAddedFeeds() {
         ArrayList<String> addedFeedUrls = new ArrayList<>();
-        String json = getSharedPreferences().getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
-        JSONArray queue = new JSONArray(json);
-        for (int i = 0; i < queue.length(); i++) {
-            addedFeedUrls.add(queue.getString(i));
+        try {
+            String json = getSharedPreferences()
+                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                addedFeedUrls.add(queue.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
         return addedFeedUrls;
     }
 
