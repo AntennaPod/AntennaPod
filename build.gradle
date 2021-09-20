@@ -87,3 +87,9 @@ task checkstyle(type: Checkstyle) {
     exclude("**/gen/**")
     exclude("**/generated/**")
 }
+
+copy {
+    from "githooks"
+    into ".git/hooks"
+    fileMode 0777
+}
