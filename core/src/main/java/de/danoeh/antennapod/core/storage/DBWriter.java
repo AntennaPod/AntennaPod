@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -32,23 +30,25 @@ import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -132,7 +132,7 @@ public class DBWriter {
             }
 
             // Gpodder: queue delete action for synchronization
-            if (GpodnetPreferences.loggedIn()) {
+            if (SynchronizationSettings.isSynchronizationProviderActive()) {
                 FeedItem item = media.getItem();
                 EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                         .currentTimestamp()
@@ -170,7 +170,9 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            LockingQueueWriter.enqueueFeedRemoved(context, feed.getDownload_url());
+            if (SynchronizationSettings.isSynchronizationProviderActive()) {
+                LockingQueueWriter.enqueueFeedRemoved(context, feed.getDownload_url());
+            }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -781,8 +783,10 @@ public class DBWriter {
             adapter.setCompleteFeed(feeds);
             adapter.close();
 
-            for (Feed feed : feeds) {
-                LockingQueueWriter.enqueueFeedAdded(context, feed.getDownload_url());
+            if (SynchronizationSettings.isSynchronizationProviderActive()) {
+                for (Feed feed : feeds) {
+                    LockingQueueWriter.enqueueFeedAdded(context, feed.getDownload_url());
+                }
             }
 
             BackupManager backupManager = new BackupManager(context);
@@ -992,7 +996,6 @@ public class DBWriter {
 
     /**
      * Set item sort order of the feed
-     *
      */
     public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         return dbExec.submit(() -> {

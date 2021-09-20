@@ -9,6 +9,11 @@ public class SynchronizationSettings {
 
     public static final String NAME = "synchronization";
 
+    public static boolean isSynchronizationProviderActive() {
+        return SynchronizationSettings.getSelectedSyncProviderKey() != null
+                && SynchronizationSettings.isProviderConnected();
+    }
+
     public static void resetTimestamps() {
         getSharedPreferences().edit()
                 .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)

@@ -15,9 +15,6 @@ public class LockingQueueWriter {
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
-        if (noSyncProviderIsActive()) {
-            return;
-        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             try {
                 new SynchronizationQueue(context).enqueueFeedAdded(downloadUrl);
@@ -29,9 +26,6 @@ public class LockingQueueWriter {
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
-        if (noSyncProviderIsActive()) {
-            return;
-        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             try {
                 new SynchronizationQueue(context).enqueueFeedRemoved(downloadUrl);
@@ -43,9 +37,6 @@ public class LockingQueueWriter {
     }
 
     public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
-        if (noSyncProviderIsActive()) {
-            return;
-        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             try {
                 new SynchronizationQueue(context).enqueueEpisodeAction(action);
@@ -57,9 +48,6 @@ public class LockingQueueWriter {
     }
 
     public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
-        if (noSyncProviderIsActive()) {
-            return;
-        }
         if (media.getItem() == null) {
             return;
         }
@@ -73,11 +61,6 @@ public class LockingQueueWriter {
                 .total(media.getDuration() / 1000)
                 .build();
         enqueueEpisodeAction(context, action);
-    }
-
-    private static boolean noSyncProviderIsActive() {
-        return SynchronizationSettings.getSelectedSyncProviderKey() == null
-                || !SynchronizationSettings.isProviderConnected();
     }
 
 }
