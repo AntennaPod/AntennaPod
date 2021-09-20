@@ -52,6 +52,7 @@ import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.core.sync.LockingQueueWriter;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -66,7 +67,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -966,7 +966,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia) {
-                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
+                    LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
             }
@@ -1110,10 +1110,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || smartMarkAsPlayed) {
-            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, true);
+            LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
-            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, false);
+            LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 

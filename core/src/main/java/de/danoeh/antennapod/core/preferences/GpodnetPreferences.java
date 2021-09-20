@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.LockingQueueWriter;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 
 /**
@@ -108,7 +108,7 @@ public class GpodnetPreferences {
         setUsername(null);
         setPassword(null);
         setDeviceID(null);
-        SyncService.clearQueue(context);
+        LockingQueueWriter.clearQueue(context);
         UserPreferences.setGpodnetNotificationsEnabled();
     }
 

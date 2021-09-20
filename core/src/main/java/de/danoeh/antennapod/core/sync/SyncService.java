@@ -19,12 +19,17 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -37,6 +42,9 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
@@ -45,24 +53,11 @@ import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.net.sync.model.SyncServiceException;
 import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
 import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
-import io.reactivex.Completable;
-import io.reactivex.schedulers.Schedulers;
-
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class SyncService extends Worker {
     public static final String TAG = "SyncService";
 
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
-    private static final ReentrantLock lock = new ReentrantLock();
     private final SynchronizationQueue synchronizationQueue;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -101,72 +96,6 @@ public class SyncService extends Worker {
         }
     }
 
-    public static void clearQueue(Context context) {
-        SynchronizationQueue synchronizationQueue = new SynchronizationQueue(context);
-        executeLockedAsync(synchronizationQueue::clearQueue);
-    }
-
-    public static void enqueueFeedAdded(Context context, String downloadUrl) {
-        if (!hasActiveSyncProvider()) {
-            return;
-        }
-        executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueFeedAdded(downloadUrl);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sync(context);
-        });
-    }
-
-    public static void enqueueFeedRemoved(Context context, String downloadUrl) {
-        if (!hasActiveSyncProvider()) {
-            return;
-        }
-        executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueFeedRemoved(downloadUrl);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sync(context);
-        });
-    }
-
-    public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
-        if (!hasActiveSyncProvider()) {
-            return;
-        }
-        executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueEpisodeAction(action);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            sync(context);
-        });
-    }
-
-    public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
-        if (!hasActiveSyncProvider()) {
-            return;
-        }
-        if (media.getItem() == null) {
-            return;
-        }
-        if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
-            return;
-        }
-        EpisodeAction action = new EpisodeAction.Builder(media.getItem(), EpisodeAction.PLAY)
-                .currentTimestamp()
-                .started(media.getStartPosition() / 1000)
-                .position((completed ? media.getDuration() : media.getPosition()) / 1000)
-                .total(media.getDuration() / 1000)
-                .build();
-        SyncService.enqueueEpisodeAction(context, action);
-    }
-
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
@@ -182,7 +111,7 @@ public class SyncService extends Worker {
     }
 
     public static void fullSync(Context context) {
-        executeLockedAsync(() -> {
+        LockingAsyncExecutor.executeLockedAsync(() -> {
             SynchronizationSettings.resetTimestamps();
             OneTimeWorkRequest workRequest = getWorkRequest()
                     .setInitialDelay(0L, TimeUnit.SECONDS)
@@ -231,14 +160,14 @@ public class SyncService extends Worker {
             Log.d(TAG, "Added: " + StringUtils.join(queuedAddedFeeds, ", "));
             Log.d(TAG, "Removed: " + StringUtils.join(queuedRemovedFeeds, ", "));
 
-            lock.lock();
+            LockingAsyncExecutor.lock.lock();
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
                 synchronizationQueue.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
-                lock.unlock();
+                LockingAsyncExecutor.lock.unlock();
             }
         }
         SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
@@ -274,7 +203,7 @@ public class SyncService extends Worker {
             }
         }
         if (queuedEpisodeActions.size() > 0) {
-            lock.lock();
+            LockingAsyncExecutor.lock.lock();
             try {
                 Log.d(TAG, "Uploading " + queuedEpisodeActions.size() + " actions: "
                         + StringUtils.join(queuedEpisodeActions, ", "));
@@ -283,7 +212,7 @@ public class SyncService extends Worker {
                 Log.d(TAG, "Upload episode response: " + postResponse);
                 synchronizationQueue.clearEpisodeActionQueue();
             } finally {
-                lock.unlock();
+                LockingAsyncExecutor.lock.unlock();
             }
         }
         SynchronizationSettings.setLastEpisodeActionSynchronizationAttemptTimestamp(newTimeStamp);
@@ -376,30 +305,6 @@ public class SyncService extends Worker {
                 .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
     }
 
-    /**
-     * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is
-     * in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
-     */
-    private static void executeLockedAsync(Runnable runnable) {
-        if (lock.tryLock()) {
-            try {
-                runnable.run();
-            } finally {
-                lock.unlock();
-            }
-        } else {
-            Completable.fromRunnable(() -> {
-                lock.lock();
-                try {
-                    runnable.run();
-                } finally {
-                    lock.unlock();
-                }
-            }).subscribeOn(Schedulers.io())
-                    .subscribe();
-        }
-    }
-
     private ISyncService getActiveSyncProvider() {
         String selectedSyncProviderKey = SynchronizationSettings.getSelectedSyncProviderKey();
         SynchronizationProviderViewData selectedService = SynchronizationProviderViewData
@@ -414,10 +319,5 @@ public class SyncService extends Worker {
             default:
                 return null;
         }
-    }
-
-    private static boolean hasActiveSyncProvider() {
-        return SynchronizationSettings.getSelectedSyncProviderKey() != null
-                && SynchronizationSettings.isProviderConnected();
     }
 }

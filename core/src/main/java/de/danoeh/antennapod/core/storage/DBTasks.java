@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.sync.LockingQueueWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -482,7 +483,7 @@ public final class DBTasks {
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            SyncService.enqueueEpisodeAction(context, action);
+                            LockingQueueWriter.enqueueEpisodeAction(context, action);
                         }
                     }
                 }

@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.LockingQueueWriter;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
@@ -137,7 +137,7 @@ public class DBWriter {
                 EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                         .currentTimestamp()
                         .build();
-                SyncService.enqueueEpisodeAction(context, action);
+                LockingQueueWriter.enqueueEpisodeAction(context, action);
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
@@ -170,7 +170,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            SyncService.enqueueFeedRemoved(context, feed.getDownload_url());
+            LockingQueueWriter.enqueueFeedRemoved(context, feed.getDownload_url());
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -782,7 +782,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                SyncService.enqueueFeedAdded(context, feed.getDownload_url());
+                LockingQueueWriter.enqueueFeedAdded(context, feed.getDownload_url());
             }
 
             BackupManager backupManager = new BackupManager(context);
