@@ -37,7 +37,7 @@ public class AudiothekSearchResultMapperTest extends TestCase {
         assertEquals("Klimazentrale - Der Talk zu Klima & Umwelt", podcastSearchResult.title);
         assertEquals("SWR", podcastSearchResult.author);
         assertEquals("https://api.ardaudiothek.de/./programsets/64922226", podcastSearchResult.feedUrl);
-        assertEquals("https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard", podcastSearchResult.imageUrl);
+        assertEquals("https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/1x1/64?mandant=ard", podcastSearchResult.imageUrl);
     }
 
     public void testExtractPodcasts() throws IOException, JSONException {
@@ -55,7 +55,7 @@ public class AudiothekSearchResultMapperTest extends TestCase {
         assertEquals("Klimazentrale - Der Talk zu Klima & Umwelt", podcastSearchResult.title);
         assertEquals("SWR", podcastSearchResult.author);
         assertEquals("https://api.ardaudiothek.de/./programsets/64922226", podcastSearchResult.feedUrl);
-        assertEquals("https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard", podcastSearchResult.imageUrl);
+        assertEquals("https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/1x1/64?mandant=ard", podcastSearchResult.imageUrl);
     }
 
     public void testExtractPodcastsOnlyOneResult() throws IOException, JSONException {
@@ -65,13 +65,14 @@ public class AudiothekSearchResultMapperTest extends TestCase {
         JSONObject searchResponseJson = null;
         rawResponseJson = IOUtils.toString(inputStream, Charsets.UTF_8);
         searchResponseJson = new JSONObject(rawResponseJson);
-        List<PodcastSearchResult> podcastSearchResults = AudiothekSearchResultMapper.extractPodcasts(searchResponseJson);
+        List<PodcastSearchResult> podcastSearchResults = AudiothekSearchResultMapper
+                .extractPodcasts(searchResponseJson);
         assertSame(1, podcastSearchResults.size());
 
         PodcastSearchResult podcastSearchResult = podcastSearchResults.get(0);
         assertEquals("Stanisław Lem: Frieden auf Erden", podcastSearchResult.title);
         assertEquals("MDR", podcastSearchResult.author);
         assertEquals("https://api.ardaudiothek.de/./programsets/92726154", podcastSearchResult.feedUrl);
-        assertEquals("https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard", podcastSearchResult.imageUrl);
+        assertEquals("https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/1x1/64?mandant=ard", podcastSearchResult.imageUrl);
     }
 }

@@ -42,6 +42,8 @@ public class AudiothekSearchResultMapper {
         String title = json.optString("title", "");
         JSONObject links = json.getJSONObject("_links");
         String imageUrl = links.getJSONObject("mt:squareImage").optString("href", null);
+        imageUrl = imageUrl.replace("{ratio}", "1x1");
+        imageUrl = imageUrl.replace("{width}", "64");
         String feedUrlRaw = links.getJSONObject("self").optString("href", null);
         String feedUrl = AUDIOTHEK_BASE_URI + feedUrlRaw.replace("{?order,offset,limit}", "");
         String author = json.getJSONObject("_embedded").getJSONObject("mt:publicationService")
