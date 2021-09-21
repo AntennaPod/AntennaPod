@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.discovery;
 
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
-import de.mfietz.fyydlin.SearchHit;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.mfietz.fyydlin.SearchHit;
 
 public class PodcastSearchResult {
 
@@ -32,7 +34,7 @@ public class PodcastSearchResult {
     public final String author;
 
 
-    private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author) {
+    public PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.feedUrl = feedUrl;

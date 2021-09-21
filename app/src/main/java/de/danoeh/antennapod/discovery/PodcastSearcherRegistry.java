@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.discovery;
 
 
-import io.reactivex.Single;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
 
 public class PodcastSearcherRegistry {
     private static List<SearcherInfo> searchProviders;

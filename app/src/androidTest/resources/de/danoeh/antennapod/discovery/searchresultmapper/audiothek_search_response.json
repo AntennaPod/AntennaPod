@@ -1,0 +1,2471 @@
+{
+  "_links": {
+    "curies": {
+      "href": "http://namespaces.ard.de/api/audioapp/version1/{rel}",
+      "name": "mt",
+      "templated": true
+    },
+    "self": {
+      "href": "./search?query=klima&offset=0&limit=12",
+      "name": "searchOverview"
+    },
+    "first": {
+      "href": "./search?query=klima&offset=0&limit=12",
+      "name": "searchOverview"
+    },
+    "last": {
+      "href": "./search?query=klima&offset=96&limit=12",
+      "name": "searchOverview"
+    },
+    "mt:autopilot": {
+      "href": "./autopilot{?offset,limit,recentlyPlayed,recentlySkipped,recentlyLiked,profileCategories,listeningCategories,deviceId}",
+      "name": "autopilot",
+      "templated": true
+    },
+    "mt:pageEditorialCategories": {
+      "href": "./editorialcategories",
+      "name": "editorialCategories"
+    },
+    "mt:pageHomescreen": {
+      "href": "./homescreen",
+      "name": "homescreen"
+    },
+    "mt:pageOrganizations": {
+      "href": "./organizations",
+      "name": "organizations"
+    },
+    "mt:search": {
+      "href": "./search{?query,offset,limit}",
+      "name": "searchDetails",
+      "templated": true
+    },
+    "mt:searchSuggestions": {
+      "href": "./suggestions{?query}",
+      "name": "suggest",
+      "templated": true
+    },
+    "next": {
+      "href": "./search?query=klima&offset=12&limit=12",
+      "name": "searchOverview"
+    }
+  },
+  "tracking": {
+    "environmentId": 511893,
+    "title": "ARD Audiothek/Suche/klima",
+    "chapter1": "Suche",
+    "searchText": "klima"
+  },
+  "_embedded": {
+    "mt:programSetSearchResults": {
+      "_links": {
+        "self": {
+          "href": "./search/programsets?query=klima&offset=0&limit=12"
+        },
+        "first": {
+          "href": "./search/programsets?query=klima&offset=0&limit=6"
+        },
+        "last": {
+          "href": "./search/programsets?query=klima&offset=0&limit=12"
+        }
+      },
+      "numberOfElements": 6,
+      "_embedded": {
+        "mt:programSets": [
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/64922226{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                "title": "SWR",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                "title": "SWR",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+              }
+            },
+            "id": "64922226",
+            "numberOfElements": 55,
+            "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/9209284",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.swr.de/swraktuell/"
+                  }
+                },
+                "brandingColor": "#00546c",
+                "genre": "Info",
+                "id": "9209284",
+                "numberOfElements": 6,
+                "organizationName": "SWR",
+                "title": "SWR Aktuell"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914742{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  }
+                },
+                "id": "42914742",
+                "title": "Wissen"
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/82361244{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                "title": "SWR",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                "title": "SWR",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+              }
+            },
+            "id": "82361244",
+            "numberOfElements": 21,
+            "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+            "title": "Weltwunderkugel - der Klima-Podcast",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/2926",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.swr.de/swr1/"
+                  }
+                },
+                "brandingColor": "#FFD200",
+                "genre": "Regional",
+                "id": "2926",
+                "numberOfElements": 9,
+                "organizationName": "SWR",
+                "title": "SWR1"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914742{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  }
+                },
+                "id": "42914742",
+                "title": "Wissen"
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/5941402{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/49/10/39/94/1100205662/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/5941402"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/49/10/39/94/1100205662/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/5941402/synd_rss"
+              }
+            },
+            "id": "5941402",
+            "numberOfElements": 989,
+            "synopsis": "Wissenschaft geht uns alle an. IQ berichtet über aktuelle Forschung und Kontroversen aus allen relevanten Bereichen wie Medizin, Klima, Astronomie, Technik, Gesellschaft.",
+            "title": "IQ - Wissenschaft und Forschung",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5562",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/78/86/-295433861/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.br.de/radio/bayern2/index.html"
+                  }
+                },
+                "brandingColor": "#ec711a",
+                "genre": "Kultur",
+                "id": "5562",
+                "numberOfElements": 82,
+                "organizationName": "BR",
+                "title": "Bayern 2"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914742{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Wissen",
+                    "title": "colourbox.de",
+                    "templated": true
+                  }
+                },
+                "id": "42914742",
+                "title": "Wissen"
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/92667830{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/66/78/28/-1774185891/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92667830"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/66/78/28/-1774185891/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92667830/synd_rss"
+              }
+            },
+            "id": "92667830",
+            "numberOfElements": 7,
+            "synopsis": "Im Kreuzverhör mit funk stellen sich Politiker:innen den Fragen, für die sich die junge Generation unter 30 interessiert. Vor der Bundestagswahl 2021 sprechen Viktoria Reichelt (Deutschland3000), Jan Schipmann (DIE DA OBEN!), Nemi El-Hassan (Der Fall) und Mirko Drotschmann (MrWissen2go) mit allen im Bundestag vertretenen Parteien über Digitalisierung, Klima, Außenpolitik, soziale Ungleichheit und Bildung.",
+            "title": "Kreuzverhör: der Interviewpodcast zur Bundestagswahl",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/66734342",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/64/95/85/04/555337067/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "https://www.funk.net"
+                  }
+                },
+                "brandingColor": "#3c3b3a",
+                "genre": "Pop und Szene",
+                "id": "66734342",
+                "numberOfElements": 16,
+                "organizationName": "funk",
+                "title": "funk"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/51850530{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/51/85/05/70/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Der Bundestag mit leeren Stuhlreihen",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/51/85/05/70/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Der Bundestag mit leeren Stuhlreihen",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "51850530",
+                "title": "Politik & Hintergrund"
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/93142684{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/93/14/26/82/-1774185891/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/93142684"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/93/14/26/82/-1774185891/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/93142684/synd_rss"
+              }
+            },
+            "id": "93142684",
+            "numberOfElements": 1,
+            "synopsis": "Wie leben wir eigentlich nachhaltig? So genau wissen Hannah Heinzinger und Raphaela Naomi Heinzl das auch noch nicht. Aber sie finden es raus - zusammen mit euch. Die beiden stellen sich gegenseitig Challenges und versuchen sie in ihrem Alltag umzusetzen. Das geht von Stromverbrauch senken über nur regionale Lebensmittel essen bis zum umweltfreundlichen Putzen der WG. Grünphase ist der Nachhaltigkeitspodcast für alle, die noch keine Umweltprofis sind und herausfinden wollen, was sie in ihrem Alltag tun können, um Umwelt und Klima zu schützen.",
+            "title": "Grünphase - der Nachhaltigkeitspodcast",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/566178",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/78/96/-295433861/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.br.de/on3/index.html"
+                  }
+                },
+                "brandingColor": "#000000",
+                "genre": "Pop und Szene",
+                "id": "566178",
+                "numberOfElements": 8,
+                "organizationName": "BR",
+                "title": "PULS"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914718{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Broadway Street, Nähe Times Square, New York",
+                    "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Broadway Street, Nähe Times Square, New York",
+                    "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+                    "templated": true
+                  }
+                },
+                "id": "42914718",
+                "title": "Leben"
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./programsets/13785130{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/49/10/47/24/2025238664/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/13785130"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/49/10/47/24/2025238664/{ratio}/{width}?mandant=ard",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/13785130/synd_rss"
+              }
+            },
+            "id": "13785130",
+            "numberOfElements": 29,
+            "synopsis": "Was bringt der Umwelt schon so ein bisschen Recyclingpapier? Und was haben Nierenschäden bei Forellen mit Medikamentenentsorgung zu tun? Umweltfragen aus dem Alltag und einfache Lösungen, all das zeigen BAYERN 1 Moderatorin Melitta Varlam und Umweltkommissar Alexander Dallmus im Nachhaltigkeitspodcast \"Besser leben\" jede Woche mit einem neuen Thema. Haben Sie eine Frage an die beiden - gerne unter bayern1.de/besserleben stellen.",
+            "title": "Besser leben. Der BAYERN 1 Nachhaltigkeitspodcast",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5494",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/78/84/-2114473875/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.br.de/radio/bayern1/index.html"
+                  }
+                },
+                "brandingColor": "#00a0d5",
+                "genre": "Regional",
+                "id": "5494",
+                "numberOfElements": 6,
+                "organizationName": "BR",
+                "title": "BAYERN 1"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914718{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Broadway Street, Nähe Times Square, New York",
+                    "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Broadway Street, Nähe Times Square, New York",
+                    "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+                    "templated": true
+                  }
+                },
+                "id": "42914718",
+                "title": "Leben"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "mt:editorialCategorySearchResults": {
+      "_links": {
+        "self": {
+          "href": "./search/editorialcategories?query=klima&offset=0&limit=12"
+        },
+        "first": {
+          "href": "./search/editorialcategories?query=klima&offset=0&limit=0"
+        },
+        "last": {
+          "href": "./search/editorialcategories?query=klima&offset=0&limit=12"
+        }
+      },
+      "numberOfElements": 0
+    },
+    "mt:itemSearchResults": {
+      "_links": {
+        "self": {
+          "href": "./search/items?query=klima&offset=0&limit=12"
+        },
+        "first": {
+          "href": "./search/items?query=klima&offset=0&limit=12"
+        },
+        "last": {
+          "href": "./search/items?query=klima&offset=96&limit=12"
+        },
+        "next": {
+          "href": "./search/items?query=klima&offset=12&limit=12"
+        }
+      },
+      "numberOfElements": 100,
+      "_embedded": {
+        "mt:items": [
+          {
+            "_links": {
+              "self": {
+                "href": "./items/93144732",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/e-mobilitaet-wie-schaffen-wir-die-verkehrswende.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/e-mobilitaet-wie-schaffen-wir-die-verkehrswende.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/93/14/47/36/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "E-Auto beim Aufladen - Elektroauto angesteckt bei der Ladestation",
+                "title": "picture-alliance / Reportdienste, picture alliance / Zoonar | Alfred Hofer",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/93144732"
+              },
+              "mt:playCounting": {
+                "href": "./items/93144732/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/93144732"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/93/14/47/38/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "E-Auto beim Aufladen - Elektroauto angesteckt bei der Ladestation",
+                "title": "picture-alliance / Reportdienste, picture alliance / Zoonar | Alfred Hofer",
+                "templated": true
+              }
+            },
+            "duration": 2135,
+            "id": "93144732",
+            "publicationStartDateAndTime": "2021-09-17T11:27:00.000+0200",
+            "synopsis": "Auf unsere Regierung wartet eine Mammutaufgabe: Zukunft geht nur ohne Verbrenner und mit E-Autos. Wir müssen Mobilität neu denken und zügig umsetzen. Mit dabei: Wirtschaftsforscherin am DIW Claudia Kemfert, Batterieforscher Maximilian Fichtner aus Ulm und E-Mobilität-Spezialist Frank Hüsch.",
+            "title": "E-Mobilität - wie schaffen wir die Verkehrswende?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/E-Mobilität - wie schaffen wir die Verkehrswende?/93144732/20210917_1127",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/E-Mobilität - wie schaffen wir die Verkehrswende?/93144732/20210917_1127",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/E-Mobilität - wie schaffen wir die Verkehrswende?/93144732/20210917_1127",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/E-Mobilität - wie schaffen wir die Verkehrswende?/93144732/20210917_1127",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "93144732",
+                "publicationDate": "20210917",
+                "clipLength": "2135",
+                "clipTitle": "E-Mobilität - wie schaffen wir die Verkehrswende?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/92886504",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/arktis-wie-wichtig-ist-ihr-schutz-fuer-unser-leben.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/arktis-wie-wichtig-ist-ihr-schutz-fuer-unser-leben.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/88/65/08/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Ein Eisbär steht auf dem Meereis des arktischen Ozeans.",
+                "title": "dpa Bildfunk, picture alliance / dpa | Mario Hoppmann",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/92886504"
+              },
+              "mt:playCounting": {
+                "href": "./items/92886504/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/92886504"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/88/65/10/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Eisbär steht auf dem Meereis des arktischen Ozeans.",
+                "title": "dpa Bildfunk, picture alliance / dpa | Mario Hoppmann",
+                "templated": true
+              }
+            },
+            "duration": 1197,
+            "id": "92886504",
+            "publicationStartDateAndTime": "2021-09-10T06:00:00.000+0200",
+            "synopsis": "Nirgendwo zeigt sich der Klimawandel so stark wie in der Arktis. Im Vergleich zum globalen Mittel hat sie sich in den letzten 40 Jahren dreimal so schnell erwärmt. Das hat wiederum negative Auswirkungen auf unser Klima und damit unser Leben. Werner & Tobi diskutieren: Warum sollten wir die Arktis in besonderem Maße schützen? Welche Auswirkungen hat sie auf Wetter & Klima? Was passiert, wenn immer mehr Eis schmilzt? Welche potenziellen Gefahren lauern im geschmolzenen Eis?\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Arktis - Wie wichtig ist ihr Schutz für unser Leben?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Arktis - Wie wichtig ist ihr Schutz für unser Leben?/92886504/20210910_0600",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Arktis - Wie wichtig ist ihr Schutz für unser Leben?/92886504/20210910_0600",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Arktis - Wie wichtig ist ihr Schutz für unser Leben?/92886504/20210910_0600",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Arktis - Wie wichtig ist ihr Schutz für unser Leben?/92886504/20210910_0600",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "92886504",
+                "publicationDate": "20210910",
+                "clipLength": "1197",
+                "clipTitle": "Arktis - Wie wichtig ist ihr Schutz für unser Leben?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/92715104",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/klimawandel-kriegt-deutschland-noch-die-kurve.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/klimawandel-kriegt-deutschland-noch-die-kurve.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/80/22/86/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Demonstranten bei der &#039;Fridays for Future&#039; Demonstration im Rahmen des weltweiten Klimastreiks am Brandenburger Tor.",
+                "title": "picture-alliance / Reportdienste, picture alliance / Geisler-Fotopress | Ben Kriemann/Geisler-Fotopress",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/92715104"
+              },
+              "mt:playCounting": {
+                "href": "./items/92715104/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/92715104"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/80/22/92/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Demonstranten bei der &#039;Fridays for Future&#039; Demonstration im Rahmen des weltweiten Klimastreiks am Brandenburger Tor.",
+                "title": "picture-alliance / Reportdienste, picture alliance / Geisler-Fotopress | Ben Kriemann/Geisler-Fotopress",
+                "templated": true
+              }
+            },
+            "duration": 2235,
+            "id": "92715104",
+            "publicationStartDateAndTime": "2021-09-03T16:57:00.000+0200",
+            "synopsis": "2045 will Deutschland klimaneutral sein. Was sind ab Herbst die Aufgaben der neuen Regierung? Wie nimmt man alle mit? Wie verhindert man Stillstand?",
+            "title": "Klimawandel - kriegt Deutschland noch die Kurve?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Klimawandel - kriegt Deutschland noch die Kurve?/92715104/20210903_1657",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Klimawandel - kriegt Deutschland noch die Kurve?/92715104/20210903_1657",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/Klimawandel - kriegt Deutschland noch die Kurve?/92715104/20210903_1657",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/Klimawandel - kriegt Deutschland noch die Kurve?/92715104/20210903_1657",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "92715104",
+                "publicationDate": "20210903",
+                "clipLength": "2235",
+                "clipTitle": "Klimawandel - kriegt Deutschland noch die Kurve?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/92499184",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/bundestagswahl-welche-partei-will-was-fuers-klima.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/bundestagswahl-welche-partei-will-was-fuers-klima.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/49/91/88/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Stimmzettel und ein Umschlag für die Briefwahl liegen auf einem Tisch",
+                "title": "dpa Bildfunk, picture alliance/dpa | Oliver Berg",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/92499184"
+              },
+              "mt:playCounting": {
+                "href": "./items/92499184/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/92499184"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/49/91/90/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Stimmzettel und ein Umschlag für die Briefwahl liegen auf einem Tisch",
+                "title": "dpa Bildfunk, picture alliance/dpa | Oliver Berg",
+                "templated": true
+              }
+            },
+            "duration": 1712,
+            "id": "92499184",
+            "publicationStartDateAndTime": "2021-08-27T07:01:00.000+0200",
+            "synopsis": "Am 26. September haben wir die Wahl: Bei wem und welcher Partei machen wir unsere Kreuzchen? In dieser Folge wollen Werner & Tobi herausfinden: Welche Pläne haben die einzelnen Parteien in Sachen Klimaschutz? Dazu haben sie sich Prof. Dr. Niklas Höhne eingeladen. Er ist Experte für Klimapolitik und Mitbegründer des NewClimate Institute. Gemeinsam mit Prof. Höhne checken die beiden die Wahlprogramme aller großen Parteien: Welche Konzepte überzeugen? Sind die gemachten Vorschläge realistisch? Reichen die Programme um das 1,5 Grad-Ziel einzureichen?\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Welche Partei will was fürs Klima?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Welche Partei will was fürs Klima?/92499184/20210827_0701",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Welche Partei will was fürs Klima?/92499184/20210827_0701",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Welche Partei will was fürs Klima?/92499184/20210827_0701",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Welche Partei will was fürs Klima?/92499184/20210827_0701",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "92499184",
+                "publicationDate": "20210827",
+                "clipLength": "1712",
+                "clipTitle": "Welche Partei will was fürs Klima?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/92126208",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/weltklimarat-was-kommt-laut-ipcc-bericht-auf-uns-zu.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/weltklimarat-was-kommt-laut-ipcc-bericht-auf-uns-zu.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/12/62/14/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Thermometer in der Sonne",
+                "title": "dpa Bildfunk, picture alliance / dpa | Patrick Pleul",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/92126208"
+              },
+              "mt:playCounting": {
+                "href": "./items/92126208/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/92126208"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/12/62/16/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Thermometer in der Sonne",
+                "title": "dpa Bildfunk, picture alliance / dpa | Patrick Pleul",
+                "templated": true
+              }
+            },
+            "duration": 1554,
+            "id": "92126208",
+            "publicationStartDateAndTime": "2021-08-13T17:19:00.000+0200",
+            "synopsis": "Der erste Teil des neuen Sachstandsberichts des Weltklimarats (IPCC) ist da. Er macht abermals deutlich: Wir sollten JETZT handeln, wenn wir den Klimawandel eindämmen möchten. Außerdem hegt der Bericht nun keinen Zweifel mehr daran, dass der Klimawandel von uns Menschen verursacht ist. Werner & Tobi diskutieren: Wer ist eigentlich der Weltklimarat? Welche Kritik gibt es an ihm? Was sagt uns der neue Bericht? Was kommt da in den nächsten Jahrzehnten auf uns zu?\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?/92126208/20210813_1719",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?/92126208/20210813_1719",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?/92126208/20210813_1719",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?/92126208/20210813_1719",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "92126208",
+                "publicationDate": "20210813",
+                "clipLength": "1554",
+                "clipTitle": "Weltklimarat - Was kommt laut IPCC-Bericht auf uns zu?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/91713442",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/klimaanpassung-was-koennen-wir-gegen-wetterextreme-tun.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/klimaanpassung-was-koennen-wir-gegen-wetterextreme-tun.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/91/71/34/46/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Luftaufnahme von einem Feuerwehrfahrzeug, das durch das hoch stehende Wasser an einem Kreisverkehr fährt.",
+                "title": "dpa Bildfunk, picture alliance/dpa | Davor Knappmeyer",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/91713442"
+              },
+              "mt:playCounting": {
+                "href": "./items/91713442/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/91713442"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/91/71/34/48/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Luftaufnahme von einem Feuerwehrfahrzeug, das durch das hoch stehende Wasser an einem Kreisverkehr fährt.",
+                "title": "dpa Bildfunk, picture alliance/dpa | Davor Knappmeyer",
+                "templated": true
+              }
+            },
+            "duration": 1620,
+            "id": "91713442",
+            "publicationStartDateAndTime": "2021-07-30T06:00:00.000+0200",
+            "synopsis": "Schwere Unwetter und Hochwasser in Teilen Deutschlands, zeitgleich extreme Hitze in Kanada und Russland. Durch den Klimawandel werden Wetterextreme überall auf der Welt zunehmen. Um denen entgegenzuwirken, spielt neben aktivem Klimaschutz, auch die Klimaanpassung eine bedeutende Rolle. Werner & Tobi diskutieren: Was für Wetterextreme kommen auf uns zu? Wie können wir uns vor Starkregen, Hochwasser oder Hitze schützen? Warum ist in den letzten Jahren kaum etwas in dem Bereich passiert?\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Klimaanpassung - Was können wir gegen Wetterextreme tun? | Talk",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Klimaanpassung - Was können wir gegen Wetterextreme tun? .../91713442/20210730_0600",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Klimaanpassung - Was können wir gegen Wetterextreme tun? .../91713442/20210730_0600",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Klimaanpassung - Was können wir gegen Wetterextreme tun? | Talk/91713442/20210730_0600",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Klimaanpassung - Was können wir gegen Wetterextreme tun? | Talk/91713442/20210730_0600",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "91713442",
+                "publicationDate": "20210730",
+                "clipLength": "1620",
+                "clipTitle": "Klimaanpassung - Was können wir gegen Wetterextreme tun? | Talk"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/91572098",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/unwetter-und-hitzewellen-warum-nehmen-sie-zu.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/unwetter-und-hitzewellen-warum-nehmen-sie-zu.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/91/57/21/04/555337067/{ratio}/{width}?mandant=ard",
+                "name": "Gewitter und Blitze",
+                "title": "picture-alliance / Reportdienste, Picture Alliance",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/91572098"
+              },
+              "mt:playCounting": {
+                "href": "./items/91572098/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/91572098"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/91/57/21/08/555337067/{ratio}/{width}?mandant=ard",
+                "name": "Gewitter und Blitze",
+                "title": "picture-alliance / Reportdienste, Picture Alliance",
+                "templated": true
+              }
+            },
+            "duration": 2012,
+            "id": "91572098",
+            "publicationStartDateAndTime": "2021-07-27T13:50:00.000+0200",
+            "synopsis": "Hagel, Sturzfluten, Hitzerekorde, Waldbrände - die Bilder dieses Sommers sind erschreckend. Klimaforscher warnen bereits seit 30 Jahren: die Erderwärmung macht Extremwetter wahrscheinlicher. Mit dabei diesmal Atmosphärenphysiker Markus Rex, Gesundheitsforscher Till Baernighausen, Hagelpilot Frank Kasparek und Betroffene aus Deutschland, Kanada und aus Sibirien",
+            "title": "Unwetter und Hitzewellen - Warum nehmen sie zu?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Unwetter und Hitzewellen - Warum nehmen sie zu?/91572098/20210727_1350",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Unwetter und Hitzewellen - Warum nehmen sie zu?/91572098/20210727_1350",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/Unwetter und Hitzewellen - Warum nehmen sie zu?/91572098/20210727_1350",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/Unwetter und Hitzewellen - Warum nehmen sie zu?/91572098/20210727_1350",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "91572098",
+                "publicationDate": "20210727",
+                "clipLength": "2012",
+                "clipTitle": "Unwetter und Hitzewellen - Warum nehmen sie zu?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/91257520",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/umweltpsychologie-warum-handeln-wir-nicht-nachhaltig.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/umweltpsychologie-warum-handeln-wir-nicht-nachhaltig.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/91/26/31/92/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Dr. Katharina Beyerl (Pressefoto)",
+                "title": "Dr. Katharina Beyerl (Pressefoto)",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/91257520"
+              },
+              "mt:playCounting": {
+                "href": "./items/91257520/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/91257520"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/91/26/31/96/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Dr. Katharina Beyerl (Pressefoto)",
+                "title": "Dr. Katharina Beyerl (Pressefoto)",
+                "templated": true
+              }
+            },
+            "duration": 1809,
+            "id": "91257520",
+            "publicationStartDateAndTime": "2021-07-16T06:29:00.000+0200",
+            "synopsis": "Warum steigen wir eigentlich ins Flugzeug, obwohl wir ganz genau wissen: Das ist schädlich fürs Klima. Oder warum schauen wir entsetzt auf das ganze Plastik im Meer, nehmen aber unser Essen trotzdem gerne to go - in der Plastikbox? Und müssen wir unser individuelles Verhalten in Sachen Nachhaltigkeit überhaupt ändern oder sollte nicht einfach das ganze System besser werden? Diese und weitere Fragen klären Werner und Tobi heute mit Diplom-Psychologin und Geographin Dr. Katharina Beyerl. Sie beschäftigt sich am Institut für transformative Nachhaltigkeitsforschung (IASS) in Potsdam intensiv mit dem Thema Umweltpsychologie.\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Klimazentrale: Umwelt-Psychologie - Warum handeln wir nicht nachhaltig?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Klimazentrale: Umwelt-Psychologie - Warum handeln wir .../91257520/20210716_0629",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Klimazentrale: Umwelt-Psychologie - Warum handeln wir .../91257520/20210716_0629",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Klimazentrale: Umwelt-Psychologie - Warum handeln wir nicht nachhaltig?/91257520/20210716_0629",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Klimazentrale: Umwelt-Psychologie - Warum handeln wir nicht nachhaltig?/91257520/20210716_0629",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "91257520",
+                "publicationDate": "20210716",
+                "clipLength": "1809",
+                "clipTitle": "Klimazentrale: Umwelt-Psychologie - Warum handeln wir nicht nachhaltig?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/91194894",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/weltwunderkugel-unser-motor-die-sonne.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/weltwunderkugel-unser-motor-die-sonne.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/91/19/48/98/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eine Weltraumsonde kreist vor dem Sonne",
+                "title": "picture-alliance / Reportdienste, ESA | ATG medialab",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/91194894"
+              },
+              "mt:playCounting": {
+                "href": "./items/91194894/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/91194894"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/91/19/49/00/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eine Weltraumsonde kreist vor dem Sonne",
+                "title": "picture-alliance / Reportdienste, ESA | ATG medialab",
+                "templated": true
+              }
+            },
+            "duration": 1706,
+            "id": "91194894",
+            "publicationStartDateAndTime": "2021-07-14T07:07:00.000+0200",
+            "synopsis": "Die Raumsonde Solar Orbiter ist auf dem Weg zur Sonne. Sie ist unser Energielieferant für die Zukunft. Können wir grenzenlos Sonnenenergie abzapfen? Überall Photovoltaik hinpacken? Was wissen wir überhaupt über die Sonne? Mit dabei diesmal Sonnenforscher Sami Solanki, Erdsystemforscher Harald Desing, Agrivoltaik-Spezialist Heiko Hildebrandt und Treibstoff-Entwickler Christian Sattler.",
+            "title": "Motor Sonne - nur so gelingt die Energiewende",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Motor Sonne - nur so gelingt die Energiewende/91194894/20210714_0707",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Motor Sonne - nur so gelingt die Energiewende/91194894/20210714_0707",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/Motor Sonne - nur so gelingt die Energiewende/91194894/20210714_0707",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/Motor Sonne - nur so gelingt die Energiewende/91194894/20210714_0707",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "91194894",
+                "publicationDate": "20210714",
+                "clipLength": "1706",
+                "clipTitle": "Motor Sonne - nur so gelingt die Energiewende"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/90521394",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/forscher-warnen-klimawandel-macht-ozonkiller-stark.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/forscher-warnen-klimawandel-macht-ozonkiller-stark.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/90/52/13/98/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eisschollen in der Arktis",
+                "title": "AWI, Stefan Hendricks",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/90521394"
+              },
+              "mt:playCounting": {
+                "href": "./items/90521394/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/90521394"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/90/52/14/00/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eisschollen in der Arktis",
+                "title": "AWI, Stefan Hendricks",
+                "templated": true
+              }
+            },
+            "duration": 1809,
+            "id": "90521394",
+            "publicationStartDateAndTime": "2021-06-23T12:05:00.000+0200",
+            "synopsis": "Für die Wissenschaft ist es ein Paradigmenwechsel: anders als bisher angenommen reicht das FCKW-Verbot keineswegs, damit sich die Ozonschicht erholt! Was das für uns bedeutet, erklärt Markus Rex, der Leiter von \"Mosaic\", der größten Arktis-Expedition aller Zeiten. Ausserdem erforschen wir mit der Wissenschaftlerin Luisa von Albedyll den Lebenszyklus der arktischen Eisschollen und mit dem Meereis-Biologen Hauke Flores die \"hidden stars\" unter den Schollen.",
+            "title": "Der Klimawandel greift auch die Ozonschicht an",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Der Klimawandel greift auch die Ozonschicht an/90521394/20210623_1205",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Der Klimawandel greift auch die Ozonschicht an/90521394/20210623_1205",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/Der Klimawandel greift auch die Ozonschicht an/90521394/20210623_1205",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/Der Klimawandel greift auch die Ozonschicht an/90521394/20210623_1205",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "90521394",
+                "publicationDate": "20210623",
+                "clipLength": "1809",
+                "clipTitle": "Der Klimawandel greift auch die Ozonschicht an"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/90806118",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/weltwunderkugel-klima-podcast-weizen-hirse-reis-wie-werden-wir-alle-satt.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swr1/bw/programm/weltwunderkugel/weltwunderkugel-klima-podcast-weizen-hirse-reis-wie-werden-wir-alle-satt.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/90/80/61/22/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Reisernte - eine Hand hält eine Reisähre",
+                "title": "picture-alliance / Reportdienste, Picture Alliance",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/90806118"
+              },
+              "mt:playCounting": {
+                "href": "./items/90806118/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/90806118"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/90/80/61/24/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Reisernte - eine Hand hält eine Reisähre",
+                "title": "picture-alliance / Reportdienste, Picture Alliance",
+                "templated": true
+              }
+            },
+            "duration": 2206,
+            "id": "90806118",
+            "publicationStartDateAndTime": "2021-06-11T15:24:00.000+0200",
+            "synopsis": "Unsere Landwirtschaft verändert das Klima. Und der Klimawandel gefährdet unsere Ernten. Wie können wir Land klimafreundlich nutzen und Grundnahrungsmittel für die Zukunft sichern? Antworten dazu von Landwirt Richard Kauffmann, Entwicklungshelfer Thomas Hoerz, Agrarforscher Folkard Asch, und der Expertin für Klimawandel und Landnutzung, Charlotte Streck.",
+            "title": "Weizen, Hirse, Reis - wie werden wir alle satt?",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Weizen, Hirse, Reis - wie werden wir alle satt?/90806118/20210611_1524",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Weltwunderkugel - der Klima-Podcast/Weizen, Hirse, Reis - wie werden wir alle satt?/90806118/20210611_1524",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Weltwunderkugel - der Klima-Podcast",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Weltwunderkugel - der Klima-Podcast/Weizen, Hirse, Reis - wie werden wir alle satt?/90806118/20210611_1524",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Weltwunderkugel - der Klima-Podcast/Weizen, Hirse, Reis - wie werden wir alle satt?/90806118/20210611_1524",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR1",
+                "show": "Weltwunderkugel - der Klima-Podcast",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "90806118",
+                "publicationDate": "20210611",
+                "clipLength": "2206",
+                "clipTitle": "Weizen, Hirse, Reis - wie werden wir alle satt?"
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/82361244{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+                    "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+                  }
+                },
+                "id": "82361244",
+                "numberOfElements": 21,
+                "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+                "title": "Weltwunderkugel - der Klima-Podcast",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/2926",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swr1/"
+                      }
+                    },
+                    "brandingColor": "#FFD200",
+                    "genre": "Regional",
+                    "id": "2926",
+                    "numberOfElements": 9,
+                    "organizationName": "SWR",
+                    "title": "SWR1"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./items/89888584",
+                "name": "item"
+              },
+              "mt:bestQualityPlaybackUrl": {
+                "href": "https://pdodswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/fliegen-umweltzerstoerung-zum-discountpreis.m.mp3"
+              },
+              "mt:downloadUrl": {
+                "href": "https://avdlswr-a.akamaihd.net/swr/swraktuell/radio/klimazentrale/fliegen-umweltzerstoerung-zum-discountpreis.m.mp3"
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/90/40/43/02/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Flugzeug, das von unten zu sehen ist, fliegt am Himmel.",
+                "title": "Photo by Philip Myrtorp on Unsplash",
+                "templated": true
+              },
+              "mt:mediaCollection": {
+                "href": "./media/89888584"
+              },
+              "mt:playCounting": {
+                "href": "./items/89888584/count/increment"
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/items/89888584"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/90/40/43/02/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Ein Flugzeug, das von unten zu sehen ist, fliegt am Himmel.",
+                "title": "Photo by Philip Myrtorp on Unsplash",
+                "templated": true
+              }
+            },
+            "duration": 1544,
+            "id": "89888584",
+            "publicationStartDateAndTime": "2021-06-04T06:00:00.000+0200",
+            "synopsis": "Je mehr wir die Pandemie unter Kontrolle bekommen, desto mehr Flugzeuge werden wieder am Himmel sein. Bis zum Beginn der Corona-Krise ist der Flugverkehr weltweit konstant gestiegen. Und es wird mit einem weiteren starken Anstieg in den nächsten Jahren gerechnet. Dabei trägt der Flugverkehr schon heute zu einem nicht unerheblichen Teil des Klimawandels bei, obwohl nur ein Bruchteil der Menschen auf der Welt überhaupt fliegt. Werner & Tobi diskutieren: Wie schlecht ist die Luftfahrt für Umwelt und Klima? Ist ein Verbot von Inlandsflügen die Lösung? Was bringt die CO2-Kompensation? Und wie sieht die Zukunft der Luftfahrt aus? Kann sie nachhaltig sein?\nDiese Podcast-Episode steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+            "title": "Fliegen: Umwelt-Zerstörung zum Discountpreis? ",
+            "tracking": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Fliegen: Umwelt-Zerstörung zum Discountpreis? /89888584/20210604_0600",
+              "chapter1": "{page.tracking.chapter1}",
+              "play": {
+                "title": "ARD Audiothek/{page.tracking.chapter1}/Klimazentrale - Der Talk zu Klima & Umwelt/Fliegen: Umwelt-Zerstörung zum Discountpreis? /89888584/20210604_0600",
+                "chapter1": "{page.tracking.chapter1}",
+                "chapter2": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "sticky": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Klimazentrale - Der Talk zu Klima & Umwelt/Fliegen: Umwelt-Zerstörung zum Discountpreis? /89888584/20210604_0600",
+                  "chapter1": "Sticky Player"
+                },
+                "autopilot": {
+                  "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Klimazentrale - Der Talk zu Klima & Umwelt/Fliegen: Umwelt-Zerstörung zum Discountpreis? /89888584/20210604_0600",
+                  "chapter1": "Autopilot"
+                },
+                "mediaType": "audio",
+                "lra": "SWR",
+                "channel": "SWR Aktuell",
+                "show": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "contentType": "2",
+                "source": "SWR",
+                "mediaDistributionType": "1",
+                "contentId": "89888584",
+                "publicationDate": "20210604",
+                "clipLength": "1544",
+                "clipTitle": "Fliegen: Umwelt-Zerstörung zum Discountpreis? "
+              }
+            },
+            "_embedded": {
+              "mt:programSet": {
+                "_links": {
+                  "self": {
+                    "href": "./programsets/64922226{?order,offset,limit}",
+                    "name": "programSet",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:sharing": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+                    "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+                    "title": "SWR",
+                    "templated": true
+                  },
+                  "mt:synd_rss": {
+                    "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+                  }
+                },
+                "id": "64922226",
+                "numberOfElements": 55,
+                "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+                "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+                "_embedded": {
+                  "mt:publicationService": {
+                    "_links": {
+                      "self": {
+                        "href": "./publicationservices/9209284",
+                        "name": "publicationService"
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+                        "templated": true
+                      },
+                      "mt:onlinePortal": {
+                        "href": "http://www.swr.de/swraktuell/"
+                      }
+                    },
+                    "brandingColor": "#00546c",
+                    "genre": "Info",
+                    "id": "9209284",
+                    "numberOfElements": 6,
+                    "organizationName": "SWR",
+                    "title": "SWR Aktuell"
+                  },
+                  "mt:editorialCategories": {
+                    "_links": {
+                      "self": {
+                        "href": "./editorialcategories/42914742{?offset,limit}",
+                        "name": "editorialCategory",
+                        "templated": true
+                      },
+                      "mt:image": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      },
+                      "mt:squareImage": {
+                        "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+                        "name": "Kategorie Wissen",
+                        "title": "colourbox.de",
+                        "templated": true
+                      }
+                    },
+                    "id": "42914742",
+                    "title": "Wissen"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "mt:editorialCollectionSearchResults": {
+      "_links": {
+        "self": {
+          "href": "./search/editorialcollections?query=klima&offset=0&limit=12"
+        },
+        "first": {
+          "href": "./search/editorialcollections?query=klima&offset=0&limit=5"
+        },
+        "last": {
+          "href": "./search/editorialcollections?query=klima&offset=0&limit=12"
+        }
+      },
+      "numberOfElements": 5,
+      "_embedded": {
+        "mt:editorialCollections": [
+          {
+            "_links": {
+              "self": {
+                "href": "./editorialcollections/58143300{?offset,limit}",
+                "name": "editorialCollection",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/91/83/79/80/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Artistic 3D illustration of the earth globe ",
+                "title": "picture alliance / CHROMORANGE | Knut Niehus",
+                "templated": true
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/91/83/79/80/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Artistic 3D illustration of the earth globe ",
+                "title": "picture alliance / CHROMORANGE | Knut Niehus",
+                "templated": true
+              }
+            },
+            "broadcastDuration": 52394,
+            "id": "58143300",
+            "numberOfElements": 32,
+            "synopsis": "Starkregen, Überflutungen, unerträgliche Hitze, Dürre - immer wieder lassen sich extreme Wetterphänomene beobachten. Was hat der Klimawandel damit zu tun und wo zeigt er sich noch? Wie steht es um unser Klima und was können wir tun?",
+            "title": "Klimawandel: Ursachen, Folgen und Lösungsansätze "
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./editorialcollections/67045732{?offset,limit}",
+                "name": "editorialCollection",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/67/07/56/46/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Blick auf arktisches Meereis",
+                "title": "Alfred-Wegener-Institut / Mario Hoppmann (CC-BY 4.0) ",
+                "templated": true
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/67/07/56/46/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Blick auf arktisches Meereis",
+                "title": "Alfred-Wegener-Institut / Mario Hoppmann (CC-BY 4.0) ",
+                "templated": true
+              }
+            },
+            "broadcastDuration": 12256,
+            "id": "67045732",
+            "numberOfElements": 10,
+            "synopsis": "Klirrende Kälte, gigantische Gletscher und Eis, soweit das Auge reicht. Noch. Denn das Eis schmilzt in der Arktis, der Klimawandel schreitet rasant voran. MOSAiC, die größte Arktis-Expedition aller Zeiten hat 2020 Proben gesammelt und soll neue Erkenntnisse bringen: Ein Jahr lang waren 600 Wissenschaftler auf dem Forschungseisbrecher \"Polarstern\" unterwegs. Was macht die Arktis so wichtig, was bedeutet die Erderwärmung für die Einwohner und was für die Menschen weltweit? Erkenntnisse, Zukunftszenarien und Expertengespräche.",
+            "title": "Die Arktis - zwischen Klima und Wirtschaftsfaktor"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./editorialcollections/67007912{?offset,limit}",
+                "name": "editorialCollection",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/67/01/85/56/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Protestierende halten Plakate hoch",
+                "title": "picture alliance / dpa",
+                "templated": true
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/67/01/85/56/2121327408/{ratio}/{width}?mandant=ard",
+                "name": "Protestierende halten Plakate hoch",
+                "title": "picture alliance / dpa",
+                "templated": true
+              }
+            },
+            "broadcastDuration": 20692,
+            "id": "67007912",
+            "numberOfElements": 13,
+            "synopsis": "Jugendliche protestieren gegen die drohende Klimakatastrophe und fordern konkrete Maßnahmen. Der Kohleausstieg und eine CO2-Steuer sind dabei nur der Anfang. Wie wurde die Bewegung um Greta Thunberg so groß? Und erreichen die Protestierenden tatsächlich etwas in Politik und Gesellschaft?",
+            "title": "Fridays for Future - der Protest der Jugend"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./editorialcollections/59919416{?offset,limit}",
+                "name": "editorialCollection",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/59/91/94/76/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Fischschwarm unter Wasser",
+                "title": "picture alliance/chromorange",
+                "templated": true
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/59/91/94/76/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Fischschwarm unter Wasser",
+                "title": "picture alliance/chromorange",
+                "templated": true
+              }
+            },
+            "broadcastDuration": 22727,
+            "id": "59919416",
+            "numberOfElements": 16,
+            "synopsis": "Fremd und verzaubert - die Welt unter Wasser fasziniert die Menschen seit jeher. Doch der Lebensraum unter der Meeresoberfläche ist bedroht: durch Fischfang, den Klimawandel, die Industrialisierung und Tourismus. Wie ist die Lage am und im Meer?",
+            "title": "Ins Wasser! Eine Reise zum Ozean"
+          },
+          {
+            "_links": {
+              "self": {
+                "href": "./editorialcollections/54945408{?offset,limit}",
+                "name": "editorialCollection",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/54/95/26/08/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eine Frau hält einen Regenschirm.",
+                "title": "picture alliance",
+                "templated": true
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/54/95/26/08/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Eine Frau hält einen Regenschirm.",
+                "title": "picture alliance",
+                "templated": true
+              }
+            },
+            "broadcastDuration": 10162,
+            "id": "54945408",
+            "numberOfElements": 19,
+            "synopsis": "Es ist mal schön, mal wild und bedrohlich. Es betrifft uns alle und beeinflusst so viele Lebensbereiche: das Wetter. Extreme Wetterperioden gab es schon immer, doch was genau ist daran menschengemacht? Von Regen, Hitze, Kälte, Gewitter und dem Klimawandel - einer der größten Herausforderungen für die Menschheit.",
+            "title": "Alle Wetter! Von Hitze, Sturm und Regenmassen"
+          }
+        ]
+      }
+    }
+  }
+}
