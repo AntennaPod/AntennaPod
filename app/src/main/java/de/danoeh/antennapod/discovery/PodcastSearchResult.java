@@ -34,7 +34,8 @@ public class PodcastSearchResult {
     public final String author;
 
 
-    public PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author) {
+    public PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl,
+                               @Nullable String author) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.feedUrl = feedUrl;

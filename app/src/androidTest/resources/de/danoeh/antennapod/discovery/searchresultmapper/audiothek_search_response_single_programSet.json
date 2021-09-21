@@ -1,0 +1,77 @@
+{
+  "_links": {
+    "self": {
+      "href": "./programsets/64922226{?order,offset,limit}",
+      "name": "programSet",
+      "templated": true
+    },
+    "mt:image": {
+      "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+      "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+      "title": "SWR",
+      "templated": true
+    },
+    "mt:sharing": {
+      "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+    },
+    "mt:squareImage": {
+      "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+      "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+      "title": "SWR",
+      "templated": true
+    },
+    "mt:synd_rss": {
+      "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+    }
+  },
+  "id": "64922226",
+  "numberOfElements": 55,
+  "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+  "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+  "_embedded": {
+    "mt:publicationService": {
+      "_links": {
+        "self": {
+          "href": "./publicationservices/9209284",
+          "name": "publicationService"
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:onlinePortal": {
+          "href": "http://www.swr.de/swraktuell/"
+        }
+      },
+      "brandingColor": "#00546c",
+      "genre": "Info",
+      "id": "9209284",
+      "numberOfElements": 6,
+      "organizationName": "SWR",
+      "title": "SWR Aktuell"
+    },
+    "mt:editorialCategories": {
+      "_links": {
+        "self": {
+          "href": "./editorialcategories/42914742{?offset,limit}",
+          "name": "editorialCategory",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+          "name": "Kategorie Wissen",
+          "title": "colourbox.de",
+          "templated": true
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+          "name": "Kategorie Wissen",
+          "title": "colourbox.de",
+          "templated": true
+        }
+      },
+      "id": "42914742",
+      "title": "Wissen"
+    }
+  }
+}

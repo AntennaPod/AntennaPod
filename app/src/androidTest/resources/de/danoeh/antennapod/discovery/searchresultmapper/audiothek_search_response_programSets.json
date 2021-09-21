@@ -1,0 +1,450 @@
+{
+  "mt:programSets": [
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/64922226{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/73/98/68/72/-1829554053/{ratio}/{width}?mandant=ard",
+          "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+          "title": "SWR",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/64922226"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/{ratio}/{width}?mandant=ard",
+          "name": "Podcast-Logo: Klimazentrale von SWR Aktuell",
+          "title": "SWR",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/64922226/synd_rss"
+        }
+      },
+      "id": "64922226",
+      "numberOfElements": 55,
+      "synopsis": "Wie kommt eigentlich das ganze Plastik ins Meer? Ist Oma wirklich eine Umweltsau - oder sind die Enkel viel schlimmer? Ist Onlineshopping schlechter für's Klima als der Kauf im Laden? Ihr merkt, es ist kompliziert. Deshalb suchen ARD-Umweltexperte Werner Eckert und Umweltökonom Tobias Koch nach Antworten auf aktuelle Klima- & Umweltfragen. Alle zwei Wochen gibt's am Freitag eine neue Folge.\nDieser Podcast steht unter der Creative Commons Lizenz CC BY-NC-ND 4.0.",
+      "title": "Klimazentrale - Der Talk zu Klima & Umwelt",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/9209284",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/92/12/78/-2114473875/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "http://www.swr.de/swraktuell/"
+            }
+          },
+          "brandingColor": "#00546c",
+          "genre": "Info",
+          "id": "9209284",
+          "numberOfElements": 6,
+          "organizationName": "SWR",
+          "title": "SWR Aktuell"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/42914742{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            }
+          },
+          "id": "42914742",
+          "title": "Wissen"
+        }
+      }
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/82361244{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+          "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+          "title": "SWR",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/82361244"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/82/36/12/52/2121327408/{ratio}/{width}?mandant=ard",
+          "name": "Weltwunderkugel, der SWR1 Klima-Podcast",
+          "title": "SWR",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/82361244/synd_rss"
+        }
+      },
+      "id": "82361244",
+      "numberOfElements": 21,
+      "synopsis": "Ist sie im Gleichgewicht, leben wir auf einer wunderbaren Kugel. Kommt sie aus der Bahn, verändert sich unser Klima dramatisch, mit Folgen für alle nachkommenden Generationen. Je mehr wir wissen, desto besser können wir den Kurs bestimmen. Markus Rex ist Klimaforscher beim Alfred-Wegener-Institut und Professor für Atmosphärenphysik. Er hat u.a. MOSAIC, die größte Arktisexpedition aller Zeiten geleitet. Im Gespräch mit SWR1Redakteurin Christiane von Wolff nimmt er uns mit auf spannende Forschungsreisen, erklärt verständlich komplexe Zusammenhänge und checkt Lösungstrategien. Weltwunderkugel, der Podcast für die Zukunft eines wunderbaren Planeten.",
+      "title": "Weltwunderkugel - der Klima-Podcast",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/2926",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/95/72/74/-2114473875/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "http://www.swr.de/swr1/"
+            }
+          },
+          "brandingColor": "#FFD200",
+          "genre": "Regional",
+          "id": "2926",
+          "numberOfElements": 9,
+          "organizationName": "SWR",
+          "title": "SWR1"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/42914742{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            }
+          },
+          "id": "42914742",
+          "title": "Wissen"
+        }
+      }
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/5941402{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/49/10/39/94/1100205662/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/5941402"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/49/10/39/94/1100205662/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/5941402/synd_rss"
+        }
+      },
+      "id": "5941402",
+      "numberOfElements": 989,
+      "synopsis": "Wissenschaft geht uns alle an. IQ berichtet über aktuelle Forschung und Kontroversen aus allen relevanten Bereichen wie Medizin, Klima, Astronomie, Technik, Gesellschaft.",
+      "title": "IQ - Wissenschaft und Forschung",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/5562",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/78/86/-295433861/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "http://www.br.de/radio/bayern2/index.html"
+            }
+          },
+          "brandingColor": "#ec711a",
+          "genre": "Kultur",
+          "id": "5562",
+          "numberOfElements": 82,
+          "organizationName": "BR",
+          "title": "Bayern 2"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/42914742{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/77/56/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Kategorie Wissen",
+              "title": "colourbox.de",
+              "templated": true
+            }
+          },
+          "id": "42914742",
+          "title": "Wissen"
+        }
+      }
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/92667830{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/92/66/78/28/-1774185891/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/92667830"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/92/66/78/28/-1774185891/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/92667830/synd_rss"
+        }
+      },
+      "id": "92667830",
+      "numberOfElements": 7,
+      "synopsis": "Im Kreuzverhör mit funk stellen sich Politiker:innen den Fragen, für die sich die junge Generation unter 30 interessiert. Vor der Bundestagswahl 2021 sprechen Viktoria Reichelt (Deutschland3000), Jan Schipmann (DIE DA OBEN!), Nemi El-Hassan (Der Fall) und Mirko Drotschmann (MrWissen2go) mit allen im Bundestag vertretenen Parteien über Digitalisierung, Klima, Außenpolitik, soziale Ungleichheit und Bildung.",
+      "title": "Kreuzverhör: der Interviewpodcast zur Bundestagswahl",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/66734342",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/64/95/85/04/555337067/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "https://www.funk.net"
+            }
+          },
+          "brandingColor": "#3c3b3a",
+          "genre": "Pop und Szene",
+          "id": "66734342",
+          "numberOfElements": 16,
+          "organizationName": "funk",
+          "title": "funk"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/51850530{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/51/85/05/70/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Der Bundestag mit leeren Stuhlreihen",
+              "title": "picture-alliance/dpa",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/51/85/05/70/2121327408/{ratio}/{width}?mandant=ard",
+              "name": "Der Bundestag mit leeren Stuhlreihen",
+              "title": "picture-alliance/dpa",
+              "templated": true
+            }
+          },
+          "id": "51850530",
+          "title": "Politik & Hintergrund"
+        }
+      }
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/93142684{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/93/14/26/82/-1774185891/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/93142684"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/93/14/26/82/-1774185891/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/93142684/synd_rss"
+        }
+      },
+      "id": "93142684",
+      "numberOfElements": 1,
+      "synopsis": "Wie leben wir eigentlich nachhaltig? So genau wissen Hannah Heinzinger und Raphaela Naomi Heinzl das auch noch nicht. Aber sie finden es raus - zusammen mit euch. Die beiden stellen sich gegenseitig Challenges und versuchen sie in ihrem Alltag umzusetzen. Das geht von Stromverbrauch senken über nur regionale Lebensmittel essen bis zum umweltfreundlichen Putzen der WG. Grünphase ist der Nachhaltigkeitspodcast für alle, die noch keine Umweltprofis sind und herausfinden wollen, was sie in ihrem Alltag tun können, um Umwelt und Klima zu schützen.",
+      "title": "Grünphase - der Nachhaltigkeitspodcast",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/566178",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/78/96/-295433861/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "http://www.br.de/on3/index.html"
+            }
+          },
+          "brandingColor": "#000000",
+          "genre": "Pop und Szene",
+          "id": "566178",
+          "numberOfElements": 8,
+          "organizationName": "BR",
+          "title": "PULS"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/42914718{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+              "name": "Broadway Street, Nähe Times Square, New York",
+              "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+              "name": "Broadway Street, Nähe Times Square, New York",
+              "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+              "templated": true
+            }
+          },
+          "id": "42914718",
+          "title": "Leben"
+        }
+      }
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "./programsets/13785130{?order,offset,limit}",
+          "name": "programSet",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/49/10/47/24/2025238664/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:sharing": {
+          "href": "https://audiothek.ardmediathek.de/programsets/13785130"
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/49/10/47/24/2025238664/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:synd_rss": {
+          "href": "https://audiothek.ardmediathek.de/programsets/13785130/synd_rss"
+        }
+      },
+      "id": "13785130",
+      "numberOfElements": 29,
+      "synopsis": "Was bringt der Umwelt schon so ein bisschen Recyclingpapier? Und was haben Nierenschäden bei Forellen mit Medikamentenentsorgung zu tun? Umweltfragen aus dem Alltag und einfache Lösungen, all das zeigen BAYERN 1 Moderatorin Melitta Varlam und Umweltkommissar Alexander Dallmus im Nachhaltigkeitspodcast \"Besser leben\" jede Woche mit einem neuen Thema. Haben Sie eine Frage an die beiden - gerne unter bayern1.de/besserleben stellen.",
+      "title": "Besser leben. Der BAYERN 1 Nachhaltigkeitspodcast",
+      "_embedded": {
+        "mt:publicationService": {
+          "_links": {
+            "self": {
+              "href": "./publicationservices/5494",
+              "name": "publicationService"
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/42/91/78/84/-2114473875/{ratio}/{width}?mandant=ard",
+              "templated": true
+            },
+            "mt:onlinePortal": {
+              "href": "http://www.br.de/radio/bayern1/index.html"
+            }
+          },
+          "brandingColor": "#00a0d5",
+          "genre": "Regional",
+          "id": "5494",
+          "numberOfElements": 6,
+          "organizationName": "BR",
+          "title": "BAYERN 1"
+        },
+        "mt:editorialCategories": {
+          "_links": {
+            "self": {
+              "href": "./editorialcategories/42914718{?offset,limit}",
+              "name": "editorialCategory",
+              "templated": true
+            },
+            "mt:image": {
+              "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+              "name": "Broadway Street, Nähe Times Square, New York",
+              "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+              "templated": true
+            },
+            "mt:squareImage": {
+              "href": "https://img.ardmediathek.de/standard/00/89/29/40/36/-295433861/{ratio}/{width}?mandant=ard",
+              "name": "Broadway Street, Nähe Times Square, New York",
+              "title": "picture alliance / All Canada Photos | Jeffrey Bosdet",
+              "templated": true
+            }
+          },
+          "id": "42914718",
+          "title": "Leben"
+        }
+      }
+    }
+  ]
+}

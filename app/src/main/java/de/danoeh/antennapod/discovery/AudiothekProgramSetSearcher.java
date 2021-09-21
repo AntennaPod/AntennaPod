@@ -20,7 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AudiothekProgramSetSearcher implements PodcastSearcher{
+public class AudiothekProgramSetSearcher implements PodcastSearcher {
     private static final String API_URL = "https://api.ardaudiothek.de/search?query=%s";
 
 
