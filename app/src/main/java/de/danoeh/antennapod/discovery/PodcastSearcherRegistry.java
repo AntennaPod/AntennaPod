@@ -4,6 +4,7 @@ package de.danoeh.antennapod.discovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.danoeh.antennapod.discovery.audiothek.AudiothekProgramSetSearcher;
 import io.reactivex.Single;
 
 public class PodcastSearcherRegistry {
@@ -20,6 +21,7 @@ public class PodcastSearcherRegistry {
             searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));
+            searchProviders.add(new SearcherInfo(new AudiothekProgramSetSearcher(), 1.0f));
         }
         return searchProviders;
     }

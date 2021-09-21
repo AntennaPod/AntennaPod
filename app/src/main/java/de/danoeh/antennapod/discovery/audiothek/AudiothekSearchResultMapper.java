@@ -15,11 +15,17 @@ public class AudiothekSearchResultMapper {
 
     public static List<PodcastSearchResult> extractPodcasts(JSONObject searchResponse) throws JSONException {
         List<PodcastSearchResult> podcasts = new ArrayList<>();
-        JSONArray programSets = searchResponse
+        JSONObject embeddedJsonObject = searchResponse
                 .getJSONObject("_embedded")
                 .getJSONObject("mt:programSetSearchResults")
-                .getJSONObject("_embedded")
-                .getJSONArray("mt:programSets");
+                .getJSONObject("_embedded");
+        JSONArray programSets = new JSONArray();
+        try {
+            programSets = embeddedJsonObject
+                    .getJSONArray("mt:programSets");
+        } catch (JSONException jsonException) {
+            programSets.put(embeddedJsonObject.getJSONObject("mt:programSets"));
+        }
 
         for (int i = 0; i < programSets.length(); i++) {
             JSONObject podcastJson = programSets.getJSONObject(i);
