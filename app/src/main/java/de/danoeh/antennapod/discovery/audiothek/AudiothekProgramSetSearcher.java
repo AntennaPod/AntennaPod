@@ -1,17 +1,17 @@
-package de.danoeh.antennapod.discovery;
+package de.danoeh.antennapod.discovery.audiothek;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.discovery.PodcastSearcher;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,22 +42,14 @@ public class AudiothekProgramSetSearcher implements PodcastSearcher {
             Request.Builder httpReq = new Request.Builder()
                     .addHeader("User-Agent", ClientConfig.USER_AGENT)
                     .url(formattedUrl);
-            List<PodcastSearchResult> podcasts = new ArrayList<>();
+            List<PodcastSearchResult> podcasts = null;
             try {
                 Response response = client.newCall(httpReq.build()).execute();
 
                 if (response.isSuccessful()) {
                     String resultString = response.body().string();
-                    JSONObject result = new JSONObject(resultString);
-                    JSONArray j = result.getJSONArray("_embedded");
-
-                    for (int i = 0; i < j.length(); i++) {
-                        JSONObject podcastJson = j.getJSONObject(i);
-                        PodcastSearchResult podcast = PodcastSearchResult.fromPodcastIndex(podcastJson);
-                        if (podcast.feedUrl != null) {
-                            podcasts.add(podcast);
-                        }
-                    }
+                    JSONObject audiothekResponseJson = new JSONObject(resultString);
+                    podcasts = AudiothekSearchResultMapper.extractPodcasts(audiothekResponseJson);
                 } else {
                     subscriber.onError(new IOException(response.toString()));
                 }

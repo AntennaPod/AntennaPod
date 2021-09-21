@@ -1,13 +1,36 @@
-package de.danoeh.antennapod.discovery.searchresultmapper;
+package de.danoeh.antennapod.discovery.audiothek;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 
 public class AudiothekSearchResultMapper {
 
     public static final String AUDIOTHEK_BASE_URI = "https://api.ardaudiothek.de/";
+
+    public static List<PodcastSearchResult> extractPodcasts(JSONObject searchResponse) throws JSONException {
+        List<PodcastSearchResult> podcasts = new ArrayList<>();
+        JSONArray programSets = searchResponse
+                .getJSONObject("_embedded")
+                .getJSONObject("mt:programSetSearchResults")
+                .getJSONObject("_embedded")
+                .getJSONArray("mt:programSets");
+
+        for (int i = 0; i < programSets.length(); i++) {
+            JSONObject podcastJson = programSets.getJSONObject(i);
+            PodcastSearchResult podcast = getPodcastSearchResult(podcastJson);
+            if (podcast.feedUrl != null) {
+                podcasts.add(podcast);
+            }
+        }
+
+        return podcasts;
+    }
 
     public static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
         String title = json.optString("title", "");
