@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.parser.feed;
 
-import de.danoeh.antennapod.parser.feed.util.TypeGetter;
 import org.apache.commons.io.input.XmlStreamReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -14,12 +13,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
 public class FeedHandler {
     public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
             ParserConfigurationException, UnsupportedFeedtypeException {
-        TypeGetter tg = new TypeGetter();
-        TypeGetter.Type type = tg.getType(feed);
+        TypeResolver typeResolver = new TypeResolver();
+        TypeResolver.Type type = typeResolver.getType(feed);
         SyndHandler handler = new SyndHandler(feed, type);
 
         SAXParserFactory factory = SAXParserFactory.newInstance();

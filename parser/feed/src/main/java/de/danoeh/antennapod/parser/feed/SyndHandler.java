@@ -2,7 +2,8 @@ package de.danoeh.antennapod.parser.feed;
 
 import android.util.Log;
 
-import de.danoeh.antennapod.parser.feed.util.TypeGetter;
+import de.danoeh.antennapod.parser.feed.util.TypeResolver;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -25,9 +26,9 @@ public class SyndHandler extends DefaultHandler {
     private static final String DEFAULT_PREFIX = "";
     public final HandlerState state;
 
-    public SyndHandler(Feed feed, TypeGetter.Type type) {
+    public SyndHandler(Feed feed, TypeResolver.Type type) {
         state = new HandlerState(feed);
-        if (type == TypeGetter.Type.RSS20 || type == TypeGetter.Type.RSS091) {
+        if (type == TypeResolver.Type.RSS20 || type == TypeResolver.Type.RSS091) {
             state.defaultNamespaces.push(new Rss20());
         }
     }
