@@ -13,7 +13,7 @@ import java.io.InputStream;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 
-public class JsonTypeGetter implements TypeGetter{
+public class JsonTypeGetter implements TypeGetter {
     @Override
     public TypeResolver.Type getType(Feed feed) throws UnsupportedFeedtypeException {
         InputStream fileInputStream = null;
