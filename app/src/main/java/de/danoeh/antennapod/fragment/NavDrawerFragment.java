@@ -157,7 +157,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             };
             removeAllNewFlagsConfirmationDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.add_to_folder) {
+        } else if (itemId == R.id.edit_tags) {
             TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {

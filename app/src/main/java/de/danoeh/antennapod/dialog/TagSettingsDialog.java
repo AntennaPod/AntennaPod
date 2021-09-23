@@ -96,7 +96,7 @@ public class TagSettingsDialog extends DialogFragment {
                     List<NavDrawerData.DrawerItem> items = data.items;
                     List<String> folders = new ArrayList<String>();
                     for (NavDrawerData.DrawerItem item : items) {
-                        if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+                        if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
                             folders.add(item.getTitle());
                         }
                     }
