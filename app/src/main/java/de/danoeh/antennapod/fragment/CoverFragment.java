@@ -50,8 +50,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -124,14 +124,16 @@ public class CoverFragment extends Fragment {
         configureForOrientation(getResources().getConfiguration());
     }
 
-    private void loadMediaInfo() {
+    private void loadMediaInfo(boolean includingChapters) {
         if (disposable != null) {
             disposable.dispose();
         }
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext());
+                if (includingChapters) {
+                    ChapterUtils.loadChapters(media, getContext());
+                }
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -141,11 +143,14 @@ public class CoverFragment extends Fragment {
                 .subscribe(media -> {
                     this.media = media;
                     displayMediaInfo(media);
+                    if (media.getChapters() == null && !includingChapters) {
+                        loadMediaInfo(true);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getPubDate());
+        String pubDateStr = DateFormatter.formatAbbrev(getActivity(), media.getPubDate());
         txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
                 + "\u00A0"
                 + "・"
@@ -161,7 +166,9 @@ public class CoverFragment extends Fragment {
             int animUnit = 1500;
             if (lines > txtvEpisodeTitle.getMaxLines()) {
                 ObjectAnimator verticalMarquee = ObjectAnimator.ofInt(
-                        txtvEpisodeTitle, "scrollY", 0, txtvEpisodeTitle.getHeight())
+                        txtvEpisodeTitle, "scrollY", 0, (lines - txtvEpisodeTitle.getMaxLines()) * (
+                                (txtvEpisodeTitle.getHeight() - txtvEpisodeTitle.getPaddingTop()
+                                        - txtvEpisodeTitle.getPaddingBottom()) / txtvEpisodeTitle.getMaxLines()))
                         .setDuration(lines * animUnit);
                 ObjectAnimator fadeOut = ObjectAnimator.ofFloat(
                         txtvEpisodeTitle, "alpha", 0);
@@ -186,17 +193,22 @@ public class CoverFragment extends Fragment {
     }
 
     private void updateChapterControlVisibility() {
+        boolean chapterControlVisible = false;
         if (media.getChapters() != null) {
-            boolean chapterControlVisible = media.getChapters().size() > 0;
-            int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
-            if (chapterControl.getVisibility() != newVisibility) {
-                chapterControl.setVisibility(newVisibility);
-                ObjectAnimator.ofFloat(chapterControl,
-                        "alpha",
-                        chapterControlVisible ? 0 : 1,
-                        chapterControlVisible ? 1 : 0)
-                        .start();
-            }
+            chapterControlVisible = media.getChapters().size() > 0;
+        } else if (media instanceof FeedMedia) {
+            FeedMedia fm = ((FeedMedia) media);
+            // If an item has chapters but they are not loaded yet, still display the button.
+            chapterControlVisible = fm.getItem() != null && fm.getItem().hasChapters();
+        }
+        int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
+        if (chapterControl.getVisibility() != newVisibility) {
+            chapterControl.setVisibility(newVisibility);
+            ObjectAnimator.ofFloat(chapterControl,
+                    "alpha",
+                    chapterControlVisible ? 0 : 1,
+                    chapterControlVisible ? 1 : 0)
+                    .start();
         }
     }
 
@@ -262,11 +274,11 @@ public class CoverFragment extends Fragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
+                CoverFragment.this.loadMediaInfo(false);
             }
         };
         controller.init();
-        loadMediaInfo();
+        loadMediaInfo(false);
         EventBus.getDefault().register(this);
     }
 

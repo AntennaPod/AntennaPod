@@ -131,8 +131,8 @@ public class VariableSpeedDialog extends DialogFragment {
             });
             holder.chip.setOnClickListener(v -> {
                 if (controller != null) {
+                    dismiss();
                     controller.setPlaybackSpeed(speed);
-                    notifyDataSetChanged();
                 }
             });
         }

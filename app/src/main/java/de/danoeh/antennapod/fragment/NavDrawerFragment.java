@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -143,43 +144,32 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     }
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.remove_all_new_flags_item:
-                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
-                        R.string.remove_all_new_flags_label,
-                        R.string.remove_all_new_flags_confirmation_msg) {
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        DBWriter.removeFeedNewFlag(feed.getId());
-                    }
-                };
-                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-                return true;
-            case R.id.mark_all_read_item:
-                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getContext(),
-                        R.string.mark_all_read_label,
-                        R.string.mark_all_read_confirmation_msg) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        DBWriter.markFeedRead(feed.getId());
-                    }
-                };
-                markAllReadConfirmationDialog.createNewDialog().show();
-                return true;
-            case R.id.rename_item:
-                new RenameFeedDialog(getActivity(), feed).show();
-                return true;
-            case R.id.remove_item:
-                RemoveFeedDialog.show(getContext(), feed, () -> {
-                    ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                });
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        final int itemId = item.getItemId();
+        if (itemId == R.id.remove_all_new_flags_item) {
+            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
+                    R.string.remove_all_new_flags_label,
+                    R.string.remove_all_new_flags_confirmation_msg) {
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    DBWriter.removeFeedNewFlag(feed.getId());
+                }
+            };
+            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            return true;
+        } else if (itemId == R.id.add_to_folder) {
+            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+            return true;
+        } else if (itemId == R.id.rename_item) {
+            new RenameFeedDialog(getActivity(), feed).show();
+            return true;
+        } else if (itemId == R.id.remove_item) {
+            RemoveFeedDialog.show(getContext(), feed, () -> {
+                ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            });
+            return true;
         }
+        return super.onContextItemSelected(item);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

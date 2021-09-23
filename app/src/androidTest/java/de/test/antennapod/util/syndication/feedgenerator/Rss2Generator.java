@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.syndication.namespace.PodcastIndex;
-import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.parser.feed.namespace.PodcastIndex;
+import de.danoeh.antennapod.core.util.DateFormatter;
 
 /**
  * Creates RSS 2.0 feeds. See FeedGenerator for more information.
@@ -98,7 +98,7 @@ public class Rss2Generator implements FeedGenerator {
                 }
                 if (item.getPubDate() != null) {
                     xml.startTag(null, "pubDate");
-                    xml.text(DateUtils.formatRFC822Date(item.getPubDate()));
+                    xml.text(DateFormatter.formatRfc822Date(item.getPubDate()));
                     xml.endTag(null, "pubDate");
                 }
                 if ((flags & FEATURE_WRITE_GUID) != 0) {

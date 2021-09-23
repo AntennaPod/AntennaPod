@@ -33,17 +33,9 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        custom:showAsAction="always|collapseActionView"
-        custom:actionViewClass="androidx.appcompat.widget.SearchView"
+        custom:showAsAction="always"
         android:title="@string/search_label"/>
 
-    <item
-        android:id="@+id/episode_actions"
-        android:menuCategory="container"
-        android:icon="@drawable/ic_check_multiple"
-        android:title="@string/multi_select"
-        custom:showAsAction="collapseActionView">
-    </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="@drawable/ic_web"

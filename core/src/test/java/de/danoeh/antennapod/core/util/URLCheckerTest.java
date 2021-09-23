@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -96,6 +99,19 @@ public class URLCheckerTest {
         final String in = "antennapod-subscribe://https://example.com";
         final String out = URLChecker.prepareURL(in);
         assertEquals("https://example.com", out);
+    }
+
+    @Test
+    public void testAntennaPodSubscribeDeeplink() throws UnsupportedEncodingException {
+        final String feed = "http://example.org/podcast.rss";
+        assertEquals(feed, URLChecker.prepareURL("https://antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("http://antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("https://www.antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url="
+                + URLEncoder.encode(feed, "UTF-8")));
+        assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url="
+                + "example.org/podcast.rss"));
     }
 
     @Test

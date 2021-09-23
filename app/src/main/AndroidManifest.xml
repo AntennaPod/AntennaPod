@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="de.danoeh.antennapod"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -194,10 +196,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.OpmlFeedChooserActivity"
-            android:label="@string/opml_import_label">
-        </activity>
-        <activity
                 android:name=".activity.BugReportActivity"
                 android:label="@string/bug_report_title">
             <meta-data
@@ -304,6 +302,19 @@
             </intent-filter>
 
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="antennapod.org" />
+                <data android:host="www.antennapod.org" />
+                <data android:pathPrefix="/deeplink/subscribe" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -352,5 +363,12 @@
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/*" />
+        </intent>
+    </queries>
 
 </manifest>

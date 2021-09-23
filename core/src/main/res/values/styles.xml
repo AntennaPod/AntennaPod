@@ -27,6 +27,12 @@
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
+        <item name="icon_red">#CF1800</item>
+        <item name="icon_yellow">#F59F00</item>
+        <item name="icon_green">#008537</item>
+        <item name="icon_purple">#5F1984</item>
+        <item name="icon_gray">#25365A</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -56,6 +62,12 @@
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
+        <item name="icon_red">#CF1800</item>
+        <item name="icon_yellow">#F59F00</item>
+        <item name="icon_green">#008537</item>
+        <item name="icon_purple">#AA55D8</item>
+        <item name="icon_gray">#CDD9E4</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">

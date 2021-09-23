@@ -21,9 +21,9 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 public class DownloadActionButton extends ItemActionButton {
     private boolean isInQueue;
 
-    public DownloadActionButton(FeedItem item, boolean isInQueue) {
+    public DownloadActionButton(FeedItem item) {
         super(item);
-        this.isInQueue = isInQueue;
+        this.isInQueue = item.isTagged(FeedItem.TAG_QUEUE);;
     }
 
     @Override

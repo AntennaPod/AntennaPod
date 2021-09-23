@@ -11,6 +11,7 @@ public class FeedItemFilter {
     public final boolean showUnplayed;
     public final boolean showPaused;
     public final boolean showNotPaused;
+    public final boolean showNew;
     public final boolean showQueued;
     public final boolean showNotQueued;
     public final boolean showDownloaded;
@@ -19,6 +20,20 @@ public class FeedItemFilter {
     public final boolean showNoMedia;
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
+
+    public static final String PLAYED = "played";
+    public static final String UNPLAYED = "unplayed";
+    public static final String NEW = "new";
+    public static final String PAUSED = "paused";
+    public static final String NOT_PAUSED = "not_paused";
+    public static final String IS_FAVORITE = "is_favorite";
+    public static final String NOT_FAVORITE = "not_favorite";
+    public static final String HAS_MEDIA = "has_media";
+    public static final String NO_MEDIA = "no_media";
+    public static final String QUEUED = "queued";
+    public static final String NOT_QUEUED = "not_queued";
+    public static final String DOWNLOADED = "downloaded";
+    public static final String NOT_DOWNLOADED = "not_downloaded";
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter("");
@@ -32,18 +47,19 @@ public class FeedItemFilter {
         this.properties = properties;
 
         // see R.arrays.feed_filter_values
-        showUnplayed = hasProperty("unplayed");
-        showPaused = hasProperty("paused");
-        showNotPaused = hasProperty("not_paused");
-        showPlayed = hasProperty("played");
-        showQueued = hasProperty("queued");
-        showNotQueued = hasProperty("not_queued");
-        showDownloaded = hasProperty("downloaded");
-        showNotDownloaded = hasProperty("not_downloaded");
-        showHasMedia = hasProperty("has_media");
-        showNoMedia = hasProperty("no_media");
-        showIsFavorite = hasProperty("is_favorite");
-        showNotFavorite = hasProperty("not_favorite");
+        showUnplayed = hasProperty(UNPLAYED);
+        showPaused = hasProperty(PAUSED);
+        showNotPaused = hasProperty(NOT_PAUSED);
+        showPlayed = hasProperty(PLAYED);
+        showQueued = hasProperty(QUEUED);
+        showNotQueued = hasProperty(NOT_QUEUED);
+        showDownloaded = hasProperty(DOWNLOADED);
+        showNotDownloaded = hasProperty(NOT_DOWNLOADED);
+        showHasMedia = hasProperty(HAS_MEDIA);
+        showNoMedia = hasProperty(NO_MEDIA);
+        showIsFavorite = hasProperty(IS_FAVORITE);
+        showNotFavorite = hasProperty(NOT_FAVORITE);
+        showNew = hasProperty(NEW);
     }
 
     private boolean hasProperty(String property) {

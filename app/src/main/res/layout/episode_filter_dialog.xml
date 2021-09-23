@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,7 +8,7 @@
 
     <RadioGroup
         android:id="@+id/radio_filter_group"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -22,19 +23,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/episode_filters_exclude" />
+
     </RadioGroup>
 
     <EditText
         android:id="@+id/etxtEpisodeFilterText"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:lines="8"
-        android:minLines="1"
-        android:maxLines="20"
-        android:scrollbars="vertical"
-        android:hint="@string/episode_filters_hint"
+        android:cursorVisible="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:cursorVisible="true" />
+        android:hint="@string/episode_filters_hint"
+        android:lines="8"
+        android:maxLines="20"
+        android:minLines="1"
+        android:scrollbars="vertical" />
+
 </LinearLayout>

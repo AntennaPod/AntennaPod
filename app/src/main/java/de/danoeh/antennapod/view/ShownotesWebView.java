@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.view;
 
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,10 +16,15 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 import androidx.core.view.ViewCompat;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -94,6 +100,19 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             selectedUrl = r.getExtra();
             showContextMenu();
             return true;
+        } else if (r != null && r.getType() == HitTestResult.EMAIL_TYPE) {
+            Log.d(TAG, "E-Mail of webview was long-pressed. Extra: " + r.getExtra());
+            ClipboardManager clipboardManager = ContextCompat.getSystemService(this.getContext(),
+                                                                               ClipboardManager.class);
+            if (clipboardManager != null) {
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
+            }
+            if (this.getContext() instanceof MainActivity) {
+                ((MainActivity) this.getContext()).showSnackbarAbovePlayer(
+                        getResources().getString(R.string.copied_to_clipboard),
+                        Snackbar.LENGTH_SHORT);
+            }
+            return true;
         }
         selectedUrl = null;
         return false;
@@ -104,33 +123,28 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             return false;
         }
 
-        switch (item.getItemId()) {
-            case R.id.open_in_browser_item:
-                IntentUtils.openInBrowser(getContext(), selectedUrl);
-                break;
-            case R.id.share_url_item:
-                ShareUtils.shareLink(getContext(), selectedUrl);
-                break;
-            case R.id.copy_url_item:
-                ClipData clipData = ClipData.newPlainText(selectedUrl, selectedUrl);
-                android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(clipData);
-                Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
-                ViewCompat.setElevation(s.getView(), 100);
-                s.show();
-                break;
-            case R.id.go_to_position_item:
-                if (Timeline.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {
-                    timecodeSelectedListener.accept(Timeline.getTimecodeLinkTime(selectedUrl));
-                } else {
-                    Log.e(TAG, "Selected go_to_position_item, but URL was no timecode link: " + selectedUrl);
-                }
-                break;
-            default:
-                selectedUrl = null;
-                return false;
-
+        final int itemId = item.getItemId();
+        if (itemId == R.id.open_in_browser_item) {
+            IntentUtils.openInBrowser(getContext(), selectedUrl);
+        } else if (itemId == R.id.share_url_item) {
+            ShareUtils.shareLink(getContext(), selectedUrl);
+        } else if (itemId == R.id.copy_url_item) {
+            ClipData clipData = ClipData.newPlainText(selectedUrl, selectedUrl);
+            ClipboardManager cm = (ClipboardManager) getContext()
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(clipData);
+            Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
+            ViewCompat.setElevation(s.getView(), 100);
+            s.show();
+        } else if (itemId == R.id.go_to_position_item) {
+            if (Timeline.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {
+                timecodeSelectedListener.accept(Timeline.getTimecodeLinkTime(selectedUrl));
+            } else {
+                Log.e(TAG, "Selected go_to_position_item, but URL was no timecode link: " + selectedUrl);
+            }
+        } else {
+            selectedUrl = null;
+            return false;
         }
         selectedUrl = null;
         return true;
