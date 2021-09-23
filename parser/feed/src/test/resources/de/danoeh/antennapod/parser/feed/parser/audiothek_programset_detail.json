@@ -1,0 +1,1862 @@
+{
+  "_links": {
+    "curies": {
+      "href": "http://namespaces.ard.de/api/audioapp/version1/{rel}",
+      "name": "mt",
+      "templated": true
+    },
+    "self": {
+      "href": "./programsets/92726154?order=desc&offset=0&limit=12",
+      "name": "programSet"
+    },
+    "first": {
+      "href": "./programsets/92726154?order=desc&offset=0&limit=12"
+    },
+    "last": {
+      "href": "./programsets/92726154?order=desc&offset=12&limit=12"
+    },
+    "mt:autopilot": {
+      "href": "./autopilot{?offset,limit,recentlyPlayed,recentlySkipped,recentlyLiked,profileCategories,listeningCategories,deviceId}",
+      "name": "autopilot",
+      "templated": true
+    },
+    "mt:image": {
+      "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+      "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+      "title": "imago/StockTrek Images",
+      "templated": true
+    },
+    "mt:orderingAsc": {
+      "href": "./programsets/92726154?order=asc{&offset,limit}",
+      "name": "programSet",
+      "templated": true
+    },
+    "mt:orderingDesc": {
+      "href": "./programsets/92726154?order=desc{&offset,limit}",
+      "name": "programSet",
+      "templated": true
+    },
+    "mt:pageEditorialCategories": {
+      "href": "./editorialcategories",
+      "name": "editorialCategories"
+    },
+    "mt:pageHomescreen": {
+      "href": "./homescreen",
+      "name": "homescreen"
+    },
+    "mt:pageOrganizations": {
+      "href": "./organizations",
+      "name": "organizations"
+    },
+    "mt:search": {
+      "href": "./search{?query,offset,limit}",
+      "name": "searchDetails",
+      "templated": true
+    },
+    "mt:searchSuggestions": {
+      "href": "./suggestions{?query}",
+      "name": "suggest",
+      "templated": true
+    },
+    "mt:sharing": {
+      "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+    },
+    "mt:squareImage": {
+      "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+      "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+      "title": "imago/StockTrek Images",
+      "templated": true
+    },
+    "mt:synd_atom": {
+      "href": "./programsets/92726154/synd_atom?offset=0&limit=12"
+    },
+    "mt:synd_rss": {
+      "href": "./programsets/92726154/synd_rss?offset=0&limit=12"
+    }
+  },
+  "id": "92726154",
+  "numberOfElements": 12,
+  "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+  "title": "Stanisław Lem: Frieden auf Erden",
+  "tracking": {
+    "environmentId": 511893,
+    "title": "ARD Audiothek/Sendung/Stanisław Lem: Frieden auf Erden",
+    "chapter1": "Sendung"
+  },
+  "_embedded": {
+    "mt:items": [
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766886",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/d/digas-d36f8cb1-d0d1-4de2-a011-403d7b1016b9-0a15de5e5053_d3.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/90/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766886"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766886/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766886"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/92/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1670,
+        "id": "92766886",
+        "publicationStartDateAndTime": "2021-10-05T09:00:00.000+0200",
+        "synopsis": "Ijon Tichy hat eine Seuche vom Mond auf die Erde eingeschleppt. Die Viren haben alle Computerprogramme ausgelöscht, alle automatischen Zentralen sind außer Betrieb. Knüppel sind die Waffen, die es jetzt noch gibt …",
+        "title": "Stanisław Lem: Frieden auf Erden (12/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (12/12)/92766886/20211005_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (12/12)/92766886/20211005_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (12/12)/92766886/20211005_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (12/12)/92766886/20211005_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766886",
+            "publicationDate": "20211005",
+            "clipLength": "1670",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (12/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766850",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/0/digas-06650654-ae7b-493d-b4e3-22fc5d803ddb-0a15de5e5053_06.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/54/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766850"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766850/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766850"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/56/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1662,
+        "id": "92766850",
+        "publicationStartDateAndTime": "2021-10-04T09:00:00.000+0200",
+        "synopsis": "Ein vertrauliches Gespräch mit Prof. Lax bringt Aufschluss. Ijon Tichy erfährt von der Expansion der Selenozyten: Der Staub, den Tichy vom Mond mit auf die Erde brachte. Er greift in die Biosphäre ein, wie eine Pandemie.",
+        "title": "Stanisław Lem: Frieden auf Erden (11/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (11/12)/92766850/20211004_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (11/12)/92766850/20211004_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (11/12)/92766850/20211004_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (11/12)/92766850/20211004_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766850",
+            "publicationDate": "20211004",
+            "clipLength": "1662",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (11/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766806",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/d/digas-dbb85ee3-c06a-4af0-a9dd-eca90f05001e-0a15de5e5053_db.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/10/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766806"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766806/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766806"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/12/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1707,
+        "id": "92766806",
+        "publicationStartDateAndTime": "2021-10-01T09:00:00.000+0200",
+        "synopsis": "Ijon Tichy findet heraus, dass sich seine Hand per Morsezeichen mit seiner rechten Hirnhälfte unterhalten kann. So versucht er herauszufinden, was auf dem Mond vorgefallen ist. Es geht um den molekularen Sendling …",
+        "title": "Stanisław Lem: Frieden auf Erden (10/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (10/12)/92766806/20211001_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (10/12)/92766806/20211001_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (10/12)/92766806/20211001_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (10/12)/92766806/20211001_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766806",
+            "publicationDate": "20211001",
+            "clipLength": "1707",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (10/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766736",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/d/digas-d08f25f1-c38d-4752-8c51-a1d957da904f-0a15de5e5053_d0.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/42/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766736"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766736/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766736"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/44/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1695,
+        "id": "92766736",
+        "publicationStartDateAndTime": "2021-09-30T09:00:00.000+0200",
+        "synopsis": "Das Mondprojekt ist geplatzt. Ijon Tichy erfährt, dass er zum Spielball aller Kräfte auf Erden geworden ist, er kann niemandem vertrauen. Die Staaten wollen die \"Doktrin der Unkenntnis\" aushebeln und weiter aufrüsten.",
+        "title": "Stanisław Lem: Frieden auf Erden (9/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (9/12)/92766736/20210930_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (9/12)/92766736/20210930_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (9/12)/92766736/20210930_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (9/12)/92766736/20210930_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766736",
+            "publicationDate": "20210930",
+            "clipLength": "1695",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (9/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766670",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/2/digas-2a6cb58c-84ed-4f76-a1cb-2da34a39ab01-0a15de5e5053_2a.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/74/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766670"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766670/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766670"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/76/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1650,
+        "id": "92766670",
+        "publicationStartDateAndTime": "2021-09-29T09:00:00.000+0200",
+        "synopsis": "Ijon Tichy bekommt Besuch von Prof. Shapiro. Dieser eröffnet ihm, dass sich Tichy wohl etwas vom Mond mitgenommen hat. Er soll gewisse Staubteilchen eingeatmet haben. Shapiro will sich Tichys rechter Hirnhälfte annehmen.",
+        "title": "Stanisław Lem: Frieden auf Erden (8/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (8/12)/92766670/20210929_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (8/12)/92766670/20210929_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (8/12)/92766670/20210929_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (8/12)/92766670/20210929_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766670",
+            "publicationDate": "20210929",
+            "clipLength": "1650",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (8/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766826",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/0/digas-058d38cf-d193-4c82-bd23-59ed062355ef-0a15de5e5053_05.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/30/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766826"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766826/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766826"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/68/32/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1679,
+        "id": "92766826",
+        "publicationStartDateAndTime": "2021-09-28T09:00:00.000+0200",
+        "synopsis": "Ijon Tichys Mondmission wird immer verrückter. Er muss sich vor roboterartigen Typen in Sicherheit bringen. Zum Glück steckt er in einem Sendling in Pulverform, der 49 verschiedene Gestalten annehmen kann.",
+        "title": "Stanisław Lem: Frieden auf Erden (7/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (7/12)/92766826/20210928_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (7/12)/92766826/20210928_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (7/12)/92766826/20210928_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (7/12)/92766826/20210928_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766826",
+            "publicationDate": "20210928",
+            "clipLength": "1679",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (7/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766710",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/f/digas-fe6dcfcc-b625-480d-a32d-d1a194ff49e1-0a15de5e5053_fe.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/14/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766710"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766710/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766710"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/16/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1658,
+        "id": "92766710",
+        "publicationStartDateAndTime": "2021-09-27T09:00:00.000+0200",
+        "synopsis": "Erst entdeckt Ijon Tichy sein eigenes Spiegelbild auf dem Mond. Dann wird er beinahe von einer Mine zerfetzt. Plötzlich taucht eine weitere Person auf und will sich mit ihm über den Frieden auf Erden unterhalten.",
+        "title": "Stanisław Lem: Frieden auf Erden (6/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (6/12)/92766710/20210927_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (6/12)/92766710/20210927_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (6/12)/92766710/20210927_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (6/12)/92766710/20210927_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766710",
+            "publicationDate": "20210927",
+            "clipLength": "1658",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (6/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766626",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/d/digas-d3757313-f351-4fca-bbbf-b554777c20ee-0a15de5e5053_d3.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/30/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766626"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766626/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766626"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/32/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1671,
+        "id": "92766626",
+        "publicationStartDateAndTime": "2021-09-24T09:00:00.000+0200",
+        "synopsis": "Prof. Lax, ein Nachrichtentechniker der Lunar Agency, warnt Ijon Tichy vor der Mondmission. Vor dem, was er dort herausfinden würde. Als Tichy auf dem Mond landet, trifft er einen anderen Mann: Es ist sein Spiegelbild.",
+        "title": "Stanisław Lem: Frieden auf Erden (5/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (5/12)/92766626/20210924_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (5/12)/92766626/20210924_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (5/12)/92766626/20210924_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (5/12)/92766626/20210924_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766626",
+            "publicationDate": "20210924",
+            "clipLength": "1671",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (5/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766690",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/6/digas-61a73700-b924-4d0c-8536-db0895e37b5c-0a15de5e5053_61.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/94/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766690"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766690/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766690"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/96/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1522,
+        "id": "92766690",
+        "publicationStartDateAndTime": "2021-09-23T09:00:00.000+0200",
+        "synopsis": "Für seine Kontroll-Mission auf dem Mond im Auftrag der Lunar Agency hatte Ijon Tichy lange trainiert, z. B. wie man einen Sendling bewegt. Auf dem Mond befinden sich Computersysteme für den weltweiten Rüstungswettlauf.",
+        "title": "Stanisław Lem: Frieden auf Erden (4/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (4/12)/92766690/20210923_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (4/12)/92766690/20210923_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (4/12)/92766690/20210923_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (4/12)/92766690/20210923_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766690",
+            "publicationDate": "20210923",
+            "clipLength": "1522",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (4/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766650",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/f/digas-fcccbad7-a739-41dd-a73d-35a31cfed22d-0a15de5e5053_fc.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/54/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766650"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766650/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766650"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/66/56/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1563,
+        "id": "92766650",
+        "publicationStartDateAndTime": "2021-09-22T09:00:00.000+0200",
+        "synopsis": "Ijon Tichy ist in einem Privatsanatorium für Millionäre untergetaucht. Hier eröffnet ihm Dr. Hous, dass die Sprachfähigkeit seiner rechten Gehirnhälfte unnormal groß ist. Es wäre besser, wenn das erstmal niemand wisse.",
+        "title": "Stanisław Lem: Frieden auf Erden (3/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (3/12)/92766650/20210922_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (3/12)/92766650/20210922_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (3/12)/92766650/20210922_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (3/12)/92766650/20210922_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766650",
+            "publicationDate": "20210922",
+            "clipLength": "1563",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (3/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766760",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/9/digas-9bb902ee-c579-4bb5-9962-b7998ac8e319-0a15de5e5053_9b.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/64/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766760"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766760/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766760"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/66/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1700,
+        "id": "92766760",
+        "publicationStartDateAndTime": "2021-09-21T09:00:00.000+0200",
+        "synopsis": "Alle Waffenarsenale lagern auf dem Mond und organisieren sich selbst. Dabei weiß keine Regierung, ob sie anderen überlegen ist. Dahinter steckt die \"Doktrin der totalen Unkenntnis\", sie soll Frieden sichern.",
+        "title": "Stanisław Lem: Frieden auf Erden (2/12)",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (2/12)/92766760/20210921_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (2/12)/92766760/20210921_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (2/12)/92766760/20210921_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (2/12)/92766760/20210921_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766760",
+            "publicationDate": "20210921",
+            "clipLength": "1700",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (2/12)"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "./items/92766784",
+            "name": "item"
+          },
+          "mt:bestQualityPlaybackUrl": {
+            "href": "https://odmdr-a.akamaihd.net/mp4audiomobil/d/digas-daa0a795-8467-426f-b043-9dcb2beb51a0-0a15de5e5053_da.mp3"
+          },
+          "mt:image": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/88/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          },
+          "mt:mediaCollection": {
+            "href": "./media/92766784"
+          },
+          "mt:playCounting": {
+            "href": "./items/92766784/count/increment"
+          },
+          "mt:sharing": {
+            "href": "https://audiothek.ardmediathek.de/items/92766784"
+          },
+          "mt:squareImage": {
+            "href": "https://img.ardmediathek.de/standard/00/92/76/67/90/-1774185891/{ratio}/{width}?mandant=ard",
+            "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+            "title": "imago/StockTrek Images",
+            "templated": true
+          }
+        },
+        "duration": 1710,
+        "id": "92766784",
+        "publicationStartDateAndTime": "2021-09-20T09:00:00.000+0200",
+        "synopsis": "Als Agent der Lunar Agency reist Ijon Tichy auf den Mond, um nach dem Rechten zu sehen. Bei seiner Mission zieht er sich eine Kallotomie zu, wodurch sein Gehirn in zwei Teile aufgespalten wird. Dies hat groteske Folgen.",
+        "title": "Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung",
+        "tracking": {
+          "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung/92766784/20210920_0900",
+          "chapter1": "{page.tracking.chapter1}",
+          "play": {
+            "title": "ARD Audiothek/{page.tracking.chapter1}/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung/92766784/20210920_0900",
+            "chapter1": "{page.tracking.chapter1}",
+            "chapter2": "Stanisław Lem: Frieden auf Erden",
+            "sticky": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Sticky Player/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung/92766784/20210920_0900",
+              "chapter1": "Sticky Player"
+            },
+            "autopilot": {
+              "title": "ARD Audiothek/{page.tracking.chapter1}/Autopilot/Stanisław Lem: Frieden auf Erden/Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung/92766784/20210920_0900",
+              "chapter1": "Autopilot"
+            },
+            "mediaType": "audio",
+            "lra": "MDR",
+            "channel": "MDR KULTUR",
+            "show": "Stanisław Lem: Frieden auf Erden",
+            "contentType": "2",
+            "source": "MITTELDEUTSCHER RUNDFUNK",
+            "mediaDistributionType": "1",
+            "contentId": "92766784",
+            "publicationDate": "20210920",
+            "clipLength": "1710",
+            "clipTitle": "Stanisław Lem: Frieden auf Erden (1/12) | Sci-Fi-Lesung"
+          }
+        },
+        "_embedded": {
+          "mt:programSet": {
+            "_links": {
+              "self": {
+                "href": "./programsets/92726154{?order,offset,limit}",
+                "name": "programSet",
+                "templated": true
+              },
+              "mt:image": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:sharing": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154"
+              },
+              "mt:squareImage": {
+                "href": "https://img.ardmediathek.de/standard/00/92/72/61/64/-1774185891/{ratio}/{width}?mandant=ard",
+                "name": "Künstlerische Darstellung eines der Erde ähnlichen Planeten im Weltraum",
+                "title": "imago/StockTrek Images",
+                "templated": true
+              },
+              "mt:synd_rss": {
+                "href": "https://audiothek.ardmediathek.de/programsets/92726154/synd_rss"
+              }
+            },
+            "id": "92726154",
+            "numberOfElements": 12,
+            "synopsis": "Die Großmächte haben alle Waffenarsenale auf den Mond verlagert, wo sie sich völlig autonom selbst optimieren. Im Auftrag der Lunar Agency reist Ijon Tichy zum Mond, um nach dem Rechten zu sehen. Es liest Roman Knižka.",
+            "title": "Stanisław Lem: Frieden auf Erden",
+            "_embedded": {
+              "mt:publicationService": {
+                "_links": {
+                  "self": {
+                    "href": "./publicationservices/5398",
+                    "name": "publicationService"
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+                    "templated": true
+                  },
+                  "mt:onlinePortal": {
+                    "href": "http://www.mdr.de/kultur/radio/index.html"
+                  }
+                },
+                "brandingColor": "#ef970e",
+                "genre": "Kultur",
+                "id": "5398",
+                "numberOfElements": 36,
+                "organizationName": "MDR",
+                "title": "MDR KULTUR"
+              },
+              "mt:editorialCategories": {
+                "_links": {
+                  "self": {
+                    "href": "./editorialcategories/42914712{?offset,limit}",
+                    "name": "editorialCategory",
+                    "templated": true
+                  },
+                  "mt:image": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  },
+                  "mt:squareImage": {
+                    "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+                    "name": "Kategorie Hörspiel",
+                    "title": "picture-alliance/dpa",
+                    "templated": true
+                  }
+                },
+                "id": "42914712",
+                "title": "Hörspiel & Lesung "
+              }
+            }
+          }
+        }
+      }
+    ],
+    "mt:publicationService": {
+      "_links": {
+        "self": {
+          "href": "./publicationservices/5398",
+          "name": "publicationService"
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/42/91/79/62/2121327408/{ratio}/{width}?mandant=ard",
+          "templated": true
+        },
+        "mt:onlinePortal": {
+          "href": "http://www.mdr.de/kultur/radio/index.html"
+        }
+      },
+      "brandingColor": "#ef970e",
+      "genre": "Kultur",
+      "id": "5398",
+      "numberOfElements": 36,
+      "organizationName": "MDR",
+      "title": "MDR KULTUR"
+    },
+    "mt:editorialCategories": {
+      "_links": {
+        "self": {
+          "href": "./editorialcategories/42914712{?offset,limit}",
+          "name": "editorialCategory",
+          "templated": true
+        },
+        "mt:image": {
+          "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+          "name": "Kategorie Hörspiel",
+          "title": "picture-alliance/dpa",
+          "templated": true
+        },
+        "mt:squareImage": {
+          "href": "https://img.ardmediathek.de/standard/00/42/91/77/34/-295433861/{ratio}/{width}?mandant=ard",
+          "name": "Kategorie Hörspiel",
+          "title": "picture-alliance/dpa",
+          "templated": true
+        }
+      },
+      "id": "42914712",
+      "title": "Hörspiel & Lesung "
+    }
+  }
+}

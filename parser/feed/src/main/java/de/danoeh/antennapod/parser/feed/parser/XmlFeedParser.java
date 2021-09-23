@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed;
+package de.danoeh.antennapod.parser.feed.parser;
 
 import androidx.annotation.NonNull;
 
@@ -15,11 +15,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
+import de.danoeh.antennapod.parser.feed.SyndHandler;
 import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
-public class XmlFeedHandler {
+public class XmlFeedParser implements FeedParser {
     @NonNull
-    public static FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException, SAXException, IOException {
+    public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException, SAXException, IOException {
         SyndHandler handler = new SyndHandler(feed, type);
 
         SAXParserFactory factory = SAXParserFactory.newInstance();

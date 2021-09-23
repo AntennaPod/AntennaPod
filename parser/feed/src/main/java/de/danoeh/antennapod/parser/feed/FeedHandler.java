@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.parser.feed.parser.XmlFeedParser;
 import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
 public class FeedHandler {
@@ -19,7 +20,7 @@ public class FeedHandler {
                         || type.equals(TypeResolver.Type.RSS20)
                         || type.equals(TypeResolver.Type.RSS091)
         ) {
-            return XmlFeedHandler.createFeedHandlerResult(feed, type);
+            return (new XmlFeedParser()).createFeedHandlerResult(feed, type);
         }
         throw new UnsupportedFeedtypeException(TypeResolver.Type.INVALID);
     }
