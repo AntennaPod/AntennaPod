@@ -75,7 +75,7 @@ public class TagSettingsDialog extends DialogFragment {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
-        dialog.setTitle(R.string.feed_folders_label);
+        dialog.setTitle(R.string.feed_tags_label);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {
             addTag(viewBinding.newTagEditText.getText().toString().trim());
             preferences.getTags().clear();

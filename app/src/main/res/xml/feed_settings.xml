@@ -25,8 +25,8 @@
     <Preference
         android:icon="@drawable/ic_tag"
         android:key="tags"
-        android:summary="@string/feed_folders_summary"
-        android:title="@string/feed_folders_label" />
+        android:summary="@string/feed_tags_summary"
+        android:title="@string/feed_tags_label" />
 
     <ListPreference
         android:icon="@drawable/ic_playback_speed"
