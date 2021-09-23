@@ -141,7 +141,7 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
-    public static final String PREF_REPEAT_EPISODE = "RepeatEpisode";
+    public static final String PREF_REPEAT_EPISODE = "prefRepeatEpisode";
 
     // Constants
     private static final int NOTIFICATION_BUTTON_REWIND = 0;
