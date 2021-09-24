@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
@@ -10,8 +9,12 @@ import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
@@ -74,7 +77,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
-    private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
+    private final ActivityResultLauncher<Uri> addLocalFolderLauncher =
+            registerForActivityResult(new AddLocalFolder(), this::addLocalFolderResult);
 
     private Feed feed;
     private Disposable disposable;
@@ -351,9 +355,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
+                    addLocalFolderLauncher.launch(null);
                 } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "No activity found. Should never happen...");
                 }
@@ -366,16 +368,11 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         return handled;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) {
+    private void addLocalFolderResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        Uri uri = data.getData();
-
-        if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
-            reconnectLocalFolder(uri);
-        }
+        reconnectLocalFolder(uri);
     }
 
     private void reconnectLocalFolder(Uri uri) {
@@ -400,5 +397,15 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                                 .showSnackbarAbovePlayer(android.R.string.ok, Snackbar.LENGTH_SHORT),
                         error -> ((MainActivity) getActivity())
                                 .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG));
+    }
+
+    private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
+            return super.createIntent(context, input)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
     }
 }
