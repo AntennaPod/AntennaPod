@@ -12,7 +12,10 @@ import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 public class SynchronizationQueue {
 
-    public static final String NAME = "synchronization";
+    private static final String NAME = "synchronization";
+    private static final String QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
+    private static final String QUEUED_FEEDS_REMOVED = "sync_removed";
+    private static final String QUEUED_FEEDS_ADDED = "sync_added";
     private final SharedPreferences sharedPreferences;
 
     public SynchronizationQueue(Context context) {
@@ -24,42 +27,41 @@ public class SynchronizationQueue {
     }
 
     public void clearQueue() {
+        SynchronizationSettings.resetTimestamps();
         getSharedPreferences().edit()
-                .putLong(SynchronizationSharedPreferenceKeys.LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
-                .putLong(SynchronizationSharedPreferenceKeys.LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
-                .putLong(SynchronizationSharedPreferenceKeys.LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]")
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
+                .putString(QUEUED_EPISODE_ACTIONS, "[]")
+                .putString(QUEUED_FEEDS_ADDED, "[]")
+                .putString(QUEUED_FEEDS_REMOVED, "[]")
                 .apply();
+
     }
 
     public void enqueueFeedAdded(String downloadUrl) throws JSONException {
         SharedPreferences sharedPreferences = getSharedPreferences();
         String json = sharedPreferences
-                .getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
+                .getString(QUEUED_FEEDS_ADDED, "[]");
         JSONArray queue = new JSONArray(json);
         queue.put(downloadUrl);
         sharedPreferences
-                .edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, queue.toString()).apply();
+                .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
     }
 
     public void enqueueFeedRemoved(String downloadUrl) throws JSONException {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences.getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
+        String json = sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]");
         JSONArray queue = new JSONArray(json);
         queue.put(downloadUrl);
-        sharedPreferences.edit().putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, queue.toString())
+        sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
                 .apply();
     }
 
     public void enqueueEpisodeAction(EpisodeAction action) throws JSONException {
         SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences.getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
+        String json = sharedPreferences.getString(QUEUED_EPISODE_ACTIONS, "[]");
         JSONArray queue = new JSONArray(json);
         queue.put(action.writeToJsonObject());
         sharedPreferences.edit().putString(
-                SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, queue.toString()
+                QUEUED_EPISODE_ACTIONS, queue.toString()
         ).apply();
     }
 
@@ -67,7 +69,7 @@ public class SynchronizationQueue {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
         try {
             String json = getSharedPreferences()
-                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]");
+                    .getString(QUEUED_EPISODE_ACTIONS, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
@@ -82,7 +84,7 @@ public class SynchronizationQueue {
         ArrayList<String> removedFeedUrls = new ArrayList<>();
         try {
             String json = getSharedPreferences()
-                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]");
+                    .getString(QUEUED_FEEDS_REMOVED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 removedFeedUrls.add(queue.getString(i));
@@ -98,7 +100,7 @@ public class SynchronizationQueue {
         ArrayList<String> addedFeedUrls = new ArrayList<>();
         try {
             String json = getSharedPreferences()
-                    .getString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]");
+                    .getString(QUEUED_FEEDS_ADDED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
                 addedFeedUrls.add(queue.getString(i));
@@ -111,14 +113,14 @@ public class SynchronizationQueue {
 
     public void clearEpisodeActionQueue() {
         getSharedPreferences().edit()
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_EPISODE_ACTIONS, "[]").apply();
+                .putString(QUEUED_EPISODE_ACTIONS, "[]").apply();
 
     }
 
     public void clearFeedQueues() {
         getSharedPreferences().edit()
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_ADDED, "[]")
-                .putString(SynchronizationSharedPreferenceKeys.QUEUED_FEEDS_REMOVED, "[]")
+                .putString(QUEUED_FEEDS_ADDED, "[]")
+                .putString(QUEUED_FEEDS_REMOVED, "[]")
                 .apply();
     }
 }
