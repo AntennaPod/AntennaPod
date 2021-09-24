@@ -2,47 +2,32 @@ package de.danoeh.antennapod.core.sync;
 
 import android.content.Context;
 
-import org.json.JSONException;
-
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 public class LockingQueueWriter {
 
     public static void clearQueue(Context context) {
-        SynchronizationQueue synchronizationQueue = new SynchronizationQueue(context);
-        LockingAsyncExecutor.executeLockedAsync(synchronizationQueue::clearQueue);
+        LockingAsyncExecutor.executeLockedAsync(new SynchronizationQueue(context)::clearQueue);
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
         LockingAsyncExecutor.executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueFeedAdded(downloadUrl);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new SynchronizationQueue(context).enqueueFeedAdded(downloadUrl);
             SyncService.sync(context);
         });
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
         LockingAsyncExecutor.executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueFeedRemoved(downloadUrl);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new SynchronizationQueue(context).enqueueFeedRemoved(downloadUrl);
             SyncService.sync(context);
         });
     }
 
     public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
         LockingAsyncExecutor.executeLockedAsync(() -> {
-            try {
-                new SynchronizationQueue(context).enqueueEpisodeAction(action);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new SynchronizationQueue(context).enqueueEpisodeAction(action);
             SyncService.sync(context);
         });
     }

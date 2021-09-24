@@ -36,33 +36,46 @@ public class SynchronizationQueue {
 
     }
 
-    public void enqueueFeedAdded(String downloadUrl) throws JSONException {
+    public void enqueueFeedAdded(String downloadUrl) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         String json = sharedPreferences
                 .getString(QUEUED_FEEDS_ADDED, "[]");
-        JSONArray queue = new JSONArray(json);
-        queue.put(downloadUrl);
-        sharedPreferences
-                .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(downloadUrl);
+            sharedPreferences
+                    .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
     }
 
-    public void enqueueFeedRemoved(String downloadUrl) throws JSONException {
+    public void enqueueFeedRemoved(String downloadUrl) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         String json = sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]");
-        JSONArray queue = new JSONArray(json);
-        queue.put(downloadUrl);
-        sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
-                .apply();
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(downloadUrl);
+            sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
+                    .apply();
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
     }
 
-    public void enqueueEpisodeAction(EpisodeAction action) throws JSONException {
+    public void enqueueEpisodeAction(EpisodeAction action) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         String json = sharedPreferences.getString(QUEUED_EPISODE_ACTIONS, "[]");
-        JSONArray queue = new JSONArray(json);
-        queue.put(action.writeToJsonObject());
-        sharedPreferences.edit().putString(
-                QUEUED_EPISODE_ACTIONS, queue.toString()
-        ).apply();
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(action.writeToJsonObject());
+            sharedPreferences.edit().putString(
+                    QUEUED_EPISODE_ACTIONS, queue.toString()
+            ).apply();
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
     }
 
     public ArrayList<EpisodeAction> getQueuedEpisodeActions() {
