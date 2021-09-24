@@ -21,7 +21,8 @@ import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
 public class XmlFeedParser implements FeedParser {
     @NonNull
-    public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException, SAXException, IOException {
+    public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type)
+            throws ParserConfigurationException, SAXException, IOException {
         SyndHandler handler = new SyndHandler(feed, type);
 
         SAXParserFactory factory = SAXParserFactory.newInstance();

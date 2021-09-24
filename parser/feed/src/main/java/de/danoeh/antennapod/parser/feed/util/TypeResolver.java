@@ -10,6 +10,7 @@ public class TypeResolver implements TypeGetter {
 
     public TypeResolver() {
         typeGetters.add(new XmlTypeGetter());
+        typeGetters.add(new JsonTypeGetter());
     }
 
     @Override

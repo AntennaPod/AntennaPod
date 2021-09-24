@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.parser.feed;
 
+import org.json.JSONException;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -7,12 +8,13 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.parser.feed.parser.JsonFeedParser;
 import de.danoeh.antennapod.parser.feed.parser.XmlFeedParser;
 import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
 public class FeedHandler {
     public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
-            ParserConfigurationException, UnsupportedFeedtypeException {
+            ParserConfigurationException, UnsupportedFeedtypeException, JSONException {
         TypeResolver typeResolver = new TypeResolver();
         TypeResolver.Type type = typeResolver.getType(feed);
         if (
@@ -22,6 +24,11 @@ public class FeedHandler {
         ) {
             return (new XmlFeedParser()).createFeedHandlerResult(feed, type);
         }
+
+        if (type.equals(TypeResolver.Type.JSON)) {
+            return (new JsonFeedParser()).createFeedHandlerResult(feed, type);
+        }
+
         throw new UnsupportedFeedtypeException(TypeResolver.Type.INVALID);
     }
 

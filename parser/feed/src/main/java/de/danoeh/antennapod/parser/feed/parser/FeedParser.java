@@ -13,5 +13,6 @@ import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.parser.feed.util.TypeResolver;
 
 public interface FeedParser {
-    FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException, SAXException, IOException, UnsupportedFeedtypeException, JSONException;
+    FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException,
+            SAXException, IOException, UnsupportedFeedtypeException, JSONException;
 }

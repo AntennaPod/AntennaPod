@@ -1,21 +1,23 @@
 package de.danoeh.antennapod.parser.feed.parser;
 
-import junit.framework.TestCase;
+import static junit.framework.TestCase.assertEquals;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import de.danoeh.antennapod.model.feed.Feed;
 
-public class JsonFeedParserTest extends TestCase {
+public class JsonFeedParserTest {
 
+    @Test
     public void testHydrateFeed() {
-     JsonFeedParser jsonFeedParser = new JsonFeedParser();
+        JsonFeedParser jsonFeedParser = new JsonFeedParser();
         Feed feed = null;
         try {
             InputStream inputStream = getClass()
@@ -29,7 +31,8 @@ public class JsonFeedParserTest extends TestCase {
         }
 
         assertEquals("Stanisław Lem: Frieden auf Erden", feed.getTitle());
-        assertEquals("./programsets/92726154?order=desc&offset=0&limit=12", feed.getDownload_url());
-        assertNull(feed.getItems());
+        assertEquals(JsonFeedParser.AUDIOTHEK_BASE_URI + "./programsets/92726154?order=desc&offset=0&limit=12",
+                feed.getDownload_url());
+        assertEquals(12, feed.getItems().size());
     }
 }
