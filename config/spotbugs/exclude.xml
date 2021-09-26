@@ -10,7 +10,7 @@
     </Match>
     <Match>
         <Bug pattern="DM_DEFAULT_ENCODING"/>
-        <Class name="de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentReader"/>
+        <Class name="de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReader"/>
     </Match>
     <Match>
         <Bug pattern="HSC_HUGE_SHARED_STRING_CONSTANT"/>

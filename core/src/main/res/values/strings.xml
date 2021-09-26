@@ -35,6 +35,14 @@
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
 
+    <!-- SwipeActions -->
+    <string name="swipeactions_label">Swipe Actions</string>
+    <string name="swipeactions_summary">Choose what happens when swiping an episode in a list</string>
+    <string name="swipe_right">Swipe Right</string>
+    <string name="swipe_left">Swipe Left</string>
+    <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
+    <string name="change_setting">Change</string>
+
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
@@ -97,15 +105,12 @@
     <string name="shownotes_label">Shownotes</string>
     <string name="shownotes_contentdescription">swipe up to read shownotes</string>
     <string name="episodes_suffix">\u0020episodes</string>
-    <string name="processing_label">Processing</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
-    <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
-    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: %1$s</string>
+    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
@@ -127,8 +132,8 @@
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
-        <item quantity="one">%d selected</item>
-        <item quantity="other">%d selected</item>
+        <item quantity="one">%1$d/%2$d selected</item>
+        <item quantity="other">%1$d/%2$d selected</item>
     </plurals>
     <plurals name="num_episodes">
         <item quantity="one">%d episode</item>
@@ -166,6 +171,7 @@
     <string name="share_website_url_label">Website address</string>
     <string name="share_feed_url_label">Podcast feed URL</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
+    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts and ALL their episodes (including downloaded episodes).</string>
     <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
@@ -177,6 +183,11 @@
     <string name="open_podcast">Open Podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
     <string name="updates_disabled_label">Updates disabled</string>
+    <plurals name="updated_feeds_batch_label">
+        <item quantity="one">%d subscription updated.</item>
+        <item quantity="other">%d subscriptions updated.</item>
+    </plurals>
+    <string name="add_to_folder">Add to folder</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -197,6 +208,8 @@
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
+    <string name="marked_as_played_label">Marked as played</string>
+    <string name="marked_as_unplayed_label">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
     <plurals name="marked_read_batch_label">
@@ -224,8 +237,6 @@
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="skip_episode_label">Skip episode</string>
-    <string name="activate_auto_download">Activate Auto Download</string>
-    <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
     <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>
@@ -254,7 +265,6 @@
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device.</string>
     <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
-    <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_error_io_error">IO Error</string>
@@ -264,7 +274,7 @@
         <item quantity="one">%d download left</item>
         <item quantity="other">%d downloads left</item>
     </plurals>
-    <string name="service_shutting_down">Service shutting down</string>
+    <string name="completing">Completing…</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
@@ -299,7 +309,6 @@
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
-    <string name="unlock_queue">Unlock Queue</string>
     <string name="queue_locked">Queue locked</string>
     <string name="queue_unlocked">Queue unlocked</string>
     <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
@@ -479,8 +488,6 @@
     <string name="enqueue_location_front">Front</string>
     <string name="enqueue_location_after_current">After current episode</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
-    <string name="pref_image_cache_size_title">Image Cache Size</string>
-    <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
     <string name="documentation_support">Documentation &amp; Support</string>
     <string name="visit_user_forum">User forum</string>
     <string name="bug_report_title">Report bug</string>
@@ -548,6 +555,7 @@
 
     <!-- Search -->
     <string name="search_status_no_results">No results were found</string>
+    <string name="type_to_search">Type a query to search</string>
     <string name="search_label">Search</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
 
@@ -622,7 +630,6 @@
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
     <string name="gpodnet_toplist_header">TOP PODCASTS</string>
-    <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
@@ -727,24 +734,6 @@
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
     <string name="filter">Filter</string>
-
-    <!-- Episodes apply actions -->
-    <string name="all_label">All</string>
-    <string name="selected_all_label">Selected all Episodes</string>
-    <string name="select_none_label">None</string>
-    <string name="deselected_all_label">Deselected all Episodes</string>
-    <string name="played_label">Played</string>
-    <string name="selected_played_label">Selected played Episodes</string>
-    <string name="unplayed_label">Unplayed</string>
-    <string name="selected_unplayed_label">Selected unplayed Episodes</string>
-    <string name="downloaded_label">Downloaded</string>
-    <string name="selected_downloaded_label">Selected downloaded Episodes</string>
-    <string name="not_downloaded_label">Not downloaded</string>
-    <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
-    <string name="selected_queued_label">Selected queued Episodes</string>
-    <string name="selected_not_queued_label">Selected not queued Episodes</string>
-    <string name="selected_has_media_label">Selected episodes with media</string>
-
     <string name="hide_is_favorite_label">Is favorite</string>
     <string name="not_favorite">Not favorite</string>
     <string name="hide_downloaded_episodes_label">Downloaded</string>
@@ -790,9 +779,6 @@
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
-    <string name="volume">Volume</string>
-    <string name="left_short">L</string>
-    <string name="right_short">R</string>
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>

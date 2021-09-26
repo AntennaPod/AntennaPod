@@ -32,7 +32,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 
@@ -367,8 +366,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void resume() {
         try {
-            // TODO see comment on prepare()
-            // setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
             if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                 int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
@@ -405,9 +402,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                             position,
                             media.getLastPlayedTime());
                 }
-                // TODO We're not supporting user set stream volume yet, as we need to make a UI
-                // that doesn't allow changing playback speed or have different values for left/right
-                //setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
                 castMgr.loadMedia(remoteMedia, startWhenPrepared.get(), position);
             } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
                 Log.e(TAG, "Error loading media", e);
@@ -629,7 +623,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if (shouldContinue) {
             nextMedia = callback.getNextInQueue(currentMedia);
 
-            boolean playNextEpisode = isPlaying && nextMedia != null && UserPreferences.isFollowQueue();
+            boolean playNextEpisode = isPlaying && nextMedia != null;
             if (playNextEpisode) {
                 Log.d(TAG, "Playback of next episode will start immediately.");
             } else if (nextMedia == null){

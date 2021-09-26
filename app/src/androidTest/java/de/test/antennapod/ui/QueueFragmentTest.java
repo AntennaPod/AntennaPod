@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.NthMatcher.first;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -40,9 +39,11 @@ public class QueueFragmentTest {
 
     @Test
     public void testLockEmptyQueue() {
-        onView(withContentDescription(R.string.lock_queue)).perform(click());
+        onView(first(EspressoTestUtils.actionBarOverflow())).perform(click());
+        onView(withText(R.string.lock_queue)).perform(click());
         onView(allOf(withClassName(endsWith("Button")), withText(R.string.lock_queue))).perform(click());
-        onView(withContentDescription(R.string.unlock_queue)).perform(click());
+        onView(first(EspressoTestUtils.actionBarOverflow())).perform(click());
+        onView(withText(R.string.lock_queue)).perform(click());
     }
 
     @Test

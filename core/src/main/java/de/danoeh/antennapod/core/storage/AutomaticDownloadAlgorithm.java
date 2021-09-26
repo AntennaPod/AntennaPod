@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.danoeh.antennapod.model.feed.FeedFilter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -55,8 +54,9 @@ public class AutomaticDownloadAlgorithm {
                 candidates.addAll(queue);
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    FeedFilter feedFilter = feedPrefs.getFilter();
-                    if (!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
+                    if (feedPrefs.getAutoDownload()
+                            && !candidates.contains(newItem)
+                            && feedPrefs.getFilter().shouldAutoDownload(newItem)) {
                         candidates.add(newItem);
                     }
                 }

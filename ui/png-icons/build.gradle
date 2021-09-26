@@ -4,11 +4,10 @@ apply from: "../../common.gradle"
 android {
     defaultConfig {
         vectorDrawables.useSupportLibrary false
-        vectorDrawables.generatedDensities = null
+        vectorDrawables.generatedDensities = ["xhdpi"]
     }
 }
 
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
 }

@@ -5,6 +5,7 @@ host = https://www.transifex.com
 source_file = core/src/main/res/values/strings.xml
 source_lang = en
 trans.ar = core/src/main/res/values-ar/strings.xml
+trans.ast_ES = core/src/main/res/values-ast/strings.xml
 trans.br = core/src/main/res/values-br/strings.xml
 trans.ca = core/src/main/res/values-ca/strings.xml
 trans.cs_CZ = core/src/main/res/values-cs/strings.xml

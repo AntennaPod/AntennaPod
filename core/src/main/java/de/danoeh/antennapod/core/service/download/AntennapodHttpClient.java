@@ -77,6 +77,9 @@ public class AntennapodHttpClient {
             if (response.code() == HttpURLConnection.HTTP_MOVED_PERM
                     || response.code() == StatusLine.HTTP_PERM_REDIRECT) {
                 String location = response.header("Location");
+                if (location == null) {
+                    return response;
+                }
                 if (location.startsWith("/")) { // URL is not absolute, but relative
                     HttpUrl url = request.url();
                     location = url.scheme() + "://" + url.host() + location;

@@ -31,7 +31,7 @@
             android:key="prefScreenGpodder"
             android:title="@string/synchronization_pref"
             android:summary="@string/synchronization_sum"
-            android:icon="@drawable/ic_star" />
+            android:icon="@drawable/ic_cloud" />
 
     <Preference
             android:key="prefScreenStorage"

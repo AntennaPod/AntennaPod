@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.app.ServiceCompat;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.sync.SyncService;
@@ -645,7 +646,7 @@ public class DownloadService extends Service {
         }
         handler.post(() -> {
             cancelNotificationUpdater();
-            stopForeground(true);
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
             stopSelf();
         });
     }
