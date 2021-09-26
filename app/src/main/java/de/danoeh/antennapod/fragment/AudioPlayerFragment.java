@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -71,7 +73,7 @@ import io.reactivex.schedulers.Schedulers;
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
+        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
@@ -158,6 +160,9 @@ public class AudioPlayerFragment extends Fragment implements
                 });
             }
         });
+
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+
 
         return root;
     }
@@ -556,14 +561,6 @@ public class AudioPlayerFragment extends Fragment implements
             return true;
         } else if (itemId == R.id.audio_controls) {
             PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
-            dialog.setOnRepeatChanged(repeat -> {
-                repeat = UserPreferences.getShouldRepeatEpisode();
-                if (repeat) {
-                    imgvRepeat.setVisibility(View.VISIBLE);
-                } else {
-                    imgvRepeat.setVisibility(View.GONE);
-                }
-            });
             dialog.show(getChildFragmentManager(), "playback_controls");
             return true;
         } else if (itemId == R.id.open_feed_item) {
@@ -575,6 +572,17 @@ public class AudioPlayerFragment extends Fragment implements
         }
 
         return false;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (UserPreferences.PREF_REPEAT_EPISODE.equals(key)) {
+            if (UserPreferences.getShouldRepeatEpisode()) {
+                imgvRepeat.setVisibility(View.VISIBLE);
+            } else {
+                imgvRepeat.setVisibility(View.GONE);
+            }
+        }
     }
 
     private static class AudioPlayerPagerAdapter extends FragmentStateAdapter {
