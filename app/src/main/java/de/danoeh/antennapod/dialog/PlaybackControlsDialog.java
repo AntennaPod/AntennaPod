@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.util.Consumer;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.List;
