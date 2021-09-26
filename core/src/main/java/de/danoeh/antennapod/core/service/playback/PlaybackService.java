@@ -67,7 +67,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -969,7 +969,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia && SynchronizationSettings.isSynchronizationProviderActive()) {
-                    LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
+                    SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
             }
@@ -1113,10 +1113,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if ((ended || smartMarkAsPlayed) && SynchronizationSettings.isSynchronizationProviderActive())  {
-            LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), media, true);
+            SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else if (SynchronizationSettings.isSynchronizationProviderActive()) {
-            LockingQueueWriter.enqueueEpisodePlayed(getApplicationContext(), media, false);
+            SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 

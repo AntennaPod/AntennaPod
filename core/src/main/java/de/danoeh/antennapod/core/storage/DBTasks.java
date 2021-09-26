@@ -35,7 +35,7 @@ import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -486,7 +486,7 @@ public final class DBTasks {
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            LockingQueueWriter.enqueueEpisodeAction(context, action);
+                            SynchronizationQueueSink.enqueueEpisodeAction(context, action);
                         }
                     }
                 }

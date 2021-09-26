@@ -16,7 +16,7 @@ import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -105,7 +105,7 @@ public class MediaDownloadedHandler implements Runnable {
             EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
                     .currentTimestamp()
                     .build();
-            LockingQueueWriter.enqueueEpisodeAction(context, action);
+            SynchronizationQueueSink.enqueueEpisodeAction(context, action);
         }
     }
 

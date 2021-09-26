@@ -35,7 +35,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -137,7 +137,7 @@ public class DBWriter {
                 EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                         .currentTimestamp()
                         .build();
-                LockingQueueWriter.enqueueEpisodeAction(context, action);
+                SynchronizationQueueSink.enqueueEpisodeAction(context, action);
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
@@ -171,7 +171,7 @@ public class DBWriter {
             adapter.close();
 
             if (SynchronizationSettings.isSynchronizationProviderActive()) {
-                LockingQueueWriter.enqueueFeedRemoved(context, feed.getDownload_url());
+                SynchronizationQueueSink.enqueueFeedRemoved(context, feed.getDownload_url());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
@@ -785,7 +785,7 @@ public class DBWriter {
 
             if (SynchronizationSettings.isSynchronizationProviderActive()) {
                 for (Feed feed : feeds) {
-                    LockingQueueWriter.enqueueFeedAdded(context, feed.getDownload_url());
+                    SynchronizationQueueSink.enqueueFeedAdded(context, feed.getDownload_url());
                 }
             }
 

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.sync;
+package de.danoeh.antennapod.core.sync.queue;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,9 +8,10 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
-public class SynchronizationQueue {
+public class SynchronizationQueueStorage {
 
     private static final String NAME = "synchronization";
     private static final String QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
@@ -18,64 +19,8 @@ public class SynchronizationQueue {
     private static final String QUEUED_FEEDS_ADDED = "sync_added";
     private final SharedPreferences sharedPreferences;
 
-    public SynchronizationQueue(Context context) {
+    public SynchronizationQueueStorage(Context context) {
         this.sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return sharedPreferences;
-    }
-
-    public void clearQueue() {
-        SynchronizationSettings.resetTimestamps();
-        getSharedPreferences().edit()
-                .putString(QUEUED_EPISODE_ACTIONS, "[]")
-                .putString(QUEUED_FEEDS_ADDED, "[]")
-                .putString(QUEUED_FEEDS_REMOVED, "[]")
-                .apply();
-
-    }
-
-    public void enqueueFeedAdded(String downloadUrl) {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences
-                .getString(QUEUED_FEEDS_ADDED, "[]");
-        try {
-            JSONArray queue = new JSONArray(json);
-            queue.put(downloadUrl);
-            sharedPreferences
-                    .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
-
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-        }
-    }
-
-    public void enqueueFeedRemoved(String downloadUrl) {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]");
-        try {
-            JSONArray queue = new JSONArray(json);
-            queue.put(downloadUrl);
-            sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
-                    .apply();
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-        }
-    }
-
-    public void enqueueEpisodeAction(EpisodeAction action) {
-        SharedPreferences sharedPreferences = getSharedPreferences();
-        String json = sharedPreferences.getString(QUEUED_EPISODE_ACTIONS, "[]");
-        try {
-            JSONArray queue = new JSONArray(json);
-            queue.put(action.writeToJsonObject());
-            sharedPreferences.edit().putString(
-                    QUEUED_EPISODE_ACTIONS, queue.toString()
-            ).apply();
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-        }
     }
 
     public ArrayList<EpisodeAction> getQueuedEpisodeActions() {
@@ -135,5 +80,61 @@ public class SynchronizationQueue {
                 .putString(QUEUED_FEEDS_ADDED, "[]")
                 .putString(QUEUED_FEEDS_REMOVED, "[]")
                 .apply();
+    }
+
+    protected void clearQueue() {
+        SynchronizationSettings.resetTimestamps();
+        getSharedPreferences().edit()
+                .putString(QUEUED_EPISODE_ACTIONS, "[]")
+                .putString(QUEUED_FEEDS_ADDED, "[]")
+                .putString(QUEUED_FEEDS_REMOVED, "[]")
+                .apply();
+
+    }
+
+    protected void enqueueFeedAdded(String downloadUrl) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        String json = sharedPreferences
+                .getString(QUEUED_FEEDS_ADDED, "[]");
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(downloadUrl);
+            sharedPreferences
+                    .edit().putString(QUEUED_FEEDS_ADDED, queue.toString()).apply();
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+    }
+
+    protected void enqueueFeedRemoved(String downloadUrl) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        String json = sharedPreferences.getString(QUEUED_FEEDS_REMOVED, "[]");
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(downloadUrl);
+            sharedPreferences.edit().putString(QUEUED_FEEDS_REMOVED, queue.toString())
+                    .apply();
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+    }
+
+    protected void enqueueEpisodeAction(EpisodeAction action) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        String json = sharedPreferences.getString(QUEUED_EPISODE_ACTIONS, "[]");
+        try {
+            JSONArray queue = new JSONArray(json);
+            queue.put(action.writeToJsonObject());
+            sharedPreferences.edit().putString(
+                    QUEUED_EPISODE_ACTIONS, queue.toString()
+            ).apply();
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
     }
 }

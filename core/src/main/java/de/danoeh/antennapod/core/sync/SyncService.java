@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueStorage;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -58,11 +59,11 @@ public class SyncService extends Worker {
     public static final String TAG = "SyncService";
 
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
-    private final SynchronizationQueue synchronizationQueue;
+    private final SynchronizationQueueStorage synchronizationQueueStorage;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
-        synchronizationQueue = new SynchronizationQueue(context);
+        synchronizationQueueStorage = new SynchronizationQueueStorage(context);
     }
 
     @Override
@@ -127,8 +128,8 @@ public class SyncService extends Worker {
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
 
-        List<String> queuedRemovedFeeds = synchronizationQueue.getQueuedRemovedFeeds();
-        List<String> queuedAddedFeeds = synchronizationQueue.getQueuedAddedFeeds();
+        List<String> queuedRemovedFeeds = synchronizationQueueStorage.getQueuedRemovedFeeds();
+        List<String> queuedAddedFeeds = synchronizationQueueStorage.getQueuedAddedFeeds();
 
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
@@ -164,7 +165,7 @@ public class SyncService extends Worker {
             try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                synchronizationQueue.clearFeedQueues();
+                synchronizationQueueStorage.clearFeedQueues();
                 newTimeStamp = uploadResponse.timestamp;
             } finally {
                 LockingAsyncExecutor.lock.unlock();
@@ -183,7 +184,7 @@ public class SyncService extends Worker {
 
         // upload local actions
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_upload));
-        List<EpisodeAction> queuedEpisodeActions = synchronizationQueue.getQueuedEpisodeActions();
+        List<EpisodeAction> queuedEpisodeActions = synchronizationQueueStorage.getQueuedEpisodeActions();
         if (lastSync == 0) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
             List<FeedItem> readItems = DBReader.getPlayedItems();
@@ -210,7 +211,7 @@ public class SyncService extends Worker {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                synchronizationQueue.clearEpisodeActionQueue();
+                synchronizationQueueStorage.clearEpisodeActionQueue();
             } finally {
                 LockingAsyncExecutor.lock.unlock();
             }
@@ -226,7 +227,7 @@ public class SyncService extends Worker {
         }
 
         Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
-                .getRemoteActionsOverridingLocalActions(remoteActions, synchronizationQueue.getQueuedEpisodeActions());
+                .getRemoteActionsOverridingLocalActions(remoteActions, synchronizationQueueStorage.getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {

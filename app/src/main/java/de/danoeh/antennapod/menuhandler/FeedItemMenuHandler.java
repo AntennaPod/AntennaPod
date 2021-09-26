@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.LockingQueueWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -162,7 +162,7 @@ public class FeedItemMenuHandler {
                             .position(media.getDuration() / 1000)
                             .total(media.getDuration() / 1000)
                             .build();
-                    LockingQueueWriter.enqueueEpisodeAction(context, actionPlay);
+                    SynchronizationQueueSink.enqueueEpisodeAction(context, actionPlay);
                 }
             }
         } else if (menuItemId == R.id.mark_unread_item) {
@@ -172,7 +172,7 @@ public class FeedItemMenuHandler {
                 EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                         .currentTimestamp()
                         .build();
-                LockingQueueWriter.enqueueEpisodeAction(context, actionNew);
+                SynchronizationQueueSink.enqueueEpisodeAction(context, actionNew);
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);
