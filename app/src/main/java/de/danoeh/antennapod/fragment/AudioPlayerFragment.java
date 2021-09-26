@@ -73,7 +73,8 @@ import io.reactivex.schedulers.Schedulers;
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
