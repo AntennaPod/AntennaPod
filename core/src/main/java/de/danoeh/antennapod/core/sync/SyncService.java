@@ -227,7 +227,8 @@ public class SyncService extends Worker {
         }
 
         Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
-                .getRemoteActionsOverridingLocalActions(remoteActions, synchronizationQueueStorage.getQueuedEpisodeActions());
+                .getRemoteActionsOverridingLocalActions(remoteActions,
+                        synchronizationQueueStorage.getQueuedEpisodeActions());
         LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : playActionsToUpdate.values()) {

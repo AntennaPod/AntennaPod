@@ -35,9 +35,8 @@ import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
-import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -478,15 +477,14 @@ public final class DBTasks {
                                         + item.getItemIdentifier(), false));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
-                        if (oldItem.isPlayed() && oldItem.getMedia() != null
-                                && SynchronizationSettings.isSynchronizationProviderActive()) {
+                        if (oldItem.isPlayed() && oldItem.getMedia() != null) {
                             EpisodeAction action = new EpisodeAction.Builder(oldItem, EpisodeAction.PLAY)
                                     .currentTimestamp()
                                     .started(oldItem.getMedia().getDuration() / 1000)
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            SynchronizationQueueSink.enqueueEpisodeAction(context, action);
+                            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
                         }
                     }
                 }

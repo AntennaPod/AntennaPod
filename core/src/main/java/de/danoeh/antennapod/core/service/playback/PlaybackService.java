@@ -68,7 +68,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -968,8 +967,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
-                if (playable instanceof FeedMedia && SynchronizationSettings.isSynchronizationProviderActive()) {
-                    SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
+                if (playable instanceof FeedMedia) {
+                    SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
+                            (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
             }
@@ -1112,13 +1112,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        if ((ended || smartMarkAsPlayed) && SynchronizationSettings.isSynchronizationProviderActive())  {
-            SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), media, true);
-            media.onPlaybackCompleted(getApplicationContext());
-        } else if (SynchronizationSettings.isSynchronizationProviderActive()) {
-            SynchronizationQueueSink.enqueueEpisodePlayed(getApplicationContext(), media, false);
-            media.onPlaybackPause(getApplicationContext());
+        boolean isCompleted = false;
+        if ((ended || smartMarkAsPlayed))  {
+            isCompleted = true;
         }
+        SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(), media,
+                isCompleted);
+        media.onPlaybackPause(getApplicationContext());
+        
 
         if (item != null) {
             if (ended || smartMarkAsPlayed

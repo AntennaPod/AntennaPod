@@ -4,6 +4,7 @@ import android.content.Context;
 
 import de.danoeh.antennapod.core.sync.LockingAsyncExecutor;
 import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
@@ -13,28 +14,41 @@ public class SynchronizationQueueSink {
         LockingAsyncExecutor.executeLockedAsync(new SynchronizationQueueStorage(context)::clearQueue);
     }
 
-    public static void enqueueFeedAdded(Context context, String downloadUrl) {
+    public static void enqueueFeedAddedIfSynchronizationIsActive(Context context, String downloadUrl) {
+        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+            return;
+        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueFeedAdded(downloadUrl);
             SyncService.sync(context);
         });
     }
 
-    public static void enqueueFeedRemoved(Context context, String downloadUrl) {
+    public static void enqueueFeedRemovedIfSynchronizationIsActive(Context context, String downloadUrl) {
+        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+            return;
+        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueFeedRemoved(downloadUrl);
             SyncService.sync(context);
         });
     }
 
-    public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
+    public static void enqueueEpisodeActionIfSynchronizationIsActive(Context context, EpisodeAction action) {
+        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+            return;
+        }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueEpisodeAction(action);
             SyncService.sync(context);
         });
     }
 
-    public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
+    public static void enqueueEpisodePlayedIfSynchronizationIsActive(Context context, FeedMedia media,
+                                                                     boolean completed) {
+        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+            return;
+        }
         if (media.getItem() == null) {
             return;
         }
@@ -47,7 +61,7 @@ public class SynchronizationQueueSink {
                 .position((completed ? media.getDuration() : media.getPosition()) / 1000)
                 .total(media.getDuration() / 1000)
                 .build();
-        enqueueEpisodeAction(context, action);
+        enqueueEpisodeActionIfSynchronizationIsActive(context, action);
     }
 
 }

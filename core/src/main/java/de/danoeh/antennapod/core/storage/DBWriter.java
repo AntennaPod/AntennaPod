@@ -36,7 +36,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
-import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
@@ -132,13 +131,11 @@ public class DBWriter {
             }
 
             // Gpodder: queue delete action for synchronization
-            if (SynchronizationSettings.isSynchronizationProviderActive()) {
-                FeedItem item = media.getItem();
-                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                        .currentTimestamp()
-                        .build();
-                SynchronizationQueueSink.enqueueEpisodeAction(context, action);
-            }
+            FeedItem item = media.getItem();
+            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+                    .currentTimestamp()
+                    .build();
+            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
         return true;
@@ -170,9 +167,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (SynchronizationSettings.isSynchronizationProviderActive()) {
-                SynchronizationQueueSink.enqueueFeedRemoved(context, feed.getDownload_url());
-            }
+            SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -783,10 +778,8 @@ public class DBWriter {
             adapter.setCompleteFeed(feeds);
             adapter.close();
 
-            if (SynchronizationSettings.isSynchronizationProviderActive()) {
-                for (Feed feed : feeds) {
-                    SynchronizationQueueSink.enqueueFeedAdded(context, feed.getDownload_url());
-                }
+            for (Feed feed : feeds) {
+                SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
             }
 
             BackupManager backupManager = new BackupManager(context);
@@ -936,7 +929,8 @@ public class DBWriter {
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return dbExec.submit(() -> { });
+            return dbExec.submit(() -> {
+            });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
