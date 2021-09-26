@@ -7,6 +7,8 @@
         android:id="@+id/fabSDOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
+        android:alpha="0.30"
         android:importantForAccessibility="no" />
 
     <!-- The FAB SpeedDial
