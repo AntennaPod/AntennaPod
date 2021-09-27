@@ -77,10 +77,16 @@ public class JsonFeedParser implements FeedParser {
             feedItem.setDescriptionIfLonger(programSetItem.getString("synopsis"));
             feedItem.setMedia(getFeedMedia(programSetItem, feedItem));
             feedItem.setFeed(feed);
+            feedItem.setItemIdentifier(createUuid(programSetItem));
             feedItems.add(feedItem);
         }
 
         return feedItems;
+    }
+
+    @NonNull
+    private String createUuid(JSONObject programSetItem) throws JSONException {
+        return "audiothek_" + programSetItem.getString("id");
     }
 
     @NonNull

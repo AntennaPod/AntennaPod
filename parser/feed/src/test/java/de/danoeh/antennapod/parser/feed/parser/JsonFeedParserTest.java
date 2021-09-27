@@ -34,5 +34,7 @@ public class JsonFeedParserTest {
         assertEquals(JsonFeedParser.AUDIOTHEK_BASE_URI + "./programsets/92726154?order=desc&offset=0&limit=12",
                 feed.getDownload_url());
         assertEquals(12, feed.getItems().size());
+
+        assertEquals("audiothek_92766886", feed.getItems().get(0).getItemIdentifier());
     }
 }
