@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed.util;
+package de.danoeh.antennapod.parser.feed.type;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;

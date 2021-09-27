@@ -24,7 +24,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
-import de.danoeh.antennapod.parser.feed.util.TypeResolver;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver;
 
 public class JsonFeedParser implements FeedParser {
     public static final String AUDIOTHEK_BASE_URI = "https://api.ardaudiothek.de/";

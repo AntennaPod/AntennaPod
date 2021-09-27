@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed.util;
+package de.danoeh.antennapod.parser.feed.type;
 
 import android.util.Log;
 

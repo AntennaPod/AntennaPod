@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.parser.feed.util;
+package de.danoeh.antennapod.parser.feed.type;
 
 import java.util.ArrayList;
 
@@ -6,11 +6,11 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 
 public class TypeResolver implements TypeGetter {
-    private ArrayList<TypeGetter> typeGetters = new ArrayList<>();
 
-    public TypeResolver() {
-        typeGetters.add(new XmlTypeGetter());
-        typeGetters.add(new JsonTypeGetter());
+    private final ArrayList<TypeGetter> typeGetters;
+
+    public TypeResolver(ArrayList<TypeGetter> typeGetters) {
+        this.typeGetters = typeGetters;
     }
 
     @Override
@@ -18,8 +18,7 @@ public class TypeResolver implements TypeGetter {
         for (TypeGetter typeGetter : typeGetters) {
             try {
                 return typeGetter.getType(feed);
-            } catch (UnsupportedFeedtypeException unsupportedFeedtypeException) {
-                continue;
+            } catch (UnsupportedFeedtypeException ignored) {
             }
         }
 

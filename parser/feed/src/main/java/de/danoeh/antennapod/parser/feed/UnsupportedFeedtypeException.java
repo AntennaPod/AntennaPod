@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.parser.feed;
 
-import de.danoeh.antennapod.parser.feed.util.TypeResolver;
-import de.danoeh.antennapod.parser.feed.util.TypeResolver.Type;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver.Type;
 
 public class UnsupportedFeedtypeException extends Exception {
     private static final long serialVersionUID = 9105878964928170669L;

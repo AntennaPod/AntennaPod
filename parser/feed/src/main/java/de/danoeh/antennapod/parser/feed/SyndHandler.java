@@ -2,7 +2,7 @@ package de.danoeh.antennapod.parser.feed;
 
 import android.util.Log;
 
-import de.danoeh.antennapod.parser.feed.util.TypeResolver;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

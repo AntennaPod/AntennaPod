@@ -10,7 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.parser.feed.util.TypeResolver;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver;
 
 public interface FeedParser {
     FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws ParserConfigurationException,

@@ -17,7 +17,7 @@ import javax.xml.parsers.SAXParserFactory;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.SyndHandler;
-import de.danoeh.antennapod.parser.feed.util.TypeResolver;
+import de.danoeh.antennapod.parser.feed.type.TypeResolver;
 
 public class XmlFeedParser implements FeedParser {
     @NonNull
