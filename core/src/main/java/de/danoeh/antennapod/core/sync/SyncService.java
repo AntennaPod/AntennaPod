@@ -85,15 +85,21 @@ public class SyncService extends Worker {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
             SynchronizationSettings.setLastSynchronizationAttemptSuccess(true);
             return Result.success();
-        } catch (SyncServiceException e) {
+        } catch (Exception e) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
             SynchronizationSettings.setLastSynchronizationAttemptSuccess(false);
             Log.e(TAG, Log.getStackTraceString(e));
-            if (getRunAttemptCount() % 3 == 2) {
-                // Do not spam users with notification and retry before notifying
+
+            if (e instanceof SyncServiceException) {
+                if (getRunAttemptCount() % 3 == 2) {
+                    // Do not spam users with notification and retry before notifying
+                    updateErrorNotification(e);
+                }
+                return Result.retry();
+            } else {
                 updateErrorNotification(e);
+                return Result.failure();
             }
-            return Result.retry();
         }
     }
 
@@ -219,7 +225,6 @@ public class SyncService extends Worker {
         SynchronizationSettings.setLastEpisodeActionSynchronizationAttemptTimestamp(newTimeStamp);
     }
 
-
     private synchronized void processEpisodeActions(List<EpisodeAction> remoteActions) {
         Log.d(TAG, "Processing " + remoteActions.size() + " actions");
         if (remoteActions.size() == 0) {
@@ -238,20 +243,22 @@ public class SyncService extends Worker {
                 Log.i(TAG, "Unknown feed item: " + action);
                 continue;
             }
+            if (feedItem.getMedia() == null) {
+                Log.i(TAG, "Feed item has no media: " + action);
+                continue;
+            }
             if (action.getAction() == EpisodeAction.NEW) {
                 DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
                 continue;
             }
-            Log.d(TAG, "Most recent play action: " + action.toString());
-            FeedMedia media = feedItem.getMedia();
-            media.setPosition(action.getPosition() * 1000);
+            Log.d(TAG, "Most recent play action: " + action);
+            feedItem.getMedia().setPosition(action.getPosition() * 1000);
             if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
                 Log.d(TAG, "Marking as played");
                 feedItem.setPlayed(true);
                 queueToBeRemoved.add(feedItem.getId());
             }
             updatedItems.add(feedItem);
-
         }
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBReader.loadAdditionalFeedItemListData(updatedItems);
@@ -265,7 +272,7 @@ public class SyncService extends Worker {
         nm.cancel(R.id.notification_gpodnet_sync_autherror);
     }
 
-    private void updateErrorNotification(SyncServiceException exception) {
+    private void updateErrorNotification(Exception exception) {
         if (!UserPreferences.gpodnetNotificationsEnabled()) {
             Log.d(TAG, "Skipping sync error notification because of user setting");
             return;
