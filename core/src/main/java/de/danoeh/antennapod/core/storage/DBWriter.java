@@ -929,8 +929,7 @@ public class DBWriter {
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return dbExec.submit(() -> {
-            });
+            return dbExec.submit(() -> { });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
@@ -990,6 +989,7 @@ public class DBWriter {
 
     /**
      * Set item sort order of the feed
+     *
      */
     public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         return dbExec.submit(() -> {

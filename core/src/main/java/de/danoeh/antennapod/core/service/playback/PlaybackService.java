@@ -1112,14 +1112,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        boolean isCompleted = false;
-        if ((ended || smartMarkAsPlayed))  {
-            isCompleted = true;
+        if (ended || smartMarkAsPlayed) {
+            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                    getApplicationContext(), media, true);
+            media.onPlaybackCompleted(getApplicationContext());
+        } else {
+            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                    getApplicationContext(), media, false);
+            media.onPlaybackPause(getApplicationContext());
         }
-        SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(), media,
-                isCompleted);
-        media.onPlaybackPause(getApplicationContext());
-        
 
         if (item != null) {
             if (ended || smartMarkAsPlayed
