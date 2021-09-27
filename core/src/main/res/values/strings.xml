@@ -447,6 +447,7 @@
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
+    <string name="synchronization_logout">Logout</string>
     <string name="pref_synchronization_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>

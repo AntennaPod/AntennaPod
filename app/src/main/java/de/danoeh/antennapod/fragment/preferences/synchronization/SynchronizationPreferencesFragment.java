@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
@@ -92,9 +93,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.dialog_choose_sync_service_title);
 
+            SynchronizationProviderViewData[] providers = SynchronizationProviderViewData.values();
             ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
-                    getContext(), R.layout.alertdialog_sync_provider_chooser, SynchronizationProviderViewData.values()
-            ) {
+                    getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
 
                 ViewHolder holder;
 
@@ -124,14 +125,13 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             };
 
             builder.setAdapter(adapter, (dialog, which) -> {
-                switch (which) {
-                    case 0:
-                        setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
+                setSelectedSyncProvider(providers[which]);
+                switch (providers[which]) {
+                    case GPODDER_NET:
                         new GpodderAuthenticationFragment()
                                 .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
                         break;
-                    case 1:
-                        setSelectedSyncProvider(SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
+                    case NEXTCLOUD_GPODDER:
                         openNextcloudAccountChooser();
                         break;
                     default:
@@ -185,24 +185,20 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGIN).setVisible(!loggedIn);
 
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
-        preferenceHeader.setIcon(getIconForSelectedSyncProvider(getSelectedSyncProviderKey()));
-        preferenceHeader.setSummary(getHeaderSummary(getSelectedSyncProviderKey()));
+        preferenceHeader.setIcon(ViewDataProvider.getSynchronizationProviderIcon(getSelectedSyncProviderKey()));
+        preferenceHeader.setSummary(ViewDataProvider.getSynchronizationProviderHeaderSummary(
+                getSelectedSyncProviderKey()));
 
-        boolean isGpodderServiceSelected = isGpodnetSyncProviderSelected();
         Preference gpodnetSetLoginPreference = findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION);
-        gpodnetSetLoginPreference.setVisible(isGpodderServiceSelected);
+        gpodnetSetLoginPreference.setVisible(isProviderSelected(SynchronizationProviderViewData.GPODDER_NET));
         gpodnetSetLoginPreference.setEnabled(loggedIn);
         findPreference(PREFERENCE_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_LOGOUT).setEnabled(loggedIn);
         if (loggedIn) {
             String format = getActivity().getString(R.string.synchronization_login_status);
-            String summary = String.format(
-                    format,
-                    ViewDataProvider.getUsernameFromSelectedSyncProvider(
-                            getContext(),
-                            getSelectedSyncProviderKey()
-                    ));
+            String summary = String.format(format,
+                    ViewDataProvider.getUsernameFromSelectedSyncProvider(getContext(), getSelectedSyncProviderKey()));
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
             updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
@@ -213,21 +209,9 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         }
     }
 
-
-    private int getIconForSelectedSyncProvider(String currentSyncProviderKey) {
-        return ViewDataProvider.getSynchronizationProviderIcon(currentSyncProviderKey);
-    }
-
-    private int getHeaderSummary(String currentSyncProviderKey) {
-        return ViewDataProvider.getSynchronizationProviderHeaderSummary(currentSyncProviderKey);
-    }
-
-    private boolean isGpodnetSyncProviderSelected() {
+    private boolean isProviderSelected(@NonNull SynchronizationProviderViewData provider) {
         String selectedSyncProviderKey = getSelectedSyncProviderKey();
-        if (selectedSyncProviderKey == null) {
-            return false;
-        }
-        return selectedSyncProviderKey.equals(SynchronizationProviderViewData.GPODDER_NET.getIdentifier());
+        return provider.getIdentifier().equals(selectedSyncProviderKey);
     }
 
     private String getSelectedSyncProviderKey() {

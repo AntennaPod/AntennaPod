@@ -24,6 +24,6 @@
             android:summary="@string/synchronization_force_sync_summary"/>
     <Preference
             android:key="pref_synchronization_logout"
-            android:title="Logout"/>
+            android:title="@string/synchronization_logout"/>
 
 </PreferenceScreen>

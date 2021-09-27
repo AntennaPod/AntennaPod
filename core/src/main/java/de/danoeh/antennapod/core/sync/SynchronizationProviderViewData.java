@@ -12,8 +12,7 @@ public enum SynchronizationProviderViewData {
             "NEXTCLOUD_GPODDER",
             R.string.synchronization_summary_nextcloud,
             R.drawable.nextcloud_logo
-    ),
-    ;
+    );
 
     private final String identifier;
     private final int iconResource;
