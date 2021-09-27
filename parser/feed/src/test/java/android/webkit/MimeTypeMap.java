@@ -1,8 +1,7 @@
 package android.webkit;
 
 public class MimeTypeMap {
-    public static MimeTypeMap getSingleton()
-    {
+    public static MimeTypeMap getSingleton() {
         return new MimeTypeMap();
     }
 

@@ -31,12 +31,12 @@ public class JsonFeedParser implements FeedParser {
 
     @Override
     public FeedHandlerResult createFeedHandlerResult(Feed feed, TypeResolver.Type type) throws JSONException {
-        InputStream fileInputStream = null;
         Map<String, String> alternateFeedUrls = new HashMap<>();
         Feed hydratedFeed = null;
         try {
-            fileInputStream = new FileInputStream(feed.getFile_url());
+            InputStream fileInputStream = new FileInputStream(feed.getFile_url());
             String jsonTxt = IOUtils.toString(fileInputStream, Charsets.UTF_8);
+            fileInputStream.close();
             hydratedFeed = hydrateFeed(new JSONObject(jsonTxt));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class JsonFeedParser implements FeedParser {
         Feed feed = new Feed(url, Calendar.getInstance().getTime().toString(), title);
 
         JSONObject embedded = jsonObject.getJSONObject("_embedded");
-        feed.setItems(extractFeedItems(embedded.getJSONArray("mt:items")));
+        feed.setItems(extractFeedItems(embedded.getJSONArray("mt:items"), feed));
         feed.setImageUrl(getProgramSetImageUrl(jsonObject));
         feed.setDescription(jsonObject.getString("synopsis"));
         feed.setAuthor(embedded.getJSONObject("mt:publicationService").getString("title"));
@@ -68,7 +68,7 @@ public class JsonFeedParser implements FeedParser {
         return rawMediaUrl.replace("{width}", "128");
     }
 
-    private ArrayList<FeedItem> extractFeedItems(JSONArray programSetItems) throws JSONException {
+    private ArrayList<FeedItem> extractFeedItems(JSONArray programSetItems, Feed feed) throws JSONException {
         ArrayList<FeedItem> feedItems = new ArrayList<>();
         for (int i = 0; i < programSetItems.length(); i++) {
             JSONObject programSetItem = (JSONObject) programSetItems.get(i);
@@ -76,6 +76,7 @@ public class JsonFeedParser implements FeedParser {
             feedItem.setTitle(programSetItem.getString("title"));
             feedItem.setDescriptionIfLonger(programSetItem.getString("synopsis"));
             feedItem.setMedia(getFeedMedia(programSetItem, feedItem));
+            feedItem.setFeed(feed);
             feedItems.add(feedItem);
         }
 

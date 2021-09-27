@@ -1,26 +1,28 @@
 package de.danoeh.antennapod.core.service.download.handler;
 
 import android.util.Log;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.parser.feed.FeedHandler;
-import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
-import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.InvalidFeedException;
 
 import org.json.JSONException;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Callable;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.InvalidFeedException;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.parser.feed.FeedHandler;
+import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
+import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 
 public class FeedParserTask implements Callable<FeedHandlerResult> {
     private static final String TAG = "FeedParserTask";
@@ -46,11 +48,11 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         String reasonDetailed = null;
         FeedHandler feedHandler = new FeedHandler();
 
-        FeedHandlerResult result = null;
+        FeedHandlerResult feedHandlerResult = null;
         try {
-            result = feedHandler.parseFeed(feed);
-            Log.d(TAG, feed.getTitle() + " parsed");
-            checkFeedData(feed);
+            feedHandlerResult = feedHandler.parseFeed(feed);
+            Log.d(TAG, feedHandlerResult.feed.getTitle() + " parsed");
+            checkFeedData(feedHandlerResult.feed);
         } catch (SAXException | IOException | ParserConfigurationException | JSONException e) {
             successful = false;
             e.printStackTrace();
@@ -81,7 +83,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         if (successful) {
             downloadStatus = new DownloadStatus(feed, feed.getHumanReadableIdentifier(), DownloadError.SUCCESS,
                                                 successful, reasonDetailed, request.isInitiatedByUser());
-            return result;
+            return feedHandlerResult;
         } else {
             downloadStatus = new DownloadStatus(feed, feed.getTitle(), reason, successful,
                                                 reasonDetailed, request.isInitiatedByUser());

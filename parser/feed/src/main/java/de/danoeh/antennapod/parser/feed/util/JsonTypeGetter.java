@@ -16,10 +16,11 @@ import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 public class JsonTypeGetter implements TypeGetter {
     @Override
     public TypeResolver.Type getType(Feed feed) throws UnsupportedFeedtypeException {
-        InputStream fileInputStream = null;
+        InputStream fileInputStream;
         try {
             fileInputStream = new FileInputStream(feed.getFile_url());
             String jsonTxt = IOUtils.toString(fileInputStream, Charsets.UTF_8);
+            fileInputStream.close();
             new JSONObject(jsonTxt);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
