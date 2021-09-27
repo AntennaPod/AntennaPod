@@ -38,7 +38,7 @@ public class AudiothekSearchResultMapper {
         return podcasts;
     }
 
-    public static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
+    protected static PodcastSearchResult getPodcastSearchResult(JSONObject json) throws JSONException {
         String title = json.optString("title", "");
         JSONObject links = json.getJSONObject("_links");
         String imageUrl = links.getJSONObject("mt:squareImage").optString("href", null);

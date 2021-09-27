@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.parser.feed.type;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.model.feed.Feed;
@@ -19,6 +21,7 @@ public class TypeResolver implements TypeGetter {
             try {
                 return typeGetter.getType(feed);
             } catch (UnsupportedFeedtypeException ignored) {
+                Log.d(TypeResolver.class.getSimpleName(), "so it wasn't " + typeGetter.getClass().getName());
             }
         }
 
