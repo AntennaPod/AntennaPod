@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.net.sync.HostnameParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,46 +64,16 @@ public class GpodnetService implements ISyncService {
 
     private final OkHttpClient httpClient;
 
-    // split into schema, host and port - missing parts are null
-    private static final Pattern URLSPLIT_REGEX = Pattern.compile("(?:(https?)://)?([^:]+)(?::(\\d+))?");
-
     public GpodnetService(OkHttpClient httpClient, String baseHosturl,
                           String deviceId, String username, String password)  {
         this.httpClient = httpClient;
         this.deviceId = deviceId;
         this.username = username;
         this.password = password;
-        if (baseHosturl == null) {
-            baseHosturl = DEFAULT_BASE_HOST;
-        }
-
-        Matcher m = URLSPLIT_REGEX.matcher(baseHosturl);
-        if (m.matches()) {
-            this.baseScheme = m.group(1);
-            this.baseHost = m.group(2);
-            if (m.group(3) == null) {
-                this.basePort = -1;
-            } else {
-                this.basePort = Integer.parseInt(m.group(3));    // regex -> can only be digits
-            }
-        } else {
-            // URL does not match regex: use it anyway -> this will cause an exception on connect
-            this.baseScheme = "https";
-            this.baseHost = baseHosturl;
-            this.basePort = 443;
-        }
-
-        if (this.baseScheme == null) {      // assume https
-            this.baseScheme = "https";
-        }
-
-        if (this.baseScheme.equals("https") && this.basePort == -1) {
-            this.basePort = 443;
-        }
-
-        if (this.baseScheme.equals("http") && this.basePort == -1) {
-            this.basePort = 80;
-        }
+        HostnameParser hostname = new HostnameParser(baseHosturl == null ? DEFAULT_BASE_HOST : baseHosturl);
+        this.baseHost = hostname.host;
+        this.basePort = hostname.port;
+        this.baseScheme = hostname.scheme;
     }
 
     private void requireLoggedIn() {
