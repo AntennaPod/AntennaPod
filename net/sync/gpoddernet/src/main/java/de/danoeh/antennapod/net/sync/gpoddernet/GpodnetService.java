@@ -72,6 +72,9 @@ public class GpodnetService implements ISyncService {
         this.deviceId = deviceId;
         this.username = username;
         this.password = password;
+        if (baseHosturl == null) {
+            baseHosturl = DEFAULT_BASE_HOST;
+        }
 
         Matcher m = URLSPLIT_REGEX.matcher(baseHosturl);
         if (m.matches()) {

@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
@@ -147,12 +147,12 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
-                            R.string.pref_gpodnet_setlogin_information_title, false, GpodnetPreferences.getUsername(),
+                            R.string.pref_gpodnet_setlogin_information_title, false, SynchronizationCredentials.getUsername(),
                             null) {
 
                         @Override
                         protected void onConfirmed(String username, String password) {
-                            GpodnetPreferences.setPassword(password);
+                            SynchronizationCredentials.setPassword(password);
                         }
                     };
                     dialog.show();
@@ -167,7 +167,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             return true;
         });
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
-            GpodnetPreferences.logout(getContext());
+            SynchronizationCredentials.clear(getContext());
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setIsProviderConnected(false);
             setSelectedSyncProvider(null);

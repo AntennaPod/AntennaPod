@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -321,8 +320,8 @@ public class SyncService extends Worker {
         switch (selectedService) {
             case GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
-                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
+                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                        SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
             case NEXTCLOUD_GPODDER:
                 return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
             default:

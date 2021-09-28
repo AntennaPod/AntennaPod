@@ -9,7 +9,7 @@ import com.nextcloud.android.sso.helper.SingleAccountHelper;
 import java.util.EnumSet;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 
 public class ViewDataProvider {
@@ -19,7 +19,7 @@ public class ViewDataProvider {
                 .valueOf(currentSyncProviderKey);
         switch (currentSyncProvider) {
             case GPODDER_NET:
-                return GpodnetPreferences.getUsername();
+                return SynchronizationCredentials.getUsername();
             case NEXTCLOUD_GPODDER:
                 try {
                     return SingleAccountHelper.getCurrentSingleSignOnAccount(context).name;

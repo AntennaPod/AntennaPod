@@ -13,11 +13,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -151,7 +151,7 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
             DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
-            if (GpodnetPreferences.loggedIn()) {
+            if (SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
                 if (media != null) {
