@@ -49,13 +49,19 @@ public class AudiothekSearchResultMapperTest extends TestCase {
         searchResponseJson = new JSONObject(rawResponseJson);
         List<PodcastSearchResult> podcastSearchResults = AudiothekSearchResultMapper
                 .extractPodcasts(searchResponseJson);
-        assertSame(6, podcastSearchResults.size());
+        assertSame(11, podcastSearchResults.size());
 
         PodcastSearchResult podcastSearchResult = podcastSearchResults.get(0);
         assertEquals("Klimazentrale - Der Talk zu Klima & Umwelt", podcastSearchResult.title);
         assertEquals("SWR", podcastSearchResult.author);
         assertEquals("https://api.ardaudiothek.de/./programsets/64922226", podcastSearchResult.feedUrl);
         assertEquals("https://img.ardmediathek.de/standard/00/74/40/73/32/-407010077/1x1/64?mandant=ard", podcastSearchResult.imageUrl);
+
+        PodcastSearchResult editorialCollectionSearchResult = podcastSearchResults.get(6);
+        assertEquals("Klimawandel: Ursachen, Folgen und Lösungsansätze ", editorialCollectionSearchResult.title);
+        assertEquals("", editorialCollectionSearchResult.author);
+        assertEquals("https://api.ardaudiothek.de/./editorialcollections/58143300{?offset,limit}", editorialCollectionSearchResult.feedUrl);
+        assertEquals("https://img.ardmediathek.de/standard/00/91/83/79/80/2121327408/1x1/64?mandant=ard", editorialCollectionSearchResult.imageUrl);
     }
 
     public void testExtractPodcastsOnlyOneResult() throws IOException, JSONException {
