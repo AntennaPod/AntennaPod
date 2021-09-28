@@ -15,7 +15,7 @@ public class SynchronizationQueueSink {
     }
 
     public static void enqueueFeedAddedIfSynchronizationIsActive(Context context, String downloadUrl) {
-        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+        if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
@@ -25,7 +25,7 @@ public class SynchronizationQueueSink {
     }
 
     public static void enqueueFeedRemovedIfSynchronizationIsActive(Context context, String downloadUrl) {
-        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+        if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
@@ -35,7 +35,7 @@ public class SynchronizationQueueSink {
     }
 
     public static void enqueueEpisodeActionIfSynchronizationIsActive(Context context, EpisodeAction action) {
-        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+        if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
@@ -46,7 +46,7 @@ public class SynchronizationQueueSink {
 
     public static void enqueueEpisodePlayedIfSynchronizationIsActive(Context context, FeedMedia media,
                                                                      boolean completed) {
-        if (!SynchronizationSettings.isSynchronizationProviderActive()) {
+        if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
         if (media.getItem() == null) {

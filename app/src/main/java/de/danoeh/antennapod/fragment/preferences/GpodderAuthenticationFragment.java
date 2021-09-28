@@ -33,6 +33,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -270,15 +271,8 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         });
     }
 
-    private void writeLoginCredentials() {
-        SynchronizationCredentials.setUsername(username);
-        SynchronizationCredentials.setPassword(password);
-        SynchronizationCredentials.setDeviceID(selectedDevice.getId());
-    }
-
     private void advance() {
         if (currentStep < STEP_FINISH) {
-
             View view = viewFlipper.getChildAt(currentStep + 1);
             if (currentStep == STEP_DEFAULT) {
                 setupHostView(view);
@@ -294,8 +288,10 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 if (selectedDevice == null) {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
-                    writeLoginCredentials();
-                    SynchronizationSettings.setIsProviderConnected(true);
+                    SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
+                    SynchronizationCredentials.setUsername(username);
+                    SynchronizationCredentials.setPassword(password);
+                    SynchronizationCredentials.setDeviceID(selectedDevice.getId());
                     setupFinishView(view);
                 }
             }

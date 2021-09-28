@@ -125,7 +125,6 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             };
 
             builder.setAdapter(adapter, (dialog, which) -> {
-                setSelectedSyncProvider(providers[which]);
                 switch (providers[which]) {
                     case GPODDER_NET:
                         new GpodderAuthenticationFragment()
@@ -169,15 +168,10 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_LOGOUT).setOnPreferenceClickListener(preference -> {
             SynchronizationCredentials.clear(getContext());
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
-            SynchronizationSettings.setIsProviderConnected(false);
-            setSelectedSyncProvider(null);
+            SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
             return true;
         });
-    }
-
-    private void setSelectedSyncProvider(SynchronizationProviderViewData userSelect) {
-        SynchronizationSettings.setSelectedSyncProvider(userSelect);
     }
 
     private void updateScreen() {
@@ -241,10 +235,10 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         try {
             AccountImporter.onActivityResult(requestCode, resultCode, data,
                     SynchronizationPreferencesFragment.this,
-                    singleSignOnAccount
-                            -> {
+                    singleSignOnAccount -> {
+                        SynchronizationSettings.setSelectedSyncProvider(
+                                SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
                         SingleAccountHelper.setCurrentAccount(getContext(), singleSignOnAccount.name);
-                        SynchronizationSettings.setIsProviderConnected(true);
                         SyncService.fullSync(getContext());
                         updateScreen();
                     });
