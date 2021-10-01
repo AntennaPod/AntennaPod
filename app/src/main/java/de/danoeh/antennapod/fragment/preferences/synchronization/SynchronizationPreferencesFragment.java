@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.format.DateUtils;
@@ -20,12 +19,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.nextcloud.android.sso.AccountImporter;
-import com.nextcloud.android.sso.exceptions.AccountImportCancelledException;
-import com.nextcloud.android.sso.exceptions.AndroidGetAccountsPermissionNotGranted;
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppNotInstalledException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
-import com.nextcloud.android.sso.ui.UiExceptionManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,7 +32,6 @@ import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -131,7 +123,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                                 .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
                         break;
                     case NEXTCLOUD_GPODDER:
-                        openNextcloudAccountChooser();
+                        new NextcloudAuthenticationFragment()
+                                .show(getChildFragmentManager(), NextcloudAuthenticationFragment.TAG);
                         break;
                     default:
                         break;
@@ -190,9 +183,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREFERENCE_LOGOUT).setEnabled(loggedIn);
         if (loggedIn) {
-            String format = getActivity().getString(R.string.synchronization_login_status);
-            String summary = String.format(format,
-                    ViewDataProvider.getUsernameFromSelectedSyncProvider(getContext(), getSelectedSyncProviderKey()));
+            String summary = getString(R.string.synchronization_login_status,
+                    SynchronizationCredentials.getUsername(), SynchronizationCredentials.getHosturl());
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
             updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
@@ -218,32 +210,5 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
                 DateUtils.getRelativeDateTimeString(getContext(),
                         lastTime, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_SHOW_TIME));
         ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(status);
-    }
-
-    private void openNextcloudAccountChooser() {
-        try {
-            AccountImporter.pickNewAccount(this);
-        } catch (NextcloudFilesAppNotInstalledException | AndroidGetAccountsPermissionNotGranted e) {
-            UiExceptionManager.showDialogForException(getContext(), e);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        try {
-            AccountImporter.onActivityResult(requestCode, resultCode, data,
-                    SynchronizationPreferencesFragment.this,
-                    singleSignOnAccount -> {
-                        SynchronizationSettings.setSelectedSyncProvider(
-                                SynchronizationProviderViewData.NEXTCLOUD_GPODDER);
-                        SingleAccountHelper.setCurrentAccount(getContext(), singleSignOnAccount.name);
-                        SyncService.fullSync(getContext());
-                        updateScreen();
-                    });
-        } catch (AccountImportCancelledException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -323,7 +322,9 @@ public class SyncService extends Worker {
                         SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
                         SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
             case NEXTCLOUD_GPODDER:
-                return new NextcloudSyncService(getApplicationContext(), ClientConfig.USER_AGENT);
+                return new NextcloudSyncService(AntennapodHttpClient.getHttpClient(),
+                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getUsername(),
+                        SynchronizationCredentials.getPassword());
             default:
                 return null;
         }

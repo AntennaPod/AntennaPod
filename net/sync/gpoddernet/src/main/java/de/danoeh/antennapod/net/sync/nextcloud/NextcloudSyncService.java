@@ -1,30 +1,6 @@
 package de.danoeh.antennapod.net.sync.nextcloud;
 
-import android.content.Context;
-import android.net.Uri;
-
-import com.google.gson.GsonBuilder;
-import com.nextcloud.android.sso.AccountImporter;
-import com.nextcloud.android.sso.aidl.NextcloudRequest;
-import com.nextcloud.android.sso.api.NextcloudAPI;
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException;
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException;
-import com.nextcloud.android.sso.helper.SingleAccountHelper;
-import com.nextcloud.android.sso.model.SingleSignOnAccount;
-
-import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
+import de.danoeh.antennapod.net.sync.HostnameParser;
 import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
@@ -33,66 +9,54 @@ import de.danoeh.antennapod.net.sync.model.ISyncService;
 import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.net.sync.model.SyncServiceException;
 import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import okhttp3.Credentials;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
 
 public class NextcloudSyncService implements ISyncService {
+    private final OkHttpClient httpClient;
+    private final String baseScheme;
+    private final int basePort;
+    private final String baseHost;
+    private final String username;
+    private final String password;
 
-    private final Context context;
-    private NextcloudAPI nextcloudApi;
-    private final String userAgent;
-
-    public NextcloudSyncService(Context context, String userAgent) {
-        this.context = context;
-        this.userAgent = userAgent;
+    public NextcloudSyncService(OkHttpClient httpClient, String baseHosturl,
+                          String username, String password)  {
+        this.httpClient = httpClient;
+        this.username = username;
+        this.password = password;
+        HostnameParser hostname = new HostnameParser(baseHosturl);
+        this.baseHost = hostname.host;
+        this.basePort = hostname.port;
+        this.baseScheme = hostname.scheme;
     }
 
     @Override
     public void login() {
-        SingleSignOnAccount ssoAccount = null;
-        try {
-            try {
-                ssoAccount = AccountImporter.getSingleSignOnAccount(context,
-                        SingleAccountHelper.getCurrentSingleSignOnAccount(context).name);
-            } catch (NoCurrentAccountSelectedException e) {
-                e.printStackTrace();
-            }
-            NextcloudAPI.ApiConnectedListener callback = new NextcloudAPI.ApiConnectedListener() {
-
-                @Override
-                public void onConnected() {
-                }
-
-                @Override
-                public void onError(Exception ex) {
-                }
-            };
-            this.nextcloudApi = new NextcloudAPI(context, ssoAccount, new GsonBuilder().create(), callback);
-        } catch (NextcloudFilesAppAccountNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public SubscriptionChanges getSubscriptionChanges(long lastSync) throws SyncServiceException {
         try {
-            String uri = "/index.php/apps/gpoddersync/subscriptions";
-            HashMap<String, String> parameters = new HashMap<>();
-            parameters.put("since", String.valueOf(lastSync));
-            HashMap<String, List<String>> header = getHeaderWithUserAgent();
-            NextcloudRequest nextcloudRequest = new NextcloudRequest.Builder()
-                    .setMethod("GET")
-                    .setUrl(Uri.encode(uri, "/"))
-                    .setParameter(parameters)
-                    .setHeader(header)
-                    .build();
-
-            InputStream inputStream = this.nextcloudApi.performNetworkRequest(nextcloudRequest);
-            String responseString = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/subscriptions");
+            url.addQueryParameter("since", "" + lastSync);
+            String responseString = performRequest(url, "GET", null);
             JSONObject json = new JSONObject(responseString);
-            inputStream.close();
             return ResponseMapper.readSubscriptionChangesFromJsonObject(json);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
         } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
             throw new SyncServiceException(e);
@@ -102,32 +66,18 @@ public class NextcloudSyncService implements ISyncService {
         }
     }
 
-    private HashMap<String, List<String>> getHeaderWithUserAgent() {
-        HashMap<String, List<String>> header = new HashMap<>();
-        header.put("User-Agent", Collections.singletonList(userAgent));
-        return header;
-    }
-
     @Override
     public UploadChangesResponse uploadSubscriptionChanges(List<String> addedFeeds,
                                                            List<String> removedFeeds)
             throws NextcloudSynchronizationServiceException {
         try {
-            HashMap<String, List<String>> header = getHeaderWithUserAgent();
-            header.put("Content-Type", Collections.singletonList("application/json"));
-
+            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/subscription_change/create");
             final JSONObject requestObject = new JSONObject();
             requestObject.put("add", new JSONArray(addedFeeds));
             requestObject.put("remove", new JSONArray(removedFeeds));
-
-            NextcloudRequest nextcloudRequest = new NextcloudRequest.Builder()
-                    .setMethod("POST")
-                    .setUrl(Uri.encode("/index.php/apps/gpoddersync/subscription_change/create", "/"))
-                    .setHeader(header)
-                    .setRequestBody(requestObject.toString())
-                    .build();
-
-            this.nextcloudApi.performNetworkRequest(nextcloudRequest).close();
+            RequestBody requestBody = RequestBody.create(
+                    MediaType.get("application/json"), requestObject.toString());
+            performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
             throw new NextcloudSynchronizationServiceException(e);
@@ -139,23 +89,11 @@ public class NextcloudSyncService implements ISyncService {
     @Override
     public EpisodeActionChanges getEpisodeActionChanges(long timestamp) throws SyncServiceException {
         try {
-            String uri = "/index.php/apps/gpoddersync/episode_action";
-            HashMap<String, String> parameters = new HashMap<>();
-            parameters.put("since", String.valueOf(timestamp));
-            NextcloudRequest nextcloudRequest = new NextcloudRequest.Builder()
-                    .setMethod("GET")
-                    .setUrl(Uri.encode(uri, "/"))
-                    .setParameter(parameters)
-                    .build();
-
-            InputStream inputStream = this.nextcloudApi.performNetworkRequest(nextcloudRequest);
-            String responseString = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
-            inputStream.close();
+            HttpUrl.Builder uri = makeUrl("/index.php/apps/gpoddersync/episode_action");
+            uri.addQueryParameter("since", "" + timestamp);
+            String responseString = performRequest(uri, "GET", null);
             JSONObject json = new JSONObject(responseString);
             return ResponseMapper.readEpisodeActionsFromJsonObject(json);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
         } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
             throw new SyncServiceException(e);
@@ -169,17 +107,11 @@ public class NextcloudSyncService implements ISyncService {
     public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> queuedEpisodeActions)
             throws NextcloudSynchronizationServiceException {
         try {
-            HashMap<String, List<String>> header = getHeaderWithUserAgent();
-            header.put("Content-Type", Collections.singletonList("application/json"));
             String body = createBody(queuedEpisodeActions.toString());
-            NextcloudRequest nextcloudRequest = new NextcloudRequest.Builder()
-                    .setMethod("POST")
-                    .setUrl(Uri.encode("/index.php/apps/gpoddersync/episode_action/create", "/"))
-                    .setHeader(header)
-                    .setRequestBody(body)
-                    .build();
-
-            this.nextcloudApi.performNetworkRequest(nextcloudRequest);
+            HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/episode_action/create");
+            RequestBody requestBody = RequestBody.create(
+                    MediaType.get("application/json"), body);
+            performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
             throw new NextcloudSynchronizationServiceException(e);
@@ -191,6 +123,28 @@ public class NextcloudSyncService implements ISyncService {
 
     private String createBody(String data) {
         return "{\"data\": \"" + data + "\"}";
+    }
+
+    private String performRequest(HttpUrl.Builder url, String method, RequestBody body) throws IOException, URISyntaxException {
+        Request request = new Request.Builder()
+                .url(url.build())
+                .header("Authorization", Credentials.basic(username, password))
+                .header("Accept", "application/json")
+                .method(method, body)
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        if (response.code() != 200) {
+            throw new IOException("Response code: " + response.code());
+        }
+        return response.body().string();
+    }
+
+    private HttpUrl.Builder makeUrl(String path) {
+        return new HttpUrl.Builder()
+                .scheme(baseScheme)
+                .host(baseHost)
+                .port(basePort)
+                .addPathSegments(path);
     }
 
     @Override

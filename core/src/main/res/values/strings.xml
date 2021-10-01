@@ -453,9 +453,10 @@
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="synchronization_sync_changes_title">Synchronize now</string>
     <string name="synchronization_full_sync_title">Force full synchronization</string>
-    <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
+    <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
     <string name="synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
+    <string name="synchronization_nextcloud_authenticate_browser">Grant access using the opened web browser and come back to AntennaPod.</string>
     <string name="synchronization_choose_and_login_summary">Choose a synchronization provider and login</string>
     <string name="synchronization_choose_and_login_title">Choose synchronization provider</string>
     <string name="synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
