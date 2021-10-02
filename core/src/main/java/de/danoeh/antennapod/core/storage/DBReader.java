@@ -881,7 +881,7 @@ public final class DBReader {
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
         List<NavDrawerData.DrawerItem> items = new ArrayList<>();
-        Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
+        Map<String, NavDrawerData.TagDrawerItem> folders = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
                 NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
@@ -890,18 +890,18 @@ public final class DBReader {
                     items.add(drawerItem);
                     continue;
                 }
-                NavDrawerData.FolderDrawerItem folder;
+                NavDrawerData.TagDrawerItem folder;
                 if (folders.containsKey(tag)) {
                     folder = folders.get(tag);
                 } else {
-                    folder = new NavDrawerData.FolderDrawerItem(tag);
+                    folder = new NavDrawerData.TagDrawerItem(tag);
                     folders.put(tag, folder);
                 }
                 drawerItem.id |= folder.id;
                 folder.children.add(drawerItem);
             }
         }
-        List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
+        List<NavDrawerData.TagDrawerItem> foldersSorted = new ArrayList<>(folders.values());
         Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
         items.addAll(foldersSorted);
 

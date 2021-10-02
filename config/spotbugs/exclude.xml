@@ -62,7 +62,7 @@
     </Match>
     <Match>
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="de.danoeh.antennapod.core.storage.NavDrawerData$FolderDrawerItem"/>
+        <Class name="de.danoeh.antennapod.core.storage.NavDrawerData$TagDrawerItem"/>
     </Match>
     <Match>
         <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>

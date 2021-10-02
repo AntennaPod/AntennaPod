@@ -157,7 +157,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             };
             removeAllNewFlagsConfirmationDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.add_to_folder) {
+        } else if (itemId == R.id.edit_tags) {
             TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
@@ -318,7 +318,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         ((MainActivity) getActivity()).getBottomSheet()
                                 .setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
-                        NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) clickedItem);
+                        NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) clickedItem);
                         if (openFolders.contains(folder.name)) {
                             openFolders.remove(folder.name);
                         } else {
@@ -388,11 +388,11 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         for (NavDrawerData.DrawerItem item : items) {
             item.setLayer(layer);
             flatItems.add(item);
-            if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
-                NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) item);
+            if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
+                NavDrawerData.TagDrawerItem folder = ((NavDrawerData.TagDrawerItem) item);
                 folder.isOpen = openFolders.contains(folder.name);
                 if (folder.isOpen) {
-                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.FolderDrawerItem) item).children, layer + 1));
+                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.TagDrawerItem) item).children, layer + 1));
                 }
             }
         }

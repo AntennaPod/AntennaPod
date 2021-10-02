@@ -689,8 +689,8 @@
     <!-- Feed settings/information screen -->
     <string name="authentication_label">Authentication</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
-    <string name="feed_folders_label">Folders</string>
-    <string name="feed_folders_summary">Change the folders in which this podcast is displayed.</string>
+    <string name="feed_tags_label">Tags</string>
+    <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show in main list</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>

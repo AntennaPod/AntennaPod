@@ -196,7 +196,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
                 holder.itemView.setOnCreateContextMenuListener(itemAccess);
             } else {
-                bindFolderView((NavDrawerData.FolderDrawerItem) item, (FeedHolder) holder);
+                bindTagView((NavDrawerData.TagDrawerItem) item, (FeedHolder) holder);
             }
         }
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
@@ -327,16 +327,16 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
-    private void bindFolderView(NavDrawerData.FolderDrawerItem folder, FeedHolder holder) {
+    private void bindTagView(NavDrawerData.TagDrawerItem tag, FeedHolder holder) {
         Activity context = activity.get();
         if (context == null) {
             return;
         }
-        if (folder.isOpen) {
+        if (tag.isOpen) {
             holder.count.setVisibility(View.GONE);
         }
         Glide.with(context).clear(holder.image);
-        holder.image.setImageResource(R.drawable.ic_folder);
+        holder.image.setImageResource(R.drawable.ic_tag);
         holder.failure.setVisibility(View.GONE);
     }
 
