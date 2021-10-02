@@ -36,10 +36,10 @@
     <string name="app_action_not_found">\"%1$s\" not found</string>
 
     <!-- SwipeActions -->
-    <string name="swipeactions_label">Effect of Swiping</string>
-    <string name="swipeactions_summary">Choose the result of flicking an episode in a list</string>
+    <string name="swipeactions_label">Swiping</string>
+    <string name="swipeactions_summary">Action applied to episodes in lists</string>
     <string name="swipe_right">Swipe right</string>
-    <string name="swipe_left">Swipe ←</string>
+    <string name="swipe_left">Swipe left</string>
     <string name="enable_swipeactions">Allow swiping here</string>
     <string name="change_setting">Change</string>
 
@@ -51,7 +51,7 @@
     <string name="statistics_mode_count_all">Sum up all episodes marked as played</string>
     <string name="statistics_speed_not_counted">(Playback speed is never taken into account.)</string>
     <string name="statistics_reset_data">Reset stats</string>
-    <string name="statistics_reset_data_msg">Erase playback history for all episodes?</string>
+    <string name="statistics_reset_data_msg">Erase all playback history?</string>
     <string name="statistics_counting_since">Since %s,\nyou played</string>
 
     <!-- Download Statistics fragment -->
@@ -61,7 +61,7 @@
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
     <string name="drawer_preferences">Drawer Preferences</string>
-    <string name="drawer_feed_order_unplayed_episodes">By counter</string>
+    <string name="drawer_feed_order_unplayed_episodes">Sort by counter</string>
     <string name="drawer_feed_order_alphabetical">A - Z</string>
     <string name="drawer_feed_order_last_update">Publication date</string>
     <string name="drawer_feed_order_most_played">Number of played episodes</string>
@@ -115,7 +115,7 @@
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads">%1$d concurrent downloads</string>
-    <string name="feed_auto_download_global">For the whole app</string>
+    <string name="feed_auto_download_global">Default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
@@ -143,14 +143,14 @@
     <string name="episode_notification">Episode Notifications</string>
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">One new episode from %2$s</item>
+        <item quantity="one">%2$s has a new episode</item>
         <item quantity="other">%1$d new episodes from %2$s</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">New Episode</item>
         <item quantity="other">New Episodes</item>
     </plurals>
-    <string name="new_episode_notification_group_text">New subscription episodes.</string>
+    <string name="new_episode_notification_group_text">New episodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -384,9 +384,9 @@
     <string name="button_action_skip_episode">Skip Episode…</string>
     <string name="button_action_restart_episode">Restart Episode…</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
-    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_sum">Delete played episodes</string>
     <string name="pref_auto_delete_title">Auto-delete</string>
-    <string name="pref_smart_mark_as_played_title">Smart Mark as Played</string>
+    <string name="pref_smart_mark_as_played_title">Smart-mark as Played</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even with less than a set amount of seconds of playtime left</string>
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes that are skipped</string>
@@ -660,7 +660,7 @@
     <string name="choose_data_directory_available_space">%1$s of %2$s available</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume for other playback</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
-    <string name="pref_resumeAfterCall_sum">Resume playback after a phone calls</string>
+    <string name="pref_resumeAfterCall_sum">Resume playback after phone calls</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
     <string name="pref_restart_required">Restart the app to use the new settings.</string>
 
