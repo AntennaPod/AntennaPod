@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceFragmentCompat;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
@@ -39,7 +40,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
-                            getActivity().recreate();
+                            ActivityCompat.recreate(getActivity());
                             return true;
                         });
 

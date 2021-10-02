@@ -213,7 +213,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         .load();
             } else {
                 new CoverLoader(mainActivityRef.get())
-                        .withResource(R.drawable.ic_folder)
+                        .withResource(R.drawable.ic_tag)
                         .withPlaceholderView(feedTitle, true)
                         .withCoverView(imageView)
                         .load();

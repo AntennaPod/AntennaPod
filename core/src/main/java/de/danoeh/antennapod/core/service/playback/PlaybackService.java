@@ -986,6 +986,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private Playable getNextInQueue(final Playable currentMedia) {
         if (!(currentMedia instanceof FeedMedia)) {
             Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
+            PlaybackPreferences.writeNoMediaPlaying();
             return null;
         }
         Log.d(TAG, "getNextInQueue()");
@@ -996,6 +997,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedItem item = media.getItem();
         if (item == null) {
             Log.w(TAG, "getNextInQueue() with FeedMedia object whose FeedItem is null");
+            PlaybackPreferences.writeNoMediaPlaying();
             return null;
         }
         FeedItem nextItem;
@@ -1008,11 +1010,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (nextItem == null || nextItem.getMedia() == null) {
+            PlaybackPreferences.writeNoMediaPlaying();
             return null;
         }
 
         if (!UserPreferences.isFollowQueue()) {
             Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
+            PlaybackPreferences.writeMediaPlaying(nextItem.getMedia(), PlayerStatus.STOPPED, false);
             updateNotificationAndMediaSession(nextItem.getMedia());
             return null;
         }
@@ -1042,7 +1046,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            PlaybackPreferences.writeNoMediaPlaying();
             if (!isCasting) {
                 stateManager.stopForeground(true);
                 stateManager.stopService();
@@ -1291,8 +1294,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void updateNotificationAndMediaSession(final Playable p) {
-        updateMediaSessionMetadata(p);
         setupNotification(p);
+        updateMediaSessionMetadata(p);
     }
 
     private void updateMediaSessionMetadata(final Playable p) {

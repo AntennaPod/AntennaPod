@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -101,8 +102,13 @@ public class DownloadLogAdapter extends BaseAdapter {
             holder.reason.setVisibility(View.GONE);
             holder.tapForDetails.setVisibility(View.GONE);
         } else {
-            holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
-            holder.icon.setText("{fa-times-circle}");
+            if (status.getReason() == DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE) {
+                holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_warning_yellow));
+                holder.icon.setText("{fa-exclamation-circle}");
+            } else {
+                holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
+                holder.icon.setText("{fa-times-circle}");
+            }
             holder.icon.setContentDescription(context.getString(R.string.error_label));
             holder.reason.setText(status.getReason().getErrorString(context));
             holder.reason.setVisibility(View.VISIBLE);

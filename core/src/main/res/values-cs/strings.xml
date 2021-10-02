@@ -28,6 +28,7 @@
   <string name="notification_pref_fragment">Upozornění</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nenalezen</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas přehraných epizod:</string>
   <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
@@ -85,15 +86,11 @@
   <string name="shownotes_label">Poznámky</string>
   <string name="shownotes_contentdescription">přejet prstem nahoru pro čtení poznámek</string>
   <string name="episodes_suffix">\u0020epizod</string>
-  <string name="processing_label">Zpracovávám</string>
   <string name="close_label">Zavřít</string>
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
-  <string name="auto_download_apply_to_items_title">Použít na předchozí epizody</string>
-  <string name="auto_download_apply_to_items_message">Nové nastavení <i>automatického stahování</i> bude použito pro nové epizody.\nChcete ho použít také na epizody zveřejněné dříve?</string>
   <string name="auto_delete_label">Automatické mazání epizod</string>
   <string name="feed_volume_reduction">Snížení hlasitosti</string>
-  <string name="feed_volume_reduction_summary">Snížení hlasitosti epizod tohoto podcastu: %1$s&lt;br&gt;</string>
   <string name="feed_volume_reduction_off">Vypnuto</string>
   <string name="feed_volume_reduction_light">Nízké</string>
   <string name="feed_volume_reduction_heavy">Vysoké</string>
@@ -117,12 +114,6 @@
     <item quantity="few">%d dny po dokončení</item>
     <item quantity="many">%d dnů po dokončení</item>
     <item quantity="other">%d dnů po dokončení</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d vybrána</item>
-    <item quantity="few">%d vybrány</item>
-    <item quantity="many">%d vybráno</item>
-    <item quantity="other">%d vybráno</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d epizoda</item>
@@ -234,8 +225,6 @@
   <string name="remove_from_favorite_label">Odebrat z obíbených</string>
   <string name="visit_website_label">Navštívit stránku</string>
   <string name="skip_episode_label">Přeskočit epizodu</string>
-  <string name="activate_auto_download">Aktivovat automatické stahování</string>
-  <string name="deactivate_auto_download">Deaktivovat automatické stahování</string>
   <string name="reset_position">Vymazat pozici přehrávání</string>
   <string name="removed_item">Položka odebrána</string>
   <string name="no_items_selected">Nic není vybráno</string>
@@ -263,7 +252,6 @@
   <string name="download_error_wrong_size">Před dokončením stahování došlo ke ztrátě připojení k serveru</string>
   <string name="download_error_blocked">Stahování bylo blokováno jinou aplikací ve vašem zařízení.</string>
   <string name="download_error_certificate">Nelze navázat zabezpečené připojení. To může znamenat, že stahování zablokovala jiná aplikace ve vašem zařízení nebo že něco není v pořádku s certifikáty serveru.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Stahování zrušeno\nVypnuto <i>automatické stahování</i> této položky</string>
   <string name="download_report_title">Stahování dokončeno s chybou</string>
   <string name="auto_download_report_title">Automatické stahování dokončeno</string>
   <string name="download_error_io_error">IO chyba</string>
@@ -275,7 +263,6 @@
     <item quantity="many">%d čekajících na stažení</item>
     <item quantity="other">%d čekajících na stažení</item>
   </plurals>
-  <string name="service_shutting_down">Vypínání služby</string>
   <string name="download_notification_title">Stahuji podcast data</string>
   <string name="download_log_title_unknown">Neznámý název</string>
   <string name="download_type_feed">Kanál</string>
@@ -307,7 +294,6 @@
   <string name="no_media_label">Položka neobsahuje mediální soubor</string>
   <!--Queue operations-->
   <string name="lock_queue">Zamknout frontu</string>
-  <string name="unlock_queue">Odemknout frontu</string>
   <string name="queue_locked">Fronta zamknuta</string>
   <string name="queue_unlocked">Fronta odemknuta</string>
   <string name="queue_lock_warning">Pokud zamknete frontu, tak nemůžete měnit pořadí epizod tažením.</string>
@@ -486,8 +472,6 @@
   <string name="enqueue_location_front">začátek</string>
   <string name="enqueue_location_after_current">za hrající epizodu</string>
   <string name="pref_smart_mark_as_played_disabled">Vypnuto</string>
-  <string name="pref_image_cache_size_title">Velikost odkládací paměti obrázků</string>
-  <string name="pref_image_cache_size_sum">Velikost diskové paměti pro obrázky.</string>
   <string name="documentation_support">Dokumentace &amp; Podpora</string>
   <string name="visit_user_forum">Uživatelské fórum</string>
   <string name="bug_report_title">Nahlásit chybu</string>
@@ -629,7 +613,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
-  <string name="gpodnet_suggestions_header">DOPORUČENÉ</string>
   <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Přihlásit</string>
   <string name="gpodnetauth_encryption_warning">Heslo a data nejsou šifrována!</string>
@@ -724,22 +707,6 @@
   <string name="local_feed_description">Byl založen následující virtuální podcast vytvořením adresáře v AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Nedaří se spustit správce souborů</string>
   <string name="filter">Filtr</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Vše</string>
-  <string name="selected_all_label">Vybrány všechny epizody</string>
-  <string name="select_none_label">Žádné</string>
-  <string name="deselected_all_label">Odebrány všechny epizody</string>
-  <string name="played_label">Přehrány</string>
-  <string name="selected_played_label">Vybrány přehrané epizody</string>
-  <string name="unplayed_label">Nepřehrány</string>
-  <string name="selected_unplayed_label">Odebrány nepřehrané epizody</string>
-  <string name="downloaded_label">Stažené</string>
-  <string name="selected_downloaded_label">Vybrány stažené epizody</string>
-  <string name="not_downloaded_label">Nestažené</string>
-  <string name="selected_not_downloaded_label">Vybrány nestažené epizody</string>
-  <string name="selected_queued_label">Vybrané epizody ve frontě</string>
-  <string name="selected_not_queued_label">Vybrané epizody mimo frontu</string>
-  <string name="selected_has_media_label">Vybrané epizody s médii</string>
   <string name="hide_is_favorite_label">Je mezi oblíbenými</string>
   <string name="not_favorite">Není mezi oblíbenými</string>
   <string name="hide_downloaded_episodes_label">Stažené</string>
@@ -780,9 +747,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio ovládání</string>
   <string name="playback_speed">Rychlost přehrávání</string>
-  <string name="volume">Hlasitost</string>
-  <string name="left_short">L</string>
-  <string name="right_short">P</string>
   <string name="audio_effects">Audio efekty</string>
   <string name="stereo_to_mono">Downmix: Stereo na mono</string>
   <string name="sonic_only">Pouze Sonic</string>

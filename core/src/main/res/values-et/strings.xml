@@ -27,6 +27,7 @@
   <string name="notification_pref_fragment">Teavitused</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Saadete kogupikkus:</string>
   <string name="statistics_details_dialog">%1$d %2$d-st saatest on alustatud.\n\nKuulatud on %3$s saadet %4$s-st.</string>
@@ -79,15 +80,11 @@
   <string name="chapter_duration">Pikkus: %1$s</string>
   <string name="description_label">Kirjeldus</string>
   <string name="episodes_suffix">\u0020saadet</string>
-  <string name="processing_label">Töötlemine</string>
   <string name="close_label">Sulge</string>
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
-  <string name="auto_download_apply_to_items_title">Rakenda eelmistele saadetele</string>
-  <string name="auto_download_apply_to_items_message">Uus <i>Automaatse allalaadimise</i> säte rakendatakse uutele saadetele.\nKas tahad seda rakendada ka varem avaldatud saadetele?</string>
   <string name="auto_delete_label">Saadete automaatne kustutamine</string>
   <string name="feed_volume_reduction">Valjuse vähendamine</string>
-  <string name="feed_volume_reduction_summary">See voo saadete valjuse vähendamine: %1$s</string>
   <string name="feed_volume_reduction_off">Väljas</string>
   <string name="feed_volume_reduction_light">Kerge</string>
   <string name="feed_volume_reduction_heavy">Tugev</string>
@@ -107,10 +104,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 päev pärast lõpetamist</item>
     <item quantity="other">%d päeva pärast lõpetamist</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d valitud</item>
-    <item quantity="other">%d valitud</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d saade</item>
@@ -203,8 +196,6 @@
   <string name="remove_from_favorite_label">Eemalda lemmikutest</string>
   <string name="visit_website_label">Külasta veebilehte</string>
   <string name="skip_episode_label">Jäta saade vahele</string>
-  <string name="activate_auto_download">Lülita automaatne allalaadimine sisse</string>
-  <string name="deactivate_auto_download">Lülita automaatne allalaadimine välja</string>
   <string name="reset_position">Nulli esitamise asukoht</string>
   <string name="removed_item">Kirje on eemaldatud</string>
   <string name="no_items_selected">Ühtegi pole valitud</string>
@@ -232,7 +223,6 @@
   <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
   <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis.</string>
   <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Allalaadimine tühistati\nKeelati selle saate <i>automaatne allalaadimine</i></string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
   <string name="auto_download_report_title">Automaatsed allalaadimised lõpetatud</string>
   <string name="download_error_io_error">IO viga</string>
@@ -242,7 +232,6 @@
     <item quantity="one">%d allalaadimine jäänud</item>
     <item quantity="other">%d allalaadimist jäänud</item>
   </plurals>
-  <string name="service_shutting_down">Seade lülitub välja</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
@@ -274,7 +263,6 @@
   <string name="no_media_label">Element ei sisalda meediafaili</string>
   <!--Queue operations-->
   <string name="lock_queue">Lukusta järjekord</string>
-  <string name="unlock_queue">Eemalda järjekorra lukustus</string>
   <string name="queue_locked">Järjekord on lukustatud</string>
   <string name="queue_unlocked">Järjekorra lukustus on eemaldatud</string>
   <string name="queue_lock_warning">Kui lukustad järjekorra, ei saa saadete järjekorda enam muuta ega neid välja pühkida.</string>
@@ -441,8 +429,6 @@
   <string name="enqueue_location_front">Lõppu</string>
   <string name="enqueue_location_after_current">Pärast praegust saadet</string>
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
-  <string name="pref_image_cache_size_title">Piltide vahemälu suurus</string>
-  <string name="pref_image_cache_size_sum">Piltide jaoks kasutatava vahemälu suurus</string>
   <string name="documentation_support">Dokumentatsioon &amp; tugi</string>
   <string name="visit_user_forum">Kasutajate foorum</string>
   <string name="bug_report_title">Raporteeri veast</string>
@@ -574,7 +560,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGOORIAD</string>
   <string name="gpodnet_toplist_header">POPULAARSED</string>
-  <string name="gpodnet_suggestions_header">SOOVITUSED</string>
   <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="gpodnetauth_login_butLabel">Logi sisse</string>
   <string name="gpodnetauth_encryption_warning">Parool ja andmed ei ole krüpteeritud!</string>
@@ -664,22 +649,6 @@
   <string name="local_feed_description">See virtuaalne taskuhääling loodi kausta lisamisega AntennaPodi.</string>
   <string name="unable_to_start_system_file_manager">Süsteemi failihalduri käivitamine ebaõnnestus</string>
   <string name="filter">Filter</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Kõik</string>
-  <string name="selected_all_label">Vali kõik saated</string>
-  <string name="select_none_label">Pole</string>
-  <string name="deselected_all_label">Tühista kõigi saadete valik</string>
-  <string name="played_label">Esitatud</string>
-  <string name="selected_played_label">Valitud kuulatud saated</string>
-  <string name="unplayed_label">Esitamata</string>
-  <string name="selected_unplayed_label">Valitud kuulamata saated</string>
-  <string name="downloaded_label">Alla laaditud</string>
-  <string name="selected_downloaded_label">Valitud allalaaditud saated</string>
-  <string name="not_downloaded_label">Pole alla laaditud</string>
-  <string name="selected_not_downloaded_label">Valitud allalaadimata saated</string>
-  <string name="selected_queued_label">Valitud järjekorras olevad saated</string>
-  <string name="selected_not_queued_label">Valitud järjekorras mitte olevad saated</string>
-  <string name="selected_has_media_label">Valitud saated meediafailidega</string>
   <string name="hide_is_favorite_label">On lemmik</string>
   <string name="not_favorite">Pole lemmik</string>
   <string name="hide_downloaded_episodes_label">Alla laaditud</string>
@@ -720,9 +689,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audioesitaja nupud</string>
   <string name="playback_speed">Esitamise kiirus</string>
-  <string name="volume">Helitugevus</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">Heliefektid</string>
   <string name="stereo_to_mono">Downmix: Stereo monoks</string>
   <string name="sonic_only">Ainult Sonic</string>

@@ -23,6 +23,7 @@
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
   <string name="notification_pref_fragment">Сповіщення</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
   <string name="statistics_mode">Режим статистики</string>
@@ -69,12 +70,9 @@
   <string name="chapter_duration">Тривалість: %1$s</string>
   <string name="description_label">Опис</string>
   <string name="episodes_suffix">\u0020епізодів</string>
-  <string name="processing_label">Обробка</string>
   <string name="close_label">Закрити</string>
   <string name="retry_label">Повторити знову</string>
   <string name="auto_download_label">Включити до автозавантаження</string>
-  <string name="auto_download_apply_to_items_title">Застосувати до попередніх епізодів</string>
-  <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозавантаження</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що були опубліковані раніше?</string>
   <string name="auto_delete_label">Автовидалення епізоду</string>
   <string name="feed_auto_download_global">За замовчуванням</string>
   <string name="feed_auto_download_always">Завжди</string>
@@ -161,8 +159,6 @@
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="skip_episode_label">Пропустити епізод</string>
-  <string name="activate_auto_download">Включити автозавантаження</string>
-  <string name="deactivate_auto_download">Виключити автозавантаження</string>
   <string name="reset_position">Скинути позицію відтворення</string>
   <string name="removed_item">Видалено</string>
   <!--Download messages and labels-->
@@ -179,7 +175,6 @@
   <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="download_error_file_type_type">Помилка типу файлу</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
-  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елементу вимкнуто</string>
   <string name="download_report_title">Завантаження завершені з помилками</string>
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
@@ -213,7 +208,6 @@
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Заблокувати чергу</string>
-  <string name="unlock_queue">Розблокувати чергу</string>
   <string name="queue_locked">Чергу заблоковано</string>
   <string name="queue_unlocked">Чергу розблоковано</string>
   <string name="checkbox_do_not_show_again">Більше не показувати</string>
@@ -329,8 +323,6 @@
   <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
   <string name="enqueue_location_after_current">Після поточного епізоду</string>
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
-  <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
-  <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
   <string name="bug_report_title">Повідомити про помилку</string>
   <string name="open_bug_tracker">Відкрити трекер помилок</string>
   <string name="copy_to_clipboard">Копіювати</string>
@@ -421,7 +413,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
-  <string name="gpodnet_suggestions_header">РЕКОМЕНДАЦІЇ</string>
   <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Логін</string>
   <string name="username_label">Ім\'я користувача</string>
@@ -474,21 +465,6 @@
   <string name="discover_more">більше »</string>
   <!--Local feeds-->
   <string name="filter">Фільтр</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Всі</string>
-  <string name="selected_all_label">Обрано всі епізоди</string>
-  <string name="deselected_all_label">Жодного епізода не обрано</string>
-  <string name="played_label">Відтворені</string>
-  <string name="selected_played_label">Обрано відтворені епізоди</string>
-  <string name="unplayed_label">Невідтворені</string>
-  <string name="selected_unplayed_label">Обрано невідтворені епізоди</string>
-  <string name="downloaded_label">Завантажені</string>
-  <string name="selected_downloaded_label">Обрано завантажені епізоди</string>
-  <string name="not_downloaded_label">Незавантажені</string>
-  <string name="selected_not_downloaded_label">Обрано незавантажені епізоди</string>
-  <string name="selected_queued_label">Обрано епізоди що в черзі</string>
-  <string name="selected_not_queued_label">Обрано епізоди що не в черзі</string>
-  <string name="selected_has_media_label">Обрано епізоди зі звуком або відео</string>
   <string name="hide_is_favorite_label">В улюблених</string>
   <string name="hide_downloaded_episodes_label">Завантажені</string>
   <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
@@ -514,9 +490,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Керування звуком</string>
   <string name="playback_speed">Швидкість програвання</string>
-  <string name="volume">Гучність</string>
-  <string name="left_short">Л</string>
-  <string name="right_short">П</string>
   <string name="audio_effects">Аудіоефекти</string>
   <string name="stereo_to_mono">Зробити моно із стерео</string>
   <string name="sonic_only">Тільки Sonic</string>

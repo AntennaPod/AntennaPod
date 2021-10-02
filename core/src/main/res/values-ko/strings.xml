@@ -27,6 +27,7 @@
   <string name="notification_pref_fragment">알림</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" 없음</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">재생한 에피소드 총 시간:</string>
   <string name="statistics_details_dialog">에피소드 %1$d개 (전체 %2$d개) 시작.\n\n%3$s개 재생 (전체 %4$s개).</string>
@@ -79,15 +80,11 @@
   <string name="chapter_duration">길이: %1$s</string>
   <string name="description_label">설명</string>
   <string name="episodes_suffix">\u0020에피소드</string>
-  <string name="processing_label">처리 중</string>
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
-  <string name="auto_download_apply_to_items_title">예전 에피소드에 적용</string>
-  <string name="auto_download_apply_to_items_message">새로운 <i>자동 다운로드</i> 설정은 자동으로 새로운 에피소드에 적용됩니다. 예전 에피소드에도 적용하시겠습니까?</string>
   <string name="auto_delete_label">에피소드 자동 삭제</string>
   <string name="feed_volume_reduction">볼륨 줄이기</string>
-  <string name="feed_volume_reduction_summary">이 피드의 에피소드에 대해 볼륨을 줄이기: %1$s</string>
   <string name="feed_volume_reduction_off">끄기</string>
   <string name="feed_volume_reduction_light">가볍게</string>
   <string name="feed_volume_reduction_heavy">무겁게</string>
@@ -105,9 +102,6 @@
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">재생이 끝나고 나서 %d일 뒤</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="other">%d개 선택</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="other">%d개 에피소드</item>
@@ -190,8 +184,6 @@
   <string name="remove_from_favorite_label">즐겨찾기에서 제거</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
-  <string name="activate_auto_download">자동 다운로드 활성화</string>
-  <string name="deactivate_auto_download">자동 다운로드 해제</string>
   <string name="reset_position">재생 위치 초기화</string>
   <string name="removed_item">항목 제거됨</string>
   <string name="no_items_selected">선택 없음</string>
@@ -209,7 +201,6 @@
   <string name="download_error_unauthorized">인증 오류</string>
   <string name="download_error_file_type_type">파일 종류 오류</string>
   <string name="download_canceled_msg">다운로드 취소함</string>
-  <string name="download_canceled_autodownload_enabled_msg">다운로드 취소함\n이 항목에 <i>자동 다운로드</i>를 해제합니다</string>
   <string name="download_report_title">다운로드 마침 (오류 있음)</string>
   <string name="auto_download_report_title">자동 다운로드 마침</string>
   <string name="download_error_io_error">입출력 오류</string>
@@ -249,7 +240,6 @@
   <string name="no_media_label">항목에 미디어 파일이 들어있지 않습니다</string>
   <!--Queue operations-->
   <string name="lock_queue">대기열 잠그기</string>
-  <string name="unlock_queue">대기열 잠금 해제</string>
   <string name="queue_locked">대기열 잠겨짐</string>
   <string name="queue_unlocked">대기열 잠금 풀림</string>
   <string name="queue_lock_warning">대기열을 잠그면, 에피소드를 밀어서 제거하거나 순서를 바꾸지 못합니다.</string>
@@ -416,8 +406,6 @@
   <string name="enqueue_location_front">앞</string>
   <string name="enqueue_location_after_current">현재 에피소드 다음</string>
   <string name="pref_smart_mark_as_played_disabled">사용 안 함</string>
-  <string name="pref_image_cache_size_title">이미지 캐시 크기</string>
-  <string name="pref_image_cache_size_sum">이미지에 사용할 디스크 캐시 크기</string>
   <string name="documentation_support">문서 및 지원</string>
   <string name="visit_user_forum">사용자 포럼</string>
   <string name="bug_report_title">문제점 보고</string>
@@ -546,7 +534,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">분류</string>
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
-  <string name="gpodnet_suggestions_header">추천</string>
   <string name="gpodnet_search_hint">gpodder.net 검색</string>
   <string name="gpodnetauth_login_butLabel">로그인</string>
   <string name="create_account">계정 만들기</string>
@@ -635,22 +622,6 @@
   <string name="local_feed_description">이 가상 팟캐스트는 안테나팟에 폴더를 추가해 만들었습니다.</string>
   <string name="unable_to_start_system_file_manager">시스템 파일 관리자를 시작할 수 없습니다</string>
   <string name="filter">필터</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">모두</string>
-  <string name="selected_all_label">모든 에피소드 선택함</string>
-  <string name="select_none_label">없음</string>
-  <string name="deselected_all_label">모든 에피소드 선택 해제함</string>
-  <string name="played_label">재생함</string>
-  <string name="selected_played_label">재생한 에피소드 선택함</string>
-  <string name="unplayed_label">재생 안 함</string>
-  <string name="selected_unplayed_label">재생 안 한 에피소드 선택함</string>
-  <string name="downloaded_label">다운로드함</string>
-  <string name="selected_downloaded_label">다운로드한 에피소드 선택함</string>
-  <string name="not_downloaded_label">다운로드 안 함</string>
-  <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택함</string>
-  <string name="selected_queued_label">대기열의 에피소드 선택함</string>
-  <string name="selected_not_queued_label">대기열에 없는 에피소드 선택함</string>
-  <string name="selected_has_media_label">미디어가 있는 에피소드 선택함</string>
   <string name="hide_is_favorite_label">즐겨찾기 포함</string>
   <string name="not_favorite">즐겨찾기 아님</string>
   <string name="hide_downloaded_episodes_label">다운로드함</string>
@@ -691,9 +662,6 @@
   <!--Audio controls-->
   <string name="audio_controls">오디오 조작</string>
   <string name="playback_speed">재생 속도</string>
-  <string name="volume">볼륨</string>
-  <string name="left_short">좌</string>
-  <string name="right_short">우</string>
   <string name="audio_effects">오디오 효과</string>
   <string name="stereo_to_mono">다운믹스: 스테레오에서 모노로</string>
   <string name="sonic_only">소닉 전용</string>

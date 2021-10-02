@@ -13,6 +13,7 @@
   <string name="new_label">Yeni</string>
   <string name="settings_label">Ayarlar</string>
   <string name="downloads_label">İndirilenler</string>
+  <string name="open_autodownload_settings">Ayarları Aç</string>
   <string name="downloads_completed_label">Tamamlandı</string>
   <string name="downloads_log_label">Günlük</string>
   <string name="subscriptions_label">Abonelikler</string>
@@ -27,6 +28,7 @@
   <string name="notification_pref_fragment">Bildirimler</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" bulunamadı</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Oynatılan bölümlerin toplam süresi:</string>
   <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
@@ -71,6 +73,8 @@
   <string name="no">Hayır</string>
   <string name="reset">Sıfırla</string>
   <string name="url_label">URL</string>
+  <string name="support_funding_label">Destek</string>
+  <string name="support_podcast">Bu Podcasti Destekle</string>
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
   <string name="refresh_label">Yenile</string>
@@ -78,24 +82,24 @@
   <string name="chapters_label">Kısımlar</string>
   <string name="chapter_duration">Süre: %1$s</string>
   <string name="description_label">Tanım</string>
+  <string name="shownotes_label">Bölüm Notları</string>
+  <string name="shownotes_contentdescription">bölüm notlarını okumak için yukarı kaydır</string>
   <string name="episodes_suffix">\u0020bölüm</string>
-  <string name="processing_label">İşleniyor</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
-  <string name="auto_download_apply_to_items_title">Önceki Bölümlere Uygula</string>
-  <string name="auto_download_apply_to_items_message">Yeni <i>Otomatik İndirme</i> ayarı otomatik olarak yeni bölümlere uygulanacak.\nBunu önceki bölümlere de uygulamak ister misiniz?</string>
   <string name="auto_delete_label">Bölümü Otomatik Sil</string>
   <string name="feed_volume_reduction">Volume Reduction</string>
-  <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: %1$s</string>
   <string name="feed_volume_reduction_off">Off</string>
   <string name="feed_volume_reduction_light">Light</string>
   <string name="feed_volume_reduction_heavy">Heavy</string>
+  <string name="parallel_downloads">%1$d eşzamanlı indirmeler</string>
   <string name="feed_auto_download_global">Varsayılan ayarlar</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
   <string name="send_label">Gönder...</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
+  <string name="episode_cleanup_except_favorite_removal">Favorilenmemişken</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -106,12 +110,9 @@
     <item quantity="one">Bittikten 1 gün sonra</item>
     <item quantity="other">Bittikten %d gün sonra</item>
   </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d selected</item>
-    <item quantity="other">%d selected</item>
-  </plurals>
   <string name="loading_more">Loading more…</string>
   <string name="episode_notification">Bölüm Bildirimleri</string>
+  <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver.</string>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Yeni Bölüm</item>
     <item quantity="other">Yeni Bölümler</item>
@@ -146,6 +147,7 @@
   <string name="refresh_failed_msg">{fa-exclamation-circle} Son Yenileme başarısız oldu. Ayrıntıları görüntülemek için dokunun.</string>
   <string name="open_podcast">Cep yayını aç</string>
   <string name="please_wait_for_data">Please wait until the data is loaded</string>
+  <string name="updates_disabled_label">Güncellemeler devre dışı</string>
   <!--actions on feeditems-->
   <string name="download_label">İndir</string>
   <plurals name="downloading_batch_label">
@@ -188,8 +190,6 @@
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="skip_episode_label">Bölümü atla</string>
-  <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
-  <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
   <string name="reset_position">Çalme konumunu sıfırla</string>
   <string name="removed_item">Öge kaldırıldı</string>
   <string name="no_items_selected">No items selected</string>
@@ -206,11 +206,17 @@
   <string name="download_error_error_unknown">Bilinmeyen Hata</string>
   <string name="download_error_parser_exception">Podcast kaynağının sunucusu bozuk bir podcast yayını gönderdi.</string>
   <string name="download_error_unsupported_type">Desteklenmeyen Besleme türü</string>
+  <string name="download_error_unsupported_type_html">Podcast\'in bulunduğu sunucu bir podcast değil, web sitesi gönderdi.</string>
+  <string name="download_error_not_found">Podcast\'in bulunduğu sunucu, dosyayı nerede bulacağını bilmiyor. Silinmiş olabilir.</string>
   <string name="download_error_connection_error">Baplantı hatası</string>
+  <string name="download_error_unknown_host">Sunucu bulunamıyor. Adresin doğru yazıldığını ve internet bağlantınızın olduğunu kontrol edin.</string>
   <string name="download_error_unauthorized">Yetkilendirme hatası</string>
   <string name="download_error_file_type_type">Dosya Tipi Hatası</string>
+  <string name="download_error_forbidden">Podcast\'in bulunduğu sunucu cevap vermeyi reddediyor.</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
-  <string name="download_canceled_autodownload_enabled_msg">İndirme iptal edildi\nBu öğe için <i>Otomatik İndirme</i> devre dışı</string>
+  <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
+  <string name="download_error_blocked">İndirme, cihazınızdaki başka bir uygulama tarafından engellendi.</string>
+  <string name="download_error_certificate">Güvenli bağlantı kurulamıyor. Bu, cihazınızdaki başka bir uygulamanın indirmeyi engellediği ya da sunucunun sertifikalarında bazı sorunlar olduğu anlamına gelebilir.</string>
   <string name="download_report_title">İndirme hata(lar) ile tamamlandı</string>
   <string name="auto_download_report_title">Auto-downloads completed</string>
   <string name="download_error_io_error">G/Ç Hatası</string>
@@ -248,9 +254,9 @@
   <string name="player_go_to_picture_in_picture">Resim içinde Resim modu</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <string name="error_file_not_found">File not found</string>
+  <string name="no_media_label">Öğe, bir medya dosyası içermiyor</string>
   <!--Queue operations-->
   <string name="lock_queue">Kuyruğu kilitle</string>
-  <string name="unlock_queue">Kuyruğun kilidini aç</string>
   <string name="queue_locked">Kuyruk kilitlendi</string>
   <string name="queue_unlocked">Kuyruk kilidi açıldı</string>
   <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
@@ -407,8 +413,6 @@
   <string name="enqueue_location_front">Front</string>
   <string name="enqueue_location_after_current">After current episode</string>
   <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
-  <string name="pref_image_cache_size_title">Görüntü Önbelleği Boyutu</string>
-  <string name="pref_image_cache_size_sum">Görüntüler için diskte tutulacak önbelleğin boyutu.</string>
   <string name="visit_user_forum">User forum</string>
   <string name="bug_report_title">Report bug</string>
   <string name="open_bug_tracker">Open bug tracker</string>
@@ -536,7 +540,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORİLER</string>
   <string name="gpodnet_toplist_header">POPÜLER CEP YAYINLARI</string>
-  <string name="gpodnet_suggestions_header">ÖNERİLER</string>
   <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
   <string name="username_label">Kullanıcı adı</string>
@@ -614,22 +617,6 @@
   <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Sistem dosya yöneticisi başlatılamıyor</string>
   <string name="filter">Filter</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Tümü</string>
-  <string name="selected_all_label">Tüm Bölümler Seçildi</string>
-  <string name="select_none_label">None</string>
-  <string name="deselected_all_label">Tüm Bölümlerin Seçimi Kaldırıldı</string>
-  <string name="played_label">Çalınan</string>
-  <string name="selected_played_label">Çalınan Bölümler Seçildi</string>
-  <string name="unplayed_label">Çalınmayan</string>
-  <string name="selected_unplayed_label">Çalınmayan Bölümler Seçildi</string>
-  <string name="downloaded_label">İndirilen</string>
-  <string name="selected_downloaded_label">İndirilen Bölümler Seçildi</string>
-  <string name="not_downloaded_label">İndirilmeyen</string>
-  <string name="selected_not_downloaded_label">İndirilmeyen Bölümler Seçildi</string>
-  <string name="selected_queued_label">Selected queued Episodes</string>
-  <string name="selected_not_queued_label">Selected not queued Episodes</string>
-  <string name="selected_has_media_label">Selected episodes with media</string>
   <string name="hide_is_favorite_label">Favori</string>
   <string name="not_favorite">Not favorite</string>
   <string name="hide_downloaded_episodes_label">İndirildi</string>
@@ -670,9 +657,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audio controls</string>
   <string name="playback_speed">Playback Speed</string>
-  <string name="volume">Ses</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">Audio Effects</string>
   <string name="stereo_to_mono">Downmix: Stereo to mono</string>
   <string name="sonic_only">Sonic only</string>

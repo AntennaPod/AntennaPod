@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" 未找到</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">滑动操作</string>
+  <string name="swipeactions_summary">选择在列表中滑动一期节目时会发生什么</string>
+  <string name="swipe_right">右滑</string>
+  <string name="swipe_left">左滑</string>
+  <string name="enable_swipeactions">启用此屏幕的滑动操作 </string>
+  <string name="change_setting">更改</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">节目总播放时间:</string>
   <string name="statistics_details_dialog">听过了总计 %2$d 期播客中的 %1$d 期。\n\n播放了总计 %4$s 中的 %3$s。</string>
@@ -84,15 +91,12 @@
   <string name="shownotes_label">节目信息</string>
   <string name="shownotes_contentdescription">上滑阅读播客简介</string>
   <string name="episodes_suffix">\u0020 曲</string>
-  <string name="processing_label">处理中</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
-  <string name="auto_download_apply_to_items_title"> 应用到之前的曲目中</string>
-  <string name="auto_download_apply_to_items_message">新的 <i>自动下载</i> 设置将会自动应用到新的节目上。\n你想应用到之前的节目吗？</string>
   <string name="auto_delete_label">自动删除剧集</string>
   <string name="feed_volume_reduction">音量下调</string>
-  <string name="feed_volume_reduction_summary">调低这个订阅中节目的音量：%1$s</string>
+  <string name="feed_volume_reduction_summary">调低此博客节目的音量：%1$s</string>
   <string name="feed_volume_reduction_off">关闭</string>
   <string name="feed_volume_reduction_light">轻微</string>
   <string name="feed_volume_reduction_heavy">显著</string>
@@ -112,7 +116,7 @@
     <item quantity="other">结束后 %d 天</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="other">已选中%d</item>
+    <item quantity="other">共 %2$d 播客，已选中 %1$d</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="other">%d 期节目</item>
@@ -146,6 +150,7 @@
   <string name="share_website_url_label">网站地址</string>
   <string name="share_feed_url_label">播客订阅源 URL</string>
   <string name="feed_delete_confirmation_msg">请确认您想删除播客“%1$s” 及其所有节目(包括已经下载的）</string>
+  <string name="feed_delete_confirmation_msg_batch">请确认您想要删除所选的播客及其所有节目(包括下载的节目)。</string>
   <string name="feed_delete_confirmation_local_msg">请确认你想要移除播客\"%1$s\"。本地源文件夹中的文件不会被删除。</string>
   <string name="feed_remover_msg">正在移除播客</string>
   <string name="load_complete_feed">刷新所有播客</string>
@@ -157,6 +162,10 @@
   <string name="open_podcast">打开播客</string>
   <string name="please_wait_for_data">请等待数据加载完成</string>
   <string name="updates_disabled_label">更新已禁用</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="other">%d 订阅已更新</item>
+  </plurals>
+  <string name="add_to_folder">添加至文件夹</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
@@ -174,6 +183,8 @@
   <string name="remove_new_flag_label">移除“新的”标签</string>
   <string name="removed_new_flag_label">已移除“新的”标签</string>
   <string name="mark_read_label">标记已播放</string>
+  <string name="marked_as_played_label">标记为已播放</string>
+  <string name="marked_as_unplayed_label">标记为未播放</string>
   <string name="mark_read_no_media_label">标记为已读</string>
   <string name="play_this_to_seek_position">要跳转到某处，你需要播放这一集</string>
   <plurals name="marked_read_batch_label">
@@ -197,8 +208,6 @@
   <string name="remove_from_favorite_label">从收藏删除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="skip_episode_label">跳过曲目</string>
-  <string name="activate_auto_download">开启自动下载</string>
-  <string name="deactivate_auto_download">关闭自动下载</string>
   <string name="reset_position">重置播放进度</string>
   <string name="removed_item">已删除项</string>
   <string name="no_items_selected">未选中项目</string>
@@ -226,7 +235,6 @@
   <string name="download_error_wrong_size">在完成下载之前，服务器连接丢失</string>
   <string name="download_error_blocked">下载被你设备上的另一个应用程序阻止了。</string>
   <string name="download_error_certificate">无法建立安全连接。这可能意味着你设备上的另一个应用程序阻止了下载，或者服务器证书有问题。 </string>
-  <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
   <string name="download_report_title">下载完成</string>
   <string name="auto_download_report_title">自动下载完成</string>
   <string name="download_error_io_error">IO 错误</string>
@@ -235,7 +243,7 @@
   <plurals name="downloads_left">
     <item quantity="other">剩余%d个下载项</item>
   </plurals>
-  <string name="service_shutting_down">服务关闭 </string>
+  <string name="completing">完成中…</string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_log_title_unknown">未知标题</string>
   <string name="download_type_feed">订阅</string>
@@ -267,7 +275,6 @@
   <string name="no_media_label">条目不包含一个媒体文件</string>
   <!--Queue operations-->
   <string name="lock_queue">锁定播放列表</string>
-  <string name="unlock_queue">解锁播放列表</string>
   <string name="queue_locked">播放列表已锁定</string>
   <string name="queue_unlocked">播放列表已解锁</string>
   <string name="queue_lock_warning">如果锁定队列，您将再也不能滑动或重新排列音频顺序</string>
@@ -328,9 +335,9 @@
   <string name="media_player">媒体播放器</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
   <string name="pref_episode_cleanup_summary">在自动下载需要新曲目空间时，应该被删除的旧曲目</string>
-  <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
+  <string name="pref_pauseOnDisconnect_sum">耳机或蓝牙断开连接时暂停播放</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">恢复播放曲目当蓝牙重新连接</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">当蓝牙重新连接时恢复播放</string>
   <string name="pref_hardware_forward_button_title">快进按钮</string>
   <string name="pref_hardware_forward_button_summary">自定义快进按钮行为</string>
   <string name="pref_hardware_previous_button_title">“上一个” 按钮</string>
@@ -444,8 +451,6 @@
   <string name="enqueue_location_front">前进</string>
   <string name="enqueue_location_after_current">在当前音频之后</string>
   <string name="pref_smart_mark_as_played_disabled">已禁用</string>
-  <string name="pref_image_cache_size_title">图像缓存大小</string>
-  <string name="pref_image_cache_size_sum">用于缓存图像的存储空间大小</string>
   <string name="documentation_support">文档 &amp; 支持</string>
   <string name="visit_user_forum">用户论坛</string>
   <string name="bug_report_title">报告Bug</string>
@@ -511,6 +516,7 @@
   <string name="licenses_summary">AntennaPod使用其他伟大的软件</string>
   <!--Search-->
   <string name="search_status_no_results">没有找到任何结果</string>
+  <string name="type_to_search">输入要搜索的查询</string>
   <string name="search_label">搜索</string>
   <string name="no_results_for_query">未找到关于 \"%1$s\" 的结果</string>
   <!--Synchronization-->
@@ -578,7 +584,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">目录</string>
   <string name="gpodnet_toplist_header">头条播客</string>
-  <string name="gpodnet_suggestions_header">建议</string>
   <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
   <string name="gpodnetauth_encryption_warning">密码和数据没有加密！</string>
@@ -673,22 +678,6 @@
   <string name="local_feed_description">这个虚拟播客是通过向AntennaPod添加一个文件夹创建的</string>
   <string name="unable_to_start_system_file_manager">无法启动系统文件管理器</string>
   <string name="filter">过滤器</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">全部</string>
-  <string name="selected_all_label">全选</string>
-  <string name="select_none_label">没有</string>
-  <string name="deselected_all_label">取消全选</string>
-  <string name="played_label">已播放</string>
-  <string name="selected_played_label">选择已播放的曲目</string>
-  <string name="unplayed_label">未播放</string>
-  <string name="selected_unplayed_label">选择未播放曲目</string>
-  <string name="downloaded_label">已下载</string>
-  <string name="selected_downloaded_label">选择已下载的曲目</string>
-  <string name="not_downloaded_label">未下载</string>
-  <string name="selected_not_downloaded_label">选择未下载的曲目</string>
-  <string name="selected_queued_label">已选曲目</string>
-  <string name="selected_not_queued_label">选择不在播放列表的曲目</string>
-  <string name="selected_has_media_label">已选中含媒体的节目</string>
   <string name="hide_is_favorite_label">喜爱的</string>
   <string name="not_favorite">非喜爱的节目</string>
   <string name="hide_downloaded_episodes_label">已下载</string>
@@ -729,9 +718,6 @@
   <!--Audio controls-->
   <string name="audio_controls">音频控制</string>
   <string name="playback_speed">播放速度</string>
-  <string name="volume">音量</string>
-  <string name="left_short">L</string>
-  <string name="right_short">R</string>
   <string name="audio_effects">音频效果</string>
   <string name="stereo_to_mono">下降混合：由立体声到单声道</string>
   <string name="sonic_only">仅声音</string>

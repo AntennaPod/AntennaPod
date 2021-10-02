@@ -26,12 +26,13 @@
   <string name="download_statistics_label">Descargues</string>
   <string name="notification_pref_fragment">Avisos</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">Aniciáronse %1$d de %2$d episodios.\n\nReproduciéronse %3$s de %4$s.</string>
   <string name="statistics_mode">Mou de les estadístiques</string>
   <string name="statistics_speed_not_counted">Avisu: la velocidá de reproducción enxamás se tien en cuenta.</string>
   <string name="statistics_reset_data">Reafitar les estadístiques</string>
-  <string name="statistics_counting_since">Dende\'l %s,\nreproduciesti</string>
+  <string name="statistics_counting_since">Dende\'l %s,\nreproduxesti</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Abrir el menú</string>
@@ -67,6 +68,7 @@
   <string name="chapters_label">Capítulos</string>
   <string name="chapter_duration">Duración: %1$s</string>
   <string name="description_label">Descripción</string>
+  <string name="shownotes_label">Sinopsis</string>
   <string name="episodes_suffix">\u0020episodios</string>
   <string name="close_label">Zarrar</string>
   <string name="auto_download_label">Incluyir nes descargues automátiques</string>
@@ -77,10 +79,6 @@
   <string name="feed_auto_download_never">Enxamás</string>
   <string name="send_label">Unviar…</string>
   <string name="episode_cleanup_never">Enxamás</string>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d na esbilla</item>
-    <item quantity="other">%d na esbilla</item>
-  </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodiu</item>
     <item quantity="other">%d episodios</item>
@@ -109,6 +107,8 @@
   <string name="remove_feed_label">Quitar el podcast</string>
   <string name="share_label">Compartir</string>
   <string name="share_label_with_ellipses">Compartir…</string>
+  <string name="share_website_url_label">Direición del sitiu web</string>
+  <string name="share_feed_url_label">URL del feed del podcast</string>
   <string name="feed_remover_msg">Quitando\'l podcast</string>
   <string name="multi_select">Esbilla múltiple</string>
   <string name="open_podcast">Abrir el podcast</string>
@@ -135,17 +135,25 @@
   <string name="mark_unread_label">Marcar como «Ensin reproducir»</string>
   <string name="mark_unread_label_no_media">Marcar como «Ensin lleer»</string>
   <string name="add_to_queue_label">Amestar a la cola</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">Amestóse %d episodiu a la cola.</item>
+    <item quantity="other">Amestáronse %d episodios a la cola.</item>
+  </plurals>
   <string name="remove_from_queue_label">Quitar de la cola</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">Quitóse %d episodiu de la cola.</item>
+    <item quantity="other">Quitáronse %d episodios de la cola.</item>
+  </plurals>
   <string name="add_to_favorite_label">Amestar a Favoritos</string>
   <string name="remove_from_favorite_label">Quitar de Favoritos</string>
   <string name="visit_website_label">Visitar el sitiu web</string>
   <string name="skip_episode_label">Saltar l\'episodiu</string>
-  <string name="deactivate_auto_download">Desactivar la descarga automática</string>
   <!--Download messages and labels-->
   <string name="download_error_details">Detalles</string>
   <string name="download_error_details_message">%1$s \n\nURL del ficheru:\n%2$s</string>
   <string name="download_error_tap_for_details">Calca pa ver los detalles</string>
   <string name="download_error_device_not_found">Nun s\'atopó\'l preséu d\'almacenamientu</string>
+  <string name="download_error_insufficient_space">Nun queda abondu espaciu nel preséu.</string>
   <string name="download_error_unsupported_type_html">L\'agospiador del podcast unvió un sitiu web, non un podcast.</string>
   <string name="download_error_not_found">L\'agospiador del podcast nun sabe onde atopar el ficheru. Pue que se desaniciare.</string>
   <string name="download_error_connection_error">Fallu de la conexón</string>
@@ -170,10 +178,10 @@
   <string name="player_error_msg">¡Fallu!</string>
   <string name="playback_error_server_died">El sirvidor morrió</string>
   <string name="playback_error_source">Nun ye posible acceder al ficheru multimedia</string>
+  <string name="player_go_to_picture_in_picture">Mou d\'Imaxe sobre Imaxe</string>
   <string name="error_file_not_found">Nun s\'atopó\'l ficheru</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquiar la cola</string>
-  <string name="unlock_queue">Desbloquiar la cola</string>
   <string name="queue_locked">Bloquióse la cola</string>
   <string name="queue_unlocked">Desbloquióse la cola</string>
   <string name="queue_lock_warning">Si bloquies la cola yá nun vas poder modificar los podcasts.</string>
@@ -191,6 +199,7 @@
   <string name="speed_presets">Preaxustes</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Nun hai episodios na cola</string>
+  <string name="no_shownotes_label">Esti episodiu nun tien sinopsis.</string>
   <string name="no_comp_downloads_head_label">Nun hai episodios baxaos</string>
   <string name="no_comp_downloads_label">Pues baxar episodios na pantalla de detalles de los podcast.</string>
   <string name="no_log_downloads_head_label">Nun hai rexistru de descargues</string>
@@ -275,6 +284,7 @@
   <string name="pref_episode_cache_title">Caché d\'episodios</string>
   <string name="pref_episode_cache_summary">El númberu total d\'episodios baxaos y atroxaos na caché del preséu. La descarga automática va suspendese si s\'algama\'l númberu qu\'afites.</string>
   <string name="pref_episode_cover_title">Usar les portaes de los episodios</string>
+  <string name="pref_episode_cover_summary">Nes llistes, úsase la portada de los episodios siempres que seya posible. Si nun se marca esta opción, l\'aplicación va usar siempres la portada de los podcasts.</string>
   <string name="pref_show_remain_time_title">Amosar el tiempu que falta</string>
   <string name="pref_theme_title_use_system">Usar l\'estilu del sistema</string>
   <string name="pref_theme_title_light">Claridá</string>
@@ -289,6 +299,8 @@
   <string name="pref_feed_playback_speed_sum">La velocidá que s\'usa al aniciar la reproducción de los episodios d\'esti podcast</string>
   <string name="pref_feed_skip">Saltu automáticu</string>
   <string name="pref_feed_skip_sum">Salta les introducciones y los creitos del final</string>
+  <string name="pref_feed_skip_ending">Saltar los caberos</string>
+  <string name="pref_feed_skip_intro">Saltar los primeros</string>
   <string name="pref_feed_skip_ending_toast">Saltáronse los últimos %d segundos</string>
   <string name="pref_feed_skip_intro_toast">Saltáronse los primeros %d segundos</string>
   <string name="pref_fast_forward">Saltu del avance rápidu</string>
@@ -300,9 +312,10 @@
   <string name="pref_compact_notification_buttons_dialog_error">Namás pues esbillar un máximu de %1$d elementos.</string>
   <string name="pref_lockscreen_background_title">Fondu de la pantalla de bloquéu</string>
   <string name="pref_enqueue_location_title">Posición na cola</string>
+  <string name="pref_enqueue_location_sum">Los episodios amiéstense: %1$s</string>
+  <string name="enqueue_location_back">A lo cabero</string>
+  <string name="enqueue_location_front">Al comienzu</string>
   <string name="enqueue_location_after_current">Darréu del episodiu actual</string>
-  <string name="pref_image_cache_size_title">Tamañu de la caché d\'imáxenes</string>
-  <string name="pref_image_cache_size_sum">El tamañu de la cache nel discu pa les imáxenes.</string>
   <string name="documentation_support">Documentación y sofitu</string>
   <string name="visit_user_forum">Foru de discutiniu</string>
   <string name="bug_report_title">Informar d\'un fallu</string>
@@ -395,7 +408,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">ESTAYES</string>
   <string name="gpodnet_toplist_header">DESTÁCASE</string>
-  <string name="gpodnet_suggestions_header">SUXERENCIES</string>
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Aniciar sesión</string>
   <string name="gpodnetauth_encryption_warning">¡Los datos y la contraseña nun tán cifraos!</string>
@@ -443,9 +455,12 @@
   <string name="episode_filters_label">Peñera d\'episodios</string>
   <string name="episode_filters_description">La llista de términos que s\'usa pa decidir si un episodiu habría incluyise o escluyise de la descarga automática</string>
   <string name="keep_updated">Anovamientu automáticu</string>
+  <string name="keep_updated_summary">Inclúi esti podcast al refrescar (automáticamente) tolos podcasts</string>
+  <string name="auto_download_disabled_globally">La descarga automática ta desactivada nos axustes principales d\'AntennaPod</string>
   <string name="statistics_listened_for">Sintióse demientres:</string>
   <string name="statistics_episodes_on_device">Episodios nel preséu:</string>
   <string name="statistics_space_used">Espaciu n\'usu:</string>
+  <string name="statistics_view_all">Ver lo de tolos podcasts »</string>
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcasts…</string>
@@ -467,13 +482,15 @@
   <string name="local_feed_description">Esti podcast virtual creóse por amestar una carpeta a AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Nun ye posible aniciar el xestor de ficheros del sistema</string>
   <string name="filter">Peñera</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Too</string>
-  <string name="played_label">Reprodúxose</string>
-  <string name="unplayed_label">Ensin reproducir</string>
+  <string name="hide_is_favorite_label">Ta en Favoritos</string>
+  <string name="queued_label">Na cola</string>
+  <string name="not_queued_label">Nun ta na cola</string>
+  <string name="hide_paused_episodes_label">En posa</string>
   <!--Sort-->
   <string name="sort_title_a_z">Títulu (A \u2192 Z)</string>
   <string name="sort_title_z_a">Títulu (Z \u2192 A)</string>
+  <string name="sort_duration_short_long">Duración (Poca \u2192 Muncha)</string>
+  <string name="sort_duration_long_short">Duración (Muncha \u2192 Poca)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Nuevo \u2192 Vieyo</string>
@@ -492,7 +509,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controles d\'audiu</string>
   <string name="playback_speed">Velocidá de la reproducción</string>
-  <string name="volume">Volume</string>
   <string name="audio_effects">Efeutos d\'audiu</string>
   <string name="exoplayer_only">Namás ExoPlayer</string>
   <!--proxy settings-->

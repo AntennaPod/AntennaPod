@@ -25,6 +25,7 @@
   <string name="download_statistics_label">Nedlastinger</string>
   <string name="notification_pref_fragment">Varslinger</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total tid, avspilte episoder</string>
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
@@ -75,15 +76,11 @@
   <string name="chapter_duration">Varighet: %1$s</string>
   <string name="description_label">Beskrivelse</string>
   <string name="episodes_suffix">\u0020episoder</string>
-  <string name="processing_label">Behandler</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
-  <string name="auto_download_apply_to_items_title">Angi for tidligere episoder</string>
-  <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk nedlasting</i>-innstillingen vil automatisk aktiveres for nye episoder.\nØnsker du å aktivere den for tidligere utgitte episoder også?</string>
   <string name="auto_delete_label">Slett episode automatisk</string>
   <string name="feed_volume_reduction">Volumreduksjon</string>
-  <string name="feed_volume_reduction_summary">Demp volumet for episoder i denne strømmen: %1$s</string>
   <string name="feed_volume_reduction_off">Av</string>
   <string name="feed_volume_reduction_light">Lett</string>
   <string name="feed_volume_reduction_heavy">Tung</string>
@@ -172,8 +169,6 @@
   <string name="remove_from_favorite_label">Fjern fra favoritter</string>
   <string name="visit_website_label">Besøk nettside</string>
   <string name="skip_episode_label">Skip episode</string>
-  <string name="activate_auto_download">Aktiver automatisk nedlasting</string>
-  <string name="deactivate_auto_download">Deaktiver automatisk nedlasting</string>
   <string name="reset_position">Tilbakestill avspillingsposisjon</string>
   <string name="removed_item">Element fjernet</string>
   <string name="no_items_selected">Ingen ting er valgt</string>
@@ -191,7 +186,6 @@
   <string name="download_error_unauthorized">Autentiseringsfeil</string>
   <string name="download_error_file_type_type">Filtype-feil</string>
   <string name="download_canceled_msg">Nedlasting avbrutt</string>
-  <string name="download_canceled_autodownload_enabled_msg">Nedlasting avbrutt\n<i>Automatisk nedlasting</i> for dette elementet er deaktivert</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
   <string name="auto_download_report_title">Auto-nedlasting fullført</string>
   <string name="download_error_io_error">IO feil</string>
@@ -231,7 +225,6 @@
   <string name="error_file_not_found">Fil ikke funnet</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås køen</string>
-  <string name="unlock_queue">Lås opp køen</string>
   <string name="queue_locked">Kø låst</string>
   <string name="queue_unlocked">Kø opplåst</string>
   <string name="queue_lock_warning">Hvis du låser køen, kan du ikke lenger sveipe eller ordne episoder.</string>
@@ -383,8 +376,6 @@
   <string name="enqueue_location_front">Begynnelsen</string>
   <string name="enqueue_location_after_current">Etter episoden som spilles</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktivert</string>
-  <string name="pref_image_cache_size_title">Størrelse for bildemellomlager</string>
-  <string name="pref_image_cache_size_sum">Størrelsen på mellomlageret for bilder.</string>
   <string name="visit_user_forum">Bruker-forum</string>
   <string name="bug_report_title">Rapporter feil</string>
   <string name="open_bug_tracker">Åpne bug-tracker</string>
@@ -490,7 +481,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER</string>
   <string name="gpodnet_toplist_header">TOPP-PODKASTER</string>
-  <string name="gpodnet_suggestions_header">FORSLAG</string>
   <string name="gpodnet_search_hint">Søk på gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Logg inn</string>
   <string name="username_label">Brukernavn</string>
@@ -555,21 +545,6 @@
   <string name="add_local_folder">Legg til lokal mappe</string>
   <string name="local_feed_description">Denne virtuelle podkasten ble laget ved å legge en mappe til i AntennaPod.</string>
   <string name="filter">Filter</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Alle</string>
-  <string name="selected_all_label">Valgte alle episoder</string>
-  <string name="deselected_all_label">Fjernet valg av alle episoder</string>
-  <string name="played_label">Avspilt</string>
-  <string name="selected_played_label">Valgte avspilte episoder</string>
-  <string name="unplayed_label">Uavspilt</string>
-  <string name="selected_unplayed_label">Valgte uavspilte episoder</string>
-  <string name="downloaded_label">Nedlastede</string>
-  <string name="selected_downloaded_label">Valgte nedlastede episoder</string>
-  <string name="not_downloaded_label">Ikke nedlastet</string>
-  <string name="selected_not_downloaded_label">Valgte ikke-nedlastede episoder</string>
-  <string name="selected_queued_label">Valgte episoder i køen</string>
-  <string name="selected_not_queued_label">Valgte episoder som ikke er i kø</string>
-  <string name="selected_has_media_label">Valgte episoder med media</string>
   <string name="hide_is_favorite_label">Er favoritt</string>
   <string name="hide_downloaded_episodes_label">Nedlastet</string>
   <string name="hide_not_downloaded_episodes_label">Ikke nedlastet</string>
@@ -602,9 +577,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Lyd-kontroller</string>
   <string name="playback_speed">Avspillingshastighet</string>
-  <string name="volume">Volum</string>
-  <string name="left_short">V</string>
-  <string name="right_short">H</string>
   <string name="audio_effects">Lydeffekter</string>
   <string name="stereo_to_mono">Nedmiksing: Stereo til mono</string>
   <string name="sonic_only">Kun Sonic</string>

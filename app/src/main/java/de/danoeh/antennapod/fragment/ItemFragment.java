@@ -55,7 +55,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -230,11 +230,6 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -291,9 +286,9 @@ public class ItemFragment extends Fragment {
         txtvTitle.setText(item.getTitle());
 
         if (item.getPubDate() != null) {
-            String pubDateStr = DateUtils.formatAbbrev(getActivity(), item.getPubDate());
+            String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
-            txtvPublished.setContentDescription(DateUtils.formatForAccessibility(getContext(), item.getPubDate()));
+            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(getContext(), item.getPubDate()));
         }
 
         RequestOptions options = new RequestOptions()

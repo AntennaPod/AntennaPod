@@ -18,7 +18,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.model.playback.Playable;

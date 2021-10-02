@@ -50,8 +50,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -150,7 +150,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getPubDate());
+        String pubDateStr = DateFormatter.formatAbbrev(getActivity(), media.getPubDate());
         txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
                 + "\u00A0"
                 + "・"

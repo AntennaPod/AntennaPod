@@ -26,6 +26,7 @@
   <string name="download_statistics_label">Lataukset</string>
   <string name="notification_pref_fragment">Ilmoitukset</string>
   <!--Google Assistant-->
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
   <string name="statistics_mode">Tilastointitila</string>
@@ -75,15 +76,11 @@
   <string name="description_label">Kuvaus</string>
   <string name="shownotes_label">Jaksomuistio</string>
   <string name="episodes_suffix">\u0020jaksoa</string>
-  <string name="processing_label">Prosessoi</string>
   <string name="close_label">Sulje</string>
   <string name="retry_label">Yritä uudelleen</string>
   <string name="auto_download_label">Lataa automaattisesti</string>
-  <string name="auto_download_apply_to_items_title">Aseta edellisiin jaksoihin</string>
-  <string name="auto_download_apply_to_items_message">Uusi <i>Automaattinen lataus</i> asetus tullaan asettamaan uusiin jaksoihin.\nHaluatko asettaa myös aikaisemmin julkaistuihin jaksoihin?</string>
   <string name="auto_delete_label">Auto deletoi jakso</string>
   <string name="feed_volume_reduction">Äänenvoimakkuuden vähentäminen</string>
-  <string name="feed_volume_reduction_summary">Vähennä äänenvoimakkuutta jaksoille syötteestä: %1$s</string>
   <string name="feed_volume_reduction_off">Pois käytöstä</string>
   <string name="feed_volume_reduction_light">Kevyt</string>
   <string name="feed_volume_reduction_heavy">Voimakas</string>
@@ -103,10 +100,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 päivä lataamisen jälkeen</item>
     <item quantity="other">%d päivää lataamisen jälkeen</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d valittu</item>
-    <item quantity="other">%d valittua</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d jakso</item>
@@ -199,8 +192,6 @@
   <string name="remove_from_favorite_label">Poista suosikeista</string>
   <string name="visit_website_label">Vieraile verkkosivustolla</string>
   <string name="skip_episode_label">Ohita jakso</string>
-  <string name="activate_auto_download">Aktivoi automaattiset lataukset</string>
-  <string name="deactivate_auto_download">Poista automaattinen lataus käytöstä</string>
   <string name="reset_position">Nollaa toistosijainti</string>
   <string name="removed_item">Nimike poistettu</string>
   <string name="no_items_selected">Ei valittuja nimikkeitä</string>
@@ -218,7 +209,6 @@
   <string name="download_error_unauthorized">Todentamisvirhe</string>
   <string name="download_error_file_type_type">Tiedostotyyppivirhe</string>
   <string name="download_canceled_msg">Lataus peruutettu</string>
-  <string name="download_canceled_autodownload_enabled_msg">Lataus peruutettu\nPoistettu <i>Automaattinen lataus</i> tälle tiedolle </string>
   <string name="download_report_title">Lataukset valmistuivat virhe(id)en kanssa</string>
   <string name="auto_download_report_title">Automaattiset lataukset valmistuivat</string>
   <string name="download_error_io_error">IO virhe</string>
@@ -256,7 +246,6 @@
   <string name="error_file_not_found">Tiedostoa ei löytynyt</string>
   <!--Queue operations-->
   <string name="lock_queue">Lukitse jono</string>
-  <string name="unlock_queue">Avaa jono</string>
   <string name="queue_locked">Jono lukittu</string>
   <string name="queue_unlocked">Jono avattu</string>
   <string name="queue_lock_warning">Jos lukitset jonon, et voi enää sipaista tai lajitella jaksoja uudelleen.</string>
@@ -388,8 +377,6 @@
   <string name="pref_lockscreen_background_title">Aseta lukitusruudun taustakuva</string>
   <string name="pref_lockscreen_background_sum">Aseta lukitusruudun taustakuva nykyisen jakson kuvaan. Tämä kuva näkyy kolmannen osapuolen sovelluksissa.</string>
   <string name="pref_smart_mark_as_played_disabled">Poissa käytöstä</string>
-  <string name="pref_image_cache_size_title">Kuvan välimuistin koko</string>
-  <string name="pref_image_cache_size_sum">Tallennusmedian välimuistin koko kuville.</string>
   <string name="experimental_pref">Kokeellinen</string>
   <string name="pref_media_player_message">Valitse mediasovellus jolla soitetaan tiedostot</string>
   <string name="pref_current_value">Nykyinen arvo: %1$s</string>
@@ -464,7 +451,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIAT</string>
   <string name="gpodnet_toplist_header">TOP PODCASTIT</string>
-  <string name="gpodnet_suggestions_header">EHDOTUKSET</string>
   <string name="gpodnet_search_hint">Etsi gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Sisäänkirjautuminen</string>
   <string name="username_label">Käyttäjätunnus</string>
@@ -516,21 +502,6 @@
   <string name="discover_more">lisää »</string>
   <!--Local feeds-->
   <string name="filter">Filteri</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Kaikki</string>
-  <string name="selected_all_label">Valitse kaikki jaksot</string>
-  <string name="deselected_all_label">Poista valinta kaikista</string>
-  <string name="played_label">Soitettu</string>
-  <string name="selected_played_label">Valitut soitetut jaksot</string>
-  <string name="unplayed_label">Soittamattomat</string>
-  <string name="selected_unplayed_label">Valitut soittamattomat jaksot</string>
-  <string name="downloaded_label">Ladattu</string>
-  <string name="selected_downloaded_label">Valittut ladatut jaksot</string>
-  <string name="not_downloaded_label">Ei ladattu</string>
-  <string name="selected_not_downloaded_label">Valitut ei ladatut jaksot</string>
-  <string name="selected_queued_label">Valitut jaksot jonossa</string>
-  <string name="selected_not_queued_label">Valitut jaksot ei jonossa</string>
-  <string name="selected_has_media_label">Valitut jaksot joissa media</string>
   <string name="hide_is_favorite_label">On suosikki</string>
   <string name="hide_downloaded_episodes_label">Ladattu</string>
   <string name="hide_not_downloaded_episodes_label">Ei ladattu</string>
@@ -556,9 +527,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Audiokontrollit</string>
   <string name="playback_speed">Soittonopeus</string>
-  <string name="volume">Äänenvoimakkuus</string>
-  <string name="left_short">V</string>
-  <string name="right_short">O</string>
   <string name="audio_effects">Audioefektit</string>
   <string name="stereo_to_mono">Downmix: Stereosta mono</string>
   <string name="sonic_only">Vain Sonic</string>

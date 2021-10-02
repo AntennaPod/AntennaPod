@@ -27,6 +27,7 @@
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$sが見つかりません</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">エピソード総再生時間:</string>
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
@@ -80,15 +81,11 @@
   <string name="description_label">説明</string>
   <string name="shownotes_label">ショーノート</string>
   <string name="episodes_suffix">\u0020エピソード</string>
-  <string name="processing_label">処理中</string>
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
   <string name="auto_download_label">自動ダウンロードに含む</string>
-  <string name="auto_download_apply_to_items_title">前のエピソードに適用</string>
-  <string name="auto_download_apply_to_items_message">新しい <i>自動ダウンロード</i> の設定は、自動的に新しいエピソードに適用されます。\n以前に公開されたエピソードにも適用しますか?</string>
   <string name="auto_delete_label">エピソードを自動削除</string>
   <string name="feed_volume_reduction">ボリューム削減</string>
-  <string name="feed_volume_reduction_summary">エピソードのボリュームをこのフィードのみ下げる: %1$s</string>
   <string name="feed_volume_reduction_off">オフ</string>
   <string name="feed_volume_reduction_light">ライト</string>
   <string name="feed_volume_reduction_heavy">ヘビー</string>
@@ -106,9 +103,6 @@
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">完了 %d 日後</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="other">%d選択された</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="other">%dエピソード</item>
@@ -180,8 +174,6 @@
   <string name="remove_from_favorite_label">お気に入りから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
   <string name="skip_episode_label">エピソードをスキップ</string>
-  <string name="activate_auto_download">自動ダウンロードを有効にする</string>
-  <string name="deactivate_auto_download">自動ダウンロードを無効にする</string>
   <string name="reset_position">再生位置をリセット</string>
   <string name="removed_item">アイテムを削除しました</string>
   <!--Download messages and labels-->
@@ -198,7 +190,6 @@
   <string name="download_error_unauthorized">認証エラー</string>
   <string name="download_error_file_type_type">ファイルタイプ エラー</string>
   <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
-  <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
   <string name="download_report_title">ダウンロードがエラーで完了しました</string>
   <string name="auto_download_report_title">自動ダウンロードが完了しました</string>
   <string name="download_error_io_error">IOエラー</string>
@@ -236,7 +227,6 @@
   <string name="error_file_not_found">ファイルが見つかりません</string>
   <!--Queue operations-->
   <string name="lock_queue">キューをロック</string>
-  <string name="unlock_queue">キューのロックを解除</string>
   <string name="queue_locked">キューをロックしました</string>
   <string name="queue_unlocked">キューのロックを解除しました</string>
   <string name="queue_lock_warning">キューをロックすると、エピソードのスワイプや並べ替えができなくなります。</string>
@@ -374,8 +364,6 @@
   <string name="enqueue_location_front">前面</string>
   <string name="enqueue_location_after_current">現在のエピソードの後</string>
   <string name="pref_smart_mark_as_played_disabled">無効</string>
-  <string name="pref_image_cache_size_title">画像キャッシュサイズ</string>
-  <string name="pref_image_cache_size_sum">画像のディスクキャッシュのサイズ。</string>
   <string name="visit_user_forum">ユーザーフォーラム</string>
   <string name="bug_report_title">バグを報告</string>
   <string name="open_bug_tracker">バグトラッカーを開く</string>
@@ -473,7 +461,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">カテゴリー</string>
   <string name="gpodnet_toplist_header">トップ ボッドキャスト</string>
-  <string name="gpodnet_suggestions_header">おススメ</string>
   <string name="gpodnet_search_hint">gpodder.netを検索</string>
   <string name="gpodnetauth_login_butLabel">ログイン</string>
   <string name="username_label">ユーザー名</string>
@@ -529,21 +516,6 @@
   <string name="discover_more">さらに »</string>
   <!--Local feeds-->
   <string name="filter">フィルター</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">すべて</string>
-  <string name="selected_all_label">すべてのエピソードを選択しました</string>
-  <string name="deselected_all_label">すべてのエピソードの選択を解除しました</string>
-  <string name="played_label">再生しました</string>
-  <string name="selected_played_label">再生済のエピソードを選択しました</string>
-  <string name="unplayed_label">未再生</string>
-  <string name="selected_unplayed_label">未再生のエピソードを選択しました</string>
-  <string name="downloaded_label">ダウンロードしました</string>
-  <string name="selected_downloaded_label">ダウンロード済のエピソードを選択しました</string>
-  <string name="not_downloaded_label">ダウンロードしていません</string>
-  <string name="selected_not_downloaded_label">ダウンロードしていないエピソードを選択しました</string>
-  <string name="selected_queued_label">キューに入ったエピソードを選択しました</string>
-  <string name="selected_not_queued_label">キューに入っていないエピソードを選択しました</string>
-  <string name="selected_has_media_label">メディアのあるエピソードを選択しました</string>
   <string name="hide_is_favorite_label">お気に入り</string>
   <string name="hide_downloaded_episodes_label">ダウンロード済</string>
   <string name="hide_not_downloaded_episodes_label">未ダウンロード</string>
@@ -569,9 +541,6 @@
   <!--Audio controls-->
   <string name="audio_controls">オーディオコントロール</string>
   <string name="playback_speed">再生速度</string>
-  <string name="volume">音量</string>
-  <string name="left_short">左</string>
-  <string name="right_short">右</string>
   <string name="audio_effects">オーディオエフェクト</string>
   <string name="stereo_to_mono">ダウンミックス: ステレオからモノラル</string>
   <string name="sonic_only">Sonic のみ</string>

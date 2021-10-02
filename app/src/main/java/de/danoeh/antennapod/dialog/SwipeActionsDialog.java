@@ -135,6 +135,7 @@ public class SwipeActionsDialog {
             item.swipeActionLabel.setText(action.getTitle(context));
 
             Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(context, action.getActionIcon()));
+            icon.mutate();
             DrawableCompat.setTintMode(icon, PorterDuff.Mode.SRC_ATOP);
             if ((direction == LEFT && leftAction == action) || (direction == RIGHT && rightAction == action)) {
                 DrawableCompat.setTint(icon, ThemeUtils.getColorFromAttr(context, action.getActionColor()));

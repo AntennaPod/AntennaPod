@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Notifikationer </string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke fundet</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Strygehandlinger</string>
+  <string name="swipeactions_summary">Vælg hvad der sker, når der stryges på en udsendelse i en liste</string>
+  <string name="swipe_right">Stryg til højre</string>
+  <string name="swipe_left">Stryg til venstre</string>
+  <string name="enable_swipeactions">Aktiver strygehandlinger for denne skærm</string>
+  <string name="change_setting">Ændr</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet tid for afspillede udsendelser:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -84,15 +91,12 @@
   <string name="shownotes_label">Udsendelsesnoter</string>
   <string name="shownotes_contentdescription">Stryg op for at læse beskrivelse af udsendelse</string>
   <string name="episodes_suffix">\u0020udsendelser</string>
-  <string name="processing_label">Behandler</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
   <string name="auto_download_label">Inkludér i automatiske overførsler</string>
-  <string name="auto_download_apply_to_items_title">Anvend på tidligere udsendelser</string>
-  <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk overførsel</i>-indstilling vil automatisk blive anvendt på nye udsendelser.\nVil du også anvende den på tidligere udsendelser?</string>
   <string name="auto_delete_label">Slet udsendelser automatisk</string>
   <string name="feed_volume_reduction">Lydstyrkereduktion</string>
-  <string name="feed_volume_reduction_summary">Skru lyd ned for episoder i dette feed: %1$s</string>
+  <string name="feed_volume_reduction_summary">Skru ned for lydstyrken i udsendelser fra denne podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Fra</string>
   <string name="feed_volume_reduction_light">Lidt</string>
   <string name="feed_volume_reduction_heavy">Meget</string>
@@ -114,8 +118,8 @@
     <item quantity="other">%d dage efter færdig afspilning</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d valgt</item>
-    <item quantity="other">%d valgte</item>
+    <item quantity="one">%1$d/%2$d valgt</item>
+    <item quantity="other">%1$d/%2$d valgte</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episode</item>
@@ -152,6 +156,7 @@
   <string name="share_website_url_label">Adresse på netsted</string>
   <string name="share_feed_url_label">Podcast-adresse</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
+  <string name="feed_delete_confirmation_msg_batch">Bekræft venligt at du ønsker at fjerne de valgte podcasts og ALLE deres udsendelser (inklusiv downloadede udsendelser).</string>
   <string name="feed_delete_confirmation_local_msg">Bekræft venligst at du vil fjerne podcasten \"%1$s\". Filerne i den lokale kildemappe vil ikke blive slettet.</string>
   <string name="feed_remover_msg">Fjerner podcast</string>
   <string name="load_complete_feed">Opdater komplet podcast</string>
@@ -163,6 +168,11 @@
   <string name="open_podcast">Åbn podcast</string>
   <string name="please_wait_for_data">Vær venlig og vent til data\'et er indlæst</string>
   <string name="updates_disabled_label">Opdateringer deaktiveret</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d abonnement opdateret.</item>
+    <item quantity="other">%d abonnementer opdateret.</item>
+  </plurals>
+  <string name="add_to_folder">Føj til mappe</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <plurals name="downloading_batch_label">
@@ -182,6 +192,8 @@
   <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
   <string name="mark_read_label">Marker som afspillet</string>
+  <string name="marked_as_played_label">Marker som afspillet</string>
+  <string name="marked_as_unplayed_label">Marker som uafspillet</string>
   <string name="mark_read_no_media_label">Marker som læst</string>
   <string name="play_this_to_seek_position">Skift til position, du bliver nødt til at afspille episode</string>
   <plurals name="marked_read_batch_label">
@@ -209,8 +221,6 @@
   <string name="remove_from_favorite_label">Fjern fra foretrukne</string>
   <string name="visit_website_label">Besøg netsted</string>
   <string name="skip_episode_label">Spring udsendelse over</string>
-  <string name="activate_auto_download">Slå Automatisk overførsel til</string>
-  <string name="deactivate_auto_download">Slå Automatisk overførsel fra</string>
   <string name="reset_position">Nulstil afspilningsposition</string>
   <string name="removed_item">Element fjernet</string>
   <string name="no_items_selected">Intet valgte</string>
@@ -238,7 +248,6 @@
   <string name="download_error_wrong_size">Mistede serverforbindelsen før overførsel var komplet.</string>
   <string name="download_error_blocked">Overførslen blev blokeret af en anden app på din enhed.</string>
   <string name="download_error_certificate">Kunne ikke etablere en sikker forbindelse. Dette kan betyde, at en anden app på din enhed blokerede overførslen, eller at noget er galt med servercertifikaterne.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Overførsel annulleret\n<i>Automatisk overførsel</i> blev slået fra for dette element</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
   <string name="auto_download_report_title">Automatiske overførsler fuldført</string>
   <string name="download_error_io_error">Læse- eller skrivefejl</string>
@@ -248,7 +257,7 @@
     <item quantity="one">%d overførsel mangler</item>
     <item quantity="other">%d overførsler mangler</item>
   </plurals>
-  <string name="service_shutting_down">Tjeneste lukker ned</string>
+  <string name="completing">Fuldfører...</string>
   <string name="download_notification_title">Henter podcast-data</string>
   <string name="download_log_title_unknown">Ukendt titel</string>
   <string name="download_type_feed">Feed</string>
@@ -280,7 +289,6 @@
   <string name="no_media_label">Element indeholder ikke en mediefil.</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås kø</string>
-  <string name="unlock_queue">Lås kø op</string>
   <string name="queue_locked">Kø låst</string>
   <string name="queue_unlocked">Kø låst op</string>
   <string name="queue_lock_warning">Hvis du låser køen, kan du ikke swipe eller flytte rundt på episoder.</string>
@@ -457,8 +465,6 @@
   <string name="enqueue_location_front">Starten</string>
   <string name="enqueue_location_after_current">Efter aktuel udsendelse</string>
   <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
-  <string name="pref_image_cache_size_title">Størrelse på mellemlager (cache) for billeder</string>
-  <string name="pref_image_cache_size_sum">Størrelse på diskmellemlageret (disk cache) for billeder</string>
   <string name="documentation_support">Dokumentation &amp; Support</string>
   <string name="visit_user_forum">Brugerforum</string>
   <string name="bug_report_title">Rapportér fejl i appen</string>
@@ -524,6 +530,7 @@
   <string name="licenses_summary">AntennaPod bruger anden fantastisk software</string>
   <!--Search-->
   <string name="search_status_no_results">Fandt ingen resultater</string>
+  <string name="type_to_search">Indtast en forespørgsel for at søge</string>
   <string name="search_label">Søg</string>
   <string name="no_results_for_query">Ingen resultater fundet for \"%1$s\"</string>
   <!--Synchronization-->
@@ -594,7 +601,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER</string>
   <string name="gpodnet_toplist_header">TOP-PODCASTS</string>
-  <string name="gpodnet_suggestions_header">FORSLAG</string>
   <string name="gpodnet_search_hint">Søg på gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Log ind</string>
   <string name="gpodnetauth_encryption_warning">Adgangskode og date er ikke krypteret!</string>
@@ -689,22 +695,6 @@
   <string name="local_feed_description">Denne virtuelle podcast blev oprettet ved at en mappe blev føjet til AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Kunne ikke starte system filhåndtering</string>
   <string name="filter">Filtrér</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Alle</string>
-  <string name="selected_all_label">Markerede alle udsendelser</string>
-  <string name="select_none_label">Ingen</string>
-  <string name="deselected_all_label">Afmarkerede alle udsendelser</string>
-  <string name="played_label">Afspillede</string>
-  <string name="selected_played_label">Markerede afspillede udsendelser</string>
-  <string name="unplayed_label">Uafspillede</string>
-  <string name="selected_unplayed_label">Markerede uafspillede udsendelser</string>
-  <string name="downloaded_label">Overførte</string>
-  <string name="selected_downloaded_label">Markerede overførte udsendelser</string>
-  <string name="not_downloaded_label">Ikke-overførte</string>
-  <string name="selected_not_downloaded_label">Markerede ikke-overførte udsendelser</string>
-  <string name="selected_queued_label">Markerede udsendelser, der er sat i kø</string>
-  <string name="selected_not_queued_label">Markerede udsendelser, der ikke er sat i kø</string>
-  <string name="selected_has_media_label">Markerede udsendelser med medier</string>
   <string name="hide_is_favorite_label">Er foretrukken</string>
   <string name="not_favorite">Ikke foretrukken</string>
   <string name="hide_downloaded_episodes_label">Overførte</string>
@@ -745,9 +735,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Lydknapper</string>
   <string name="playback_speed">Afspilningshastighed</string>
-  <string name="volume">Lydstyrke</string>
-  <string name="left_short">V</string>
-  <string name="right_short">H</string>
   <string name="audio_effects">Lydeffekter</string>
   <string name="stereo_to_mono">Gør stereo til mono</string>
   <string name="sonic_only">Kun Sonic</string>

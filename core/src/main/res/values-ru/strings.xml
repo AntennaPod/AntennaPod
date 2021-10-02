@@ -28,6 +28,7 @@
   <string name="notification_pref_fragment">Уведомления</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" не найдено</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время воспроизведения выпусков:</string>
   <string name="statistics_details_dialog">Начато %1$d выпусков из %2$d.\n\nВоспроизведено %3$s из %4$s.</string>
@@ -84,15 +85,11 @@
   <string name="shownotes_label">Примечания к выпуску</string>
   <string name="shownotes_contentdescription">чтобы прочесть примечания проведите вверх</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
-  <string name="processing_label">Обработка</string>
   <string name="close_label">Закрыть</string>
   <string name="retry_label">Повторить</string>
   <string name="auto_download_label">Добавить в автозагрузки</string>
-  <string name="auto_download_apply_to_items_title">Применить к предыдущим выпускам</string>
-  <string name="auto_download_apply_to_items_message">Новые настройки <i>Автозагрузки</i> будут автоматически применены к новым выпускам. \nХотите ли вы применить их к ранее опубликованным выпускам?</string>
   <string name="auto_delete_label">Автоматическое удаление выпусков</string>
   <string name="feed_volume_reduction">Приглушение</string>
-  <string name="feed_volume_reduction_summary">Приглушать выпуски с этого канала: %1$s</string>
   <string name="feed_volume_reduction_off">Нет</string>
   <string name="feed_volume_reduction_light">Слабо</string>
   <string name="feed_volume_reduction_heavy">Сильно</string>
@@ -116,12 +113,6 @@
     <item quantity="few">%d дня после прослушивания</item>
     <item quantity="many">%d дней после прослушивания</item>
     <item quantity="other">%d дней после прослушивания</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">Выбрано: %d</item>
-    <item quantity="few">Выбраны: %d</item>
-    <item quantity="many">Выбраны: %d</item>
-    <item quantity="other">Выбраны: %d</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d выпуск</item>
@@ -233,8 +224,6 @@
   <string name="remove_from_favorite_label">Удалить из избранного</string>
   <string name="visit_website_label">Посетить сайт</string>
   <string name="skip_episode_label">Пропустить выпуск</string>
-  <string name="activate_auto_download">Включить автоматическую загрузку</string>
-  <string name="deactivate_auto_download">Отключить автоматическую загрузку</string>
   <string name="reset_position">Сбросить время воспроизведения</string>
   <string name="removed_item">Удалено</string>
   <string name="no_items_selected">Ничего не выбрано</string>
@@ -262,7 +251,6 @@
   <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки.</string>
   <string name="download_error_blocked">Загрузке препятствует другое приложение на устройстве.</string>
   <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение либо что-то не так с сертификатом сервера.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Загрузка отменена\n <i>Автозагрузка</i> отключена для этого выпуска</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
   <string name="auto_download_report_title">Автозагрузка завершена</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
@@ -274,7 +262,6 @@
     <item quantity="many">Осталось %d загрузок</item>
     <item quantity="other">Осталось %d загрузок</item>
   </plurals>
-  <string name="service_shutting_down">Сервис завершает работу</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
@@ -306,7 +293,6 @@
   <string name="no_media_label">Элемент не содержит медиафайла</string>
   <!--Queue operations-->
   <string name="lock_queue">Заблокировать очередь</string>
-  <string name="unlock_queue">Разблокировать очередь</string>
   <string name="queue_locked">Очередь заблокирована</string>
   <string name="queue_unlocked">Очередь разблокирована</string>
   <string name="queue_lock_warning">Заблокировав очередь, вы не сможете смахивать или упорядочивать выпуски.</string>
@@ -485,8 +471,6 @@
   <string name="enqueue_location_front">в начало</string>
   <string name="enqueue_location_after_current">за текущим выпуском</string>
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
-  <string name="pref_image_cache_size_title">Размер кеша изображений</string>
-  <string name="pref_image_cache_size_sum">Размер дискового кеша изображений</string>
   <string name="documentation_support">Документация и Поддержка</string>
   <string name="visit_user_forum">Форум пользователей</string>
   <string name="bug_report_title">Сообщить об ошибке</string>
@@ -628,7 +612,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Категории</string>
   <string name="gpodnet_toplist_header">Лучшее</string>
-  <string name="gpodnet_suggestions_header">Рекомендации</string>
   <string name="gpodnet_search_hint">Искать на gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
   <string name="gpodnetauth_encryption_warning">Пароль и данные не зашифрованы!</string>
@@ -723,22 +706,6 @@
   <string name="local_feed_description">Этот виртуальный подкаст был создан путем добавления папки в AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Невозможно запустить системный файловый менеджер</string>
   <string name="filter">Фильтровать</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Все</string>
-  <string name="selected_all_label">Выбраны все выпуски</string>
-  <string name="select_none_label">Ничего</string>
-  <string name="deselected_all_label">Выбор снят со всех выпусков</string>
-  <string name="played_label">Прослушанное</string>
-  <string name="selected_played_label">Выбраны прослушанные выпуски</string>
-  <string name="unplayed_label">Непрослушанное</string>
-  <string name="selected_unplayed_label">Выбраны непрослушанные выпуски</string>
-  <string name="downloaded_label">Загруженное</string>
-  <string name="selected_downloaded_label">Выбраны загруженные выпуски</string>
-  <string name="not_downloaded_label">Не загруженное</string>
-  <string name="selected_not_downloaded_label">Выбраны не загруженные выпуски</string>
-  <string name="selected_queued_label">Выбраны выпуски из очереди</string>
-  <string name="selected_not_queued_label">Выбраны выпуски не из очереди</string>
-  <string name="selected_has_media_label">Выбраны выпуски с файлами</string>
   <string name="hide_is_favorite_label">В Избранном</string>
   <string name="not_favorite">Не в избранном</string>
   <string name="hide_downloaded_episodes_label">Загружено</string>
@@ -779,9 +746,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Управление звучанием</string>
   <string name="playback_speed">Скорость воспроизведения</string>
-  <string name="volume">Громкость</string>
-  <string name="left_short">Л</string>
-  <string name="right_short">П</string>
   <string name="audio_effects">Звуковые эффекты</string>
   <string name="stereo_to_mono">Низвести стерео до моно</string>
   <string name="sonic_only">Только для Sonic</string>

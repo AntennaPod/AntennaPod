@@ -28,6 +28,7 @@
   <string name="notification_pref_fragment">Notificaciones</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" no encontrado</string>
+  <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de episodios:</string>
   <string name="statistics_details_dialog">%1$d episodios iniciados de %2$d.\n\nReproducidos %3$s de %4$s.</string>
@@ -84,15 +85,11 @@
   <string name="shownotes_label">Notas del programa</string>
   <string name="shownotes_contentdescription">deslice hacia arriba para leer las notas del programa</string>
   <string name="episodes_suffix">\u0020episodios</string>
-  <string name="processing_label">Procesando</string>
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluir en descargas automáticas</string>
-  <string name="auto_download_apply_to_items_title">Aplicar a episodios anteriores</string>
-  <string name="auto_download_apply_to_items_message">La nueva opción <i>descarga automática</i> se aplicará automáticamente a episodios nuevos.\n¿También desea aplicarlo a episodios anteriores?</string>
   <string name="auto_delete_label">Borrar episodio automáticamente</string>
   <string name="feed_volume_reduction">Reducción de volumen</string>
-  <string name="feed_volume_reduction_summary">Bajar el volumen para episodios de este canal: %1$s</string>
   <string name="feed_volume_reduction_off">Apagado</string>
   <string name="feed_volume_reduction_light">Ligero</string>
   <string name="feed_volume_reduction_heavy">Fuerte</string>
@@ -112,10 +109,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 día después de acabar</item>
     <item quantity="other">%d días después de acabar</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">1%d seleccionado</item>
-    <item quantity="other">%d seleccionado</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodio</item>
@@ -209,8 +202,6 @@
   <string name="remove_from_favorite_label">Eliminar de favoritos</string>
   <string name="visit_website_label">Visitar el sitio web</string>
   <string name="skip_episode_label">Omitir episodio</string>
-  <string name="activate_auto_download">Activar descarga automática</string>
-  <string name="deactivate_auto_download">Desactivar descarga automática</string>
   <string name="reset_position">Restablecer la posición de reproducción</string>
   <string name="removed_item">Elemento elminado</string>
   <string name="no_items_selected">No hay elementos seleccionados</string>
@@ -238,7 +229,6 @@
   <string name="download_error_wrong_size">Descarga incompleta por perdida de conexión con el servidor.</string>
   <string name="download_error_blocked">Descargada bloqueada por otra aplicación en su dispositivo.</string>
   <string name="download_error_certificate">No se pudo establecer una conexión segura. Esto puede significar que otra aplicación de tu dispositivo ha bloqueado la descarga o que hay algún problema con los certificados del servidor.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó la <i>descarga automática</i> en este elemento</string>
   <string name="download_report_title">Descargas completadas con error(es)</string>
   <string name="auto_download_report_title">Descargas automáticas completadas</string>
   <string name="download_error_io_error">Error de E/S</string>
@@ -248,7 +238,6 @@
     <item quantity="one">Queda %d descarga</item>
     <item quantity="other">Quedan %d descargas</item>
   </plurals>
-  <string name="service_shutting_down">Apagando servicio</string>
   <string name="download_notification_title">Descargando datos del pódcast</string>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
@@ -280,7 +269,6 @@
   <string name="no_media_label">El elemento no contiene un archivo multimedia</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquear cola</string>
-  <string name="unlock_queue">Desbloquear cola</string>
   <string name="queue_locked">Cola bloqueada</string>
   <string name="queue_unlocked">Cola desbloqueada</string>
   <string name="queue_lock_warning">Si bloqueas la cola, no podrás mover o marcar los episodios.</string>
@@ -457,8 +445,6 @@
   <string name="enqueue_location_front">Principio</string>
   <string name="enqueue_location_after_current">Después del episodio actual</string>
   <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
-  <string name="pref_image_cache_size_title">Tamaño del almacenamiento de imágenes</string>
-  <string name="pref_image_cache_size_sum">Tamaño del almacenamiento de imágenes en disco.</string>
   <string name="documentation_support">Documentación &amp; Asistencia</string>
   <string name="visit_user_forum">Foro de usuario</string>
   <string name="bug_report_title">Reportar bug</string>
@@ -594,7 +580,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORÍAS</string>
   <string name="gpodnet_toplist_header">MEJORES PÓDCAST</string>
-  <string name="gpodnet_suggestions_header">SUGERENCIAS</string>
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Iniciar sesión</string>
   <string name="gpodnetauth_encryption_warning">Clave de acceso y data no encriptadas.</string>
@@ -689,22 +674,6 @@
   <string name="local_feed_description">Este podcast virtual fue creado añadiendo una carpeta a AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">No se puede iniciar el administrador de archivos del sistema</string>
   <string name="filter">Filtro</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Todos</string>
-  <string name="selected_all_label">Todos los episodios seleccionados</string>
-  <string name="select_none_label">Ninguno</string>
-  <string name="deselected_all_label">Ningún episodio seleccionado</string>
-  <string name="played_label">Reproducidos</string>
-  <string name="selected_played_label">Episodios reproducidos seleccionados</string>
-  <string name="unplayed_label">No reproducidos</string>
-  <string name="selected_unplayed_label">Episodios no reproducidos seleccionados</string>
-  <string name="downloaded_label">Descargados</string>
-  <string name="selected_downloaded_label">Episodios descargados seleccionados</string>
-  <string name="not_downloaded_label">No descargado</string>
-  <string name="selected_not_downloaded_label">Episodios no descargados seleccionados</string>
-  <string name="selected_queued_label">Episodios en cola seleccionados</string>
-  <string name="selected_not_queued_label">Episodios que no están en cola seleccionados</string>
-  <string name="selected_has_media_label">Episodios con multimedia seleccionados</string>
   <string name="hide_is_favorite_label">Es favorito</string>
   <string name="not_favorite">No favorito</string>
   <string name="hide_downloaded_episodes_label">Descargados</string>
@@ -745,9 +714,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controles de audio</string>
   <string name="playback_speed">Velocidad de reproducción</string>
-  <string name="volume">Volumen</string>
-  <string name="left_short">I</string>
-  <string name="right_short">D</string>
   <string name="audio_effects">Efectos de audio</string>
   <string name="stereo_to_mono">Mezclar: de estéreo a mono</string>
   <string name="sonic_only">Solo Sonic</string>

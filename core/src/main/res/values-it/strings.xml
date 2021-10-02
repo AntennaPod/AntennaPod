@@ -28,6 +28,13 @@
   <string name="notification_pref_fragment">Notifiche</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" non trovato</string>
+  <!--SwipeActions-->
+  <string name="swipeactions_label">Azioni di scorrimento</string>
+  <string name="swipeactions_summary">Azioni quando si scorre a destra/sinistra un episodio nella lista</string>
+  <string name="swipe_right">Scorri a destra</string>
+  <string name="swipe_left">Scorri a sinistra</string>
+  <string name="enable_swipeactions">Abilita azioni di scorrimento su questa schermata</string>
+  <string name="change_setting">Modifica</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo totale episodi riprodotti:</string>
   <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
@@ -84,15 +91,12 @@
   <string name="shownotes_label">Note episodio</string>
   <string name="shownotes_contentdescription">scorri verso l\'alto per leggere le note dello show</string>
   <string name="episodes_suffix">\u0020episodi</string>
-  <string name="processing_label">Elaborazione in corso</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
-  <string name="auto_download_apply_to_items_title">Applica agli episodi precedenti</string>
-  <string name="auto_download_apply_to_items_message">L\'opzione <i>Download automatico</i> verrà applicata ai nuovi episodi.\nVuoi applicarla anche agli episodi precedenti?</string>
   <string name="auto_delete_label">Eliminazione automatica episodi</string>
   <string name="feed_volume_reduction">Riduzione del volume</string>
-  <string name="feed_volume_reduction_summary">Riduci il volume degli episodi di questo feed: %1$s</string>
+  <string name="feed_volume_reduction_summary">Abbassa volume per gli episodi di questo podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Spento</string>
   <string name="feed_volume_reduction_light">Leggero</string>
   <string name="feed_volume_reduction_heavy">Deciso</string>
@@ -114,8 +118,8 @@
     <item quantity="other">%d giorni dopo il completamento</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%d selezionato</item>
-    <item quantity="other">%d selezionati</item>
+    <item quantity="one">%1$d/%2$d selezionato</item>
+    <item quantity="other">%1$d/%2$d selezionati</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodio</item>
@@ -152,6 +156,7 @@
   <string name="share_website_url_label">Indirizzo del sito internet</string>
   <string name="share_feed_url_label">URL feed del podcast</string>
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
+  <string name="feed_delete_confirmation_msg_batch">Conferma che vuoi eliminare i podcast selezionati e TUTTI i loro episodi (inclusi quelli scaricati).</string>
   <string name="feed_delete_confirmation_local_msg">Conferma se desideri rimuovere il podcast \"%1$s\". I file nella cartella di origine locale non verranno cancellati.</string>
   <string name="feed_remover_msg">Rimozione podcast in corso</string>
   <string name="load_complete_feed">Aggiorna podcast completo</string>
@@ -163,6 +168,11 @@
   <string name="open_podcast">Apri podcast</string>
   <string name="please_wait_for_data">Attendi il caricamento dei dati</string>
   <string name="updates_disabled_label">Aggiornamenti disabilitati</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d iscrizione aggiornata.</item>
+    <item quantity="other">%d iscrizioni aggiornate.</item>
+  </plurals>
+  <string name="add_to_folder">Aggiungi alla cartella</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
@@ -182,6 +192,8 @@
   <string name="remove_new_flag_label">Rimuovi flag \"nuovo\"</string>
   <string name="removed_new_flag_label">Flag \"nuovo\" rimosso</string>
   <string name="mark_read_label">Segna come riprodotto</string>
+  <string name="marked_as_played_label">Segna come riprodotto</string>
+  <string name="marked_as_unplayed_label">Segna come non riprodotto</string>
   <string name="mark_read_no_media_label">Segna come letto</string>
   <string name="play_this_to_seek_position">Per saltare alla posizione devi riprodurre l\'episodio</string>
   <plurals name="marked_read_batch_label">
@@ -209,8 +221,6 @@
   <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
-  <string name="activate_auto_download">Attiva il download automatico</string>
-  <string name="deactivate_auto_download">Disattiva il download automatico</string>
   <string name="reset_position">Azzera la posizione di riproduzione</string>
   <string name="removed_item">Elemento rimosso</string>
   <string name="no_items_selected">Nessun elemento selezionato</string>
@@ -238,7 +248,6 @@
   <string name="download_error_wrong_size">Connessione al server persa prima del completamento del download</string>
   <string name="download_error_blocked">Il download è stato bloccato da un\'altra app sul dispositivo.</string>
   <string name="download_error_certificate">Impossibile stabilire una connessione sicura. Un\'altra app potrebbe aver bloccato il download oppure c\'è qualche problema con i certificati del server.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download automatico</i> disabilitato per questo elemento</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
   <string name="auto_download_report_title">Download automatici completati</string>
   <string name="download_error_io_error">Errore IO</string>
@@ -248,7 +257,7 @@
     <item quantity="one">%d download rimanente</item>
     <item quantity="other">%d download rimanenti</item>
   </plurals>
-  <string name="service_shutting_down">Spegnimento servizio</string>
+  <string name="completing">Completamento...</string>
   <string name="download_notification_title">Scaricamento podcast in corso</string>
   <string name="download_log_title_unknown">Titolo sconosciuto</string>
   <string name="download_type_feed">Feed</string>
@@ -280,7 +289,6 @@
   <string name="no_media_label">L\'oggetto non contiene un file multimediale</string>
   <!--Queue operations-->
   <string name="lock_queue">Blocca la coda</string>
-  <string name="unlock_queue">Sblocca la coda</string>
   <string name="queue_locked">Coda bloccata</string>
   <string name="queue_unlocked">Coda sbloccata</string>
   <string name="queue_lock_warning">Se blocchi la coda non potrai più fare swipe o riordinare gli episodi.</string>
@@ -457,8 +465,6 @@
   <string name="enqueue_location_front">All\'inizio</string>
   <string name="enqueue_location_after_current">Dopo l\'episodio attuale</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
-  <string name="pref_image_cache_size_title">Dimensione cache delle immagini</string>
-  <string name="pref_image_cache_size_sum">Spazio su disco usato per la cache delle immagini.</string>
   <string name="documentation_support">Documentazione &amp; supporto</string>
   <string name="visit_user_forum">Forum utenti</string>
   <string name="bug_report_title">Segnala un problema</string>
@@ -524,6 +530,7 @@
   <string name="licenses_summary">AntennaPod usa altri ottimi software</string>
   <!--Search-->
   <string name="search_status_no_results">Nessun risultato trovato</string>
+  <string name="type_to_search">Digita una ricerca da eseguire</string>
   <string name="search_label">Ricerca</string>
   <string name="no_results_for_query">Nessun risultato trovato per \"%1$s\"</string>
   <!--Synchronization-->
@@ -594,7 +601,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCAST</string>
-  <string name="gpodnet_suggestions_header">SUGGERIMENTI</string>
   <string name="gpodnet_search_hint">Cerca su gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="gpodnetauth_encryption_warning">Dati e password non cifrati!</string>
@@ -689,22 +695,6 @@
   <string name="local_feed_description">Questo podcast virtuale è generato dall\'aggiunta di una cartella ad AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Impossibile avviare il gestore file di sistema</string>
   <string name="filter">Filtra</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Tutto</string>
-  <string name="selected_all_label">Seleziona tutti gli episodi</string>
-  <string name="select_none_label">Nessuno</string>
-  <string name="deselected_all_label">Deseleziona tutti gli episodi</string>
-  <string name="played_label">Riprodotti</string>
-  <string name="selected_played_label">Episodi riprodotti selezionati</string>
-  <string name="unplayed_label">Non riprodotti</string>
-  <string name="selected_unplayed_label">Episodi non riprodotti selezionati</string>
-  <string name="downloaded_label">Scaricati</string>
-  <string name="selected_downloaded_label">Episodi scaricati selezionati</string>
-  <string name="not_downloaded_label">Non scaricati</string>
-  <string name="selected_not_downloaded_label">Episodi non scaricati selezionati</string>
-  <string name="selected_queued_label">Episodi in coda selezionati</string>
-  <string name="selected_not_queued_label">Episodi non in coda selezionati</string>
-  <string name="selected_has_media_label">Episodi con elementi multimediali selezionati</string>
   <string name="hide_is_favorite_label">Preferiti</string>
   <string name="not_favorite">Non preferito</string>
   <string name="hide_downloaded_episodes_label">Scaricati</string>
@@ -745,9 +735,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Controlli audio</string>
   <string name="playback_speed">Velocità di riproduzione</string>
-  <string name="volume">Volume</string>
-  <string name="left_short">Sx</string>
-  <string name="right_short">Dx</string>
   <string name="audio_effects">Effetti Audio</string>
   <string name="stereo_to_mono">Downmix: da Stereo a Mono</string>
   <string name="sonic_only">Solo Sonic</string>

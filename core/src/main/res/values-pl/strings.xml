@@ -28,6 +28,10 @@
   <string name="notification_pref_fragment">Powiadomienia</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Nie odnaleziono \"%1$s\"</string>
+  <!--SwipeActions-->
+  <string name="swipe_right">Przeciągnij w prawo</string>
+  <string name="swipe_left">Przeciągnij w lewo</string>
+  <string name="change_setting">Zmień </string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas odtwarzania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nOdtworzono %3$s z %4$s.</string>
@@ -84,12 +88,9 @@
   <string name="shownotes_label">Opis odcinka</string>
   <string name="shownotes_contentdescription">przesuń w górę, aby zobaczyć opis</string>
   <string name="episodes_suffix">\u0020odcinków</string>
-  <string name="processing_label">Przetwarzanie</string>
   <string name="close_label">Zamknij</string>
   <string name="retry_label">Spróbuj ponownie</string>
   <string name="auto_download_label">Dołącz do automatycznego pobierania</string>
-  <string name="auto_download_apply_to_items_title">Zastosuj do poprzednich odcinków</string>
-  <string name="auto_download_apply_to_items_message">Nowe ustawienie <i>automatycznego pobierania</i> zostanie zastosowane do nowych odcinków.\n Czy chcesz zastosować je także do odcinków opublikowanych wcześniej?</string>
   <string name="auto_delete_label">Automatyczne usuwanie odcinków</string>
   <string name="feed_volume_reduction">Redukcja głośności</string>
   <string name="feed_volume_reduction_summary">Zmniejsz głośność dla odcinków z tego kanału: %1$s</string>
@@ -116,12 +117,6 @@
     <item quantity="few">%d dni po odtworzeniu</item>
     <item quantity="many">%d dni po odtworzeniu</item>
     <item quantity="other">%d dni po odtworzeniu</item>
-  </plurals>
-  <plurals name="num_selected_label">
-    <item quantity="one">%d zaznaczono</item>
-    <item quantity="few"> %d zaznaczono</item>
-    <item quantity="many">%d zaznaczono</item>
-    <item quantity="other">%d zaznaczono</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d odcinek</item>
@@ -164,6 +159,7 @@
   <string name="share_website_url_label">Adres stony</string>
   <string name="share_feed_url_label">Adres URL podcastu</string>
   <string name="feed_delete_confirmation_msg">Potwierdź, że chcesz usunąć kanał \"%1$s\" oraz WSZYSTKIE jego odcinki (również te pobrane).</string>
+  <string name="feed_delete_confirmation_msg_batch">Potwierdź, że chcesz usunąć zaznaczone podcasty i WSZYSTKIE odcinki (także te pobrane). </string>
   <string name="feed_delete_confirmation_local_msg">Proszę potwierdzić usunięcie podcastu \"%1$s\". Pliki w lokalnym folderze źródłowym nie zostaną usunięte.</string>
   <string name="feed_remover_msg">Usuwanie podcastu</string>
   <string name="load_complete_feed">Odśwież cały podcast</string>
@@ -175,6 +171,7 @@
   <string name="open_podcast">Otwórz Podcast</string>
   <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
   <string name="updates_disabled_label">Aktualizacje wyłączone</string>
+  <string name="add_to_folder">Dodaj do folderu</string>
   <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
   <plurals name="downloading_batch_label">
@@ -198,6 +195,8 @@
   <string name="remove_new_flag_label">Usuń flagę \"nowy\"</string>
   <string name="removed_new_flag_label">Usunięto flagę \"nowy\"</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
+  <string name="marked_as_played_label">Oznaczone jako odtworzone</string>
+  <string name="marked_as_unplayed_label">Oznaczone jako nieodtworzone</string>
   <string name="mark_read_no_media_label">Oznacz jako przeczytane</string>
   <string name="play_this_to_seek_position">Aby skoczyć do konkretnej pozycji, musisz odtworzyć odcinek</string>
   <plurals name="marked_read_batch_label">
@@ -233,8 +232,6 @@
   <string name="remove_from_favorite_label">Usuń z Ulubionych</string>
   <string name="visit_website_label">Odwiedź stronę</string>
   <string name="skip_episode_label">Pomiń odcinek</string>
-  <string name="activate_auto_download">Włącz automatyczne pobieranie</string>
-  <string name="deactivate_auto_download">Wyłącz automatyczne pobieranie</string>
   <string name="reset_position">Zresetuj pozycję odtwarzania</string>
   <string name="removed_item">Pozycja usunięta</string>
   <string name="no_items_selected">Nie zaznaczono żadnego elementu</string>
@@ -263,7 +260,6 @@
   <string name="download_error_wrong_size">Połączenie z serwerem zostało zerwane przed ukończeniem pobierania.</string>
   <string name="download_error_blocked">Pobieranie zostało zablokowane przez inną aplikację na twoim urządzeniu.</string>
   <string name="download_error_certificate">Nie można ustanowić bezpiecznego połączenia. Może to oznaczać, że inna aplikacja na twoim urządzeniu zablokowała pobieranie, lub coś jest nie tak z certyfikatami serwera.</string>
-  <string name="download_canceled_autodownload_enabled_msg">Pobieranie zatrzymane\nWyłączone <i>Automatyczne pobieranie</i> dla tego elementu</string>
   <string name="download_report_title">Pobieranie ukończone</string>
   <string name="auto_download_report_title">Automatyczne pobieranie ukończone</string>
   <string name="download_error_io_error">Błąd wejścia/wyjścia</string>
@@ -275,7 +271,6 @@
     <item quantity="many">%d elementów zostało do pobrania</item>
     <item quantity="other">%d elementów zostało do pobrania</item>
   </plurals>
-  <string name="service_shutting_down">Zamykanie usługi</string>
   <string name="download_notification_title">Pobieranie danych podcastu</string>
   <string name="download_log_title_unknown">Nieznany tytuł</string>
   <string name="download_type_feed">Kanał</string>
@@ -307,7 +302,6 @@
   <string name="no_media_label">Element nie zawiera pliku multimedialnego</string>
   <!--Queue operations-->
   <string name="lock_queue">Zablokuj Kolejkę</string>
-  <string name="unlock_queue">Odblokuj Kolejkę</string>
   <string name="queue_locked">Kolejka zablokowana</string>
   <string name="queue_unlocked">Kolejka odblokowana</string>
   <string name="queue_lock_warning">Jeśli zablokujesz kolejkę, nie będzie można usuwać z niej odcinków przez przesunięcie i zmieniać ich kolejności.</string>
@@ -486,8 +480,6 @@
   <string name="enqueue_location_front">Początek</string>
   <string name="enqueue_location_after_current">Za bieżącym odcinkiem</string>
   <string name="pref_smart_mark_as_played_disabled">Wyłączone</string>
-  <string name="pref_image_cache_size_title">Pamięć podręczna obrazów</string>
-  <string name="pref_image_cache_size_sum">Rozmiar przestrzeni na dysku dla pamięci podręcznej obrazów</string>
   <string name="documentation_support">Dokumentacja &amp; Wsparcie</string>
   <string name="visit_user_forum">Forum użytkowników</string>
   <string name="bug_report_title">Zgłoś błąd</string>
@@ -629,7 +621,6 @@
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
-  <string name="gpodnet_suggestions_header">SUGESTIE</string>
   <string name="gpodnet_search_hint">Szukaj na gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="gpodnetauth_encryption_warning">Hasło i dane nie są zaszyfrowane!</string>
@@ -724,22 +715,6 @@
   <string name="local_feed_description">Ten wirtualny podcast został stworzony przez dodanie lokalnego folderu do AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Nie można uruchomić menedżera plików</string>
   <string name="filter">Filtruj</string>
-  <!--Episodes apply actions-->
-  <string name="all_label">Wszystkie</string>
-  <string name="selected_all_label">Zaznaczono wszystkie odcinki</string>
-  <string name="select_none_label">Brak</string>
-  <string name="deselected_all_label">Odznaczono wszystkie odcinki</string>
-  <string name="played_label">Odtworzone</string>
-  <string name="selected_played_label">Zaznaczono odtworzone odcinki</string>
-  <string name="unplayed_label">Nieodtworzone</string>
-  <string name="selected_unplayed_label">Zaznaczono nieodtworzone odcinki</string>
-  <string name="downloaded_label">Pobrane</string>
-  <string name="selected_downloaded_label">Zaznaczono pobrane odcinki</string>
-  <string name="not_downloaded_label">Nie pobrane</string>
-  <string name="selected_not_downloaded_label">Zaznaczono niepobrane odcinki</string>
-  <string name="selected_queued_label">Wybierz odcinki w kolejce</string>
-  <string name="selected_not_queued_label">Wybierz odcinki, które nie są w kolejce</string>
-  <string name="selected_has_media_label">Wybrane odcinki z mediami</string>
   <string name="hide_is_favorite_label">Ulubione</string>
   <string name="not_favorite">Nie oznaczone jako ulubione</string>
   <string name="hide_downloaded_episodes_label">Pobrane</string>
@@ -780,9 +755,6 @@
   <!--Audio controls-->
   <string name="audio_controls">Sterowanie audio</string>
   <string name="playback_speed">Prędkość odtwarzania</string>
-  <string name="volume">Głośność</string>
-  <string name="left_short">Lewy</string>
-  <string name="right_short">Prawy</string>
   <string name="audio_effects">Efekty audio</string>
   <string name="stereo_to_mono">Miksuj: Stereo do mono</string>
   <string name="sonic_only">Tylko Sonic</string>
