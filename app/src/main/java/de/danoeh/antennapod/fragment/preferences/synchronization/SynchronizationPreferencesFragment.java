@@ -35,7 +35,6 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 
 public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
-    private static final String PREFERENCE_LOGIN = "pref_synchronization_authenticate";
     private static final String PREFERENCE_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREFERENCE_SYNC = "pref_synchronization_sync";
     private static final String PREFERENCE_FORCE_FULL_SYNC = "pref_synchronization_force_full_sync";
@@ -80,68 +79,11 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
 
     private void setupScreen() {
         final Activity activity = getActivity();
-
-        findPreference(PREFERENCE_LOGIN).setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle(R.string.dialog_choose_sync_service_title);
-
-            SynchronizationProviderViewData[] providers = SynchronizationProviderViewData.values();
-            ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
-                    getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
-
-                ViewHolder holder;
-
-                class ViewHolder {
-                    ImageView icon;
-                    TextView title;
-                }
-
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    final LayoutInflater inflater = LayoutInflater.from(getContext());
-                    if (convertView == null) {
-                        convertView = inflater.inflate(
-                                R.layout.alertdialog_sync_provider_chooser, null);
-
-                        holder = new ViewHolder();
-                        holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                        holder.title = (TextView) convertView.findViewById(R.id.title);
-                        convertView.setTag(holder);
-                    } else {
-                        holder = (ViewHolder) convertView.getTag();
-                    }
-                    SynchronizationProviderViewData synchronizationProviderViewData = getItem(position);
-                    holder.title.setText(synchronizationProviderViewData.getSummaryResource());
-                    holder.icon.setImageResource(synchronizationProviderViewData.getIconResource());
-                    return convertView;
-                }
-            };
-
-            builder.setAdapter(adapter, (dialog, which) -> {
-                switch (providers[which]) {
-                    case GPODDER_NET:
-                        new GpodderAuthenticationFragment()
-                                .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
-                        break;
-                    case NEXTCLOUD_GPODDER:
-                        new NextcloudAuthenticationFragment()
-                                .show(getChildFragmentManager(), NextcloudAuthenticationFragment.TAG);
-                        break;
-                    default:
-                        break;
-                }
-                updateScreen();
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            return true;
-        });
         findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
                             R.string.pref_gpodnet_setlogin_information_title,
                             false, SynchronizationCredentials.getUsername(), null) {
-
                         @Override
                         protected void onConfirmed(String username, String password) {
                             SynchronizationCredentials.setPassword(password);
@@ -169,12 +111,23 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
 
     private void updateScreen() {
         final boolean loggedIn = SynchronizationSettings.isProviderConnected();
-        findPreference(PREFERENCE_LOGIN).setVisible(!loggedIn);
-
         Preference preferenceHeader = findPreference(PREFERENCE_SYNCHRONIZATION_DESCRIPTION);
-        preferenceHeader.setIcon(ViewDataProvider.getSynchronizationProviderIcon(getSelectedSyncProviderKey()));
-        preferenceHeader.setSummary(ViewDataProvider.getSynchronizationProviderHeaderSummary(
-                getSelectedSyncProviderKey()));
+        if (loggedIn) {
+            SynchronizationProviderViewData selectedProvider =
+                    SynchronizationProviderViewData.fromIdentifier(getSelectedSyncProviderKey());
+            preferenceHeader.setTitle("");
+            preferenceHeader.setSummary(selectedProvider.getSummaryResource());
+            preferenceHeader.setIcon(selectedProvider.getIconResource());
+            preferenceHeader.setOnPreferenceClickListener(null);
+        } else {
+            preferenceHeader.setTitle(R.string.synchronization_choose_title);
+            preferenceHeader.setSummary(R.string.synchronization_summary_unchoosen);
+            preferenceHeader.setIcon(R.drawable.ic_cloud);
+            preferenceHeader.setOnPreferenceClickListener((preference) -> {
+                chooseProviderAndLogin();
+                return true;
+            });
+        }
 
         Preference gpodnetSetLoginPreference = findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION);
         gpodnetSetLoginPreference.setVisible(isProviderSelected(SynchronizationProviderViewData.GPODDER_NET));
@@ -193,6 +146,61 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             findPreference(PREFERENCE_LOGOUT).setSummary(null);
             ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(null);
         }
+    }
+
+    private void chooseProviderAndLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.dialog_choose_sync_service_title);
+
+        SynchronizationProviderViewData[] providers = SynchronizationProviderViewData.values();
+        ListAdapter adapter = new ArrayAdapter<SynchronizationProviderViewData>(
+                getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
+
+            ViewHolder holder;
+
+            class ViewHolder {
+                ImageView icon;
+                TextView title;
+            }
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+                final LayoutInflater inflater = LayoutInflater.from(getContext());
+                if (convertView == null) {
+                    convertView = inflater.inflate(
+                            R.layout.alertdialog_sync_provider_chooser, null);
+
+                    holder = new ViewHolder();
+                    holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+                    holder.title = (TextView) convertView.findViewById(R.id.title);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+                SynchronizationProviderViewData synchronizationProviderViewData = getItem(position);
+                holder.title.setText(synchronizationProviderViewData.getSummaryResource());
+                holder.icon.setImageResource(synchronizationProviderViewData.getIconResource());
+                return convertView;
+            }
+        };
+
+        builder.setAdapter(adapter, (dialog, which) -> {
+            switch (providers[which]) {
+                case GPODDER_NET:
+                    new GpodderAuthenticationFragment()
+                            .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
+                    break;
+                case NEXTCLOUD_GPODDER:
+                    new NextcloudAuthenticationFragment()
+                            .show(getChildFragmentManager(), NextcloudAuthenticationFragment.TAG);
+                    break;
+                default:
+                    break;
+            }
+            updateScreen();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean isProviderSelected(@NonNull SynchronizationProviderViewData provider) {

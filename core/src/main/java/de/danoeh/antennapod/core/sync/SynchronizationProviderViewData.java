@@ -14,6 +14,15 @@ public enum SynchronizationProviderViewData {
             R.drawable.nextcloud_logo
     );
 
+    public static SynchronizationProviderViewData fromIdentifier(String provider) {
+        for (SynchronizationProviderViewData synchronizationProvider : SynchronizationProviderViewData.values()) {
+            if (synchronizationProvider.getIdentifier().equals(provider)) {
+                return synchronizationProvider;
+            }
+        }
+        return null;
+    }
+
     private final String identifier;
     private final int iconResource;
     private final int summaryResource;
