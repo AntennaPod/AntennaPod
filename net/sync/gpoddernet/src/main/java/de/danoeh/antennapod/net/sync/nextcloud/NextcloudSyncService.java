@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -125,7 +124,7 @@ public class NextcloudSyncService implements ISyncService {
         return "{\"data\": \"" + data + "\"}";
     }
 
-    private String performRequest(HttpUrl.Builder url, String method, RequestBody body) throws IOException, URISyntaxException {
+    private String performRequest(HttpUrl.Builder url, String method, RequestBody body) throws IOException {
         Request request = new Request.Builder()
                 .url(url.build())
                 .header("Authorization", Credentials.basic(username, password))

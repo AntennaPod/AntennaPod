@@ -11,7 +11,8 @@ import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
  */
 public class SynchronizationCredentials {
 
-    private SynchronizationCredentials(){}
+    private SynchronizationCredentials() {
+    }
 
     private static final String PREF_NAME = "gpodder.net";
     private static final String PREF_USERNAME = "de.danoeh.antennapod.preferences.gpoddernet.username";

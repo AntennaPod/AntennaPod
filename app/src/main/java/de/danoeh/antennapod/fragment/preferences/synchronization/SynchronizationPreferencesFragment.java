@@ -139,8 +139,8 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
         findPreference(PREFERENCE_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
-                            R.string.pref_gpodnet_setlogin_information_title, false, SynchronizationCredentials.getUsername(),
-                            null) {
+                            R.string.pref_gpodnet_setlogin_information_title,
+                            false, SynchronizationCredentials.getUsername(), null) {
 
                         @Override
                         protected void onConfirmed(String username, String password) {
