@@ -336,7 +336,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.count.setVisibility(View.GONE);
         }
         Glide.with(context).clear(holder.image);
-        holder.image.setImageResource(R.drawable.ic_folder);
+        holder.image.setImageResource(R.drawable.ic_tag);
         holder.failure.setVisibility(View.GONE);
     }
 
