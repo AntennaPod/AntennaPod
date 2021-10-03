@@ -84,6 +84,7 @@ public class CompletedDownloadsFragment extends Fragment implements
         progressBar = root.findViewById(R.id.progLoading);
 
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
         speedDialView.removeActionItemById(R.id.download_batch);
         speedDialView.removeActionItemById(R.id.mark_read_batch);
