@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -327,6 +328,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            openKeyboard();
             return true;
         }
         return false;
@@ -655,5 +657,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             DBWriter.moveQueueItem(from, to, true);
         }
 
+    }
+    private void openKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 }
