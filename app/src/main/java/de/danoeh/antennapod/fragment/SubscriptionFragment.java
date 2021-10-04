@@ -167,6 +167,7 @@ public class SubscriptionFragment extends Fragment
         });
 
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.nav_feed_action_speeddial);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
