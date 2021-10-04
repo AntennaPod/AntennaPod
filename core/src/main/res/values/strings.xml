@@ -110,7 +110,7 @@
     <string name="auto_download_label">Include in auto-downloads</string>
     <string name="auto_delete_label">Auto-delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>
-    <string name="feed_volume_reduction_summary">Reduce the volume for this feed: %1$s</strings>
+    <string name="feed_volume_reduction_summary">Reduce the volume for episodes of this podcast: %1$s</strings>
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
@@ -118,7 +118,7 @@
     <string name="feed_auto_download_global">Default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
-    <string name="send_label">Send&#8230;</string>
+    <string name="send_label">Send…</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
@@ -159,7 +159,7 @@
     <string name="mark_all_read_feed_confirmation_msg">Mark all episodes in this podcast as played?</string>
     <string name="remove_all_new_flags_label">Remove all \"new\" flags</string>
     <string name="removed_all_new_flags_msg">Removed all \"new\" flags</string>
-    <string name="remove_all_new_flags_confirmation_msg">Please confirm removal of the \"new\" flag from all episodes.</string>
+    <string name="remove_all_new_flags_confirmation_msg">Remove \"new\" flag from all episodes?</string>
     <string name="show_info_label">Show info</string>
     <string name="show_feed_settings_label">Show podcast settings</string>
     <string name="feed_settings_label">Podcast settings</string>
@@ -243,8 +243,8 @@
 
     <!-- Download messages and labels -->
     <string name="download_successful">Done</string>
-    <string name="download_pending">Download pending…</string>
-    <string name="download_running">Download running…</string>
+    <string name="download_pending">Queued download</string>
+    <string name="download_running">Downloading…</string>
     <string name="download_error_details">Details</string>
     <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
@@ -259,12 +259,12 @@
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Cannot find the server. Ensure you are connected to the Internet and that the address is typed correctly.</string>
     <string name="download_error_unauthorized">Authentication Error</string>
-    <string name="download_error_file_type_type">Filetype Error</string>
-    <string name="download_error_forbidden">No response from the podcast server.</string>
-    <string name="download_canceled_msg">Download cancelled</string>
+    <string name="download_error_file_type_type">File Format Error</string>
+    <string name="download_error_forbidden">Could not get data from the podcast server.</string>
+    <string name="download_canceled_msg">Download canceled</string>
     <string name="download_error_wrong_size">Lost connection to the server before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device.</string>
-    <string name="download_error_certificate">Could not establish a secure connection. Another app on your device could have blocked the download, or the server certificates could be wrong.</string>
+    <string name="download_error_certificate">Could not establish a secure connection! The certificates are wrong, or an app blocked the download.</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_error_io_error">I/O Error</string>
@@ -283,11 +283,11 @@
     <string name="null_value_podcast_error">No provided podcast could be shown.</string>
     <string name="authentication_notification_title">Log in</string>
     <string name="authentication_notification_msg">A username and password is required</string>
-    <string name="confirm_mobile_download_dialog_title">Confirm Mobile-data Download</string>
-    <string name="confirm_mobile_download_dialog_message_not_in_queue">(Downloading using mobile data is turned off in the settings.)\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
-    <string name="confirm_mobile_download_dialog_message">/Downloading using mobile data is turned off in the settings.)\n\nAllow downloading for 10 min.?</string>
+    <string name="confirm_mobile_download_dialog_title">Download using Mobile Data?</string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue">Only add the episode to the queue or make an exception to allow mobile data downloading for 10 mins.</string>
+    <string name="confirm_mobile_download_dialog_message">Make an exception to allow mobile data downloading for 10 mins?</string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
-    <string name="confirm_mobile_streaming_notification_message">(Streaming using mobile data is turned off in the settings.) Tap to stream anyway.</string>
+    <string name="confirm_mobile_streaming_notification_message">Make an exception to strean using mobile data?</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
     <string name="confirm_mobile_streaming_button_once">Once</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
@@ -305,13 +305,13 @@
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod — Unknown media key: %1$d</string>
     <string name="error_file_not_found">Could not find file</string>
-    <string name="no_media_label">No contained media file</string>
+    <string name="no_media_label">No media content in file</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
     <string name="queue_locked">Locked</string>
     <string name="queue_unlocked">Unlocked</string>
-    <string name="queue_lock_warning">Locking a queue prevents swiping it or reordering episodes in it.</string>
+    <string name="queue_lock_warning">Locking the queue prevents swiping it or reordering episodes in it.</string>
     <string name="checkbox_do_not_show_again">Do not show again</string>
     <string name="clear_queue_label">Clear Queue</string>
     <string name="undo">Undo</string>
@@ -338,12 +338,12 @@
     <string name="no_shownotes_label">This episode has no shownotes.</string>
     <string name="no_comp_downloads_head_label">No downloaded episodes</string>
     <string name="no_comp_downloads_label">Download episodes from the \'Podcast details\' screen.</string>
-    <string name="no_log_downloads_head_label">No downloads yet</string>
+    <string name="no_log_downloads_head_label">No errors yet</string>
     <string name="no_log_downloads_label">A history of downloads is displayed here.</string>
     <string name="no_history_head_label">No History</string>
-    <string name="no_history_label">Heard episodes are displayed here.</string>
+    <string name="no_history_label">Played episodes are displayed here.</string>
     <string name="no_all_episodes_head_label">No Episodes</string>
-    <string name="no_all_episodes_label">Added podcasts are displayed here.</string>
+    <string name="no_all_episodes_label">Episodes of added podcasts are displayed here.</string>
     <string name="no_new_episodes_head_label">No new episodes</string>
     <string name="no_new_episodes_label">Newly arrived episodes are displayed here.</string>
     <string name="no_fav_episodes_head_label">Favourite episodes to see them here</string>
@@ -386,8 +386,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete played episodes</string>
     <string name="pref_auto_delete_title">Auto-delete</string>
-    <string name="pref_smart_mark_as_played_title">Smart-mark as Played</string>
-    <string name="pref_smart_mark_as_played_sum">Mark episodes as played even with less than a set amount of seconds of playtime left</string>
+    <string name="pref_smart_mark_as_played_title">Smart Marking as Played</string>
+    <string name="pref_smart_mark_as_played_sum">Mark episodes with a set amount of seconds left as played</string>
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes that are skipped</string>
     <string name="pref_favorite_keeps_episodes_title">Keep Favourited Episodes</string>
@@ -445,7 +445,7 @@
     <string name="pref_theme_title_use_system">Use system theme</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
-    <string name="pref_theme_title_trueblack">Black (AMOLED)</string>
+    <string name="pref_theme_title_trueblack">Black</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
     <string name="pref_gpodnet_authenticate_title">Log in</string>
     <string name="pref_gpodnet_authenticate_sum">Log in with your gpodder.net account to sync your subscriptions.</string>
@@ -457,7 +457,7 @@
     <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
     <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
-    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>]]></string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_playback_speed_sum">Customize variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">Starting playback speed for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto-skip</string>
@@ -490,7 +490,7 @@
     <string name="pref_smart_mark_as_played_disabled">Off</string>
     <string name="documentation_support">Documentation and Support</string>
     <string name="visit_user_forum">Forum</string>
-    <string name="bug_report_title">Report Bugs</string>
+    <string name="bug_report_title">Report Bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -554,7 +554,7 @@
     <string name="licenses_summary">Other great libre software used</string>
 
     <!-- Search -->
-    <string name="search_status_no_results">No results…</string>
+    <string name="search_status_no_results">No results</string>
     <string name="type_to_search">Type something to search for</string>
     <string name="search_label">Search</string>
     <string name="no_results_for_query">Could not find \"%1$s\"</string>
@@ -636,7 +636,7 @@
     <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnet_description">Gpodder.net is an independent libre podcast-syncing service.</string>
+    <string name="gpodnet_description">Gpodder.net is a libre podcast-syncing service.</string>
     <string name="gpodnetauth_server_official">Official gpodder.net service</string>
     <string name="gpodnetauth_server_custom">Custom</string>
     <string name="gpodnetauth_host">Hostname</string>
@@ -645,7 +645,7 @@
     <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_existing_devices">Existing devices</string>
     <string name="gpodnetauth_create_device">Create device</string>
-    <string name="gpodnetauth_finish_descr">Your gpodder.net account is now linked with your device. Your subscriptions from gpodder.net will auto-sync to your device.</string>
+    <string name="gpodnetauth_finish_descr">Gpodder.net will now sync subscriptions to this device.</string>
     <string name="gpodnetauth_finish_butsyncnow">Sync…</string>
 
     <string name="gpodnetsync_error_title">Could not sync subscriptions from gpodder.net</string>
@@ -673,12 +673,12 @@
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
-    <string name="increase_speed">Faster</string>
-    <string name="decrease_speed">Slower</string>
+    <string name="increase_speed">Speed up</string>
+    <string name="decrease_speed">Slow down</string>
     <string name="media_type_video_label">Video</string>
     <string name="status_downloading_label">Downloading episode…</string>
     <string name="in_queue_label">The episode is enqueued</string>
-    <string name="is_favorite_label">Favourited episode</string>
+    <string name="is_favorite_label">Favorited episode</string>
     <string name="load_next_page_label">Next page…</string>
     <string name="position">Position: %1$s</string>
     <string name="apply_action">Apply action</string>
@@ -690,7 +690,7 @@
     <string name="authentication_label">Log in</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_tags_label">Tags</string>
-    <string name="feed_tags_summary">Tag your subscriptions to organize them.
+    <string name="feed_tags_summary">Tag your subscriptions to organize them.</string>
     <string name="feed_folders_include_root">Show in main list</string>
     <string name="auto_download_settings_label">Auto-downloading</string>
     <string name="episode_filters_label">Episode Filter</string>
