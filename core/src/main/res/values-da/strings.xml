@@ -123,18 +123,18 @@
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episode</item>
-    <item quantity="other">%d episoder</item>
+    <item quantity="other">%d udsendelser</item>
   </plurals>
   <string name="loading_more">Indlæser mere ...</string>
   <string name="episode_notification">Notifikationer om udsendelser</string>
-  <string name="episode_notification_summary">Vis en notifikation når der er nye episoder</string>
+  <string name="episode_notification_summary">Vis en notifikation når der er nye udsendelser</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s har en ny episode</item>
     <item quantity="other">%2$s har %1$d nye udsendelser</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Nye episoder</item>
-    <item quantity="other">Nye episoder</item>
+    <item quantity="other">Nye udsendelser</item>
   </plurals>
   <string name="new_episode_notification_group_text">Dine abonnementer har nye udsendelser</string>
   <!--Actions on feeds-->
@@ -195,7 +195,7 @@
   <string name="marked_as_played_label">Marker som afspillet</string>
   <string name="marked_as_unplayed_label">Marker som uafspillet</string>
   <string name="mark_read_no_media_label">Marker som læst</string>
-  <string name="play_this_to_seek_position">Skift til position, du bliver nødt til at afspille episode</string>
+  <string name="play_this_to_seek_position">For at springe til positioner, er du nødt til at afspille udsendelsen</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d udsendelse markeret som afspillet.</item>
     <item quantity="other">%d udsendelser markeret som afspillet.</item>
@@ -291,7 +291,7 @@
   <string name="lock_queue">Lås kø</string>
   <string name="queue_locked">Kø låst</string>
   <string name="queue_unlocked">Kø låst op</string>
-  <string name="queue_lock_warning">Hvis du låser køen, kan du ikke swipe eller flytte rundt på episoder.</string>
+  <string name="queue_lock_warning">Hvis du låser køen, kan du ikke swipe eller flytte rundt på udsendelser.</string>
   <string name="checkbox_do_not_show_again">Vis ikke igen</string>
   <string name="clear_queue_label">Ryd kø</string>
   <string name="undo">Fortryd</string>
@@ -312,17 +312,17 @@
   <string name="preset_already_exists">%1$.2fx er allerede gemt som en forudindstilling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ingen udsendelser i køen</string>
-  <string name="no_items_label">Tilføj en udsendelse ved at downloade den, eller tryk og hold på episoden og vælg \"Føj til kø\".</string>
+  <string name="no_items_label">Tilføj en udsendelse ved at downloade den, eller tryk og hold på en udsendelse og vælg \"Føj til kø\".</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
   <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
-  <string name="no_comp_downloads_label">Du kan downloade episoden på podcastens detaljerede skærm. </string>
+  <string name="no_comp_downloads_label">Du kan downloade udsendelsen på podcastens skærm med detaljer. </string>
   <string name="no_log_downloads_head_label">Ingen overførselslog</string>
   <string name="no_log_downloads_label">Overførselslog vil blive vist her når tilgængelig.</string>
   <string name="no_history_head_label">Ingen historik</string>
-  <string name="no_history_label">Når du har hørt en episode, vil den blive vist her.</string>
+  <string name="no_history_label">Når du har hørt en udsendelse, vil den blive vist her.</string>
   <string name="no_all_episodes_head_label">Ingen udsendelser</string>
   <string name="no_all_episodes_label">Når du tilføjer en podcast, vil udsendelserne blive vist her.</string>
-  <string name="no_new_episodes_head_label">Ingen nye episoder</string>
+  <string name="no_new_episodes_head_label">Ingen nye udsendelser</string>
   <string name="no_new_episodes_label">Når nye udsendelser ankommer, vil de blive vist her.</string>
   <string name="no_fav_episodes_head_label">Ingen foretrukne udsendelser</string>
   <string name="no_fav_episodes_label">Du kan føje udsendelser til foretrukne ved at trykke længe på dem</string>
@@ -358,7 +358,7 @@
   <string name="pref_hardware_previous_button_summary">Konfigurer tilbageknap</string>
   <string name="button_action_fast_forward">Spol frem</string>
   <string name="button_action_rewind">Spol tilbage</string>
-  <string name="button_action_skip_episode">Spring episode over</string>
+  <string name="button_action_skip_episode">Spring udsendelse over</string>
   <string name="button_action_restart_episode">Genstart udsendelse</string>
   <string name="pref_followQueue_sum">Gå til næste element i køen når afspilningen er færdig</string>
   <string name="pref_auto_delete_sum">Slet udsendelsen når afspilningen er færdig</string>
@@ -414,7 +414,7 @@
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
   <string name="pref_parallel_downloads_title">Parallelle overførsler</string>
   <string name="pref_episode_cache_title">Mellemlager for udsendelser</string>
-  <string name="pref_episode_cache_summary">Total nummer af episoder downloades på din enhed. Stop automatisk download, når dette nummer nåes.</string>
+  <string name="pref_episode_cache_summary">Totalt antal af downloadede udsendelser gemt på din enhed. Automatisk download stilles i bero, når dette nummer nåes.</string>
   <string name="pref_episode_cover_title">Brug udsendelsesbillede</string>
   <string name="pref_episode_cover_summary">Brug det udsendelsesspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcast coverbilledet.</string>
   <string name="pref_show_remain_time_title">Hvis tilbageværende tid</string>
@@ -781,8 +781,8 @@
   <string name="notification_channel_sync_error">Synkronisering mislykkedes</string>
   <string name="notification_channel_sync_error_description">Vises når gpodder-synkronisering fejler.</string>
   <string name="notification_channel_auto_download">Automatisk overførsel fuldført</string>
-  <string name="notification_channel_episode_auto_download">Vist når episoder automatisk var blevet downloaded.</string>
-  <string name="notification_channel_new_episode">Ny episode</string>
+  <string name="notification_channel_episode_auto_download">Vises når udsendelser er blevet automatisk downloadet.</string>
+  <string name="notification_channel_new_episode">Ny udsendelse</string>
   <string name="notification_channel_new_episode_description">Vis når en ny udsendelse af en podcast blev fundet, hvor notifikationer er aktiveret.</string>
   <!--Widget settings-->
   <string name="widget_settings">Kontrol opsætning</string>
@@ -790,6 +790,6 @@
   <string name="widget_opacity">Ugennemsigtighed</string>
   <!--On-Demand configuration-->
   <string name="on_demand_config_setting_changed">Indstilling opdateret.</string>
-  <string name="on_demand_config_stream_text">Det ser ud til at du streamer en del. Vil du have vist stream knappen i episode lister?</string>
-  <string name="on_demand_config_download_text">Det ser ud til at du har overført meget. Vil du have overfør knappen til at blive vist i episode lister?</string>
+  <string name="on_demand_config_stream_text">Det ser ud til at du streamer en del. Vil du have vist streamknapper i udsendelseslister?</string>
+  <string name="on_demand_config_download_text">Det ser ud til at du downloader meget. Vil du have downloadknapper vist i udsendelseslister?</string>
 </resources>

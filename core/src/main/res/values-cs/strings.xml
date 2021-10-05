@@ -91,6 +91,7 @@
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <string name="auto_delete_label">Automatické mazání epizod</string>
   <string name="feed_volume_reduction">Snížení hlasitosti</string>
+  <string name="feed_volume_reduction_summary">Snížit hlasitost pro tento podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Vypnuto</string>
   <string name="feed_volume_reduction_light">Nízké</string>
   <string name="feed_volume_reduction_heavy">Vysoké</string>

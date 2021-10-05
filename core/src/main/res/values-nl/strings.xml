@@ -187,7 +187,7 @@
   <string name="delete_episode_label">Aflevering verwijderen</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">%d geselecteerde aflevering - %d download verwijderd</item>
-    <item quantity="other">%d geselecteerde afleveringen - %d downloads verwijderd</item>
+    <item quantity="other">%d geselecteerde afleveringen - %d download(s) verwijderd</item>
   </plurals>
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>

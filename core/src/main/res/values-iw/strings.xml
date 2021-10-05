@@ -243,7 +243,7 @@
     <item quantity="many">%d פרקים הוסרו מהתור.</item>
     <item quantity="other">%d פרקים הוסרו מהתור.</item>
   </plurals>
-  <string name="add_to_favorite_label">התווסף למועדפים</string>
+  <string name="add_to_favorite_label">הוספה למועדפים</string>
   <string name="remove_from_favorite_label">הסרה מהמועדפים</string>
   <string name="visit_website_label">ביקור באתר</string>
   <string name="skip_episode_label">דילוג על פרק</string>
@@ -660,7 +660,7 @@
   <string name="gpodnetsync_pref_report_failed">נכשל</string>
   <string name="gpodnetsync_username_characters_error">שמות המשתמשים יכולים להכיל אותיות, ספרות, מינוסים וקווים תחתיים בלבד.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory">בחר תיקיית מידע</string>
+  <string name="choose_data_directory">נא לבחור תיקיית נתונים</string>
   <string name="choose_data_directory_message">נא לבחור את בסיס תיקיית הנתונים שלך. תת־התיקיות תיווצרנה על ידי אנטנה־פּוֹד בהתאם.</string>
   <string name="choose_data_directory_available_space">%1$s מתוך %2$s פנויים</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">השהיית הניגון במקום הנמכת עצמת השמע כאשר יישומון אחר מעוניין לנגן צלילים</string>
@@ -760,7 +760,7 @@
   <string name="rating_title" tools:ignore="UnusedResources">היישומון אנטנה־פּוֹד נושא חן בעיניך?</string>
   <string name="rating_message" tools:ignore="UnusedResources">מאוד נשמח לקבל דירוג על אנטנה־פּוֹד אם יש לך זמן לכך.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">לא תודה</string>
-  <string name="rating_later_label" tools:ignore="UnusedResources">פעם אחרת</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">בפעם אחרת</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">בטח, נלך על זה!</string>
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">כולל:</string>

@@ -29,6 +29,8 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" не найдено</string>
   <!--SwipeActions-->
+  <string name="swipe_right">Проведите Вправо</string>
+  <string name="swipe_left">Проведите Влево</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время воспроизведения выпусков:</string>
   <string name="statistics_details_dialog">Начато %1$d выпусков из %2$d.\n\nВоспроизведено %3$s из %4$s.</string>
@@ -166,6 +168,7 @@
   <string name="open_podcast">Открыть подкаст</string>
   <string name="please_wait_for_data">Подождите, пока загружаются данные</string>
   <string name="updates_disabled_label">Обновления запрещены</string>
+  <string name="add_to_folder">Добавить в папку</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <plurals name="downloading_batch_label">
@@ -189,6 +192,8 @@
   <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
   <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
+  <string name="marked_as_played_label">Отметить как прослушанное</string>
+  <string name="marked_as_unplayed_label">Отметить как непрослушанное</string>
   <string name="mark_read_no_media_label">Отметить как прочитанное</string>
   <string name="play_this_to_seek_position">Для переходов в выпуске нужно слушать выпуск</string>
   <plurals name="marked_read_batch_label">
