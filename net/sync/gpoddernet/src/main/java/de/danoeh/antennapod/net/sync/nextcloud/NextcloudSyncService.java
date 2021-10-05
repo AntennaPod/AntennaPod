@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NextcloudSyncService implements ISyncService {
+    private static final int UPLOAD_BULK_SIZE = 30;
     private final OkHttpClient httpClient;
     private final String baseScheme;
     private final int basePort;
@@ -105,23 +106,32 @@ public class NextcloudSyncService implements ISyncService {
     @Override
     public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> queuedEpisodeActions)
             throws NextcloudSynchronizationServiceException {
+        for (int i = 0; i < queuedEpisodeActions.size(); i += UPLOAD_BULK_SIZE) {
+            uploadEpisodeActionsPartial(queuedEpisodeActions,
+                    i, Math.min(queuedEpisodeActions.size(), i + UPLOAD_BULK_SIZE));
+        }
+        return new NextcloudGpodderEpisodeActionPostResponse(System.currentTimeMillis() / 1000);
+    }
+
+    private void uploadEpisodeActionsPartial(List<EpisodeAction> queuedEpisodeActions, int from, int to)
+            throws NextcloudSynchronizationServiceException {
         try {
-            String body = createBody(queuedEpisodeActions.toString());
+            final JSONArray list = new JSONArray();
+            for (int i = from; i < to; i++) {
+                EpisodeAction episodeAction = queuedEpisodeActions.get(i);
+                JSONObject obj = episodeAction.writeToJsonObject();
+                if (obj != null) {
+                    list.put(obj);
+                }
+            }
             HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/episode_action/create");
             RequestBody requestBody = RequestBody.create(
-                    MediaType.get("application/json"), body);
+                    MediaType.get("application/json"), list.toString());
             performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
             throw new NextcloudSynchronizationServiceException(e);
         }
-
-
-        return new NextcloudGpodderEpisodeActionPostResponse(System.currentTimeMillis() / 1000);
-    }
-
-    private String createBody(String data) {
-        return "{\"data\": \"" + data + "\"}";
     }
 
     private String performRequest(HttpUrl.Builder url, String method, RequestBody body) throws IOException {
