@@ -17,12 +17,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
     private static final String TAG = "ResizingOkHttpStreamFetcher";
-    private static final int MAX_DIMENSIONS = 2000;
+    private static final int MAX_DIMENSIONS = 1500;
     private static final int MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 
     private FileInputStream stream;
@@ -66,7 +67,9 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     BitmapFactory.decodeStream(in, null, options);
                     IOUtils.closeQuietly(in);
 
-                    if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
+                    if (options.outWidth == -1 || options.outHeight == -1) {
+                        throw new IOException("Not a valid image");
+                    } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
                         double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
                         options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
                     }
@@ -97,12 +100,13 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                             break;
                         }
                     }
+                    bitmap.recycle();
 
                     stream = new FileInputStream(tempOut);
                     callback.onDataReady(stream);
                     Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
                             + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
 
                     try {
