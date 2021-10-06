@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -142,6 +144,14 @@ public class OnlineSearchFragment extends Fragment {
                 return false;
             }
         });
+        sv.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    showInputMethod(view.findFocus());
+                }
+            }
+        });
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -191,5 +201,12 @@ public class OnlineSearchFragment extends Fragment {
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void showInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(view, 0);
+        }
     }
 }

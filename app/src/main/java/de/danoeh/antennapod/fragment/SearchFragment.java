@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -153,6 +156,14 @@ public class SearchFragment extends Fragment {
         if (getArguments().getString(ARG_QUERY, null) != null) {
             search();
         }
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    showInputMethod(view.findFocus());
+                }
+            }
+        });
         return layout;
     }
 
@@ -172,6 +183,8 @@ public class SearchFragment extends Fragment {
         searchView = (SearchView) item.getActionView();
         searchView.setQueryHint(getString(R.string.search_label));
         searchView.requestFocus();
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -319,5 +332,11 @@ public class SearchFragment extends Fragment {
         List<FeedItem> items = FeedSearcher.searchFeedItems(getContext(), query, feed);
         List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
         return new Pair<>(items, feeds);
+    }
+    private void showInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(view, 0);
+        }
     }
 }
