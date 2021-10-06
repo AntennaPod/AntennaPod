@@ -249,12 +249,14 @@ public class SyncService extends Worker {
                 DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
                 continue;
             }
-            Log.d(TAG, "Most recent play action: " + action);
             feedItem.getMedia().setPosition(action.getPosition() * 1000);
             if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
-                Log.d(TAG, "Marking as played");
+                Log.d(TAG, "Marking as played: " + action);
                 feedItem.setPlayed(true);
+                feedItem.getMedia().setPosition(0);
                 queueToBeRemoved.add(feedItem.getId());
+            } else {
+                Log.d(TAG, "Setting position: " + action);
             }
             updatedItems.add(feedItem);
         }
