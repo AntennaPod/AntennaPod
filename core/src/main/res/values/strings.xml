@@ -115,7 +115,7 @@
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads">%1$d concurrent downloads</string>
-    <string name="feed_auto_download_global">Default</string>
+    <string name="feed_auto_download_global">App setting</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send…</string>
@@ -124,11 +124,11 @@
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">One hour after finishing</item>
+        <item quantity="one">1 hour after finishing</item>
         <item quantity="other">%d hours after finishing</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">One day after finishing</item>
+        <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
@@ -252,15 +252,15 @@
     <string name="download_error_insufficient_space">Not enough space left on your device.</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
-    <string name="download_error_parser_exception">The podcast server sent a broken podcast feed.</string>
+    <string name="download_error_parser_exception">The server the podcast is on sent a broken podcast feed.</string>
     <string name="download_error_unsupported_type">Unsupported Feed Type</string>
-    <string name="download_error_unsupported_type_html">The podcast server sent a website, which is not a podcast.</string>
-    <string name="download_error_not_found">The podcast server does not know where to find the file. It may have been deleted.</string>
+    <string name="download_error_unsupported_type_html">The server the podcast is on sent a website, which is not a podcast.</string>
+    <string name="download_error_not_found">The server the podcast is on does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Cannot find the server. Ensure you are connected to the Internet and that the address is typed correctly.</string>
     <string name="download_error_unauthorized">Authentication Error</string>
     <string name="download_error_file_type_type">File Format Error</string>
-    <string name="download_error_forbidden">Could not get data from the podcast server.</string>
+    <string name="download_error_forbidden">Could not get data from the server the podcast is on.</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_error_wrong_size">Lost connection to the server before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device.</string>
@@ -379,7 +379,7 @@
     <string name="pref_hardware_forward_button_summary">Customize the \"Forward\" button behavior</string>
     <string name="pref_hardware_previous_button_title">\"Previous\" Button</string>
     <string name="pref_hardware_previous_button_summary">Customize "\Previous\" button behavior</string>
-    <string name="button_action_fast_forward">Fast Forward…</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
     <string name="button_action_rewind">Rewind…</string>
     <string name="button_action_skip_episode">Skip Episode…</string>
     <string name="button_action_restart_episode">Restart Episode…</string>
@@ -390,7 +390,7 @@
     <string name="pref_smart_mark_as_played_sum">Mark episodes with a set amount of seconds left as played</string>
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes that are skipped</string>
-    <string name="pref_favorite_keeps_episodes_title">Keep Favourited Episodes</string>
+    <string name="pref_favorite_keeps_episodes_title">Keep Favorited Episodes</string>
     <string name="pref_favorite_keeps_episodes_sum">Keep episodes marked as favourites</string>
     <string name="playback_pref">Playback</string>
     <string name="playback_pref_sum">Headphone controls, skip intervals, queue</string>
@@ -606,7 +606,7 @@
     <string name="disable_sleeptimer_label">Turn off sleep timer</string>
     <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_label">Sleep timer</string>
-    <string name="time_dialog_invalid_input">Type in a proper time</string>
+    <string name="time_dialog_invalid_input">Correct the time format</string>
     <string name="shake_to_reset_label">Shake to reset</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>
@@ -624,7 +624,7 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="auto_enable_label">Auto</string>
+    <string name="auto_enable_label">Renew for manual playback</string>
     <string name="sleep_timer_enabled_label">Sleep timer on</string>
 
     <!-- gpodder.net -->
@@ -637,7 +637,7 @@
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
     <string name="gpodnet_description">Gpodder.net is a libre podcast-syncing service.</string>
-    <string name="gpodnetauth_server_official">Official gpodder.net service</string>
+    <string name="gpodnetauth_server_official">Official gpodder.net server</string>
     <string name="gpodnetauth_server_custom">Custom</string>
     <string name="gpodnetauth_host">Hostname</string>
     <string name="gpodnetauth_select_server">Select</string>
@@ -648,11 +648,11 @@
     <string name="gpodnetauth_finish_descr">Gpodder.net will now sync subscriptions to this device.</string>
     <string name="gpodnetauth_finish_butsyncnow">Sync…</string>
 
-    <string name="gpodnetsync_error_title">Could not sync subscriptions from gpodder.net</string>
-    <string name="gpodnetsync_error_descr">Could not perform sync:\u0020</string>
+    <string name="gpodnetsync_error_title">Could not sync from gpodder.net</string>
+    <string name="gpodnetsync_error_descr">Could not fetch subscriptions: </string>
     <string name="gpodnetsync_pref_report_successful">Done</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
-    <string name="gpodnetsync_username_characters_error">Only use letters, digits, hyphens and underscores.</string>
+    <string name="gpodnetsync_username_characters_error">Your username can only have letters, digits, hyphens and underscores.</string>
 
     <!-- Directory chooser -->
     <string name="choose_data_directory">Choose Data Folder</string>
@@ -690,11 +690,11 @@
     <string name="authentication_label">Log in</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_tags_label">Tags</string>
-    <string name="feed_tags_summary">Tag your subscriptions to organize them.</string>
+    <string name="feed_tags_summary">Tag this to organize subscriptions.</string>
     <string name="feed_folders_include_root">Show in main list</string>
     <string name="auto_download_settings_label">Auto-downloading</string>
     <string name="episode_filters_label">Episode Filter</string>
-    <string name="episode_filters_description">Terms to prevent or auto-download episodes</string>
+    <string name="episode_filters_description">Pick terms to prevent or auto-download episodes</string>
     <string name="episode_filters_include">Include</string>
     <string name="episode_filters_exclude">Exclude</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
@@ -716,7 +716,7 @@
     <string name="search_fyyd_label">Search on fyyd</string>
     <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add podcast RSS address</string>
-    <string name="add_podcast_by_url_hint">www.example.com/feed</string>
+    <string name="add_podcast_by_url_hint">www.example.org/feed</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
@@ -780,7 +780,7 @@
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
     <string name="audio_effects">Audio Effects</string>
-    <string name="stereo_to_mono">Downmix: Stereo in mono</string>
+    <string name="stereo_to_mono">Stereo in mono</string>
     <string name="sonic_only">Sonic only</string>
     <string name="exoplayer_only">ExoPlayer only</string>
 
@@ -835,7 +835,7 @@
 
     <!-- Widget settings -->
     <string name="widget_settings">Widgets</string>
-    <string name="widget_create_button">New widget</string>
+    <string name="widget_create_button">Add</string>
     <string name="widget_opacity">Opacity</string>
 
     <!-- On-Demand configuration -->
