@@ -55,8 +55,9 @@ import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
 
 public class SyncService extends Worker {
     public static final String TAG = "SyncService";
-
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
+
+    private static boolean isCurrentlyActive = false;
     private final SynchronizationQueueStorage synchronizationQueueStorage;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -73,10 +74,11 @@ public class SyncService extends Worker {
         }
 
         SynchronizationSettings.updateLastSynchronizationAttempt();
+        setCurrentlyActive(true);
         try {
             activeSyncProvider.login();
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
             syncSubscriptions(activeSyncProvider);
+            waitForDownloadServiceCompleted();
             syncEpisodeActions(activeSyncProvider);
             activeSyncProvider.logout();
             clearErrorNotifications();
@@ -98,13 +100,18 @@ public class SyncService extends Worker {
                 updateErrorNotification(e);
                 return Result.failure();
             }
+        } finally {
+            setCurrentlyActive(false);
         }
+    }
+
+    private static void setCurrentlyActive(boolean active) {
+        isCurrentlyActive = active;
     }
 
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void syncImmediately(Context context) {
@@ -112,7 +119,6 @@ public class SyncService extends Worker {
                 .setInitialDelay(0L, TimeUnit.SECONDS)
                 .build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void fullSync(Context context) {
@@ -122,12 +128,12 @@ public class SyncService extends Worker {
                     .setInitialDelay(0L, TimeUnit.SECONDS)
                     .build();
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
         });
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
         final long lastSync = SynchronizationSettings.getLastSubscriptionSynchronizationTimestamp();
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
@@ -176,6 +182,18 @@ public class SyncService extends Worker {
             }
         }
         SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
+    }
+
+    private void waitForDownloadServiceCompleted() {
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
+        try {
+            while (DownloadRequester.getInstance().isDownloadingFeeds()) {
+                //noinspection BusyWait
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
@@ -308,10 +326,19 @@ public class SyncService extends Worker {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);
         }
 
-        return new OneTimeWorkRequest.Builder(SyncService.class)
+        OneTimeWorkRequest.Builder builder = new OneTimeWorkRequest.Builder(SyncService.class)
                 .setConstraints(constraints.build())
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
-                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES);
+
+        if (isCurrentlyActive) {
+            // Debounce: don't start sync again immediately after it was finished.
+            builder.setInitialDelay(2L, TimeUnit.MINUTES);
+        } else {
+            // Give it some time, so other possible actions can be queued.
+            builder.setInitialDelay(20L, TimeUnit.SECONDS);
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+        }
+        return builder;
     }
 
     private ISyncService getActiveSyncProvider() {

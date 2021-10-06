@@ -22,7 +22,6 @@ public class EpisodeActionFilter {
         Map<Pair<String, String>, EpisodeAction> localMostRecentPlayActions =
                 createUniqueLocalMostRecentPlayActions(queuedEpisodeActions);
         for (EpisodeAction remoteAction : remoteActions) {
-            Log.d(TAG, "Processing remoteAction: " + remoteAction.toString());
             Pair<String, String> key = new Pair<>(remoteAction.getPodcast(), remoteAction.getEpisode());
             switch (remoteAction.getAction()) {
                 case NEW:

@@ -20,7 +20,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ServiceCompat;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.sync.SyncService;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -226,10 +225,6 @@ public class DownloadService extends Service {
             downloadPostFuture.cancel(true);
         }
         unregisterReceiver(cancelDownloadReceiver);
-
-        // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
-        // it is now time to sync the episode actions
-        SyncService.sync(this);
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
