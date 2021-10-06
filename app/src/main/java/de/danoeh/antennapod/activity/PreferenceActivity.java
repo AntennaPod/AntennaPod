@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -21,13 +22,13 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
-import de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NotificationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.StoragePreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.synchronization.SynchronizationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.SwipePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragment;
 
@@ -76,8 +77,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new ImportExportPreferencesFragment();
         } else if (screen == R.xml.preferences_autodownload) {
             prefFragment = new AutoDownloadPreferencesFragment();
-        } else if (screen == R.xml.preferences_gpodder) {
-            prefFragment = new GpodderPreferencesFragment();
+        } else if (screen == R.xml.preferences_synchronization) {
+            prefFragment = new SynchronizationPreferencesFragment();
         } else if (screen == R.xml.preferences_playback) {
             prefFragment = new PlaybackPreferencesFragment();
         } else if (screen == R.xml.preferences_notifications) {
@@ -101,8 +102,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             return R.string.import_export_pref;
         } else if (preferences == R.xml.preferences_user_interface) {
             return R.string.user_interface_label;
-        } else if (preferences == R.xml.preferences_gpodder) {
-            return R.string.gpodnet_main_label;
+        } else if (preferences == R.xml.preferences_synchronization) {
+            return R.string.synchronization_pref;
         } else if (preferences == R.xml.preferences_notifications) {
             return R.string.notification_pref_fragment;
         } else if (preferences == R.xml.feed_settings) {

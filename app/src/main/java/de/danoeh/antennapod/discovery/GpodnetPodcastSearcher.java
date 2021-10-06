@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.discovery;
 
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetServiceException;
@@ -18,8 +18,8 @@ public class GpodnetPodcastSearcher implements PodcastSearcher {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
             try {
                 GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
-                        GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
+                        SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                        SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
                 List<GpodnetPodcast> gpodnetPodcasts = service.searchPodcasts(query, 0);
                 List<PodcastSearchResult> results = new ArrayList<>();
                 for (GpodnetPodcast podcast : gpodnetPodcasts) {

@@ -6,21 +6,22 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Handles a completed media download.
@@ -103,7 +104,7 @@ public class MediaDownloadedHandler implements Runnable {
             EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
                     .currentTimestamp()
                     .build();
-            SyncService.enqueueEpisodeAction(context, action);
+            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
     }
 

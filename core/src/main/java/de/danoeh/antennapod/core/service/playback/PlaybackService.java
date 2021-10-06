@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -21,13 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
-import androidx.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import android.support.v4.media.MediaBrowserCompat;
-import androidx.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -39,6 +35,17 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.webkit.URLUtil;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.media.MediaBrowserServiceCompat;
+import androidx.preference.PreferenceManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,12 +59,6 @@ import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -66,15 +67,21 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import io.reactivex.Completable;
@@ -83,11 +90,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -966,7 +968,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia) {
-                    SyncService.enqueueEpisodePlayed(getApplicationContext(), (FeedMedia) playable, false);
+                    SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(getApplicationContext(),
+                            (FeedMedia) playable, false);
                 }
                 playable.onPlaybackPause(getApplicationContext());
             }
@@ -1110,10 +1113,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (ended || smartMarkAsPlayed) {
-            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, true);
+            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                    getApplicationContext(), media, true);
             media.onPlaybackCompleted(getApplicationContext());
         } else {
-            SyncService.enqueueEpisodePlayed(getApplicationContext(), media, false);
+            SynchronizationQueueSink.enqueueEpisodePlayedIfSynchronizationIsActive(
+                    getApplicationContext(), media, false);
             media.onPlaybackPause(getApplicationContext());
         }
 

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,22 +11,6 @@ import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -41,7 +27,23 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static android.content.Context.MODE_PRIVATE;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
+import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.
@@ -482,7 +484,7 @@ public final class DBTasks {
                                     .position(oldItem.getMedia().getDuration() / 1000)
                                     .total(oldItem.getMedia().getDuration() / 1000)
                                     .build();
-                            SyncService.enqueueEpisodeAction(context, action);
+                            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
                         }
                     }
                 }

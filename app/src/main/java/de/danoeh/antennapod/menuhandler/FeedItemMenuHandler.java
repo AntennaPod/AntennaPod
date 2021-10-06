@@ -13,12 +13,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
@@ -151,7 +151,7 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
             DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
-            if (GpodnetPreferences.loggedIn()) {
+            if (SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
                 // not all items have media, Gpodder only cares about those that do
                 if (media != null) {
@@ -161,17 +161,17 @@ public class FeedItemMenuHandler {
                             .position(media.getDuration() / 1000)
                             .total(media.getDuration() / 1000)
                             .build();
-                    SyncService.enqueueEpisodeAction(context, actionPlay);
+                    SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionPlay);
                 }
             }
         } else if (menuItemId == R.id.mark_unread_item) {
             selectedItem.setPlayed(false);
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
-            if (GpodnetPreferences.loggedIn() && selectedItem.getMedia() != null) {
+            if (selectedItem.getMedia() != null) {
                 EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                         .currentTimestamp()
                         .build();
-                SyncService.enqueueEpisodeAction(context, actionNew);
+                SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, actionNew);
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);

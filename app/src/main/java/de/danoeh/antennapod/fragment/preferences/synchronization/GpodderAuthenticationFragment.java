@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,29 +15,34 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Guides the user through the authentication process.
@@ -83,23 +88,24 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         final RadioGroup serverRadioGroup = view.findViewById(R.id.serverRadioGroup);
         final EditText serverUrlText = view.findViewById(R.id.serverUrlText);
 
-        if (!GpodnetService.DEFAULT_BASE_HOST.equals(GpodnetPreferences.getHosturl())) {
-            serverUrlText.setText(GpodnetPreferences.getHosturl());
+        if (!GpodnetService.DEFAULT_BASE_HOST.equals(SynchronizationCredentials.getHosturl())) {
+            serverUrlText.setText(SynchronizationCredentials.getHosturl());
         }
         final TextInputLayout serverUrlTextInput = view.findViewById(R.id.serverUrlTextInput);
         serverRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             serverUrlTextInput.setVisibility(checkedId == R.id.customServerRadio ? View.VISIBLE : View.GONE);
         });
         selectHost.setOnClickListener(v -> {
+            SynchronizationCredentials.clear(getContext());
             if (serverRadioGroup.getCheckedRadioButtonId() == R.id.customServerRadio) {
-                GpodnetPreferences.setHosturl(serverUrlText.getText().toString());
+                SynchronizationCredentials.setHosturl(serverUrlText.getText().toString());
             } else {
-                GpodnetPreferences.setHosturl(GpodnetService.DEFAULT_BASE_HOST);
+                SynchronizationCredentials.setHosturl(GpodnetService.DEFAULT_BASE_HOST);
             }
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                    GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
-                    GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
-            getDialog().setTitle(GpodnetPreferences.getHosturl());
+                    SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceID(),
+                    SynchronizationCredentials.getUsername(), SynchronizationCredentials.getPassword());
+            getDialog().setTitle(SynchronizationCredentials.getHosturl());
             advance();
         });
     }
@@ -116,7 +122,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         createAccount.setPaintFlags(createAccount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         createAccount.setOnClickListener(v -> IntentUtils.openInBrowser(getContext(), "https://gpodder.net/register/"));
 
-        if (GpodnetPreferences.getHosturl().startsWith("http://")) {
+        if (SynchronizationCredentials.getHosturl().startsWith("http://")) {
             createAccountWarning.setVisibility(View.VISIBLE);
         }
         password.setOnEditorActionListener((v, actionID, event) ->
@@ -265,15 +271,8 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         });
     }
 
-    private void writeLoginCredentials() {
-        GpodnetPreferences.setUsername(username);
-        GpodnetPreferences.setPassword(password);
-        GpodnetPreferences.setDeviceID(selectedDevice.getId());
-    }
-
     private void advance() {
         if (currentStep < STEP_FINISH) {
-
             View view = viewFlipper.getChildAt(currentStep + 1);
             if (currentStep == STEP_DEFAULT) {
                 setupHostView(view);
@@ -289,7 +288,10 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 if (selectedDevice == null) {
                     throw new IllegalStateException("Device must not be null here");
                 } else {
-                    writeLoginCredentials();
+                    SynchronizationSettings.setSelectedSyncProvider(SynchronizationProviderViewData.GPODDER_NET);
+                    SynchronizationCredentials.setUsername(username);
+                    SynchronizationCredentials.setPassword(password);
+                    SynchronizationCredentials.setDeviceID(selectedDevice.getId());
                     setupFinishView(view);
                 }
             }

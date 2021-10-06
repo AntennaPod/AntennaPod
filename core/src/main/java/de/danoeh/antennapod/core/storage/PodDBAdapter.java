@@ -1123,7 +1123,6 @@ public class PodDBAdapter {
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + whereClauseCondition;
-        Log.d(TAG, "SQL: " + query);
         return db.rawQuery(query, null);
     }
 
