@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,9 +9,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
@@ -73,7 +74,6 @@ public class SearchFragment extends Fragment {
     private SearchView searchView;
     private Handler automaticSearchDebouncer;
     private long lastQueryChange = 0;
-
     /**
      * Create a new SearchFragment that searches all feeds.
      */
@@ -162,6 +162,17 @@ public class SearchFragment extends Fragment {
                 if (hasFocus) {
                     showInputMethod(view.findFocus());
                 }
+            }
+        });
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                return false;
             }
         });
         return layout;
@@ -339,4 +350,23 @@ public class SearchFragment extends Fragment {
             imm.showSoftInput(view, 0);
         }
     }
+
+//    public KeyboardDismissingRecyclerView(Context context) {
+//        this(context, null);
+//    }
+//
+//    public KeyboardDismissingRecyclerView(Context context, @Nullable AttributeSet attrs) {
+//        this(context, attrs, -1);
+//    }
+//
+//    public KeyboardDismissingRecyclerView(final Context context, @Nullable AttributeSet attrs, int defStyle) {
+//        super(context, attrs, defStyle);
+//        setOnKeyboardDismissingListener();
+//    }
+
+//    /**
+//     * Creates {@link OnScrollListener} that will dismiss keyboard when scrolling if the keyboard
+//     * has not been dismissed internally before
+//     */
+
 }

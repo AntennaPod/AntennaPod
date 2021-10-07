@@ -159,9 +159,9 @@ public class AddFeedFragment extends Fragment {
 
     private void performSearch() {
         String query = viewBinding.combinedFeedSearchEditText.getText().toString();
+        addUrl(query);
+        return;
         if (query.matches("http[s]?://.*")) {
-            addUrl(query);
-            return;
         }
         activity.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
     }
