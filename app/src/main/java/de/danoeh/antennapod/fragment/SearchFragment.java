@@ -169,7 +169,8 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 return false;
@@ -344,29 +345,11 @@ public class SearchFragment extends Fragment {
         List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
         return new Pair<>(items, feeds);
     }
+    
     private void showInputMethod(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.showSoftInput(view, 0);
         }
     }
-
-//    public KeyboardDismissingRecyclerView(Context context) {
-//        this(context, null);
-//    }
-//
-//    public KeyboardDismissingRecyclerView(Context context, @Nullable AttributeSet attrs) {
-//        this(context, attrs, -1);
-//    }
-//
-//    public KeyboardDismissingRecyclerView(final Context context, @Nullable AttributeSet attrs, int defStyle) {
-//        super(context, attrs, defStyle);
-//        setOnKeyboardDismissingListener();
-//    }
-
-//    /**
-//     * Creates {@link OnScrollListener} that will dismiss keyboard when scrolling if the keyboard
-//     * has not been dismissed internally before
-//     */
-
 }
