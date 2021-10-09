@@ -1,15 +1,20 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.widget.AbsListView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.SearchView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -110,6 +115,21 @@ public class OnlineSearchFragment extends Fragment {
         TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
         txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
         setupToolbar(root.findViewById(R.id.toolbar));
+
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    InputMethodManager imm = (InputMethodManager)
+                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
         return root;
     }
 
@@ -140,6 +160,11 @@ public class OnlineSearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 return false;
+            }
+        });
+        sv.setOnQueryTextFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                showInputMethod(view.findFocus());
             }
         });
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
@@ -191,5 +216,12 @@ public class OnlineSearchFragment extends Fragment {
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void showInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(view, 0);
+        }
     }
 }
