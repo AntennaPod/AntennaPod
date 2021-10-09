@@ -61,4 +61,16 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
     public void setProgressChangedListener(Consumer<Float> progressChangedListener) {
         this.progressChangedListener = progressChangedListener;
     }
+
+    public float getCurrentSpeed() {
+        return (seekBar.getProgress() + 10) / 20.0f;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        seekBar.setEnabled(enabled);
+        findViewById(R.id.butDecSpeed).setEnabled(enabled);
+        findViewById(R.id.butIncSpeed).setEnabled(enabled);
+    }
 }
