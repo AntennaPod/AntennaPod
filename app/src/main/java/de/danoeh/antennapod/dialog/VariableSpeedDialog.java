@@ -55,11 +55,11 @@ public class VariableSpeedDialog extends DialogFragment {
             }
         };
         controller.init();
-        speedSeekBar.setController(controller);
+        updateSpeed();
     }
 
     private void updateSpeed() {
-        speedSeekBar.updateSpeed();
+        speedSeekBar.updateSpeed(controller.getCurrentPlaybackSpeedMultiplier());
         addCurrentSpeedChip.setText(speedFormat.format(controller.getCurrentPlaybackSpeedMultiplier()));
     }
 
@@ -78,6 +78,11 @@ public class VariableSpeedDialog extends DialogFragment {
 
         View root = View.inflate(getContext(), R.layout.speed_select_dialog, null);
         speedSeekBar = root.findViewById(R.id.speed_seek_bar);
+        speedSeekBar.setProgressChangedListener(multiplier -> {
+            if (controller != null) {
+                controller.setPlaybackSpeed(multiplier);
+            }
+        });
         RecyclerView selectedSpeedsGrid = root.findViewById(R.id.selected_speeds_grid);
         selectedSpeedsGrid.setLayoutManager(new GridLayoutManager(getContext(), 3));
         selectedSpeedsGrid.addItemDecoration(new ItemOffsetDecoration(getContext(), 4));
