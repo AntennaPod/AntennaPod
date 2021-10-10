@@ -33,8 +33,8 @@
         android:icon="@drawable/ic_check"/>
 
     <item
-        android:id="@+id/remove_all_new_flags_item"
-        android:title="@string/remove_all_new_flags_label"
+        android:id="@+id/remove_all_inbox_item"
+        android:title="@string/remove_all_inbox_label"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:visible="false"

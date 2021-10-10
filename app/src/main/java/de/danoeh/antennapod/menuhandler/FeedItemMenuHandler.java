@@ -61,7 +61,7 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.visit_website_item, !selectedItem.getFeed().isLocalFeed()
                 && ShareUtils.hasLinkToShare(selectedItem));
         setItemVisibility(menu, R.id.share_item, !selectedItem.getFeed().isLocalFeed());
-        setItemVisibility(menu, R.id.remove_new_flag_item, selectedItem.isNew());
+        setItemVisibility(menu, R.id.remove_inbox_item, selectedItem.isNew());
         setItemVisibility(menu, R.id.mark_read_item, !selectedItem.isPlayed());
         setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
         setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
@@ -146,7 +146,7 @@ public class FeedItemMenuHandler {
             IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
         } else if (menuItemId == R.id.remove_item) {
             DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
-        } else if (menuItemId == R.id.remove_new_flag_item) {
+        } else if (menuItemId == R.id.remove_inbox_item) {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
@@ -233,7 +233,7 @@ public class FeedItemMenuHandler {
             case FeedItem.UNPLAYED:
                 if (item.getPlayState() == FeedItem.NEW) {
                     //was new
-                    playStateStringRes = R.string.removed_new_flag_label;
+                    playStateStringRes = R.string.removed_inbox_label;
                 } else {
                     //was played
                     playStateStringRes = R.string.marked_as_unplayed_label;

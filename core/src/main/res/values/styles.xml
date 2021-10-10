@@ -180,12 +180,6 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">@dimen/text_size_micro</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
     <style name="BigBlurryBackground">
         <item name="android:scaleType">centerCrop</item>
         <!-- <item name="android:tint">@color/image_readability_tint</item> -->

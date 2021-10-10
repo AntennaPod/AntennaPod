@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.fragment.InboxFragment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -265,6 +266,9 @@ public class MainActivity extends CastEnabledActivity {
         switch (tag) {
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
+                break;
+            case InboxFragment.TAG:
+                fragment = new InboxFragment();
                 break;
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();

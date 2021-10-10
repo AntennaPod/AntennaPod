@@ -333,10 +333,10 @@ public class SubscriptionFragment extends Fragment
             return false;
         }
         int itemId = item.getItemId();
-        if (itemId == R.id.remove_all_new_flags_item) {
+        if (itemId == R.id.remove_all_inbox_item) {
             displayConfirmationDialog(
-                    R.string.remove_all_new_flags_label,
-                    R.string.remove_all_new_flags_confirmation_msg,
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg,
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
         } else if (itemId == R.id.edit_tags) {

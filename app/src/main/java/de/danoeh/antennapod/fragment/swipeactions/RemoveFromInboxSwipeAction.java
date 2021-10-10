@@ -28,7 +28,7 @@ public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
     public String getTitle(Context context) {
-        return context.getString(R.string.remove_new_flag_label);
+        return context.getString(R.string.remove_inbox_label);
     }
 
     @Override

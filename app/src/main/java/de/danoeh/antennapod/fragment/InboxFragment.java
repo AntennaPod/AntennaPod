@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -12,19 +12,23 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class NewEpisodesFragment extends EpisodesListFragment {
-
+public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
+
+    private Toolbar toolbar;
+    private boolean displayUpArrow;
 
     @Override
     protected String getPrefName() {
@@ -41,35 +45,35 @@ public class NewEpisodesFragment extends EpisodesListFragment {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(false);
         menu.findItem(R.id.mark_all_read_item).setVisible(false);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
+        menu.findItem(R.id.remove_all_inbox_item).setVisible(true);
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View inboxContainer = View.inflate(getContext(), R.layout.inbox_fragment, null);
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        emptyView.setTitle(R.string.no_new_episodes_head_label);
-        emptyView.setMessage(R.string.no_new_episodes_label);
+        ((FrameLayout) inboxContainer.findViewById(R.id.inboxContent)).addView(root);
+        emptyView.setTitle(R.string.no_inbox_head_label);
+        emptyView.setMessage(R.string.no_inbox_label);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-                return false;
-            }
+        toolbar = inboxContainer.findViewById(R.id.toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
-                FeedItemMenuHandler.removeNewFlagWithUndo(NewEpisodesFragment.this, holder.getFeedItem());
-            }
-        };
+        SwipeActions swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        return inboxContainer;
+    }
 
-        return root;
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @NonNull

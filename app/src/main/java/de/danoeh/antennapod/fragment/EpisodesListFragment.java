@@ -143,17 +143,17 @@ public abstract class EpisodesListFragment extends Fragment {
             };
             markAllReadConfirmationDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.remove_all_new_flags_item) {
+        } else if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.remove_all_new_flags_label,
-                    R.string.remove_all_new_flags_confirmation_msg) {
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg) {
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
                     dialog.dismiss();
                     DBWriter.removeAllNewFlags();
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
+                            R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
                 }
             };
             removeAllNewFlagsConfirmationDialog.createNewDialog().show();
