@@ -113,7 +113,8 @@ public class PlaybackControlsDialog extends DialogFragment {
 
     private void updateSpeed() {
         if (controller != null) {
-            txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", controller.getCurrentPlaybackSpeedMultiplier()));
+            txtvPlaybackSpeed.setText(String.format(
+                    Locale.getDefault(), "%.2fx", controller.getCurrentPlaybackSpeedMultiplier()));
             speedSeekBar.updateSpeed(controller.getCurrentPlaybackSpeedMultiplier());
         }
     }
