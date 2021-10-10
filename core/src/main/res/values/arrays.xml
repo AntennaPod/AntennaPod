@@ -135,58 +135,6 @@
         <item>-2</item>
     </string-array>
 
-    <string-array name="playback_speed_values">
-        <item>0.50</item>
-        <item>0.60</item>
-        <item>0.70</item>
-        <item>0.75</item>
-        <item>0.80</item>
-        <item>0.85</item>
-        <item>0.90</item>
-        <item>0.95</item>
-        <item>1.00</item>
-        <item>1.05</item>
-        <item>1.10</item>
-        <item>1.15</item>
-        <item>1.20</item>
-        <item>1.25</item>
-        <item>1.30</item>
-        <item>1.35</item>
-        <item>1.40</item>
-        <item>1.45</item>
-        <item>1.50</item>
-        <item>1.55</item>
-        <item>1.60</item>
-        <item>1.65</item>
-        <item>1.70</item>
-        <item>1.75</item>
-        <item>1.80</item>
-        <item>1.85</item>
-        <item>1.90</item>
-        <item>1.95</item>
-        <item>2.00</item>
-        <item>2.10</item>
-        <item>2.20</item>
-        <item>2.30</item>
-        <item>2.40</item>
-        <item>2.50</item>
-        <item>2.60</item>
-        <item>2.70</item>
-        <item>2.80</item>
-        <item>2.90</item>
-        <item>3.00</item>
-        <item>3.10</item>
-        <item>3.20</item>
-        <item>3.30</item>
-        <item>3.40</item>
-        <item>3.50</item>
-        <item>3.60</item>
-        <item>3.70</item>
-        <item>3.80</item>
-        <item>3.90</item>
-        <item>4.00</item>
-    </string-array>
-
     <string-array name="theme_options">
         <item>@string/pref_theme_title_use_system</item>
         <item>@string/pref_theme_title_light</item>

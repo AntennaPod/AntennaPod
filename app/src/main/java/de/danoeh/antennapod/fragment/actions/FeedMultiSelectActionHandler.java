@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment.actions;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -15,6 +16,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
@@ -64,25 +66,26 @@ public class FeedMultiSelectActionHandler {
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
     private void playbackSpeedPrefHandler() {
-        final String[] speeds = activity.getResources().getStringArray(R.array.playback_speed_values);
-        String[] values = new String[speeds.length + 1];
-        values[0] = SPEED_FORMAT.format(FeedPreferences.SPEED_USE_GLOBAL);
-
-        String[] entries = new String[speeds.length + 1];
-        entries[0] = activity.getString(R.string.feed_auto_download_global);
-
-        System.arraycopy(speeds, 0, values, 1, speeds.length);
-        System.arraycopy(speeds, 0, entries, 1, speeds.length);
-
-        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.playback_speed));
-        preferenceListDialog.openDialog(entries);
-        preferenceListDialog.setOnPreferenceChangedListener(pos -> {
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) values[pos]));
-            });
-
+        PlaybackSpeedFeedSettingDialogBinding viewBinding =
+                PlaybackSpeedFeedSettingDialogBinding.inflate(activity.getLayoutInflater());
+        viewBinding.seekBar.setProgressChangedListener(speed ->
+                viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
+        viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewBinding.seekBar.setEnabled(!isChecked);
+            viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
+            viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
         });
+        viewBinding.seekBar.updateSpeed(1.0f);
+        new AlertDialog.Builder(activity)
+                .setTitle(R.string.playback_speed)
+                .setView(viewBinding.getRoot())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
+                            ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
+                    saveFeedPreferences(feedPreferences -> feedPreferences.setFeedPlaybackSpeed(newSpeed));
+                })
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
     }
 
     private void autoDeleteEpisodesPrefHandler() {

@@ -22,6 +22,8 @@ import java.util.Locale;
 public class PlaybackControlsDialog extends DialogFragment {
     private PlaybackController controller;
     private AlertDialog dialog;
+    private PlaybackSpeedSeekBar speedSeekBar;
+    private TextView txtvPlaybackSpeed;
 
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
@@ -42,6 +44,12 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
+                updateSpeed();
+            }
+
+            @Override
+            public void onPlaybackSpeedChange() {
+                updateSpeed();
             }
         };
         controller.init();
@@ -66,12 +74,15 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        final TextView txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
-
-        PlaybackSpeedSeekBar speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
-        speedSeekBar.setController(controller);
-        speedSeekBar.setProgressChangedListener(speed
-                -> txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
+        txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
+        speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
+        speedSeekBar.setProgressChangedListener(speed -> {
+            if (controller != null) {
+                controller.setPlaybackSpeed(speed);
+                updateSpeed();
+            }
+        });
+        updateSpeed();
 
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
@@ -98,6 +109,14 @@ public class PlaybackControlsDialog extends DialogFragment {
                 controller.setDownmix(isChecked);
             }
         });
+    }
+
+    private void updateSpeed() {
+        if (controller != null) {
+            txtvPlaybackSpeed.setText(String.format(
+                    Locale.getDefault(), "%.2fx", controller.getCurrentPlaybackSpeedMultiplier()));
+            speedSeekBar.updateSpeed(controller.getCurrentPlaybackSpeedMultiplier());
+        }
     }
 
     private void setupAudioTracks() {
