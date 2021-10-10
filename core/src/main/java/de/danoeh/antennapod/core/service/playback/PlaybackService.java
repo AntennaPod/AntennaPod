@@ -174,6 +174,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
     public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
     public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
+
+    /**
+     * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
+     */
+    public static final int MAX_ANDROID_AUTO_EPISODES_PER_FEED = 100;
+
     /**
      * No more episodes are going to be played.
      */
@@ -460,9 +466,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+            int count = 0;
             for (FeedItem feedItem : feedItems) {
                 if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
                     mediaItems.add(feedItem.getMedia().getMediaItem());
+                    if (++count >= MAX_ANDROID_AUTO_EPISODES_PER_FEED) {
+                        break;
+                    }
                 }
             }
         }
