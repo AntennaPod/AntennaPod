@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.core.util.download;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.FeedUpdateWorker;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -70,7 +72,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
-        Calendar alarm = (Calendar)now.clone();
+        Calendar alarm = (Calendar) now.clone();
         alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
         alarm.set(Calendar.MINUTE, minute);
         if (alarm.before(now) || alarm.equals(now)) {
@@ -89,7 +91,6 @@ public class AutoUpdateManager {
 
     /**
      * Run auto feed refresh once in background, as soon as what OS scheduling allows.
-     *
      * Callers from UI should use {@link #runImmediate(Context)}, as it will guarantee
      * the refresh be run immediately.
      * @param context Context
@@ -122,10 +123,29 @@ public class AutoUpdateManager {
         if (!NetworkUtils.networkAvailable()) {
             Log.d(TAG, "Ignoring: No network connection.");
             return;
+        } else if (NetworkUtils.isEpisodeDownloadAllowed()) {
+            startRefreshAllFeeds(context);
+        } else {
+            confirmMobileAllFeedsRefresh(context);
         }
+    }
+
+    private static void confirmMobileAllFeedsRefresh(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.confirm_mobile_feed_refresh_dialog_title)
+                .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
+                .setPositiveButton(context.getText(R.string.confirm_mobile_feed_refresh_dialog_positive_text),
+                        (dialog, which) -> startRefreshAllFeeds(context))
+                .setNegativeButton(context.getText(R.string.confirm_mobile_feed_refresh_dialog_negative_text),
+                        (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private static void startRefreshAllFeeds(final Context context) {
         new Thread(() -> DBTasks.refreshAllFeeds(
                 context.getApplicationContext(), true), "ManualRefreshAllFeeds").start();
     }
+
 
     public static void disableAutoUpdate(Context context) {
         WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
