@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
 
     <TextView
-            android:id="@+id/butDecSpeed"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:text="-"
-            android:clickable="true"
-            android:focusable="true"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="?attr/colorSecondary"
-            android:contentDescription="@string/decrease_speed"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+        android:id="@+id/butDecSpeed"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="-"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="?attr/colorSecondary"
+        android:contentDescription="@string/decrease_speed"
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
     <SeekBar
-            android:id="@+id/playback_speed"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:max="70"
-            android:layout_weight="1" />
+        android:id="@+id/playback_speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="70"
+        android:paddingVertical="4dp"
+        android:layout_weight="1" />
 
     <TextView
-            android:id="@+id/butIncSpeed"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:text="+"
-            android:clickable="true"
-            android:focusable="true"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="?attr/colorSecondary"
-            android:contentDescription="@string/increase_speed"
-            android:background="?attr/selectableItemBackgroundBorderless" />
+        android:id="@+id/butIncSpeed"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="+"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="?attr/colorSecondary"
+        android:contentDescription="@string/increase_speed"
+        android:background="?attr/selectableItemBackgroundBorderless" />
+
 </LinearLayout>
