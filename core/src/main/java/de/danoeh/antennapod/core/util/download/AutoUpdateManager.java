@@ -72,7 +72,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
-        Calendar alarm = (Calendar) now.clone();
+        Calendar alarm = (Calendar)now.clone();
         alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
         alarm.set(Calendar.MINUTE, minute);
         if (alarm.before(now) || alarm.equals(now)) {
@@ -91,6 +91,7 @@ public class AutoUpdateManager {
 
     /**
      * Run auto feed refresh once in background, as soon as what OS scheduling allows.
+     *
      * Callers from UI should use {@link #runImmediate(Context)}, as it will guarantee
      * the refresh be run immediately.
      * @param context Context
@@ -132,11 +133,11 @@ public class AutoUpdateManager {
 
     private static void confirmMobileAllFeedsRefresh(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.confirm_mobile_feed_refresh_dialog_title)
+                .setTitle(R.string.feed_refresh_title)
                 .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
-                .setPositiveButton(context.getText(R.string.confirm_mobile_feed_refresh_dialog_positive_text),
+                .setPositiveButton(R.string.yes,
                         (dialog, which) -> startRefreshAllFeeds(context))
-                .setNegativeButton(context.getText(R.string.confirm_mobile_feed_refresh_dialog_negative_text),
+                .setNegativeButton(R.string.no,
                         (dialog, which) -> dialog.cancel());
         builder.show();
     }
@@ -145,7 +146,6 @@ public class AutoUpdateManager {
         new Thread(() -> DBTasks.refreshAllFeeds(
                 context.getApplicationContext(), true), "ManualRefreshAllFeeds").start();
     }
-
 
     public static void disableAutoUpdate(Context context) {
         WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
