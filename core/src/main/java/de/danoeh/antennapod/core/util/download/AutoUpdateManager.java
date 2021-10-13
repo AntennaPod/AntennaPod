@@ -35,6 +35,7 @@ public class AutoUpdateManager {
 
     /**
      * Start / restart periodic auto feed refresh
+     *
      * @param context Context
      */
     public static void restartUpdateAlarm(Context context) {
@@ -72,7 +73,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
-        Calendar alarm = (Calendar)now.clone();
+        Calendar alarm = (Calendar) now.clone();
         alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
         alarm.set(Calendar.MINUTE, minute);
         if (alarm.before(now) || alarm.equals(now)) {
@@ -137,8 +138,7 @@ public class AutoUpdateManager {
                 .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
                 .setPositiveButton(R.string.yes,
                         (dialog, which) -> startRefreshAllFeeds(context))
-                .setNegativeButton(R.string.no,
-                        (dialog, which) -> dialog.cancel());
+                .setNegativeButton(R.string.no, null);
         builder.show();
     }
 
