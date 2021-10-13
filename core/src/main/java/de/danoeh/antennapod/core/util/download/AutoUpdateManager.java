@@ -35,7 +35,6 @@ public class AutoUpdateManager {
 
     /**
      * Start / restart periodic auto feed refresh
-     *
      * @param context Context
      */
     public static void restartUpdateAlarm(Context context) {
@@ -124,7 +123,6 @@ public class AutoUpdateManager {
         Log.d(TAG, "Run auto update immediately in background.");
         if (!NetworkUtils.networkAvailable()) {
             Log.d(TAG, "Ignoring: No network connection.");
-            return;
         } else if (NetworkUtils.isEpisodeDownloadAllowed()) {
             startRefreshAllFeeds(context);
         } else {
