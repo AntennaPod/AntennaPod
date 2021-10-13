@@ -812,7 +812,7 @@ public class UserPreferences {
             }
         }
         // If this preference hasn't been set yet, return the default options
-        return Arrays.asList(0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f);
+        return Arrays.asList(1.0f, 1.25f, 1.5f);
     }
 
     public static String getMediaPlayer() {
