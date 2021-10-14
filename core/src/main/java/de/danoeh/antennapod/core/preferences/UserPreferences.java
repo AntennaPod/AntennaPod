@@ -207,7 +207,7 @@ public class UserPreferences {
     public static List<Integer> getCompactNotificationButtons() {
         String[] buttons = TextUtils.split(
                 prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
-                        String.valueOf(NOTIFICATION_BUTTON_SKIP)),
+                        NOTIFICATION_BUTTON_REWIND + "," + NOTIFICATION_BUTTON_FAST_FORWARD),
                 ",");
         List<Integer> notificationButtons = new ArrayList<>();
         for (String button : buttons) {
