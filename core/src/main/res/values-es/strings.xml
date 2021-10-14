@@ -13,30 +13,36 @@
   <string name="new_label">Nuevos</string>
   <string name="settings_label">Ajustes</string>
   <string name="downloads_label">Descargas</string>
-  <string name="open_autodownload_settings">Ajustes</string>
+  <string name="open_autodownload_settings">Abrir configuración</string>
   <string name="downloads_completed_label">Completadas</string>
   <string name="downloads_log_label">Registro</string>
   <string name="subscriptions_label">Suscripciones</string>
   <string name="subscriptions_list_label">Lista de suscripciones</string>
   <string name="cancel_download_label">Cancelar descarga</string>
-  <string name="playback_history_label">Historial de reproducción</string>
+  <string name="playback_history_label">Historial de reproducciones</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="episode_cache_full_title">Caché de episodios lleno</string>
-  <string name="episode_cache_full_message">Se ha alcanzado el límite del caché de episodios. Puede aumentar el tamaño en Ajustes.</string>
+  <string name="episode_cache_full_title">Antememoria de episodios llena</string>
+  <string name="episode_cache_full_message">Se alcanzó el límite de la antememoria de episodios. Puede aumentar el tamaño en Configuración.</string>
   <string name="playback_statistics_label">Reproducción</string>
   <string name="download_statistics_label">Descargas</string>
   <string name="notification_pref_fragment">Notificaciones</string>
   <!--Google Assistant-->
-  <string name="app_action_not_found">\"%1$s\" no encontrado</string>
+  <string name="app_action_not_found">No se encontró «%1$s»</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Gestos de deslizado</string>
+  <string name="swipeactions_summary">Escoger que pasa al deslizar un episodio en una lista</string>
+  <string name="swipe_right">Deslizar a la derecha</string>
+  <string name="swipe_left">Deslizar a la izquierda</string>
+  <string name="enable_swipeactions">Activar gestos de deslizado en esta pantalla</string>
+  <string name="change_setting">Cambiar</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de episodios:</string>
   <string name="statistics_details_dialog">%1$d episodios iniciados de %2$d.\n\nReproducidos %3$s de %4$s.</string>
   <string name="statistics_mode">Modo de estadísticas</string>
   <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble y marcar como leído no cuenta como reproducido</string>
   <string name="statistics_mode_count_all">Suma de todos los episodios marcados como reproducidos</string>
-  <string name="statistics_speed_not_counted">Aviso: La velocidad de reproducción nunca se tiene en cuenta.</string>
-  <string name="statistics_reset_data">Borrar estadísticas</string>
+  <string name="statistics_speed_not_counted">Aviso: la velocidad de reproducción nunca se tiene en cuenta.</string>
+  <string name="statistics_reset_data">Restablecer estadísticas</string>
   <string name="statistics_reset_data_msg">Esto borrará el historial de duración reproducida de todos los episodios. ¿Confirma que quiere hacerlo?</string>
   <string name="statistics_counting_since">Desde %s,\nhas reproducido</string>
   <!--Download Statistics fragment-->
@@ -90,6 +96,7 @@
   <string name="auto_download_label">Incluir en descargas automáticas</string>
   <string name="auto_delete_label">Borrar episodio automáticamente</string>
   <string name="feed_volume_reduction">Reducción de volumen</string>
+  <string name="feed_volume_reduction_summary">Bajar el volumen de los episodios de este pódcast: %1$s</string>
   <string name="feed_volume_reduction_off">Apagado</string>
   <string name="feed_volume_reduction_light">Ligero</string>
   <string name="feed_volume_reduction_heavy">Fuerte</string>
@@ -109,6 +116,10 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 día después de acabar</item>
     <item quantity="other">%d días después de acabar</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d seleccionado</item>
+    <item quantity="other">%1$d/%2$d seleccionados</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodio</item>
@@ -145,6 +156,7 @@
   <string name="share_website_url_label">Dirección web</string>
   <string name="share_feed_url_label">URL del canal del podcast</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere borrar el pódcast \"%1$s\" y TODOS los episodios (incluidos los descargados).</string>
+  <string name="feed_delete_confirmation_msg_batch">Confirme que quiere borrar los pódcasts seleccionados y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_delete_confirmation_local_msg">Confirme que quiere borrar el podcast \"%1$s\". Los archivos en la carpeta origen local no serán borrados.</string>
   <string name="feed_remover_msg">Eliminando el pódcast</string>
   <string name="load_complete_feed">Actualizar el pódcast completo</string>
@@ -156,6 +168,11 @@
   <string name="open_podcast">Abrir pódcast</string>
   <string name="please_wait_for_data">Esperando a que los datos carguen</string>
   <string name="updates_disabled_label">Actualizaciones deshabilitadas</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d suscripción actualizada.</item>
+    <item quantity="other">%d suscripciones actualizadas.</item>
+  </plurals>
+  <string name="add_to_folder">Agregar carpeta</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
@@ -175,6 +192,8 @@
   <string name="remove_new_flag_label">Eliminar marca \"nuevo\"</string>
   <string name="removed_new_flag_label">Eliminada marca \"nuevo\"</string>
   <string name="mark_read_label">Marcar como reproducido</string>
+  <string name="marked_as_played_label">Marcar como reproducido</string>
+  <string name="marked_as_unplayed_label">Marcar como no reproducido</string>
   <string name="mark_read_no_media_label">Marcar como leído</string>
   <string name="play_this_to_seek_position">Para saltar a posiciones, necesitas reproducir el episodio</string>
   <plurals name="marked_read_batch_label">
@@ -238,6 +257,7 @@
     <item quantity="one">Queda %d descarga</item>
     <item quantity="other">Quedan %d descargas</item>
   </plurals>
+  <string name="completing">Terminando...</string>
   <string name="download_notification_title">Descargando datos del pódcast</string>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
@@ -510,6 +530,7 @@
   <string name="licenses_summary">AntennaPod usa otros software estupendos</string>
   <!--Search-->
   <string name="search_status_no_results">No se han encontrado resultados</string>
+  <string name="type_to_search">Escribe un término de búsqueda</string>
   <string name="search_label">Buscar</string>
   <string name="no_results_for_query">No se han encontrado resultados de \"%1$s\"</string>
   <!--Synchronization-->

@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/butDecSpeed"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:text="-"
         android:clickable="true"
@@ -24,14 +24,15 @@
     <SeekBar
         android:id="@+id/playback_speed"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:max="70"
+        android:paddingVertical="4dp"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/butIncSpeed"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:text="+"
         android:clickable="true"

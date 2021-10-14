@@ -1,15 +1,17 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -25,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class VariableSpeedDialog extends DialogFragment {
+public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private SpeedSelectionAdapter adapter;
     private final DecimalFormat speedFormat;
     private PlaybackController controller;
@@ -70,12 +72,10 @@ public class VariableSpeedDialog extends DialogFragment {
         controller = null;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton(R.string.close_label, null);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = View.inflate(getContext(), R.layout.speed_select_dialog, null);
         speedSeekBar = root.findViewById(R.id.speed_seek_bar);
         speedSeekBar.setProgressChangedListener(multiplier -> {
@@ -95,9 +95,7 @@ public class VariableSpeedDialog extends DialogFragment {
         addCurrentSpeedChip.setCloseIconResource(R.drawable.ic_add);
         addCurrentSpeedChip.setOnCloseIconClickListener(v -> addCurrentSpeed());
         addCurrentSpeedChip.setOnClickListener(v -> addCurrentSpeed());
-
-        builder.setView(root);
-        return builder.create();
+        return root;
     }
 
     private void addCurrentSpeed() {
@@ -119,8 +117,9 @@ public class VariableSpeedDialog extends DialogFragment {
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
-            chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_delete);
+            if (Build.VERSION.SDK_INT >= 17) {
+                chip.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            }
             return new ViewHolder(chip);
         }
 
@@ -129,16 +128,19 @@ public class VariableSpeedDialog extends DialogFragment {
             float speed = selectedSpeeds.get(position);
 
             holder.chip.setText(speedFormat.format(speed));
-            holder.chip.setOnCloseIconClickListener(v -> {
+            holder.chip.setOnLongClickListener(v -> {
                 selectedSpeeds.remove(speed);
                 UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
                 notifyDataSetChanged();
+                return true;
             });
             holder.chip.setOnClickListener(v -> {
-                if (controller != null) {
-                    dismiss();
-                    controller.setPlaybackSpeed(speed);
-                }
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (controller != null) {
+                        dismiss();
+                        controller.setPlaybackSpeed(speed);
+                    }
+                }, 200);
             });
         }
 

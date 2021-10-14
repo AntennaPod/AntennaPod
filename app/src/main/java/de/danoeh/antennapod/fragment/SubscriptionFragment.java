@@ -167,6 +167,7 @@ public class SubscriptionFragment extends Fragment
         });
 
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.nav_feed_action_speeddial);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
@@ -303,6 +304,10 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        if (listItems != null && listItems.size() > result.size()) {
+                            // We have fewer items. This can result in items being selected that are no longer visible.
+                            subscriptionAdapter.endSelectMode();
+                        }
                         listItems = result;
                         subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();

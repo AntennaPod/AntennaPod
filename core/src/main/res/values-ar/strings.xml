@@ -29,6 +29,12 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">لم يتم العثور على %1$s</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">خيارات السحب </string>
+  <string name="swipeactions_summary">اختر ما يحدث عند سحب حلقة من القائمة </string>
+  <string name="swipe_right">سحب إلى اليمين</string>
+  <string name="swipe_left">سحب إلى اليسار </string>
+  <string name="enable_swipeactions">تفعيل السحب في هذه الواجهة</string>
+  <string name="change_setting">تغيير </string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">الوقت الكلي للحلقات المشغلة:</string>
   <string name="statistics_details_dialog">%1$d حلقة من  %2$d بدأ.\n\nتشغيلها %3$s من مجموع %4$s.</string>
@@ -90,6 +96,7 @@
   <string name="auto_download_label">تضمين فى التنزيل التلقائي</string>
   <string name="auto_delete_label">مسح الحلقات تلقائيا</string>
   <string name="feed_volume_reduction">تقليل شدة الصوت</string>
+  <string name="feed_volume_reduction_summary">قلل شدة الصوت لحلقات هذه القناة: %1$s</string>
   <string name="feed_volume_reduction_off">بدون</string>
   <string name="feed_volume_reduction_light">خفيف</string>
   <string name="feed_volume_reduction_heavy">شديد</string>
@@ -117,6 +124,14 @@
     <item quantity="few">%d يوم بعد الأنتهاء</item>
     <item quantity="many">%d يوم بعد الأنتهاء</item>
     <item quantity="other">%d يوم بعد الأنتهاء</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="zero">تم تحديد %1$d/ %2$d</item>
+    <item quantity="one">تم تحديد %1$d/%2$d</item>
+    <item quantity="two">تم تحديد %1$d/%2$d</item>
+    <item quantity="few">تم تحديد %1$d/%2$d</item>
+    <item quantity="many">تم تحديد %1$d/ %2$d </item>
+    <item quantity="other">تم تحديد %1$d/%2$d</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="zero">%d حلقة</item>
@@ -165,6 +180,7 @@
   <string name="share_website_url_label">عنوان موقع</string>
   <string name="share_feed_url_label">عنوان URL قناة البودكاست</string>
   <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك مسح بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة).</string>
+  <string name="feed_delete_confirmation_msg_batch">الرجاء تأكيد أنك تريد إزالة البرامج الإذاعية المحددة وجميع حلقاتها (متضمنة الحلقات المحمّلة) </string>
   <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك إزالة بودكاست \"%1$s\". الملفات المنزلة لن يتم مسحها.</string>
   <string name="feed_remover_msg">أزيل البودكاست</string>
   <string name="load_complete_feed">حدث كامل البودكاست</string>
@@ -176,6 +192,15 @@
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
   <string name="updates_disabled_label">التحديثات موقوفة</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="zero">تم تحديث %d اشتراك</item>
+    <item quantity="one">تم تحديث %d اشتراك</item>
+    <item quantity="two">تم تحديث %d اشتراك</item>
+    <item quantity="few">تم تحديث %d اشتراك</item>
+    <item quantity="many">تم تحديث %d اشتراك</item>
+    <item quantity="other">تم تحديث %d اشتراك</item>
+  </plurals>
+  <string name="add_to_folder">إضافة إلى مجلد</string>
   <!--actions on feeditems-->
   <string name="download_label">تنزيل</string>
   <plurals name="downloading_batch_label">
@@ -203,6 +228,8 @@
   <string name="remove_new_flag_label">أزل العلامات الجديدة</string>
   <string name="removed_new_flag_label">أزيلت العلامات الجديدة</string>
   <string name="mark_read_label">علمها كـ مشغلة</string>
+  <string name="marked_as_played_label">تم الاستماع</string>
+  <string name="marked_as_unplayed_label">لم يتم الاستماع بعد</string>
   <string name="mark_read_no_media_label">علمها كـ مقروءة</string>
   <string name="play_this_to_seek_position">للإنتقال للتوقيتات, يجب أن تشغل الحلقة</string>
   <plurals name="marked_read_batch_label">
@@ -286,6 +313,7 @@
     <item quantity="many">%d تنزيلات بقت</item>
     <item quantity="other">%d تنزيلات بقت</item>
   </plurals>
+  <string name="completing">جاري الإتمام</string>
   <string name="download_notification_title">تنزيل بيانات البودكاست</string>
   <string name="download_log_title_unknown">عنوان غير معروف</string>
   <string name="download_type_feed">قناة</string>
@@ -565,6 +593,7 @@
   <string name="licenses_summary">يعتمد AntennaPod على برامج عظيمة أخرى</string>
   <!--Search-->
   <string name="search_status_no_results">لم يتم العثور على نتائج</string>
+  <string name="type_to_search">اكتب شيئاً للبحث</string>
   <string name="search_label">البحث</string>
   <string name="no_results_for_query">لا توجد نتائج لـ\"%1$s\"</string>
   <!--Synchronization-->

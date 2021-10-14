@@ -13,6 +13,7 @@
   <string name="new_label">Uus</string>
   <string name="settings_label">Seaded</string>
   <string name="downloads_label">Allalaadimised</string>
+  <string name="open_autodownload_settings">Ava seaded</string>
   <string name="downloads_completed_label">Lõpetatud</string>
   <string name="downloads_log_label">Logi</string>
   <string name="subscriptions_label">Tellimused</string>
@@ -28,6 +29,12 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Pühkimise tegevused</string>
+  <string name="swipeactions_summary">Vali, mis juhtub kui pühkida nimekirjas saadet</string>
+  <string name="swipe_right">Pühi paremale</string>
+  <string name="swipe_left">Pühi vasakule</string>
+  <string name="enable_swipeactions">Luba sellel ekraanil pühkimise tegevused</string>
+  <string name="change_setting">Muuda</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Saadete kogupikkus:</string>
   <string name="statistics_details_dialog">%1$d %2$d-st saatest on alustatud.\n\nKuulatud on %3$s saadet %4$s-st.</string>
@@ -72,6 +79,8 @@
   <string name="no">Ei</string>
   <string name="reset">Nulli</string>
   <string name="url_label">URL</string>
+  <string name="support_funding_label">Toeta</string>
+  <string name="support_podcast">Toeta seda taskuhäälingut</string>
   <string name="error_label">Viga</string>
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="refresh_label">Värskenda</string>
@@ -79,12 +88,15 @@
   <string name="chapters_label">Peatükid</string>
   <string name="chapter_duration">Pikkus: %1$s</string>
   <string name="description_label">Kirjeldus</string>
+  <string name="shownotes_label">Saate märkmed</string>
+  <string name="shownotes_contentdescription">saate märkmete lugemiseks pühi üles</string>
   <string name="episodes_suffix">\u0020saadet</string>
   <string name="close_label">Sulge</string>
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
   <string name="auto_delete_label">Saadete automaatne kustutamine</string>
   <string name="feed_volume_reduction">Valjuse vähendamine</string>
+  <string name="feed_volume_reduction_summary">Keera alla selle taskuhäälingu saadete helitase: %1$s</string>
   <string name="feed_volume_reduction_off">Väljas</string>
   <string name="feed_volume_reduction_light">Kerge</string>
   <string name="feed_volume_reduction_heavy">Tugev</string>
@@ -104,6 +116,10 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 päev pärast lõpetamist</item>
     <item quantity="other">%d päeva pärast lõpetamist</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d valitud</item>
+    <item quantity="other">%1$d/%2$d valitud</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d saade</item>
@@ -150,6 +166,8 @@
   <string name="refresh_failed_msg">{fa-exclamation-circle} Viimane värskendamine ebaõnnestus. Puuduta üksikasjade jaoks.</string>
   <string name="open_podcast">Ava taskuhääling</string>
   <string name="please_wait_for_data">Palun oota andmete laadimist</string>
+  <string name="updates_disabled_label">Värskendused keelatud</string>
+  <string name="add_to_folder">Lisa kausta</string>
   <!--actions on feeditems-->
   <string name="download_label">Laadi alla</string>
   <plurals name="downloading_batch_label">
@@ -169,6 +187,8 @@
   <string name="remove_new_flag_label">Eemalda silt \"uus\"</string>
   <string name="removed_new_flag_label">Eemaldati silt \"uus\"</string>
   <string name="mark_read_label">Märgi kuulatuks</string>
+  <string name="marked_as_played_label">Märgitud kuulatuks</string>
+  <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
   <string name="mark_read_no_media_label">Märgi loetuks</string>
   <string name="play_this_to_seek_position">Asukohale hüppamiseks pead saadet esitama</string>
   <plurals name="marked_read_batch_label">
@@ -232,6 +252,7 @@
     <item quantity="one">%d allalaadimine jäänud</item>
     <item quantity="other">%d allalaadimist jäänud</item>
   </plurals>
+  <string name="completing">Lõpetamine…</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
@@ -347,6 +368,11 @@
   <string name="playback_pref_sum">Kõrvaklappide juhtimine, vahelejätmine, ootejärjekord</string>
   <string name="network_pref">Võrk</string>
   <string name="network_pref_sum">Uuendamise sagedus, allalaadimine, mobiilinett</string>
+  <string name="feed_refresh_title">Värskenda taskuhäälinguid</string>
+  <string name="feed_refresh_interval">Vahemik</string>
+  <string name="feed_refresh_time">Aeg</string>
+  <string name="feed_refresh_never">Mitte kunagi</string>
+  <string name="feed_refresh_interval_at">%1$s tagant</string>
   <string name="pref_followQueue_title">Pidev esitamine</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Peakomplekti või Bluetoothi lahti ühendamisel</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kõrvaklappide uuesti ühendamine</string>
@@ -477,6 +503,8 @@
   <string name="not_auto_downloaded">Pole automaatselt alla laaditud</string>
   <string name="kept_updated">Hoitakse uuendatuna</string>
   <string name="not_kept_updated">Ei hoita uuendatuna</string>
+  <string name="new_episode_notification_enabled">Teavitus lubatud</string>
+  <string name="new_episode_notification_disabled">Teavitus keelatud</string>
   <!--About screen-->
   <string name="about_pref">Info</string>
   <string name="antennapod_version">AntennaPodi versioon</string>
@@ -609,6 +637,8 @@
   <string name="position">Asukoht: %1$s</string>
   <string name="apply_action">Vii ellu</string>
   <string name="play_chapter">Esita peatükk</string>
+  <string name="prev_chapter">Eelmine peatükk</string>
+  <string name="next_chapter">Järgmine peatükk</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentimine</string>
   <string name="authentication_descr">Muuda kasutajanime ja parooli selle taskuhäälingu ja saadete jaoks.</string>

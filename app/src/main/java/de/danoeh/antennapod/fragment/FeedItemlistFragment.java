@@ -238,6 +238,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // Init action UI (via a FAB Speed Dial)
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override

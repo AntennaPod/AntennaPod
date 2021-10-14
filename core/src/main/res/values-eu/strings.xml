@@ -29,6 +29,12 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ezin da aurkitu</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Irristatze ekintzak</string>
+  <string name="swipeactions_summary">Aukeratu zer gertatzen den zerrendako saio bat irristatzean</string>
+  <string name="swipe_right">Irristatu eskuinera</string>
+  <string name="swipe_left">Irristatu ezkerrera</string>
+  <string name="enable_swipeactions">Gaitu irristatzeko ekintzak pantaila honetan</string>
+  <string name="change_setting">Aldatu</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Ikusitako saio denen denbora:</string>
   <string name="statistics_details_dialog">%1$d kanpo %2$d hasitako saioetatik. %3$s \n\nErreproduzituak %4$setatik.</string>
@@ -90,6 +96,7 @@
   <string name="auto_download_label">Deskarga automatikoetan sartu</string>
   <string name="auto_delete_label">Ezabatu saioa automatikoki</string>
   <string name="feed_volume_reduction">Bolumenaren kudeaketa</string>
+  <string name="feed_volume_reduction_summary">Murriztu bolumena podcast honen ataletarako: %1$s</string>
   <string name="feed_volume_reduction_off">Itzalita</string>
   <string name="feed_volume_reduction_light">Gozoa</string>
   <string name="feed_volume_reduction_heavy">Indartsua</string>
@@ -109,6 +116,10 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 egun bukatu ondoren</item>
     <item quantity="other">%d bukatu ondoren</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d aukeratuak</item>
+    <item quantity="other">%1$d/%2$d aukeratuak</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d saio</item>
@@ -145,6 +156,7 @@
   <string name="share_website_url_label">Web gunea</string>
   <string name="share_feed_url_label">Fluxuaren lotura</string>
   <string name="feed_delete_confirmation_msg">Mesedez berretsi \"%1$s\" podcasta eta bere saio \"guztiak\" (deskargatutako saioak barne) ezabatu nahi dituzula.</string>
+  <string name="feed_delete_confirmation_msg_batch">Mesedez, baieztatu hautatutako podcastak eta haien atal GUZTIAK (deskargatutako atalak barne) kendu nahi dituzula.</string>
   <string name="feed_delete_confirmation_local_msg">Baieztatu, mesedez, \"%1$s\" podcasta ezabatu nahi duzula. Tokiko karpetako artxiboak ez dira ezabatukoThe files in the local source folder will not be deleted.</string>
   <string name="feed_remover_msg">Podcasta ezabatzen</string>
   <string name="load_complete_feed">Eguneratu osatutako podcasta</string>
@@ -156,6 +168,11 @@
   <string name="open_podcast">Ireki podcasta</string>
   <string name="please_wait_for_data">Mesedez, itxaron datuak kargatu arte</string>
   <string name="updates_disabled_label">Eguneraketak desgaiturik</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d harpidetza eguneratu da.</item>
+    <item quantity="other">%d harpidetzak eguneratu dira.</item>
+  </plurals>
+  <string name="add_to_folder">Gehitu karpetara</string>
   <!--actions on feeditems-->
   <string name="download_label">Deskargatu</string>
   <plurals name="downloading_batch_label">
@@ -175,6 +192,8 @@
   <string name="remove_new_flag_label">Kendu \"berria\" ikurra</string>
   <string name="removed_new_flag_label">\"Berria\" ikurra kendu da</string>
   <string name="mark_read_label">Markatu ikusita bezala</string>
+  <string name="marked_as_played_label">Ikusita bezala markatua</string>
+  <string name="marked_as_unplayed_label">Ikusi gabe bezala markatua</string>
   <string name="mark_read_no_media_label">Markatu iraurrita gisa</string>
   <string name="play_this_to_seek_position">Posizioetara jauzi egiteko, pasartea erreproduzitu behar duzu</string>
   <plurals name="marked_read_batch_label">
@@ -238,6 +257,7 @@
     <item quantity="one">%d deskarga zain</item>
     <item quantity="other">%d deskarga zain</item>
   </plurals>
+  <string name="completing">Osatzen...</string>
   <string name="download_notification_title">Podcastaren datuak deskargatzen</string>
   <string name="download_log_title_unknown">Izenburu ezezaguna</string>
   <string name="download_type_feed">Kanala</string>
@@ -512,6 +532,7 @@
   <string name="licenses_summary">AntennaPod-ek beste software ezin hobeak erabiltzen ditu</string>
   <!--Search-->
   <string name="search_status_no_results">Ez da emaitzarik aurkitu</string>
+  <string name="type_to_search">Idatzi kontsulta bilatzeko</string>
   <string name="search_label">Bilatu</string>
   <string name="no_results_for_query">Ez da \"%1$s\"emaitzarik aurkitu</string>
   <!--Synchronization-->

@@ -193,7 +193,7 @@
   <string name="removed_new_flag_label">A marca \"novo\" foi removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_played_label">Marcado como reproduzido</string>
-  <string name="marked_as_unplayed_label">Marcar como não reproduzido</string>
+  <string name="marked_as_unplayed_label">Marcado como não reproduzido</string>
   <string name="mark_read_no_media_label">Marcar como lida</string>
   <string name="play_this_to_seek_position">Se quiser ir para uma posição, tem que reproduzir o episódio</string>
   <plurals name="marked_read_batch_label">

@@ -29,8 +29,11 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">Nie odnaleziono \"%1$s\"</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Akcje przeciągania</string>
+  <string name="swipeactions_summary">Wybierz co zrobić, gdy przeciągasz odcinek na liście</string>
   <string name="swipe_right">Przeciągnij w prawo</string>
   <string name="swipe_left">Przeciągnij w lewo</string>
+  <string name="enable_swipeactions">Włącz akcje przeciągania dla tego ekranu</string>
   <string name="change_setting">Zmień </string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas odtwarzania podcastów:</string>
@@ -118,6 +121,12 @@
     <item quantity="many">%d dni po odtworzeniu</item>
     <item quantity="other">%d dni po odtworzeniu</item>
   </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d wybrany</item>
+    <item quantity="few">%1$d/%2$d wybranych</item>
+    <item quantity="many">%1$d/%2$d wybranych</item>
+    <item quantity="other">%1$d/%2$d wybranych</item>
+  </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d odcinek</item>
     <item quantity="few">%d odcinki</item>
@@ -171,6 +180,12 @@
   <string name="open_podcast">Otwórz Podcast</string>
   <string name="please_wait_for_data">Proszę czekać aż dane zostaną załadowane</string>
   <string name="updates_disabled_label">Aktualizacje wyłączone</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">Uaktualniono %d subskrypcję.</item>
+    <item quantity="few">%d subskrypcji uaktualniono.</item>
+    <item quantity="many">%d subskrypcji uaktualniono.</item>
+    <item quantity="other">%dsubskrypcji uaktualniono.</item>
+  </plurals>
   <string name="add_to_folder">Dodaj do folderu</string>
   <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
@@ -271,6 +286,7 @@
     <item quantity="many">%d elementów zostało do pobrania</item>
     <item quantity="other">%d elementów zostało do pobrania</item>
   </plurals>
+  <string name="completing">Kończę...</string>
   <string name="download_notification_title">Pobieranie danych podcastu</string>
   <string name="download_log_title_unknown">Nieznany tytuł</string>
   <string name="download_type_feed">Kanał</string>
@@ -545,6 +561,7 @@
   <string name="licenses_summary">AntennaPod używa różnego świetnego oprogramowania/bibliotek</string>
   <!--Search-->
   <string name="search_status_no_results">Brak wyników</string>
+  <string name="type_to_search">Wpisz szukaną frazę</string>
   <string name="search_label">Szukaj</string>
   <string name="no_results_for_query">Brak wyników dla \"%1$s\"</string>
   <!--Synchronization-->
