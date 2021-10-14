@@ -606,6 +606,7 @@
   <string name="cast_failed_to_pause">Hebo un fallu al posar la reproducción</string>
   <string name="cast_failed_setting_volume">Hebo un fallu al afitar el volume</string>
   <string name="cast_failed_seek">Hebo un fallu al guetar el puntu nuevu nel preséu de tresmisión</string>
+  <string name="cast_failed_media_error_skipping">Hebo un fallu al reproducir el conteníu multimedia. Saltando…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fallos</string>
   <string name="notification_group_news">Noticies</string>

@@ -358,7 +358,7 @@
   <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
-  <string name="pref_hardware_forward_button_title">Tlačítno vpřed</string>
+  <string name="pref_hardware_forward_button_title">Tlačítko vpřed</string>
   <string name="pref_hardware_forward_button_summary">Přizpůsobit tlačítko vpřed</string>
   <string name="pref_hardware_previous_button_title">Tlačítko předchozí</string>
   <string name="pref_hardware_previous_button_summary">Přizpůsobit tlačítko předchozí</string>

@@ -41,9 +41,9 @@
   <string name="statistics_mode">Statistiktilstand</string>
   <string name="statistics_mode_normal">Beregn den varighed som faktisk blev afspillet. Afspilning af en udsendelse to gange tæller dobbelt, mens en markering som værende afspillet ikke tælles med.</string>
   <string name="statistics_mode_count_all">Summér alle udsendelser markeret som afspillet</string>
-  <string name="statistics_speed_not_counted">Bemærk: Afspilningshastigheden har ingen betydning</string>
+  <string name="statistics_speed_not_counted">Bemærk: Der tages aldrig hensyn til afspilningshastigheden.</string>
   <string name="statistics_reset_data">Nulstil statistik</string>
-  <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet af alle udsendelser.</string>
+  <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet for alle udsendelser. Er du sikker på, at du vil fortsætte?</string>
   <string name="statistics_counting_since">Siden %s\nhar du afspillet</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Samlet størrelse af udsendelserne på enheden:</string>
@@ -71,7 +71,7 @@
   <string name="copied_url_msg">Webadresse kopieret til udklipsholderen</string>
   <string name="go_to_position_label">Gå til denne position</string>
   <!--Playback history-->
-  <string name="clear_history_label">Fjern historik</string>
+  <string name="clear_history_label">Ryd historik</string>
   <!--Other-->
   <string name="confirm_label">Bekræft</string>
   <string name="cancel_label">Annuller</string>
@@ -129,7 +129,7 @@
   <string name="episode_notification">Notifikationer om udsendelser</string>
   <string name="episode_notification_summary">Vis en notifikation når der er nye udsendelser</string>
   <plurals name="new_episode_notification_message">
-    <item quantity="one">%2$s har en ny episode</item>
+    <item quantity="one">%2$s har en ny udsendelse</item>
     <item quantity="other">%2$s har %1$d nye udsendelser</item>
   </plurals>
   <plurals name="new_episode_notification_title">
