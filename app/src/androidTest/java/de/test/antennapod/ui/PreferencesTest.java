@@ -244,8 +244,8 @@ public class PreferencesTest {
     public void testPlaybackSpeeds() {
         clickPreference(R.string.playback_pref);
         clickPreference(R.string.playback_speed);
-        onView(isRoot()).perform(waitForView(withText("0.75"), 1000));
-        onView(withText("0.75")).check(matches(isDisplayed()));
+        onView(isRoot()).perform(waitForView(withText("1.25"), 1000));
+        onView(withText("1.25")).check(matches(isDisplayed()));
     }
 
     @Test
