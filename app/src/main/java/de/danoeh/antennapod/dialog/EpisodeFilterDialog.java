@@ -2,6 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -28,7 +29,7 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
         final EditText etxtEpisodeFilterDurationText = rootView.findViewById(R.id.etxtEpisodeFilterDurationText);
         final RadioButton radioInclude = rootView.findViewById(R.id.radio_filter_include);
         final RadioButton radioExclude = rootView.findViewById(R.id.radio_filter_exclude);
-        final RadioButton radioDuration = rootView.findViewById(R.id.radio_filter_duration);
+        final CheckBox radioDuration = rootView.findViewById(R.id.radio_filter_duration);
 
         if (initialFilter.includeOnly()) {
             radioInclude.setChecked(true);
@@ -43,7 +44,8 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
         }
         if (initialFilter.hasMinimalDurationFilter()) {
             radioDuration.setChecked(true);
-            etxtEpisodeFilterDurationText.setText(String.valueOf(initialFilter.getMinimalDurationFilter()));
+            // Store minimal duration in seconds, show in minutes
+            etxtEpisodeFilterDurationText.setText(String.valueOf(initialFilter.getMinimalDurationFilter() / 60));
         }
 
         setNegativeButton(R.string.cancel_label, null);
@@ -58,9 +60,10 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
                     }
                     if (radioDuration.isChecked()) {
                         try {
-                            minimalDuration = Integer.parseInt(etxtEpisodeFilterDurationText.getText().toString());
+                            // Store minimal duration in seconds
+                            minimalDuration = Integer.parseInt(etxtEpisodeFilterDurationText.getText().toString()) * 60;
                         } catch (NumberFormatException e) {
-                            minimalDuration = -1;
+                            // Do not change anything on error
                         }
                     }
                     onConfirmed(new FeedFilter(includeString, excludeString, minimalDuration));

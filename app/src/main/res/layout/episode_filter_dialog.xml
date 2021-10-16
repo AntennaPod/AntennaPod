@@ -40,19 +40,12 @@
         android:minLines="1"
         android:scrollbars="vertical" />
 
-    <RadioGroup
-        android:id="@+id/radio_filter_duration_group"
+    <CheckBox
+        android:id="@+id/radio_filter_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/radio_filter_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/episode_filters_duration" />
-
-    </RadioGroup>
+        android:text="@string/episode_filters_duration"
+        android:orientation="vertical" />
 
     <EditText
         android:id="@+id/etxtEpisodeFilterDurationText"
@@ -63,10 +56,6 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:inputType="numberSigned"
-        android:hint="@string/episode_filters_duration_hint"
-        android:lines="1"
-        android:maxLines="1"
-        android:minLines="1"
-        android:scrollbars="vertical" />
+        android:lines="1" />
 
 </LinearLayout>

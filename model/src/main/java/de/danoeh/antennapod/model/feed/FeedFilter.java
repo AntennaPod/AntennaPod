@@ -16,16 +16,6 @@ public class FeedFilter implements Serializable {
         this("", "", -1);
     }
 
-    public FeedFilter(String includeFilter, String excludeFilter) {
-        // We're storing the strings and not the parsed terms because
-        // 1. It's easier to show the user exactly what they typed in this way
-        //    (we don't have to recreate it)
-        // 2. We don't know if we'll actually be asked to parse anything anyways.
-        this.includeFilter = includeFilter;
-        this.excludeFilter = excludeFilter;
-        this.minimalDuration = -1;
-    }
-
     public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
         // We're storing the strings and not the parsed terms because
         // 1. It's easier to show the user exactly what they typed in this way
@@ -34,6 +24,10 @@ public class FeedFilter implements Serializable {
         this.includeFilter = includeFilter;
         this.excludeFilter = excludeFilter;
         this.minimalDuration = minimalDuration;
+    }
+
+    public FeedFilter(String includeFilter, String excludeFilter) {
+        this(includeFilter, excludeFilter, -1);
     }
 
     /**
@@ -67,14 +61,11 @@ public class FeedFilter implements Serializable {
         }
 
         // Check if the episode is long enough if minimal duration filter is on
-        boolean longEnough = true;
+        boolean isLongEnough = true;
         if (minimalDuration > -1 && item.getMedia() != null) {
-            int duration = item.getMedia().getDuration();
-            int h = 60 * (duration / 3600000);
-            int rest = duration - h * 3600000;
-            int m = rest / 60000;
-            int durationMinutes = 60 * h + m;
-            longEnough = (durationMinutes >= minimalDuration);
+            int durationInMs = item.getMedia().getDuration();
+            // Minimal Duration is stored in seconds
+            isLongEnough = (durationInMs / 1000 >= minimalDuration);
         }
 
         // check using lowercase so the users don't have to worry about case.
@@ -90,7 +81,7 @@ public class FeedFilter implements Serializable {
 
         for (String term : includeTerms) {
             if (title.contains(term.trim().toLowerCase(Locale.getDefault()))) {
-                return longEnough;
+                return hasMinimalDurationFilter() && isLongEnough;
             }
         }
 
@@ -98,11 +89,7 @@ public class FeedFilter implements Serializable {
         // if they haven't set an include filter, but they have set an exclude filter
         // default to including, but if they've set both, then exclude
         if (!hasIncludeFilter() && hasExcludeFilter()) {
-            return longEnough;
-        }
-
-        if (hasMinimalDurationFilter() && longEnough) {
-            return true;
+            return hasMinimalDurationFilter() && isLongEnough;
         }
 
         return false;
