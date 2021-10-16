@@ -67,6 +67,7 @@ public class ProxyDialog {
                 .setView(content)
                 .setNegativeButton(R.string.cancel_label, null)
                 .setPositiveButton(R.string.proxy_test_label, null)
+                .setNeutralButton(R.string.reset, null)
                 .show();
         // To prevent cancelling the dialog on button click
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
@@ -75,34 +76,17 @@ public class ProxyDialog {
                 test();
                 return;
             }
-            String type = (String) spType.getSelectedItem();
-            ProxyConfig proxy;
-            if (Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
-                proxy = ProxyConfig.direct();
-            } else {
-                String host = etHost.getText().toString();
-                String port = etPort.getText().toString();
-                String username = etUsername.getText().toString();
-                if (TextUtils.isEmpty(username)) {
-                    username = null;
-                }
-                String password = etPassword.getText().toString();
-                if (TextUtils.isEmpty(password)) {
-                    password = null;
-                }
-                int portValue = 0;
-                if (!TextUtils.isEmpty(port)) {
-                    portValue = Integer.parseInt(port);
-                }
-                if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
-                    proxy = ProxyConfig.socks(host, portValue, username, password);
-                } else {
-                    proxy = ProxyConfig.http(host, portValue, username, password);
-                }
-            }
-            UserPreferences.setProxyConfig(proxy);
+            setProxyConfig();
             AntennapodHttpClient.reinit();
             dialog.dismiss();
+        });
+
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener((view) -> {
+            etHost.getText().clear();
+            etPort.getText().clear();
+            etUsername.getText().clear();
+            etPassword.getText().clear();
+            setProxyConfig();
         });
 
         List<String> types = new ArrayList<>();
@@ -118,25 +102,14 @@ public class ProxyDialog {
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
         spType.setSelection(adapter.getPosition(proxyConfig.type.name()));
         etHost = content.findViewById(R.id.etHost);
-        if (!TextUtils.isEmpty(proxyConfig.host)) {
-            etHost.setText(proxyConfig.host);
-        }
         etHost.addTextChangedListener(requireTestOnChange);
         etPort = content.findViewById(R.id.etPort);
-        if (proxyConfig.port > 0) {
-            etPort.setText(String.valueOf(proxyConfig.port));
-        }
         etPort.addTextChangedListener(requireTestOnChange);
         etUsername = content.findViewById(R.id.etUsername);
-        if (!TextUtils.isEmpty(proxyConfig.username)) {
-            etUsername.setText(proxyConfig.username);
-        }
         etUsername.addTextChangedListener(requireTestOnChange);
         etPassword = content.findViewById(R.id.etPassword);
-        if (!TextUtils.isEmpty(proxyConfig.password)) {
-            etPassword.setText(proxyConfig.password);
-        }
         etPassword.addTextChangedListener(requireTestOnChange);
+        editProxyDetails(proxyConfig);
         if (proxyConfig.type == Proxy.Type.DIRECT) {
             enableSettings(false);
             setTestRequired(false);
@@ -144,6 +117,18 @@ public class ProxyDialog {
         spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ProxyConfig proxy;
+                if (position == 1) {
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+                    proxy = UserPreferences.getHttpProxyConfig();
+                } else if (position == 2) {
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+                    proxy = UserPreferences.getSocksProxyConfig();
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.GONE);
+                    proxy = ProxyConfig.direct();
+                }
+                editProxyDetails(proxy);
                 enableSettings(position > 0);
                 setTestRequired(position > 0);
             }
@@ -156,6 +141,46 @@ public class ProxyDialog {
         txtvMessage = content.findViewById(R.id.txtvMessage);
         checkValidity();
         return dialog;
+    }
+
+    private void editProxyDetails(ProxyConfig proxyConfig) {
+        etHost.setText(proxyConfig.host);
+        if (proxyConfig.port > 0) {
+            etPort.setText(String.valueOf(proxyConfig.port));
+        } else {
+            etPort.getText().clear();
+        }
+        etUsername.setText(proxyConfig.username);
+        etPassword.setText(proxyConfig.password);
+    }
+
+    private void setProxyConfig() {
+        String type = (String) spType.getSelectedItem();
+        ProxyConfig proxy;
+        if (Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
+            proxy = ProxyConfig.direct();
+        } else {
+            String host = etHost.getText().toString();
+            String port = etPort.getText().toString();
+            String username = etUsername.getText().toString();
+            if (TextUtils.isEmpty(username)) {
+                username = null;
+            }
+            String password = etPassword.getText().toString();
+            if (TextUtils.isEmpty(password)) {
+                password = null;
+            }
+            int portValue = 0;
+            if (!TextUtils.isEmpty(port)) {
+                portValue = Integer.parseInt(port);
+            }
+            if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
+                proxy = ProxyConfig.socks(host, portValue, username, password);
+            } else {
+                proxy = ProxyConfig.http(host, portValue, username, password);
+            }
+        }
+        UserPreferences.setProxyConfig(proxy);
     }
 
     private final TextWatcher requireTestOnChange = new TextWatcher() {

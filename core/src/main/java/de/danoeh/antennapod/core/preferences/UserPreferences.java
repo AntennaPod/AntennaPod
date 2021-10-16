@@ -104,10 +104,14 @@ public class UserPreferences {
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
     private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
-    private static final String PREF_PROXY_HOST = "prefProxyHost";
-    private static final String PREF_PROXY_PORT = "prefProxyPort";
-    private static final String PREF_PROXY_USER = "prefProxyUser";
-    private static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
+    private static final String PREF_HTTP_PROXY_HOST = "prefHttpProxyHost";
+    private static final String PREF_HTTP_PROXY_PORT = "prefHttpProxyPort";
+    private static final String PREF_HTTP_PROXY_USER = "prefHttpProxyUser";
+    private static final String PREF_HTTP_PROXY_PASSWORD = "prefHttpProxyPassword";
+    private static final String PREF_SOCKS_PROXY_HOST = "prefSocksProxyHost";
+    private static final String PREF_SOCKS_PROXY_PORT = "prefSocksProxyPort";
+    private static final String PREF_SOCKS_PROXY_USER = "prefSocksProxyUser";
+    private static final String PREF_SOCKS_PROXY_PASSWORD = "prefSocksProxyPassword";
 
     // Services
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
@@ -610,36 +614,74 @@ public class UserPreferences {
     public static void setProxyConfig(ProxyConfig config) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_PROXY_TYPE, config.type.name());
-        if(TextUtils.isEmpty(config.host)) {
-            editor.remove(PREF_PROXY_HOST);
+        String host;
+        String port;
+        String user;
+        String password;
+        Proxy.Type type = Proxy.Type.valueOf(config.type.name());
+        if (type == Proxy.Type.DIRECT) {
+            editor.apply();
+            return;
+        }
+        if (type == Proxy.Type.HTTP) {
+            host = PREF_HTTP_PROXY_HOST;
+            port = PREF_HTTP_PROXY_PORT;
+            user = PREF_HTTP_PROXY_USER;
+            password = PREF_HTTP_PROXY_PASSWORD;
         } else {
-            editor.putString(PREF_PROXY_HOST, config.host);
+            host = PREF_SOCKS_PROXY_HOST;
+            port = PREF_SOCKS_PROXY_PORT;
+            user = PREF_SOCKS_PROXY_USER;
+            password = PREF_SOCKS_PROXY_PASSWORD;
+        }
+
+        if(TextUtils.isEmpty(config.host)) {
+            editor.remove(host);
+        } else {
+            editor.putString(host, config.host);
         }
         if(config.port <= 0 || config.port > 65535) {
-            editor.remove(PREF_PROXY_PORT);
+            editor.remove(port);
         } else {
-            editor.putInt(PREF_PROXY_PORT, config.port);
+            editor.putInt(port, config.port);
         }
         if(TextUtils.isEmpty(config.username)) {
-            editor.remove(PREF_PROXY_USER);
+            editor.remove(user);
         } else {
-            editor.putString(PREF_PROXY_USER, config.username);
+            editor.putString(user, config.username);
         }
         if(TextUtils.isEmpty(config.password)) {
-            editor.remove(PREF_PROXY_PASSWORD);
+            editor.remove(password);
         } else {
-            editor.putString(PREF_PROXY_PASSWORD, config.password);
+            editor.putString(password, config.password);
         }
         editor.apply();
     }
 
     public static ProxyConfig getProxyConfig() {
         Proxy.Type type = Proxy.Type.valueOf(prefs.getString(PREF_PROXY_TYPE, Proxy.Type.DIRECT.name()));
-        String host = prefs.getString(PREF_PROXY_HOST, null);
-        int port = prefs.getInt(PREF_PROXY_PORT, 0);
-        String username = prefs.getString(PREF_PROXY_USER, null);
-        String password = prefs.getString(PREF_PROXY_PASSWORD, null);
-        return new ProxyConfig(type, host, port, username, password);
+        if (type == Proxy.Type.DIRECT) {
+            return new ProxyConfig(type, null, 0, null, null);
+        } else if (type == Proxy.Type.HTTP) {
+            return getHttpProxyConfig();
+        }
+        return getSocksProxyConfig();
+    }
+
+    public static ProxyConfig getHttpProxyConfig() {
+        String host = prefs.getString(PREF_HTTP_PROXY_HOST, null);
+        int port = prefs.getInt(PREF_HTTP_PROXY_PORT, 0);
+        String username = prefs.getString(PREF_HTTP_PROXY_USER, null);
+        String password = prefs.getString(PREF_HTTP_PROXY_PASSWORD, null);
+        return new ProxyConfig(Proxy.Type.HTTP, host, port, username, password);
+    }
+
+    public static ProxyConfig getSocksProxyConfig() {
+        String host = prefs.getString(PREF_SOCKS_PROXY_HOST, null);
+        int port = prefs.getInt(PREF_SOCKS_PROXY_PORT, 0);
+        String username = prefs.getString(PREF_SOCKS_PROXY_USER, null);
+        String password = prefs.getString(PREF_SOCKS_PROXY_PASSWORD, null);
+        return new ProxyConfig(Proxy.Type.SOCKS, host, port, username, password);
     }
 
     public static boolean shouldResumeAfterCall() {
