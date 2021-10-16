@@ -102,14 +102,25 @@ public class ProxyDialog {
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
         spType.setSelection(adapter.getPosition(proxyConfig.type.name()));
         etHost = content.findViewById(R.id.etHost);
+        if (!TextUtils.isEmpty(proxyConfig.host)) {
+            etHost.setText(proxyConfig.host);
+        }
         etHost.addTextChangedListener(requireTestOnChange);
         etPort = content.findViewById(R.id.etPort);
+        if (proxyConfig.port > 0) {
+            etPort.setText(String.valueOf(proxyConfig.port));
+        }
         etPort.addTextChangedListener(requireTestOnChange);
         etUsername = content.findViewById(R.id.etUsername);
+        if (!TextUtils.isEmpty(proxyConfig.username)) {
+            etUsername.setText(proxyConfig.username);
+        }
         etUsername.addTextChangedListener(requireTestOnChange);
         etPassword = content.findViewById(R.id.etPassword);
+        if (!TextUtils.isEmpty(proxyConfig.password)) {
+            etPassword.setText(proxyConfig.password);
+        }
         etPassword.addTextChangedListener(requireTestOnChange);
-        editProxyDetails(proxyConfig);
         if (proxyConfig.type == Proxy.Type.DIRECT) {
             enableSettings(false);
             setTestRequired(false);
@@ -117,18 +128,11 @@ public class ProxyDialog {
         spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ProxyConfig proxy;
-                if (position == 1) {
-                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-                    proxy = UserPreferences.getHttpProxyConfig();
-                } else if (position == 2) {
-                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-                    proxy = UserPreferences.getSocksProxyConfig();
-                } else {
+                if (position == 0) {
                     dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.GONE);
-                    proxy = ProxyConfig.direct();
+                } else {
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
                 }
-                editProxyDetails(proxy);
                 enableSettings(position > 0);
                 setTestRequired(position > 0);
             }
@@ -141,17 +145,6 @@ public class ProxyDialog {
         txtvMessage = content.findViewById(R.id.txtvMessage);
         checkValidity();
         return dialog;
-    }
-
-    private void editProxyDetails(ProxyConfig proxyConfig) {
-        etHost.setText(proxyConfig.host);
-        if (proxyConfig.port > 0) {
-            etPort.setText(String.valueOf(proxyConfig.port));
-        } else {
-            etPort.getText().clear();
-        }
-        etUsername.setText(proxyConfig.username);
-        etPassword.setText(proxyConfig.password);
     }
 
     private void setProxyConfig() {
