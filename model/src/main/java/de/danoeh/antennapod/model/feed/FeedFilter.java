@@ -65,7 +65,9 @@ public class FeedFilter implements Serializable {
         if (minimalDuration > -1 && item.getMedia() != null) {
             int durationInMs = item.getMedia().getDuration();
             // Minimal Duration is stored in seconds
-            isLongEnough = (durationInMs / 1000 >= minimalDuration);
+            if (durationInMs / 1000 < minimalDuration) {
+                return false;
+            }
         }
 
         // check using lowercase so the users don't have to worry about case.
@@ -81,7 +83,7 @@ public class FeedFilter implements Serializable {
 
         for (String term : includeTerms) {
             if (title.contains(term.trim().toLowerCase(Locale.getDefault()))) {
-                return hasMinimalDurationFilter() && isLongEnough;
+                return true;
             }
         }
 
@@ -89,7 +91,13 @@ public class FeedFilter implements Serializable {
         // if they haven't set an include filter, but they have set an exclude filter
         // default to including, but if they've set both, then exclude
         if (!hasIncludeFilter() && hasExcludeFilter()) {
-            return hasMinimalDurationFilter() && isLongEnough;
+            return true;
+        }
+
+        // if they only set minimal duration filter and arrived here, autodownload
+        // should happen
+        if (hasMinimalDurationFilter()) {
+            return true;
         }
 
         return false;

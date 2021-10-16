@@ -141,7 +141,7 @@ public class FeedFilterTest {
         doNotDownloadMedia.setDuration(Converter.durationStringShortToMs("02:00", false));
         doNotDownload.setMedia(doNotDownloadMedia);
 
-        int minimalDurationFilter = 3;
+        int minimalDurationFilter = 3 * 60;
         FeedFilter filter = new FeedFilter("", "", minimalDurationFilter);
 
         assertTrue(filter.hasMinimalDurationFilter());
