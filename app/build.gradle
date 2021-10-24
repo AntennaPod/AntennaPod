@@ -126,8 +126,8 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
 
