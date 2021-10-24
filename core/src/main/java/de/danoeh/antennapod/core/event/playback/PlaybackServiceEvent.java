@@ -1,6 +1,6 @@
-package de.danoeh.antennapod.core.event;
+package de.danoeh.antennapod.core.event.playback;
 
-public class ServiceEvent {
+public class PlaybackServiceEvent {
     public enum Action {
         SERVICE_STARTED,
         SERVICE_SHUT_DOWN
@@ -8,7 +8,7 @@ public class ServiceEvent {
 
     public final Action action;
 
-    public ServiceEvent(Action action) {
+    public PlaybackServiceEvent(Action action) {
         this.action = action;
     }
 }
