@@ -610,6 +610,11 @@ public class UserPreferences {
     public static void setProxyConfig(ProxyConfig config) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_PROXY_TYPE, config.type.name());
+        Proxy.Type type = Proxy.Type.valueOf(config.type.name());
+        if (type == Proxy.Type.DIRECT) {
+            editor.apply();
+            return;
+        }
         if(TextUtils.isEmpty(config.host)) {
             editor.remove(PREF_PROXY_HOST);
         } else {
