@@ -53,7 +53,7 @@
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverHolder"
             android:layout_width="@dimen/thumbnail_length_queue_item"
             android:layout_height="@dimen/thumbnail_length_queue_item"
@@ -91,7 +91,7 @@
 
             </RelativeLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="0dp"

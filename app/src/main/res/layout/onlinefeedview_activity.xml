@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:id="@+id/transparentBackground">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="4dp"
@@ -164,5 +164,5 @@
             </LinearLayout>
 
         </FrameLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

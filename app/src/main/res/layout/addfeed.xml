@@ -15,7 +15,7 @@
             app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="4dp"
@@ -56,7 +56,7 @@
                     android:background="@null"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <ScrollView
             android:layout_width="match_parent"

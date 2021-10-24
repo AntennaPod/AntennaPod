@@ -43,7 +43,7 @@
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardViewSeek"
             android:alpha="0"
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                 android:textSize="16sp"
                 tools:text="1:06:29" />
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
             android:id="@+id/playtime_layout"

@@ -76,7 +76,7 @@
         android:layout_gravity="bottom|center"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/seekCardView"
             android:alpha="0"
             android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
                 android:textSize="24sp"
                 tools:text="1:06:29" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <RelativeLayout
             android:layout_width="match_parent"
