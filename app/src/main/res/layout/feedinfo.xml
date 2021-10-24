@@ -45,6 +45,7 @@
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme"
                     app:layout_collapseMode="pin"
+                    app:navigationContentDescription="@string/toolbar_back_button_content_description"
                     app:navigationIcon="?homeAsUpIndicator" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
