@@ -25,6 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,7 +51,6 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
-import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
@@ -301,23 +301,6 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public void handleError(int code) {
-                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(getContext());
-                errorDialog.setTitle(R.string.error_label);
-                errorDialog.setMessage(MediaPlayerError.getErrorString(getContext(), code));
-                errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->
-                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
-                if (!UserPreferences.useExoplayer()) {
-                    errorDialog.setNeutralButton(R.string.media_player_switch_to_exoplayer, (dialog, which) -> {
-                        UserPreferences.enableExoplayer();
-                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                                R.string.media_player_switched_to_exoplayer, Snackbar.LENGTH_LONG);
-                    });
-                }
-                errorDialog.create().show();
-            }
-
-            @Override
             public void onSleepTimerUpdate() {
                 AudioPlayerFragment.this.loadMediaInfo(false);
             }
@@ -417,6 +400,23 @@ public class AudioPlayerFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void favoritesChanged(FavoritesEvent event) {
         AudioPlayerFragment.this.loadMediaInfo(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void mediaPlayerError(PlayerErrorEvent event) {
+        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(getContext());
+        errorDialog.setTitle(R.string.error_label);
+        errorDialog.setMessage(event.getMessage());
+        errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
+        if (!UserPreferences.useExoplayer()) {
+            errorDialog.setNeutralButton(R.string.media_player_switch_to_exoplayer, (dialog, which) -> {
+                UserPreferences.enableExoplayer();
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                        R.string.media_player_switched_to_exoplayer, Snackbar.LENGTH_LONG);
+            });
+        }
+        errorDialog.create().show();
     }
 
     @Override

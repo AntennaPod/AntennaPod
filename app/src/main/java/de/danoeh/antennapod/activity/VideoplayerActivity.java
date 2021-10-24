@@ -37,6 +37,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -50,7 +51,6 @@ import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
@@ -205,15 +205,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             @Override
             public void onBufferUpdate(float progress) {
                 viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
-            }
-
-            @Override
-            public void handleError(int code) {
-                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
-                errorDialog.setTitle(R.string.error_label);
-                errorDialog.setMessage(MediaPlayerError.getErrorString(VideoplayerActivity.this, code));
-                errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
-                errorDialog.show();
             }
 
             @Override
@@ -548,6 +539,15 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
             finish();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMediaPlayerError(PlayerErrorEvent event) {
+        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
+        errorDialog.setTitle(R.string.error_label);
+        errorDialog.setMessage(event.getMessage());
+        errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
+        errorDialog.show();
     }
 
     @Override

@@ -356,8 +356,6 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerInfo(int code, @StringRes int resourceId);
 
-        boolean onMediaPlayerError(Object inObj, int what, int extra);
-
         void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext);
 
         void onPlaybackStart(@NonNull Playable playable, int position);

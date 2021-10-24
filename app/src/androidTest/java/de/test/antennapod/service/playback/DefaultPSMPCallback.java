@@ -38,11 +38,6 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
         }
 
         @Override
-        public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-            return false;
-        }
-
-        @Override
         public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext) {
 
         }

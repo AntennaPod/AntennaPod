@@ -7,14 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -209,9 +206,6 @@ public abstract class PlaybackController {
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_ERROR:
-                    handleError(code);
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
                     float progress = ((float) code) / 100;
                     onBufferUpdate(progress);
@@ -264,8 +258,6 @@ public abstract class PlaybackController {
 
     public void onSleepTimerUpdate() {}
 
-    public void handleError(int code) {}
-
     public void onPlaybackEnd() {}
 
     /**
@@ -276,10 +268,6 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         checkMediaInfoLoaded();
         switch (status) {
-            case ERROR:
-                EventBus.getDefault().post(new MessageEvent(activity.getString(R.string.player_error_msg)));
-                handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
-                break;
             case PAUSED:
                 onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
@@ -552,20 +540,6 @@ public abstract class PlaybackController {
     public void notifyVideoSurfaceAbandoned() {
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
-        }
-    }
-
-    /**
-     * Move service into INITIALIZED state if it's paused to save bandwidth
-     */
-    public void reinitServiceIfPaused() {
-        if (playbackService != null
-                && playbackService.isStreaming()
-                && !PlaybackService.isCasting()
-                && (playbackService.getStatus() == PlayerStatus.PAUSED ||
-                (playbackService.getStatus() == PlayerStatus.PREPARING &&
-                        !playbackService.isStartWhenPrepared()))) {
-            playbackService.reinit();
         }
     }
 
