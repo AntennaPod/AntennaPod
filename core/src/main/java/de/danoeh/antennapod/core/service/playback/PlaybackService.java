@@ -45,6 +45,7 @@ import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -180,11 +181,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * No more episodes are going to be played.
      */
     public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
-
-    /**
-     * Playback speed has changed
-     */
-    public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
     /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -889,11 +885,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void shouldStop() {
             updateNotificationAndMediaSession(getPlayable()); // Stops foreground if not playing
-        }
-
-        @Override
-        public void playbackSpeedChanged(float s) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
         }
 
         @Override

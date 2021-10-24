@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -244,14 +245,11 @@ public class AudioPlayerFragment extends Fragment implements
         });
     }
 
-    protected void updatePlaybackSpeedButton(Playable media) {
-        if (butPlaybackSpeed == null || controller == null) {
-            return;
-        }
-        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
-        String speedStr = new DecimalFormat("0.00").format(speed);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updatePlaybackSpeedButton(SpeedChangedEvent event) {
+        String speedStr = new DecimalFormat("0.00").format(event.getNewSpeed());
         txtvPlaybackSpeed.setText(speedStr);
-        butPlaybackSpeed.setSpeed(speed);
+        butPlaybackSpeed.setSpeed(event.getNewSpeed());
     }
 
     private void loadMediaInfo(boolean includingChapters) {
@@ -301,11 +299,6 @@ public class AudioPlayerFragment extends Fragment implements
             public void onPlaybackEnd() {
                 ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-
-            @Override
-            public void onPlaybackSpeedChange() {
-                updatePlaybackSpeedButton(getMedia());
-            }
         };
     }
 
@@ -315,7 +308,7 @@ public class AudioPlayerFragment extends Fragment implements
         }
         duration = controller.getDuration();
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
-        updatePlaybackSpeedButton(media);
+        updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
     }

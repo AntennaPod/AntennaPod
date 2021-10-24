@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -222,18 +223,12 @@ public abstract class PlaybackController {
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
-                    onPlaybackSpeedChange();
-                    break;
             }
         }
 
     };
 
     public void onPositionObserverUpdate() {}
-
-
-    public void onPlaybackSpeedChange() {}
 
     /**
      * Called when the currently displayed information should be refreshed.
@@ -454,7 +449,7 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
         } else {
-            onPlaybackSpeedChange();
+            EventBus.getDefault().post(new SpeedChangedEvent(speed));
         }
     }
 

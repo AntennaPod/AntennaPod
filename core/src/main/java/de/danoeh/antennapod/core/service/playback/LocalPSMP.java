@@ -16,6 +16,7 @@ import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import org.antennapod.audio.MediaPlayer;
@@ -617,7 +618,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
         Log.d(TAG, "Playback speed was set to " + speed);
-        callback.playbackSpeedChanged(speed);
+        EventBus.getDefault().post(new SpeedChangedEvent(speed));
         mediaPlayer.setPlaybackParams(speed, skipSilence);
         playerLock.unlock();
     }
