@@ -16,7 +16,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
@@ -43,6 +42,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -162,8 +162,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int EXTRA_CODE_VIDEO = 2;
     public static final int EXTRA_CODE_CAST = 3;
 
-    public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
-
     /**
      * Receivers of this intent should update their information about the curently playing media
      */
@@ -172,8 +170,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * The state of the sleeptimer changed.
      */
     public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
-    public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
-    public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -901,11 +897,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onBufferingUpdate(int percent) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
-        }
-
-        @Override
         public void onMediaChanged(boolean reloadUI) {
             Log.d(TAG, "reloadUI callback reached");
             if (reloadUI) {
@@ -916,26 +907,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
-            switch (code) {
-                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
-                    return true;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
-
-                    Playable playable = getPlayable();
-                    if (getPlayable() instanceof FeedMedia
-                            && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
-                        // Playable is being streamed and does not have a duration specified in the feed
-                        playable.setDuration(mediaPlayer.getDuration());
-                        DBWriter.setFeedMedia((FeedMedia) playable);
-                        updateNotificationAndMediaSession(playable);
-                    }
-
-                    return true;
-                default:
-                    return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
-            }
+            return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
         }
 
         @Override
@@ -991,6 +963,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         PlaybackPreferences.writeNoMediaPlaying();
         stateManager.stopService();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasEnded()) {
+            Playable playable = getPlayable();
+            if (getPlayable() instanceof FeedMedia
+                    && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
+                // Playable is being streamed and does not have a duration specified in the feed
+                playable.setDuration(mediaPlayer.getDuration());
+                DBWriter.setFeedMedia((FeedMedia) playable);
+                updateNotificationAndMediaSession(playable);
+            }
+        }
     }
 
     private Playable getNextInQueue(final Playable currentMedia) {

@@ -36,6 +36,7 @@ import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
@@ -193,21 +194,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onBufferStart() {
-                viewBinding.progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBufferEnd() {
-                viewBinding.progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-                viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
-            }
-
-            @Override
             public void onReloadNotification(int code) {
                 VideoplayerActivity.this.onReloadNotification(code);
             }
@@ -250,6 +236,18 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 }
             }
         };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasStarted()) {
+            viewBinding.progressBar.setVisibility(View.VISIBLE);
+        } else if (event.hasEnded()) {
+            viewBinding.progressBar.setVisibility(View.INVISIBLE);
+        } else {
+            viewBinding.sbPosition.setSecondaryProgress((int) (event.getProgress() * viewBinding.sbPosition.getMax()));
+        }
     }
 
     protected void loadMediaInfo() {

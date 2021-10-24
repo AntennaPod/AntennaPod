@@ -15,6 +15,7 @@ import androidx.media.AudioAttributesCompat;
 import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import org.antennapod.audio.MediaPlayer;
@@ -1057,14 +1058,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
-            (mp, percent) -> genericOnBufferingUpdate(percent);
+            (mp, percent) -> EventBus.getDefault().post(BufferUpdateEvent.progressUpdate(0.01f * percent));
 
     private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener =
-            (mp, percent) -> genericOnBufferingUpdate(percent);
-
-    private void genericOnBufferingUpdate(int percent) {
-        callback.onBufferingUpdate(percent);
-    }
+            (mp, percent) -> EventBus.getDefault().post(BufferUpdateEvent.progressUpdate(0.01f * percent));
 
     private final MediaPlayer.OnInfoListener audioInfoListener =
             (mp, what, extra) -> genericInfoListener(what);
@@ -1073,7 +1070,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             (mp, what, extra) -> genericInfoListener(what);
 
     private boolean genericInfoListener(int what) {
-        return callback.onMediaPlayerInfo(what, 0);
+        switch (what) {
+            case android.media.MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                EventBus.getDefault().post(BufferUpdateEvent.started());
+                return true;
+            case android.media.MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                EventBus.getDefault().post(BufferUpdateEvent.ended());
+                return true;
+            default:
+                return callback.onMediaPlayerInfo(what, 0);
+        }
     }
 
     private final MediaPlayer.OnErrorListener audioErrorListener =

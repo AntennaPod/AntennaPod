@@ -25,6 +25,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -282,25 +283,6 @@ public class AudioPlayerFragment extends Fragment implements
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
             @Override
-            public void onBufferStart() {
-                progressIndicator.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBufferEnd() {
-                progressIndicator.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-                if (isStreaming()) {
-                    sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
-                } else {
-                    sbPosition.setSecondaryProgress(0);
-                }
-            }
-
-            @Override
             public void onSleepTimerUpdate() {
                 AudioPlayerFragment.this.loadMediaInfo(false);
             }
@@ -364,6 +346,20 @@ public class AudioPlayerFragment extends Fragment implements
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasStarted()) {
+            progressIndicator.setVisibility(View.VISIBLE);
+        } else if (event.hasEnded()) {
+            progressIndicator.setVisibility(View.GONE);
+        } else if (controller != null && controller.isStreaming()) {
+            sbPosition.setSecondaryProgress((int) (event.getProgress() * sbPosition.getMax()));
+        } else {
+            sbPosition.setSecondaryProgress(0);
         }
     }
 

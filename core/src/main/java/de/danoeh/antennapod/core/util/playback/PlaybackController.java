@@ -206,10 +206,6 @@ public abstract class PlaybackController {
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
-                    float progress = ((float) code) / 100;
-                    onBufferUpdate(progress);
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
                     if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
@@ -222,12 +218,6 @@ public abstract class PlaybackController {
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
                     onSleepTimerUpdate();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_START:
-                    onBufferStart();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
-                    onBufferEnd();
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
@@ -249,12 +239,6 @@ public abstract class PlaybackController {
      * Called when the currently displayed information should be refreshed.
      */
     public void onReloadNotification(int code) {}
-
-    public void onBufferStart() {}
-
-    public void onBufferEnd() {}
-
-    public void onBufferUpdate(float progress) {}
 
     public void onSleepTimerUpdate() {}
 
