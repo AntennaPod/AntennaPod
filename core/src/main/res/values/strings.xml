@@ -676,6 +676,7 @@
     <string name="stop_preview">Stop preview</string>
 
     <!-- Content descriptions for image buttons -->
+    <string name="toolbar_back_button_content_description">Back</string>
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
     <string name="increase_speed">Increase speed</string>

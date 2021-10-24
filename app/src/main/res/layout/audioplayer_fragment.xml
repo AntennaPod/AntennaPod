@@ -12,6 +12,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             android:layout_alignParentTop="true"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
