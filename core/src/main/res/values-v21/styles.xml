@@ -4,14 +4,17 @@
         <item name="android:windowContentTransitions">true</item>
         <!-- To make icons visible -->
         <item name="android:statusBarColor">@color/grey600</item>
+        <item name="android:navigationBarColor">@color/grey600</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:statusBarColor">@color/background_darktheme</item>
+        <item name="android:navigationBarColor">@color/background_darktheme</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 </resources>
