@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -54,7 +56,7 @@ public class ExoPlayerWrapper implements IPlayer {
     private MediaSource mediaSource;
     private MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener;
     private MediaPlayer.OnCompletionListener audioCompletionListener;
-    private MediaPlayer.OnErrorListener audioErrorListener;
+    private Consumer<String> audioErrorListener;
     private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
     private MediaPlayer.OnInfoListener infoListener;
@@ -98,9 +100,11 @@ public class ExoPlayerWrapper implements IPlayer {
             }
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) {
+            public void onPlayerError(@NonNull ExoPlaybackException error) {
                 if (audioErrorListener != null) {
-                    audioErrorListener.onError(null, error.type + ERROR_CODE_OFFSET, 0);
+                    Throwable cause = error.getCause();
+                    audioErrorListener.accept(cause != null
+                            ? cause.getLocalizedMessage() : error.getLocalizedMessage());
                 }
             }
 
@@ -323,7 +327,7 @@ public class ExoPlayerWrapper implements IPlayer {
         this.audioSeekCompleteListener = audioSeekCompleteListener;
     }
 
-    void setOnErrorListener(MediaPlayer.OnErrorListener audioErrorListener) {
+    void setOnErrorListener(Consumer<String> audioErrorListener) {
         this.audioErrorListener = audioErrorListener;
     }
 

@@ -514,13 +514,6 @@ public class PlaybackServiceMediaPlayerTest {
                 if (assertionError == null)
                     assertionError = new AssertionFailedError("Unexpected call to shouldStop");
             }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
-            }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
@@ -604,14 +597,6 @@ public class PlaybackServiceMediaPlayerTest {
                 }
 
             }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null) {
-                    assertionError = new AssertionFailedError("Unexpected call of onMediaPlayerError");
-                }
-                return false;
-            }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         if (initialState == PlayerStatus.PREPARED || initialState == PlayerStatus.PLAYING || initialState == PlayerStatus.PAUSED) {
@@ -663,13 +648,6 @@ public class PlaybackServiceMediaPlayerTest {
                         countDownLatch.countDown();
                     }
                 }
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -737,13 +715,6 @@ public class PlaybackServiceMediaPlayerTest {
                         countDownLatch.countDown();
                     }
                 }
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);

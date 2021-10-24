@@ -43,6 +43,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -161,7 +162,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int EXTRA_CODE_VIDEO = 2;
     public static final int EXTRA_CODE_CAST = 3;
 
-    public static final int NOTIFICATION_TYPE_ERROR = 0;
     public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 
     /**
@@ -939,19 +939,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-            final String TAG = "PlaybackSvc.onErrorLtsn";
-            Log.w(TAG, "An error has occured: " + what + " " + extra);
-            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                mediaPlayer.pause(true, false);
-            }
-            sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
-            PlaybackPreferences.writeNoMediaPlaying();
-            stateManager.stopService();
-            return true;
-        }
-
-        @Override
         public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped,
                                    boolean playingNext) {
             PlaybackService.this.onPostPlayback(media, ended, skipped, playingNext);
@@ -995,6 +982,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void playerError(PlayerErrorEvent event) {
+        if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
+            mediaPlayer.pause(true, false);
+        }
+        PlaybackPreferences.writeNoMediaPlaying();
+        stateManager.stopService();
+    }
 
     private Playable getNextInQueue(final Playable currentMedia) {
         if (!(currentMedia instanceof FeedMedia)) {

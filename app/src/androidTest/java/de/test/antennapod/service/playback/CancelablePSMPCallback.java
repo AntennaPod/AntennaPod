@@ -67,14 +67,6 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
     }
 
     @Override
-    public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-        if (isCancelled) {
-            return true;
-        }
-        return originalCallback.onMediaPlayerError(inObj, what, extra);
-    }
-
-    @Override
     public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext) {
         if (isCancelled) {
             return;

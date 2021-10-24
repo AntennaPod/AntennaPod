@@ -14,7 +14,9 @@ import android.view.SurfaceHolder;
 import androidx.media.AudioAttributesCompat;
 import androidx.media.AudioFocusRequestCompat;
 import androidx.media.AudioManagerCompat;
+import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -41,6 +43,7 @@ import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Manages the MediaPlayer object of the PlaybackService.
@@ -294,6 +297,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
+            EventBus.getDefault().postSticky(new PlayerErrorEvent(e.getLocalizedMessage()));
         }
     }
 
@@ -402,6 +406,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 } catch (IOException e) {
                     e.printStackTrace();
                     setPlayerStatus(PlayerStatus.ERROR, null);
+                    EventBus.getDefault().postSticky(new PlayerErrorEvent(e.getLocalizedMessage()));
                 }
             }
             playerLock.unlock();
@@ -734,7 +739,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
         } else if (mediaPlayer instanceof ExoPlayerWrapper) {
             ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
-            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+            ap.setOnErrorListener(message -> { });
         }
     }
 
@@ -1033,7 +1038,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
             ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
-            ap.setOnErrorListener(audioErrorListener);
+            ap.setOnErrorListener(message -> EventBus.getDefault().postSticky(new PlayerErrorEvent(message)));
             ap.setOnInfoListener(audioInfoListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
@@ -1084,7 +1089,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final android.media.MediaPlayer.OnErrorListener videoErrorListener = this::genericOnError;
 
     private boolean genericOnError(Object inObj, int what, int extra) {
-        return callback.onMediaPlayerError(inObj, what, extra);
+        EventBus.getDefault().postSticky(new PlayerErrorEvent(MediaPlayerError.getErrorString(context, what)));
+        return true;
     }
 
     private final MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener =
