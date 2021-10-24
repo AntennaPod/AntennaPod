@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -199,11 +200,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onSleepTimerUpdate() {
-                supportInvalidateOptionsMenu();
-            }
-
-            @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 viewBinding.playButton.setIsShowPlay(showPlay);
             }
@@ -247,6 +243,14 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             viewBinding.progressBar.setVisibility(View.INVISIBLE);
         } else {
             viewBinding.sbPosition.setSecondaryProgress((int) (event.getProgress() * viewBinding.sbPosition.getMax()));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isCancelled() || event.wasJustEnabled()) {
+            supportInvalidateOptionsMenu();
         }
     }
 

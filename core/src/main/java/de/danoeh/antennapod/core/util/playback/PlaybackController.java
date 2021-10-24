@@ -217,9 +217,6 @@ public abstract class PlaybackController {
                     onReloadNotification(intent.getIntExtra(
                             PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
-                    onSleepTimerUpdate();
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
                     break;
@@ -234,8 +231,6 @@ public abstract class PlaybackController {
      * Called when the currently displayed information should be refreshed.
      */
     public void onReloadNotification(int code) {}
-
-    public void onSleepTimerUpdate() {}
 
     public void onPlaybackEnd() {}
 

@@ -45,7 +45,7 @@ import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
-import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -167,10 +167,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Receivers of this intent should update their information about the curently playing media
      */
     public static final int NOTIFICATION_TYPE_RELOAD = 3;
-    /**
-     * The state of the sleeptimer changed.
-     */
-    public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -786,25 +782,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
         }
 
-        @Override
-        public void onSleepTimerAlmostExpired(long timeLeft) {
-            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
-            float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
-            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            mediaPlayer.setVolume(multiplicator, multiplicator);
-        }
 
-        @Override
-        public void onSleepTimerExpired() {
-            mediaPlayer.pause(true, true);
-            mediaPlayer.setVolume(1.0f, 1.0f);
-            sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        }
-
-        @Override
-        public void onSleepTimerReset() {
-            mediaPlayer.setVolume(1.0f, 1.0f);
-        }
 
         @Override
         public WidgetUpdater.WidgetState requestWidgetState() {
@@ -968,6 +946,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 DBWriter.setFeedMedia((FeedMedia) playable);
                 updateNotificationAndMediaSession(playable);
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isOver()) {
+            mediaPlayer.pause(true, true);
+            mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
+            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
+            float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
+            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
+            mediaPlayer.setVolume(multiplicator, multiplicator);
+        } else if (event.isCancelled()) {
+            mediaPlayer.setVolume(1.0f, 1.0f);
         }
     }
 
@@ -1136,12 +1130,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         taskManager.setSleepTimer(waitingTime);
-        sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
-        sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
     private void sendNotificationBroadcast(int type, int code) {

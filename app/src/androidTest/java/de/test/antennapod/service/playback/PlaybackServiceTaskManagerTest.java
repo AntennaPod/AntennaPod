@@ -5,10 +5,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import org.awaitility.Awaitility;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -173,21 +175,6 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onSleepTimerAlmostExpired(long timeLeft) {
-
-            }
-
-            @Override
-            public void onSleepTimerExpired() {
-
-            }
-
-            @Override
-            public void onSleepTimerReset() {
-
-            }
-
-            @Override
             public WidgetUpdater.WidgetState requestWidgetState() {
                 return null;
             }
@@ -230,21 +217,6 @@ public class PlaybackServiceTaskManagerTest {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, new PlaybackServiceTaskManager.PSTMCallback() {
             @Override
             public void positionSaverTick() {
-
-            }
-
-            @Override
-            public void onSleepTimerAlmostExpired(long timeLeft) {
-
-            }
-
-            @Override
-            public void onSleepTimerExpired() {
-
-            }
-
-            @Override
-            public void onSleepTimerReset() {
 
             }
 
@@ -325,42 +297,20 @@ public class PlaybackServiceTaskManagerTest {
         final long TIME = 2000;
         final long TIMEOUT = 2 * TIME;
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, new PlaybackServiceTaskManager.PSTMCallback() {
-            @Override
-            public void positionSaverTick() {
-
-            }
-
-            @Override
-            public void onSleepTimerAlmostExpired(long timeLeft) {
-
-            }
-
-            @Override
-            public void onSleepTimerExpired() {
+        Object timerReceiver = new Object() {
+            @Subscribe
+            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
                 if (countDownLatch.getCount() == 0) {
                     fail();
                 }
                 countDownLatch.countDown();
             }
-
-            @Override
-            public void onSleepTimerReset() {
-
-            }
-
-            @Override
-            public WidgetUpdater.WidgetState requestWidgetState() {
-                return null;
-            }
-
-            @Override
-            public void onChapterLoaded(Playable media) {
-
-            }
-        });
+        };
+        EventBus.getDefault().register(timerReceiver);
+        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         pstm.setSleepTimer(TIME);
         countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
+        EventBus.getDefault().unregister(timerReceiver);
         pstm.shutdown();
     }
 
@@ -368,44 +318,26 @@ public class PlaybackServiceTaskManagerTest {
     @UiThreadTest
     public void testDisableSleepTimer() throws InterruptedException {
         final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final long TIME = 1000;
+        final long TIME = 5000;
         final long TIMEOUT = 2 * TIME;
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, new PlaybackServiceTaskManager.PSTMCallback() {
-            @Override
-            public void positionSaverTick() {
-
+        Object timerReceiver = new Object() {
+            @Subscribe
+            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+                if (event.isOver()) {
+                    countDownLatch.countDown();
+                } else if (event.getTimeLeft() == 1) {
+                    fail("Arrived at 1 but should have been cancelled");
+                }
             }
-
-            @Override
-            public void onSleepTimerAlmostExpired(long timeLeft) {
-
-            }
-
-            @Override
-            public void onSleepTimerExpired() {
-                fail("Sleeptimer expired");
-            }
-
-            @Override
-            public void onSleepTimerReset() {
-
-            }
-
-            @Override
-            public WidgetUpdater.WidgetState requestWidgetState() {
-                return null;
-            }
-
-            @Override
-            public void onChapterLoaded(Playable media) {
-
-            }
-        });
+        };
+        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
+        EventBus.getDefault().register(timerReceiver);
         pstm.setSleepTimer(TIME);
         pstm.disableSleepTimer();
         assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
         pstm.shutdown();
+        EventBus.getDefault().unregister(timerReceiver);
     }
 
     @Test
@@ -432,21 +364,6 @@ public class PlaybackServiceTaskManagerTest {
     private final PlaybackServiceTaskManager.PSTMCallback defaultPSTM = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-
-        }
-
-        @Override
-        public void onSleepTimerAlmostExpired(long timeLeft) {
-
-        }
-
-        @Override
-        public void onSleepTimerExpired() {
-
-        }
-
-        @Override
-        public void onSleepTimerReset() {
 
         }
 

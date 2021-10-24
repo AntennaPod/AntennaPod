@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -281,11 +282,6 @@ public class AudioPlayerFragment extends Fragment implements
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
             @Override
-            public void onSleepTimerUpdate() {
-                AudioPlayerFragment.this.loadMediaInfo(false);
-            }
-
-            @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 butPlay.setIsShowPlay(showPlay);
             }
@@ -311,6 +307,14 @@ public class AudioPlayerFragment extends Fragment implements
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isCancelled() || event.wasJustEnabled()) {
+            AudioPlayerFragment.this.loadMediaInfo(false);
+        }
     }
 
     @Override
