@@ -61,11 +61,10 @@ public class FeedFilter implements Serializable {
         }
 
         // Check if the episode is long enough if minimal duration filter is on
-        boolean isLongEnough = true;
-        if (minimalDuration > -1 && item.getMedia() != null) {
+        if (hasMinimalDurationFilter() && item.getMedia() != null) {
             int durationInMs = item.getMedia().getDuration();
             // Minimal Duration is stored in seconds
-            if (durationInMs / 1000 < minimalDuration) {
+            if (durationInMs > 0 && durationInMs / 1000 < minimalDuration) {
                 return false;
             }
         }

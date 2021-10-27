@@ -135,6 +135,12 @@ public class FeedFilterTest {
         FeedMedia downloadMedia = FeedMediaMother.anyFeedMedia();
         downloadMedia.setDuration(Converter.durationStringShortToMs("05:00", false));
         download.setMedia(downloadMedia);
+        // because duration of the media in unknown
+        FeedItem download2 = new FeedItem();
+        download2.setTitle("Hello friend!");
+        FeedMedia unknownDurationMedia = FeedMediaMother.anyFeedMedia();
+        download2.setMedia(unknownDurationMedia);
+        // because it is not long enough
         FeedItem doNotDownload = new FeedItem();
         doNotDownload.setTitle("Hello friend!");
         FeedMedia doNotDownloadMedia = FeedMediaMother.anyFeedMedia();
@@ -147,6 +153,7 @@ public class FeedFilterTest {
         assertTrue(filter.hasMinimalDurationFilter());
         assertTrue(filter.shouldAutoDownload(download));
         assertFalse(filter.shouldAutoDownload(doNotDownload));
+        assertTrue(filter.shouldAutoDownload(download2));
     }
 
 }

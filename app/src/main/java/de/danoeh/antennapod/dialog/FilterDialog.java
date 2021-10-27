@@ -19,6 +19,7 @@ import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
 public abstract class FilterDialog {
+
     protected FeedItemFilter filter;
     protected Context context;
 

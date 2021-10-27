@@ -41,11 +41,10 @@
         android:scrollbars="vertical" />
 
     <CheckBox
-        android:id="@+id/radio_filter_duration"
+        android:id="@+id/checkbox_filter_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/episode_filters_duration"
-        android:orientation="vertical" />
+        android:text="@string/episode_filters_duration" />
 
     <EditText
         android:id="@+id/etxtEpisodeFilterDurationText"

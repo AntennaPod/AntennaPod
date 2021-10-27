@@ -29,7 +29,7 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
         final EditText etxtEpisodeFilterDurationText = rootView.findViewById(R.id.etxtEpisodeFilterDurationText);
         final RadioButton radioInclude = rootView.findViewById(R.id.radio_filter_include);
         final RadioButton radioExclude = rootView.findViewById(R.id.radio_filter_exclude);
-        final CheckBox radioDuration = rootView.findViewById(R.id.radio_filter_duration);
+        final CheckBox checkboxDuration = rootView.findViewById(R.id.checkbox_filter_duration);
 
         if (initialFilter.includeOnly()) {
             radioInclude.setChecked(true);
@@ -43,7 +43,7 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
             etxtEpisodeFilterText.setText("");
         }
         if (initialFilter.hasMinimalDurationFilter()) {
-            radioDuration.setChecked(true);
+            checkboxDuration.setChecked(true);
             // Store minimal duration in seconds, show in minutes
             etxtEpisodeFilterDurationText.setText(String.valueOf(initialFilter.getMinimalDurationFilter() / 60));
         }
@@ -58,7 +58,7 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
                     } else {
                         excludeString = etxtEpisodeFilterText.getText().toString();
                     }
-                    if (radioDuration.isChecked()) {
+                    if (checkboxDuration.isChecked()) {
                         try {
                             // Store minimal duration in seconds
                             minimalDuration = Integer.parseInt(etxtEpisodeFilterDurationText.getText().toString()) * 60;
