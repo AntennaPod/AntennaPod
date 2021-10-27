@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/videoPlayerContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/black"
-    android:orientation="vertical"
-    android:id="@+id/videoPlayerContainer">
+    android:orientation="vertical">
 
     <de.danoeh.antennapod.view.AspectRatioVideoView
         android:id="@+id/videoView"
@@ -27,10 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layoutDirection="ltr"
         android:background="@android:color/transparent"
-        android:padding="16dp"
-        android:orientation="horizontal">
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <ImageButton
             android:id="@+id/rewindButton"
@@ -65,9 +66,9 @@
         android:id="@+id/skipAnimationImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_gravity="center"
         android:padding="64dp"
-        android:layout_gravity="center"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bottomControlsContainer"
@@ -78,21 +79,21 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/seekCardView"
-            android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_gravity="center"
-            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="12dp"
+            android:alpha="0"
             app:cardBackgroundColor="?attr/seek_background"
+            app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             tools:alpha="1">
 
             <TextView
                 android:id="@+id/seekPositionLabel"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingLeft="24dp"
                 android:paddingTop="4dp"
                 android:paddingRight="24dp"
@@ -114,15 +115,15 @@
                 android:id="@+id/positionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/position_default_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
@@ -131,15 +132,15 @@
                 android:id="@+id/durationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/position_default_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
@@ -148,11 +149,11 @@
                 android:id="@+id/sbPosition"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/durationLabel"
-                android:layout_toStartOf="@+id/durationLabel"
-                android:layout_toRightOf="@+id/positionLabel"
-                android:layout_toEndOf="@+id/positionLabel"
                 android:layout_centerInParent="true"
+                android:layout_toStartOf="@+id/durationLabel"
+                android:layout_toLeftOf="@+id/durationLabel"
+                android:layout_toEndOf="@+id/positionLabel"
+                android:layout_toRightOf="@+id/positionLabel"
                 android:max="500" />
 
         </RelativeLayout>

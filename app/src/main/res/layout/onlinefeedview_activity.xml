@@ -1,168 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/transparentBackground">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transparentBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="4dp"
-            android:layout_margin="32dp"
-            android:elevation="16dp"
-            android:id="@+id/card">
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="32dp"
+        android:elevation="16dp"
+        app:cardCornerRadius="4dp">
 
         <FrameLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ProgressBar
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/progressBar"
-                    android:layout_gravity="center"/>
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="?android:attr/progressBarStyle" />
 
             <LinearLayout
-                    android:id="@+id/feed_display_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                android:id="@+id/feed_display_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/feed_image_bg">
+
+                    <ImageView
+                        android:id="@+id/backgroundImage"
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/feeditemlist_header_height"
+                        style="@style/BigBlurryBackground" />
+
+                    <ImageView
+                        android:id="@+id/coverImage"
+                        android:layout_width="@dimen/thumbnail_length_onlinefeedview"
+                        android:layout_height="@dimen/thumbnail_length_onlinefeedview"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:importantForAccessibility="no"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/titleLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@color/feed_image_bg">
-
-                    <ImageView
-                            android:id="@+id/backgroundImage"
-                            style="@style/BigBlurryBackground"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/feeditemlist_header_height"/>
-
-                    <ImageView
-                            android:id="@+id/coverImage"
-                            android:layout_width="@dimen/thumbnail_length_onlinefeedview"
-                            android:layout_height="@dimen/thumbnail_length_onlinefeedview"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:importantForAccessibility="no"
-                            tools:src="@tools:sample/avatars"/>
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_toEndOf="@id/coverImage"
+                        android:layout_toRightOf="@id/coverImage"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:shadowColor="@color/black"
+                        android:shadowRadius="3"
+                        android:textColor="@color/white"
+                        style="@style/AntennaPod.TextView.Heading"
+                        tools:text="Podcast title" />
 
                     <TextView
-                            android:id="@+id/titleLabel"
-                            style="@style/AntennaPod.TextView.Heading"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/coverImage"
-                            android:layout_toEndOf="@id/coverImage"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:shadowColor="@color/black"
-                            android:shadowRadius="3"
-                            android:textColor="@color/white"
-                            tools:text="Podcast title"/>
+                        android:id="@+id/author_label"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/titleLabel"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_toEndOf="@id/coverImage"
+                        android:layout_toRightOf="@id/coverImage"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:shadowColor="@color/black"
+                        android:shadowRadius="3"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_small"
+                        tools:text="Podcast author" />
 
-                    <TextView
-                            android:id="@+id/author_label"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleLabel"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/coverImage"
-                            android:layout_toEndOf="@id/coverImage"
-                            android:ellipsize="end"
-                            android:lines="1"
-                            android:shadowColor="@color/black"
-                            android:shadowRadius="3"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_small"
-                            tools:text="Podcast author"/>
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/alternate_urls_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:dropDownWidth="match_parent"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="@dimen/text_size_micro" />
+
+                    <Button
+                        android:id="@+id/subscribeButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="vertical">
-
-                    <Spinner
-                            android:id="@+id/alternate_urls_spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:dropDownWidth="match_parent"
-                            android:padding="8dp"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:textSize="@dimen/text_size_micro" />
-
-                    <Button
-                            android:id="@+id/subscribeButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="8dp"
-                            android:focusable="false"
-                            android:text="@string/subscribe_label" />
+                        android:focusable="false"
+                        android:text="@string/subscribe_label" />
 
                     <CheckBox
-                            android:id="@+id/autoDownloadCheckBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:focusable="false"
-                            android:checked="true"
-                            android:text="@string/auto_download_label"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                        android:id="@+id/autoDownloadCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:checked="true"
+                        android:focusable="false"
+                        android:text="@string/auto_download_label"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <Button
-                            android:id="@+id/stopPreviewButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:focusable="false"
-                            android:text="@string/stop_preview"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                        android:id="@+id/stopPreviewButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:focusable="false"
+                        android:text="@string/stop_preview"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
                 <ListView
-                        android:id="@+id/listView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
         </FrameLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

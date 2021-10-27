@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="8dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="8dp">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -28,11 +28,11 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:background="?attr/filter_dialog_button_background"
-                style="@style/NoButtonRadio"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:checked="false"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:textColor="@color/filter_dialog_button_text" />
+                android:textColor="@color/filter_dialog_button_text"
+                style="@style/NoButtonRadio" />
 
             <RadioButton
                 android:id="@+id/filter_dialog_radioButton2"
@@ -40,22 +40,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="?attr/filter_dialog_button_background"
-                style="@style/NoButtonRadio"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:checked="false"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:textColor="@color/filter_dialog_button_text" />
+                android:textColor="@color/filter_dialog_button_text"
+                style="@style/NoButtonRadio" />
+
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
     <RadioButton
         android:id="@+id/filter_dialog_clear"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/ic_filter_close"
-        style="@style/NoButtonRadio"
-        android:foreground="?android:attr/selectableItemBackground"
         android:layout_gravity="center_vertical"
-        android:checked="true" />
+        android:background="@drawable/ic_filter_close"
+        android:checked="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        style="@style/NoButtonRadio" />
 
 </de.danoeh.antennapod.ui.common.RecursiveRadioGroup>
