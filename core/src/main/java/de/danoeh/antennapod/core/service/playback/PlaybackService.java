@@ -35,6 +35,7 @@ import android.view.SurfaceHolder;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
@@ -366,30 +367,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
-    private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
+    private MediaBrowserCompat.MediaItem createBrowsableMediaItem(
+            @StringRes int title, @DrawableRes int icon, int numEpisodes) {
         Uri uri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(getResources().getResourcePackageName(R.drawable.ic_playlist_black))
-                .appendPath(getResources().getResourceTypeName(R.drawable.ic_playlist_black))
-                .appendPath(getResources().getResourceEntryName(R.drawable.ic_playlist_black))
+                .authority(getResources().getResourcePackageName(icon))
+                .appendPath(getResources().getResourceTypeName(icon))
+                .appendPath(getResources().getResourceEntryName(icon))
                 .build();
-
-        String subtitle = "";
-        try {
-            int count = taskManager.getQueue().size();
-            subtitle = getResources().getQuantityString(R.plurals.num_episodes, count, count);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
                 .setIconUri(uri)
-                .setMediaId(getResources().getString(R.string.queue_label))
-                .setTitle(getResources().getString(R.string.queue_label))
-                .setSubtitle(subtitle)
+                .setMediaId(getResources().getString(title))
+                .setTitle(getResources().getString(title))
+                .setSubtitle(getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes))
                 .build();
-        return new MediaBrowserCompat.MediaItem(description,
-                MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
+        return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForFeed(Feed feed) {
@@ -421,46 +414,47 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> { }, Throwable::printStackTrace);
+                .subscribe(
+                    () -> {
+                    }, e -> {
+                        e.printStackTrace();
+                        result.sendResult(null);
+                    });
     }
 
-    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId)
+            throws InterruptedException {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
-            // Root List
-            try {
-                if (!(taskManager.getQueue().isEmpty())) {
-                    mediaItems.add(createBrowsableMediaItemForRoot());
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_black,
+                    taskManager.getQueue().size()));
+            mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
+                    DBReader.getDownloadedItems().size()));
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed : feeds) {
                 mediaItems.add(createBrowsableMediaItemForFeed(feed));
             }
-        } else if (parentId.equals(getResources().getString(R.string.queue_label))) {
-            // Child List
-            try {
-                for (FeedItem feedItem : taskManager.getQueue()) {
-                    FeedMedia media = feedItem.getMedia();
-                    if (media != null) {
-                        mediaItems.add(media.getMediaItem());
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            return mediaItems;
+        }
+
+        List<FeedItem> feedItems;
+        if (parentId.equals(getResources().getString(R.string.queue_label))) {
+            feedItems = taskManager.getQueue();
+        } else if (parentId.equals(getResources().getString(R.string.downloads_label))) {
+            feedItems = DBReader.getDownloadedItems();
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
-            List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
-            int count = 0;
-            for (FeedItem feedItem : feedItems) {
-                if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
-                    mediaItems.add(feedItem.getMedia().getMediaItem());
-                    if (++count >= MAX_ANDROID_AUTO_EPISODES_PER_FEED) {
-                        break;
-                    }
+            feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+        } else {
+            Log.e(TAG, "Parent ID not found: " + parentId);
+            return null;
+        }
+        int count = 0;
+        for (FeedItem feedItem : feedItems) {
+            if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
+                mediaItems.add(feedItem.getMedia().getMediaItem());
+                if (++count >= MAX_ANDROID_AUTO_EPISODES_PER_FEED) {
+                    break;
                 }
             }
         }
