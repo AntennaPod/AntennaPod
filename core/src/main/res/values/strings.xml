@@ -702,6 +702,7 @@
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
     <string name="episode_filters_include">Include</string>
     <string name="episode_filters_exclude">Exclude</string>
+    <string name="episode_filters_duration">Minimal Duration (in minutes)</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>

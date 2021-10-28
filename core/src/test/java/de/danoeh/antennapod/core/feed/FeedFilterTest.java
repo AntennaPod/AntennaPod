@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.model.feed.FeedFilter;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -123,6 +126,34 @@ public class FeedFilterTest {
         assertTrue(filter.shouldAutoDownload(download));
         assertFalse(filter.shouldAutoDownload(doNotDownload));
         assertFalse(filter.shouldAutoDownload(doNotDownload2));
+    }
+
+    @Test
+    public void testMinimalDurationFilter() {
+        FeedItem download = new FeedItem();
+        download.setTitle("Hello friend!");
+        FeedMedia downloadMedia = FeedMediaMother.anyFeedMedia();
+        downloadMedia.setDuration(Converter.durationStringShortToMs("05:00", false));
+        download.setMedia(downloadMedia);
+        // because duration of the media in unknown
+        FeedItem download2 = new FeedItem();
+        download2.setTitle("Hello friend!");
+        FeedMedia unknownDurationMedia = FeedMediaMother.anyFeedMedia();
+        download2.setMedia(unknownDurationMedia);
+        // because it is not long enough
+        FeedItem doNotDownload = new FeedItem();
+        doNotDownload.setTitle("Hello friend!");
+        FeedMedia doNotDownloadMedia = FeedMediaMother.anyFeedMedia();
+        doNotDownloadMedia.setDuration(Converter.durationStringShortToMs("02:00", false));
+        doNotDownload.setMedia(doNotDownloadMedia);
+
+        int minimalDurationFilter = 3 * 60;
+        FeedFilter filter = new FeedFilter("", "", minimalDurationFilter);
+
+        assertTrue(filter.hasMinimalDurationFilter());
+        assertTrue(filter.shouldAutoDownload(download));
+        assertFalse(filter.shouldAutoDownload(doNotDownload));
+        assertTrue(filter.shouldAutoDownload(download2));
     }
 
 }
