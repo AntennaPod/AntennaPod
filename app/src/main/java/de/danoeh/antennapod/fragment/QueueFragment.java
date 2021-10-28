@@ -247,8 +247,9 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     private void refreshToolbarState() {
-        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
+        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
+        toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
@@ -632,11 +633,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         @Override
         public boolean isLongPressDragEnabled() {
             return false;
-        }
-
-        @Override
-        public boolean isItemViewSwipeEnabled() {
-            return !UserPreferences.isQueueLocked();
         }
 
         @Override
