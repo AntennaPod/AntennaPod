@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,7 +22,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class InboxFragment extends EpisodesListFragment {
+public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -40,14 +40,6 @@ public class InboxFragment extends EpisodesListFragment {
         return item.isNew();
     }
 
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.filter_items).setVisible(false);
-        menu.findItem(R.id.mark_all_read_item).setVisible(false);
-        menu.findItem(R.id.remove_all_inbox_item).setVisible(true);
-    }
-
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +50,8 @@ public class InboxFragment extends EpisodesListFragment {
         emptyView.setMessage(R.string.no_inbox_label);
 
         toolbar = inboxContainer.findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.inbox);
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -68,6 +62,11 @@ public class InboxFragment extends EpisodesListFragment {
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
         return inboxContainer;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
