@@ -12,7 +12,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -68,8 +69,8 @@ public abstract class PlaybackController {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+    public void onEventMainThread(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_STARTED) {
             init();
         }
     }
@@ -206,10 +207,6 @@ public abstract class PlaybackController {
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
-                    float progress = ((float) code) / 100;
-                    onBufferUpdate(progress);
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
                     if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
@@ -220,20 +217,8 @@ public abstract class PlaybackController {
                     onReloadNotification(intent.getIntExtra(
                             PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
-                    onSleepTimerUpdate();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_START:
-                    onBufferStart();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
-                    onBufferEnd();
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
-                    onPlaybackSpeedChange();
                     break;
             }
         }
@@ -242,21 +227,10 @@ public abstract class PlaybackController {
 
     public void onPositionObserverUpdate() {}
 
-
-    public void onPlaybackSpeedChange() {}
-
     /**
      * Called when the currently displayed information should be refreshed.
      */
     public void onReloadNotification(int code) {}
-
-    public void onBufferStart() {}
-
-    public void onBufferEnd() {}
-
-    public void onBufferUpdate(float progress) {}
-
-    public void onSleepTimerUpdate() {}
 
     public void onPlaybackEnd() {}
 
@@ -470,7 +444,7 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
         } else {
-            onPlaybackSpeedChange();
+            EventBus.getDefault().post(new SpeedChangedEvent(speed));
         }
     }
 

@@ -16,7 +16,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
@@ -43,7 +42,10 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -55,8 +57,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
@@ -162,18 +163,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int EXTRA_CODE_VIDEO = 2;
     public static final int EXTRA_CODE_CAST = 3;
 
-    public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
-
     /**
      * Receivers of this intent should update their information about the curently playing media
      */
     public static final int NOTIFICATION_TYPE_RELOAD = 3;
-    /**
-     * The state of the sleeptimer changed.
-     */
-    public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
-    public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
-    public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -184,11 +177,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * No more episodes are going to be played.
      */
     public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
-
-    /**
-     * Playback speed has changed
-     */
-    public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
     /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -318,7 +306,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
 
-        EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
+        EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_STARTED));
     }
 
     @Override
@@ -794,25 +782,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
         }
 
-        @Override
-        public void onSleepTimerAlmostExpired(long timeLeft) {
-            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
-            float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
-            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            mediaPlayer.setVolume(multiplicator, multiplicator);
-        }
 
-        @Override
-        public void onSleepTimerExpired() {
-            mediaPlayer.pause(true, true);
-            mediaPlayer.setVolume(1.0f, 1.0f);
-            sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        }
-
-        @Override
-        public void onSleepTimerReset() {
-            mediaPlayer.setVolume(1.0f, 1.0f);
-        }
 
         @Override
         public WidgetUpdater.WidgetState requestWidgetState() {
@@ -896,16 +866,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void playbackSpeedChanged(float s) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
-        }
-
-        @Override
-        public void onBufferingUpdate(int percent) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
-        }
-
-        @Override
         public void onMediaChanged(boolean reloadUI) {
             Log.d(TAG, "reloadUI callback reached");
             if (reloadUI) {
@@ -916,26 +876,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
-            switch (code) {
-                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
-                    return true;
-                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
-
-                    Playable playable = getPlayable();
-                    if (getPlayable() instanceof FeedMedia
-                            && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
-                        // Playable is being streamed and does not have a duration specified in the feed
-                        playable.setDuration(mediaPlayer.getDuration());
-                        DBWriter.setFeedMedia((FeedMedia) playable);
-                        updateNotificationAndMediaSession(playable);
-                    }
-
-                    return true;
-                default:
-                    return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
-            }
+            return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
         }
 
         @Override
@@ -991,6 +932,37 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         PlaybackPreferences.writeNoMediaPlaying();
         stateManager.stopService();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasEnded()) {
+            Playable playable = getPlayable();
+            if (getPlayable() instanceof FeedMedia
+                    && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
+                // Playable is being streamed and does not have a duration specified in the feed
+                playable.setDuration(mediaPlayer.getDuration());
+                DBWriter.setFeedMedia((FeedMedia) playable);
+                updateNotificationAndMediaSession(playable);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isOver()) {
+            mediaPlayer.pause(true, true);
+            mediaPlayer.setVolume(1.0f, 1.0f);
+        } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
+            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
+            float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
+            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
+            mediaPlayer.setVolume(multiplicator, multiplicator);
+        } else if (event.isCancelled()) {
+            mediaPlayer.setVolume(1.0f, 1.0f);
+        }
     }
 
     private Playable getNextInQueue(final Playable currentMedia) {
@@ -1158,12 +1130,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         taskManager.setSleepTimer(waitingTime);
-        sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
-        sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1578,7 +1548,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_SHUT_DOWN));
+                EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
                 stateManager.stopService();
             }
         }

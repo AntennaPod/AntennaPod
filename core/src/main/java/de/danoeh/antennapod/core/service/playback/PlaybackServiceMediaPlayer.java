@@ -348,10 +348,6 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void shouldStop();
 
-        void playbackSpeedChanged(float s);
-
-        void onBufferingUpdate(int percent);
-
         void onMediaChanged(boolean reloadUI);
 
         boolean onMediaPlayerInfo(int code, @StringRes int resourceId);

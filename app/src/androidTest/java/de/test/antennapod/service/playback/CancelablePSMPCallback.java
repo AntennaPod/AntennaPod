@@ -35,22 +35,6 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
     }
 
     @Override
-    public void playbackSpeedChanged(float s) {
-        if (isCancelled) {
-            return;
-        }
-        originalCallback.playbackSpeedChanged(s);
-    }
-
-    @Override
-    public void onBufferingUpdate(int percent) {
-        if (isCancelled) {
-            return;
-        }
-        originalCallback.onBufferingUpdate(percent);
-    }
-
-    @Override
     public void onMediaChanged(boolean reloadUI) {
         if (isCancelled) {
             return;

@@ -27,7 +27,7 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;

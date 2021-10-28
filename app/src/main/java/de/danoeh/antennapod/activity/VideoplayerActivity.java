@@ -36,9 +36,11 @@ import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -193,28 +195,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onBufferStart() {
-                viewBinding.progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBufferEnd() {
-                viewBinding.progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-                viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
-            }
-
-            @Override
             public void onReloadNotification(int code) {
                 VideoplayerActivity.this.onReloadNotification(code);
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-                supportInvalidateOptionsMenu();
             }
 
             @Override
@@ -250,6 +232,26 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 }
             }
         };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasStarted()) {
+            viewBinding.progressBar.setVisibility(View.VISIBLE);
+        } else if (event.hasEnded()) {
+            viewBinding.progressBar.setVisibility(View.INVISIBLE);
+        } else {
+            viewBinding.sbPosition.setSecondaryProgress((int) (event.getProgress() * viewBinding.sbPosition.getMax()));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isCancelled() || event.wasJustEnabled()) {
+            supportInvalidateOptionsMenu();
+        }
     }
 
     protected void loadMediaInfo() {
@@ -535,8 +537,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlaybackServiceChanged(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+    public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
             finish();
         }
     }

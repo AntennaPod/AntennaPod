@@ -18,16 +18,6 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
         }
 
         @Override
-        public void playbackSpeedChanged(float s) {
-
-        }
-
-        @Override
-        public void onBufferingUpdate(int percent) {
-
-        }
-
-        @Override
         public void onMediaChanged(boolean reloadUI) {
 
         }

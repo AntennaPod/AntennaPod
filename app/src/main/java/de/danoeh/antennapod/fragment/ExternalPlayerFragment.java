@@ -17,8 +17,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -147,8 +147,8 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlaybackServiceChanged(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+    public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
             ((MainActivity) getActivity()).setPlayerVisible(false);
         }
     }

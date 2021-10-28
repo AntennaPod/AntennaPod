@@ -25,7 +25,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
+import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,8 +42,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -224,8 +227,8 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlaybackServiceChanged(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+    public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
             ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
     }
@@ -243,14 +246,11 @@ public class AudioPlayerFragment extends Fragment implements
         });
     }
 
-    protected void updatePlaybackSpeedButton(Playable media) {
-        if (butPlaybackSpeed == null || controller == null) {
-            return;
-        }
-        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
-        String speedStr = new DecimalFormat("0.00").format(speed);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updatePlaybackSpeedButton(SpeedChangedEvent event) {
+        String speedStr = new DecimalFormat("0.00").format(event.getNewSpeed());
         txtvPlaybackSpeed.setText(speedStr);
-        butPlaybackSpeed.setSpeed(speed);
+        butPlaybackSpeed.setSpeed(event.getNewSpeed());
     }
 
     private void loadMediaInfo(boolean includingChapters) {
@@ -282,30 +282,6 @@ public class AudioPlayerFragment extends Fragment implements
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
             @Override
-            public void onBufferStart() {
-                progressIndicator.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBufferEnd() {
-                progressIndicator.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-                if (isStreaming()) {
-                    sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
-                } else {
-                    sbPosition.setSecondaryProgress(0);
-                }
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-                AudioPlayerFragment.this.loadMediaInfo(false);
-            }
-
-            @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 butPlay.setIsShowPlay(showPlay);
             }
@@ -319,11 +295,6 @@ public class AudioPlayerFragment extends Fragment implements
             public void onPlaybackEnd() {
                 ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-
-            @Override
-            public void onPlaybackSpeedChange() {
-                updatePlaybackSpeedButton(getMedia());
-            }
         };
     }
 
@@ -333,9 +304,17 @@ public class AudioPlayerFragment extends Fragment implements
         }
         duration = controller.getDuration();
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
-        updatePlaybackSpeedButton(media);
+        updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isCancelled() || event.wasJustEnabled()) {
+            AudioPlayerFragment.this.loadMediaInfo(false);
+        }
     }
 
     @Override
@@ -364,6 +343,20 @@ public class AudioPlayerFragment extends Fragment implements
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasStarted()) {
+            progressIndicator.setVisibility(View.VISIBLE);
+        } else if (event.hasEnded()) {
+            progressIndicator.setVisibility(View.GONE);
+        } else if (controller != null && controller.isStreaming()) {
+            sbPosition.setSecondaryProgress((int) (event.getProgress() * sbPosition.getMax()));
+        } else {
+            sbPosition.setSecondaryProgress(0);
         }
     }
 

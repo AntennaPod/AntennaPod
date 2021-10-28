@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event;
+package de.danoeh.antennapod.core.event.playback;
 
 public class PlaybackHistoryEvent {
 
