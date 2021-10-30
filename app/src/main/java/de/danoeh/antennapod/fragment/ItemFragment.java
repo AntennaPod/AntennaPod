@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.util.ObjectsCompat;
@@ -224,12 +223,6 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        load();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -240,6 +233,7 @@ public class ItemFragment extends Fragment {
             }
         };
         controller.init();
+        load();
     }
 
     @Override
