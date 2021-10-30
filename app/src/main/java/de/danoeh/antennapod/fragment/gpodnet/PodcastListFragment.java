@@ -101,7 +101,7 @@ public abstract class PodcastListFragment extends Fragment {
                         }, error -> {
                             gridView.setVisibility(View.GONE);
                             progressBar.setVisibility(View.GONE);
-                            txtvError.setText(getString(R.string.error_msg_prefix) + error.getMessage());
+                            txtvError.setText(error.getMessage());
                             txtvError.setVisibility(View.VISIBLE);
                             butRetry.setVisibility(View.VISIBLE);
                             Log.e(TAG, Log.getStackTraceString(error));
