@@ -39,14 +39,12 @@ public class Rss20 extends Namespace {
     private static final String ENC_TYPE = "type";
 
     @Override
-    public SyndElement handleElementStart(String localName, HandlerState state,
-                                          Attributes attributes) {
-        if (ITEM.equals(localName)) {
+    public SyndElement handleElementStart(String localName, HandlerState state, Attributes attributes) {
+        if (ITEM.equals(localName) && CHANNEL.equals(state.getTagstack().lastElement().getName())) {
             state.setCurrentItem(new FeedItem());
             state.getItems().add(state.getCurrentItem());
             state.getCurrentItem().setFeed(state.getFeed());
-
-        } else if (ENCLOSURE.equals(localName)) {
+        } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())) {
             String type = attributes.getValue(ENC_TYPE);
             String url = attributes.getValue(ENC_URL);
 
@@ -72,7 +70,6 @@ public class Rss20 extends Namespace {
                 FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
                 state.getCurrentItem().setMedia(media);
             }
-
         }
         return new SyndElement(localName, this);
     }
