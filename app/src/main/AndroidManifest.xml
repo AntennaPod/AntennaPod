@@ -65,15 +65,14 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
 
-            <intent-filter>
-                <action android:name=
-                    "android.media.action.MEDIA_PLAY_FROM_SEARCH" />
-                <category android:name=
-                    "android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
@@ -98,13 +97,6 @@
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/search"
@@ -144,11 +136,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data
