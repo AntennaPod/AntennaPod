@@ -13,10 +13,16 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -29,6 +35,7 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
 
     private Toolbar toolbar;
     private boolean displayUpArrow;
+    private volatile boolean isUpdatingFeeds;
 
     @Override
     protected String getPrefName() {
@@ -62,6 +69,29 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
         return inboxContainer;
+    }
+
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+
+    private void updateToolbar() {
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+                R.id.refresh_item, updateRefreshMenuItemChecker);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            updateToolbar();
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            updateToolbar();
+        }
     }
 
     @Override
