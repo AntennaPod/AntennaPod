@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -77,25 +78,22 @@ public class FeedItemPermutors {
 
     @NonNull
     private static Date pubDate(@Nullable FeedItem item) {
-        return (item != null && item.getPubDate() != null) ?
-                item.getPubDate() : new Date(0);
+        return (item != null && item.getPubDate() != null) ? item.getPubDate() : new Date(0);
     }
 
     @NonNull
     private static String itemTitle(@Nullable FeedItem item) {
-        return (item != null && item.getTitle() != null) ?
-                item.getTitle() : "";
+        return (item != null && item.getTitle() != null) ? item.getTitle().toLowerCase(Locale.getDefault()) : "";
     }
 
     private static int duration(@Nullable FeedItem item) {
-        return (item != null && item.getMedia() != null) ?
-                item.getMedia().getDuration() : 0;
+        return (item != null && item.getMedia() != null) ? item.getMedia().getDuration() : 0;
     }
 
     @NonNull
     private static String feedTitle(@Nullable FeedItem item) {
-        return (item != null && item.getFeed() != null && item.getFeed().getTitle() != null) ?
-                item.getFeed().getTitle() : "";
+        return (item != null && item.getFeed() != null && item.getFeed().getTitle() != null)
+                ? item.getFeed().getTitle().toLowerCase(Locale.getDefault()) : "";
     }
 
     /**
