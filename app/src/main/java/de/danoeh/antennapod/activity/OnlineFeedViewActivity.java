@@ -46,10 +46,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -261,8 +261,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
                     VolumeAdaptionSetting.OFF, username, password));
         }
-        String fileUrl = new File(getExternalCacheDir(),
-                FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
+        String fileUrl;
+        try {
+            fileUrl = DownloadRequester.getInstance().getDownloadPathForFeed(feed).getAbsolutePath();
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            fileUrl = new File(getCacheDir(), FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
+        }
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
