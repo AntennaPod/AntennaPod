@@ -22,7 +22,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 			Log.d(TAG, "Received intent");
 
             ClientConfig.initialize(context);
-            if (NetworkUtils.autodownloadNetworkAvailable()) {
+            if (NetworkUtils.isAutoDownloadAllowed()) {
 				Log.d(TAG, "auto-dl network available, starting auto-download");
 					DBTasks.autodownloadUndownloadedItems(context);
 			} else { // if new network is Wi-Fi, finish ongoing downloads,
