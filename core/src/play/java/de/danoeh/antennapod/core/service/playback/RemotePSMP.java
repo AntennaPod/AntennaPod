@@ -7,14 +7,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import com.google.android.gms.cast.Cast;
-import com.google.android.gms.cast.CastStatusCodes;
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaStatus;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastException;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
-
 import de.danoeh.antennapod.core.cast.MediaInfoCreator;
 
 import java.util.Collections;
@@ -24,10 +16,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.CastUtils;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -46,11 +35,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     public static final int CAST_ERROR_PRIORITY_HIGH = 3005;
 
-    private final CastManager castMgr;
-
     private volatile Playable media;
     private volatile MediaType mediaType;
-    private volatile MediaInfo remoteMedia;
+    //private volatile MediaInfo remoteMedia;
     private volatile int remoteState;
 
     private final AtomicBoolean isBuffering;
@@ -60,16 +47,16 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     public RemotePSMP(@NonNull Context context, @NonNull PSMPCallback callback) {
         super(context, callback);
 
-        castMgr = CastManager.getInstance();
+        //castMgr = CastManager.getInstance();
         media = null;
         mediaType = null;
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
-        remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
+        //remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
     }
 
     public void init() {
-        try {
+        /*try {
             if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
                 onRemoteMediaPlayerStatusUpdated();
             }
@@ -77,10 +64,10 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             Log.e(TAG, "Unable to do initial check for loaded media", e);
         }
 
-        castMgr.addCastConsumer(castConsumer);
+        castMgr.addCastConsumer(castConsumer);*/
     }
 
-    private CastConsumer castConsumer = new DefaultCastConsumer() {
+    /*private CastConsumer castConsumer = new DefaultCastConsumer() {
         @Override
         public void onRemoteMediaPlayerMetadataUpdated() {
             RemotePSMP.this.onRemoteMediaPlayerStatusUpdated();
@@ -138,7 +125,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         public void onFailed(int resourceId, int statusCode) {
             callback.onMediaPlayerInfo(CAST_ERROR, resourceId);
         }
-    };
+    };*/
 
     private void setBuffering(boolean buffering) {
         if (buffering && isBuffering.compareAndSet(false, true)) {
@@ -148,7 +135,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         }
     }
 
-    private Playable localVersion(MediaInfo info){
+    /*private Playable localVersion(MediaInfo info){
         if (info == null) {
             return null;
         }
@@ -292,7 +279,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 callback.onPostPlayback(oldMedia, false, false, currentMedia != null);
             }
         }
-    }
+    }*/
 
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
@@ -307,7 +294,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
      * @see #playMediaObject(Playable, boolean, boolean, boolean)
      */
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        if (!CastUtils.isCastable(playable)) {
+        /*if (!CastUtils.isCastable(playable)) {
             Log.d(TAG, "media provided is not compatible with cast device");
             callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, R.string.cast_not_castable);
             Playable nextPlayable = playable;
@@ -360,12 +347,12 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZED, media);
         if (prepareImmediately) {
             prepare();
-        }
+        }*/
     }
 
     @Override
     public void resume() {
-        try {
+        /*try {
             if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                 int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
@@ -376,23 +363,23 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
         } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to resume remote playback", e);
-        }
+        }*/
     }
 
     @Override
     public void pause(boolean abandonFocus, boolean reinit) {
-        try {
+        /*try {
             if (castMgr.isRemoteMediaPlaying()) {
                 castMgr.pause();
             }
         } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to pause", e);
-        }
+        }*/
     }
 
     @Override
     public void prepare() {
-        if (playerStatus == PlayerStatus.INITIALIZED) {
+        /*if (playerStatus == PlayerStatus.INITIALIZED) {
             Log.d(TAG, "Preparing media player");
             setPlayerStatus(PlayerStatus.PREPARING, media);
             try {
@@ -407,7 +394,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 Log.e(TAG, "Error loading media", e);
                 setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
-        }
+        }*/
     }
 
     @Override
@@ -422,7 +409,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void seekTo(int t) {
-        //TODO check other seek implementations and see if there's no issue with sending too many seek commands to the remote media player
+        /*//TODO check other seek implementations and see if there's no issue with sending too many seek commands to the remote media player
         try {
             if (castMgr.isRemoteMediaLoaded()) {
                 setPlayerStatus(PlayerStatus.SEEKING, media);
@@ -434,7 +421,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to seek", e);
-        }
+        }*/
     }
 
     @Override
@@ -451,7 +438,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     public int getDuration() {
         int retVal = INVALID_TIME;
         boolean prepared;
-        try {
+        /*try {
             prepared = castMgr.isRemoteMediaLoaded();
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to check if remote media is loaded", e);
@@ -467,14 +454,14 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if(retVal == INVALID_TIME && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
-        Log.d(TAG, "getDuration() -> " + retVal);
+        Log.d(TAG, "getDuration() -> " + retVal);*/
         return retVal;
     }
 
     @Override
     public int getPosition() {
         int retVal = INVALID_TIME;
-        boolean prepared;
+        /*boolean prepared;
         try {
             prepared = castMgr.isRemoteMediaLoaded();
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
@@ -491,7 +478,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if(retVal <= 0 && media != null && media.getPosition() >= 0) {
             retVal = media.getPosition();
         }
-        Log.d(TAG, "getPosition() -> " + retVal);
+        Log.d(TAG, "getPosition() -> " + retVal);*/
         return retVal;
     }
 
@@ -518,7 +505,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void setVolume(float volumeLeft, float volumeRight) {
         Log.d(TAG, "Setting the Stream volume on Remote Media Player");
-        double volume = (volumeLeft+volumeRight)/2;
+        /*double volume = (volumeLeft+volumeRight)/2;
         if (volume > 1.0) {
             volume = 1.0;
         }
@@ -529,7 +516,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             castMgr.setStreamVolume(volume);
         } catch (TransientNetworkDisconnectionException | NoConnectionException | CastException e) {
             Log.e(TAG, "Unable to set the volume", e);
-        }
+        }*/
     }
 
     @Override
@@ -554,7 +541,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void shutdown() {
-        castMgr.removeCastConsumer(castConsumer);
+        //castMgr.removeCastConsumer(castConsumer);
     }
 
     @Override
@@ -586,7 +573,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     protected void setPlayable(Playable playable) {
         if (playable != media) {
             media = playable;
-            remoteMedia = remoteVersion(playable);
+            //remoteMedia = remoteVersion(playable);
         }
     }
 
@@ -639,7 +626,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
             }
         }
-        if (shouldContinue || toStoppedState) {
+        /*if (shouldContinue || toStoppedState) {
             boolean shouldPostProcess = true;
             if (nextMedia == null) {
                 try {
@@ -658,7 +645,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,
                     currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
-        }
+        }*/
 
         FutureTask<?> future = new FutureTask<>(() -> {}, null);
         future.run();

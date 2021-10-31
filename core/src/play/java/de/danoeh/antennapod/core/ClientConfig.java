@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
-import android.util.Log;
-import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
@@ -33,8 +31,6 @@ public class ClientConfig {
 
     public static DownloadServiceCallbacks downloadServiceCallbacks;
 
-    public static CastCallbacks castCallbacks;
-
     private static boolean initialized = false;
 
     public static synchronized void initialize(Context context) {
@@ -47,15 +43,6 @@ public class ClientConfig {
         PlaybackPreferences.init(context);
         SslProviderInstaller.install(context);
         NetworkUtils.init(context);
-        // Don't initialize Cast-related logic unless it is enabled, to avoid the unnecessary
-        // Google Play Service usage.
-        // Down side: when the user decides to enable casting, AntennaPod needs to be restarted
-        // for it to take effect.
-        if (UserPreferences.isCastEnabled()) {
-            CastManager.init(context);
-        } else {
-            Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
-        }
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         NotificationUtils.createChannels(context);

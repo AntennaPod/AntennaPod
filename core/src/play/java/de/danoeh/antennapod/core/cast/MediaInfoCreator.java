@@ -2,15 +2,12 @@ package de.danoeh.antennapod.core.cast;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.common.images.WebImage;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import java.util.Calendar;
 
 public class MediaInfoCreator {
-    public static MediaInfo from(RemoteMedia media) {
-        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
+    public static void from(RemoteMedia media) {
+        /*MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
 
         metadata.putString(MediaMetadata.KEY_TITLE, media.getEpisodeTitle());
         metadata.putString(MediaMetadata.KEY_SUBTITLE, media.getFeedTitle());
@@ -52,6 +49,6 @@ public class MediaInfoCreator {
         if (media.getDuration() > 0) {
             builder.setStreamDuration(media.getDuration());
         }
-        return builder.build();
+        return builder.build();*/
     }
 }

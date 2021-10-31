@@ -11,21 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import androidx.mediarouter.media.MediaRouter;
 import android.support.wearable.media.MediaControlConstants;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.google.android.gms.cast.ApplicationMetadata;
-import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastManager;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -51,61 +44,51 @@ public class PlaybackServiceFlavorHelper {
     private boolean wifiConnectivity = true;
     private BroadcastReceiver wifiBroadcastReceiver;
 
-    private CastManager castManager;
-    private MediaRouter mediaRouter;
     private PlaybackService.FlavorHelperCallback callback;
-    private CastConsumer castConsumer;
 
     PlaybackServiceFlavorHelper(Context context, PlaybackService.FlavorHelperCallback callback) {
         this.callback = callback;
-        if (!CastManager.isInitialized()) {
-            return;
-        }
-        mediaRouter = MediaRouter.getInstance(context.getApplicationContext());
         setCastConsumer(context);
     }
 
     void initializeMediaPlayer(Context context) {
-        if (!CastManager.isInitialized()) {
+        //if (!CastManager.isInitialized()) {
             callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
-            return;
-        }
-        castManager = CastManager.getInstance();
-        castManager.addCastConsumer(castConsumer);
-        boolean isCasting = castManager.isConnected();
-        callback.setIsCasting(isCasting);
-        if (isCasting) {
-            if (UserPreferences.isCastEnabled()) {
-                onCastAppConnected(context, false);
-            } else {
-                castManager.disconnect();
-            }
-        } else {
-            callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
-        }
+        //    return;
+        //}
+        //castManager = CastManager.getInstance();
+        //castManager.addCastConsumer(castConsumer);
+        //boolean isCasting = castManager.isConnected();
+        //callback.setIsCasting(isCasting);
+        //if (isCasting) {
+        //    if (UserPreferences.isCastEnabled()) {
+        //        onCastAppConnected(context, false);
+        //    } else {
+        //        castManager.disconnect();
+        //    }
+        //} else {
+        //    callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
+        //}
     }
 
     void removeCastConsumer() {
-        if (!CastManager.isInitialized()) {
-            return;
-        }
-        castManager.removeCastConsumer(castConsumer);
+        //if (!CastManager.isInitialized()) {
+        //    return;
+        //}
+        //castManager.removeCastConsumer(castConsumer);
     }
 
     boolean castDisconnect(boolean castDisconnect) {
-        if (!CastManager.isInitialized()) {
-            return false;
-        }
-        if (castDisconnect) {
-            castManager.disconnect();
-        }
+        //if (!CastManager.isInitialized()) {
+        //    return false;
+        //}
+        //if (castDisconnect) {
+        //    castManager.disconnect();
+        //}
         return castDisconnect;
     }
 
     boolean onMediaPlayerInfo(Context context, int code, @StringRes int resourceId) {
-        if (!CastManager.isInitialized()) {
-            return false;
-        }
         switch (code) {
             case RemotePSMP.CAST_ERROR:
                 EventBus.getDefault().post(new MessageEvent(context.getString(resourceId)));
@@ -119,7 +102,7 @@ public class PlaybackServiceFlavorHelper {
     }
 
     private void setCastConsumer(Context context) {
-        castConsumer = new DefaultCastConsumer() {
+        /*castConsumer = new DefaultCastConsumer() {
             @Override
             public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
                 onCastAppConnected(context, wasLaunched);
@@ -173,7 +156,7 @@ public class PlaybackServiceFlavorHelper {
                 unregisterWifiBroadcastReceiver();
                 callback.setupNotification(false, info);
             }
-        };
+        };*/
     }
 
     private void onCastAppConnected(Context context, boolean wasLaunched) {
@@ -199,7 +182,7 @@ public class PlaybackServiceFlavorHelper {
         switchMediaPlayer(remotePSMP, info, wasLaunched);
         remotePSMP.init();
         // hardware volume buttons control the remote device volume
-        mediaRouter.setMediaSessionCompat(callback.getMediaSession());
+        //mediaRouter.setMediaSessionCompat(callback.getMediaSession());
         registerWifiBroadcastReceiver();
         callback.setupNotification(true, info);
     }
@@ -236,7 +219,7 @@ public class PlaybackServiceFlavorHelper {
     }
 
     void registerWifiBroadcastReceiver() {
-        if (!CastManager.isInitialized()) {
+        /*if (!CastManager.isInitialized()) {
             return;
         }
         if (wifiBroadcastReceiver != null) {
@@ -260,21 +243,21 @@ public class PlaybackServiceFlavorHelper {
             }
         };
         callback.registerReceiver(wifiBroadcastReceiver,
-                new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));
+                new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));*/
     }
 
     void unregisterWifiBroadcastReceiver() {
-        if (!CastManager.isInitialized()) {
+        /*if (!CastManager.isInitialized()) {
             return;
         }
         if (wifiBroadcastReceiver != null) {
             callback.unregisterReceiver(wifiBroadcastReceiver);
             wifiBroadcastReceiver = null;
-        }
+        }*/
     }
 
     boolean onSharedPreference(String key) {
-        if (!CastManager.isInitialized()) {
+        /*if (!CastManager.isInitialized()) {
             return false;
         }
         if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
@@ -285,12 +268,12 @@ public class PlaybackServiceFlavorHelper {
                 }
             }
             return true;
-        }
+        }*/
         return false;
     }
 
     void sessionStateAddActionForWear(PlaybackStateCompat.Builder sessionState, String actionName, CharSequence name, int icon) {
-        if (!CastManager.isInitialized()) {
+        /*if (!CastManager.isInitialized()) {
             return;
         }
         PlaybackStateCompat.CustomAction.Builder actionBuilder =
@@ -299,16 +282,16 @@ public class PlaybackServiceFlavorHelper {
         actionExtras.putBoolean(MediaControlConstants.EXTRA_CUSTOM_ACTION_SHOW_ON_WEAR, true);
         actionBuilder.setExtras(actionExtras);
 
-        sessionState.addCustomAction(actionBuilder.build());
+        sessionState.addCustomAction(actionBuilder.build());*/
     }
 
     void mediaSessionSetExtraForWear(MediaSessionCompat mediaSession) {
-        if (!CastManager.isInitialized()) {
+        /*if (!CastManager.isInitialized()) {
             return;
         }
         Bundle sessionExtras = new Bundle();
         sessionExtras.putBoolean(MediaControlConstants.EXTRA_RESERVE_SLOT_SKIP_TO_PREVIOUS, true);
         sessionExtras.putBoolean(MediaControlConstants.EXTRA_RESERVE_SLOT_SKIP_TO_NEXT, true);
-        mediaSession.setExtras(sessionExtras);
+        mediaSession.setExtras(sessionExtras);*/
     }
 }

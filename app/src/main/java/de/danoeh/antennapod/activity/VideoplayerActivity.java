@@ -555,7 +555,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        requestCastButton(menu);
+        //requestCastButton(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mediaplayer, menu);
         return true;
