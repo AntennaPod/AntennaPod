@@ -23,7 +23,7 @@
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <SwitchPreferenceCompat
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseForFocusLoss"
                 android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
