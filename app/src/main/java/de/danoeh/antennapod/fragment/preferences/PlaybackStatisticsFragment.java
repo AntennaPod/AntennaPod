@@ -68,7 +68,7 @@ public class PlaybackStatisticsFragment extends Fragment {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
-        listAdapter = new PlaybackStatisticsListAdapter(getContext());
+        listAdapter = new PlaybackStatisticsListAdapter(this);
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         feedStatisticsList.setAdapter(listAdapter);

@@ -9,7 +9,15 @@ import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,55 +28,37 @@ import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-import android.text.TextUtils;
-import android.text.format.Formatter;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
-
-import org.apache.commons.lang3.StringUtils;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Displays information about a feed.
@@ -82,24 +72,17 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
     private Feed feed;
     private Disposable disposable;
-    private Disposable disposableStatistics;
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
-    private TextView lblStatistics;
-    private TextView txtvPodcastTime;
-    private TextView txtvPodcastSpace;
-    private TextView txtvPodcastEpisodeCount;
     private TextView txtvFundingUrl;
     private TextView lblSupport;
-    private Button btnvOpenStatistics;
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
     private ImageView imgvBackground;
     private View infoContainer;
     private View header;
     private Toolbar toolbar;
-    private ToolbarIconTintManager iconTintManager;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -137,7 +120,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
-        iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
+        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
@@ -161,23 +144,20 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         txtvDescription = root.findViewById(R.id.txtvDescription);
-        lblStatistics = root.findViewById(R.id.lblStatistics);
-        txtvPodcastSpace = root.findViewById(R.id.txtvPodcastSpaceUsed);
-        txtvPodcastEpisodeCount = root.findViewById(R.id.txtvPodcastEpisodeCount);
-        txtvPodcastTime = root.findViewById(R.id.txtvPodcastTime);
-        btnvOpenStatistics = root.findViewById(R.id.btnvOpenStatistics);
         txtvUrl = root.findViewById(R.id.txtvUrl);
         lblSupport = root.findViewById(R.id.lblSupport);
         txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        btnvOpenStatistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
-            }
+        long feedId = getArguments().getLong(EXTRA_FEED_ID);
+        getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                        FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                .commitAllowingStateLoss();
+
+        root.findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
+            StatisticsFragment fragment = new StatisticsFragment();
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
 
         return root;
@@ -199,7 +179,6 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 .subscribe(result -> {
                     feed = result;
                     showFeed();
-                    loadStatistics();
                 }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
     }
 
@@ -274,52 +253,11 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         refreshToolbarState();
     }
 
-    private void loadStatistics() {
-        if (disposableStatistics != null) {
-            disposableStatistics.dispose();
-        }
-
-        disposableStatistics =
-                Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
-
-                    for (StatisticsItem statisticsItem : statisticsData) {
-                        if (statisticsItem.feed.getId() == feed.getId()) {
-                            return statisticsItem;
-                        }
-                    }
-
-                    return null;
-                })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            txtvPodcastTime.setText(Converter.shortLocalizedDuration(
-                                        getContext(), result.timePlayed));
-                            txtvPodcastSpace.setText(Formatter.formatShortFileSize(
-                                        getContext(), result.totalDownloadSize));
-                            txtvPodcastEpisodeCount.setText(String.format(Locale.getDefault(),
-                                        "%d%s", result.episodesDownloadCount,
-                                        getString(R.string.episodes_suffix)));
-                        }, error -> {
-                                Log.d(TAG, Log.getStackTraceString(error));
-                                lblStatistics.setVisibility(View.GONE);
-                                txtvPodcastSpace.setVisibility(View.GONE);
-                                txtvPodcastTime.setVisibility(View.GONE);
-                                txtvPodcastEpisodeCount.setVisibility(View.GONE);
-                                btnvOpenStatistics.setVisibility(View.GONE);
-                            });
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (disposable != null) {
             disposable.dispose();
-        }
-
-        if (disposableStatistics != null) {
-            disposableStatistics.dispose();
         }
     }
 
