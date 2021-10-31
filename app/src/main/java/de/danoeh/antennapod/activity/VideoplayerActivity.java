@@ -62,6 +62,7 @@ import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.cast.CastEnabledActivity;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -555,7 +556,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        //requestCastButton(menu);
+        requestCastButton(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mediaplayer, menu);
         return true;

@@ -1,0 +1,11 @@
+apply plugin: "com.android.library"
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+
+    playApi 'androidx.mediarouter:mediarouter:1.2.5'
+    playApi 'com.google.android.gms:play-services-cast-framework:20.0.0'
+}

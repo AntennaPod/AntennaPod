@@ -21,6 +21,7 @@ android {
 
 dependencies {
     implementation project(':model')
+    implementation project(':net:cast')
     implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
