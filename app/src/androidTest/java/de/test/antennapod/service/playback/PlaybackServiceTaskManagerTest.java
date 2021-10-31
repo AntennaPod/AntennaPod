@@ -146,7 +146,7 @@ public class PlaybackServiceTaskManagerTest {
             FeedItem item = DBReader.getFeedItem(testItem.getId());
             item.getMedia().setDownloaded(true);
             item.getMedia().setFile_url("file://123");
-            item.setAutoDownload(false);
+            item.disableAutoDownload();
             DBWriter.setFeedMedia(item.getMedia()).get();
             DBWriter.setFeedItem(item).get();
 
