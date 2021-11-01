@@ -22,12 +22,14 @@ import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
@@ -157,9 +159,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     private void setBuffering(boolean buffering) {
         if (buffering && isBuffering.compareAndSet(false, true)) {
-            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_START, 0);
+            EventBus.getDefault().post(BufferUpdateEvent.started());
         } else if (!buffering && isBuffering.compareAndSet(true, false)) {
-            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_END, 0);
+            EventBus.getDefault().post(BufferUpdateEvent.ended());
         }
     }
 
@@ -245,7 +247,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, currentMedia, position);
                 break;
             case MediaStatus.PLAYER_STATE_BUFFERING:
-                //EventBus.getDefault().post(BufferUpdateEvent.started());
                 setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING) ?
                         PlayerStatus.PREPARING : PlayerStatus.SEEKING,
                         currentMedia,
@@ -438,21 +439,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public int getDuration() {
-        int retVal = INVALID_TIME;
-        boolean prepared;
-        /*try {
-            prepared = castMgr.isRemoteMediaLoaded();
-        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            Log.e(TAG, "Unable to check if remote media is loaded", e);
-            prepared = playerStatus.isAtLeast(PlayerStatus.PREPARED);
-        }
-        if (prepared) {
-            try {
-                retVal = (int) castMgr.getMediaDuration();
-            } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-                Log.e(TAG, "Unable to determine remote media's duration", e);
-            }
-        }*/
+        int retVal = (int) remoteMediaClient.getStreamDuration();
         if (retVal == INVALID_TIME && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
@@ -462,22 +449,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public int getPosition() {
-        int retVal = INVALID_TIME;
-        /*boolean prepared;
-        try {
-            prepared = castMgr.isRemoteMediaLoaded();
-        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            Log.e(TAG, "Unable to check if remote media is loaded", e);
-            prepared = playerStatus.isAtLeast(PlayerStatus.PREPARED);
-        }
-        if (prepared) {
-            try {
-                retVal = (int) castMgr.getCurrentMediaPosition();
-            } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-                Log.e(TAG, "Unable to determine remote media's position", e);
-            }
-        } */
-        retVal = (int) remoteMediaClient.getApproximateStreamPosition();
+        int retVal = (int) remoteMediaClient.getApproximateStreamPosition();
         if (retVal <= 0 && media != null && media.getPosition() >= 0) {
             retVal = media.getPosition();
         }
@@ -657,5 +629,10 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Override
     protected boolean shouldLockWifi() {
         return false;
+    }
+
+    @Override
+    public boolean isCasting() {
+        return true;
     }
 }

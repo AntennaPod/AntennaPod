@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event.playback;
+package de.danoeh.antennapod.event.playback;
 
 public class BufferUpdateEvent {
     private static final float PROGRESS_STARTED = -1;

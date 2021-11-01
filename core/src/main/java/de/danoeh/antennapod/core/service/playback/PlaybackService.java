@@ -42,10 +42,10 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
-import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
-import de.danoeh.antennapod.core.event.PlayerErrorEvent;
-import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
@@ -59,11 +59,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
-import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
+import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -195,10 +195,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Is true if the service was running, but paused due to headphone disconnect
      */
     private static boolean transientPause = false;
-    /**
-     * Is true if a Cast Device is connected to the service.
-     */
-    private static volatile boolean isCasting = false;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
@@ -238,7 +234,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         boolean showVideoPlayer;
 
         if (isRunning) {
-            showVideoPlayer = currentMediaType == MediaType.VIDEO && !isCasting;
+            showVideoPlayer = currentMediaType == MediaType.VIDEO /*&& !isCasting()*/;
         } else {
             showVideoPlayer = PlaybackPreferences.getCurrentEpisodeIsVideo();
         }
@@ -255,7 +251,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * depends on the FeedMedia that is provided as an argument.
      */
     public static Intent getPlayerActivityIntent(Context context, Playable media) {
-        if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
+        if (media.getMediaType() == MediaType.VIDEO /*&& !mediaPlayer.isCasting()*/) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
             return new MainActivityStarter(context).withOpenPlayer().getIntent();
@@ -818,12 +814,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
                 case PAUSED:
-                    if ((UserPreferences.isPersistNotify() || isCasting) &&
-                            android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (UserPreferences.isPersistNotify() || mediaPlayer.isCasting()) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
                         updateNotificationAndMediaSession(newInfo.playable);
-                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
+                    } else if (!UserPreferences.isPersistNotify() && !mediaPlayer.isCasting()) {
                         // remove notification on pause
                         stateManager.stopForeground(true);
                     }
@@ -1030,7 +1025,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            if (!isCasting) {
+            if (!isCasting()) {
                 stateManager.stopForeground(true);
                 stateManager.stopService();
             }
@@ -1039,7 +1034,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
         } else {
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                    isCasting ? EXTRA_CODE_CAST :
+                    isCasting() ? EXTRA_CODE_CAST :
                             (mediaType == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
         }
     }
@@ -1297,7 +1292,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (UserPreferences.setLockscreenBackground() && notificationBuilder.isIconCached()) {
             builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, notificationBuilder.getCachedIcon());
-        } else if (isCasting && !TextUtils.isEmpty(p.getImageLocation())) {
+        } else if (isCasting() && !TextUtils.isEmpty(p.getImageLocation())) {
             // In the absence of metadata art, the controller dialog takes care of creating it.
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, p.getImageLocation());
         }
@@ -1341,7 +1336,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setPlayable(playable);
         notificationBuilder.setMediaSessionToken(mediaSession.getSessionToken());
         notificationBuilder.setPlayerStatus(playerStatus);
-        notificationBuilder.setCasting(isCasting);
+        notificationBuilder.setCasting(isCasting());
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -1364,7 +1359,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
         Log.d(TAG, "startForegroundIfPlaying: " + status);
         if (stateManager.hasReceivedValidStartCommand()) {
-            if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
+            if (isCasting() || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
                     || status == PlayerStatus.SEEKING) {
                 stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                 Log.d(TAG, "foreground");
@@ -1618,8 +1613,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return currentMediaType;
     }
 
-    public static boolean isCasting() {
-        return isCasting;
+    public boolean isCasting() {
+        return mediaPlayer.isCasting();
     }
 
     public void resume() {

@@ -12,8 +12,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
-import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -245,12 +245,14 @@ public abstract class PlaybackController {
             case PAUSED:
                 onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (playbackService != null && !playbackService.isCasting()
+                        && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
                 }
                 break;
             case PLAYING:
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (playbackService != null && !playbackService.isCasting()
+                        && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
                 }
@@ -494,7 +496,7 @@ public abstract class PlaybackController {
     }
 
     public boolean isPlayingVideoLocally() {
-        if (PlaybackService.isCasting()) {
+        if (playbackService != null && playbackService.isCasting()) {
             return false;
         } else if (playbackService != null) {
             return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;

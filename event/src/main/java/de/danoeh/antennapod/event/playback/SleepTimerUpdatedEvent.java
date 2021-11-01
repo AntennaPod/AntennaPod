@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event.playback;
+package de.danoeh.antennapod.event.playback;
 
 public class SleepTimerUpdatedEvent {
     private static final long CANCELLED = Long.MAX_VALUE;

@@ -1,87 +1,11 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.cast.CastPsmp;
-import org.greenrobot.eventbus.EventBus;
-
 /**
  * Class intended to work along PlaybackService and provide support for different flavors.
  */
 public class PlaybackServiceFlavorHelper {
     public static final String TAG = "PlaybackSrvFlavorHelper";
 
-    /**
-     * Time in seconds during which the CastManager will try to reconnect to the Cast Device after
-     * the Wifi Connection is regained.
-     */
-    private static final int RECONNECTION_ATTEMPT_PERIOD_S = 15;
-    /**
-     * Stores the state of the cast playback just before it disconnects.
-     */
-    private volatile PlaybackServiceMediaPlayer.PSMPInfo infoBeforeCastDisconnection;
-
-    private boolean wifiConnectivity = true;
-    private BroadcastReceiver wifiBroadcastReceiver;
-
-    //private PlaybackService.FlavorHelperCallback callback;
-
-    //PlaybackServiceFlavorHelper(Context context, PlaybackService.FlavorHelperCallback callback) {
-    //    this.callback = callback;
-    //    setCastConsumer(context);
-    //}
-
-//    void initializeMediaPlayer(Context context) {
-//        //if (!CastManager.isInitialized()) {
-//            callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
-//        //    return;
-//        //}
-//        //castManager = CastManager.getInstance();
-//        //castManager.addCastConsumer(castConsumer);
-//        //boolean isCasting = castManager.isConnected();
-//        //callback.setIsCasting(isCasting);
-//        //if (isCasting) {
-//        //    if (UserPreferences.isCastEnabled()) {
-//        //        onCastAppConnected(context, false);
-//        //    } else {
-//        //        castManager.disconnect();
-//        //    }
-//        //} else {
-//        //    callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
-//        //}
-//    }
-//
-//    void removeCastConsumer() {
-//        //if (!CastManager.isInitialized()) {
-//        //    return;
-//        //}
-//        //castManager.removeCastConsumer(castConsumer);
-//    }
-//
-//    boolean castDisconnect(boolean castDisconnect) {
-//        //if (!CastManager.isInitialized()) {
-//        //    return false;
-//        //}
-//        //if (castDisconnect) {
-//        //    castManager.disconnect();
-//        //}
-//        return castDisconnect;
-//    }
-//
 //    boolean onMediaPlayerInfo(Context context, int code, @StringRes int resourceId) {
 //        switch (code) {
 //            case CastPsmp.CAST_ERROR:
@@ -210,60 +134,6 @@ public class PlaybackServiceFlavorHelper {
 //                    info.playerStatus == PlayerStatus.PLAYING,
 //                    info.playerStatus.isAtLeast(PlayerStatus.PREPARING));
 //        }
-//    }
-//
-//    void registerWifiBroadcastReceiver() {
-//        /*if (!CastManager.isInitialized()) {
-//            return;
-//        }
-//        if (wifiBroadcastReceiver != null) {
-//            return;
-//        }
-//        wifiBroadcastReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-//                    NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-//                    boolean isConnected = info.isConnected();
-//                    //apparently this method gets called twice when a change happens, but one run is enough.
-//                    if (isConnected && !wifiConnectivity) {
-//                        wifiConnectivity = true;
-//                        castManager.startCastDiscovery();
-//                        castManager.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
-//                    } else {
-//                        wifiConnectivity = isConnected;
-//                    }
-//                }
-//            }
-//        };
-//        callback.registerReceiver(wifiBroadcastReceiver,
-//                new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));*/
-//    }
-//
-//    void unregisterWifiBroadcastReceiver() {
-//        /*if (!CastManager.isInitialized()) {
-//            return;
-//        }
-//        if (wifiBroadcastReceiver != null) {
-//            callback.unregisterReceiver(wifiBroadcastReceiver);
-//            wifiBroadcastReceiver = null;
-//        }*/
-//    }
-//
-//    boolean onSharedPreference(String key) {
-//        /*if (!CastManager.isInitialized()) {
-//            return false;
-//        }
-//        if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
-//            if (!UserPreferences.isCastEnabled()) {
-//                if (castManager.isConnecting() || castManager.isConnected()) {
-//                    Log.d(TAG, "Disconnecting cast device due to a change in user preferences");
-//                    castManager.disconnect();
-//                }
-//            }
-//            return true;
-//        }*/
-//        return false;
 //    }
 //
 //    void sessionStateAddActionForWear(PlaybackStateCompat.Builder sessionState, String actionName, CharSequence name, int icon) {

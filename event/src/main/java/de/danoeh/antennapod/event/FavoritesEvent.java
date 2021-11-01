@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event;
+package de.danoeh.antennapod.event;
 
 import androidx.annotation.NonNull;
 

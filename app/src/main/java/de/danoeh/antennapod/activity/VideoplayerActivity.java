@@ -36,11 +36,11 @@ import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
-import de.danoeh.antennapod.core.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerErrorEvent;
-import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
-import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -119,7 +119,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        if (PlaybackService.isCasting()) {
+        if (!controller.isPlayingVideoLocally()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
                 destroyingDueToReload = true;

@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;

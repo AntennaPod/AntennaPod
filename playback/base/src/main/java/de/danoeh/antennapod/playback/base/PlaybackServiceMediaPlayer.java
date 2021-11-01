@@ -281,6 +281,8 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     protected abstract boolean shouldLockWifi();
 
+    public abstract boolean isCasting();
+
     protected final synchronized void acquireWifiLockIfNecessary() {
         if (shouldLockWifi()) {
             if (wifiLock == null) {
