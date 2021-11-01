@@ -14,6 +14,9 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -422,6 +425,11 @@ public abstract class PlaybackController {
     public void seekTo(int time) {
         if (playbackService != null) {
             playbackService.seekTo(time);
+        } else if (getMedia() instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) getMedia();
+            media.setPosition(time);
+            DBWriter.setFeedItem(media.getItem());
+            EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
         }
     }
 

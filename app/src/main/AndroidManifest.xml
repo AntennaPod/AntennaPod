@@ -40,7 +40,8 @@
         android:supportsRtl="true"
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
-        android:allowAudioPlaybackCapture="true">
+        android:allowAudioPlaybackCapture="true"
+        android:networkSecurityConfig="@xml/network_security_config">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
@@ -68,15 +69,14 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
 
-            <intent-filter>
-                <action android:name=
-                    "android.media.action.MEDIA_PLAY_FROM_SEARCH" />
-                <category android:name=
-                    "android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
@@ -101,13 +101,6 @@
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/search"
@@ -147,11 +140,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data
@@ -168,34 +157,23 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:mimeType="text/xml"/>
-                <data android:mimeType="text/x-opml"/>
-                <data android:mimeType="application/xml"/>
-                <data android:mimeType="application/octet-stream"/>
-
-                <data android:scheme="file"/>
-                <data android:scheme="content"/>
-
-                <data android:host="*"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:mimeType="text/xml"/>
-                <data android:mimeType="text/plain"/>
                 <data android:mimeType="text/x-opml"/>
                 <data android:mimeType="application/xml"/>
-                <data android:mimeType="application/octet-stream"/>
 
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
                 <data android:scheme="http"/>
                 <data android:scheme="https"/>
+
+                <data android:host="*"/>
+                <data android:pathPattern=".*.xml" />
+                <data android:pathPattern=".*.opml" />
             </intent-filter>
         </activity>
         <activity
@@ -313,6 +291,18 @@
                 <data android:host="antennapod.org" />
                 <data android:host="www.antennapod.org" />
                 <data android:pathPrefix="/deeplink/subscribe" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:pathPattern="/.*/podcast/.*" />
+                <data android:host="podcasts.apple.com" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>

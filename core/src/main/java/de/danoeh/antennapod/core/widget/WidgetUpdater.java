@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -212,7 +213,8 @@ public abstract class WidgetUpdater {
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
 
-        return PendingIntent.getBroadcast(context, eventCode, startingIntent, 0);
+        return PendingIntent.getBroadcast(context, eventCode, startingIntent,
+                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     private static String getProgressString(int position, int duration, float speed) {

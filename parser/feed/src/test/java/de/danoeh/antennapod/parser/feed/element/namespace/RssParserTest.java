@@ -96,4 +96,12 @@ public class RssParserTest {
         assertTrue(TextUtils.isEmpty(feed.getPaymentLinks().get(2).content));
         assertEquals("https://example.com/funding3", feed.getPaymentLinks().get(2).url);
     }
+
+    @Test
+    public void testUnsupportedElements() throws Exception {
+        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testUnsupportedElements.xml");
+        Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
+        assertEquals(1, feed.getItems().size());
+        assertEquals("item-0", feed.getItems().get(0).getTitle());
+    }
 }
