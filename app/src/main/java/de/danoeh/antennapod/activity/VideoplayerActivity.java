@@ -62,7 +62,7 @@ import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.net.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

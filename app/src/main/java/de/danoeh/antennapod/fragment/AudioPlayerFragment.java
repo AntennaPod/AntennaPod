@@ -30,7 +30,7 @@ import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
-import de.danoeh.antennapod.net.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

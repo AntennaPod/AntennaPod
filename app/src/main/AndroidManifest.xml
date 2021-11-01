@@ -55,7 +55,7 @@
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="de.danoeh.antennapod.net.cast.CastOptionsProvider" />
+            android:value="de.danoeh.antennapod.playback.cast.CastOptionsProvider" />
 
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>

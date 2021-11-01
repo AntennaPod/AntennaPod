@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.net.cast;
+package de.danoeh.antennapod.playback.cast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
