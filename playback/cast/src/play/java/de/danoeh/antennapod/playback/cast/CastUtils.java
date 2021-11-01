@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.cast;
+package de.danoeh.antennapod.playback.cast;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -8,12 +8,16 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.List;
 
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.common.images.WebImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
-import de.danoeh.antennapod.core.storage.DBReader;
 
 /**
  * Helper functions for Cast support.
@@ -44,106 +48,33 @@ public class CastUtils {
     public static final int FORMAT_VERSION_VALUE = 1;
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
-//    public static boolean isCastable(Playable media) {
-//        if (media == null) {
-//            return false;
-//        }
-//        if (media instanceof FeedMedia || media instanceof RemoteMedia) {
-//            String url = media.getStreamUrl();
-//            if (url == null || url.isEmpty()) {
-//                return false;
-//            }
-//            if (url.startsWith(ContentResolver.SCHEME_CONTENT)) {
-//                return false; // Local feed
-//            }
-//            switch (media.getMediaType()) {
-//                case UNKNOWN:
-//                    return false;
-//                case AUDIO:
-//                    return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_AUDIO_OUT, true);
-//                case VIDEO:
-//                    return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_VIDEO_OUT, true);
-//            }
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * Converts {@link FeedMedia} objects into a format suitable for sending to a Cast Device.
-//     * Before using this method, one should make sure {@link #isCastable(Playable)} returns
-//     * {@code true}. This method should not run on the main thread.
-//     *
-//     * @param media The {@link FeedMedia} object to be converted.
-//     * @return {@link MediaInfo} object in a format proper for casting.
-//     */
-//    public static MediaInfo convertFromFeedMedia(FeedMedia media){
-//        if (media == null) {
-//            return null;
-//        }
-//        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
-//        if (media.getItem() == null) {
-//            media.setItem(DBReader.getFeedItem(media.getItemId()));
-//        }
-//        FeedItem feedItem = media.getItem();
-//        if (feedItem != null) {
-//            metadata.putString(MediaMetadata.KEY_TITLE, media.getEpisodeTitle());
-//            String subtitle = media.getFeedTitle();
-//            if (subtitle != null) {
-//                metadata.putString(MediaMetadata.KEY_SUBTITLE, subtitle);
-//            }
-//
-//            if (!TextUtils.isEmpty(feedItem.getImageLocation())) {
-//                metadata.addImage(new WebImage(Uri.parse(feedItem.getImageLocation())));
-//            }
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(media.getItem().getPubDate());
-//            metadata.putDate(MediaMetadata.KEY_RELEASE_DATE, calendar);
-//            Feed feed = feedItem.getFeed();
-//            if (feed != null) {
-//                if (!TextUtils.isEmpty(feed.getAuthor())) {
-//                    metadata.putString(MediaMetadata.KEY_ARTIST, feed.getAuthor());
-//                }
-//                if (!TextUtils.isEmpty(feed.getDownload_url())) {
-//                    metadata.putString(KEY_FEED_URL, feed.getDownload_url());
-//                }
-//                if (!TextUtils.isEmpty(feed.getLink())) {
-//                    metadata.putString(KEY_FEED_WEBSITE, feed.getLink());
-//                }
-//            }
-//            if (!TextUtils.isEmpty(feedItem.getItemIdentifier())) {
-//                metadata.putString(KEY_EPISODE_IDENTIFIER, feedItem.getItemIdentifier());
-//            } else {
-//                metadata.putString(KEY_EPISODE_IDENTIFIER, media.getStreamUrl());
-//            }
-//            if (!TextUtils.isEmpty(feedItem.getLink())) {
-//                metadata.putString(KEY_EPISODE_LINK, feedItem.getLink());
-//            }
-//            try {
-//                DBReader.loadDescriptionOfFeedItem(feedItem);
-//                metadata.putString(KEY_EPISODE_NOTES, feedItem.getDescription());
-//            } catch (Exception e) {
-//                Log.e(TAG, "Unable to load FeedMedia notes", e);
-//            }
-//        }
-//        // This field only identifies the id on the device that has the original version.
-//        // Idea is to perhaps, on a first approach, check if the version on the local DB with the
-//        // same id matches the remote object, and if not then search for episode and feed identifiers.
-//        // This at least should make media recognition for a single device much quicker.
-//        metadata.putInt(KEY_MEDIA_ID, ((Long) media.getIdentifier()).intValue());
-//        // A way to identify different casting media formats in case we change it in the future and
-//        // senders with different versions share a casting device.
-//        metadata.putInt(KEY_FORMAT_VERSION, FORMAT_VERSION_VALUE);
-//
-//        MediaInfo.Builder builder = new MediaInfo.Builder(media.getStreamUrl())
-//                .setContentType(media.getMime_type())
-//                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-//                .setMetadata(metadata);
-//        if (media.getDuration() > 0) {
-//            builder.setStreamDuration(media.getDuration());
-//        }
-//        return builder.build();
-//    }
-//
+    public static boolean isCastable(Playable media, CastContext castContext) {
+        if (media == null) {
+            return false;
+        }
+        if (media instanceof FeedMedia || media instanceof RemoteMedia) {
+            String url = media.getStreamUrl();
+            if (url == null || url.isEmpty()) {
+                return false;
+            }
+            if (url.startsWith(ContentResolver.SCHEME_CONTENT)) {
+                return false; // Local feed
+            }
+            switch (media.getMediaType()) {
+                case UNKNOWN:
+                    return false;
+                case AUDIO:
+                    //return castContext.hasCapability(CastDevice.CAPABILITY_AUDIO_OUT, true);
+                case VIDEO:
+                    //return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_VIDEO_OUT, true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
 //    //TODO make unit tests for all the conversion methods
 //    /**
 //     * Converts {@link MediaInfo} objects into the appropriate implementation of {@link Playable}.

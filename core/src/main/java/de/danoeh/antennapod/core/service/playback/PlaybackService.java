@@ -48,6 +48,7 @@ import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.cast.CastPsmp;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -201,7 +202,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
-    private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
@@ -281,7 +281,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
-        flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(prefListener);
 
@@ -305,7 +304,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
-        flavorHelper.initializeMediaPlayer(PlaybackService.this);
+        mediaPlayer = CastPsmp.getInstanceIfConnected(this, mediaPlayerCallback);
+        if (mediaPlayer == null) {
+            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
+        }
         mediaSession.setActive(true);
 
         EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_STARTED));
@@ -337,8 +339,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
-        flavorHelper.removeCastConsumer();
-        flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -516,7 +516,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
-            } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
+            } else if (/*!flavorHelper.castDisconnect(castDisconnect) &&*/ playable != null) {
                 stateManager.validStartCommandWasReceived();
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
                 boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
@@ -878,7 +878,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
-            return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
+            return true;//flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
         }
 
         @Override
@@ -1252,7 +1252,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // This would give the PIP of videos a play button
             capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
             if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
-                flavorHelper.sessionStateAddActionForWear(sessionState,
+                /*flavorHelper.sessionStateAddActionForWear(sessionState,
                         CUSTOM_ACTION_REWIND,
                         getString(R.string.rewind_label),
                         android.R.drawable.ic_media_rew);
@@ -1260,7 +1260,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         CUSTOM_ACTION_FAST_FORWARD,
                         getString(R.string.fast_forward_label),
                         android.R.drawable.ic_media_ff);
-                flavorHelper.mediaSessionSetExtraForWear(mediaSession);
+                flavorHelper.mediaSessionSetExtraForWear(mediaSession);*/
             }
         }
 
@@ -1904,96 +1904,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
                     updateNotificationAndMediaSession(getPlayable());
-                } else {
-                    flavorHelper.onSharedPreference(key);
                 }
             };
-
-    interface FlavorHelperCallback {
-        PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback();
-
-        void setMediaPlayer(PlaybackServiceMediaPlayer mediaPlayer);
-
-        PlaybackServiceMediaPlayer getMediaPlayer();
-
-        void setIsCasting(boolean isCasting);
-
-        void sendNotificationBroadcast(int type, int code);
-
-        void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position);
-
-        void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
-
-        MediaSessionCompat getMediaSession();
-
-        Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter);
-
-        void unregisterReceiver(BroadcastReceiver receiver);
-    }
-
-    private final FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
-        @Override
-        public PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback() {
-            return PlaybackService.this.mediaPlayerCallback;
-        }
-
-        @Override
-        public void setMediaPlayer(PlaybackServiceMediaPlayer mediaPlayer) {
-            PlaybackService.this.mediaPlayer = mediaPlayer;
-        }
-
-        @Override
-        public PlaybackServiceMediaPlayer getMediaPlayer() {
-            return PlaybackService.this.mediaPlayer;
-        }
-
-        @Override
-        public void setIsCasting(boolean isCasting) {
-            PlaybackService.isCasting = isCasting;
-            stateManager.validStartCommandWasReceived();
-        }
-
-        @Override
-        public void sendNotificationBroadcast(int type, int code) {
-            PlaybackService.this.sendNotificationBroadcast(type, code);
-        }
-
-        @Override
-        public void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position) {
-            PlaybackService.this.saveCurrentPosition(fromMediaPlayer, playable, position);
-        }
-
-        @Override
-        public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
-            if (connected) {
-                PlaybackService.this.updateNotificationAndMediaSession(info.playable);
-            } else {
-                PlayerStatus status = info.playerStatus;
-                if ((status == PlayerStatus.PLAYING ||
-                        status == PlayerStatus.SEEKING ||
-                        status == PlayerStatus.PREPARING ||
-                        UserPreferences.isPersistNotify()) &&
-                        android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    PlaybackService.this.updateNotificationAndMediaSession(info.playable);
-                } else if (!UserPreferences.isPersistNotify()) {
-                    stateManager.stopForeground(true);
-                }
-            }
-        }
-
-        @Override
-        public MediaSessionCompat getMediaSession() {
-            return PlaybackService.this.mediaSession;
-        }
-
-        @Override
-        public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
-            return PlaybackService.this.registerReceiver(receiver, filter);
-        }
-
-        @Override
-        public void unregisterReceiver(BroadcastReceiver receiver) {
-            PlaybackService.this.unregisterReceiver(receiver);
-        }
-    };
 }
