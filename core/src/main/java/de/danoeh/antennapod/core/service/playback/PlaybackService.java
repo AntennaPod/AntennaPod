@@ -49,6 +49,7 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
+import de.danoeh.antennapod.playback.cast.CastStateListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -201,6 +202,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
+    private CastStateListener castStateListener;
 
     private String autoSkippedFeedMediaId = null;
 
@@ -300,13 +302,33 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
+        recreateMediaPlayer();
+        mediaSession.setActive(true);
+        castStateListener = new CastStateListener(this) {
+            @Override
+            public void onSessionStartedOrEnded() {
+                recreateMediaPlayer();
+            }
+        };
+        EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_STARTED));
+    }
+
+    void recreateMediaPlayer() {
+        Playable media = null;
+        boolean wasPlaying = false;
+        if (mediaPlayer != null) {
+            media = mediaPlayer.getPlayable();
+            wasPlaying = mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING;
+            mediaPlayer.pause(true, false);
+            mediaPlayer.shutdown();
+        }
         mediaPlayer = CastPsmp.getInstanceIfConnected(this, mediaPlayerCallback);
         if (mediaPlayer == null) {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
         }
-        mediaSession.setActive(true);
-
-        EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_STARTED));
+        if (media != null) {
+            mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
+        }
     }
 
     @Override
@@ -322,6 +344,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
+        castStateListener.destroy();
 
         cancelPositionObserver();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener);

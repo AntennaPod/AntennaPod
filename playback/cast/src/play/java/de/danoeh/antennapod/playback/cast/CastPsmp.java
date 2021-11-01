@@ -485,7 +485,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public void shutdown() {
-        //castMgr.removeCastConsumer(castConsumer);
+        remoteMediaClient.unregisterCallback(remoteMediaClientCallback);
     }
 
     @Override
@@ -570,26 +570,18 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
             }
         }
-        /*if (shouldContinue || toStoppedState) {
-            boolean shouldPostProcess = true;
+        if (shouldContinue || toStoppedState) {
             if (nextMedia == null) {
-                try {
-                    castMgr.stop();
-                    shouldPostProcess = false;
-                } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
-                    Log.e(TAG, "Unable to stop playback", e);
-                    callback.onPlaybackEnded(null, true);
-                    stop();
-                }
-            }
-            if (shouldPostProcess) {
+                remoteMediaClient.stop();
                 // Otherwise we rely on the chromecast callback to tell us the playback has stopped.
-                callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, nextMedia != null);
+                callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, false);
+            } else {
+                callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, true);
             }
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,
                     currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
-        }*/
+        }
 
         FutureTask<?> future = new FutureTask<>(() -> {}, null);
         future.run();
