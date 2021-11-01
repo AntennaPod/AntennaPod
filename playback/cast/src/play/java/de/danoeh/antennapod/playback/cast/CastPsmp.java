@@ -15,12 +15,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.Nullable;
 import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaLoadOptions;
 import com.google.android.gms.cast.MediaLoadRequestData;
 import com.google.android.gms.cast.MediaSeekOptions;
 import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
-import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -48,6 +48,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     private final RemoteMediaClient remoteMediaClient;
 
     private final AtomicBoolean isBuffering;
+    private float playbackRate = 1.0f;
 
     private final AtomicBoolean startWhenPrepared;
 
@@ -496,12 +497,14 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
-        //Can be safely ignored as neither set speed not skipSilence is supported
+        playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
+                Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
+        remoteMediaClient.setPlaybackRate(playbackRate);
     }
 
     @Override
     public float getPlaybackSpeed() {
-        return 1;
+        return playbackRate;
     }
 
     @Override
