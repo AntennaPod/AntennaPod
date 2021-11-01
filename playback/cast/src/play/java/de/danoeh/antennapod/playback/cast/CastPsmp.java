@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.playback.cast;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
@@ -29,6 +28,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -36,9 +36,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class CastPsmp extends PlaybackServiceMediaPlayer {
 
-    public static final String TAG = "RemotePSMP";
-
-    public static final int CAST_ERROR = 3001;
+    public static final String TAG = "CastPSMP";
 
     public static final int CAST_ERROR_PRIORITY_HIGH = 3005;
 
@@ -75,18 +73,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
         //remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
-    }
-
-    public void init() {
-        /*try {
-            if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
-                onRemoteMediaPlayerStatusUpdated();
-            }
-        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            Log.e(TAG, "Unable to do initial check for loaded media", e);
-        }
-
-        castMgr.addCastConsumer(castConsumer);*/
     }
 
     private final RemoteMediaClient.Callback remoteMediaClientCallback = new RemoteMediaClient.Callback() {
@@ -336,7 +322,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             return;
         }
 
-        /*if (media != null) {
+        if (media != null) {
             if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())
                     && playerStatus == PlayerStatus.PLAYING) {
                 // episode is already playing -> ignore method call
@@ -344,14 +330,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 return;
             } else {
                 // set temporarily to pause in order to update list with current position
-                boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
-                int position = media.getPosition();
-                try {
-                    isPlaying = castMgr.isRemoteMediaPlaying();
-                    position = (int) castMgr.getCurrentMediaPosition();
-                } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-                    Log.e(TAG, "Unable to determine whether media was playing, falling back to stored player status", e);
-                }
+                boolean isPlaying = remoteMediaClient.isPlaying();
+                int position = (int) remoteMediaClient.getApproximateStreamPosition();
                 if (isPlaying) {
                     callback.onPlaybackPause(media, position);
                 }
@@ -359,10 +339,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     final Playable oldMedia = media;
                     callback.onPostPlayback(oldMedia, false, false, true);
                 }
-
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
-        }*/
+        }
 
         this.media = playable;
         remoteMedia = remoteVersion(playable);
@@ -381,9 +360,10 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public void resume() {
-        /* int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+        int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
-                        media.getLastPlayedTime());*/
+                        media.getLastPlayedTime());
+        seekTo(newPosition);
         remoteMediaClient.play();
     }
 
@@ -399,9 +379,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             setPlayerStatus(PlayerStatus.PREPARING, media);
             int position = media.getPosition();
             if (position > 0) {
-                /*position = RewindAfterPauseUtils.calculatePositionWithRewind(
+                position = RewindAfterPauseUtils.calculatePositionWithRewind(
                         position,
-                        media.getLastPlayedTime());*/
+                        media.getLastPlayedTime());
             }
             remoteMediaClient.load(new MediaLoadRequestData.Builder()
                     .setMediaInfo(remoteMedia)
@@ -443,7 +423,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         if (retVal == INVALID_TIME && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
-        Log.d(TAG, "getDuration() -> " + retVal);
         return retVal;
     }
 
@@ -453,7 +432,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         if (retVal <= 0 && media != null && media.getPosition() >= 0) {
             retVal = media.getPosition();
         }
-        Log.d(TAG, "getPosition() -> " + retVal);
         return retVal;
     }
 

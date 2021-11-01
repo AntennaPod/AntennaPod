@@ -5,4 +5,6 @@ dependencies {
     implementation project(':model')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+
+    testImplementation 'junit:junit:4.13'
 }

@@ -83,8 +83,10 @@ public class MediaInfoCreator {
                 metadata.putString(MediaMetadata.KEY_SUBTITLE, subtitle);
             }
 
-            if (!TextUtils.isEmpty(feedItem.getImageLocation())) {
-                metadata.addImage(new WebImage(Uri.parse(feedItem.getImageLocation())));
+            // Manual because cast does not support embedded images
+            String url = feedItem.getImageUrl() == null ? feedItem.getFeed().getImageUrl() : feedItem.getImageUrl();
+            if (!TextUtils.isEmpty(url)) {
+                metadata.addImage(new WebImage(Uri.parse(url)));
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(media.getItem().getPubDate());

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.playback.base;
 
 import org.junit.Test;
 

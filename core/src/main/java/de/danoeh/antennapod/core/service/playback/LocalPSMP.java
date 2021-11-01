@@ -41,7 +41,7 @@ import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
