@@ -165,9 +165,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         if (playable == null) {
             return null;
         }
-        /*if (CastUtils.matches(remoteMedia, playable)) {
+        if (CastUtils.matches(remoteMedia, playable)) {
             return remoteMedia;
-        }*/
+        }
         if (playable instanceof FeedMedia) {
             return MediaInfoCreator.from((FeedMedia) playable);
         }
@@ -188,7 +188,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         int state = status.getPlayerState();
         int oldState = remoteState;
         remoteMedia = status.getMediaInfo();
-        boolean mediaChanged = false; /*!CastUtils.matches(remoteMedia, media);*/
+        boolean mediaChanged = !CastUtils.matches(remoteMedia, media);
         boolean stateChanged = state != oldState;
         if (!mediaChanged && !stateChanged) {
             Log.d(TAG, "Both media and state haven't changed, so nothing to do");
@@ -274,8 +274,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                         endPlayback(true, false, true, true);
                         return;
                     case MediaStatus.IDLE_REASON_ERROR:
-                        Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
-                        callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, 0); //R.string.cast_failed_media_error_skipping);
+                        Log.w(TAG, "Got an error status from the Chromecast. "
+                                + "Skipping, if possible, to the next episode...");
+                        callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, 0);
                         endPlayback(false, false, true, true);
                         return;
                 }
@@ -586,14 +587,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         FutureTask<?> future = new FutureTask<>(() -> {}, null);
         future.run();
         return future;
-    }
-
-    private void stop() {
-        if (playerStatus == PlayerStatus.INDETERMINATE) {
-            setPlayerStatus(PlayerStatus.STOPPED, null);
-        } else {
-            Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
-        }
     }
 
     @Override

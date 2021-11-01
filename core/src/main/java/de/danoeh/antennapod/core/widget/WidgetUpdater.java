@@ -157,36 +157,32 @@ public abstract class WidgetUpdater {
             views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_play);
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            for (int id : widgetIds) {
-                Bundle options = manager.getAppWidgetOptions(id);
-                SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
-                int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int columns = getCellsForSize(minWidth);
-                if (columns < 3) {
-                    views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
-                } else {
-                    views.setViewVisibility(R.id.layout_center, View.VISIBLE);
-                }
-                boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
-                boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
-                boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-
-                if (showRewind || showSkip || showFastForward) {
-                    views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
-                    views.setInt(R.id.butPlay, "setVisibility", View.GONE);
-                    views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
-                    views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
-                    views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
-                }
-
-                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
-                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
-
-                manager.updateAppWidget(id, views);
+        for (int id : widgetIds) {
+            Bundle options = manager.getAppWidgetOptions(id);
+            SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            int columns = getCellsForSize(minWidth);
+            if (columns < 3) {
+                views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
+            } else {
+                views.setViewVisibility(R.id.layout_center, View.VISIBLE);
             }
-        } else {
-            manager.updateAppWidget(playerWidget, views);
+            boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
+            boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
+            boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+
+            if (showRewind || showSkip || showFastForward) {
+                views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
+                views.setInt(R.id.butPlay, "setVisibility", View.GONE);
+                views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
+                views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
+                views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+            }
+
+            int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+            views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+
+            manager.updateAppWidget(id, views);
         }
     }
 

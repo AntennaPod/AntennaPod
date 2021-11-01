@@ -595,7 +595,6 @@
     <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
-    <string name="import_select_file">Select file to import</string>
     <string name="successful_import_label">Import successful</string>
     <string name="import_ok">Please press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
@@ -663,7 +662,6 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
-    <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
@@ -804,19 +802,7 @@
     <string name="subscription_num_columns">Number of columns</string>
 
     <!-- Casting -->
-    <string name="cast_media_route_menu_title">Play on&#8230;</string>
     <string name="cast_disconnect_label">Disconnect the cast session</string>
-    <string name="cast_not_castable">Media selected is not compatible with cast device</string>
-    <string name="cast_failed_to_play">Failed to start the playback of media</string>
-    <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
-    <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
-    <string name="cast_failed_setting_volume">Failed to set the volume</string>
-    <string name="cast_failed_no_connection">No connection to the cast device is present</string>
-    <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
-    <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
-    <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
-    <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
-    <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
 
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>

@@ -895,7 +895,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
-            return true;//flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
+            return true;
         }
 
         @Override
