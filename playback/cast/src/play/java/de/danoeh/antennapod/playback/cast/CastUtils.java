@@ -1,20 +1,7 @@
 package de.danoeh.antennapod.playback.cast;
 
 import android.content.ContentResolver;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-
-import java.util.Calendar;
-import java.util.List;
-
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.common.images.WebImage;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
