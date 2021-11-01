@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.base;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -31,20 +31,20 @@ public abstract class PlaybackServiceMediaPlayer {
     /**
      * Return value of some PSMP methods if the method call failed.
      */
-    static final int INVALID_TIME = -1;
+    public static final int INVALID_TIME = -1;
 
     private volatile PlayerStatus oldPlayerStatus;
-    volatile PlayerStatus playerStatus;
+    protected volatile PlayerStatus playerStatus;
 
     /**
      * A wifi-lock that is acquired if the media file is being streamed.
      */
     private WifiManager.WifiLock wifiLock;
 
-    final PSMPCallback callback;
-    final Context context;
+    protected final PSMPCallback callback;
+    protected final Context context;
 
-    PlaybackServiceMediaPlayer(@NonNull Context context,
+    protected PlaybackServiceMediaPlayer(@NonNull Context context,
                                @NonNull PSMPCallback callback){
         this.context = context;
         this.callback = callback;
@@ -281,7 +281,7 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     protected abstract boolean shouldLockWifi();
 
-    final synchronized void acquireWifiLockIfNecessary() {
+    protected final synchronized void acquireWifiLockIfNecessary() {
         if (shouldLockWifi()) {
             if (wifiLock == null) {
                 wifiLock = ((WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE))
@@ -292,7 +292,7 @@ public abstract class PlaybackServiceMediaPlayer {
         }
     }
 
-    final synchronized void releaseWifiLockIfNecessary() {
+    protected final synchronized void releaseWifiLockIfNecessary() {
         if (wifiLock != null && wifiLock.isHeld()) {
             wifiLock.release();
         }
@@ -313,7 +313,8 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param position  The position to be set to the current Playable object in case playback started or paused.
      *                  Will be ignored if given the value of {@link #INVALID_TIME}.
      */
-    final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
+    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus,
+                                                      Playable newMedia, int position) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
 
         this.oldPlayerStatus = playerStatus;
@@ -339,7 +340,7 @@ public abstract class PlaybackServiceMediaPlayer {
     /**
      * @see #setPlayerStatus(PlayerStatus, Playable, int)
      */
-    final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    protected final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         setPlayerStatus(newStatus, newMedia, INVALID_TIME);
     }
 
@@ -371,7 +372,7 @@ public abstract class PlaybackServiceMediaPlayer {
         public PlayerStatus playerStatus;
         public Playable playable;
 
-        PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
+        public PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
             this.oldPlayerStatus = oldPlayerStatus;
             this.playerStatus = playerStatus;
             this.playable = playable;

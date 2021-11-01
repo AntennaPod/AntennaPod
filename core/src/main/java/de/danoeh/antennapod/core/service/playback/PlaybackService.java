@@ -46,6 +46,8 @@ import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.core.event.PlayerErrorEvent;
 import de.danoeh.antennapod.core.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

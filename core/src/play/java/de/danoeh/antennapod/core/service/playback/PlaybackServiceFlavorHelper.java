@@ -2,16 +2,10 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.wearable.media.MediaControlConstants;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.cast.CastPsmp;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -90,10 +84,10 @@ public class PlaybackServiceFlavorHelper {
 
     boolean onMediaPlayerInfo(Context context, int code, @StringRes int resourceId) {
         switch (code) {
-            case RemotePSMP.CAST_ERROR:
+            case CastPsmp.CAST_ERROR:
                 EventBus.getDefault().post(new MessageEvent(context.getString(resourceId)));
                 return true;
-            case RemotePSMP.CAST_ERROR_PRIORITY_HIGH:
+            case CastPsmp.CAST_ERROR_PRIORITY_HIGH:
                 Toast.makeText(context, resourceId, Toast.LENGTH_SHORT).show();
                 return true;
             default:
@@ -178,7 +172,7 @@ public class PlaybackServiceFlavorHelper {
         }
         callback.sendNotificationBroadcast(PlaybackService.NOTIFICATION_TYPE_RELOAD,
                 PlaybackService.EXTRA_CODE_CAST);
-        RemotePSMP remotePSMP = new RemotePSMP(context, callback.getMediaPlayerCallback());
+        CastPsmp remotePSMP = new CastPsmp(context, callback.getMediaPlayerCallback());
         switchMediaPlayer(remotePSMP, info, wasLaunched);
         remotePSMP.init();
         // hardware volume buttons control the remote device volume

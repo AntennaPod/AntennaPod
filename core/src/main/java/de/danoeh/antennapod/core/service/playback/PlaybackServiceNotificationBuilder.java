@@ -31,6 +31,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {

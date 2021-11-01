@@ -2,8 +2,8 @@ package de.test.antennapod.service.playback;
 
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 
 public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallback {
 

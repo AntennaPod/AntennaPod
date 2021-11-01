@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapod.playback.cast;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -7,27 +7,21 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import de.danoeh.antennapod.core.cast.MediaInfoCreator;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.cast.CastUtils;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.model.playback.RemoteMedia;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
  */
-public class RemotePSMP extends PlaybackServiceMediaPlayer {
+public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     public static final String TAG = "RemotePSMP";
 
@@ -44,7 +38,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     private final AtomicBoolean startWhenPrepared;
 
-    public RemotePSMP(@NonNull Context context, @NonNull PSMPCallback callback) {
+    public CastPsmp(@NonNull Context context, @NonNull PSMPCallback callback) {
         super(context, callback);
 
         //castMgr = CastManager.getInstance();

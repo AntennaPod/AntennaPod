@@ -19,6 +19,8 @@ import de.danoeh.antennapod.core.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.core.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -147,7 +149,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     public LocalPSMP(@NonNull Context context,
-                     @NonNull PSMPCallback callback) {
+                     @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback) {
         super(context, callback);
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new PlayerLock();

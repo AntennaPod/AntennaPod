@@ -3,6 +3,9 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 dependencies {
+    implementation project(':model')
+    implementation project(':playback:base')
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
 
