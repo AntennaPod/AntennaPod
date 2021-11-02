@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event.settings;
+package de.danoeh.antennapod.event.settings;
 
 public class SkipIntroEndingChangedEvent {
     private final int skipIntro;

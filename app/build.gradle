@@ -111,6 +111,7 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation project(":event")
     implementation project(':model')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
