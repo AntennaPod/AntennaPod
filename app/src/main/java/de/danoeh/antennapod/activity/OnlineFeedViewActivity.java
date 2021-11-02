@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.LightingColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -451,8 +450,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         final int MAX_LINES_COLLAPSED = 10;
         description.setMaxLines(MAX_LINES_COLLAPSED);
         description.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
-                    && description.getMaxLines() > MAX_LINES_COLLAPSED) {
+            if (description.getMaxLines() > MAX_LINES_COLLAPSED) {
                 description.setMaxLines(MAX_LINES_COLLAPSED);
             } else {
                 description.setMaxLines(2000);
