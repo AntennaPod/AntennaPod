@@ -16,10 +16,14 @@ public class FileNameGenerator {
     public static final int MAX_FILENAME_LENGTH = 242; // limited by CircleCI
     private static final int MD5_HEX_LENGTH = 32;
 
-    private static final char[] validChars =
-            ("abcdefghijklmnopqrstuvwxyz"
+    private static final String englishValidChars = "abcdefghijklmnopqrstuvwxyz"
             + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "0123456789"
+            + "0123456789";
+    private static final String persianValidChars = "ئءاآبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیي"
+            + "۰۱۲۳۴۵۶۷۸۹";
+    private static final char[] validChars =
+            (englishValidChars
+            + persianValidChars
             + " _-").toCharArray();
 
     private FileNameGenerator() {
