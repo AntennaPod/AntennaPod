@@ -44,6 +44,13 @@ public class FilenameGeneratorTest {
     }
 
     @Test
+    public void testGenerateFileName3() throws Exception {
+        String result = FileNameGenerator.generateFileName("این یک نام معتبر است");
+        assertEquals(result, "این یک نام معتبر است");
+        createFiles(result);
+    }
+
+    @Test
     public void testFeedTitleContainsApostrophe() {
         String result = FileNameGenerator.generateFileName("Feed's Title ...");
         assertEquals("Feeds Title", result);
@@ -59,6 +66,18 @@ public class FilenameGeneratorTest {
     public void testFeedTitleContainsAccents() {
         String result = FileNameGenerator.generateFileName("Äàáâãå");
         assertEquals("Aaaaaa", result);
+    }
+
+    @Test
+    public void testFeedTitleContainsPersianComma() throws Exception {
+        String result = FileNameGenerator.generateFileName("سلام، سلام");
+        assertEquals(result, "سلام سلام");
+    }
+
+    @Test
+    public void testFeedTitleContainsPersianNumbers() throws Exception {
+        String result = FileNameGenerator.generateFileName("پادکست قسمت ۱۲۳");
+        assertEquals(result, "پادکست قسمت ۱۲۳");
     }
 
     @Test
