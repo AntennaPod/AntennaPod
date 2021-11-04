@@ -65,7 +65,7 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable() || FeedItemUtil.isPlaying(item.getMedia())
+                    if (!item.isAutoDownloadable(System.currentTimeMillis()) || FeedItemUtil.isPlaying(item.getMedia())
                             || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }

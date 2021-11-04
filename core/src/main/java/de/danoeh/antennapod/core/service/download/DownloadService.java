@@ -321,18 +321,8 @@ public class DownloadService extends Service {
                     if (item == null) {
                         return;
                     }
-                    boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
-                    boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
-                    boolean wrongSize = status.getReason() == DownloadError.ERROR_IO_WRONG_SIZE;
-
-                    if (! (unknownHost || unsupportedType || wrongSize)) {
-                        try {
-                            DBWriter.saveFeedItemAutoDownloadFailed(item).get();
-                        } catch (ExecutionException | InterruptedException e) {
-                            Log.d(TAG, "Ignoring exception while setting item download status");
-                            e.printStackTrace();
-                        }
-                    }
+                    item.increaseFailedAutoDownloadAttempts(System.currentTimeMillis());
+                    DBWriter.setFeedItem(item);
                     // to make lists reload the failed item, we fake an item update
                     EventBus.getDefault().post(FeedItemEvent.updated(item));
                 }

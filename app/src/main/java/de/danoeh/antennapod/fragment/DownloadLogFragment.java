@@ -113,7 +113,7 @@ public class DownloadLogFragment extends ListFragment {
             if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 FeedMedia media = DBReader.getFeedMedia(downloadRequest.getFeedfileId());
                 FeedItem feedItem = media.getItem();
-                feedItem.setAutoDownload(false);
+                feedItem.disableAutoDownload();
                 DBWriter.setFeedItem(feedItem);
             }
         } else if (item instanceof DownloadStatus) {
