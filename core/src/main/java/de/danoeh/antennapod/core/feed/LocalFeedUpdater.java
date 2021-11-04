@@ -178,7 +178,7 @@ public class LocalFeedUpdater {
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
         FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
                 file.getName(), new Date(file.lastModified()), FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
+        item.disableAutoDownload();
 
         long size = file.length();
         FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),

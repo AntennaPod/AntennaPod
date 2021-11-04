@@ -5,6 +5,4 @@ dependencies {
     implementation project(':model')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
 }

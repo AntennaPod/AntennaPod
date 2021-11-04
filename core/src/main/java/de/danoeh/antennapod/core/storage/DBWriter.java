@@ -950,25 +950,6 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
-        return dbExec.submit(() -> {
-            int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
-            long autoDownload;
-            if (!feedItem.getAutoDownload() || failedAttempts >= 10) {
-                autoDownload = 0; // giving up, disable auto download
-                feedItem.setAutoDownload(false);
-            } else {
-                long now = System.currentTimeMillis();
-                autoDownload = (now / 10) * 10 + failedAttempts;
-            }
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemAutoDownload(feedItem, autoDownload);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
     /**
      * Set filter of the feed
      *

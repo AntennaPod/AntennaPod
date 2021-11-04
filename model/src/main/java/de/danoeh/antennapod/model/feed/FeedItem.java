@@ -64,12 +64,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient List<Chapter> chapters;
     private String imageUrl;
 
-    /*
-     *   0: auto download disabled
-     *   1: auto download enabled (default)
-     * > 1: auto download enabled, (approx.) timestamp of the last failed attempt
-     *      where last digit denotes the number of failed attempts
-     */
     private long autoDownload = 1;
 
     /**
@@ -361,15 +355,18 @@ public class FeedItem extends FeedComponent implements Serializable {
         return hasChapters;
     }
 
-    public void setAutoDownload(boolean autoDownload) {
-        this.autoDownload = autoDownload ? 1 : 0;
+    public void disableAutoDownload() {
+        this.autoDownload = 0;
     }
 
-    public boolean getAutoDownload() {
-        return this.autoDownload > 0;
+    public long getAutoDownloadAttemptsAndTime() {
+        return autoDownload;
     }
 
     public int getFailedAutoDownloadAttempts() {
+        // 0: auto download disabled
+        // 1: auto download enabled (default)
+        // > 1: auto download enabled, timestamp of last failed attempt, last digit denotes number of failed attempts
         if (autoDownload <= 1) {
             return 0;
         }
@@ -380,23 +377,33 @@ public class FeedItem extends FeedComponent implements Serializable {
         return failedAttempts;
     }
 
-    public boolean isDownloaded() {
-        return media != null && media.isDownloaded();
+    public void increaseFailedAutoDownloadAttempts(long now) {
+        if (autoDownload == 0) {
+            return; // Don't re-enable
+        }
+        int failedAttempts = getFailedAutoDownloadAttempts() + 1;
+        if (failedAttempts >= 5) {
+            disableAutoDownload(); // giving up
+        } else {
+            autoDownload = (now / 10) * 10 + failedAttempts;
+        }
     }
 
-    public boolean isAutoDownloadable() {
+    public boolean isAutoDownloadable(long now) {
         if (media == null || media.isDownloaded() || autoDownload == 0) {
             return false;
         }
         if (autoDownload == 1) {
-            return true;
+            return true; // Never failed
         }
         int failedAttempts = getFailedAutoDownloadAttempts();
-        double magicValue = 1.767; // 1.767^(10[=#maxNumAttempts]-1) = 168 hours / 7 days
-        int millisecondsInHour = 3600000;
-        long waitingTime = (long) (Math.pow(magicValue, failedAttempts - 1) * millisecondsInHour);
-        long grace = TimeUnit.MINUTES.toMillis(5);
-        return System.currentTimeMillis() > (autoDownload + waitingTime - grace);
+        long waitingTime = TimeUnit.HOURS.toMillis((long) Math.pow(2, failedAttempts - 1));
+        long lastAttempt = (autoDownload / 10) * 10;
+        return now >= (lastAttempt + waitingTime);
+    }
+
+    public boolean isDownloaded() {
+        return media != null && media.isDownloaded();
     }
 
     /**

@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -30,11 +31,10 @@ import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
 import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -195,18 +195,12 @@ public class ExoPlayerWrapper implements IPlayer {
     public void setDataSource(String s, String user, String password)
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
-        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
-                ClientConfig.USER_AGENT, null,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                true);
+        OkHttpDataSourceFactory httpDataSourceFactory = new OkHttpDataSourceFactory(
+                AntennapodHttpClient.getHttpClient(), ClientConfig.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
             httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
-                    HttpDownloader.encodeCredentials(
-                            user,
-                            password,
-                            "ISO-8859-1"));
+                    HttpDownloader.encodeCredentials(user, password, "ISO-8859-1"));
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
