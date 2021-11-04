@@ -1,9 +1,6 @@
-package de.danoeh.antennapod.core.event;
+package de.danoeh.antennapod.event;
 
 import androidx.annotation.Nullable;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -57,15 +54,5 @@ public class QueueEvent {
 
     public static QueueEvent moved(FeedItem item, int newPosition) {
         return new QueueEvent(Action.MOVED, item, null, newPosition);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("action", action)
-                .append("item", item)
-                .append("items", items)
-                .append("position", position)
-                .toString();
     }
 }

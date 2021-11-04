@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.event.settings;
+package de.danoeh.antennapod.event.settings;
 
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 
