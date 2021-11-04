@@ -353,8 +353,6 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void onMediaChanged(boolean reloadUI);
 
-        boolean onMediaPlayerInfo(int code, @StringRes int resourceId);
-
         void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext);
 
         void onPlaybackStart(@NonNull Playable playable, int position);

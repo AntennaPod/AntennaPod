@@ -119,7 +119,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        if (!controller.isPlayingVideoLocally()) {
+        if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
                 destroyingDueToReload = true;

@@ -197,6 +197,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Is true if the service was running, but paused due to headphone disconnect
      */
     private static boolean transientPause = false;
+    /**
+     * Is true if a Cast Device is connected to the service.
+     */
+    private static volatile boolean isCasting = false;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
@@ -237,7 +241,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         boolean showVideoPlayer;
 
         if (isRunning) {
-            showVideoPlayer = currentMediaType == MediaType.VIDEO /*&& !isCasting()*/;
+            showVideoPlayer = currentMediaType == MediaType.VIDEO && !isCasting;
         } else {
             showVideoPlayer = PlaybackPreferences.getCurrentEpisodeIsVideo();
         }
@@ -254,7 +258,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * depends on the FeedMedia that is provided as an argument.
      */
     public static Intent getPlayerActivityIntent(Context context, Playable media) {
-        if (media.getMediaType() == MediaType.VIDEO /*&& !mediaPlayer.isCasting()*/) {
+        if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
             return new MainActivityStarter(context).withOpenPlayer().getIntent();
@@ -331,6 +335,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (media != null) {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
+        isCasting = mediaPlayer.isCasting();
     }
 
     @Override
@@ -807,7 +812,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public WidgetUpdater.WidgetState requestWidgetState() {
             return new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
-                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed(), isCasting());
+                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed(), isCasting);
         }
 
         @Override
@@ -836,11 +841,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
                 case PAUSED:
-                    if (UserPreferences.isPersistNotify() || mediaPlayer.isCasting()) {
+                    if (UserPreferences.isPersistNotify() || isCasting) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
                         updateNotificationAndMediaSession(newInfo.playable);
-                    } else if (!UserPreferences.isPersistNotify() && !mediaPlayer.isCasting()) {
+                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
                         // remove notification on pause
                         stateManager.stopForeground(true);
                     }
@@ -891,11 +896,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
             }
             updateNotificationAndMediaSession(getPlayable());
-        }
-
-        @Override
-        public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
-            return true;
         }
 
         @Override
@@ -1047,7 +1047,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            if (!isCasting()) {
+            if (!isCasting) {
                 stateManager.stopForeground(true);
                 stateManager.stopService();
             }
@@ -1056,7 +1056,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
         } else {
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                    isCasting() ? EXTRA_CODE_CAST :
+                    isCasting ? EXTRA_CODE_CAST :
                             (mediaType == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
         }
     }
@@ -1314,7 +1314,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (UserPreferences.setLockscreenBackground() && notificationBuilder.isIconCached()) {
             builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, notificationBuilder.getCachedIcon());
-        } else if (isCasting() && !TextUtils.isEmpty(p.getImageLocation())) {
+        } else if (isCasting && !TextUtils.isEmpty(p.getImageLocation())) {
             // In the absence of metadata art, the controller dialog takes care of creating it.
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, p.getImageLocation());
         }
@@ -1359,7 +1359,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setPlayable(playable);
         notificationBuilder.setMediaSessionToken(mediaSession.getSessionToken());
         notificationBuilder.setPlayerStatus(playerStatus);
-        notificationBuilder.setCasting(isCasting());
+        notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -1382,7 +1382,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
         Log.d(TAG, "startForegroundIfPlaying: " + status);
         if (stateManager.hasReceivedValidStartCommand()) {
-            if (isCasting() || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
+            if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
                     || status == PlayerStatus.SEEKING) {
                 stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                 Log.d(TAG, "foreground");
@@ -1534,7 +1534,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void pauseIfPauseOnDisconnect() {
         Log.d(TAG, "pauseIfPauseOnDisconnect()");
-        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
+        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting) {
             transientPause = true;
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
@@ -1636,8 +1636,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return currentMediaType;
     }
 
-    public boolean isCasting() {
-        return mediaPlayer.isCasting();
+    public static boolean isCasting() {
+        return isCasting;
     }
 
     public void resume() {

@@ -13,6 +13,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.Nullable;
+import com.google.android.gms.cast.MediaError;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaLoadOptions;
 import com.google.android.gms.cast.MediaLoadRequestData;
@@ -21,6 +22,7 @@ import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -38,8 +40,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     public static final String TAG = "CastPSMP";
 
-    public static final int CAST_ERROR_PRIORITY_HIGH = 3005;
-
     private volatile Playable media;
     private volatile MediaType mediaType;
     private volatile MediaInfo remoteMedia;
@@ -48,7 +48,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     private final RemoteMediaClient remoteMediaClient;
 
     private final AtomicBoolean isBuffering;
-    private float playbackRate = 1.0f;
 
     private final AtomicBoolean startWhenPrepared;
 
@@ -72,20 +71,20 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         mediaType = null;
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
-        //remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
+        remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
     }
 
     private final RemoteMediaClient.Callback remoteMediaClientCallback = new RemoteMediaClient.Callback() {
         @Override
         public void onMetadataUpdated() {
             super.onMetadataUpdated();
-            //RemotePSMP.this.onRemoteMediaPlayerStatusUpdated();
+            onRemoteMediaPlayerStatusUpdated();
         }
 
         @Override
         public void onPreloadStatusUpdated() {
             super.onPreloadStatusUpdated();
-            //RemotePSMP.this.onRemoteMediaPlayerStatusUpdated();
+            onRemoteMediaPlayerStatusUpdated();
         }
 
         @Override
@@ -93,54 +92,11 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             super.onStatusUpdated();
             onRemoteMediaPlayerStatusUpdated();
         }
-/*
-        @Override
-        public void onMediaLoadResult(int statusCode) {
-            if (playerStatus == PlayerStatus.PREPARING) {
-                if (statusCode == CastStatusCodes.SUCCESS) {
-                    setPlayerStatus(PlayerStatus.PREPARED, media);
-                    if (media.getDuration() == 0) {
-                        Log.d(TAG, "Setting duration of media");
-                        try {
-                            media.setDuration((int) castMgr.getMediaDuration());
-                        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-                            Log.e(TAG, "Unable to get remote media's duration");
-                        }
-                    }
-                } else if (statusCode != CastStatusCodes.REPLACED){
-                    Log.d(TAG, "Remote media failed to load");
-                    setPlayerStatus(PlayerStatus.INITIALIZED, media);
-                }
-            } else {
-                Log.d(TAG, "onMediaLoadResult called, but Player Status wasn't in preparing state, so we ignore the result");
-            }
-        }
 
         @Override
-        public void onApplicationStatusChanged(String appStatus) {
-            if (playerStatus != PlayerStatus.PLAYING) {
-                Log.d(TAG, "onApplicationStatusChanged, but no media was playing");
-                return;
-            }
-            boolean playbackEnded = false;
-            try {
-                int standbyState = castMgr.getApplicationStandbyState();
-                Log.d(TAG, "standbyState: " + standbyState);
-                playbackEnded = standbyState == Cast.STANDBY_STATE_YES;
-            } catch (IllegalStateException e) {
-                Log.d(TAG, "unable to get standbyState on onApplicationStatusChanged()");
-            }
-            if (playbackEnded) {
-                // This is an unconventional thing to occur...
-                Log.w(TAG, "Somehow, Chromecast went from playing directly to standby mode");
-                endPlayback(false, false, true, true);
-            }
+        public void onMediaError(@NonNull MediaError mediaError) {
+            EventBus.getDefault().post(new PlayerErrorEvent(mediaError.getReason()));
         }
-
-        @Override
-        public void onFailed(int resourceId, int statusCode) {
-            callback.onMediaPlayerInfo(CAST_ERROR, resourceId);
-        }*/
     };
 
     private void setBuffering(boolean buffering) {
@@ -276,7 +232,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. "
                                 + "Skipping, if possible, to the next episode...");
-                        callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, 0);
+                        EventBus.getDefault().post(new PlayerErrorEvent("Chromecast error code 1"));
                         endPlayback(false, false, true, true);
                         return;
                 }
@@ -309,10 +265,11 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
      *
      * @see #playMediaObject(Playable, boolean, boolean, boolean)
      */
-    private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
+    private void playMediaObject(@NonNull final Playable playable, final boolean forceReset,
+                         final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable, castContext)) {
             Log.d(TAG, "media provided is not compatible with cast device");
-            callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, android.R.string.emptyPhoneNumber);//R.string.cast_not_castable);
+            EventBus.getDefault().post(new PlayerErrorEvent("Media not compatible with cast device"));
             Playable nextPlayable = playable;
             do {
                 nextPlayable = callback.getNextInQueue(nextPlayable);
@@ -448,14 +405,15 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
-        playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
+        double playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
                 Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
         remoteMediaClient.setPlaybackRate(playbackRate);
     }
 
     @Override
     public float getPlaybackSpeed() {
-        return playbackRate;
+        MediaStatus status = remoteMediaClient.getMediaStatus();
+        return status != null ? (float) status.getPlaybackRate() : 1.0f;
     }
 
     @Override

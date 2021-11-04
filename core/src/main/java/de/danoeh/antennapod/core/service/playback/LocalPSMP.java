@@ -1081,7 +1081,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 EventBus.getDefault().post(BufferUpdateEvent.ended());
                 return true;
             default:
-                return callback.onMediaPlayerInfo(what, 0);
+                return true;
         }
     }
 

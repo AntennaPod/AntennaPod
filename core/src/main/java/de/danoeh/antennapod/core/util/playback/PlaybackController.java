@@ -248,14 +248,12 @@ public abstract class PlaybackController {
             case PAUSED:
                 onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
-                if (playbackService != null && !playbackService.isCasting()
-                        && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
                 }
                 break;
             case PLAYING:
-                if (playbackService != null && !playbackService.isCasting()
-                        && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
                 }
@@ -504,7 +502,7 @@ public abstract class PlaybackController {
     }
 
     public boolean isPlayingVideoLocally() {
-        if (playbackService != null && playbackService.isCasting()) {
+        if (PlaybackService.isCasting()) {
             return false;
         } else if (playbackService != null) {
             return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
