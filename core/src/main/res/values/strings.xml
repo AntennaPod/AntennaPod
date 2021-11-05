@@ -850,4 +850,9 @@
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+
+    <string name="shortcut_unsupported_device">Device does not support creating shortcuts.</string>
+    <string name="shortcut_subscription_label">Subscription</string>
+    <string name="shortcut_select_subscription">Select subscription</string>
+    <string name="add_shortcut">Add Shortcut</string>
 </resources>
