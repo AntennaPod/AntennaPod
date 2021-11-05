@@ -22,6 +22,8 @@ import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -54,6 +56,9 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Nullable
     public static PlaybackServiceMediaPlayer getInstanceIfConnected(@NonNull Context context,
                                                                     @NonNull PSMPCallback callback) {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) != ConnectionResult.SUCCESS) {
+            return null;
+        }
         if (CastContext.getSharedInstance(context).getCastState() == CastState.CONNECTED) {
             return new CastPsmp(context, callback);
         } else {

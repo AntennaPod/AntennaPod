@@ -5,17 +5,25 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class CastStateListener implements SessionManagerListener<CastSession> {
     private final CastContext castContext;
 
     public CastStateListener(Context context) {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) != ConnectionResult.SUCCESS) {
+            castContext = null;
+            return;
+        }
         castContext = CastContext.getSharedInstance(context);
         castContext.getSessionManager().addSessionManagerListener(this, CastSession.class);
     }
 
     public void destroy() {
-        castContext.getSessionManager().removeSessionManagerListener(this, CastSession.class);
+        if (castContext != null) {
+            castContext.getSessionManager().removeSessionManagerListener(this, CastSession.class);
+        }
     }
 
     @Override

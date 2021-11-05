@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
