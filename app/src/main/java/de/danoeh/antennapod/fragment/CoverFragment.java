@@ -156,8 +156,13 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(), ((FeedMedia) media).getItem().getFeedId());
-        txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+        if (media instanceof FeedMedia) {
+            Intent openFeed = MainActivity.getIntentToOpenFeed(requireContext(),
+                    ((FeedMedia) media).getItem().getFeedId());
+            txtvPodcastTitle.setOnClickListener(v -> startActivity(openFeed));
+        } else {
+            txtvPodcastTitle.setOnClickListener(null);
+        }
         txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
