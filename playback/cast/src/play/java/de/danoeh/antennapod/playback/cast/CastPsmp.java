@@ -276,13 +276,14 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
      */
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset,
                          final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        if (!CastUtils.isCastable(playable, castContext)) {
+        if (!CastUtils.isCastable(playable, castContext.getSessionManager().getCurrentCastSession())) {
             Log.d(TAG, "media provided is not compatible with cast device");
             EventBus.getDefault().post(new PlayerErrorEvent("Media not compatible with cast device"));
             Playable nextPlayable = playable;
             do {
                 nextPlayable = callback.getNextInQueue(nextPlayable);
-            } while (nextPlayable != null && !CastUtils.isCastable(nextPlayable, castContext));
+            } while (nextPlayable != null && !CastUtils.isCastable(nextPlayable,
+                    castContext.getSessionManager().getCurrentCastSession()));
             if (nextPlayable != null) {
                 playMediaObject(nextPlayable, forceReset, stream, startWhenPrepared, prepareImmediately);
             }

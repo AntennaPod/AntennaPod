@@ -3,9 +3,10 @@ package de.danoeh.antennapod.playback.cast;
 import android.content.ContentResolver;
 import android.util.Log;
 import android.text.TextUtils;
+import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.common.images.WebImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -45,8 +46,8 @@ public class CastUtils {
     public static final int FORMAT_VERSION_VALUE = 1;
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
-    public static boolean isCastable(Playable media, CastContext castContext) {
-        if (media == null) {
+    public static boolean isCastable(Playable media, CastSession castSession) {
+        if (media == null || castSession == null || castSession.getCastDevice() == null) {
             return false;
         }
         if (media instanceof FeedMedia || media instanceof RemoteMedia) {
@@ -58,14 +59,13 @@ public class CastUtils {
                 return false; // Local feed
             }
             switch (media.getMediaType()) {
-                case UNKNOWN:
-                    return false;
                 case AUDIO:
-                    //return castContext.hasCapability(CastDevice.CAPABILITY_AUDIO_OUT, true);
+                    return castSession.getCastDevice().hasCapability(CastDevice.CAPABILITY_AUDIO_OUT);
                 case VIDEO:
-                    //return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_VIDEO_OUT, true);
+                    return castSession.getCastDevice().hasCapability(CastDevice.CAPABILITY_VIDEO_OUT);
+                default:
+                    return false;
             }
-            return true;
         }
         return false;
     }
