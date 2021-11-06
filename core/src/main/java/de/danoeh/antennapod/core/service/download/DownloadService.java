@@ -165,7 +165,7 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
+        if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
             Notification notification = notificationManager.updateNotifications(
                     requester.getNumberOfDownloads(), downloads);
             startForeground(R.id.notification_downloading, notification);
@@ -424,10 +424,14 @@ public class DownloadService extends Service {
         for (DownloadRequest request : requests) {
             onDownloadQueued(request, itemsEnqueued);
         }
+        handler.post(() -> {
+            postDownloaders();
+            stopServiceIfEverythingDone();
+        });
     }
 
     private List<? extends FeedItem> enqueueFeedItems(@NonNull List<? extends DownloadRequest> requests)
-        throws Exception {
+            throws Exception {
         List<FeedItem> feedItems = new ArrayList<>();
         for (DownloadRequest request : requests) {
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -447,7 +451,6 @@ public class DownloadService extends Service {
     private void onDownloadQueued(@NonNull DownloadRequest request,
                                   @NonNull List<? extends FeedItem> itemsEnqueued) {
         writeFileUrl(request);
-
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
@@ -459,10 +462,8 @@ public class DownloadService extends Service {
             handler.post(() -> {
                 downloads.add(downloader);
                 downloadExecutor.submit(downloader);
-                postDownloaders();
             });
         }
-        handler.post(this::stopServiceIfEverythingDone);
     }
 
     private static boolean isEnqueued(@NonNull DownloadRequest request,
