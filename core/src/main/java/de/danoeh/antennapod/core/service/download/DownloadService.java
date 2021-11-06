@@ -166,9 +166,6 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
-            Notification notification = notificationManager.updateNotifications(
-                    requester.getNumberOfDownloads(), downloads);
-            startForeground(R.id.notification_downloading, notification);
             setupNotificationUpdaterIfNecessary();
             syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
@@ -192,6 +189,10 @@ public class DownloadService extends Service {
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 
         downloadCompletionThread.start();
+
+        Notification notification = notificationManager.updateNotifications(
+                requester.getNumberOfDownloads(), downloads);
+        startForeground(R.id.notification_downloading, notification);
     }
 
     @Override
