@@ -132,6 +132,16 @@ public final class DBTasks {
                 iterator.remove();
             }
         }
+        if (feeds.size() > 200) { // Refreshing so many feeds is impractical
+            int startIndex = (int) (Math.random() * feeds.size());
+            if (startIndex + 200 <= feeds.size()) {
+                feeds = feeds.subList(startIndex, startIndex + 200);
+            } else {
+                List<Feed> first = feeds.subList(0, (startIndex + 200) % feeds.size());
+                feeds = feeds.subList(startIndex, feeds.size());
+                feeds.addAll(first);
+            }
+        }
         try {
             refreshFeeds(context, feeds, false, false, false);
         } catch (DownloadRequestException e) {

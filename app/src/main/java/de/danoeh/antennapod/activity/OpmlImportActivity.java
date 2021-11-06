@@ -91,6 +91,11 @@ public class OpmlImportActivity extends AppCompatActivity {
             Completable.fromAction(() -> {
                 DownloadRequester requester = DownloadRequester.getInstance();
                 SparseBooleanArray checked = viewBinding.feedlist.getCheckedItemPositions();
+                if (checked.size() > 200) {
+                    // People try to import lists with hundreds of subscriptions that they downloaded somewhere.
+                    // AntennaPod is made for manual subscription management, so this makes the app impossible to use.
+                    throw new IllegalStateException("Too many subscriptions");
+                }
                 for (int i = 0; i < checked.size(); i++) {
                     if (!checked.valueAt(i)) {
                         continue;
