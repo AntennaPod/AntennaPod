@@ -73,6 +73,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final PlayerLock playerLock;
     private final PlayerExecutor executor;
     private boolean useCallerThread = true;
+    private boolean isShutDown = false;
 
 
     private CountDownLatch seekLatch;
@@ -719,30 +720,20 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void shutdown() {
-        executor.shutdown();
         if (mediaPlayer != null) {
             try {
-                removeMediaPlayerErrorListener();
+                clearMediaPlayerListeners();
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();
                 }
             } catch (Exception ignore) { }
             mediaPlayer.release();
+            mediaPlayer = null;
         }
+        isShutDown = true;
+        executor.shutdown();
+        abandonAudioFocus();
         releaseWifiLockIfNecessary();
-    }
-
-    private void removeMediaPlayerErrorListener() {
-        if (mediaPlayer instanceof VideoPlayer) {
-            VideoPlayer vp = (VideoPlayer) mediaPlayer;
-            vp.setOnErrorListener((mp, what, extra) -> true);
-        } else if (mediaPlayer instanceof AudioPlayer) {
-            AudioPlayer ap = (AudioPlayer) mediaPlayer;
-            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
-        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
-            ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
-            ap.setOnErrorListener(message -> { });
-        }
     }
 
     /**
@@ -864,10 +855,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onAudioFocusChange(final int focusChange) {
+            if (isShutDown) {
+                return;
+            }
             if (!PlaybackService.isRunning) {
                 abandonAudioFocus();
                 Log.d(TAG, "onAudioFocusChange: PlaybackService is no longer running");
                 if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
+                    pausedBecauseOfTransientAudiofocusLoss = false;
                     new PlaybackServiceStarter(context, getPlayable())
                             .startWhenPrepared(true)
                             .streamIfLastWasStream()
@@ -1011,9 +1006,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         return stream;
     }
 
-    private IPlayer setMediaPlayerListeners(IPlayer mp) {
+    private void setMediaPlayerListeners(IPlayer mp) {
         if (mp == null || media == null) {
-            return mp;
+            return;
         }
         if (mp instanceof VideoPlayer) {
             if (media.getMediaType() != MediaType.VIDEO) {
@@ -1045,7 +1040,31 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
         }
-        return mp;
+    }
+
+    private void clearMediaPlayerListeners() {
+        if (mediaPlayer instanceof VideoPlayer) {
+            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            vp.setOnCompletionListener(x -> { });
+            vp.setOnSeekCompleteListener(x -> { });
+            vp.setOnErrorListener((mediaPlayer, i, i1) -> false);
+            vp.setOnBufferingUpdateListener((mediaPlayer, i) -> { });
+            vp.setOnInfoListener((mediaPlayer, i, i1) -> false);
+        } else if (mediaPlayer instanceof AudioPlayer) {
+            AudioPlayer ap = (AudioPlayer) mediaPlayer;
+            ap.setOnCompletionListener(x -> { });
+            ap.setOnSeekCompleteListener(x -> { });
+            ap.setOnErrorListener((x, y, z) -> false);
+            ap.setOnBufferingUpdateListener((arg0, percent) -> { });
+            ap.setOnInfoListener((arg0, what, extra) -> false);
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
+            ap.setOnCompletionListener(x -> { });
+            ap.setOnSeekCompleteListener(x -> { });
+            ap.setOnBufferingUpdateListener((arg0, percent) -> { });
+            ap.setOnErrorListener(x -> { });
+            ap.setOnInfoListener((arg0, what, extra) -> false);
+        }
     }
 
     private final MediaPlayer.OnCompletionListener audioCompletionListener =
