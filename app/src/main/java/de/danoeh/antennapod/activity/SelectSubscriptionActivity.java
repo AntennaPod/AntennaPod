@@ -42,30 +42,32 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
 
     private Disposable disposable;
     private volatile List<Feed> listItems;
-    private ArrayAdapter<String> adapter;
-    private Integer checkedPosition;
-    private String action;
 
     private SubscriptionSelectionActivityBinding viewBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(UserPreferences.getTranslucentTheme());
         super.onCreate(savedInstanceState);
-        action = getIntent().getAction();
 
         viewBinding = SubscriptionSelectionActivityBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        setTitle(R.string.shortcut_select_subscription);
+        setSupportActionBar(viewBinding.toolbar);
+
+        viewBinding.transparentBackground.setOnClickListener(v -> finish());
+        viewBinding.card.setOnClickListener(null);
 
         loadSubscriptions();
 
+        final Integer[] checkedPosition = new Integer[1];
         viewBinding.list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         viewBinding.list.setOnItemClickListener((listView, view1, position, rowId) ->
-                checkedPosition = position);
+                checkedPosition[0] = position
+        );
         viewBinding.shortcutBtn.setOnClickListener(view -> {
-            if (checkedPosition != null && Intent.ACTION_CREATE_SHORTCUT.equals(action)) {
-                getBitmapFromUrl(listItems.get(checkedPosition));
+            if (checkedPosition[0] != null && Intent.ACTION_CREATE_SHORTCUT.equals(
+                    getIntent().getAction())) {
+                getBitmapFromUrl(listItems.get(checkedPosition[0]));
             }
         });
 
@@ -121,20 +123,15 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
                 .load(feed.getImageUrl())
                 .listener(new RequestListener<Bitmap>() {
                     @Override
-                    public boolean onLoadFailed(@Nullable GlideException e,
-                                                Object model,
-                                                Target<Bitmap> target,
-                                                boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Bitmap> target, boolean isFirstResource) {
                         addShortcut(feed, null);
                         return true;
                     }
 
                     @Override
-                    public boolean onResourceReady(Bitmap resource,
-                                                   Object model,
-                                                   Target<Bitmap> target,
-                                                   DataSource dataSource,
-                                                   boolean isFirstResource) {
+                    public boolean onResourceReady(Bitmap resource, Object model,
+                            Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                         addShortcut(feed, resource);
                         return true;
                     }
@@ -159,12 +156,9 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
                             for (Feed feed: result) {
                                 titles.add(feed.getTitle());
                             }
-                            adapter = new ArrayAdapter<>(this,
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                                     R.layout.simple_list_item_multiple_choice_on_start, titles);
                             viewBinding.list.setAdapter(adapter);
                         }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }
-
-
-
