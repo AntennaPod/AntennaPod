@@ -39,7 +39,9 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider" />
+                android:clipToPadding="false"
+                android:layout_below="@id/divider"
+                android:paddingBottom="88dp" />
 
             <Button
                 android:id="@+id/shortcutBtn"
