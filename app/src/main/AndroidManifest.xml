@@ -315,21 +315,14 @@
         </activity>
 
         <activity android:name=".activity.SelectSubscriptionActivity"
-            android:label="@string/shortcut_select_subscription"
-            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
-            android:exported="false">
-        </activity>
-
-        <activity-alias
-            android:name=".activity.MainActivityAlias"
-            android:targetActivity=".activity.MainActivity"
             android:label="@string/shortcut_subscription_label"
             android:icon="@drawable/ic_folder_shortcut"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
-        </activity-alias>
+        </activity>
 
         <receiver
             android:name=".receiver.ConnectivityActionReceiver"

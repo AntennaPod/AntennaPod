@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -53,6 +53,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         viewBinding = SubscriptionSelectionActivityBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         setSupportActionBar(viewBinding.toolbar);
+        setTitle(R.string.shortcut_select_subscription);
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
@@ -88,39 +89,36 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
     }
 
     private void addShortcut(Feed feed, Bitmap bitmap) {
-        if (ShortcutManagerCompat.isRequestPinShortcutSupported(this)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(EXTRA_FEED_ID, feed.getId());
-            String id = "subscription-" + feed.getId();
-            IconCompat icon;
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(EXTRA_FEED_ID, feed.getId());
+        String id = "subscription-" + feed.getId();
+        IconCompat icon;
 
-            if (bitmap != null) {
-                icon = IconCompat.createWithAdaptiveBitmap(bitmap);
-            } else {
-                icon = IconCompat.createWithResource(this, R.drawable.ic_folder_shortcut);
-            }
-
-            ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, id)
-                    .setShortLabel(feed.getTitle())
-                    .setLongLabel(feed.getFeedTitle())
-                    .setIntent(intent)
-                    .setIcon(icon)
-                    .build();
-
-            ShortcutManagerCompat.requestPinShortcut(this, shortcut, null);
+        if (bitmap != null) {
+            icon = IconCompat.createWithAdaptiveBitmap(bitmap);
         } else {
-            Toast.makeText(this, R.string.shortcut_unsupported_device,
-                    Toast.LENGTH_SHORT).show();
+            icon = IconCompat.createWithResource(this, R.drawable.ic_folder_shortcut);
         }
 
+        ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, id)
+                .setShortLabel(feed.getTitle())
+                .setLongLabel(feed.getFeedTitle())
+                .setIntent(intent)
+                .setIcon(icon)
+                .build();
+
+        setResult(RESULT_OK, ShortcutManagerCompat.createShortcutResultIntent(this, shortcut));
+        finish();
     }
 
     private void getBitmapFromUrl(Feed feed) {
+        int iconSize = (int) (128 * getResources().getDisplayMetrics().density);
         Glide.with(this)
                 .asBitmap()
                 .load(feed.getImageUrl())
+                .apply(new RequestOptions().override(iconSize, iconSize))
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,

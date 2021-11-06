@@ -531,10 +531,6 @@ public class MainActivity extends CastEnabledActivity {
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             handleDeeplink(intent.getData());
-        } else if (Intent.ACTION_CREATE_SHORTCUT.equals(intent.getAction())) {
-            intent = new Intent(this, SelectSubscriptionActivity.class);
-            intent.setAction(Intent.ACTION_CREATE_SHORTCUT);
-            startActivity(intent);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
