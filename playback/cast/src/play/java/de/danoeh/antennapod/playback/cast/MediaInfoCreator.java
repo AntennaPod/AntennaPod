@@ -47,6 +47,7 @@ public class MediaInfoCreator {
         // Default id value
         metadata.putInt(CastUtils.KEY_MEDIA_ID, 0);
         metadata.putInt(CastUtils.KEY_FORMAT_VERSION, CastUtils.FORMAT_VERSION_VALUE);
+        metadata.putString(CastUtils.KEY_STREAM_URL, media.getStreamUrl());
 
         MediaInfo.Builder builder = new MediaInfo.Builder(media.getDownloadUrl())
                 .setContentType(media.getMimeType())
@@ -126,6 +127,7 @@ public class MediaInfoCreator {
         // A way to identify different casting media formats in case we change it in the future and
         // senders with different versions share a casting device.
         metadata.putInt(CastUtils.KEY_FORMAT_VERSION, CastUtils.FORMAT_VERSION_VALUE);
+        metadata.putString(CastUtils.KEY_STREAM_URL, media.getStreamUrl());
 
         MediaInfo.Builder builder = new MediaInfo.Builder(media.getStreamUrl())
                 .setContentType(media.getMime_type())

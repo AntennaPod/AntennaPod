@@ -1,6 +1,7 @@
 package de.test.antennapod.service.playback;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -41,8 +42,18 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
         return null;
     }
 
+    @Nullable
+    @Override
+    public Playable findMedia(@NonNull String url) {
+        return null;
+    }
+
     @Override
     public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
 
+    }
+
+    @Override
+    public void ensureMediaInfoLoaded(@NonNull Playable media) {
     }
 }

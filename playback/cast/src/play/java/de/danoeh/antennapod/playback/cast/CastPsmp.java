@@ -112,15 +112,16 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         }
     }
 
-    /*private Playable localVersion(MediaInfo info){
-        if (info == null) {
+    private Playable localVersion(MediaInfo info) {
+        if (info == null || info.getMetadata() == null) {
             return null;
         }
         if (CastUtils.matches(info, media)) {
             return media;
         }
-        return CastUtils.getPlayable(info, true);
-    } */
+        String streamUrl = info.getMetadata().getString(CastUtils.KEY_STREAM_URL);
+        return streamUrl == null ? CastUtils.makeRemoteMedia(info) : callback.findMedia(streamUrl);
+    }
 
     private MediaInfo remoteVersion(Playable playable) {
         if (playable == null) {
@@ -155,7 +156,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             Log.d(TAG, "Both media and state haven't changed, so nothing to do");
             return;
         }
-        Playable currentMedia = /*mediaChanged ? localVersion(remoteMedia) :*/ media;
+        Playable currentMedia = mediaChanged ? localVersion(remoteMedia) : media;
         Playable oldMedia = media;
         int position = (int) status.getStreamPosition();
         // check for incompatible states
@@ -170,8 +171,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             remoteState = state;
         }
 
-        if (mediaChanged && stateChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING &&
-                state != MediaStatus.PLAYER_STATE_IDLE) {
+        if (mediaChanged && stateChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING
+                && state != MediaStatus.PLAYER_STATE_IDLE) {
             callback.onPlaybackPause(null, INVALID_TIME);
             // We don't want setPlayerStatus to handle the onPlaybackPause callback
             setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
@@ -194,9 +195,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, currentMedia, position);
                 break;
             case MediaStatus.PLAYER_STATE_BUFFERING:
-                setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING) ?
-                        PlayerStatus.PREPARING : PlayerStatus.SEEKING,
-                        currentMedia,
+                setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING)
+                                ? PlayerStatus.PREPARING : PlayerStatus.SEEKING, currentMedia,
                         currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
@@ -240,6 +240,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                         EventBus.getDefault().post(new PlayerErrorEvent("Chromecast error code 1"));
                         endPlayback(false, false, true, true);
                         return;
+                    default:
+                        return;
                 }
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
@@ -248,7 +250,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 }
                 break;
             default:
-                Log.wtf(TAG, "Remote media state undetermined!");
+                Log.w(TAG, "Remote media state undetermined!");
         }
         if (mediaChanged) {
             callback.onMediaChanged(true);
@@ -259,13 +261,15 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
+    public void playMediaObject(@NonNull final Playable playable, final boolean stream,
+                                final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject() called");
         playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
     }
 
     /**
-     * Internal implementation of playMediaObject. This method has an additional parameter that allows the caller to force a media player reset even if
+     * Internal implementation of playMediaObject. This method has an additional parameter that
+     * allows the caller to force a media player reset even if
      * the given playable parameter is the same object as the currently playing media.
      *
      * @see #playMediaObject(Playable, boolean, boolean, boolean)
@@ -311,9 +315,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         this.mediaType = media.getMediaType();
         this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
-        //if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
-        //    ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
-        //}
+        callback.ensureMediaInfoLoaded(media);
         callback.onMediaChanged(true);
         setPlayerStatus(PlayerStatus.INITIALIZED, media);
         if (prepareImmediately) {
@@ -521,7 +523,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             boolean playNextEpisode = isPlaying && nextMedia != null;
             if (playNextEpisode) {
                 Log.d(TAG, "Playback of next episode will start immediately.");
-            } else if (nextMedia == null){
+            } else if (nextMedia == null) {
                 Log.d(TAG, "No more episodes available to play");
             } else {
                 Log.d(TAG, "Loading next episode, but not playing automatically.");
@@ -531,7 +533,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
                 // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
                 media = null;
-                playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
+                playMediaObject(nextMedia, false, true, playNextEpisode, playNextEpisode);
             }
         }
         if (shouldContinue || toStoppedState) {
@@ -547,7 +549,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
         }
 
-        FutureTask<?> future = new FutureTask<>(() -> {}, null);
+        FutureTask<?> future = new FutureTask<>(() -> { }, null);
         future.run();
         return future;
     }

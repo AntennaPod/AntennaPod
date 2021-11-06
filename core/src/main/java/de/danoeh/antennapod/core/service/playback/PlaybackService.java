@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -937,9 +938,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return PlaybackService.this.getNextInQueue(currentMedia);
         }
 
+        @Nullable
+        @Override
+        public Playable findMedia(@NonNull String url) {
+            FeedItem item = DBReader.getFeedItemByGuidOrEpisodeUrl(null, url);
+            return item != null ? item.getMedia() : null;
+        }
+
         @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
+        }
+
+        @Override
+        public void ensureMediaInfoLoaded(@NonNull Playable media) {
+            if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
+                ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
+            }
         }
     };
 

@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 
@@ -360,7 +361,12 @@ public abstract class PlaybackServiceMediaPlayer {
 
         Playable getNextInQueue(Playable currentMedia);
 
+        @Nullable
+        Playable findMedia(@NonNull String url);
+
         void onPlaybackEnded(MediaType mediaType, boolean stopPlaying);
+
+        void ensureMediaInfoLoaded(@NonNull Playable media);
     }
 
     /**
