@@ -350,10 +350,10 @@ public class PlaybackServiceTaskManager {
      * Cancels all tasks and shuts down the internal executor service of the PSTM. The object should not be used after
      * execution of this method.
      */
-    public synchronized void shutdown() {
+    public void shutdown() {
         EventBus.getDefault().unregister(this);
         cancelAllTasks();
-        schedExecutor.shutdown();
+        schedExecutor.shutdownNow();
     }
 
     private Runnable useMainThreadIfNecessary(Runnable runnable) {
