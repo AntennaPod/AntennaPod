@@ -17,7 +17,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -86,31 +85,33 @@ public class DownloadRequester implements DownloadStateProvider {
         return download(context, false, requests);
     }
 
+    public ArrayList<DownloadRequest> enqueue(DownloadRequest... requests) {
+        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>(requests.length);
+        for (DownloadRequest request : requests) {
+            if (downloads.containsKey(request.getSource())) {
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "DownloadRequest is already stored.");
+                }
+                continue;
+            }
+            downloads.put(request.getSource(), request);
+            requestsToSend.add(request);
+        }
+        return requestsToSend;
+    }
+
     private boolean download(@NonNull Context context, boolean cleanupMedia, DownloadRequest... requests) {
         if (requests.length <= 0) {
             return false;
         }
-        boolean result = false;
-
-        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>(requests.length);
-        for (DownloadRequest request : requests) {
-            if (downloads.containsKey(request.getSource())) {
-                if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
-                continue;
-            }
-            downloads.put(request.getSource(), request);
-
-            requestsToSend.add(request);
-            result = true;
-        }
+        ArrayList<DownloadRequest> requestsToSend = enqueue(requests);
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
         if (cleanupMedia) {
-            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, cleanupMedia);
+            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
         }
         ContextCompat.startForegroundService(context, launchIntent);
-
-        return result;
+        return !requestsToSend.isEmpty();
     }
 
     @Nullable
@@ -193,41 +194,26 @@ public class DownloadRequester implements DownloadStateProvider {
      */
     public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages,
                                            boolean force, boolean initiatedByUser) throws DownloadRequestException {
-        downloadFeeds(context, Collections.singletonList(feed), loadAllPages, force, initiatedByUser);
+        DownloadRequest request = createRequestForFeed(feed, loadAllPages, force, initiatedByUser);
+        if (request != null) {
+            download(context, request);
+        }
     }
 
-    /**
-     * Downloads a list of feeds.
-     *
-     * @param context The application's environment.
-     * @param feeds Feeds to download
-     * @param loadAllPages Set to true to download all pages
-     */
-    public synchronized void downloadFeeds(Context context, List<Feed> feeds, boolean loadAllPages,
-                                          boolean force, boolean initiatedByUser) throws DownloadRequestException {
-        List<DownloadRequest> requests = new ArrayList<>();
-        for (Feed feed : feeds) {
-            if (!feedFileValid(feed)) {
-                continue;
-            }
-            String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
-            String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            String lastModified = feed.isPaged() || force ? null : feed.getLastUpdate();
-
-            Bundle args = new Bundle();
-            args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
-            args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
-
-            DownloadRequest request = createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
-                    true, username, password, lastModified, true, args, initiatedByUser
-            );
-            if (request != null) {
-                requests.add(request);
-            }
+    public DownloadRequest createRequestForFeed(Feed feed, boolean loadAllPages,
+                                 boolean force, boolean initiatedByUser) throws DownloadRequestException {
+        if (!feedFileValid(feed)) {
+            return null;
         }
-        if (!requests.isEmpty()) {
-            download(context, requests.toArray(new DownloadRequest[0]));
-        }
+        String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
+        String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
+        String lastModified = feed.isPaged() || force ? null : feed.getLastUpdate();
+
+        Bundle args = new Bundle();
+        args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
+        args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
+        return createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
+                true, username, password, lastModified, true, args, initiatedByUser);
     }
 
     public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {

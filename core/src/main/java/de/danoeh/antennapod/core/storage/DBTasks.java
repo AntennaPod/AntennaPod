@@ -3,14 +3,16 @@ package de.danoeh.antennapod.core.storage;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
+import androidx.core.content.ContextCompat;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -120,23 +121,19 @@ public final class DBTasks {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
             return;
         }
-
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            throw new IllegalStateException("DBTasks.refreshAllFeeds() must not be called from the main thread.");
-        }
-
-        List<Feed> feeds = DBReader.getFeedList();
-        ListIterator<Feed> iterator = feeds.listIterator();
-        while (iterator.hasNext()) {
-            if (!iterator.next().getPreferences().getKeepUpdated()) {
-                iterator.remove();
+        new Thread(() -> {
+            List<Feed> feeds = DBReader.getFeedList();
+            for (Feed feed : feeds) {
+                if (feed.isLocalFeed() && feed.getPreferences().getKeepUpdated()) {
+                    LocalFeedUpdater.updateFeed(feed, context);
+                }
             }
-        }
-        try {
-            refreshFeeds(context, feeds, false, false, false);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-        }
+        }).start();
+
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putExtra(DownloadService.EXTRA_REFRESH_ALL, true);
+        launchIntent.putExtra(DownloadService.EXTRA_INITIATED_BY_USER, initiatedByUser);
+        ContextCompat.startForegroundService(context, launchIntent);
         isRefreshing.set(false);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -157,7 +154,7 @@ public final class DBTasks {
      */
     public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
         try {
-            refreshFeeds(context, Collections.singletonList(feed), true, true, false);
+            refreshFeed(context, feed, true, true, false);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
@@ -201,31 +198,15 @@ public final class DBTasks {
     public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() + ")");
-        refreshFeeds(context, Collections.singletonList(feed), false, true, initiatedByUser);
+        refreshFeed(context, feed, false, true, initiatedByUser);
     }
 
-    private static void refreshFeeds(Context context, List<Feed> feeds, boolean loadAllPages,
+    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages,
                                     boolean force, boolean initiatedByUser) throws DownloadRequestException {
-        List<Feed> localFeeds = new ArrayList<>();
-        List<Feed> normalFeeds = new ArrayList<>();
-
-        for (Feed feed : feeds) {
-            if (feed.isLocalFeed()) {
-                localFeeds.add(feed);
-            } else {
-                normalFeeds.add(feed);
-            }
-        }
-
-        if (!localFeeds.isEmpty()) {
-            new Thread(() -> {
-                for (Feed feed : localFeeds) {
-                    LocalFeedUpdater.updateFeed(feed, context);
-                }
-            }).start();
-        }
-        if (!normalFeeds.isEmpty()) {
-            DownloadRequester.getInstance().downloadFeeds(context, normalFeeds, loadAllPages, force, initiatedByUser);
+        if (feed.isLocalFeed()) {
+            new Thread(() -> LocalFeedUpdater.updateFeed(feed, context)).start();
+        } else {
+            DownloadRequester.getInstance().downloadFeed(context, feed, loadAllPages, force, initiatedByUser);
         }
     }
 
