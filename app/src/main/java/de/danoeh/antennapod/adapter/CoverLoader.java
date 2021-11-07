@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+import androidx.palette.graphics.Palette;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import com.bumptech.glide.request.transition.Transition;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class CoverLoader {
     private int resource = 0;
@@ -77,7 +83,7 @@ public class CoverLoader {
         if (resource != 0) {
             Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined);
+            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined, null);
             return;
         }
 
@@ -121,7 +127,8 @@ public class CoverLoader {
 
         @Override
         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-            setPlaceholderVisibility(placeholder.get(), textAndImageCombined);
+            Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+            setPlaceholderVisibility(placeholder.get(), textAndImageCombined, bitmap);
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(resource);
         }
@@ -132,11 +139,27 @@ public class CoverLoader {
             ivCover.setImageDrawable(placeholder);
         }
 
-        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined) {
+        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined, Bitmap bitmap) {
+            boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (placeholder != null) {
-                if (textAndImageCombined) {
+                if (textAndImageCombined || showTitle) {
                     int bgColor = placeholder.getContext().getResources().getColor(R.color.feed_text_bg);
-                    placeholder.setBackgroundColor(bgColor);
+                    if (bitmap == null || !showTitle) {
+                        placeholder.setBackgroundColor(bgColor);
+                        return;
+                    }
+                    Palette.from(bitmap).generate(p -> {
+                        if (p == null) {
+                            return;
+                        }
+                        int dominantColor = p.getDominantColor(bgColor);
+                        int textColor = placeholder.getContext().getResources().getColor(R.color.white);
+                        if (ColorUtils.calculateLuminance(dominantColor) > 0.6) {
+                            textColor = placeholder.getContext().getResources().getColor(R.color.black);
+                        }
+                        placeholder.setTextColor(textColor);
+                        placeholder.setBackgroundColor(dominantColor);
+                    });
                 } else {
                     placeholder.setVisibility(View.INVISIBLE);
                 }

@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
@@ -177,6 +181,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         private final TriangleLabelView count;
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
+        private ViewGroup.LayoutParams lastParams;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -203,6 +208,18 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 count.setVisibility(View.GONE);
             }
 
+            TypedArray res = feedTitle.getContext().getTheme().obtainStyledAttributes(
+                    new int[] { android.R.attr.textColorPrimary });
+            int textColorPrimary = res.getColor(0, 0);
+
+            if (UserPreferences.shouldShowSubscriptionTitle()) {
+                updateLayoutParams(feedTitle, textColorPrimary);
+            } else if (lastParams != null) {
+                feedTitle.setLayoutParams(lastParams);
+                feedTitle.setTextColor(textColorPrimary);
+                feedTitle.setSingleLine(false);
+            }
+
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                 boolean textAndImageCombind = feed.isLocalFeed()
@@ -219,6 +236,24 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         .withCoverView(imageView)
                         .load();
             }
+        }
+
+        private void updateLayoutParams(TextView feedTitle, int textColor) {
+            lastParams = feedTitle.getLayoutParams();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.addRule(RelativeLayout.ALIGN_LEFT, R.id.imgvCover);
+            params.addRule(RelativeLayout.ALIGN_RIGHT, R.id.imgvCover);
+            params.addRule(RelativeLayout.BELOW, R.id.imgvCover);
+            feedTitle.setLayoutParams(params);
+            feedTitle.setEllipsize(TextUtils.TruncateAt.END);
+            feedTitle.setSingleLine(true);
+            feedTitle.setTextColor(textColor);
+            feedTitle.setBackgroundColor(feedTitle.getContext().getResources()
+                    .getColor(R.color.feed_text_bg));
+
+            int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
+            feedTitle.setPadding(padding, padding, padding, padding);
         }
     }
 
