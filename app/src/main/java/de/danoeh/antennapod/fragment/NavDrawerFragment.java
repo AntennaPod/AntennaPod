@@ -164,9 +164,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             new RenameFeedDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
-            RemoveFeedDialog.show(getContext(), feed, () -> {
-                ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-            });
+            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            RemoveFeedDialog.show(getContext(), feed);
             return true;
         }
         return super.onContextItemSelected(item);
