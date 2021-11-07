@@ -19,8 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ServiceCompat;
 
+import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -37,7 +37,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -52,7 +51,6 @@ import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.DownloadError;
 
 /**
@@ -64,67 +62,32 @@ import de.danoeh.antennapod.core.util.DownloadError;
  */
 public class DownloadService extends Service {
     private static final String TAG = "DownloadService";
-
-    /**
-     * Cancels one download. The intent MUST have an EXTRA_DOWNLOAD_URL extra that contains the download URL of the
-     * object whose download should be cancelled.
-     */
+    private static final int SCHED_EX_POOL_SIZE = 1;
     public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.core.service.cancelDownload";
-
-    /**
-     * Cancels all running downloads.
-     */
-    public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.core.service.cancelAllDownloads";
-
-    /**
-     * Extra for ACTION_CANCEL_DOWNLOAD
-     */
+    public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.core.service.cancelAll";
     public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
-
-    /**
-     * Extra for ACTION_ENQUEUE_DOWNLOAD intent.
-     */
     public static final String EXTRA_REQUESTS = "downloadRequests";
     public static final String EXTRA_REFRESH_ALL = "refreshAll";
     public static final String EXTRA_INITIATED_BY_USER = "initiatedByUser";
-
     public static final String EXTRA_CLEANUP_MEDIA = "cleanupMedia";
 
-    /**
-     * Contains all completed downloads that have not been included in the report yet.
-     */
-    private final List<DownloadStatus> reportQueue;
-    private final ExecutorService syncExecutor;
-    private final CompletionService<Downloader> downloadExecutor;
-    private final DownloadRequester requester;
-    private DownloadServiceNotification notificationManager;
-    private final NewEpisodesNotification newEpisodesNotification;
-
-    /**
-     * Currently running downloads.
-     */
-    private final List<Downloader> downloads;
-
-    /**
-     * Number of running downloads.
-     */
-    private AtomicInteger numberOfDownloads;
-
-    /**
-     * True if service is running.
-     */
     public static boolean isRunning = false;
 
-    private Handler handler;
+    private final List<DownloadStatus> reportQueue = new ArrayList<>();
+    private final ExecutorService syncExecutor;
+    private final CompletionService<Downloader> downloadExecutor;
+    private DownloadServiceNotification notificationManager;
+    private final NewEpisodesNotification newEpisodesNotification;
+    static final List<Downloader> downloads = new ArrayList<>();
 
+    private Handler handler;
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
-    private static final int SCHED_EX_POOL_SIZE = 1;
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
 
-    private final IBinder mBinder = new LocalBinder();
+    private final IBinder binder = new LocalBinder();
 
     private class LocalBinder extends Binder {
         public DownloadService getService() {
@@ -132,11 +95,12 @@ public class DownloadService extends Service {
         }
     }
 
+    @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
     public DownloadService() {
-        reportQueue = Collections.synchronizedList(new ArrayList<>());
-        downloads = Collections.synchronizedList(new ArrayList<>());
-        numberOfDownloads = new AtomicInteger(0);
-        requester = DownloadRequester.getInstance();
         newEpisodesNotification = new NewEpisodesNotification();
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
@@ -167,33 +131,6 @@ public class DownloadService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
-            Notification notification = notificationManager.updateNotifications(
-                    requester.getNumberOfDownloads(), downloads);
-            startForeground(R.id.notification_downloading, notification);
-            setupNotificationUpdaterIfNecessary();
-            syncExecutor.execute(() -> onDownloadQueued(intent));
-        } else if (intent != null && intent.getBooleanExtra(EXTRA_REFRESH_ALL, false)) {
-            Notification notification = notificationManager.updateNotifications(1, downloads);
-            startForeground(R.id.notification_downloading, notification);
-            setupNotificationUpdaterIfNecessary();
-            syncExecutor.execute(() -> {
-                try {
-                    enqueueAll(intent);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else if (numberOfDownloads.get() == 0) {
-            shutdown();
-        } else {
-            Log.d(TAG, "onStartCommand: Unknown intent");
-        }
-        return Service.START_NOT_STICKY;
-    }
-
-    @Override
     public void onCreate() {
         Log.d(TAG, "Service started");
         isRunning = true;
@@ -208,9 +145,103 @@ public class DownloadService extends Service {
         downloadCompletionThread.start();
     }
 
+    public static void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
+        if (requests.length > 100) {
+            throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
+        }
+        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
+        for (DownloadRequest request : requests) {
+            boolean alreadyDownloaded = false;
+            for (Downloader downloader : downloads) {
+                if (downloader.request.equals(request)) {
+                    alreadyDownloaded = true;
+                    break;
+                }
+            }
+            if (!alreadyDownloaded) {
+                requestsToSend.add(request);
+            }
+        }
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
+        if (cleanupMedia) {
+            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
+        }
+        ContextCompat.startForegroundService(context, launchIntent);
+    }
+
+    public static void refreshAllFeeds(Context context, boolean initiatedByUser) {
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putExtra(DownloadService.EXTRA_REFRESH_ALL, true);
+        launchIntent.putExtra(DownloadService.EXTRA_INITIATED_BY_USER, initiatedByUser);
+        ContextCompat.startForegroundService(context, launchIntent);
+    }
+
+    public static void cancel(Context context, String url) {
+        if (!isRunning) {
+            return;
+        }
+        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
+        cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, url);
+        cancelIntent.setPackage(context.getPackageName());
+        context.sendBroadcast(cancelIntent);
+    }
+
+    public static void cancelAll(Context context) {
+        if (!isRunning) {
+            return;
+        }
+        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
+        cancelIntent.putExtra(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS, true);
+        cancelIntent.setPackage(context.getPackageName());
+        context.sendBroadcast(cancelIntent);
+    }
+
+    public static boolean isDownloadingFeeds() {
+        for (Downloader downloader : downloads) {
+            if (downloader.request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDownloadingFile(String downloadUrl) {
+        for (Downloader downloader : downloads) {
+            if (downloader.request.getSource().equals(downloadUrl)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static DownloadRequest findRequest(String downloadUrl) {
+        for (Downloader downloader : downloads) {
+            if (downloader.request.getSource().equals(downloadUrl)) {
+                return downloader.request;
+            }
+        }
+        return null;
+    }
+
     @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
+            Notification notification = notificationManager.updateNotifications(downloads);
+            startForeground(R.id.notification_downloading, notification);
+            setupNotificationUpdaterIfNecessary();
+            syncExecutor.execute(() -> onDownloadQueued(intent));
+        } else if (intent != null && intent.getBooleanExtra(EXTRA_REFRESH_ALL, false)) {
+            Notification notification = notificationManager.updateNotifications(downloads);
+            startForeground(R.id.notification_downloading, notification);
+            setupNotificationUpdaterIfNecessary();
+            syncExecutor.execute(() -> enqueueAll(intent));
+        } else if (downloads.size() == 0) {
+            shutdown();
+        } else {
+            Log.d(TAG, "onStartCommand: Unknown intent");
+        }
+        return Service.START_NOT_STICKY;
     }
 
     @Override
@@ -259,13 +290,11 @@ public class DownloadService extends Service {
                         syncExecutor.execute(() -> {
                             handleSuccessfulDownload(downloader);
                             removeDownload(downloader);
-                            numberOfDownloads.decrementAndGet();
                             stopServiceIfEverythingDoneAsync();
                         });
                     } else {
                         handleFailedDownload(downloader);
                         removeDownload(downloader);
-                        numberOfDownloads.decrementAndGet();
                         stopServiceIfEverythingDoneAsync();
                     }
                 } catch (InterruptedException e) {
@@ -324,7 +353,7 @@ public class DownloadService extends Service {
 
                 Log.d(TAG, "Requested invalid range, restarting download from the beginning");
                 FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());
+                download(this, false, downloader.getDownloadRequest());
             } else {
                 Log.e(TAG, "Download failed");
                 saveDownloadStatus(status);
@@ -378,8 +407,6 @@ public class DownloadService extends Service {
                 if (d != null) {
                     d.cancel();
                     DownloadRequest request = d.getDownloadRequest();
-                    DownloadRequester.getInstance().removeDownload(request);
-
                     FeedItem item = getFeedItemFromId(request.getFeedfileId());
                     if (item != null) {
                         // undo enqueue upon cancel
@@ -413,30 +440,20 @@ public class DownloadService extends Service {
     private void onDownloadQueued(Intent intent) {
         List<DownloadRequest> requests = intent.getParcelableArrayListExtra(EXTRA_REQUESTS);
         if (requests == null) {
-            throw new IllegalArgumentException(
-                    "ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
+            throw new IllegalArgumentException("ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
         }
-        boolean cleanupMedia = intent.getBooleanExtra(EXTRA_CLEANUP_MEDIA, false);
-        Log.d(TAG, "Received enqueue request. #requests=" + requests.size()
-                + ", cleanupMedia=" + cleanupMedia);
+        Log.d(TAG, "Received enqueue request. #requests=" + requests.size());
 
-        if (cleanupMedia) {
-            UserPreferences.getEpisodeCleanupAlgorithm()
-                    .makeRoomForEpisodes(getApplicationContext(), requests.size());
+        if (intent.getBooleanExtra(EXTRA_CLEANUP_MEDIA, false)) {
+            UserPreferences.getEpisodeCleanupAlgorithm().makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
-        // #2448: First, add to-download items to the queue before actual download
+        // First, add to-download items to the queue before actual download
         // so that the resulting queue order is the same as when download is clicked
-        List<? extends FeedItem> itemsEnqueued;
-        try {
-            itemsEnqueued = enqueueFeedItems(requests);
-        } catch (Exception e) {
-            Log.e(TAG, "Unexpected exception during enqueue before downloads. Abort download", e);
-            return;
-        }
+        enqueueFeedItems(requests);
 
         for (DownloadRequest request : requests) {
-            onDownloadQueued(request, itemsEnqueued);
+            addNewRequest(request);
         }
         handler.post(() -> {
             postDownloaders();
@@ -444,8 +461,7 @@ public class DownloadService extends Service {
         });
     }
 
-    private List<? extends FeedItem> enqueueFeedItems(@NonNull List<? extends DownloadRequest> requests)
-            throws Exception {
+    private void enqueueFeedItems(@NonNull List<DownloadRequest> requests) {
         List<FeedItem> feedItems = new ArrayList<>();
         for (DownloadRequest request : requests) {
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -458,23 +474,35 @@ public class DownloadService extends Service {
                 feedItems.add(media.getItem());
             }
         }
+        List<FeedItem> actuallyEnqueued = Collections.emptyList();
+        try {
+            actuallyEnqueued = DBTasks.enqueueFeedItemsToDownload(getApplicationContext(), feedItems);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        return DBTasks.enqueueFeedItemsToDownload(getApplicationContext(), feedItems);
-    }
-
-    private void enqueueAll(Intent intent) throws DownloadRequestException {
-        boolean initiatedByUser = intent.getBooleanExtra(EXTRA_INITIATED_BY_USER, false);
-        List<Feed> feeds = DBReader.getFeedList();
-        ArrayList<DownloadRequest> requests = new ArrayList<>();
-        for (Feed feed : feeds) {
-            if (feed.getPreferences().getKeepUpdated() && !feed.isLocalFeed()) {
-                requests.add(DownloadRequester.getInstance().createRequestForFeed(feed, false, false, initiatedByUser));
+        for (DownloadRequest request : requests) {
+            if (request.getFeedfileType() != FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                continue;
+            }
+            final long mediaId = request.getFeedfileId();
+            for (FeedItem item : actuallyEnqueued) {
+                if (item.getMedia() != null && item.getMedia().getId() == mediaId) {
+                    request.setMediaEnqueued(true);
+                }
             }
         }
-        ArrayList<DownloadRequest> requestsToStart = DownloadRequester.getInstance()
-                .enqueue(requests.toArray(new DownloadRequest[0]));
-        for (DownloadRequest request : requestsToStart) {
-            onDownloadQueued(request, Collections.emptyList());
+    }
+
+    private void enqueueAll(Intent intent) {
+        boolean initiatedByUser = intent.getBooleanExtra(EXTRA_INITIATED_BY_USER, false);
+        List<Feed> feeds = DBReader.getFeedList();
+        for (Feed feed : feeds) {
+            if (feed.getPreferences().getKeepUpdated() && !feed.isLocalFeed()) {
+                DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+                builder.setInitiatedByUser(initiatedByUser);
+                addNewRequest(builder.build());
+            }
         }
         handler.post(() -> {
             postDownloaders();
@@ -482,17 +510,13 @@ public class DownloadService extends Service {
         });
     }
 
-    private void onDownloadQueued(@NonNull DownloadRequest request,
-                                  @NonNull List<? extends FeedItem> itemsEnqueued) {
+    private void addNewRequest(@NonNull DownloadRequest request) {
+        /*if (already downloading) {
+            return;
+        }*/
         writeFileUrl(request);
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
-            numberOfDownloads.incrementAndGet();
-
-            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                    && isEnqueued(request, itemsEnqueued)) {
-                request.setMediaEnqueued(true);
-            }
             handler.post(() -> {
                 downloads.add(downloader);
                 downloadExecutor.submit(downloader);
@@ -502,14 +526,7 @@ public class DownloadService extends Service {
 
     private static boolean isEnqueued(@NonNull DownloadRequest request,
                                       @NonNull List<? extends FeedItem> itemsEnqueued) {
-        if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-            final long mediaId = request.getFeedfileId();
-            for (FeedItem item : itemsEnqueued) {
-                if (item.getMedia() != null && item.getMedia().getId() == mediaId) {
-                    return true;
-                }
-            }
-        }
+
         return false;
     }
 
@@ -532,9 +549,7 @@ public class DownloadService extends Service {
     private void removeDownload(final Downloader d) {
         handler.post(() -> {
             Log.d(TAG, "Removing downloader: " + d.getDownloadRequest().getSource());
-            boolean rc = downloads.remove(d);
-            Log.d(TAG, "Result of downloads.remove: " + rc);
-            DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+            downloads.remove(d);
             postDownloaders();
         });
     }
@@ -562,9 +577,8 @@ public class DownloadService extends Service {
      * Check if there's something else to download, otherwise stop.
      */
     private void stopServiceIfEverythingDone() {
-        Log.d(TAG, numberOfDownloads.get() + " downloads left");
-
-        if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
+        Log.d(TAG, downloads.size() + " downloads left");
+        if (downloads.size() <= 0) {
             Log.d(TAG, "Attempting shutdown");
             shutdown();
         }
@@ -639,7 +653,7 @@ public class DownloadService extends Service {
 
     private class NotificationUpdater implements Runnable {
         public void run() {
-            Notification n = notificationManager.updateNotifications(requester.getNumberOfDownloads(), downloads);
+            Notification n = notificationManager.updateNotifications(downloads);
             if (n != null) {
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.notify(R.id.notification_downloading, n);

@@ -7,7 +7,6 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
@@ -38,7 +37,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         feed.setDownloaded(true);
         feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
                 VolumeAdaptionSetting.OFF, request.getUsername(), request.getPassword()));
-        feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
+        feed.setPageNr(request.getArguments().getInt(DownloadRequest.REQUEST_ARG_PAGE_NR, 0));
 
         DownloadError reason = null;
         String reasonDetailed = null;

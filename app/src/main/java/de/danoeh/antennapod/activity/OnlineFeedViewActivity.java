@@ -30,8 +30,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -45,8 +46,6 @@ import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -427,12 +426,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
                 f.setPreferences(feed.getPreferences());
                 this.feed = f;
-                try {
-                    DownloadRequester.getInstance().downloadFeed(this, f);
-                } catch (DownloadRequestException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
-                }
+                DownloadService.download(this, false, DownloadRequestCreator.create(f).build());
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus(feed);
             }
@@ -514,7 +508,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void handleUpdatedFeedStatus(Feed feed) {
         if (feed != null) {
-            if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
+            if (DownloadService.isDownloadingFile(feed.getDownload_url())) {
                 viewBinding.subscribeButton.setEnabled(false);
                 viewBinding.subscribeButton.setText(R.string.subscribing_label);
             } else if (feedInFeedlist(feed)) {

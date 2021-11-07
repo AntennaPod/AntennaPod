@@ -8,6 +8,7 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.List;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
@@ -21,9 +22,6 @@ class ItemEnqueuePositionCalculator {
 
     @NonNull
     private final EnqueueLocation enqueueLocation;
-
-    @VisibleForTesting
-    DownloadStateProvider downloadStateProvider = DownloadRequester.getInstance();
 
     public ItemEnqueuePositionCalculator(@NonNull EnqueueLocation enqueueLocation) {
         this.enqueueLocation = enqueueLocation;
@@ -74,7 +72,7 @@ class ItemEnqueuePositionCalculator {
 
         if (curItem != null
                 && curItem.getMedia() != null
-                && downloadStateProvider.isDownloadingFile(curItem.getMedia())) {
+                /*&& DownloadService.isDownloadingFile(curItem.getMedia().getDownload_url())*/) {
             return true;
         } else {
             return false;

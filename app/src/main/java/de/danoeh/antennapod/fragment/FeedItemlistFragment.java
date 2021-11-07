@@ -49,7 +49,6 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.event.FavoritesEvent;
@@ -66,8 +65,6 @@ import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
@@ -202,12 +199,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         nextPageLoader = new MoreContentListFooterUtil(root.findViewById(R.id.more_content_list_footer));
         nextPageLoader.setClickListener(() -> {
             if (feed != null) {
-                try {
-                    DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-                }
+                DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -225,11 +217,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            try {
-                DBTasks.forceRefreshFeed(requireContext(), feed, true);
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-            }
+            DBTasks.forceRefreshFeed(requireContext(), feed, true);
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -287,7 +275,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
         @Override
         public boolean isRefreshing() {
-            return feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed);
+            return feed != null && DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url());
         }
     };
 
@@ -317,14 +305,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
             return true;
         }
-        boolean feedMenuHandled;
-        try {
-            feedMenuHandled = FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-            return true;
-        }
+        boolean feedMenuHandled = FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed);
         if (feedMenuHandled) {
             return true;
         }
@@ -478,10 +459,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             refreshToolbarState();
         }
-        if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
+        if (!DownloadService.isDownloadingFeeds()) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        nextPageLoader.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
+        nextPageLoader.setLoadingState(DownloadService.isDownloadingFeeds());
     }
 
     private void displayList() {

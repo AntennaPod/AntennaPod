@@ -41,24 +41,19 @@ public class DownloadRequestTest {
         String username = "testUser";
         String password = "testPassword";
         FeedFile item = createFeedItem(1);
-        Bundle arg = new Bundle();
-        arg.putString("arg1", "value1");
-        DownloadRequest request1 = new DownloadRequest.Builder(destStr, item, true)
+        DownloadRequest request1 = new DownloadRequest.Builder(destStr, item)
                 .deleteOnFailure(true)
                 .withAuthentication(username, password)
-                .withArguments(arg)
                 .build();
 
-        DownloadRequest request2 = new DownloadRequest.Builder(destStr, item, true)
+        DownloadRequest request2 = new DownloadRequest.Builder(destStr, item)
                 .deleteOnFailure(true)
                 .withAuthentication(username, password)
-                .withArguments(arg)
                 .build();
 
-        DownloadRequest request3 = new DownloadRequest.Builder(destStr, item, true)
+        DownloadRequest request3 = new DownloadRequest.Builder(destStr, item)
                 .deleteOnFailure(true)
                 .withAuthentication("diffUsername", "diffPassword")
-                .withArguments(arg)
                 .build();
 
         assertEquals(request1, request2);
@@ -74,15 +69,12 @@ public class DownloadRequestTest {
         { // test DownloadRequests to parcel
             String destStr = "file://location/media.mp3";
             FeedFile item1 = createFeedItem(1);
-            Bundle arg1 = new Bundle();
-            arg1.putString("arg1", "value1");
-            DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1, false)
+            DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1)
                     .withAuthentication(username1, password1)
-                    .withArguments(arg1)
                     .build();
 
             FeedFile item2 = createFeedItem(2);
-            DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2, true)
+            DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2)
                     .withAuthentication(username2, password2)
                     .build();
 

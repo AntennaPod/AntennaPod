@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {
@@ -32,7 +32,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 				NetworkInfo ni = cm.getActiveNetworkInfo();
 				if (ni == null || ni.getType() != ConnectivityManager.TYPE_WIFI) {
 					Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
-					DownloadRequester.getInstance().cancelAllDownloads(context);
+					DownloadService.cancelAll(context);
 				}
 			}
 		}

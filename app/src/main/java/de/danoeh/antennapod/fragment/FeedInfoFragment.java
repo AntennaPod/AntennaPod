@@ -36,12 +36,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
@@ -280,13 +278,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
             return false;
         }
-        boolean handled = false;
-        try {
-            handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getContext(), e.getMessage());
-        }
+        boolean handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
 
         if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());

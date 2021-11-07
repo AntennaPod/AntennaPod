@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.storage;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -11,7 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
-import androidx.core.content.ContextCompat;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -105,8 +104,6 @@ public final class DBTasks {
         }
     }
 
-    private static final AtomicBoolean isRefreshing = new AtomicBoolean(false);
-
     /**
      * Refreshes all feeds.
      * It must not be from the main thread.
@@ -117,10 +114,6 @@ public final class DBTasks {
      * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
      */
     public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
-        if (!isRefreshing.compareAndSet(false, true)) {
-            Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
-            return;
-        }
         new Thread(() -> {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed : feeds) {
@@ -129,12 +122,7 @@ public final class DBTasks {
                 }
             }
         }).start();
-
-        Intent launchIntent = new Intent(context, DownloadService.class);
-        launchIntent.putExtra(DownloadService.EXTRA_REFRESH_ALL, true);
-        launchIntent.putExtra(DownloadService.EXTRA_INITIATED_BY_USER, initiatedByUser);
-        ContextCompat.startForegroundService(context, launchIntent);
-        isRefreshing.set(false);
+        DownloadService.refreshAllFeeds(context, initiatedByUser);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
@@ -146,27 +134,7 @@ public final class DBTasks {
         // See Issue #2577 for the details of the rationale
     }
 
-    /**
-     * Downloads all pages of the given feed even if feed has not been modified since last refresh
-     *
-     * @param context Used for requesting the download.
-     * @param feed    The Feed object.
-     */
-    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
-        try {
-            refreshFeed(context, feed, true, true, false);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DBWriter.addDownloadStatus(
-                    new DownloadStatus(feed,
-                                       feed.getHumanReadableIdentifier(),
-                                       DownloadError.ERROR_REQUEST_ERROR,
-                                       false,
-                                       e.getMessage(),
-                                       false)
-            );
-        }
-    }
+
 
     /**
      * Queues the next page of this Feed for download. The given Feed has to be a paged
@@ -176,37 +144,39 @@ public final class DBTasks {
      * @param feed         The feed whose next page should be loaded.
      * @param loadAllPages True if any subsequent pages should also be loaded, false otherwise.
      */
-    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
+    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) {
         if (feed.isPaged() && feed.getNextPageLink() != null) {
             int pageNr = feed.getPageNr() + 1;
             Feed nextFeed = new Feed(feed.getNextPageLink(), null, feed.getTitle() + "(" + pageNr + ")");
             nextFeed.setPageNr(pageNr);
             nextFeed.setPaged(true);
             nextFeed.setId(feed.getId());
-            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false, true);
+
+            DownloadRequest.Builder builder = DownloadRequestCreator.create(nextFeed);
+            builder.loadAllPages(loadAllPages);
+            DownloadService.download(context, false, builder.build());
         } else {
             Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
         }
     }
 
-    /**
-     * Refresh a specific feed even if feed has not been modified since last refresh
-     *
-     * @param context Used for requesting the download.
-     * @param feed    The Feed object.
-     */
-    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)
-            throws DownloadRequestException {
-        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() + ")");
-        refreshFeed(context, feed, false, true, initiatedByUser);
+    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser) {
+        forceRefreshFeed(context, feed, false, initiatedByUser);
     }
 
-    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages,
-                                    boolean force, boolean initiatedByUser) throws DownloadRequestException {
+    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
+        forceRefreshFeed(context, feed, true, true);
+    }
+
+    private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
         if (feed.isLocalFeed()) {
             new Thread(() -> LocalFeedUpdater.updateFeed(feed, context)).start();
         } else {
-            DownloadRequester.getInstance().downloadFeed(context, feed, loadAllPages, force, initiatedByUser);
+            DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+            builder.setInitiatedByUser(initiatedByUser);
+            builder.setForce(true);
+            builder.loadAllPages(loadAllPages);
+            DownloadService.download(context, false, builder.build());
         }
     }
 
@@ -223,8 +193,8 @@ public final class DBTasks {
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
     }
 
-    public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
-                       List<? extends FeedItem> items) throws InterruptedException, ExecutionException {
+    public static List<FeedItem> enqueueFeedItemsToDownload(final Context context,
+                       List<FeedItem> items) throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();
         if (UserPreferences.enqueueDownloadedEpisodes()) {
             LongList queueIDList = DBReader.getQueueIDList();
