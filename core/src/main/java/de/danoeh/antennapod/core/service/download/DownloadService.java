@@ -191,8 +191,7 @@ public class DownloadService extends Service {
         if (!isRunning) {
             return;
         }
-        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
-        cancelIntent.putExtra(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS, true);
+        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
         cancelIntent.setPackage(context.getPackageName());
         context.sendBroadcast(cancelIntent);
     }

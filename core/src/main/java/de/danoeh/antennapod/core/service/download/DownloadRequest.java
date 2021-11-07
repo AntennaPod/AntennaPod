@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.icu.text.RelativeDateTimeFormatter;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
