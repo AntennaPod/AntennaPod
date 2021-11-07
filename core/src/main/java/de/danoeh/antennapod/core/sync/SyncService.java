@@ -346,7 +346,10 @@ public class SyncService extends Worker {
     private ISyncService getActiveSyncProvider() {
         String selectedSyncProviderKey = SynchronizationSettings.getSelectedSyncProviderKey();
         SynchronizationProviderViewData selectedService = SynchronizationProviderViewData
-                .valueOf(selectedSyncProviderKey);
+                .fromIdentifier(selectedSyncProviderKey);
+        if (selectedService == null) {
+            return null;
+        }
         switch (selectedService) {
             case GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),
