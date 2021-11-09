@@ -82,7 +82,7 @@ public class DownloadService extends Service {
     // Can be modified from another thread while iterating. Both possible race conditions are not critical:
     // Remove while iterating: We think it is still downloading and don't start a new download with the same file.
     // Add while iterating: We think it is not downloading and might start a second download with the same file.
-    static final List<Downloader> downloads = new CopyOnWriteArrayList<>();
+    static final List<Downloader> downloads = Collections.synchronizedList(new CopyOnWriteArrayList<>());
 
     private Handler handler;
     private NotificationUpdater notificationUpdater;
@@ -198,7 +198,7 @@ public class DownloadService extends Service {
 
     public static boolean isDownloadingFeeds() {
         for (Downloader downloader : downloads) {
-            if (downloader.request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            if (downloader.request.getFeedfileType() == Feed.FEEDFILETYPE_FEED && !downloader.cancelled) {
                 return true;
             }
         }
@@ -207,7 +207,7 @@ public class DownloadService extends Service {
 
     public static boolean isDownloadingFile(String downloadUrl) {
         for (Downloader downloader : downloads) {
-            if (downloader.request.getSource().equals(downloadUrl)) {
+            if (downloader.request.getSource().equals(downloadUrl) && !downloader.cancelled) {
                 return true;
             }
         }
