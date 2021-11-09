@@ -130,7 +130,6 @@ public class DownloadRequest implements Parcelable {
         if (size != that.size) return false;
         if (soFar != that.soFar) return false;
         if (statusMsg != that.statusMsg) return false;
-        if (!arguments.equals(that.arguments)) return false;
         if (!destination.equals(that.destination)) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;

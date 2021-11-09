@@ -151,16 +151,12 @@ public class DownloadService extends Service {
         }
         ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
         for (DownloadRequest request : requests) {
-            boolean alreadyDownloaded = false;
-            for (Downloader downloader : downloads) {
-                if (downloader.request.equals(request)) {
-                    alreadyDownloaded = true;
-                    break;
-                }
-            }
-            if (!alreadyDownloaded) {
+            if (!isDownloadingFile(request.getSource())) {
                 requestsToSend.add(request);
             }
+        }
+        if (requestsToSend.isEmpty()) {
+            return;
         }
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
@@ -268,6 +264,7 @@ public class DownloadService extends Service {
         if (downloadPostFuture != null) {
             downloadPostFuture.cancel(true);
         }
+        downloads.clear();
         unregisterReceiver(cancelDownloadReceiver);
 
         // start auto download in case anything new has shown up
@@ -510,9 +507,9 @@ public class DownloadService extends Service {
     }
 
     private void addNewRequest(@NonNull DownloadRequest request) {
-        /*if (already downloading) {
+        if (isDownloadingFile(request.getSource())) {
             return;
-        }*/
+        }
         writeFileUrl(request);
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
@@ -521,12 +518,6 @@ public class DownloadService extends Service {
                 downloadExecutor.submit(downloader);
             });
         }
-    }
-
-    private static boolean isEnqueued(@NonNull DownloadRequest request,
-                                      @NonNull List<? extends FeedItem> itemsEnqueued) {
-
-        return false;
     }
 
     @VisibleForTesting
