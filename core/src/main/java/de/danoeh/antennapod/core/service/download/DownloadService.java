@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -78,7 +79,10 @@ public class DownloadService extends Service {
     private final CompletionService<Downloader> downloadExecutor;
     private DownloadServiceNotification notificationManager;
     private final NewEpisodesNotification newEpisodesNotification;
-    static final List<Downloader> downloads = new ArrayList<>();
+    // Can be modified from another thread while iterating. Both possible race conditions are not critical:
+    // Remove while iterating: We think it is still downloading and don't start a new download with the same file.
+    // Add while iterating: We think it is not downloading and might start a second download with the same file.
+    static final List<Downloader> downloads = new CopyOnWriteArrayList<>();
 
     private Handler handler;
     private NotificationUpdater notificationUpdater;
