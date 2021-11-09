@@ -88,7 +88,7 @@ public class DownloadService extends Service {
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
-    private final ScheduledThreadPoolExecutor schedExecutor;
+    private final ScheduledThreadPoolExecutor notificationUpdateExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
 
     private final IBinder binder = new LocalBinder();
@@ -125,9 +125,9 @@ public class DownloadService extends Service {
                         }
                 )
         );
-        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
+        notificationUpdateExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
                 r -> {
-                    Thread t = new Thread(r, "DownloadSchedExecutorThread");
+                    Thread t = new Thread(r, "NotificationUpdateExecutor");
                     t.setPriority(Thread.MIN_PRIORITY);
                     return t;
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
@@ -264,7 +264,7 @@ public class DownloadService extends Service {
         }
         cancelNotificationUpdater();
         syncExecutor.shutdown();
-        schedExecutor.shutdown();
+        notificationUpdateExecutor.shutdown();
         if (downloadPostFuture != null) {
             downloadPostFuture.cancel(true);
         }
@@ -634,7 +634,7 @@ public class DownloadService extends Service {
         if (notificationUpdater == null) {
             Log.d(TAG, "Setting up notification updater");
             notificationUpdater = new NotificationUpdater();
-            notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(notificationUpdater, 1, 1, TimeUnit.SECONDS);
+            notificationUpdaterFuture = notificationUpdateExecutor.scheduleAtFixedRate(notificationUpdater, 1, 1, TimeUnit.SECONDS);
         }
     }
 
@@ -663,7 +663,7 @@ public class DownloadService extends Service {
         new PostDownloaderTask(downloads).run();
 
         if (downloadPostFuture == null) {
-            downloadPostFuture = schedExecutor.scheduleAtFixedRate(
+            downloadPostFuture = notificationUpdateExecutor.scheduleAtFixedRate(
                     new PostDownloaderTask(downloads), 1, 1, TimeUnit.SECONDS);
         }
     }
