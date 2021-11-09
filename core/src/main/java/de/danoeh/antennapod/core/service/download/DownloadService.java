@@ -320,12 +320,15 @@ public class DownloadService extends Service {
             boolean success = task.run();
 
             if (success) {
+                if (request.getFeedfileId() == 0) {
+                    return; // No download logs for new subscriptions
+                }
                 // we create a 'successful' download log if the feed's last refresh failed
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
                     saveDownloadStatus(task.getDownloadStatus());
                 }
-                if (request.getFeedfileId() != 0 && !request.isInitiatedByUser()) {
+                if (!request.isInitiatedByUser()) {
                     // Was stored in the database before and not initiated manually
                     newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
                 }
