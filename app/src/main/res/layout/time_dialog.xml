@@ -1,136 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:padding="16dp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/timeSetup"
-            android:orientation="vertical">
+        android:id="@+id/timeSetup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
-                    android:id="@+id/etxtTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="8dp"
-                    android:ems="2"
-                    android:inputType="number"
-                    android:maxLength="3"/>
+                android:id="@+id/etxtTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:ems="2"
+                android:inputType="number"
+                android:maxLength="3" />
 
             <Spinner
-                    android:id="@+id/spTimeUnit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"/>
+                android:id="@+id/spTimeUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" />
+
         </LinearLayout>
 
         <Button
-                android:text="@string/set_sleeptimer_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/setSleeptimerButton"/>
+            android:id="@+id/setSleeptimerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_sleeptimer_label" />
+
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/timeDisplay"
-            android:orientation="vertical"
-            android:visibility="gone">
+        android:id="@+id/timeDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
-                android:text="00:00:00"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="32sp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/time"/>
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="00:00:00"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:textColor="?android:attr/textColorPrimary" />
 
         <Button
-                android:text="@string/disable_sleeptimer_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/disableSleeptimerButton"/>
+            android:id="@+id/disableSleeptimerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disable_sleeptimer_label" />
 
         <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/extendSleepFiveMinutesButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="4dp"
+                android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
+                tools:text="+5 min" />
 
             <Button
-                    android:id="@+id/extendSleepFiveMinutesButton"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_weight="1"
-                    android:padding="5dp"
-                    tools:text="+5 min" />
+                android:id="@+id/extendSleepTenMinutesButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="4dp"
+                android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
+                tools:text="+10 min" />
 
             <Button
-                    android:id="@+id/extendSleepTenMinutesButton"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    tools:text="+10 min" />
-
-            <Button
-                    android:id="@+id/extendSleepTwentyMinutesButton"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    tools:text="+20 min" />
+                android:id="@+id/extendSleepTwentyMinutesButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="4dp"
+                android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
+                tools:text="+20 min" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <CheckBox
+            android:id="@+id/cbShakeToReset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp">
+            android:text="@string/shake_to_reset_label" />
 
         <CheckBox
-                android:id="@+id/cbShakeToReset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/shake_to_reset_label"/>
+            android:id="@+id/cbVibrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/timer_vibration_label" />
 
         <CheckBox
-                android:id="@+id/cbVibrate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/timer_vibration_label"/>
-
-        <CheckBox
-                android:id="@+id/chAutoEnable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/auto_enable_label"/>
+            android:id="@+id/chAutoEnable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_enable_label" />
 
     </LinearLayout>
 

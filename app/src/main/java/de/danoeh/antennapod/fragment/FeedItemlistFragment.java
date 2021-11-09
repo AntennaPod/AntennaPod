@@ -310,8 +310,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             new RenameFeedDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
-            RemoveFeedDialog.show(getContext(), feed, () ->
-                    ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null));
+            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));

@@ -350,7 +350,7 @@ public class SubscriptionFragment extends Fragment
             new RenameFeedDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
-            RemoveFeedDialog.show(getContext(), feed, null);
+            RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
