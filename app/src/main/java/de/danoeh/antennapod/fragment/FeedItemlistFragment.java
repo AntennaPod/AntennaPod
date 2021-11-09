@@ -272,12 +272,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         super.onSaveInstanceState(outState);
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
-        @Override
-        public boolean isRefreshing() {
-            return feed != null && DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url());
-        }
-    };
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url());
 
     private void refreshToolbarState() {
         if (feed == null) {
