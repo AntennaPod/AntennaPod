@@ -197,6 +197,9 @@ public class DownloadService extends Service {
     }
 
     public static boolean isDownloadingFeeds() {
+        if (!isRunning) {
+            return false;
+        }
         for (Downloader downloader : downloads) {
             if (downloader.request.getFeedfileType() == Feed.FEEDFILETYPE_FEED && !downloader.cancelled) {
                 return true;
@@ -206,6 +209,9 @@ public class DownloadService extends Service {
     }
 
     public static boolean isDownloadingFile(String downloadUrl) {
+        if (!isRunning) {
+            return false;
+        }
         for (Downloader downloader : downloads) {
             if (downloader.request.getSource().equals(downloadUrl) && !downloader.cancelled) {
                 return true;

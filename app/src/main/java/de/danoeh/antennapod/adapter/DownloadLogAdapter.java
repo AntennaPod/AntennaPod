@@ -140,7 +140,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                             Log.e(TAG, "Could not find feed media for feed id: " + status.getFeedfileId());
                             return;
                         }
-                        DownloadService.download(context, false, DownloadRequestCreator.create(media).build());
+                        DownloadService.download(context, true, DownloadRequestCreator.create(media).build());
                         ((MainActivity) context).showSnackbarAbovePlayer(
                                 R.string.status_downloading_label, Toast.LENGTH_SHORT);
                     });

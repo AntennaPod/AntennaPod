@@ -44,6 +44,6 @@ class MobileDownloadHelper {
 
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
-        DownloadService.download(context, false, DownloadRequestCreator.create(item.getMedia()).build());
+        DownloadService.download(context, true, DownloadRequestCreator.create(item.getMedia()).build());
     }
 }

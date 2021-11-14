@@ -95,7 +95,9 @@ public class AutomaticDownloadAlgorithm {
 
                     List<DownloadRequest> requests = new ArrayList<>();
                     for (FeedItem episode : itemsToDownload) {
-                        requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
+                        DownloadRequest.Builder request = DownloadRequestCreator.create(episode.getMedia());
+                        request.setInitiatedByUser(false);
+                        requests.add(request.build());
                     }
                     DownloadService.download(context, false, requests.toArray(new DownloadRequest[0]));
                 }

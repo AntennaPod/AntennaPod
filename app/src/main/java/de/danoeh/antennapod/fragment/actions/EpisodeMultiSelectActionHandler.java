@@ -84,7 +84,7 @@ public class EpisodeMultiSelectActionHandler {
                 requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
             }
         }
-        DownloadService.download(activity, false, requests.toArray(new DownloadRequest[0]));
+        DownloadService.download(activity, true, requests.toArray(new DownloadRequest[0]));
         showMessage(R.plurals.downloading_batch_label, requests.size());
     }
 
