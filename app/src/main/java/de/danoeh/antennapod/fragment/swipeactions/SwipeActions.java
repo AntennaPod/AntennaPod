@@ -201,12 +201,12 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     @Override
     public float getSwipeEscapeVelocity(float defaultValue) {
-        return swipeOutEnabled ? defaultValue : Float.MAX_VALUE;
+        return swipeOutEnabled ? defaultValue * 1.5f : Float.MAX_VALUE;
     }
 
     @Override
     public float getSwipeVelocityThreshold(float defaultValue) {
-        return swipeOutEnabled ? defaultValue : 0;
+        return swipeOutEnabled ? defaultValue * 0.6f : 0;
     }
 
     @Override
