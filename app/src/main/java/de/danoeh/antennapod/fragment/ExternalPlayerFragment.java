@@ -99,12 +99,6 @@ public class ExternalPlayerFragment extends Fragment {
 
     private PlaybackController setupPlaybackController() {
         return new PlaybackController(getActivity()) {
-
-            @Override
-            public void onPositionObserverUpdate() {
-                ExternalPlayerFragment.this.onPositionObserverUpdate();
-            }
-
             @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 butPlay.setIsShowPlay(showPlay);
@@ -142,8 +136,15 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) {
-        onPositionObserverUpdate();
+    public void onPositionObserverUpdate(PlaybackPositionEvent event) {
+        if (controller == null) {
+            return;
+        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
+                || controller.getDuration() == PlaybackService.INVALID_TIME) {
+            return;
+        }
+        progressBar.setProgress((int)
+                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -195,7 +196,7 @@ public class ExternalPlayerFragment extends Fragment {
         ((MainActivity) getActivity()).setPlayerVisible(true);
         txtvTitle.setText(media.getEpisodeTitle());
         feedName.setText(media.getFeedTitle());
-        onPositionObserverUpdate();
+        onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
 
         RequestOptions options = new RequestOptions()
                 .placeholder(R.color.light_gray)
@@ -219,16 +220,5 @@ public class ExternalPlayerFragment extends Fragment {
             butPlay.setVisibility(View.VISIBLE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
         }
-    }
-
-    private void onPositionObserverUpdate() {
-        if (controller == null) {
-            return;
-        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
-                || controller.getDuration() == PlaybackService.INVALID_TIME) {
-            return;
-        }
-        progressBar.setProgress((int)
-                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 }

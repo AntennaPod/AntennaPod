@@ -387,7 +387,7 @@ public class ItemFragment extends Fragment {
         long mediaId = item.getMedia().getId();
         if (ArrayUtils.contains(update.mediaIds, mediaId)) {
             if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
+                updateButtons();
             }
         }
     }
