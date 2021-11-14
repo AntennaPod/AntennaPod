@@ -32,10 +32,13 @@ import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -102,9 +105,15 @@ public class ExoPlayerWrapper implements IPlayer {
             @Override
             public void onPlayerError(@NonNull ExoPlaybackException error) {
                 if (audioErrorListener != null) {
-                    Throwable cause = error.getCause();
-                    audioErrorListener.accept(cause != null
-                            ? cause.getLocalizedMessage() : error.getLocalizedMessage());
+                    if (NetworkUtils.wasDownloadBlocked(error)) {
+                        audioErrorListener.accept(context.getString(R.string.download_error_blocked));
+                    } else {
+                        Throwable cause = error.getCause();
+                        if (cause instanceof HttpDataSource.HttpDataSourceException) {
+                            cause = cause.getCause();
+                        }
+                        audioErrorListener.accept(cause != null ? cause.getMessage() : error.getMessage());
+                    }
                 }
             }
 

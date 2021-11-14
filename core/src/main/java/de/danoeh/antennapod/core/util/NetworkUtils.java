@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -30,6 +32,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkUtils {
+    private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
+
     private NetworkUtils(){}
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
@@ -140,6 +144,22 @@ public class NetworkUtils {
             return wifiInfo.getSSID();
         }
         return null;
+    }
+
+    public static boolean wasDownloadBlocked(Throwable throwable) {
+        String message = throwable.getMessage();
+        if (message != null) {
+            Pattern pattern = Pattern.compile(REGEX_PATTERN_IP_ADDRESS);
+            Matcher matcher = pattern.matcher(message);
+            if (matcher.find()) {
+                String ip = matcher.group();
+                return ip.startsWith("127.") || ip.startsWith("0.");
+            }
+        }
+        if (throwable.getCause() != null) {
+            return wasDownloadBlocked(throwable.getCause());
+        }
+        return false;
     }
 
     public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {

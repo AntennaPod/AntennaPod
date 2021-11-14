@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
@@ -19,8 +20,6 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -39,7 +38,6 @@ public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
 
     private static final int BUFFER_SIZE = 8 * 1024;
-    private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
 
     public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
@@ -259,21 +257,14 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_UNKNOWN_HOST, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            if (NetworkUtils.wasDownloadBlocked(e)) {
+                onFail(DownloadError.ERROR_IO_BLOCKED, e.getMessage());
+                return;
+            }
             String message = e.getMessage();
-            if (message != null) {
-                // Try to parse message for a more detailed error message
-                Pattern pattern = Pattern.compile(REGEX_PATTERN_IP_ADDRESS);
-                Matcher matcher = pattern.matcher(message);
-                if (matcher.find()) {
-                    String ip = matcher.group();
-                    if (ip.startsWith("127.") || ip.startsWith("0.")) {
-                        onFail(DownloadError.ERROR_IO_BLOCKED, e.getMessage());
-                        return;
-                    }
-                } else if (message.contains("Trust anchor for certification path not found")) {
-                    onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
-                    return;
-                }
+            if (message != null && message.contains("Trust anchor for certification path not found")) {
+                onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
+                return;
             }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
         } catch (NullPointerException e) {
