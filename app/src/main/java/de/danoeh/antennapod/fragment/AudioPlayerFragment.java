@@ -299,11 +299,11 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void updateUi(Playable media) {
-        if (controller == null) {
+        if (controller == null || media == null) {
             return;
         }
         duration = controller.getDuration();
-        updatePosition(new PlaybackPositionEvent(controller.getPosition(), duration));
+        updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
