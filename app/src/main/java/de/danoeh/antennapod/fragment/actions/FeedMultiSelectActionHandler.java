@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,6 +19,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -44,6 +46,8 @@ public class FeedMultiSelectActionHandler {
             autoDeleteEpisodesPrefHandler();
         } else if (id == R.id.playback_speed) {
             playbackSpeedPrefHandler();
+        } else if (id == R.id.edit_tags) {
+            editFeedPrefTags();
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
@@ -138,5 +142,14 @@ public class FeedMultiSelectActionHandler {
             DBWriter.setFeedPreferences(feed.getPreferences());
         }
         showMessage(R.plurals.updated_feeds_batch_label, selectedItems.size());
+    }
+
+    private void editFeedPrefTags() {
+        ArrayList<FeedPreferences> preferencesList = new ArrayList<>();
+        for (Feed feed : selectedItems) {
+            preferencesList.add(feed.getPreferences());
+        }
+        TagSettingsDialog.newInstance(preferencesList).show(activity.getSupportFragmentManager(),
+                TagSettingsDialog.TAG);
     }
 }
