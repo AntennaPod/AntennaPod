@@ -3,6 +3,7 @@ package de.danoeh.antennapod.parser.feed.namespace;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.text.HtmlCompat;
 import de.danoeh.antennapod.parser.feed.HandlerState;
 import de.danoeh.antennapod.parser.feed.element.SyndElement;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
@@ -97,6 +98,7 @@ public class Rss20 extends Namespace {
         } else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
             String contentRaw = state.getContentBuf().toString();
             String content = SyndStringUtils.trimAllWhitespace(contentRaw);
+            String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
             SyndElement topElement = state.getTagstack().peek();
             String top = topElement.getName();
             SyndElement secondElement = state.getSecondTag();
@@ -113,9 +115,9 @@ public class Rss20 extends Namespace {
                 }
             } else if (TITLE.equals(top)) {
                 if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setTitle(content);
+                    state.getCurrentItem().setTitle(contentFromHtml);
                 } else if (CHANNEL.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setTitle(content);
+                    state.getFeed().setTitle(contentFromHtml);
                 }
             } else if (LINK.equals(top)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
@@ -132,9 +134,9 @@ public class Rss20 extends Namespace {
                 }
             } else if (DESCR.equals(localName)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setDescription(content);
+                    state.getFeed().setDescription(contentFromHtml);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setDescriptionIfLonger(content);
+                    state.getCurrentItem().setDescriptionIfLonger(contentFromHtml);
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase(Locale.US));
