@@ -49,66 +49,33 @@ public class Itunes extends Namespace {
             return;
         }
 
-        if (AUTHOR.equals(localName)) {
-            parseAuthor(state);
+        String content = state.getContentBuf().toString();
+        String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
+        if (TextUtils.isEmpty(content)) {
+            return;
+        }
+
+        if (AUTHOR.equals(localName) && state.getFeed() != null) {
+            state.getFeed().setAuthor(contentFromHtml);
         } else if (DURATION.equals(localName)) {
-            parseDuration(state);
+            try {
+                long durationMs = DurationParser.inMillis(content);
+                state.getTempObjects().put(DURATION, (int) durationMs);
+            } catch (NumberFormatException e) {
+                Log.e(NSTAG, String.format("Duration '%s' could not be parsed", content));
+            }
         } else if (SUBTITLE.equals(localName)) {
-            parseSubtitle(state);
+            if (state.getCurrentItem() != null && TextUtils.isEmpty(state.getCurrentItem().getDescription())) {
+                state.getCurrentItem().setDescriptionIfLonger(content);
+            } else if (state.getFeed() != null && TextUtils.isEmpty(state.getFeed().getDescription())) {
+                state.getFeed().setDescription(content);
+            }
         } else if (SUMMARY.equals(localName)) {
-            SyndElement secondElement = state.getSecondTag();
-            parseSummary(state, secondElement.getName());
-        }
-    }
-
-    private void parseAuthor(HandlerState state) {
-        if (state.getFeed() != null) {
-            String author = state.getContentBuf().toString();
-            state.getFeed().setAuthor(HtmlCompat.fromHtml(author,
-                    HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
-        }
-    }
-
-    private void parseDuration(HandlerState state) {
-        String durationStr = state.getContentBuf().toString();
-        if (TextUtils.isEmpty(durationStr)) {
-            return;
-        }
-
-        try {
-            long durationMs = DurationParser.inMillis(durationStr);
-            state.getTempObjects().put(DURATION, (int) durationMs);
-        } catch (NumberFormatException e) {
-            Log.e(NSTAG, String.format("Duration '%s' could not be parsed", durationStr));
-        }
-    }
-
-    private void parseSubtitle(HandlerState state) {
-        String subtitle = state.getContentBuf().toString();
-        if (TextUtils.isEmpty(subtitle)) {
-            return;
-        }
-        if (state.getCurrentItem() != null) {
-            if (TextUtils.isEmpty(state.getCurrentItem().getDescription())) {
-                state.getCurrentItem().setDescriptionIfLonger(subtitle);
+            if (state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescriptionIfLonger(content);
+            } else if (Rss20.CHANNEL.equals(state.getSecondTag().getName()) && state.getFeed() != null) {
+                state.getFeed().setDescription(content);
             }
-        } else {
-            if (state.getFeed() != null && TextUtils.isEmpty(state.getFeed().getDescription())) {
-                state.getFeed().setDescription(subtitle);
-            }
-        }
-    }
-
-    private void parseSummary(HandlerState state, String secondElementName) {
-        String summary = state.getContentBuf().toString();
-        if (TextUtils.isEmpty(summary)) {
-            return;
-        }
-
-        if (state.getCurrentItem() != null) {
-            state.getCurrentItem().setDescriptionIfLonger(summary);
-        } else if (Rss20.CHANNEL.equals(secondElementName) && state.getFeed() != null) {
-            state.getFeed().setDescription(summary);
         }
     }
 }
