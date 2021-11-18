@@ -27,7 +27,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,35 +34,23 @@ import java.util.Set;
 public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
     private static final String ARG_FEED_PREFERENCES = "feed_preferences";
-    private static final String ARG_MULTI_FEED_PREFERENCES = "multi_feed_preferences";
     private List<String> displayedTags;
     private EditTagsDialogBinding viewBinding;
     private TagSelectionAdapter adapter;
 
-    private static TagSettingsDialog newInstance() {
+    public static TagSettingsDialog newInstance(List<FeedPreferences> preferencesList) {
         TagSettingsDialog fragment = new TagSettingsDialog();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_FEED_PREFERENCES, null);
+        args.putSerializable(ARG_FEED_PREFERENCES, new ArrayList<>(preferencesList));
         fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static TagSettingsDialog newInstance(FeedPreferences preferences) {
-        TagSettingsDialog fragment = newInstance();
-        fragment.getArguments().putSerializable(ARG_FEED_PREFERENCES, preferences);
-        return fragment;
-    }
-
-    public static TagSettingsDialog newInstance(ArrayList<FeedPreferences> preferencesList) {
-        TagSettingsDialog fragment = newInstance();
-        fragment.getArguments().putSerializable(ARG_MULTI_FEED_PREFERENCES, preferencesList);
         return fragment;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        List<FeedPreferences> feedPreferencesList = getFeedPreferences();
+        ArrayList<FeedPreferences> feedPreferencesList =
+                (ArrayList<FeedPreferences>) getArguments().getSerializable(ARG_FEED_PREFERENCES);
         Set<String> commonTags = new HashSet<>(feedPreferencesList.get(0).getTags());
 
         for (FeedPreferences preference : feedPreferencesList) {
@@ -93,6 +80,10 @@ public class TagSettingsDialog extends DialogFragment {
                 return false;
             }
         });
+
+        if (feedPreferencesList.size() > 1) {
+            viewBinding.commonTagsInfo.setVisibility(View.VISIBLE);
+        }
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
@@ -139,24 +130,13 @@ public class TagSettingsDialog extends DialogFragment {
         adapter.notifyDataSetChanged();
     }
 
-    private List<FeedPreferences> getFeedPreferences() {
-        FeedPreferences preferences = (FeedPreferences) getArguments().getSerializable(ARG_FEED_PREFERENCES);
-        if (preferences != null) {
-            return Collections.singletonList(preferences);
-        }
-        return (ArrayList<FeedPreferences>) getArguments().getSerializable(ARG_MULTI_FEED_PREFERENCES);
-    }
-
     private void updatePreferencesTags(List<FeedPreferences> feedPreferencesList, Set<String> commonTags) {
         if (viewBinding.rootFolderCheckbox.isChecked()) {
             displayedTags.add(FeedPreferences.TAG_ROOT);
         }
         for (FeedPreferences preferences : feedPreferencesList) {
-            ArrayList<String> allTags = new ArrayList<>(preferences.getTags());
-            allTags.removeAll(commonTags);
-            allTags.addAll(displayedTags);
-            preferences.getTags().clear();
-            preferences.getTags().addAll(allTags);
+            preferences.getTags().removeAll(commonTags);
+            preferences.getTags().addAll(displayedTags);
             DBWriter.setFeedPreferences(preferences);
         }
     }
