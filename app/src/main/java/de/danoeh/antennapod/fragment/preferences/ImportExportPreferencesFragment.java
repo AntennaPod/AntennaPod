@@ -323,6 +323,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "No activity found. Should never happen...");
         }
+
         // If we are using a SDK lower than API 21 or the implicit intent failed
         // fallback to the legacy export process
         exportWithWriter(writer, null);

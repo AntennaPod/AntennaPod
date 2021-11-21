@@ -20,7 +20,8 @@ import java.util.List;
  * Helper functions for Cast support.
  */
 public class CastUtils {
-    private CastUtils() { }
+    private CastUtils() {
+    }
 
     private static final String TAG = "CastUtils";
 

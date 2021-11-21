@@ -112,12 +112,6 @@ public class MediaInfoCreator {
             if (!TextUtils.isEmpty(feedItem.getLink())) {
                 metadata.putString(CastUtils.KEY_EPISODE_LINK, feedItem.getLink());
             }
-            /*try {
-                DBReader.loadDescriptionOfFeedItem(feedItem);
-                metadata.putString(KEY_EPISODE_NOTES, feedItem.getDescription());
-            } catch (Exception e) {
-                Log.e(TAG, "Unable to load FeedMedia notes", e);
-            }*/
         }
         // This field only identifies the id on the device that has the original version.
         // Idea is to perhaps, on a first approach, check if the version on the local DB with the
