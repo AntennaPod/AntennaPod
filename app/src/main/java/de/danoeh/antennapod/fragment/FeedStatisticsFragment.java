@@ -43,6 +43,16 @@ public class FeedStatisticsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         feedId = getArguments().getLong(EXTRA_FEED_ID);
         viewBinding = FeedStatisticsBinding.inflate(inflater);
+
+        if (!getArguments().getBoolean(EXTRA_DETAILED)) {
+            for (int i = 0; i < viewBinding.getRoot().getChildCount(); i++) {
+                View child = viewBinding.getRoot().getChildAt(i);
+                if ("detailed".equals(child.getTag())) {
+                    child.setVisibility(View.GONE);
+                }
+            }
+        }
+
         loadStatistics();
         return viewBinding.getRoot();
     }
@@ -71,15 +81,6 @@ public class FeedStatisticsFragment extends Fragment {
         viewBinding.totalDurationLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
         viewBinding.onDeviceLabel.setText(String.format(Locale.getDefault(), "%d", s.episodesDownloadCount));
         viewBinding.spaceUsedLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
-
-        if (!getArguments().getBoolean(EXTRA_DETAILED)) {
-            for (int i = 0; i < viewBinding.getRoot().getChildCount(); i++) {
-                View child = viewBinding.getRoot().getChildAt(i);
-                if ("detailed".equals(child.getTag())) {
-                    child.setVisibility(View.GONE);
-                }
-            }
-        }
     }
 
     @Override
