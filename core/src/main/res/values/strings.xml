@@ -696,7 +696,7 @@
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show in main list</string>
-    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from the selected feeds are shown.</string>
+    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
