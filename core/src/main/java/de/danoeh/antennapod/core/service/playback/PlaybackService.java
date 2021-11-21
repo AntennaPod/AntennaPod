@@ -1268,6 +1268,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                 .getSystemService(Context.UI_MODE_SERVICE);
+        int mode = uiModeManager.getCurrentModeType();
         if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
