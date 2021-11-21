@@ -1096,7 +1096,7 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
     }
 
-    public static void setSubscriptionTitleSetting(Boolean showTitle) {
+    public static void setSubscriptionTitleSetting(boolean showTitle) {
         prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, showTitle).apply();
     }
 

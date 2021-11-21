@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -44,6 +42,8 @@ import jp.shts.android.library.TriangleLabelView;
  */
 public class SubscriptionsRecyclerAdapter extends SelectableAdapter<SubscriptionsRecyclerAdapter.SubscriptionViewHolder>
         implements View.OnCreateContextMenuListener {
+    private static final int COVER_WITH_TITLE = 1;
+
     private final WeakReference<MainActivity> mainActivityRef;
     private List<NavDrawerData.DrawerItem> listItems;
     private Feed selectedFeed = null;
@@ -68,6 +68,23 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     @Override
     public SubscriptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mainActivityRef.get()).inflate(R.layout.subscription_item, parent, false);
+        TextView feedTitle = itemView.findViewById(R.id.txtvTitle);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) feedTitle.getLayoutParams();
+        int topAndBottomItemId = R.id.imgvCover;
+        int belowItemId = 0;
+
+        if (viewType == COVER_WITH_TITLE) {
+            topAndBottomItemId = 0;
+            belowItemId = R.id.imgvCover;
+            feedTitle.setBackgroundColor(feedTitle.getContext().getResources().getColor(R.color.feed_text_bg));
+            int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
+            feedTitle.setPadding(padding, padding, padding, padding);
+        }
+        params.addRule(RelativeLayout.BELOW, belowItemId);
+        params.addRule(RelativeLayout.ALIGN_TOP, topAndBottomItemId);
+        params.addRule(RelativeLayout.ALIGN_BOTTOM, topAndBottomItemId);
+        feedTitle.setLayoutParams(params);
+        feedTitle.setSingleLine(viewType == COVER_WITH_TITLE);
         return new SubscriptionViewHolder(itemView);
     }
 
@@ -175,13 +192,17 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return UserPreferences.shouldShowSubscriptionTitle() ? COVER_WITH_TITLE : 0;
+    }
+
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private final TextView feedTitle;
         private final ImageView imageView;
         private final TriangleLabelView count;
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
-        private ViewGroup.LayoutParams lastParams;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -208,18 +229,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 count.setVisibility(View.GONE);
             }
 
-            TypedArray res = feedTitle.getContext().getTheme().obtainStyledAttributes(
-                    new int[] { android.R.attr.textColorPrimary });
-            int textColorPrimary = res.getColor(0, 0);
-
-            if (UserPreferences.shouldShowSubscriptionTitle()) {
-                updateLayoutParams(feedTitle, textColorPrimary);
-            } else if (lastParams != null) {
-                feedTitle.setLayoutParams(lastParams);
-                feedTitle.setTextColor(textColorPrimary);
-                feedTitle.setSingleLine(false);
-            }
-
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                 boolean textAndImageCombind = feed.isLocalFeed()
@@ -236,24 +245,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         .withCoverView(imageView)
                         .load();
             }
-        }
-
-        private void updateLayoutParams(TextView feedTitle, int textColor) {
-            lastParams = feedTitle.getLayoutParams();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.addRule(RelativeLayout.ALIGN_LEFT, R.id.imgvCover);
-            params.addRule(RelativeLayout.ALIGN_RIGHT, R.id.imgvCover);
-            params.addRule(RelativeLayout.BELOW, R.id.imgvCover);
-            feedTitle.setLayoutParams(params);
-            feedTitle.setEllipsize(TextUtils.TruncateAt.END);
-            feedTitle.setSingleLine(true);
-            feedTitle.setTextColor(textColor);
-            feedTitle.setBackgroundColor(feedTitle.getContext().getResources()
-                    .getColor(R.color.feed_text_bg));
-
-            int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
-            feedTitle.setPadding(padding, padding, padding, padding);
         }
     }
 

@@ -48,8 +48,7 @@
             android:title="@string/pref_show_subscription_title"
             android:key="prefSubscriptionTitle"
             android:summary="@string/pref_show_subscription_title_summary"
-            android:defaultValue="false"
-            android:enabled="true"/>
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat

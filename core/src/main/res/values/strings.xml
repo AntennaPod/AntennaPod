@@ -543,7 +543,7 @@
     <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. You can change it by opening the podcast page.</string>
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show Subscription Title</string>
-    <string name="pref_show_subscription_title_summary">Display subscription title when checked.</string>
+    <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
