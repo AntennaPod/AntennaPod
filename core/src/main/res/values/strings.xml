@@ -263,8 +263,8 @@
     <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
-    <string name="download_error_blocked">The download was blocked by another app on your device.</string>
-    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
+    <string name="download_error_blocked">The download was blocked by another app on your device (like a VPN or ad blocker).</string>
+    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device (like a VPN or an ad blocker) blocked the download, or that something is wrong with the server certificates.</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_error_io_error">IO Error</string>
@@ -691,6 +691,7 @@
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show in main list</string>
+    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
@@ -833,4 +834,8 @@
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+
+    <string name="shortcut_subscription_label">Subscription shortcut</string>
+    <string name="shortcut_select_subscription">Select subscription</string>
+    <string name="add_shortcut">Add Shortcut</string>
 </resources>

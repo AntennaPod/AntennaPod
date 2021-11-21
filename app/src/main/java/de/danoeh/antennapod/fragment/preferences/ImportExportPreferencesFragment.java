@@ -224,15 +224,14 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
             sendIntent.setType("text/plain");
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
+            Intent chooserIntent = Intent.createChooser(sendIntent, getString(R.string.send_label));
+            List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                    .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
-            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+            getContext().startActivity(chooserIntent);
         });
         alert.create().show();
     }
@@ -310,7 +309,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void openExportPathPicker(String contentType, String title,
-                  final ActivityResultLauncher<Intent> result, ExportWriter writer) {
+                                      final ActivityResultLauncher<Intent> result, ExportWriter writer) {
         Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
                 .setType(contentType)

@@ -63,7 +63,7 @@ project.ext {
     audioPlayerVersion = "v2.0.0"
 
     // Only used for free builds. This version should be updated regularly.
-    conscryptVersion = "2.4.0"
+    conscryptVersion = "2.5.2"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"

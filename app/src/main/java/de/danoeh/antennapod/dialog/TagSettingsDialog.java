@@ -27,7 +27,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TagSettingsDialog extends DialogFragment {
     public static final String TAG = "TagSettingsDialog";
@@ -36,10 +38,10 @@ public class TagSettingsDialog extends DialogFragment {
     private EditTagsDialogBinding viewBinding;
     private TagSelectionAdapter adapter;
 
-    public static TagSettingsDialog newInstance(FeedPreferences preferences) {
+    public static TagSettingsDialog newInstance(List<FeedPreferences> preferencesList) {
         TagSettingsDialog fragment = new TagSettingsDialog();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_FEED_PREFERENCES, preferences);
+        args.putSerializable(ARG_FEED_PREFERENCES, new ArrayList<>(preferencesList));
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,8 +49,14 @@ public class TagSettingsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        FeedPreferences preferences = (FeedPreferences) getArguments().getSerializable(ARG_FEED_PREFERENCES);
-        displayedTags = new ArrayList<>(preferences.getTags());
+        ArrayList<FeedPreferences> feedPreferencesList =
+                (ArrayList<FeedPreferences>) getArguments().getSerializable(ARG_FEED_PREFERENCES);
+        Set<String> commonTags = new HashSet<>(feedPreferencesList.get(0).getTags());
+
+        for (FeedPreferences preference : feedPreferencesList) {
+            commonTags.retainAll(preference.getTags());
+        }
+        displayedTags = new ArrayList<>(commonTags);
         displayedTags.remove(FeedPreferences.TAG_ROOT);
 
         viewBinding = EditTagsDialogBinding.inflate(getLayoutInflater());
@@ -57,7 +65,7 @@ public class TagSettingsDialog extends DialogFragment {
         adapter = new TagSelectionAdapter();
         adapter.setHasStableIds(true);
         viewBinding.tagsRecycler.setAdapter(adapter);
-        viewBinding.rootFolderCheckbox.setChecked(preferences.getTags().contains(FeedPreferences.TAG_ROOT));
+        viewBinding.rootFolderCheckbox.setChecked(commonTags.contains(FeedPreferences.TAG_ROOT));
 
         viewBinding.newTagButton.setOnClickListener(v ->
                 addTag(viewBinding.newTagEditText.getText().toString().trim()));
@@ -73,17 +81,16 @@ public class TagSettingsDialog extends DialogFragment {
             }
         });
 
+        if (feedPreferencesList.size() > 1) {
+            viewBinding.commonTagsInfo.setVisibility(View.VISIBLE);
+        }
+
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setView(viewBinding.getRoot());
         dialog.setTitle(R.string.feed_tags_label);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {
             addTag(viewBinding.newTagEditText.getText().toString().trim());
-            preferences.getTags().clear();
-            preferences.getTags().addAll(displayedTags);
-            if (viewBinding.rootFolderCheckbox.isChecked()) {
-                preferences.getTags().add(FeedPreferences.TAG_ROOT);
-            }
-            DBWriter.setFeedPreferences(preferences);
+            updatePreferencesTags(feedPreferencesList, commonTags);
         });
         dialog.setNegativeButton(R.string.cancel_label, null);
         return dialog.create();
@@ -121,6 +128,17 @@ public class TagSettingsDialog extends DialogFragment {
         displayedTags.add(name);
         viewBinding.newTagEditText.setText("");
         adapter.notifyDataSetChanged();
+    }
+
+    private void updatePreferencesTags(List<FeedPreferences> feedPreferencesList, Set<String> commonTags) {
+        if (viewBinding.rootFolderCheckbox.isChecked()) {
+            displayedTags.add(FeedPreferences.TAG_ROOT);
+        }
+        for (FeedPreferences preferences : feedPreferencesList) {
+            preferences.getTags().removeAll(commonTags);
+            preferences.getTags().addAll(displayedTags);
+            DBWriter.setFeedPreferences(preferences);
+        }
     }
 
     public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapter.ViewHolder> {

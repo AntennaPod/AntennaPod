@@ -38,6 +38,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
 import java.util.Locale;
 
 public class FeedSettingsFragment extends Fragment {
@@ -391,7 +392,8 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupTags() {
             findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
-                TagSettingsDialog.newInstance(feedPreferences).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+                TagSettingsDialog.newInstance(Collections.singletonList(feedPreferences))
+                        .show(getChildFragmentManager(), TagSettingsDialog.TAG);
                 return true;
             });
         }

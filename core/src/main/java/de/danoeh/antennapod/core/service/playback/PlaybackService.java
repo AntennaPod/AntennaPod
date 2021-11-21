@@ -843,7 +843,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 case PAUSED:
                     if (UserPreferences.isPersistNotify() || isCasting) {
-                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                        // do not remove notification on pause based on user pref
                         // Change [Play] button to [Pause]
                         updateNotificationAndMediaSession(newInfo.playable);
                     } else if (!UserPreferences.isPersistNotify() && !isCasting) {

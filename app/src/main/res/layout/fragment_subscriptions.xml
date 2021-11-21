@@ -41,6 +41,7 @@
             android:id="@+id/subscriptions_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="88dp"
             tools:itemCount="2"

@@ -95,7 +95,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                 holder.preview.setVisibility(View.GONE);
                 holder.description.setTag(Boolean.FALSE);
             } else {
-                holder.description.setMaxLines(2000);
+                holder.description.setMaxLines(30);
                 holder.description.setTag(Boolean.TRUE);
 
                 holder.preview.setVisibility(item.getMedia() != null ? View.VISIBLE : View.GONE);

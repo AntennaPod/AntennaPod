@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -68,9 +69,6 @@ public abstract class WidgetUpdater {
         if (!PlayerWidget.isEnabled(context) || widgetState == null) {
             return;
         }
-        ComponentName playerWidget = new ComponentName(context, PlayerWidget.class);
-        AppWidgetManager manager = AppWidgetManager.getInstance(context);
-        int[] widgetIds = manager.getAppWidgetIds(playerWidget);
 
         PendingIntent startMediaPlayer;
         if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO
@@ -157,6 +155,10 @@ public abstract class WidgetUpdater {
             views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_play);
         }
 
+        ComponentName playerWidget = new ComponentName(context, PlayerWidget.class);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        int[] widgetIds = manager.getAppWidgetIds(playerWidget);
+
         for (int id : widgetIds) {
             Bundle options = manager.getAppWidgetOptions(id);
             SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
@@ -214,14 +216,16 @@ public abstract class WidgetUpdater {
     }
 
     private static String getProgressString(int position, int duration, float speed) {
-        if (position >= 0 && duration > 0) {
-            TimeSpeedConverter converter = new TimeSpeedConverter(speed);
-            position = converter.convert(position);
-            duration = converter.convert(duration);
-            return Converter.getDurationStringLong(position) + " / "
-                    + Converter.getDurationStringLong(duration);
-        } else {
+        if (position < 0 || duration <= 0) {
             return null;
+        }
+        TimeSpeedConverter converter = new TimeSpeedConverter(speed);
+        if (UserPreferences.shouldShowRemainingTime()) {
+            return Converter.getDurationStringLong(converter.convert(position)) + " / -"
+                    + Converter.getDurationStringLong(converter.convert(Math.max(0, duration - position)));
+        } else {
+            return Converter.getDurationStringLong(converter.convert(position)) + " / "
+                    + Converter.getDurationStringLong(converter.convert(duration));
         }
     }
 }

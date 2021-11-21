@@ -76,7 +76,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.APP_MUSIC" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
@@ -315,6 +314,16 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
+        </activity>
+
+        <activity android:name=".activity.SelectSubscriptionActivity"
+            android:label="@string/shortcut_subscription_label"
+            android:icon="@drawable/ic_folder_shortcut"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
         </activity>
 
         <receiver
