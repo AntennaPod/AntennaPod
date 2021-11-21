@@ -75,10 +75,14 @@ public abstract class VorbisCommentReader {
     private void readUserComment(InputStream input) throws VorbisCommentReaderException {
         try {
             long vectorLength = EndianUtils.readSwappedUnsignedInteger(input);
+            if (vectorLength > 20 * 1024 * 1024) {
+                // Avoid reading entire file if it is encoded incorrectly
+                throw new VorbisCommentReaderException("User comment unrealistically long: " + vectorLength);
+            }
             String key = readContentVectorKey(input, vectorLength).toLowerCase(Locale.US);
             boolean readValue = onContentVectorKey(key);
             if (readValue) {
-                String value = readUtf8String(input, (int) (vectorLength - key.length() - 1));
+                String value = readUtf8String(input, vectorLength - key.length() - 1);
                 onContentVectorValue(key, value);
             } else {
                 IOUtils.skipFully(input, vectorLength - key.length() - 1);
