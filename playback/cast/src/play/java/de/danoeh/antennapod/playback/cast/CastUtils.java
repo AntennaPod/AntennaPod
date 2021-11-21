@@ -20,7 +20,7 @@ import java.util.List;
  * Helper functions for Cast support.
  */
 public class CastUtils {
-    private CastUtils(){}
+    private CastUtils() { }
 
     private static final String TAG = "CastUtils";
 
@@ -78,9 +78,9 @@ public class CastUtils {
         MediaMetadata metadata = media.getMetadata();
         int version = metadata.getInt(KEY_FORMAT_VERSION);
         if (version <= 0 || version > MAX_VERSION_FORWARD_COMPATIBILITY) {
-            Log.w(TAG, "MediaInfo object obtained from the cast device is not compatible with this" +
-                    "version of AntennaPod CastUtils, curVer=" + FORMAT_VERSION_VALUE +
-                    ", object version=" + version);
+            Log.w(TAG, "MediaInfo object obtained from the cast device is not compatible with this"
+                    + "version of AntennaPod CastUtils, curVer=" + FORMAT_VERSION_VALUE
+                    + ", object version=" + version);
             return null;
         }
         List<WebImage> imageList = metadata.getImages();
@@ -126,8 +126,8 @@ public class CastUtils {
         }
         MediaMetadata metadata = info.getMetadata();
         FeedItem fi = media.getItem();
-        if (fi == null || metadata == null ||
-                !TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), fi.getItemIdentifier())) {
+        if (fi == null || metadata == null
+                || !TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), fi.getItemIdentifier())) {
             return false;
         }
         Feed feed = fi.getFeed();
@@ -152,9 +152,9 @@ public class CastUtils {
             return false;
         }
         MediaMetadata metadata = info.getMetadata();
-        return metadata != null &&
-                TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), media.getEpisodeIdentifier()) &&
-                TextUtils.equals(metadata.getString(KEY_FEED_URL), media.getFeedUrl());
+        return metadata != null
+                && TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), media.getEpisodeIdentifier())
+                && TextUtils.equals(metadata.getString(KEY_FEED_URL), media.getFeedUrl());
     }
 
     /**
