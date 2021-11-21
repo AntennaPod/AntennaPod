@@ -66,11 +66,6 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
     }
 
     @Override
-    public void onNoVorbisCommentFound() {
-        System.out.println("No vorbis comment found");
-    }
-
-    @Override
     public void onEndOfComment() {
         System.out.println("End of comment");
         for (Chapter c : chapters) {
