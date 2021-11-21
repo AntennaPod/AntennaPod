@@ -597,7 +597,6 @@
     <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
-    <string name="import_select_file">Select file to import</string>
     <string name="successful_import_label">Import successful</string>
     <string name="import_ok">Please press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>

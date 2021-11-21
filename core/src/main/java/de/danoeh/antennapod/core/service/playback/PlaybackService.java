@@ -815,9 +815,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
                 case PAUSED:
-                    if ((UserPreferences.isPersistNotify() || isCasting) &&
-                            android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                    if (UserPreferences.isPersistNotify() || isCasting) {
+                        // do not remove notification on pause based on user pref
                         // Change [Play] button to [Pause]
                         updateNotificationAndMediaSession(newInfo.playable);
                     } else if (!UserPreferences.isPersistNotify() && !isCasting) {
@@ -1967,11 +1966,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 PlaybackService.this.updateNotificationAndMediaSession(info.playable);
             } else {
                 PlayerStatus status = info.playerStatus;
-                if ((status == PlayerStatus.PLAYING ||
-                        status == PlayerStatus.SEEKING ||
-                        status == PlayerStatus.PREPARING ||
-                        UserPreferences.isPersistNotify()) &&
-                        android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (status == PlayerStatus.PLAYING || status == PlayerStatus.SEEKING
+                        || status == PlayerStatus.PREPARING || UserPreferences.isPersistNotify()) {
                     PlaybackService.this.updateNotificationAndMediaSession(info.playable);
                 } else if (!UserPreferences.isPersistNotify()) {
                     stateManager.stopForeground(true);
