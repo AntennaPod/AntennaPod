@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -188,6 +190,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
+            Drawable drawable = AppCompatResources.getDrawable(selectView.getContext(),
+                    R.drawable.ic_checkbox_background);
+            selectView.setBackground(drawable); // Setting this in XML crashes API <= 21
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
