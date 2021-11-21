@@ -456,7 +456,7 @@ public final class DBTasks {
                 final FeedItem item = newFeed.getItems().get(idx);
 
                 FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
-                if (possibleDuplicate != null && item != possibleDuplicate) {
+                if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
                     DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
@@ -470,7 +470,7 @@ public final class DBTasks {
                 }
 
                 FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed.getItems(), item);
-                if (oldItem == null) {
+                if (!newFeed.isLocalFeed() && oldItem == null) {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
