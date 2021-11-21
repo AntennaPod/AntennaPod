@@ -110,9 +110,8 @@ public class CoverFragment extends Fragment {
         butNextChapter.setColorFilter(colorFilter);
         butPrevChapter.setColorFilter(colorFilter);
         descriptionIcon.setColorFilter(colorFilter);
-        ChaptersFragment chaptersFragment = new ChaptersFragment();
         chapterControl.setOnClickListener(v ->
-                chaptersFragment.show(getChildFragmentManager(), ChaptersFragment.TAG));
+                new ChaptersFragment().show(getChildFragmentManager(), ChaptersFragment.TAG));
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
