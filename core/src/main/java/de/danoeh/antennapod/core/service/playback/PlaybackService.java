@@ -1273,10 +1273,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
                         .build());
         sessionState.addCustomAction(
-            new PlaybackStateCompat.CustomAction.Builder(
-                    CUSTOM_ACTION_REWIND,
-                    getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
-                    .build());
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_REWIND,
+                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
+                        .build());
 
         sessionState.setActions(capabilities);
 
