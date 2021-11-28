@@ -1264,15 +1264,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // This would give the PIP of videos a play button
             capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
             if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
-                /*flavorHelper.sessionStateAddActionForWear(sessionState,
+                WearMediaSession.sessionStateAddActionForWear(sessionState,
                         CUSTOM_ACTION_REWIND,
                         getString(R.string.rewind_label),
                         android.R.drawable.ic_media_rew);
-                flavorHelper.sessionStateAddActionForWear(sessionState,
+                WearMediaSession.sessionStateAddActionForWear(sessionState,
                         CUSTOM_ACTION_FAST_FORWARD,
                         getString(R.string.fast_forward_label),
                         android.R.drawable.ic_media_ff);
-                flavorHelper.mediaSessionSetExtraForWear(mediaSession);*/
+                WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
             }
         }
 
