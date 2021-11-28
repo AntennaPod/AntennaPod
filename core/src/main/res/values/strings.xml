@@ -804,9 +804,6 @@
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
 
-    <!-- Casting -->
-    <string name="cast_disconnect_label">Disconnect the cast session</string>
-
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>
     <string name="notification_group_news">News</string>

@@ -108,24 +108,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private static final String TAG = "PlaybackService";
 
-    /**
-     * Parcelable of type Playable.
-     */
     public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
-    /**
-     * True if cast session should disconnect.
-     */
-    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
-    /**
-     * True if media should be streamed.
-     */
     public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.core.service.shouldStream";
     public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
     public static final String EXTRA_ALLOW_STREAM_ALWAYS = "extra.de.danoeh.antennapod.core.service.allowStreamAlways";
-    /**
-     * True if playback should be started immediately after media has been
-     * prepared.
-     */
     public static final String EXTRA_START_WHEN_PREPARED = "extra.de.danoeh.antennapod.core.service.startWhenPrepared";
 
     public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
@@ -510,9 +496,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
-        final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
-        if (keycode == -1 && playable == null && !castDisconnect) {
+        if (keycode == -1 && playable == null) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stateManager.stopService();
             return Service.START_NOT_STICKY;
@@ -536,7 +521,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
-            } else if (/*!flavorHelper.castDisconnect(castDisconnect) &&*/ playable != null) {
+            } else {
                 stateManager.validStartCommandWasReceived();
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
                 boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
@@ -580,9 +565,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                     stateManager.stopService();
                                 });
                 return Service.START_NOT_STICKY;
-            } else {
-                Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
-                Log.d(TAG, "Extras: " + intent.getExtras());
             }
         }
 
@@ -1372,7 +1354,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setPlayable(playable);
         notificationBuilder.setMediaSessionToken(mediaSession.getSessionToken());
         notificationBuilder.setPlayerStatus(playerStatus);
-        notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
