@@ -45,7 +45,6 @@
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
-    <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
     <string name="statistics_mode">Statistics mode</string>
     <string name="statistics_mode_normal">Calculate duration that was actually played. Playing twice is counted twice, while marking as played is not counted</string>
     <string name="statistics_mode_count_all">Sum up all episodes marked as played</string>
@@ -264,8 +263,8 @@
     <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
-    <string name="download_error_blocked">The download was blocked by another app on your device.</string>
-    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
+    <string name="download_error_blocked">The download was blocked by another app on your device (like a VPN or ad blocker).</string>
+    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device (like a VPN or an ad blocker) blocked the download, or that something is wrong with the server certificates.</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_error_io_error">IO Error</string>
@@ -295,7 +294,6 @@
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
-    <string name="player_error_msg">Error!</string>
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
@@ -504,9 +502,6 @@
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_no_browser_found">No web browser found.</string>
-    <string name="pref_cast_title">Chromecast support</string>
-    <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
-    <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player (deprecated) </string>
@@ -599,7 +594,6 @@
     <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
-    <string name="import_select_file">Select file to import</string>
     <string name="successful_import_label">Import successful</string>
     <string name="import_ok">Please press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
@@ -667,7 +661,6 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
-    <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
@@ -676,6 +669,7 @@
     <string name="stop_preview">Stop preview</string>
 
     <!-- Content descriptions for image buttons -->
+    <string name="toolbar_back_button_content_description">Back</string>
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
     <string name="increase_speed">Increase speed</string>
@@ -697,18 +691,23 @@
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show in main list</string>
+    <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
     <string name="episode_filters_include">Include</string>
     <string name="episode_filters_exclude">Exclude</string>
+    <string name="episode_filters_duration">Minimal Duration (in minutes)</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="statistics_listened_for">Listened for:</string>
+    <string name="statistics_time_played">Time played:</string>
+    <string name="statistics_total_duration">Total duration (estimate):</string>
+    <string name="statistics_duration_played_episodes">Duration of played episodes:</string>
     <string name="statistics_episodes_on_device">Episodes on the device:</string>
     <string name="statistics_space_used">Space used:</string>
+    <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
 
     <!-- AntennaPodSP -->
@@ -805,21 +804,6 @@
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
 
-    <!-- Casting -->
-    <string name="cast_media_route_menu_title">Play on&#8230;</string>
-    <string name="cast_disconnect_label">Disconnect the cast session</string>
-    <string name="cast_not_castable">Media selected is not compatible with cast device</string>
-    <string name="cast_failed_to_play">Failed to start the playback of media</string>
-    <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
-    <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
-    <string name="cast_failed_setting_volume">Failed to set the volume</string>
-    <string name="cast_failed_no_connection">No connection to the cast device is present</string>
-    <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
-    <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
-    <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
-    <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
-    <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
-
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>
     <string name="notification_group_news">News</string>
@@ -847,4 +831,8 @@
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+
+    <string name="shortcut_subscription_label">Subscription shortcut</string>
+    <string name="shortcut_select_subscription">Select subscription</string>
+    <string name="add_shortcut">Add Shortcut</string>
 </resources>

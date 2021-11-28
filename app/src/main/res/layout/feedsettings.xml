@@ -11,6 +11,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="@string/feed_settings_label"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
             app:navigationIcon="?homeAsUpIndicator"
             android:elevation="4dp"
             android:id="@+id/toolbar"/>

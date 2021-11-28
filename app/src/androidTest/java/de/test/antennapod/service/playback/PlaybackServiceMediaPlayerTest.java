@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.test.filters.MediumTest;
 
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.test.antennapod.EspressoTestUtils;
 import junit.framework.AssertionFailedError;
 
@@ -24,8 +26,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.playback.LocalPSMP;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.test.antennapod.util.service.download.HTTPBin;
@@ -514,13 +514,6 @@ public class PlaybackServiceMediaPlayerTest {
                 if (assertionError == null)
                     assertionError = new AssertionFailedError("Unexpected call to shouldStop");
             }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
-            }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
@@ -604,14 +597,6 @@ public class PlaybackServiceMediaPlayerTest {
                 }
 
             }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null) {
-                    assertionError = new AssertionFailedError("Unexpected call of onMediaPlayerError");
-                }
-                return false;
-            }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         if (initialState == PlayerStatus.PREPARED || initialState == PlayerStatus.PLAYING || initialState == PlayerStatus.PAUSED) {
@@ -663,13 +648,6 @@ public class PlaybackServiceMediaPlayerTest {
                         countDownLatch.countDown();
                     }
                 }
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -737,13 +715,6 @@ public class PlaybackServiceMediaPlayerTest {
                         countDownLatch.countDown();
                     }
                 }
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                if (assertionError == null)
-                    assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);

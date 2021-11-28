@@ -40,4 +40,21 @@
         android:minLines="1"
         android:scrollbars="vertical" />
 
+    <CheckBox
+        android:id="@+id/checkbox_filter_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/episode_filters_duration" />
+
+    <EditText
+        android:id="@+id/etxtEpisodeFilterDurationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="numberSigned"
+        android:lines="1" />
+
 </LinearLayout>

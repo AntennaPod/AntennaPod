@@ -1,0 +1,78 @@
+name: Bug report
+description: Create a report to help us improve existing features
+labels: ["Type: Possible bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have used the search function to see if someone else has already submitted the same bug report.
+          required: true
+        - label: I will describe the problem with as much detail as possible.
+          required: true
+        - label: If the bug only to occurs with a certain podcast, I will include the URL of that podcast.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: The latest version is different on each device, so we need the actual version number found on the settings screen.
+      placeholder: x.y.z
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where did you get the app from
+      multiple: false
+      options:
+        - Google Play
+        - F-Droid
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: android_version
+    attributes:
+      label: Android version
+      description: Please mention if you are using a custom rom!
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device model
+  - type: input
+    id: first
+    attributes:
+      label: First occurred
+      placeholder: about x days/weeks ago
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. This
+        2. Then that
+        3. Then this
+        4. Etc.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: After following the steps, what did you think AntennaPod would do?
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behaviour
+      description: What did AntennaPod do instead? Screenshots might help. Usually, you can take a screenshot of your smartphone by pressing *Power* + *Volume down* for a few seconds.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. AntennaPod has an `export logs` feature for this.

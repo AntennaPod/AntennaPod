@@ -7,23 +7,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -71,8 +72,8 @@ public abstract class PlaybackController {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+    public void onEventMainThread(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_STARTED) {
             init();
         }
     }
@@ -209,13 +210,6 @@ public abstract class PlaybackController {
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_ERROR:
-                    handleError(code);
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
-                    float progress = ((float) code) / 100;
-                    onBufferUpdate(progress);
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
                     if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
@@ -226,20 +220,8 @@ public abstract class PlaybackController {
                     onReloadNotification(intent.getIntExtra(
                             PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
-                    onSleepTimerUpdate();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_START:
-                    onBufferStart();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
-                    onBufferEnd();
-                    break;
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
-                    break;
-                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
-                    onPlaybackSpeedChange();
                     break;
             }
         }
@@ -248,23 +230,10 @@ public abstract class PlaybackController {
 
     public void onPositionObserverUpdate() {}
 
-
-    public void onPlaybackSpeedChange() {}
-
     /**
      * Called when the currently displayed information should be refreshed.
      */
     public void onReloadNotification(int code) {}
-
-    public void onBufferStart() {}
-
-    public void onBufferEnd() {}
-
-    public void onBufferUpdate(float progress) {}
-
-    public void onSleepTimerUpdate() {}
-
-    public void handleError(int code) {}
 
     public void onPlaybackEnd() {}
 
@@ -276,10 +245,6 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         checkMediaInfoLoaded();
         switch (status) {
-            case ERROR:
-                EventBus.getDefault().post(new MessageEvent(activity.getString(R.string.player_error_msg)));
-                handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
-                break;
             case PAUSED:
                 onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
@@ -458,6 +423,11 @@ public abstract class PlaybackController {
     public void seekTo(int time) {
         if (playbackService != null) {
             playbackService.seekTo(time);
+        } else if (getMedia() instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) getMedia();
+            media.setPosition(time);
+            DBWriter.setFeedItem(media.getItem());
+            EventBus.getDefault().post(new PlaybackPositionEvent(time, getMedia().getDuration()));
         }
     }
 
@@ -482,7 +452,7 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
         } else {
-            onPlaybackSpeedChange();
+            EventBus.getDefault().post(new SpeedChangedEvent(speed));
         }
     }
 
@@ -552,20 +522,6 @@ public abstract class PlaybackController {
     public void notifyVideoSurfaceAbandoned() {
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
-        }
-    }
-
-    /**
-     * Move service into INITIALIZED state if it's paused to save bandwidth
-     */
-    public void reinitServiceIfPaused() {
-        if (playbackService != null
-                && playbackService.isStreaming()
-                && !PlaybackService.isCasting()
-                && (playbackService.getStatus() == PlayerStatus.PAUSED ||
-                (playbackService.getStatus() == PlayerStatus.PREPARING &&
-                        !playbackService.isStartWhenPrepared()))) {
-            playbackService.reinit();
         }
     }
 

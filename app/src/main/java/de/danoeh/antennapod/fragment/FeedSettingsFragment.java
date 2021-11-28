@@ -16,9 +16,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
-import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
+import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFilter;
@@ -38,6 +38,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
 import java.util.Locale;
 
 public class FeedSettingsFragment extends Fragment {
@@ -391,7 +392,8 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupTags() {
             findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
-                TagSettingsDialog.newInstance(feedPreferences).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+                TagSettingsDialog.newInstance(Collections.singletonList(feedPreferences))
+                        .show(getChildFragmentManager(), TagSettingsDialog.TAG);
                 return true;
             });
         }

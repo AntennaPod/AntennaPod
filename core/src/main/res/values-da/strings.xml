@@ -88,7 +88,7 @@
   <string name="chapters_label">Kapitler</string>
   <string name="chapter_duration">Varighed: %1$s</string>
   <string name="description_label">Beskrivelse</string>
-  <string name="shownotes_label">Udsendelsesnoter</string>
+  <string name="shownotes_label">Beskrivelse</string>
   <string name="shownotes_contentdescription">Stryg op for at læse beskrivelse af udsendelse</string>
   <string name="episodes_suffix">\u0020udsendelser</string>
   <string name="close_label">Luk</string>
@@ -315,7 +315,7 @@
   <string name="no_items_label">Tilføj en udsendelse ved at downloade den, eller tryk og hold på en udsendelse og vælg \"Føj til kø\".</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
   <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
-  <string name="no_comp_downloads_label">Du kan downloade udsendelsen på podcastens skærm med detaljer. </string>
+  <string name="no_comp_downloads_label">Du kan downloade udsendelser på siden med podcastoplysninger.</string>
   <string name="no_log_downloads_head_label">Ingen overførselslog</string>
   <string name="no_log_downloads_label">Overførselslog vil blive vist her når tilgængelig.</string>
   <string name="no_history_head_label">Ingen historik</string>
@@ -388,7 +388,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Tilslutning af hovedtelefoner igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth forbundet igen</string>
   <string name="pref_stream_over_download_title">Foretræk streaming</string>
-  <string name="pref_stream_over_download_sum">Vis stream knap, i stedet for download knap i listen.</string>
+  <string name="pref_stream_over_download_sum">Vis stream-knap i stedet for download-knap i lister.</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
   <string name="pref_mobileUpdate_sum">Vælg hvad der skal være tilladt via mobil dataforbindelse</string>
   <string name="pref_mobileUpdate_refresh">Opdatere podcast</string>
@@ -416,7 +416,7 @@
   <string name="pref_episode_cache_title">Mellemlager for udsendelser</string>
   <string name="pref_episode_cache_summary">Totalt antal af downloadede udsendelser gemt på din enhed. Automatisk download stilles i bero, når dette nummer nåes.</string>
   <string name="pref_episode_cover_title">Brug udsendelsesbillede</string>
-  <string name="pref_episode_cover_summary">Brug det udsendelsesspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcast coverbilledet.</string>
+  <string name="pref_episode_cover_summary">Brug det udsendelsesspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcastens coverbillede.</string>
   <string name="pref_show_remain_time_title">Hvis tilbageværende tid</string>
   <string name="pref_show_remain_time_summary">Vis resterende tid for udsendelser når valgt. Hvis ikke valgt vises den samlede varighed af udsendelser.</string>
   <string name="pref_theme_title_use_system">Brug systemtema</string>
@@ -443,7 +443,7 @@
   <string name="pref_feed_skip_intro">Overspring første</string>
   <string name="pref_feed_skip_ending_toast">Overspring sidste %d sekunder</string>
   <string name="pref_feed_skip_intro_toast">Overspring første %d sekunder</string>
-  <string name="pref_playback_time_respects_speed_title">Justere medie information for afspilningshastighed</string>
+  <string name="pref_playback_time_respects_speed_title">Afpas medieinformation til afspilningshastighed</string>
   <string name="pref_playback_time_respects_speed_sum">Vist position og varighed er tilpasset afspilningshastighed</string>
   <string name="pref_fast_forward">Tidshop for fremadspoling</string>
   <string name="pref_fast_forward_sum">Indstil antallet af sekunder, der skal springes fremad, når der trykkes på fremadspolingsknappen</string>

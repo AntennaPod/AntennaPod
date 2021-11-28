@@ -11,7 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -83,7 +83,7 @@ public class MediaDownloadedHandler implements Runnable {
 
             // we've received the media, we don't want to autodownload it again
             if (item != null) {
-                item.setAutoDownload(false);
+                item.disableAutoDownload();
                 // setFeedItem() signals (via EventBus) that the item has been updated,
                 // so we do it after the enclosing media has been updated above,
                 // to ensure subscribers will get the updated FeedMedia as well

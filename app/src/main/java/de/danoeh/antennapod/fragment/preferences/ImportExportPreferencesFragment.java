@@ -195,18 +195,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         // add a button
         builder.setNegativeButton(R.string.no, null);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(intent);
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(Intent.createChooser(intent,
-                                getString(R.string.import_select_file)));
-                    }
-                }
-        );
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            restoreDatabaseLauncher.launch(intent);
+        });
 
         // create and show the alert dialog
         builder.show();
@@ -232,15 +224,14 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
             sendIntent.setType("text/plain");
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
+            Intent chooserIntent = Intent.createChooser(sendIntent, getString(R.string.send_label));
+            List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                    .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
-            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+            getContext().startActivity(chooserIntent);
         });
         alert.create().show();
     }
@@ -319,20 +310,18 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private void openExportPathPicker(String contentType, String title,
                                       final ActivityResultLauncher<Intent> result, ExportWriter writer) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(contentType)
-                    .putExtra(Intent.EXTRA_TITLE, title);
+        Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType(contentType)
+                .putExtra(Intent.EXTRA_TITLE, title);
 
-            // Creates an implicit intent to launch a file manager which lets
-            // the user choose a specific directory to export to.
-            try {
-                result.launch(intentPickAction);
-                return;
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
-            }
+        // Creates an implicit intent to launch a file manager which lets
+        // the user choose a specific directory to export to.
+        try {
+            result.launch(intentPickAction);
+            return;
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "No activity found. Should never happen...");
         }
 
         // If we are using a SDK lower than API 21 or the implicit intent failed

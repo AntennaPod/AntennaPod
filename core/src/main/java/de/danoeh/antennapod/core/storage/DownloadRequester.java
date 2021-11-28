@@ -218,7 +218,7 @@ public class DownloadRequester implements DownloadStateProvider {
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
-            DownloadRequest request = createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
+            DownloadRequest request = createRequest(feed, null, getDownloadPathForFeed(feed),
                     true, username, password, lastModified, true, args, initiatedByUser
             );
             if (request != null) {
@@ -228,6 +228,10 @@ public class DownloadRequester implements DownloadStateProvider {
         if (!requests.isEmpty()) {
             download(context, requests.toArray(new DownloadRequest[0]));
         }
+    }
+
+    public File getDownloadPathForFeed(Feed feed) throws DownloadRequestException {
+        return new File(getFeedfilePath(), getFeedfileName(feed));
     }
 
     public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {

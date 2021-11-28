@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -30,6 +32,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkUtils {
+    private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
+
     private NetworkUtils(){}
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
@@ -40,56 +44,23 @@ public class NetworkUtils {
         NetworkUtils.context = context;
     }
 
-    /**
-     * Returns true if the device is connected to Wi-Fi and the Wi-Fi filter for
-     * automatic downloads is disabled or the device is connected to a Wi-Fi
-     * network that is on the 'selected networks' list of the Wi-Fi filter for
-     * automatic downloads and false otherwise.
-     * */
-    public static boolean autodownloadNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isAutoDownloadAllowed() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                Log.d(TAG, "Device is connected to Wi-Fi");
-                if (networkInfo.isConnected()) {
-                    if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
-                        Log.d(TAG, "Auto-dl filter is disabled");
-                        return true;
-                    } else {
-                        WifiManager wm = (WifiManager) context.getApplicationContext()
-                                .getSystemService(Context.WIFI_SERVICE);
-                        WifiInfo wifiInfo = wm.getConnectionInfo();
-                        List<String> selectedNetworks = Arrays
-                                .asList(UserPreferences
-                                        .getAutodownloadSelectedNetworks());
-                        if (selectedNetworks.contains(Integer.toString(wifiInfo
-                                .getNetworkId()))) {
-                            Log.d(TAG, "Current network is on the selected networks list");
-                            return true;
-                        }
-                    }
-                }
-            } else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
-                Log.d(TAG, "Device is connected to Ethernet");
-                if (networkInfo.isConnected()) {
-                    return true;
-                }
-            } else {
-                if (!UserPreferences.isAllowMobileAutoDownload()) {
-                    Log.d(TAG, "Auto Download not enabled on Mobile");
-                    return false;
-                }
-                if (networkInfo.isRoaming()) {
-                    Log.d(TAG, "Roaming on foreign network");
-                    return false;
-                }
-                return true;
-            }
+        if (networkInfo == null) {
+            return false;
         }
-        Log.d(TAG, "Network for auto-dl is not available");
-        return false;
+        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            if (UserPreferences.isEnableAutodownloadWifiFilter()) {
+                return isInAllowedWifiNetwork();
+            } else {
+                return !isNetworkMetered();
+            }
+        } else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
+            return true;
+        } else {
+            return UserPreferences.isAllowMobileAutoDownload() || !NetworkUtils.isNetworkRestricted();
+        }
     }
 
     public static boolean networkAvailable() {
@@ -157,6 +128,12 @@ public class NetworkUtils {
         }
     }
 
+    private static boolean isInAllowedWifiNetwork() {
+        WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        List<String> selectedNetworks = Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks());
+        return selectedNetworks.contains(Integer.toString(wm.getConnectionInfo().getNetworkId()));
+    }
+
     /**
      * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
      */
@@ -167,6 +144,22 @@ public class NetworkUtils {
             return wifiInfo.getSSID();
         }
         return null;
+    }
+
+    public static boolean wasDownloadBlocked(Throwable throwable) {
+        String message = throwable.getMessage();
+        if (message != null) {
+            Pattern pattern = Pattern.compile(REGEX_PATTERN_IP_ADDRESS);
+            Matcher matcher = pattern.matcher(message);
+            if (matcher.find()) {
+                String ip = matcher.group();
+                return ip.startsWith("127.") || ip.startsWith("0.");
+            }
+        }
+        if (throwable.getCause() != null) {
+            return wasDownloadBlocked(throwable.getCause());
+        }
+        return false;
     }
 
     public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {

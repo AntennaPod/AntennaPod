@@ -15,6 +15,5 @@ class ClientConfigurator {
         ClientConfig.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
         ClientConfig.downloadServiceCallbacks = new DownloadServiceCallbacksImpl();
-        ClientConfig.castCallbacks = new CastCallbackImpl();
     }
 }

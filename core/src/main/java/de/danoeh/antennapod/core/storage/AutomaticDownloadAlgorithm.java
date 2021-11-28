@@ -35,7 +35,7 @@ public class AutomaticDownloadAlgorithm {
         return () -> {
 
             // true if we should auto download based on network status
-            boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable()
+            boolean networkShouldAutoDl = NetworkUtils.isAutoDownloadAllowed()
                     && UserPreferences.isEnableAutodownload();
 
             // true if we should auto download based on power status
@@ -65,7 +65,7 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable() || FeedItemUtil.isPlaying(item.getMedia())
+                    if (!item.isAutoDownloadable(System.currentTimeMillis()) || FeedItemUtil.isPlaying(item.getMedia())
                             || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }

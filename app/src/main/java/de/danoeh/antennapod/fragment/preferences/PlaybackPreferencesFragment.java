@@ -10,13 +10,12 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.preferences.PreferenceControllerFlavorHelper;
 import java.util.Map;
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,7 +30,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences_playback);
 
         setupPlaybackScreen();
-        PreferenceControllerFlavorHelper.setupFlavoredUI(this);
         buildSmartMarkAsPlayedPreference();
     }
 

@@ -23,7 +23,7 @@
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <SwitchPreferenceCompat
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseForFocusLoss"
                 android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
@@ -127,11 +127,5 @@
                 android:title="@string/media_player"
                 android:summary="@string/pref_media_player_message"
                 android:entryValues="@array/media_player_values"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefCast"
-                android:summary="@string/pref_cast_message"
-                android:title="@string/pref_cast_title"/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -36,11 +36,13 @@ import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
@@ -50,7 +52,6 @@ import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
@@ -60,6 +61,8 @@ import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -193,37 +196,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onBufferStart() {
-                viewBinding.progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBufferEnd() {
-                viewBinding.progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-                viewBinding.sbPosition.setSecondaryProgress((int) (progress * viewBinding.sbPosition.getMax()));
-            }
-
-            @Override
-            public void handleError(int code) {
-                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
-                errorDialog.setTitle(R.string.error_label);
-                errorDialog.setMessage(MediaPlayerError.getErrorString(VideoplayerActivity.this, code));
-                errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
-                errorDialog.show();
-            }
-
-            @Override
             public void onReloadNotification(int code) {
                 VideoplayerActivity.this.onReloadNotification(code);
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-                supportInvalidateOptionsMenu();
             }
 
             @Override
@@ -259,6 +233,26 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 }
             }
         };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void bufferUpdate(BufferUpdateEvent event) {
+        if (event.hasStarted()) {
+            viewBinding.progressBar.setVisibility(View.VISIBLE);
+        } else if (event.hasEnded()) {
+            viewBinding.progressBar.setVisibility(View.INVISIBLE);
+        } else {
+            viewBinding.sbPosition.setSecondaryProgress((int) (event.getProgress() * viewBinding.sbPosition.getMax()));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isCancelled() || event.wasJustEnabled()) {
+            supportInvalidateOptionsMenu();
+        }
     }
 
     protected void loadMediaInfo() {
@@ -544,10 +538,19 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlaybackServiceChanged(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_SHUT_DOWN) {
+    public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
             finish();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMediaPlayerError(PlayerErrorEvent event) {
+        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
+        errorDialog.setTitle(R.string.error_label);
+        errorDialog.setMessage(event.getMessage());
+        errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
+        errorDialog.show();
     }
 
     @Override

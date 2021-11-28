@@ -40,7 +40,8 @@
         android:supportsRtl="true"
         android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
-        android:allowAudioPlaybackCapture="true">
+        android:allowAudioPlaybackCapture="true"
+        android:networkSecurityConfig="@xml/network_security_config">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
@@ -53,6 +54,9 @@
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="de.danoeh.antennapod.playback.cast.CastOptionsProvider" />
 
         <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
         <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>
@@ -65,15 +69,13 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
 
-            <intent-filter>
-                <action android:name=
-                    "android.media.action.MEDIA_PLAY_FROM_SEARCH" />
-                <category android:name=
-                    "android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_MUSIC" />
             </intent-filter>
 
             <meta-data
@@ -98,13 +100,6 @@
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="antennapod.org"
                     android:pathPrefix="/deeplink/search"
@@ -144,11 +139,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data
@@ -165,34 +156,23 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:mimeType="text/xml"/>
-                <data android:mimeType="text/x-opml"/>
-                <data android:mimeType="application/xml"/>
-                <data android:mimeType="application/octet-stream"/>
-
-                <data android:scheme="file"/>
-                <data android:scheme="content"/>
-
-                <data android:host="*"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:mimeType="text/xml"/>
-                <data android:mimeType="text/plain"/>
                 <data android:mimeType="text/x-opml"/>
                 <data android:mimeType="application/xml"/>
-                <data android:mimeType="application/octet-stream"/>
 
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
                 <data android:scheme="http"/>
                 <data android:scheme="https"/>
+
+                <data android:host="*"/>
+                <data android:pathPattern=".*.xml" />
+                <data android:pathPattern=".*.opml" />
             </intent-filter>
         </activity>
         <activity
@@ -315,6 +295,18 @@
             </intent-filter>
 
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:pathPattern="/.*/podcast/.*" />
+                <data android:host="podcasts.apple.com" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -322,6 +314,16 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
+        </activity>
+
+        <activity android:name=".activity.SelectSubscriptionActivity"
+            android:label="@string/shortcut_subscription_label"
+            android:icon="@drawable/ic_folder_shortcut"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
         </activity>
 
         <receiver

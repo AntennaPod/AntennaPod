@@ -29,7 +29,7 @@ public final class URLChecker {
     private static final String TAG = "URLChecker";
 
     private static final String AP_SUBSCRIBE = "antennapod-subscribe://";
-    private static final String AP_SUBSCRIBE_DEEPLINK = "antennapod.org/deeplink/subscribe?url=";
+    private static final String AP_SUBSCRIBE_DEEPLINK = "antennapod.org/deeplink/subscribe";
 
     /**
      * Checks if URL is valid and modifies it if necessary.
@@ -57,7 +57,7 @@ public final class URLChecker {
             return prepareURL(url.substring(AP_SUBSCRIBE.length()));
         } else if (lowerCaseUrl.contains(AP_SUBSCRIBE_DEEPLINK)) {
             Log.d(TAG, "Removing " + AP_SUBSCRIBE_DEEPLINK);
-            String removedWebsite = url.substring(url.indexOf(AP_SUBSCRIBE_DEEPLINK) + AP_SUBSCRIBE_DEEPLINK.length());
+            String removedWebsite = url.substring(url.indexOf("?url=") + "?url=".length());
             try {
                 return prepareURL(URLDecoder.decode(removedWebsite, "UTF-8"));
             } catch (UnsupportedEncodingException e) {

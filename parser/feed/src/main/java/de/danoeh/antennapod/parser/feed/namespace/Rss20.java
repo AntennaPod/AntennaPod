@@ -3,6 +3,7 @@ package de.danoeh.antennapod.parser.feed.namespace;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.text.HtmlCompat;
 import de.danoeh.antennapod.parser.feed.HandlerState;
 import de.danoeh.antennapod.parser.feed.element.SyndElement;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
@@ -39,14 +40,12 @@ public class Rss20 extends Namespace {
     private static final String ENC_TYPE = "type";
 
     @Override
-    public SyndElement handleElementStart(String localName, HandlerState state,
-                                          Attributes attributes) {
-        if (ITEM.equals(localName)) {
+    public SyndElement handleElementStart(String localName, HandlerState state, Attributes attributes) {
+        if (ITEM.equals(localName) && CHANNEL.equals(state.getTagstack().lastElement().getName())) {
             state.setCurrentItem(new FeedItem());
             state.getItems().add(state.getCurrentItem());
             state.getCurrentItem().setFeed(state.getFeed());
-
-        } else if (ENCLOSURE.equals(localName)) {
+        } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())) {
             String type = attributes.getValue(ENC_TYPE);
             String url = attributes.getValue(ENC_URL);
 
@@ -72,7 +71,6 @@ public class Rss20 extends Namespace {
                 FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
                 state.getCurrentItem().setMedia(media);
             }
-
         }
         return new SyndElement(localName, this);
     }
@@ -100,6 +98,7 @@ public class Rss20 extends Namespace {
         } else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
             String contentRaw = state.getContentBuf().toString();
             String content = SyndStringUtils.trimAllWhitespace(contentRaw);
+            String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
             SyndElement topElement = state.getTagstack().peek();
             String top = topElement.getName();
             SyndElement secondElement = state.getSecondTag();
@@ -116,9 +115,9 @@ public class Rss20 extends Namespace {
                 }
             } else if (TITLE.equals(top)) {
                 if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setTitle(content);
+                    state.getCurrentItem().setTitle(contentFromHtml);
                 } else if (CHANNEL.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setTitle(content);
+                    state.getFeed().setTitle(contentFromHtml);
                 }
             } else if (LINK.equals(top)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
@@ -135,9 +134,9 @@ public class Rss20 extends Namespace {
                 }
             } else if (DESCR.equals(localName)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setDescription(content);
+                    state.getFeed().setDescription(contentFromHtml);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setDescriptionIfLonger(content);
+                    state.getCurrentItem().setDescriptionIfLonger(contentFromHtml);
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase(Locale.US));

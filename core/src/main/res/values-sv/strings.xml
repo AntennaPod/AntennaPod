@@ -18,7 +18,7 @@
   <string name="downloads_log_label">Logg</string>
   <string name="subscriptions_label">Prenumerationer</string>
   <string name="subscriptions_list_label">Prenumerationslista</string>
-  <string name="cancel_download_label">Avbryt Nedladdning</string>
+  <string name="cancel_download_label">Avbryt nedladdning</string>
   <string name="playback_history_label">Uppspelningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Episodcachen är full</string>
@@ -88,9 +88,8 @@
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Längd: %1$s</string>
   <string name="description_label">Beskrivning</string>
-  <string name="shownotes_label">Shownotes</string>
-  <string name="shownotes_contentdescription">svep uppåt för att läsa shownotes
-</string>
+  <string name="shownotes_label">Avsnittsanteckningar&lt;br&gt;</string>
+  <string name="shownotes_contentdescription">svep upp för att läsa avsnittsanteckningar</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="close_label">Stäng</string>
   <string name="retry_label">Försök igen</string>
@@ -112,7 +111,7 @@
   <string name="episode_cleanup_after_listening">Efter färdigspelad</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 timma efter klar</item>
-    <item quantity="other">1%d timmar efter klar</item>
+    <item quantity="other">%d timmar efter klar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dag efter färdigspelad</item>
@@ -135,7 +134,7 @@
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Nya Episoder</item>
-    <item quantity="other">Nya Episoder</item>
+    <item quantity="other">Nya episoder</item>
   </plurals>
   <string name="new_episode_notification_group_text">Dina prenumerationer har nya episoder.</string>
   <!--Actions on feeds-->
@@ -252,7 +251,7 @@
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="auto_download_report_title">Automatiska nedladdningar klara</string>
   <string name="download_error_io_error">IO fel</string>
-  <string name="download_error_request_error">Förfrågningsfel</string>
+  <string name="download_error_request_error">HTTP-förfrågnings fel</string>
   <string name="download_error_db_access">Åtkomstfel till databasen</string>
   <plurals name="downloads_left">
     <item quantity="one">%d nedladdning kvar</item>
@@ -314,7 +313,7 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Inga köade episoder</string>
   <string name="no_items_label">Lägg till en episod genom att ladda ner den, eller tryck länge på en episod och väl \"Lägg till i kön\".</string>
-  <string name="no_shownotes_label">Denna episod har inga shownotes.</string>
+  <string name="no_shownotes_label">Denna episod har inga avsnittsanteckningar.</string>
   <string name="no_comp_downloads_head_label">Inga nedladdade episoder</string>
   <string name="no_comp_downloads_label">Du kan ladda ner episoder på sidan podcastdetaljer.</string>
   <string name="no_log_downloads_head_label">Ingen nedladdningslogg</string>
@@ -328,7 +327,7 @@
   <string name="no_fav_episodes_head_label">Inga favoritepisoder</string>
   <string name="no_fav_episodes_label">Du kan lägga till episoder i favoriter genom att lång-trycka på dem.</string>
   <string name="no_subscriptions_head_label">Inga prenumerationer</string>
-  <string name="no_subscriptions_label">Tryck på plus-ikonen nedan för att prenumerera på podcasts.</string>
+  <string name="no_subscriptions_label">Tryck på plus-ikonen nedan för att prenumerera på en podcast.</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="storage_sum">Automatisk episodradering, Import, Export</string>
@@ -409,16 +408,16 @@
   <string name="pref_set_theme_sum">Ändra utseendet på AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisk nedladdning</string>
   <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av episoder.</string>
-  <string name="pref_autodl_wifi_filter_title">Aktivera WiFi filtrering</string>
+  <string name="pref_autodl_wifi_filter_title">Aktivera Wi-Fi filtrering</string>
   <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
   <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillåt automatisk nedladdning när batteriet inte laddas</string>
   <string name="pref_parallel_downloads_title">Parallella nedladdningar</string>
   <string name="pref_episode_cache_title">Episodcache</string>
   <string name="pref_episode_cache_summary">Totalt antal nedladdade epidoder som ligger i enhetens cache. Automatisk nedladdning kommer att vänta om detta antal nås.</string>
-  <string name="pref_episode_cover_title">Använd Episodomslag</string>
+  <string name="pref_episode_cover_title">Använd episodomslag</string>
   <string name="pref_episode_cover_summary">Använd episodspecifika omslag i listan när de är tillgängliga. Om urkryssat kommer appen alltid använda podcastens omslagsbild.</string>
-  <string name="pref_show_remain_time_title">Visa Kvarvarande Tid</string>
+  <string name="pref_show_remain_time_title">Visa återstående tid</string>
   <string name="pref_show_remain_time_summary">Visa kvarvarande tid för episoder när ikryssad. Om urkryssad visas totala tiden för episoder.</string>
   <string name="pref_theme_title_use_system">Använd systemtemat</string>
   <string name="pref_theme_title_light">Ljust</string>

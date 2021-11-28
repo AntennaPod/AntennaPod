@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.LightingColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -19,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -31,8 +31,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -46,10 +46,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -60,7 +60,6 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import io.reactivex.Maybe;
@@ -101,6 +100,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Feed feed;
     private String selectedDownloadUrl;
     private Downloader downloader;
+    private String username = null;
+    private String password = null;
 
     private boolean isPaused;
     private boolean didPressSubscribe = false;
@@ -144,12 +145,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (feedUrl.contains("subscribeonandroid.com")) {
                 feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
             }
-            if (savedInstanceState == null) {
-                lookupUrlAndDownload(feedUrl, null, null);
-            } else {
-                lookupUrlAndDownload(feedUrl, savedInstanceState.getString("username"),
-                        savedInstanceState.getString("password"));
+            if (savedInstanceState != null) {
+                username = savedInstanceState.getString("username");
+                password = savedInstanceState.getString("password");
             }
+            lookupUrlAndDownload(feedUrl);
         }
     }
 
@@ -210,10 +210,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (feed != null && feed.getPreferences() != null) {
-            outState.putString("username", feed.getPreferences().getUsername());
-            outState.putString("password", feed.getPreferences().getPassword());
-        }
+        outState.putString("username", username);
+        outState.putString("password", password);
     }
 
     private void resetIntent(String url) {
@@ -242,25 +240,21 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void lookupUrlAndDownload(String url, String username, String password) {
+    private void lookupUrlAndDownload(String url) {
         download = PodcastSearcherRegistry.lookupUrl(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(lookedUpUrl -> startFeedDownload(lookedUpUrl, username, password),
+                .subscribe(this::startFeedDownload,
                         error -> {
                             showNoPodcastFoundError();
                             Log.e(TAG, Log.getStackTraceString(error));
                         });
     }
 
-    private void startFeedDownload(String url, String username, String password) {
+    private void startFeedDownload(String url) {
         Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
-        if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
-                    VolumeAdaptionSetting.OFF, username, password));
-        }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
         feed.setFile_url(fileUrl);
@@ -288,6 +282,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             parseFeed();
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
             if (!isFinishing() && !isPaused) {
+                if (username != null && password != null) {
+                    Toast.makeText(this, R.string.download_error_unauthorized, Toast.LENGTH_LONG).show();
+                }
                 dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
                         R.string.authentication_notification_title,
                         downloader.getDownloadRequest().getSource()).create();
@@ -453,8 +450,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         final int MAX_LINES_COLLAPSED = 10;
         description.setMaxLines(MAX_LINES_COLLAPSED);
         description.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
-                    && description.getMaxLines() > MAX_LINES_COLLAPSED) {
+            if (description.getMaxLines() > MAX_LINES_COLLAPSED) {
                 description.setMaxLines(MAX_LINES_COLLAPSED);
             } else {
                 description.setMaxLines(2000);
@@ -637,21 +633,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (urls.size() == 1) {
             // Skip dialog and display the item directly
             resetIntent(urls.get(0));
-            startFeedDownload(urls.get(0), null, null);
+            startFeedDownload(urls.get(0));
             return true;
         }
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(OnlineFeedViewActivity.this, R.layout.ellipsize_start_listitem, R.id.txtvTitle, titles);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(OnlineFeedViewActivity.this,
+                R.layout.ellipsize_start_listitem, R.id.txtvTitle, titles);
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
             String selectedUrl = urls.get(which);
             dialog.dismiss();
             resetIntent(selectedUrl);
-            FeedPreferences prefs = feed.getPreferences();
-            if(prefs != null) {
-                startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword());
-            } else {
-                startFeedDownload(selectedUrl, null, null);
-            }
+            startFeedDownload(selectedUrl);
         };
 
         AlertDialog.Builder ab = new AlertDialog.Builder(OnlineFeedViewActivity.this)
@@ -674,7 +666,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         private final String feedUrl;
 
         FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
-            super(context, titleRes, true, null, null);
+            super(context, titleRes, true, username, password);
             this.feedUrl = feedUrl;
         }
 
@@ -686,7 +678,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         @Override
         protected void onConfirmed(String username, String password) {
-            startFeedDownload(feedUrl, username, password);
+            OnlineFeedViewActivity.this.username = username;
+            OnlineFeedViewActivity.this.password = password;
+            startFeedDownload(feedUrl);
         }
     }
 

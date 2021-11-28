@@ -126,8 +126,9 @@ public class PreferencesTest {
         clickPreference(R.string.user_interface_label);
         String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
         clickPreference(R.string.pref_compact_notification_buttons_title);
-        // First uncheck checkbox
-        onView(withText(buttons[2])).perform(click());
+        // First uncheck checkboxes
+        onView(withText(buttons[0])).perform(click());
+        onView(withText(buttons[1])).perform(click());
 
         // Now try to check all checkboxes
         onView(withText(buttons[0])).perform(click());

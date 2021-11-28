@@ -21,7 +21,7 @@ public abstract class FeedPreferencesCursorMapper {
     @NonNull
     public static FeedPreferences convert(@NonNull Cursor cursor) {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+        int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD_ENABLED);
         int indexAutoRefresh = cursor.getColumnIndex(PodDBAdapter.KEY_KEEP_UPDATED);
         int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexVolumeAdaption = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_VOLUME_ADAPTION);
@@ -29,6 +29,7 @@ public abstract class FeedPreferencesCursorMapper {
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
         int indexIncludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_INCLUDE_FILTER);
         int indexExcludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_EXCLUDE_FILTER);
+        int indexMinimalDurationFilter = cursor.getColumnIndex(PodDBAdapter.KEY_MINIMAL_DURATION_FILTER);
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
@@ -47,6 +48,7 @@ public abstract class FeedPreferencesCursorMapper {
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
+        int minimalDurationFilter = cursor.getInt(indexMinimalDurationFilter);
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
@@ -62,7 +64,7 @@ public abstract class FeedPreferencesCursorMapper {
                 volumeAdaptionSetting,
                 username,
                 password,
-                new FeedFilter(includeFilter, excludeFilter),
+                new FeedFilter(includeFilter, excludeFilter, minimalDurationFilter),
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,

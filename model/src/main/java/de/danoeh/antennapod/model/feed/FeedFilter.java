@@ -10,18 +10,24 @@ import java.util.regex.Pattern;
 public class FeedFilter implements Serializable {
     private final String includeFilter;
     private final String excludeFilter;
+    private final int minimalDuration;
 
     public FeedFilter() {
-        this("", "");
+        this("", "", -1);
     }
 
-    public FeedFilter(String includeFilter, String excludeFilter) {
+    public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
         // We're storing the strings and not the parsed terms because
         // 1. It's easier to show the user exactly what they typed in this way
         //    (we don't have to recreate it)
         // 2. We don't know if we'll actually be asked to parse anything anyways.
         this.includeFilter = includeFilter;
         this.excludeFilter = excludeFilter;
+        this.minimalDuration = minimalDuration;
+    }
+
+    public FeedFilter(String includeFilter, String excludeFilter) {
+        this(includeFilter, excludeFilter, -1);
     }
 
     /**
@@ -49,9 +55,18 @@ public class FeedFilter implements Serializable {
         List<String> includeTerms = parseTerms(includeFilter);
         List<String> excludeTerms = parseTerms(excludeFilter);
 
-        if (includeTerms.size() == 0 && excludeTerms.size() == 0) {
+        if (includeTerms.size() == 0 && excludeTerms.size() == 0 && minimalDuration <= -1) {
             // nothing has been specified, so include everything
             return true;
+        }
+
+        // Check if the episode is long enough if minimal duration filter is on
+        if (hasMinimalDurationFilter() && item.getMedia() != null) {
+            int durationInMs = item.getMedia().getDuration();
+            // Minimal Duration is stored in seconds
+            if (durationInMs > 0 && durationInMs / 1000 < minimalDuration) {
+                return false;
+            }
         }
 
         // check using lowercase so the users don't have to worry about case.
@@ -78,6 +93,12 @@ public class FeedFilter implements Serializable {
             return true;
         }
 
+        // if they only set minimal duration filter and arrived here, autodownload
+        // should happen
+        if (hasMinimalDurationFilter()) {
+            return true;
+        }
+
         return false;
     }
 
@@ -87,6 +108,10 @@ public class FeedFilter implements Serializable {
 
     public String getExcludeFilter() {
         return excludeFilter;
+    }
+
+    public int getMinimalDurationFilter() {
+        return minimalDuration;
     }
 
     /**
@@ -109,5 +134,9 @@ public class FeedFilter implements Serializable {
 
     public boolean hasExcludeFilter() {
         return excludeFilter.length() > 0;
+    }
+
+    public boolean hasMinimalDurationFilter() {
+        return minimalDuration > -1;
     }
 }

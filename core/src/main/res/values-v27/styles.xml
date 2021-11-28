@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:statusBarColor">@color/background_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/background_light</item>
+        <item name="android:navigationBarDividerColor">@color/navigation_bar_divider_light</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

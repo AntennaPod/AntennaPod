@@ -12,9 +12,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.view.PlaybackSpeedSeekBar;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
@@ -44,16 +48,12 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
-                updateSpeed();
-            }
-
-            @Override
-            public void onPlaybackSpeedChange() {
-                updateSpeed();
+                updateSpeed(new SpeedChangedEvent(getCurrentPlaybackSpeedMultiplier()));
             }
         };
         controller.init();
         setupUi();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -61,6 +61,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStop();
         controller.release();
         controller = null;
+        EventBus.getDefault().unregister(this);
     }
 
     @NonNull
@@ -79,10 +80,9 @@ public class PlaybackControlsDialog extends DialogFragment {
         speedSeekBar.setProgressChangedListener(speed -> {
             if (controller != null) {
                 controller.setPlaybackSpeed(speed);
-                updateSpeed();
             }
         });
-        updateSpeed();
+        updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
 
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
@@ -111,12 +111,10 @@ public class PlaybackControlsDialog extends DialogFragment {
         });
     }
 
-    private void updateSpeed() {
-        if (controller != null) {
-            txtvPlaybackSpeed.setText(String.format(
-                    Locale.getDefault(), "%.2fx", controller.getCurrentPlaybackSpeedMultiplier()));
-            speedSeekBar.updateSpeed(controller.getCurrentPlaybackSpeedMultiplier());
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSpeed(SpeedChangedEvent event) {
+        txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", event.getNewSpeed()));
+        speedSeekBar.updateSpeed(event.getNewSpeed());
     }
 
     private void setupAudioTracks() {

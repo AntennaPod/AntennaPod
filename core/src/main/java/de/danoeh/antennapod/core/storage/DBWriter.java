@@ -23,13 +23,13 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -947,25 +947,6 @@ public class DBWriter {
                 Log.e(TAG, "reorderQueue: Could not load queue");
             }
             adapter.close();
-        });
-    }
-
-    public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
-        return dbExec.submit(() -> {
-            int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
-            long autoDownload;
-            if (!feedItem.getAutoDownload() || failedAttempts >= 10) {
-                autoDownload = 0; // giving up, disable auto download
-                feedItem.setAutoDownload(false);
-            } else {
-                long now = System.currentTimeMillis();
-                autoDownload = (now / 10) * 10 + failedAttempts;
-            }
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemAutoDownload(feedItem, autoDownload);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 

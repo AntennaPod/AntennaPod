@@ -31,17 +31,17 @@ import de.danoeh.antennapod.model.playback.Playable;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {
     private static final String TAG = "PlaybackSrvNotification";
     private static Bitmap defaultIcon = null;
 
-    private Context context;
+    private final Context context;
     private Playable playable;
     private MediaSessionCompat.Token mediaSessionToken;
     private PlayerStatus playerStatus;
-    private boolean isCasting;
     private Bitmap icon;
     private String position;
 
@@ -140,7 +140,7 @@ public class PlaybackServiceNotificationBuilder {
         if (playable != null) {
             notification.setContentTitle(playable.getFeedTitle());
             notification.setContentText(playable.getEpisodeTitle());
-            addActions(notification, mediaSessionToken, playerStatus, isCasting);
+            addActions(notification, mediaSessionToken, playerStatus);
 
             if (icon != null) {
                 notification.setLargeIcon(icon);
@@ -170,26 +170,15 @@ public class PlaybackServiceNotificationBuilder {
 
     private PendingIntent getPlayerActivityPendingIntent() {
         return PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
-                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT);
+                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT
+                        | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
-                            PlayerStatus playerStatus, boolean isCasting) {
+                            PlayerStatus playerStatus) {
         ArrayList<Integer> compactActionList = new ArrayList<>();
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
-
-        if (isCasting) {
-            Intent stopCastingIntent = new Intent(context, PlaybackService.class);
-            stopCastingIntent.putExtra(PlaybackService.EXTRA_CAST_DISCONNECT, true);
-            PendingIntent stopCastingPendingIntent = PendingIntent.getService(context,
-                    numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            notification.addAction(R.drawable.ic_notification_cast_off,
-                    context.getString(R.string.cast_disconnect_label),
-                    stopCastingPendingIntent);
-            numActions++;
-        }
-
         // always let them rewind
         PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
@@ -252,9 +241,11 @@ public class PlaybackServiceNotificationBuilder {
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
 
         if (Build.VERSION.SDK_INT >= 26) {
-            return PendingIntent.getForegroundService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getForegroundService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
         }
     }
 
@@ -264,10 +255,6 @@ public class PlaybackServiceNotificationBuilder {
 
     public void setPlayerStatus(PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
-    }
-
-    public void setCasting(boolean casting) {
-        isCasting = casting;
     }
 
     public PlayerStatus getPlayerStatus() {

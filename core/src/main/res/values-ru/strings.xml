@@ -29,8 +29,12 @@
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" не найдено</string>
   <!--SwipeActions-->
-  <string name="swipe_right">Проведите Вправо</string>
-  <string name="swipe_left">Проведите Влево</string>
+  <string name="swipeactions_label">Действия при смахивании</string>
+  <string name="swipeactions_summary">Выберите действие, выполняемое при смахивании выпуска в списке</string>
+  <string name="swipe_right">Смахивание вправо</string>
+  <string name="swipe_left">Смахивание влево</string>
+  <string name="enable_swipeactions">Включить смахивания на этом экране</string>
+  <string name="change_setting">Изменить</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время воспроизведения выпусков:</string>
   <string name="statistics_details_dialog">Начато %1$d выпусков из %2$d.\n\nВоспроизведено %3$s из %4$s.</string>
@@ -92,6 +96,7 @@
   <string name="auto_download_label">Добавить в автозагрузки</string>
   <string name="auto_delete_label">Автоматическое удаление выпусков</string>
   <string name="feed_volume_reduction">Приглушение</string>
+  <string name="feed_volume_reduction_summary">Приглушать громкость для выпусков подкаста: %1$s</string>
   <string name="feed_volume_reduction_off">Нет</string>
   <string name="feed_volume_reduction_light">Слабо</string>
   <string name="feed_volume_reduction_heavy">Сильно</string>
@@ -115,6 +120,12 @@
     <item quantity="few">%d дня после прослушивания</item>
     <item quantity="many">%d дней после прослушивания</item>
     <item quantity="other">%d дней после прослушивания</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d выбран</item>
+    <item quantity="few">%1$d/%2$d выбрано</item>
+    <item quantity="many">%1$d/%2$d выбрано</item>
+    <item quantity="other">%1$d/%2$d выбрано</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d выпуск</item>
@@ -157,6 +168,7 @@
   <string name="share_website_url_label">Адрес вебсайта</string>
   <string name="share_feed_url_label">Ссылка на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его выпуски (включая загруженные).</string>
+  <string name="feed_delete_confirmation_msg_batch">Подтвердите, что хотите удалить выбранные подкасты и все их выпуски (включая загруженные).</string>
   <string name="feed_delete_confirmation_local_msg">Подтвердите, что хотите удалить подкаст «%1$s». Файлы в локальной исходной папке не будут удалены.</string>
   <string name="feed_remover_msg">Подкаст удаляется</string>
   <string name="load_complete_feed">Обновить весь подкаст</string>
@@ -168,6 +180,12 @@
   <string name="open_podcast">Открыть подкаст</string>
   <string name="please_wait_for_data">Подождите, пока загружаются данные</string>
   <string name="updates_disabled_label">Обновления запрещены</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d подписка обновлена.</item>
+    <item quantity="few">%d подписки обновлено.</item>
+    <item quantity="many">%d подписок обновлено.</item>
+    <item quantity="other">%d подписок обновлено.</item>
+  </plurals>
   <string name="add_to_folder">Добавить в папку</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
@@ -267,6 +285,7 @@
     <item quantity="many">Осталось %d загрузок</item>
     <item quantity="other">Осталось %d загрузок</item>
   </plurals>
+  <string name="completing">Завершение...</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
@@ -386,7 +405,7 @@
   <string name="feed_refresh_sum">Укажите интервал или время автоматического обновления выпусков</string>
   <string name="feed_refresh_interval">Интервал</string>
   <string name="feed_refresh_time">Время</string>
-  <string name="feed_refresh_never">никогда</string>
+  <string name="feed_refresh_never">Никогда</string>
   <string name="feed_refresh_interval_at">в %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">Каждый час</item>
@@ -541,6 +560,7 @@
   <string name="licenses_summary">В AntennaPod используется другое отличное ПО</string>
   <!--Search-->
   <string name="search_status_no_results">Ничего не найдено</string>
+  <string name="type_to_search">Введите запрос для поиска</string>
   <string name="search_label">Поиск</string>
   <string name="no_results_for_query">По запросу «%1$s» ничего не найдено</string>
   <!--Synchronization-->

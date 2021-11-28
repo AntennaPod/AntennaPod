@@ -35,43 +35,54 @@ public abstract class VorbisCommentReader {
      */
     protected abstract void onContentVectorValue(String key, String value) throws VorbisCommentReaderException;
 
-    protected abstract void onNoVorbisCommentFound();
-
     protected abstract void onEndOfComment();
 
     protected abstract void onError(VorbisCommentReaderException exception);
 
     public void readInputStream(InputStream input) throws VorbisCommentReaderException {
         try {
-            // look for identification header
-            if (findIdentificationHeader(input)) {
-                onVorbisCommentFound();
-                input = new OggInputStream(input);
-                if (findCommentHeader(input)) {
-                    VorbisCommentHeader commentHeader = readCommentHeader(input);
-                    onVorbisCommentHeaderFound(commentHeader);
-                    for (int i = 0; i < commentHeader.getUserCommentLength(); i++) {
-                        readUserComment(input);
-                    }
-                    onEndOfComment();
-                } else {
-                    onError(new VorbisCommentReaderException("No comment header found"));
-                }
-            } else {
-                onNoVorbisCommentFound();
+            findIdentificationHeader(input);
+            onVorbisCommentFound();
+            findOggPage(input);
+            findCommentHeader(input);
+            VorbisCommentHeader commentHeader = readCommentHeader(input);
+            onVorbisCommentHeaderFound(commentHeader);
+            for (int i = 0; i < commentHeader.getUserCommentLength(); i++) {
+                readUserComment(input);
             }
+            onEndOfComment();
         } catch (IOException e) {
             onError(new VorbisCommentReaderException(e));
         }
     }
 
+    private void findOggPage(InputStream input) throws IOException {
+        // find OggS
+        byte[] buffer = new byte[4];
+        final byte[] oggPageHeader = {'O', 'g', 'g', 'S'};
+        for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
+            buffer[bytesRead % buffer.length] = (byte) input.read();
+            if (bufferMatches(buffer, oggPageHeader, bytesRead)) {
+                break;
+            }
+        }
+        // read segments
+        IOUtils.skipFully(input, 22);
+        int numSegments = input.read();
+        IOUtils.skipFully(input, numSegments);
+    }
+
     private void readUserComment(InputStream input) throws VorbisCommentReaderException {
         try {
             long vectorLength = EndianUtils.readSwappedUnsignedInteger(input);
+            if (vectorLength > 20 * 1024 * 1024) {
+                // Avoid reading entire file if it is encoded incorrectly
+                throw new VorbisCommentReaderException("User comment unrealistically long: " + vectorLength);
+            }
             String key = readContentVectorKey(input, vectorLength).toLowerCase(Locale.US);
             boolean readValue = onContentVectorKey(key);
             if (readValue) {
-                String value = readUtf8String(input, (int) (vectorLength - key.length() - 1));
+                String value = readUtf8String(input, vectorLength - key.length() - 1);
                 onContentVectorValue(key, value);
             } else {
                 IOUtils.skipFully(input, vectorLength - key.length() - 1);
@@ -93,33 +104,32 @@ public abstract class VorbisCommentReader {
      * identification header is found, it will be skipped completely and the
      * method will return true, otherwise false.
      */
-    private boolean findIdentificationHeader(InputStream input) throws IOException {
+    private void findIdentificationHeader(InputStream input) throws IOException {
         byte[] buffer = new byte[FIRST_OPUS_PAGE_LENGTH];
         IOUtils.readFully(input, buffer);
         final byte[] oggIdentificationHeader = new byte[]{ PACKET_TYPE_IDENTIFICATION, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int i = 6; i < buffer.length; i++) {
             if (bufferMatches(buffer, oggIdentificationHeader, i)) {
                 IOUtils.skip(input, FIRST_OGG_PAGE_LENGTH - FIRST_OPUS_PAGE_LENGTH);
-                return true;
             } else if (bufferMatches(buffer, "OpusHead".getBytes(), i)) {
-                return true;
+                return;
             }
         }
-        return false;
+        throw new IOException("No identification header found");
     }
 
-    private boolean findCommentHeader(InputStream input) throws IOException {
+    private void findCommentHeader(InputStream input) throws IOException {
         byte[] buffer = new byte[64]; // Enough space for some bytes. Used circularly.
         final byte[] oggCommentHeader = new byte[]{ PACKET_TYPE_COMMENT, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
             buffer[bytesRead % buffer.length] = (byte) input.read();
             if (bufferMatches(buffer, oggCommentHeader, bytesRead)) {
-                return true;
+                return;
             } else if (bufferMatches(buffer, "OpusTags".getBytes(), bytesRead)) {
-                return true;
+                return;
             }
         }
-        return false;
+        throw new IOException("No comment header found");
     }
 
     /**
