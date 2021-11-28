@@ -31,9 +31,9 @@
   <!--SwipeActions-->
   <string name="swipeactions_label">Seprési műveletek</string>
   <string name="swipeactions_summary">Válasszon, hogy mi történjen ha elcsúsztat egy epizódot a listában</string>
-  <string name="swipe_right">Seprés jobbra</string>
-  <string name="swipe_left">Seprés jobbra</string>
-  <string name="enable_swipeactions">Seprési műveletek engedélyezése ezen a képernyőn</string>
+  <string name="swipe_right">Húzás jobbra</string>
+  <string name="swipe_left">Húzás balra</string>
+  <string name="enable_swipeactions">Húzási műveletek engedélyezése ezen a képernyőn</string>
   <string name="change_setting">Módosítás</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">A lejátszott epizódok összideje:</string>
@@ -611,7 +611,7 @@
   <string name="gpodnetauth_server_official">Hivatalos gpodder.net kiszolgáló</string>
   <string name="gpodnetauth_server_custom">Egyéni kiszolgáló</string>
   <string name="gpodnetauth_host">Kiszolgálónév</string>
-  <string name="gpodnetauth_select_server">Kiszolgáló kiválasztása</string>
+  <string name="gpodnetauth_select_server">Válasszon kiszolgálót</string>
   <string name="gpodnetauth_device_name">Eszköz neve</string>
   <string name="gpodnetauth_device_name_default">AntennaPod ezen: %1$s</string>
   <string name="gpodnetauth_existing_devices">Létező eszközök</string>
