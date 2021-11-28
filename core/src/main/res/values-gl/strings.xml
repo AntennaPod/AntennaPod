@@ -140,8 +140,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como reproducido</string>
   <string name="mark_all_read_msg">Marcáronse todos como reproducidos</string>
-  <string name="mark_all_read_confirmation_msg">Por favor confirme que quere marcar todos os episodios como reproducidos.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor, confirme que quere marcar todos os episodios deste podcast como reproducidos.</string>
+  <string name="mark_all_read_confirmation_msg">Por favor confirma que queres marcar todos os episodios como reproducidos.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Por favor, confirma que queres marcar todos os episodios deste podcast como reproducidos.</string>
   <string name="remove_all_new_flags_label">Quitarlle a marca de \"novidade\" a todo</string>
   <string name="removed_all_new_flags_msg">Eliminaches o aviso de \"novos\" episodios</string>
   <string name="remove_all_new_flags_confirmation_msg">Confirma que queres quitarlle marca de \"novidade\" a todos os episodios.</string>
@@ -155,7 +155,7 @@
   <string name="share_file_label">Compartir ficheiro</string>
   <string name="share_website_url_label">Enderezo sitio web</string>
   <string name="share_feed_url_label">URL da fonte do podcast</string>
-  <string name="feed_delete_confirmation_msg">Por favor, confirme que quere eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados).</string>
+  <string name="feed_delete_confirmation_msg">Por favor, confirma que queres eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirma que desexas eliminar os podcast seleccionados e TODOS os seus episodios (incluńdo os descargados).</string>
   <string name="feed_delete_confirmation_local_msg">Confirma que queres eliminar o podcast \"%1$s\". Os ficheiros no cartafol local non serán eliminados.</string>
   <string name="feed_remover_msg">Eliminando o podcast</string>
@@ -266,7 +266,7 @@
   <string name="null_value_podcast_error">Non se proporcionou ningún podcast que se poida mostrar.</string>
   <string name="authentication_notification_title">Precísase autenticación</string>
   <string name="authentication_notification_msg">O recurso solicitado require un usuario e contrasinal</string>
-  <string name="confirm_mobile_download_dialog_title">Confirme a descarga con datos do móbil</string>
+  <string name="confirm_mobile_download_dialog_title">Confirma a descarga con datos do móbil</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Descargar coa conexión de datos do móbil está desactivada nos axustes.\n\nPodes escoller ben só engadir o episodio a cola ou podes permitir a descarga temporalmente.\n\n<small> A túa elección lembrarase durante 10 minutos.</small></string>
   <string name="confirm_mobile_download_dialog_message">A descarga con datos móbiles está desactivada nos axustes.\n\nQuere permitir a descarga temporalmente?\n\n <small>A súa decisión lembrarase durante 10 minutos.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Confirmar retransmisión Móbil</string>

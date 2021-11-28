@@ -400,7 +400,7 @@
   <string name="playback_pref">Prehrávanie</string>
   <string name="playback_pref_sum">Ovládanie tlačidlami slúchadiel, preskakovanie, poradie</string>
   <string name="network_pref">Sieť</string>
-  <string name="network_pref_sum">Počeť aktualizací, ovládanie sťahovania, mobilné dáta</string>
+  <string name="network_pref_sum">Počet aktualizácií, ovládanie sťahovania, mobilné dáta</string>
   <string name="feed_refresh_title">Aktualizovať podcasty</string>
   <string name="feed_refresh_sum">Zvoliť interval alebo čas pre automatické hľadanie nových epizód</string>
   <string name="feed_refresh_interval">Interval</string>

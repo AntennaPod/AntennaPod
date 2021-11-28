@@ -457,24 +457,30 @@ public final class DBTasks {
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                 final FeedItem item = newFeed.getItems().get(idx);
 
-                if (item != searchFeedItemGuessDuplicate(newFeed.getItems(), item)) {
+                FeedItem possibleDuplicate = searchFeedItemGuessDuplicate(newFeed.getItems(), item);
+                if (!newFeed.isLocalFeed() && possibleDuplicate != null && item != possibleDuplicate) {
                     // Canonical episode is the first one returned (usually oldest)
                     DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
-                                    + "AntennaPod attempted to repair it.", false));
+                                    + "AntennaPod still refreshed the feed and attempted to repair it."
+                                    + "{" + possibleDuplicate.getTitle() + "} with ID "
+                                    + possibleDuplicate.getItemIdentifier()
+                                    + " seems to be the same as {" + item.getTitle() + "} with ID "
+                                    + item.getItemIdentifier(), false));
                     continue;
                 }
 
                 FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed.getItems(), item);
-                if (oldItem == null) {
+                if (!newFeed.isLocalFeed() && oldItem == null) {
                     oldItem = searchFeedItemGuessDuplicate(savedFeed.getItems(), item);
                     if (oldItem != null) {
                         Log.d(TAG, "Repaired duplicate: " + oldItem + ", " + item);
                         DBWriter.addDownloadStatus(new DownloadStatus(savedFeed,
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
-                                        + "updating the episode itself. AntennaPod attempted to repair it.\n\n"
+                                        + "updating the episode itself. AntennaPod still refreshed the feed and "
+                                        + "attempted to repair it.\n\n"
                                         + "{" + oldItem.getTitle() + "} with ID " + oldItem.getItemIdentifier()
                                         + " seems to be the same as {" + item.getTitle() + "} with ID "
                                         + item.getItemIdentifier(), false));

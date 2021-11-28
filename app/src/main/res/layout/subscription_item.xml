@@ -49,8 +49,7 @@
     <FrameLayout
         android:id="@+id/selectView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_checkbox_background">
+        android:layout_height="wrap_content">
 
         <CheckBox
             android:id="@+id/selectCheckBox"

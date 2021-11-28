@@ -106,8 +106,10 @@ public class URLCheckerTest {
         final String feed = "http://example.org/podcast.rss";
         assertEquals(feed, URLChecker.prepareURL("https://antennapod.org/deeplink/subscribe?url=" + feed));
         assertEquals(feed, URLChecker.prepareURL("http://antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("http://antennapod.org/deeplink/subscribe/?url=" + feed));
         assertEquals(feed, URLChecker.prepareURL("https://www.antennapod.org/deeplink/subscribe?url=" + feed));
         assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url=" + feed));
+        assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe/?url=" + feed));
         assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url="
                 + URLEncoder.encode(feed, "UTF-8")));
         assertEquals(feed, URLChecker.prepareURL("http://www.antennapod.org/deeplink/subscribe?url="
