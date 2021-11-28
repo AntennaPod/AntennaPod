@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import androidx.core.content.FileProvider;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.util.List;
@@ -23,11 +26,13 @@ public class ShareUtils {
     private ShareUtils() {
     }
 
-    public static void shareLink(Context context, String text) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, text);
-        context.startActivity(Intent.createChooser(i, context.getString(R.string.share_url_label)));
+    public static void shareLink(@NonNull Context context, @NonNull String text) {
+        Intent intent = new ShareCompat.IntentBuilder(context)
+                .setType("text/plain")
+                .setText(text)
+                .setChooserTitle(R.string.share_url_label)
+                .createChooserIntent();
+        context.startActivity(intent);
     }
 
     public static void shareFeedlink(Context context, Feed feed) {
