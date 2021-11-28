@@ -27,6 +27,8 @@ dependencies {
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':parser:media')
+    implementation project(':playback:base')
+    implementation project(':playback:cast')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:png-icons')
@@ -61,9 +63,6 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Non-free dependencies:
-    playApi 'com.google.android.libraries.cast.companionlibrary:ccl:2.9.1'
-    playApi 'androidx.mediarouter:mediarouter:1.0.0'
-    playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
     playApi "com.google.android.support:wearable:$wearableSupportVersion"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
