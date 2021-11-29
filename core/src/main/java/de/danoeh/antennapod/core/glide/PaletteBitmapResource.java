@@ -1,3 +1,7 @@
+/*
+ * Source: https://github.com/bumptech/glide/wiki/Custom-targets#palette-example
+ */
+
 package de.danoeh.antennapod.core.glide;
 
 import androidx.annotation.NonNull;
@@ -19,15 +23,18 @@ public class PaletteBitmapResource implements Resource<PaletteBitmap> {
     }
 
     @NonNull
-    @Override public PaletteBitmap get() {
+    @Override
+    public PaletteBitmap get() {
         return paletteBitmap;
     }
 
-    @Override public int getSize() {
+    @Override
+    public int getSize() {
         return Util.getBitmapByteSize(paletteBitmap.bitmap);
     }
 
-    @Override public void recycle() {
+    @Override
+    public void recycle() {
         paletteBitmap.bitmap.recycle();
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * Source: https://github.com/bumptech/glide/wiki/Custom-targets#palette-example
+ */
+
 package de.danoeh.antennapod.core.glide;
 
 import android.graphics.Bitmap;
