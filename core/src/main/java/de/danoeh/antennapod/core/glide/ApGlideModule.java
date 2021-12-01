@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.glide;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -45,5 +46,6 @@ public class ApGlideModule extends AppGlideModule {
         registry.append(String.class, InputStream.class, new NoHttpStringLoader.StreamFactory());
 
         registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory());
+        registry.register(Bitmap.class, PaletteBitmap.class, new PaletteBitmapTranscoder());
     }
 }

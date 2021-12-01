@@ -69,6 +69,7 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
+    public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -1090,4 +1091,13 @@ public class UserPreferences {
     public static void unsetUsageCountingDate() {
         setUsageCountingDateMillis(-1);
     }
+
+    public static boolean shouldShowSubscriptionTitle() {
+        return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
+    }
+
+    public static void setSubscriptionTitleSetting(boolean showTitle) {
+        prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, showTitle).apply();
+    }
+
 }
