@@ -93,7 +93,7 @@ public class ExoPlayerWrapper implements IPlayer {
                 .setLoadControl(loadControl.build())
                 .build();
         exoPlayer.setSeekParameters(SeekParameters.EXACT);
-        exoPlayer.addListener(new Player.EventListener() {
+        exoPlayer.addListener(new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(@Player.State int playbackState) {
                 if (audioCompletionListener != null && playbackState == Player.STATE_ENDED) {
@@ -121,7 +121,9 @@ public class ExoPlayerWrapper implements IPlayer {
             }
 
             @Override
-            public void onPositionDiscontinuity(@Player.DiscontinuityReason int reason) {
+            public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition,
+                                                @NonNull Player.PositionInfo newPosition,
+                                                @Player.DiscontinuityReason int reason) {
                 if (audioSeekCompleteListener != null && reason == Player.DISCONTINUITY_REASON_SEEK) {
                     audioSeekCompleteListener.onSeekComplete(null);
                 }
