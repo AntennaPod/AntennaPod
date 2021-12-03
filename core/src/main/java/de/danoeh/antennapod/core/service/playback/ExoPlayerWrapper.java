@@ -18,15 +18,15 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp3.Mp3Extractor;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.ExoTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
 import com.google.android.exoplayer2.ui.TrackNameProvider;
@@ -49,6 +49,7 @@ import org.antennapod.audio.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -200,18 +201,23 @@ public class ExoPlayerWrapper implements IPlayer {
         b.setContentType(i);
         b.setFlags(a.flags);
         b.setUsage(a.usage);
-        exoPlayer.setAudioAttributes(b.build());
+        exoPlayer.setAudioAttributes(b.build(), false);
     }
 
     public void setDataSource(String s, String user, String password)
             throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
-        OkHttpDataSourceFactory httpDataSourceFactory = new OkHttpDataSourceFactory(
-                AntennapodHttpClient.getHttpClient(), ClientConfig.USER_AGENT);
+        final OkHttpDataSource.Factory httpDataSourceFactory =
+                new OkHttpDataSource.Factory(AntennapodHttpClient.getHttpClient())
+                        .setUserAgent(ClientConfig.USER_AGENT);
 
         if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
-            httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
-                    HttpDownloader.encodeCredentials(user, password, "ISO-8859-1"));
+            final HashMap<String, String> requestProperties = new HashMap<>();
+            requestProperties.put(
+                    "Authorization",
+                    HttpDownloader.encodeCredentials(user, password, "ISO-8859-1")
+            );
+            httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
@@ -316,7 +322,7 @@ public class ExoPlayerWrapper implements IPlayer {
         TrackSelectionArray trackSelections = exoPlayer.getCurrentTrackSelections();
         List<Format> availableFormats = getFormats();
         for (int i = 0; i < trackSelections.length; i++) {
-            TrackSelection track = trackSelections.get(i);
+            ExoTrackSelection track = (ExoTrackSelection) trackSelections.get(i);
             if (track == null) {
                 continue;
             }
