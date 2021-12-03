@@ -1231,7 +1231,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_PAUSE
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
                 | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                | PlaybackStateCompat.ACTION_SEEK_TO;
+                | PlaybackStateCompat.ACTION_SEEK_TO
+                | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
         if (useSkipToPreviousForRewindInLockscreen()) {
             // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
@@ -1885,6 +1886,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onSeekTo(long pos) {
             Log.d(TAG, "onSeekTo()");
             seekTo((int) pos);
+        }
+
+        @Override
+        public void onSetPlaybackSpeed(float speed) {
+            Log.d(TAG, "onSetPlaybackSpeed()");
+            setSpeed(speed);
         }
 
         @Override
