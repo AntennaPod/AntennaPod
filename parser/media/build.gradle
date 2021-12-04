@@ -8,5 +8,5 @@ dependencies {
 
     implementation "commons-io:commons-io:$commonsioVersion"
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation "junit:junit:$junitVersion"
 }

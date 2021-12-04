@@ -39,10 +39,10 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
-    implementation 'androidx.palette:palette:1.0.0'
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
@@ -69,9 +69,9 @@ dependencies {
 
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    testImplementation 'junit:junit:4.13'
+    testImplementation "junit:junit:$junitVersion"
     testImplementation 'org.mockito:mockito-inline:3.5.13'
-    testImplementation 'org.robolectric:robolectric:4.5-alpha-1'
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
