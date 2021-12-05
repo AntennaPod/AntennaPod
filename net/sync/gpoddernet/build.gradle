@@ -9,7 +9,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation 'commons-io:commons-io:2.5'
+    implementation "commons-io:commons-io:$commonsioVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 }
