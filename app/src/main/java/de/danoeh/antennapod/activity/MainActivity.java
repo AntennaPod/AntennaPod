@@ -656,7 +656,13 @@ public class MainActivity extends CastEnabledActivity {
                             AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
-                break;
+            case KeyEvent.KEYCODE_B:
+            case KeyEvent.KEYCODE_T:
+                OnKeyListenerForFragments myFragment = (OnKeyListenerForFragments) getSupportFragmentManager().findFragmentById(R.id.main_view);
+                if(myFragment != null) {
+                    myFragment.onKeyUp(keyCode);
+                }
+                return true;
         }
 
         if (customKeyCode != null) {

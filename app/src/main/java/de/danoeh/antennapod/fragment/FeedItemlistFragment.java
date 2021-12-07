@@ -92,7 +92,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays a list of FeedItems.
  */
-public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
+public class FeedItemlistFragment extends OnKeyListenerForFragments implements AdapterView.OnItemClickListener,
         Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
@@ -642,6 +642,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             feed.setItems(feedItems);
         }
         return feed;
+    }
+
+    @Override
+    public void onKeyUp(int keyCode){
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_T:
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            case KeyEvent.KEYCODE_B:
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                break;
+        }
     }
 
     private static class FeedItemListAdapter extends EpisodeItemListAdapter {
