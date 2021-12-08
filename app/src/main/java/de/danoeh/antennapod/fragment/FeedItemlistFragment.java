@@ -644,7 +644,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         return feed;
     }
 
-    public void onKeyUp(int keyCode){
+    public void onKeyUp(int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_T:
                 recyclerView.smoothScrollToPosition(0);

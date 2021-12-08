@@ -662,7 +662,6 @@ public class MainActivity extends CastEnabledActivity {
                 if(myFragment != null) {
                     myFragment.onKeyUp(keyCode);
                 }
-                return true;
         }
 
         if (customKeyCode != null) {
