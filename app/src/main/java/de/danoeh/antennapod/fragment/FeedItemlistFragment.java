@@ -89,6 +89,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import de.danoeh.antennapod.view.OnKeyListenerForFragments;
+import android.view.KeyEvent;
 
 /**
  * Displays a list of FeedItems.
