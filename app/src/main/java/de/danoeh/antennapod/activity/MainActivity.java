@@ -667,6 +667,8 @@ public class MainActivity extends CastEnabledActivity {
                     myFragment.onKeyUp(keyCode);
                 }
                 return true;
+            default:
+                return true;
         }
 
         if (customKeyCode != null) {
