@@ -68,6 +68,7 @@ import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
+import de.danoeh.antennapod.view.OnKeyListenerForFragments;
 
 /**
  * The activity that is shown when the user launches the app.
