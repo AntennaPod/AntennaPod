@@ -658,7 +658,7 @@ public class MainActivity extends CastEnabledActivity {
                 }
             case KeyEvent.KEYCODE_B:
             case KeyEvent.KEYCODE_T:
-                OnKeyListenerForFragments myFragment = (OnKeyListenerForFragments) getSupportFragmentManager().findFragmentById(R.id.main_view);
+                FeedItemlistFragment myFragment = new FeedItemlistFragment();
                 if(myFragment != null) {
                     myFragment.onKeyUp(keyCode);
                 }
