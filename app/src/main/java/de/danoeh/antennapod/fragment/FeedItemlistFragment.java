@@ -654,8 +654,6 @@ public class FeedItemlistFragment extends OnKeyListenerForFragments implements A
             case KeyEvent.KEYCODE_B:
                 recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                 break;
-            default:
-                break;
         }
     }
 
