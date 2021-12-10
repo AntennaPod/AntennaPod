@@ -660,12 +660,7 @@ public class MainActivity extends CastEnabledActivity {
                 break;
             case KeyEvent.KEYCODE_B:
             case KeyEvent.KEYCODE_T:
-                OnKeyListenerForFragments myFragment =
-                        (OnKeyListenerForFragments) getSupportFragmentManager()
-                                .findFragmentById(R.id.main_view);
-                if (myFragment != null) {
-                    myFragment.onKeyUp(keyCode);
-                }
+                EventBus.getDefault().post(event);
                 return true;
         }
 

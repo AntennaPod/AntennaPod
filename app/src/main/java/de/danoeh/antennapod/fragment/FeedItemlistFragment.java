@@ -89,11 +89,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import de.danoeh.antennapod.view.OnKeyListenerForFragments;
 import android.view.KeyEvent;
+import androidx.fragment.app.Fragment;
 
 /**
  * Displays a list of FeedItems.
  */
-public class FeedItemlistFragment extends OnKeyListenerForFragments implements AdapterView.OnItemClickListener,
+public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
         Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
@@ -645,9 +646,9 @@ public class FeedItemlistFragment extends OnKeyListenerForFragments implements A
         return feed;
     }
 
-    @Override
-    public void onKeyUp(int keyCode) {
-        switch (keyCode) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onKeyUp(KeyEvent event) {
+        switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_T:
                 recyclerView.smoothScrollToPosition(0);
                 break;
