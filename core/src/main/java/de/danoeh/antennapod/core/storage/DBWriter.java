@@ -149,7 +149,6 @@ public class DBWriter {
      */
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return dbExec.submit(() -> {
-            DownloadRequester requester = DownloadRequester.getInstance();
             final Feed feed = DBReader.getFeed(feedId);
             if (feed == null) {
                 return;
@@ -167,7 +166,9 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+            if (!feed.isLocalFeed()) {
+                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+            }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -779,7 +780,9 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                if (!feed.isLocalFeed()) {
+                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                }
             }
 
             BackupManager backupManager = new BackupManager(context);
