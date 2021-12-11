@@ -95,29 +95,18 @@ public class EpisodeMultiSelectActionHandler {
 
     private void deleteChecked() {
         int countHasMedia = 0;
-        int countNoMedia = 0;
         for (FeedItem feedItem : selectedItems) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia().getId());
-            } else {
-                countNoMedia++;
             }
         }
-        showMessageMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
+        showMessage(R.plurals.deleted_multi_episode_batch_label, countHasMedia);
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
         activity.showSnackbarAbovePlayer(activity.getResources()
                 .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-    }
-
-    private void showMessageMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
-        activity.showSnackbarAbovePlayer(activity.getResources()
-                .getQuantityString(msgId,
-                        (countHasMedia + countNoMedia),
-                        (countHasMedia + countNoMedia), countHasMedia),
-                Snackbar.LENGTH_LONG);
     }
 
     private long[] getSelectedIds() {
