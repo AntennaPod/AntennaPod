@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import androidx.core.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -97,7 +96,7 @@ public class NetworkUtils {
 
     private static boolean isNetworkMetered() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);
+        return connManager.isActiveNetworkMetered();
     }
 
     private static boolean isNetworkCellular() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -18,8 +19,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.text.TextUtilsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -222,8 +221,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
-            if (TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
-                    == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
                 count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
             }
 
