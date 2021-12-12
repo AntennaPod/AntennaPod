@@ -647,16 +647,17 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onKeyUp(KeyEvent event) {
-        switch (event.getKeyCode()) {
-            case KeyEvent.KEYCODE_T:
-                recyclerView.smoothScrollToPosition(0);
-                break;
-            case KeyEvent.KEYCODE_B:
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                break;
-            default:
-                recyclerView.smoothScrollToPosition(0);
-                break;
+        if (this.isAdded() && this.isVisible()) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_T:
+                    recyclerView.smoothScrollToPosition(0);
+                    break;
+                case KeyEvent.KEYCODE_B:
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
