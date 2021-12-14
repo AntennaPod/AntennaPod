@@ -625,6 +625,7 @@ public class MainActivity extends CastEnabledActivity {
 
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
+        EventBus.getDefault().post(event);
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_P:
@@ -657,10 +658,6 @@ public class MainActivity extends CastEnabledActivity {
                     return true;
                 }
                 break;
-            case KeyEvent.KEYCODE_B:
-            case KeyEvent.KEYCODE_T:
-                EventBus.getDefault().post(event);
-                return true;
         }
 
         if (customKeyCode != null) {
