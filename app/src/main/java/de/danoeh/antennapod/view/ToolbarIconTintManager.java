@@ -6,7 +6,6 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import de.danoeh.antennapod.R;
@@ -25,7 +24,7 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-        boolean tint  = (collapsingToolbar.getHeight() + offset) > (2 * ViewCompat.getMinimumHeight(collapsingToolbar));
+        boolean tint  = (collapsingToolbar.getHeight() + offset) > (2 * collapsingToolbar.getMinimumHeight());
         if (isTinted != tint) {
             isTinted = tint;
             updateTint();

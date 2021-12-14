@@ -28,7 +28,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -188,10 +187,10 @@ public class PlaybackStatisticsFragment extends Fragment {
         List<StatisticsItem> statisticsData = DBReader.getStatistics();
         if (countAll) {
             Collections.sort(statisticsData, (item1, item2) ->
-                    CompareCompat.compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
+                    Long.compare(item2.timePlayedCountAll, item1.timePlayedCountAll));
         } else {
             Collections.sort(statisticsData, (item1, item2) ->
-                    CompareCompat.compareLong(item1.timePlayed, item2.timePlayed));
+                    Long.compare(item2.timePlayed, item1.timePlayed));
         }
         return statisticsData;
     }

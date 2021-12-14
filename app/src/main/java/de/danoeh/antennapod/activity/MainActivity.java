@@ -27,7 +27,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -153,14 +152,14 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     /**
-     * ViewCompat.generateViewId stores the current ID in a static variable.
+     * View.generateViewId stores the current ID in a static variable.
      * When the process is killed, the variable gets reset.
      * This makes sure that we do not get ID collisions
      * and therefore errors when trying to restore state from another view.
      */
     @SuppressWarnings("StatementWithEmptyBody")
     private void ensureGeneratedViewIdGreaterThan(int minimum) {
-        while (ViewCompat.generateViewId() <= minimum) {
+        while (View.generateViewId() <= minimum) {
             // Generate new IDs
         }
     }
@@ -168,7 +167,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
+        outState.putInt(KEY_GENERATED_VIEW_ID, View.generateViewId());
     }
 
     private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =

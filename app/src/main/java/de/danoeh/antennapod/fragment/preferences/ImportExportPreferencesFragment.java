@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
@@ -42,7 +40,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -169,21 +166,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void exportDatabase() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
-        } else {
-            File sd = Environment.getExternalStorageDirectory();
-            File backupDB = new File(sd, dateStampFilename(DATABASE_EXPORT_FILENAME));
-            progressDialog.show();
-            disposable = Completable.fromAction(() ->
-                        DatabaseExporter.exportToStream(new FileOutputStream(backupDB), getContext()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
-                        progressDialog.dismiss();
-                    }, this::showExportErrorDialog);
-        }
+        backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
     }
 
     private void importDatabase() {
