@@ -624,6 +624,7 @@ public class MainActivity extends CastEnabledActivity {
 
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
+        EventBus.getDefault().post(event);
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_P:
