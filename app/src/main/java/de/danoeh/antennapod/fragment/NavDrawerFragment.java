@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -163,7 +163,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     .show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
+            new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
             ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);

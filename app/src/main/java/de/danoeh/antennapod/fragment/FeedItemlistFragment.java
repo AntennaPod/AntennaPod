@@ -72,7 +72,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -331,7 +331,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         final int itemId = item.getItemId();
         if (itemId == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
+            new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
             ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
