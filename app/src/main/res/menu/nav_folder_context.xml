@@ -3,5 +3,5 @@
     <item
         android:id="@+id/rename_folder_item"
         android:menuCategory="container"
-        android:title="@string/rename_folder_label" />
+        android:title="@string/rename_tag_label" />
 </menu>

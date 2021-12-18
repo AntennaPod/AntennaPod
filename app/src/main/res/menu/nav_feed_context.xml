@@ -9,7 +9,7 @@
     <item
         android:id="@+id/edit_tags"
         android:menuCategory="container"
-        android:title="@string/add_to_folder" />
+        android:title="@string/edit_tags" />
 
     <item
         android:id="@+id/rename_item"

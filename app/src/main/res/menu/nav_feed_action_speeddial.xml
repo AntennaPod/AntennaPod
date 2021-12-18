@@ -28,6 +28,6 @@
     <item
         android:id="@+id/edit_tags"
         android:menuCategory="container"
-        android:title="@string/add_to_folder"
+        android:title="@string/edit_tags"
         android:icon="@drawable/ic_tag"/>
 </menu>
