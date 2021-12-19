@@ -186,7 +186,8 @@
         <item quantity="one">%d subscription updated.</item>
         <item quantity="other">%d subscriptions updated.</item>
     </plurals>
-    <string name="add_to_folder">Add to folder</string>
+    <string name="edit_tags">Edit tags</string>
+    <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Downloading episodes over mobile data connection is disabled in the settings.\n\nDo you still want to refresh all podcasts over mobile data?</string>
 
     <!-- actions on feeditems -->

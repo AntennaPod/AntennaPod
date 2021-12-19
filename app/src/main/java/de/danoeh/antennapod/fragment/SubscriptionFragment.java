@@ -55,7 +55,7 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -334,11 +334,17 @@ public class SubscriptionFragment extends Fragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Feed feed = subscriptionAdapter.getSelectedFeed();
-        if (feed == null) {
+        NavDrawerData.DrawerItem drawerItem = subscriptionAdapter.getSelectedItem();
+        if (drawerItem == null) {
             return false;
         }
         int itemId = item.getItemId();
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG && itemId == R.id.rename_folder_item) {
+            new RenameItemDialog(getActivity(), drawerItem).show();
+            return true;
+        }
+
+        Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
         if (itemId == R.id.remove_all_new_flags_item) {
             displayConfirmationDialog(
                     R.string.remove_all_new_flags_label,
@@ -350,7 +356,7 @@ public class SubscriptionFragment extends Fragment
                     .show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
+            new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_item) {
             RemoveFeedDialog.show(getContext(), feed);

@@ -47,7 +47,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<NavDrawerData.DrawerItem> listItems;
-    private Feed selectedFeed = null;
+    private NavDrawerData.DrawerItem selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
@@ -61,8 +61,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return listItems.get(position);
     }
 
-    public Feed getSelectedFeed() {
-        return selectedFeed;
+    public NavDrawerData.DrawerItem getSelectedItem() {
+        return selectedItem;
     }
 
     @NonNull
@@ -113,11 +113,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         holder.itemView.setOnLongClickListener(v -> {
             if (!inActionMode()) {
                 if (isFeed) {
-                    selectedFeed = ((NavDrawerData.FeedDrawerItem) getItem(holder.getBindingAdapterPosition())).feed;
                     longPressedPosition = holder.getBindingAdapterPosition();
-                } else {
-                    selectedFeed = null;
                 }
+                selectedItem = (NavDrawerData.DrawerItem) getItem(holder.getBindingAdapterPosition());
             }
             return false;
         });
@@ -151,12 +149,17 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (selectedFeed != null && !inActionMode()) {
-            MenuInflater inflater = mainActivityRef.get().getMenuInflater();
-            inflater.inflate(R.menu.nav_feed_context, menu);
-            menu.setHeaderTitle(selectedFeed.getTitle());
-            menu.findItem(R.id.multi_select).setVisible(true);
+        if (inActionMode() || selectedItem == null) {
+            return;
         }
+        MenuInflater inflater = mainActivityRef.get().getMenuInflater();
+        if (selectedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            inflater.inflate(R.menu.nav_feed_context, menu);
+            menu.findItem(R.id.multi_select).setVisible(true);
+        } else {
+            inflater.inflate(R.menu.nav_folder_context, menu);
+        }
+        menu.setHeaderTitle(selectedItem.getTitle());
     }
 
     public boolean onContextItemSelected(MenuItem item) {
