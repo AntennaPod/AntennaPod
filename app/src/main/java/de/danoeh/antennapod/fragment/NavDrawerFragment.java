@@ -124,24 +124,28 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (contextPressedItem.type != NavDrawerData.DrawerItem.Type.FEED) {
-            return; // Should actually never happen because the context menu is not set up for other items
-        }
-
         MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.nav_feed_context, menu);
-        menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed.getTitle());
-        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+        menu.setHeaderTitle(contextPressedItem.getTitle());
+        if (contextPressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            inflater.inflate(R.menu.nav_feed_context, menu);
+            // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+        } else {
+            inflater.inflate(R.menu.nav_folder_context, menu);
+        }
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         NavDrawerData.DrawerItem pressedItem = contextPressedItem;
         contextPressedItem = null;
-        if (pressedItem != null && pressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) pressedItem).feed, item);
+        if (pressedItem == null) {
+            return false;
         }
-        return false;
+        if (pressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) pressedItem).feed, item);
+        } else {
+            return onTagContextMenuClicked(pressedItem, item);
+        }
     }
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
@@ -168,6 +172,15 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         } else if (itemId == R.id.remove_item) {
             ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
             RemoveFeedDialog.show(getContext(), feed);
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private boolean onTagContextMenuClicked(NavDrawerData.DrawerItem drawerItem, MenuItem item) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.rename_folder_item) {
+            new RenameItemDialog(getActivity(), drawerItem).show();
             return true;
         }
         return super.onContextItemSelected(item);
