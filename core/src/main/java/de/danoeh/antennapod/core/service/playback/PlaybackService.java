@@ -1250,21 +1250,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                 .getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
-            sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_REWIND,
-                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
-                        .build());
+        // Hack to work around this bug https://github.com/AntennaPod/AntennaPod/issues/5481#issuecomment-999811393
+        if (Build.VERSION.SDK_INT >= 31 ||
+                uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
                         CUSTOM_ACTION_FAST_FORWARD,
                         getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
                         .build());
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
+                            CUSTOM_ACTION_REWIND,
+                            getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
+                            .build());
         } else {
             // This would give the PIP of videos a play button
             capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
-            if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
+            if (Build.VERSION.SDK_INT >= 31 || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
                 WearMediaSession.sessionStateAddActionForWear(sessionState,
                         CUSTOM_ACTION_REWIND,
                         getString(R.string.rewind_label),
