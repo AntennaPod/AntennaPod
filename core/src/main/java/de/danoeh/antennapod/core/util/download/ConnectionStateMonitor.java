@@ -1,94 +1,34 @@
 package de.danoeh.antennapod.core.util.download;
 
-public class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
+import android.os.Build;
+import android.util.Log;
 
-private var connectivityManager: ConnectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+import androidx.annotation.RequiresApi;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 
-private lateinit var connectivityManagerCallback: ConnectivityManager.NetworkCallback
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback {
+    private static final String TAG = "ConnectionStateMonitor";
+    final NetworkRequest networkRequest;
 
-private val networkRequestBuilder: NetworkRequest.Builder = NetworkRequest.Builder()
-        .addTransportType(android.net.NetworkCapabilities.TRANSPORT_CELLULAR)
-        .addTransportType(android.net.NetworkCapabilities.TRANSPORT_WIFI)
+    public ConnectionStateMonitor() {
+            networkRequest = new NetworkRequest.Builder()
+                    .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                    .build();
+    }
 
-        override fun onActive() {
-        super.onActive()
-        updateConnection()
-        when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> connectivityManager.registerDefaultNetworkCallback(getConnectivityMarshmallowManagerCallback())
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> marshmallowNetworkAvailableRequest()
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> lollipopNetworkAvailableRequest()
-        else -> {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-        context.registerReceiver(networkReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")) // android.net.ConnectivityManager.CONNECTIVITY_ACTION
-        }
-        }
-        }
-        }
-
-        override fun onInactive() {
-        super.onInactive()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        connectivityManager.unregisterNetworkCallback(connectivityManagerCallback)
-        } else {
-        context.unregisterReceiver(networkReceiver)
-        }
-        }
-
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-private fun lollipopNetworkAvailableRequest() {
-        connectivityManager.registerNetworkCallback(networkRequestBuilder.build(), getConnectivityLollipopManagerCallback())
-        }
-
-@TargetApi(Build.VERSION_CODES.M)
-private fun marshmallowNetworkAvailableRequest() {
-        connectivityManager.registerNetworkCallback(networkRequestBuilder.build(), getConnectivityMarshmallowManagerCallback())
-        }
-
-private fun getConnectivityLollipopManagerCallback(): ConnectivityManager.NetworkCallback {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        connectivityManagerCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network?) {
-        postValue(true)
-        }
-
-        override fun onLost(network: Network?) {
-        postValue(false)
-        }
-        }
-        return connectivityManagerCallback
-        } else {
-        throw IllegalAccessError("Accessing wrong API version")
-        }
-        }
-
-private fun getConnectivityMarshmallowManagerCallback(): ConnectivityManager.NetworkCallback {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        connectivityManagerCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onCapabilitiesChanged(network: Network?, networkCapabilities: NetworkCapabilities?) {
-        networkCapabilities?.let { capabilities ->
-        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-        postValue(true)
-        }
-        }
-        }
-        override fun onLost(network: Network?) {
-        postValue(false)
-        }
-        }
-        return connectivityManagerCallback
-        } else {
-        throw IllegalAccessError("Accessing wrong API version")
-        }
-        }
-
-private val networkReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-        updateConnection()
-        }
-        }
-
-private fun updateConnection() {
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        postValue(activeNetwork?.isConnected == true)
-        }
-        }
+    public void enable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager.registerNetworkCallback(networkRequest, this);
+        connectivityManager.addDefaultNetworkActiveListener(() -> {
+            Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
+            NetworkUtils.networkChangedDetected(context);
+        });
+        Log.d(TAG, "ConnectionStateMonitor::enable " + connectivityManager.toString());
+    }
+}

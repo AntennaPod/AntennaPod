@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -113,6 +115,11 @@ public class NetworkUtils {
             NetworkCapabilities capabilities = connManager.getNetworkCapabilities(network);
             if (capabilities == null) {
                 return true; // Better be safe than sorry
+            }
+
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.d(TAG, "Network has WIFI");
+                return false;
             }
             return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
         } else {
@@ -217,4 +224,19 @@ public class NetworkUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static void networkChangedDetected(Context context) {
+        if (NetworkUtils.isAutoDownloadAllowed()) {
+            Log.d(TAG, "auto-dl network available, starting auto-download");
+            DBTasks.autodownloadUndownloadedItems(context);
+        } else { // if new network is Wi-Fi, finish ongoing downloads,
+            // otherwise cancel all downloads
+            ConnectivityManager cm = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo ni = cm.getActiveNetworkInfo();
+            if (NetworkUtils.isNetworkRestricted()) {
+                Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
+                DownloadRequester.getInstance().cancelAllDownloads(context);
+            }
+        }
+    }
 }
