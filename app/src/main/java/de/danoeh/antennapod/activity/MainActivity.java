@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -37,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.util.download.ConnectionStateMonitor;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -144,13 +146,21 @@ public class MainActivity extends CastEnabledActivity {
 
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.registerLollipopNetworkListener();
+        }
+
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void registerLollipopNetworkListener() {
+        ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
+        connectionMonitor.enable(getApplicationContext());
+    }
     /**
      * View.generateViewId stores the current ID in a static variable.
      * When the process is killed, the variable gets reset.
