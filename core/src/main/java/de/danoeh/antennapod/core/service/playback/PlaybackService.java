@@ -1250,7 +1250,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                 .getSystemService(Context.UI_MODE_SERVICE);
-        // Hack to work around this bug https://github.com/AntennaPod/AntennaPod/issues/5481#issuecomment-999811393
+        // Hack to work around this bug https://issuetracker.google.com/issues/207389461?pli=1
         if (Build.VERSION.SDK_INT >= 31
                 || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
