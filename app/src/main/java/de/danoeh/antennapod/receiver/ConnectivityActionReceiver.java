@@ -20,7 +20,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
             Log.d(TAG, "Received intent");
 
             ClientConfig.initialize(context);
-            NetworkUtils.networkChangedDetected(context);
+            NetworkUtils.networkChangedDetected();
         }
     }
 }
