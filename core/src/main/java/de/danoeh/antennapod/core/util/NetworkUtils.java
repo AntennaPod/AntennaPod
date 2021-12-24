@@ -117,10 +117,6 @@ public class NetworkUtils {
                 return true; // Better be safe than sorry
             }
 
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                Log.d(TAG, "Network has WIFI");
-                return false;
-            }
             return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
         } else {
             // if the default network is a VPN,
@@ -230,9 +226,6 @@ public class NetworkUtils {
             DBTasks.autodownloadUndownloadedItems(context);
         } else { // if new network is Wi-Fi, finish ongoing downloads,
             // otherwise cancel all downloads
-            ConnectivityManager cm = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo ni = cm.getActiveNetworkInfo();
             if (NetworkUtils.isNetworkRestricted()) {
                 Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
                 DownloadRequester.getInstance().cancelAllDownloads(context);
