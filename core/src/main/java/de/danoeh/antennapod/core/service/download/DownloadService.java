@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ServiceCompat;
 
@@ -39,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.util.download.ConnectionStateMonitor;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -190,8 +193,24 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.registerLollipopNetworkListener();
+        }
 
         downloadCompletionThread.start();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void registerLollipopNetworkListener() {
+        ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
+        connectionMonitor.enable(getApplicationContext());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void unRegisterLollipopNetworkListener() {
+        ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
+        connectionMonitor.disable(getApplicationContext());
+
     }
 
     @Override

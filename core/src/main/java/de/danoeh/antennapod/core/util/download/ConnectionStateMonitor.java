@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback {
+public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback implements ConnectivityManager.OnNetworkActiveListener {
     private static final String TAG = "ConnectionStateMonitor";
     final NetworkRequest networkRequest;
 
@@ -22,14 +22,24 @@ public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback 
                 .build();
     }
 
+    public void onNetworkActive() {
+        Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
+        NetworkUtils.networkChangedDetected();
+    }
+
     public void enable(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerNetworkCallback(networkRequest, this);
-        connectivityManager.addDefaultNetworkActiveListener(() -> {
-            Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
-            NetworkUtils.networkChangedDetected(context);
-        });
+        connectivityManager.addDefaultNetworkActiveListener(this);
+        Log.d(TAG, "ConnectionStateMonitor::enable " + connectivityManager.toString());
+    }
+
+    public void disable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager.unregisterNetworkCallback(this);
+        connectivityManager.removeDefaultNetworkActiveListener(this);
         Log.d(TAG, "ConnectionStateMonitor::enable " + connectivityManager.toString());
     }
 }
