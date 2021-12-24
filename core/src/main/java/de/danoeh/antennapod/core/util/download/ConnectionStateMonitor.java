@@ -11,7 +11,9 @@ import androidx.annotation.RequiresApi;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback implements ConnectivityManager.OnNetworkActiveListener {
+public class ConnectionStateMonitor
+        extends ConnectivityManager.NetworkCallback
+        implements ConnectivityManager.OnNetworkActiveListener {
     private static final String TAG = "ConnectionStateMonitor";
     final NetworkRequest networkRequest;
 
