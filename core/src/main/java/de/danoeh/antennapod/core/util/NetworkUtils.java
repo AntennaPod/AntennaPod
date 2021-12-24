@@ -220,7 +220,7 @@ public class NetworkUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static void networkChangedDetected(Context context) {
+    public static void networkChangedDetected() {
         if (NetworkUtils.isAutoDownloadAllowed()) {
             Log.d(TAG, "auto-dl network available, starting auto-download");
             DBTasks.autodownloadUndownloadedItems(context);
