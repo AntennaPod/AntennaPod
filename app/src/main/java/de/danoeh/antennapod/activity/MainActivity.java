@@ -156,11 +156,13 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void registerLollipopNetworkListener() {
         ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
         connectionMonitor.enable(getApplicationContext());
     }
+
     /**
      * View.generateViewId stores the current ID in a static variable.
      * When the process is killed, the variable gets reset.

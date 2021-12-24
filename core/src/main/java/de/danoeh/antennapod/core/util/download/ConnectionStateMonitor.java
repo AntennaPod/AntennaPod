@@ -16,14 +16,15 @@ public class ConnectionStateMonitor extends ConnectivityManager.NetworkCallback 
     final NetworkRequest networkRequest;
 
     public ConnectionStateMonitor() {
-            networkRequest = new NetworkRequest.Builder()
-                    .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                    .build();
+        networkRequest = new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build();
     }
 
     public void enable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerNetworkCallback(networkRequest, this);
         connectivityManager.addDefaultNetworkActiveListener(() -> {
             Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
