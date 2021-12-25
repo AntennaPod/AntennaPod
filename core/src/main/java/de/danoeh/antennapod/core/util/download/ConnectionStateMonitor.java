@@ -35,7 +35,7 @@ public class ConnectionStateMonitor
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerNetworkCallback(networkRequest, this);
         connectivityManager.addDefaultNetworkActiveListener(this);
-        Log.d(TAG, "ConnectionStateMonitor::enable " + connectivityManager.toString());
+        Log.d(TAG, "enable " + connectivityManager.toString());
     }
 
     public void disable(Context context) {
@@ -43,6 +43,6 @@ public class ConnectionStateMonitor
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.unregisterNetworkCallback(this);
         connectivityManager.removeDefaultNetworkActiveListener(this);
-        Log.d(TAG, "ConnectionStateMonitor::enable " + connectivityManager.toString());
+        Log.d(TAG, "disable" + connectivityManager.toString());
     }
 }
