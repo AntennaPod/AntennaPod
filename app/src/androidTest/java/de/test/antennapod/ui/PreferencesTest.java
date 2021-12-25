@@ -174,22 +174,22 @@ public class PreferencesTest {
     @Test
     public void testHeadPhonesDisconnect() {
         clickPreference(R.string.playback_pref);
-        final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetDisconnect();
+        final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetBluetoothDisconnect();
         onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseOnHeadsetDisconnect != UserPreferences.isPauseOnHeadsetDisconnect());
+                .until(() -> pauseOnHeadsetDisconnect != UserPreferences.isPauseOnHeadsetBluetoothDisconnect());
         onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetDisconnect());
+                .until(() -> pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetBluetoothDisconnect());
     }
 
     @Test
     public void testHeadPhonesReconnect() {
         clickPreference(R.string.playback_pref);
-        if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
+        if (!UserPreferences.isPauseOnHeadsetBluetoothDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
             Awaitility.await().atMost(1000, MILLISECONDS)
-                    .until(UserPreferences::isPauseOnHeadsetDisconnect);
+                    .until(UserPreferences::isPauseOnHeadsetBluetoothDisconnect);
         }
         final boolean unpauseOnHeadsetReconnect = UserPreferences.isUnpauseOnHeadsetReconnect();
         onView(withText(R.string.pref_unpauseOnHeadsetReconnect_title)).perform(click());
@@ -203,10 +203,10 @@ public class PreferencesTest {
     @Test
     public void testBluetoothReconnect() {
         clickPreference(R.string.playback_pref);
-        if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
+        if (!UserPreferences.isPauseOnHeadsetBluetoothDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
             Awaitility.await().atMost(1000, MILLISECONDS)
-                    .until(UserPreferences::isPauseOnHeadsetDisconnect);
+                    .until(UserPreferences::isPauseOnHeadsetBluetoothDisconnect);
         }
         final boolean unpauseOnBluetoothReconnect = UserPreferences.isUnpauseOnBluetoothReconnect();
         onView(withText(R.string.pref_unpauseOnBluetoothReconnect_title)).perform(click());
