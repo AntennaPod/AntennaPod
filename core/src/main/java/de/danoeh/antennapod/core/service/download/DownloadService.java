@@ -123,7 +123,7 @@ public class DownloadService extends Service {
     private static final int SCHED_EX_POOL_SIZE = 1;
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
-    private ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
+    private ConnectionStateMonitor connectionMonitor;
     private final IBinder mBinder = new LocalBinder();
 
     private class LocalBinder extends Binder {
@@ -193,7 +193,11 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (connectionMonitor == null) {
+                connectionMonitor = new ConnectionStateMonitor();
+            }
             connectionMonitor.enable(getApplicationContext());
         }
 
@@ -232,7 +236,9 @@ public class DownloadService extends Service {
         }
         unregisterReceiver(cancelDownloadReceiver);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor.disable(getApplicationContext());
+            if (connectionMonitor != null) {
+                connectionMonitor.disable(getApplicationContext());
+            }
         }
 
         // start auto download in case anything new has shown up
