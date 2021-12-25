@@ -24,6 +24,7 @@ public class ConnectionStateMonitor
                 .build();
     }
 
+    @Override
     public void onNetworkActive() {
         Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
         NetworkUtils.networkChangedDetected();

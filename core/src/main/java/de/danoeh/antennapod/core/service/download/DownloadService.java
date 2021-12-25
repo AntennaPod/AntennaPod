@@ -194,20 +194,10 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.registerLollipopNetworkListener();
+            connectionMonitor.enable(getApplicationContext());
         }
 
         downloadCompletionThread.start();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    void registerLollipopNetworkListener() {
-        connectionMonitor.enable(getApplicationContext());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    void unRegisterLollipopNetworkListener() {
-        connectionMonitor.disable(getApplicationContext());
     }
 
     @Override
@@ -241,7 +231,9 @@ public class DownloadService extends Service {
             downloadPostFuture.cancel(true);
         }
         unregisterReceiver(cancelDownloadReceiver);
-        unRegisterLollipopNetworkListener();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectionMonitor.disable(getApplicationContext());
+        }
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());

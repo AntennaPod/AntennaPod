@@ -116,7 +116,6 @@ public class NetworkUtils {
             if (capabilities == null) {
                 return true; // Better be safe than sorry
             }
-
             return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
         } else {
             // if the default network is a VPN,
