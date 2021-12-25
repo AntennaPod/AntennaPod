@@ -1525,12 +1525,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     };
 
     /**
-     * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
+     * Pauses playback if PREF_PAUSE_ON_HEADSET_BLUETOOTH_DISCONNECT was set to true.
      */
     private void pauseIfPauseOnDisconnect() {
         Log.d(TAG, "pauseIfPauseOnDisconnect()");
-        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            transientPause = true;
+        transientPause = (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING);
+        if (UserPreferences.isPauseOnHeadsetBluetoothDisconnect() && !isCasting()) {
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }
