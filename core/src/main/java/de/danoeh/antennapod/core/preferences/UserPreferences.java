@@ -75,7 +75,7 @@ public class UserPreferences {
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
     // Playback
-    public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
+    public static final String PREF_PAUSE_ON_HEADSET_BLUETOOTH_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
@@ -378,8 +378,8 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static boolean isPauseOnHeadsetDisconnect() {
-        return prefs.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
+    public static boolean isPauseOnHeadsetBluetoothDisconnect() {
+        return prefs.getBoolean(PREF_PAUSE_ON_HEADSET_BLUETOOTH_DISCONNECT, true);
     }
 
     public static boolean isUnpauseOnHeadsetReconnect() {
