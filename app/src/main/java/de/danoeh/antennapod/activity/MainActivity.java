@@ -144,7 +144,6 @@ public class MainActivity extends CastEnabledActivity {
 
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
-
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
