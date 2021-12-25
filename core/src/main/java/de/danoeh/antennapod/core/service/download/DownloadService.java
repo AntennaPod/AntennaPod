@@ -123,7 +123,7 @@ public class DownloadService extends Service {
     private static final int SCHED_EX_POOL_SIZE = 1;
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
-
+    private ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
     private final IBinder mBinder = new LocalBinder();
 
     private class LocalBinder extends Binder {
@@ -202,15 +202,12 @@ public class DownloadService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void registerLollipopNetworkListener() {
-        ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
         connectionMonitor.enable(getApplicationContext());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void unRegisterLollipopNetworkListener() {
-        ConnectionStateMonitor connectionMonitor = new ConnectionStateMonitor();
         connectionMonitor.disable(getApplicationContext());
-
     }
 
     @Override
@@ -244,6 +241,7 @@ public class DownloadService extends Service {
             downloadPostFuture.cancel(true);
         }
         unregisterReceiver(cancelDownloadReceiver);
+        unRegisterLollipopNetworkListener();
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
