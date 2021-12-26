@@ -194,9 +194,7 @@ public class DownloadService extends Service {
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (connectionMonitor == null) {
-                connectionMonitor = new ConnectionStateMonitor();
-            }
+            connectionMonitor = new ConnectionStateMonitor();
             connectionMonitor.enable(getApplicationContext());
         }
 
@@ -235,9 +233,7 @@ public class DownloadService extends Service {
         }
         unregisterReceiver(cancelDownloadReceiver);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (connectionMonitor != null) {
-                connectionMonitor.disable(getApplicationContext());
-            }
+            connectionMonitor.disable(getApplicationContext());
         }
 
         // start auto download in case anything new has shown up
