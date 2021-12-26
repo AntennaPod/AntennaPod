@@ -103,9 +103,9 @@ public class NetworkUtils {
 
             // TODO what if the wifi is also metered, maybe we should consider adding an option
             // to allow for VPN+Wifi always
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) &&
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) &&
-                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)) {
                 Log.d(TAG, "Network is VPN and WIFI, is this really not metered?");
                 return false;
             }
