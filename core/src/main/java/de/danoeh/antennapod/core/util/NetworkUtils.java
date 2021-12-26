@@ -96,6 +96,19 @@ public class NetworkUtils {
 
     private static boolean isNetworkMetered() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            NetworkCapabilities capabilities = connManager.getNetworkCapabilities(
+                    connManager.getActiveNetwork());
+
+            // TODO what if the wifi is also metered, maybe we should consider adding an option
+            // to allow for VPN+Wifi always
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) &&
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                Log.d(TAG, "Network is VPN and WIFI, is this really not metered?");
+                return false;
+            }
+        }
         return connManager.isActiveNetworkMetered();
     }
 
