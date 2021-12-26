@@ -29,12 +29,6 @@
                 numberpicker:maxValue="50"
                 android:key="prefParallelDownloads"
                 android:title="@string/pref_parallel_downloads_title"/>
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefVPNWifiMetered"
-            android:summary="@string/pref_VPNWifiMetered_sum"
-            android:title="@string/pref_VPNWifiMetered_title"/>
         <Preference
                 android:key="prefProxy"
                 android:summary="@string/pref_proxy_sum"
