@@ -417,8 +417,6 @@
     <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
     <string name="pref_mobileUpdate_images">Cover images</string>
     <string name="pref_mobileUpdate_auto_download">Auto download</string>
-    <string name="pref_VPNWifiMetered_title">VPN on Wifi unlimited</string>
-    <string name="pref_VPNWifiMetered_sum">Should VPN on Wifi network be treated as unlimited networks?</string>
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
