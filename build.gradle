@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.0'
         classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.4'
         classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
+        classpath 'org.codehaus.groovy:groovy-xml:3.0.9'
     }
 }
 
