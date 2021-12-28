@@ -1532,8 +1532,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void pauseIfPauseOnDisconnect() {
         Log.d(TAG, "pauseIfPauseOnDisconnect()");
+        transientPause = (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING);
         if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            transientPause = true;
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }
