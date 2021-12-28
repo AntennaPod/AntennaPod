@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -227,4 +229,16 @@ public class NetworkUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static void networkChangedDetected() {
+        if (NetworkUtils.isAutoDownloadAllowed()) {
+            Log.d(TAG, "auto-dl network available, starting auto-download");
+            DBTasks.autodownloadUndownloadedItems(context);
+        } else { // if new network is Wi-Fi, finish ongoing downloads,
+            // otherwise cancel all downloads
+            if (NetworkUtils.isNetworkRestricted()) {
+                Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
+                DownloadRequester.getInstance().cancelAllDownloads(context);
+            }
+        }
+    }
 }
