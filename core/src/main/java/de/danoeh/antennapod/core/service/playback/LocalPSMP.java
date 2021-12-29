@@ -328,7 +328,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 acquireWifiLockIfNecessary();
 
                 setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
-                setVolume(1.0f, 1.0f);
+
+                float leftVolume = UserPreferences.getLeftVolume();
+                float rightVolume = UserPreferences.getRightVolume();
+                setVolume(leftVolume, rightVolume);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
@@ -889,13 +892,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
                         resume();
                     } else { // we ducked => raise audio level back
-                        setVolumeSync(1.0f, 1.0f);
+                        setVolumeSync(UserPreferences.getLeftVolume(),
+                                UserPreferences.getRightVolume());
                     }
                 } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                     if (playerStatus == PlayerStatus.PLAYING) {
                         if (!UserPreferences.shouldPauseForFocusLoss()) {
                             Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                            setVolumeSync(0.25f, 0.25f);
+                            final float DUCK_FACTOR = 0.25f;
+                            setVolumeSync(DUCK_FACTOR * UserPreferences.getLeftVolume(),
+                                    DUCK_FACTOR * UserPreferences.getRightVolume());
                             pausedBecauseOfTransientAudiofocusLoss = false;
                         } else {
                             Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");

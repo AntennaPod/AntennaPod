@@ -462,6 +462,12 @@ public abstract class PlaybackController {
         }
     }
 
+    public void setVolume(float leftVolume, float rightVolume) {
+        if (playbackService != null) {
+            playbackService.setVolume(leftVolume, rightVolume);
+        }
+    }
+
     public float getCurrentPlaybackSpeedMultiplier() {
         if (playbackService != null) {
             return playbackService.getCurrentPlaybackSpeed();

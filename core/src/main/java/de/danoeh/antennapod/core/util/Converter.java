@@ -105,4 +105,17 @@ public final class Converter {
         float hours = (float) time / 3600f;
         return String.format(Locale.getDefault(), "%.1f ", hours) + context.getString(R.string.time_hours);
     }
+
+    /**
+     * Converts the volume as read as the progress from a SeekBar scaled to 100 and as saved in
+     * UserPreferences to the format taken by setVolume methods.
+     * @param progress integer between 0 to 100 taken from the SeekBar progress
+     * @return the appropriate volume as float taken by setVolume methods
+     */
+    public static float getVolumeFromPercentage(int progress) {
+        if (progress == 100) {
+            return 1f;
+        }
+        return (float) (1 - (Math.log(101 - progress) / Math.log(101)));
+    }
 }

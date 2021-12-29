@@ -966,16 +966,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        float leftVolume = UserPreferences.getLeftVolume();
+        float rightVolume = UserPreferences.getRightVolume();
+
         if (event.isOver()) {
             mediaPlayer.pause(true, true);
-            mediaPlayer.setVolume(1.0f, 1.0f);
+            mediaPlayer.setVolume(leftVolume, rightVolume);
         } else if (event.getTimeLeft() < PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD) {
             final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
             float multiplicator = multiplicators[Math.max(0, (int) event.getTimeLeft() / 1000)];
             Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
-            mediaPlayer.setVolume(multiplicator, multiplicator);
+            mediaPlayer.setVolume(leftVolume * multiplicator, rightVolume * multiplicator);
         } else if (event.isCancelled()) {
-            mediaPlayer.setVolume(1.0f, 1.0f);
+            mediaPlayer.setVolume(leftVolume, rightVolume);
         }
     }
 
@@ -1671,6 +1674,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void skipSilence(boolean skipSilence) {
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
+    }
+
+    public void setVolume(float leftVolume, float rightVolume) {
+        mediaPlayer.setVolume(leftVolume, rightVolume);
     }
 
     public float getCurrentPlaybackSpeed() {
