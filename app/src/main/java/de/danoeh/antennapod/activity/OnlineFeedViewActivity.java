@@ -271,9 +271,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private String searchFeedUrlByTrackName(String trackName, String artistName) {
-        CombinedSearcher combinedSearcher = (CombinedSearcher) PodcastSearcherRegistry.getSearcher(CombinedSearcher.class);
+        CombinedSearcher searcher = (CombinedSearcher) PodcastSearcherRegistry.getSearcher(CombinedSearcher.class);
         String query = trackName + " " + artistName;
-        List<PodcastSearchResult> results = combinedSearcher.search(query).blockingGet();
+        List<PodcastSearchResult> results = searcher.search(query).blockingGet();
         for (PodcastSearchResult result : results) {
             if (result.feedUrl != null && result.author != null
                     && result.author.equalsIgnoreCase(artistName) && result.title.equalsIgnoreCase(trackName)) {

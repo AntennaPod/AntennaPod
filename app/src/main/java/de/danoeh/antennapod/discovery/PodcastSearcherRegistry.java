@@ -28,7 +28,7 @@ public class PodcastSearcherRegistry {
     public static PodcastSearcher getSearcher(Class<? extends PodcastSearcher> searcher) {
         Objects.requireNonNull(searcher);
         for (PodcastSearcherRegistry.SearcherInfo searcherInfo : getSearchProviders()) {
-            if (searcherInfo.searcher.getClass() == searcher){
+            if (searcherInfo.searcher.getClass() == searcher) {
                 return searcherInfo.searcher;
             }
         }

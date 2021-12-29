@@ -87,7 +87,7 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
                     JSONObject result = new JSONObject(resultString);
                     JSONObject results = result.getJSONArray("results").getJSONObject(0);
                     String feedUrlName = "feedUrl";
-                    if (!results.has(feedUrlName)){
+                    if (!results.has(feedUrlName)) {
                         String artistName = results.getString("artistName");
                         String trackName = results.getString("trackName");
                         emitter.onError(new FeedUrlNotFoundException(artistName, trackName));
