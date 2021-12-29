@@ -5,6 +5,7 @@ import io.reactivex.Single;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PodcastSearcherRegistry {
     private static List<SearcherInfo> searchProviders;
@@ -22,6 +23,16 @@ public class PodcastSearcherRegistry {
             searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));
         }
         return searchProviders;
+    }
+
+    public static PodcastSearcher getSearcher(Class<? extends PodcastSearcher> searcher) {
+        Objects.requireNonNull(searcher);
+        for (PodcastSearcherRegistry.SearcherInfo searcherInfo : getSearchProviders()) {
+            if (searcherInfo.searcher.getClass() == searcher){
+                return searcherInfo.searcher;
+            }
+        }
+        throw new IllegalStateException(searcher.getName() + " not register");
     }
 
     public static Single<String> lookupUrl(String url) {

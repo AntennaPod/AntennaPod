@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.discovery;
 
+import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -85,7 +86,14 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
                     String resultString = response.body().string();
                     JSONObject result = new JSONObject(resultString);
                     JSONObject results = result.getJSONArray("results").getJSONObject(0);
-                    String feedUrl = results.getString("feedUrl");
+                    String feedUrlName = "feedUrl";
+                    if (!results.has(feedUrlName)){
+                        String artistName = results.getString("artistName");
+                        String trackName = results.getString("trackName");
+                        emitter.onError(new FeedUrlNotFoundException(artistName, trackName));
+                        return;
+                    }
+                    String feedUrl = results.getString(feedUrlName);
                     emitter.onSuccess(feedUrl);
                 } else {
                     emitter.onError(new IOException(response.toString()));
