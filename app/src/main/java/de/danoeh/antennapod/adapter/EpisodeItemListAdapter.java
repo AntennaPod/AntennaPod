@@ -91,7 +91,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         holder.itemView.setOnGenericMotionListener((v, e) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                    && e.getActionButton() != MotionEvent.BUTTON_SECONDARY) {
+                        && e.getActionButton() != MotionEvent.BUTTON_SECONDARY) {
                     longPressedItem = getItem(holder.getBindingAdapterPosition());
                     longPressedPosition = holder.getBindingAdapterPosition();
                 }
