@@ -1029,8 +1029,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             stateManager.stopService();
             return null;
         }
-        return nextItem.getMedia();
-
+        // After PlayableUtils::saveCurrentPosition saves position, load the position from the DB
+        return DBReader.getFeedMedia(nextItem.getMedia().getId());
     }
 
     /**
