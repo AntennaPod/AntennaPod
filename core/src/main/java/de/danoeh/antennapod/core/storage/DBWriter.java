@@ -130,8 +130,8 @@ public class DBWriter {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
 
-                NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(context);
-                mNotificationManager.cancel(R.id.notification_playing);
+                NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+                nm.cancel(R.id.notification_playing);
             }
 
             // Gpodder: queue delete action for synchronization
