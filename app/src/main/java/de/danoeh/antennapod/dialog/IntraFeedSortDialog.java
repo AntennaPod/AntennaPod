@@ -37,16 +37,13 @@ public abstract class IntraFeedSortDialog {
     }
 
     public void openDialog() {
-        final SortOrder[] values = sortValues;
-        final String [] items = sortItems;
-
-        int idxCurrentSort = getCurrentSortOrderIndex(values);
+        int idxCurrentSort = getCurrentSortOrderIndex();
 
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.sort)
-                        .setSingleChoiceItems(items, idxCurrentSort, (dialog, idxNewSort) -> {
-                            updateSort(values[idxNewSort]);
+                        .setSingleChoiceItems(sortItems, idxCurrentSort, (dialog, idxNewSort) -> {
+                            updateSort(sortValues[idxNewSort]);
                             dialog.dismiss();
                         })
                         .setNegativeButton(R.string.cancel_label, null);
@@ -55,20 +52,16 @@ public abstract class IntraFeedSortDialog {
 
     /**
      * Retrieves index of currentSortOrder index in values array.
-     * @param values - array of available sorting options
      * @return if currentSortOrder is found in array - returns index of that element,
-     *         otherwise returns -1;
+     *         otherwise returns 0, the default sort option;
      */
-    private int getCurrentSortOrderIndex(SortOrder[] values) {
-        int idxCurrentSort;
-        for (int i = 0; i < values.length; i++) {
-            if (currentSortOrder == values[i]) {
-                idxCurrentSort = i;
-                return idxCurrentSort;
+    private int getCurrentSortOrderIndex() {
+        for (int i = 0; i < sortValues.length; i++) {
+            if (currentSortOrder == sortValues[i]) {
+                return i;
             }
         }
-
-        return -1;
+        return 0;
     }
 
     protected abstract void updateSort(@NonNull SortOrder sortOrder);
