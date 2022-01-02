@@ -18,7 +18,7 @@
             android:id="@+id/share_link_to_episode_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_link_to_episode"
+            android:text="@string/share_dialog_link_to_episode"
             android:checked="true" />
 
         <RadioButton

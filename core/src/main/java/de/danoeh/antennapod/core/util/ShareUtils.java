@@ -54,10 +54,11 @@ public class ShareUtils {
     public static void shareFeedItemLinkWithDownloadLink(Context context, FeedItem item, boolean withPosition) {
         String text = getItemShareText(item) + " ";
         if (hasLinkToShare(item)) {
+            text +=  "\n\n" + R.string.share_dialog_episode_website_label + ": ";
             text += FeedItemUtil.getLinkWithFallback(item);
         }
         if (item.getMedia() != null && item.getMedia().getDownload_url() != null) {
-            text += "\n" + item.getMedia().getDownload_url();
+            text += "\n\n" + R.string.share_dialog_media_file_label + ": " + item.getMedia().getDownload_url();
         }
         if (withPosition) {
             int pos = item.getMedia().getPosition();
