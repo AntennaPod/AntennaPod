@@ -12,7 +12,9 @@ public class PodcastIndex extends Namespace {
     public static final String NSURI = "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md";
     public static final String NSURI2 = "https://podcastindex.org/namespace/1.0";
     private static final String URL = "url";
+    private static final String MIME_TYPE= "type";
     private static final String FUNDING = "funding";
+    private static final String CHAPTERS = "chapters";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -22,6 +24,13 @@ public class PodcastIndex extends Namespace {
             FeedFunding funding = new FeedFunding(href, "");
             state.setCurrentFunding(funding);
             state.getFeed().addPayment(state.getCurrentFunding());
+        }
+
+        if (CHAPTERS.equals(localName)) {
+            String href = attributes.getValue(URL);
+            if (! StringUtil.isBlank(href)) {
+                state.getCurrentItem().setChapterURL(href);
+            }
         }
         return new SyndElement(localName, this);
     }
