@@ -4,11 +4,10 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 
 public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
 
-    private static final String TAG = "NotificationPrefFragment";
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     @Override
@@ -24,7 +23,6 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void setUpScreen() {
-        final boolean loggedIn = GpodnetPreferences.loggedIn();
-        findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
+        findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(SynchronizationSettings.isProviderConnected());
     }
 }

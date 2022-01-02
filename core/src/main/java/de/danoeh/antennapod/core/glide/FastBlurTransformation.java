@@ -8,9 +8,11 @@ import android.util.Log;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 public class FastBlurTransformation extends BitmapTransformation {
+    private static final String ID = "de.danoeh.antennapod.core.glide.FastBlurTransformation";
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
@@ -42,8 +44,13 @@ public class FastBlurTransformation extends BitmapTransformation {
     }
 
     @Override
+    public int hashCode() {
+        return ID.hashCode();
+    }
+
+    @Override
     public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-        messageDigest.update(TAG.getBytes());
+        messageDigest.update(TAG.getBytes(Charset.defaultCharset()));
     }
 
     private static Bitmap fastBlur(Bitmap bitmap, int radius) {

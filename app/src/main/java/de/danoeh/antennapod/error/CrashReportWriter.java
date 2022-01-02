@@ -7,7 +7,6 @@ import de.danoeh.antennapod.BuildConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -40,7 +39,7 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
         File path = getFile();
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new FileWriter(path));
+            out = new PrintWriter(path, "UTF-8");
             out.println("## Crash info");
             out.println("Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
             out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);

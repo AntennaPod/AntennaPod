@@ -1,0 +1,11 @@
+android {
+    flavorDimensions "market"
+    productFlavors {
+        free {
+            dimension "market"
+        }
+        play {
+            dimension "market"
+        }
+    }
+}

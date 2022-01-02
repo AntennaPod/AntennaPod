@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:clipToPadding="false">
+    <ViewFlipper
+        android:id="@+id/viewflipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/slide_right_in"
+        android:outAnimation="@anim/slide_left_out">
+
+        <include layout="@layout/gpodnetauth_host" />
+        <include layout="@layout/gpodnetauth_credentials" />
+        <include layout="@layout/gpodnetauth_device" />
+        <include layout="@layout/gpodnetauth_finish" />
+
+    </ViewFlipper>
+</ScrollView>

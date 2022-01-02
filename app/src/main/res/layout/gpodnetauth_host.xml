@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RadioGroup
+            android:id="@+id/serverRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <RadioButton
+                android:id="@+id/officialServerRadio"
+                android:text="@string/gpodnetauth_server_official"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        <RadioButton
+                android:id="@+id/customServerRadio"
+                android:text="@string/gpodnetauth_server_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/serverUrlTextInput"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/serverUrlText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/gpodnetauth_host"
+                android:inputType="textNoSuggestions"
+                android:lines="1"
+                android:imeOptions="actionNext|flagNoFullscreen" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+            android:id="@+id/chooseHostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:text="@string/gpodnetauth_select_server"/>
+
+</LinearLayout>

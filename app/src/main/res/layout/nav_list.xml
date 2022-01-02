@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +19,6 @@
         android:focusable="true">
 
         <ImageView
-            android:id="@+id/imgvCover"
             android:layout_width="@dimen/thumbnail_length_navlist"
             android:layout_height="@dimen/thumbnail_length_navlist"
             android:layout_marginBottom="4dp"
@@ -30,7 +30,7 @@
             android:cropToPadding="true"
             android:padding="8dp"
             android:scaleType="centerCrop"
-            android:src="?attr/ic_settings"
+            app:srcCompat="@drawable/ic_settings"
             tools:background="@android:color/holo_orange_dark"
             tools:src="@android:drawable/sym_def_app_icon" />
 
@@ -57,7 +57,7 @@
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nav_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

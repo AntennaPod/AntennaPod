@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
 
 import java.util.List;
 

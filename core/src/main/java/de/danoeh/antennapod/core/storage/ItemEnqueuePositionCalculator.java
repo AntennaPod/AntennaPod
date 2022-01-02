@@ -8,10 +8,10 @@ import androidx.annotation.VisibleForTesting;
 
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 
 /**
  * @see DBWriter#addQueueItem(Context, boolean, long...) it uses the class to determine

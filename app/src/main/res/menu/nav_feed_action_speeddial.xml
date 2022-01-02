@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/remove_item"
+        android:menuCategory="container"
+        android:title="@string/remove_feed_label"
+        android:icon="@drawable/ic_delete"/>
+    <item
+        android:id="@+id/keep_updated"
+        android:menuCategory="container"
+        android:title="@string/keep_updated"
+        android:icon="@drawable/ic_refresh"/>
+    <item
+        android:id="@+id/autodownload"
+        android:menuCategory="container"
+        android:title="@string/auto_download_label"
+        android:icon="@drawable/ic_download"/>
+    <item
+        android:id="@+id/autoDeleteDownload"
+        android:menuCategory="container"
+        android:title="@string/auto_delete_label"
+        android:icon="@drawable/ic_delete_auto"/>
+    <item
+        android:id="@+id/playback_speed"
+        android:menuCategory="container"
+        android:title="@string/playback_speed"
+        android:icon="@drawable/ic_playback_speed"/>
+    <item
+        android:id="@+id/edit_tags"
+        android:menuCategory="container"
+        android:title="@string/edit_tags"
+        android:icon="@drawable/ic_tag"/>
+</menu>

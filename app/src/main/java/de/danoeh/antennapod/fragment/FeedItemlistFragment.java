@@ -1,14 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +17,13 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -31,25 +31,34 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.leinardi.android.speeddial.SpeedDialView;
+
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+import java.util.Set;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -60,15 +69,17 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.Optional;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
-import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -76,23 +87,20 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-import java.util.Set;
+import android.view.KeyEvent;
+import androidx.fragment.app.Fragment;
 
 /**
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener {
-    private static final String TAG = "ItemlistFragment";
+        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
+    public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private FeedItemListAdapter adapter;
+    private SwipeActions swipeActions;
     private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
@@ -103,11 +111,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private ImageView imgvCover;
     private TextView txtvInformation;
     private TextView txtvAuthor;
+    private TextView txtvUpdatesDisabled;
     private ImageButton butShowInfo;
     private ImageButton butShowSettings;
     private View header;
     private Toolbar toolbar;
-    private ToolbarIconTintManager iconTintManager;
+    private SpeedDialView speedDialView;
+
+    private boolean displayUpArrow;
 
     private long feedID;
     private Feed feed;
@@ -148,14 +159,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.feedlist);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         refreshToolbarState();
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        recyclerView.setVisibility(View.GONE);
 
         progressBar = root.findViewById(R.id.progLoading);
+        progressBar.setVisibility(View.VISIBLE);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         txtvAuthor = root.findViewById(R.id.txtvAuthor);
         imgvBackground = root.findViewById(R.id.imgvBackground);
@@ -164,21 +179,22 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         butShowSettings = root.findViewById(R.id.butShowSettings);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         txtvFailure = root.findViewById(R.id.txtvFailure);
+        txtvUpdatesDisabled = root.findViewById(R.id.txtvUpdatesDisabled);
         header = root.findViewById(R.id.headerContainer);
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
 
-        iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
+        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_sort));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_sort));
                 toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_filter));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_filter));
                 toolbar.getMenu().findItem(R.id.refresh_item)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.navigation_refresh));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
                 toolbar.getMenu().findItem(R.id.action_search)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.action_search));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_search));
             }
         };
         iconTintManager.updateTint();
@@ -208,6 +224,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         EventBus.getDefault().register(this);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             try {
                 DBTasks.forceRefreshFeed(requireContext(), feed, true);
@@ -219,6 +236,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         loadItems();
+
+        // Init action UI (via a FAB Speed Dial)
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && adapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
+            adapter.endSelectMode();
+            return true;
+        });
         return root;
     }
 
@@ -230,7 +273,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
+        if (adapter != null) {
+            adapter.endSelectMode();
+        }
         adapter = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -244,8 +296,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed == null) {
             return;
         }
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), feedID, feed.getTitle());
-
         toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
@@ -263,9 +313,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            item.getActionView().post(() -> iconTintManager.updateTint());
-        }
         if (feed == null) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -282,56 +329,30 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feedMenuHandled) {
             return true;
         }
-        switch (item.getItemId()) {
-            case R.id.episode_actions:
-                int actions = EpisodesApplyActionFragment.ACTION_ALL;
-                if (feed.isLocalFeed()) {
-                    // turn off download and delete actions for local feed
-                    actions ^= EpisodesApplyActionFragment.ACTION_DOWNLOAD;
-                    actions ^= EpisodesApplyActionFragment.ACTION_DELETE;
-                }
-                EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(feed.getItems(), actions);
-                ((MainActivity) getActivity()).loadChildFragment(fragment);
-                return true;
-            case R.id.rename_item:
-                new RenameFeedDialog(getActivity(), feed).show();
-                return true;
-            case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(
-                        getActivity(), feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                    }
-                };
-                int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
-                        : R.string.feed_delete_confirmation_msg;
-                ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
-                        R.string.remove_feed_label,
-                        getString(messageId, feed.getTitle())) {
-
-                    @Override
-                    public void onConfirmButtonPressed(
-                            DialogInterface dialog) {
-                        dialog.dismiss();
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
-                return true;
-            default:
-                return false;
+        final int itemId = item.getItemId();
+        if (itemId == R.id.rename_item) {
+            new RenameItemDialog(getActivity(), feed).show();
+            return true;
+        } else if (itemId == R.id.remove_item) {
+            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            RemoveFeedDialog.show(getContext(), feed);
+            return true;
+        } else if (itemId == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
+            return true;
         }
+        return false;
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getSelectedItem();
+        FeedItem selectedItem = adapter.getLongPressedItem();
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
+        }
+        if (adapter.onContextItemSelected(item)) {
+            return true;
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
@@ -404,6 +425,34 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void favoritesChanged(FavoritesEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onQueueChanged(QueueEvent event) {
+        updateUi();
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        swipeActions.detach();
+        if (feed.isLocalFeed()) {
+            speedDialView.removeActionItemById(R.id.download_batch);
+            speedDialView.removeActionItemById(R.id.delete_batch);
+        }
+        speedDialView.setVisibility(View.VISIBLE);
+        refreshToolbarState();
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
+        swipeActions.attachTo(recyclerView);
+    }
+
     private void updateUi() {
         loadItems();
         updateSyncProgressBarVisibility();
@@ -444,12 +493,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (adapter == null) {
             recyclerView.setAdapter(null);
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
+            adapter.setOnSelectModeListener(this);
             recyclerView.setAdapter(adapter);
+            swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         }
-        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         if (feed != null) {
             adapter.updateItems(feed.getItems());
+            swipeActions.setFilter(feed.getItemFilter());
         }
 
         refreshToolbarState();
@@ -468,15 +519,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else {
             txtvFailure.setVisibility(View.GONE);
         }
+        if (!feed.getPreferences().getKeepUpdated()) {
+            txtvUpdatesDisabled.setText("{md-pause-circle-outline} " + this.getString(R.string.updates_disabled_label));
+            Iconify.addIcons(txtvUpdatesDisabled);
+            txtvUpdatesDisabled.setVisibility(View.VISIBLE);
+        } else {
+            txtvUpdatesDisabled.setVisibility(View.GONE);
+        }
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
-                if (feed.hasLastUpdateFailed()) {
-                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
-                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
-                }
                 txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {
@@ -536,7 +590,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void loadFeedImage() {
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
@@ -546,7 +600,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .into(imgvBackground);
 
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
@@ -560,31 +614,52 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    feed = result.orElse(null);
-                    refreshHeaderView();
-                    displayList();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(
+                    result -> {
+                        feed = result;
+                        refreshHeaderView();
+                        displayList();
+                    }, error -> {
+                        feed = null;
+                        refreshHeaderView();
+                        displayList();
+                        Log.e(TAG, Log.getStackTraceString(error));
+                    });
     }
 
-    @NonNull
-    private Optional<Feed> loadData() {
-        Feed feed = DBReader.getFeed(feedID);
-        if (feed != null && feed.getItemFilter() != null) {
-            DBReader.loadAdditionalFeedItemListData(feed.getItems());
-            FeedItemFilter filter = feed.getItemFilter();
-            feed.setItems(filter.filter(feed.getItems()));
+    @Nullable
+    private Feed loadData() {
+        Feed feed = DBReader.getFeed(feedID, true);
+        if (feed == null) {
+            return null;
         }
-        if (feed != null && feed.getSortOrder() != null) {
+        DBReader.loadAdditionalFeedItemListData(feed.getItems());
+        if (feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();
             FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
             feed.setItems(feedItems);
         }
-        return Optional.ofNullable(feed);
+        return feed;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onKeyUp(KeyEvent event) {
+        if (!isAdded() || !isVisible() || !isMenuVisible()) {
+            return;
+        }
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_T:
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            case KeyEvent.KEYCODE_B:
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                break;
+            default:
+                break;
+        }
     }
 
     private static class FeedItemListAdapter extends EpisodeItemListAdapter {
@@ -595,6 +670,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            if (!inActionMode()) {
+                menu.findItem(R.id.multi_select).setVisible(true);
+            }
         }
     }
 }

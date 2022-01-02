@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 
 /** Writes saved favorites to file. */
@@ -117,10 +117,17 @@ public class FavoritesWriter implements ExportWriter {
     }
 
     private void writeFavoriteItem(Writer writer, FeedItem item, String favoriteTemplate) throws IOException {
-        String favItem = favoriteTemplate
-                .replace("{FAV_TITLE}", item.getTitle().trim())
-                .replace("{FAV_WEBSITE}", item.getLink())
-                .replace("{FAV_MEDIA}", item.getMedia().getDownload_url());
+        String favItem = favoriteTemplate.replace("{FAV_TITLE}", item.getTitle().trim());
+        if (item.getLink() != null) {
+            favItem = favItem.replace("{FAV_WEBSITE}", item.getLink());
+        } else {
+            favItem = favItem.replace("{FAV_WEBSITE}", "");
+        }
+        if (item.getMedia() != null && item.getMedia().getDownload_url() != null) {
+            favItem = favItem.replace("{FAV_MEDIA}", item.getMedia().getDownload_url());
+        } else {
+            favItem = favItem.replace("{FAV_MEDIA}", "");
+        }
 
         writer.append(favItem);
     }

@@ -94,17 +94,6 @@
 
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/txtvInformation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:background="?android:attr/windowBackground"
-            android:visibility="gone"
-            android:gravity="center"
-            tools:visibility="visible"
-            tools:text="(i) Information"/>
-
     <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/txtvFailure"
             android:layout_width="match_parent"
@@ -117,4 +106,29 @@
             android:text="@string/refresh_failed_msg"
             tools:visibility="visible"
             tools:text="(!) Last refresh failed"/>
+
+    <TextView
+            android:id="@+id/txtvInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="?android:attr/windowBackground"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="(i) Information"/>
+
+    <TextView
+            android:id="@+id/txtvUpdatesDisabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="?android:attr/windowBackground"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="?attr/colorAccent"
+            tools:visibility="visible"
+            tools:text="Updates disabled"/>
 </LinearLayout>

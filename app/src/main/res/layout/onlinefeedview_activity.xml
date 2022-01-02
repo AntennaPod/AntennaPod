@@ -118,6 +118,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:dropDownWidth="match_parent"
                             android:padding="8dp"
                             android:textColor="?android:attr/textColorPrimary"
                             android:textSize="@dimen/text_size_micro" />

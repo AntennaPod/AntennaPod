@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -21,33 +19,35 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.SortOrder;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -71,6 +71,18 @@ public class DBWriter {
     }
 
     private DBWriter() {
+    }
+
+    /**
+     * Wait until all threads are finished to avoid the "Illegal connection pointer" error of
+     * Robolectric. Call this method only for unit tests.
+     */
+    public static void tearDownTests() {
+        try {
+            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
@@ -119,13 +131,11 @@ public class DBWriter {
             }
 
             // Gpodder: queue delete action for synchronization
-            if (GpodnetPreferences.loggedIn()) {
-                FeedItem item = media.getItem();
-                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
-                        .currentTimestamp()
-                        .build();
-                SyncService.enqueueEpisodeAction(context, action);
-            }
+            FeedItem item = media.getItem();
+            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
+                    .currentTimestamp()
+                    .build();
+            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
         return true;
@@ -139,7 +149,6 @@ public class DBWriter {
      */
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return dbExec.submit(() -> {
-            DownloadRequester requester = DownloadRequester.getInstance();
             final Feed feed = DBReader.getFeed(feedId);
             if (feed == null) {
                 return;
@@ -157,7 +166,9 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            SyncService.enqueueFeedRemoved(context, feed.getDownload_url());
+            if (!feed.isLocalFeed()) {
+                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+            }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -183,10 +194,17 @@ public class DBWriter {
             if (queue.remove(item)) {
                 removedFromQueue.add(item);
             }
-            if (item.getMedia() != null && item.getMedia().isDownloaded()) {
-                deleteFeedMediaSynchronous(context, item.getMedia());
-            } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
-                requester.cancelDownload(context, item.getMedia());
+            if (item.getMedia() != null) {
+                if (item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                    // Applies to both downloaded and streamed media
+                    PlaybackPreferences.writeNoMediaPlaying();
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                }
+                if (item.getMedia().isDownloaded()) {
+                    deleteFeedMediaSynchronous(context, item.getMedia());
+                } else if (requester.isDownloadingFile(item.getMedia())) {
+                    requester.cancelDownload(context, item.getMedia());
+                }
             }
         }
 
@@ -370,7 +388,7 @@ public class DBWriter {
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
-            Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
+            Playable currentlyPlaying = PlayableUtils.createInstanceFromPreferences(context);
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (long itemId : itemIds) {
                 if (!itemListContains(queue, itemId)) {
@@ -512,6 +530,14 @@ public class DBWriter {
         adapter.close();
         if (performAutoDownload) {
             DBTasks.autodownloadUndownloadedItems(context);
+        }
+    }
+
+    public static Future<?> toggleFavoriteItem(final FeedItem item) {
+        if (item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return removeFavoriteItem(item);
+        } else {
+            return addFavoriteItem(item);
         }
     }
 
@@ -754,7 +780,9 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                SyncService.enqueueFeedAdded(context, feed.getDownload_url());
+                if (!feed.isLocalFeed()) {
+                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                }
             }
 
             BackupManager backupManager = new BackupManager(context);
@@ -775,8 +803,9 @@ public class DBWriter {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemlist(items);
+            adapter.storeFeedItemlist(items);
             adapter.close();
+            EventBus.getDefault().post(FeedItemEvent.updated(items));
         });
     }
 
@@ -923,61 +952,6 @@ public class DBWriter {
             adapter.close();
         });
     }
-
-    /**
-     * Sets the 'auto_download'-attribute of specific FeedItem.
-     *
-     * @param feedItem     FeedItem.
-     * @param autoDownload true enables auto download, false disables it
-     */
-    public static Future<?> setFeedItemAutoDownload(final FeedItem feedItem,
-                                                    final boolean autoDownload) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
-    public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
-        return dbExec.submit(() -> {
-            int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
-            long autoDownload;
-            if (!feedItem.getAutoDownload() || failedAttempts >= 10) {
-                autoDownload = 0; // giving up, disable auto download
-                feedItem.setAutoDownload(false);
-            } else {
-                long now = System.currentTimeMillis();
-                autoDownload = (now / 10) * 10 + failedAttempts;
-            }
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemAutoDownload(feedItem, autoDownload);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
-    /**
-     * Sets the 'auto_download'-attribute of specific FeedItem.
-     *
-     * @param feed         This feed's episodes will be processed.
-     * @param autoDownload If true, auto download will be enabled for the feed's episodes. Else,
-     */
-    public static Future<?> setFeedsItemsAutoDownload(final Feed feed,
-                                                      final boolean autoDownload) {
-        Log.d(TAG, (autoDownload ? "Enabling" : "Disabling") + " auto download for items of feed " + feed.getId());
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedsItemsAutoDownload(feed, autoDownload);
-            adapter.close();
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
 
     /**
      * Set filter of the feed

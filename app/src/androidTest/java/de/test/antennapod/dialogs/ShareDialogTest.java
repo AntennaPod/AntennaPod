@@ -11,15 +11,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
@@ -70,7 +66,6 @@ public class ShareDialogTest {
         onView(withText(R.string.all_episodes_short_label)).perform(click());
 
         Matcher<View> allEpisodesMatcher;
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         allEpisodesMatcher = Matchers.allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, click()));

@@ -1,0 +1,9 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <string name="keycode_media_next">87</string>
+    <string name="keycode_media_previous">88</string>
+    <string name="keycode_media_rewind">89</string>
+    <string name="keycode_media_fast_forward">90</string>
+</resources>

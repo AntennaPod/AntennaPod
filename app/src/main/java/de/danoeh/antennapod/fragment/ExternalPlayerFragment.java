@@ -6,24 +6,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.view.PlayButton;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -40,7 +43,7 @@ public class ExternalPlayerFragment extends Fragment {
 
     private ImageView imgvCover;
     private TextView txtvTitle;
-    private ImageButton butPlay;
+    private PlayButton butPlay;
     private TextView feedName;
     private ProgressBar progressBar;
     private PlaybackController controller;
@@ -76,50 +79,34 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         butPlay.setOnClickListener(v -> {
-            if (controller != null) {
-                if (controller.getMedia().getMediaType() == MediaType.VIDEO
-                        && controller.getStatus() != PlayerStatus.PLAYING) {
-                    controller.playPause();
-                    getContext().startActivity(PlaybackService
-                            .getPlayerActivityIntent(getContext(), controller.getMedia()));
-                } else {
-                    controller.playPause();
-                }
+            if (controller == null) {
+                return;
             }
-
+            if (controller.getMedia() != null && controller.getMedia().getMediaType() == MediaType.VIDEO
+                    && controller.getStatus() != PlayerStatus.PLAYING) {
+                controller.playPause();
+                getContext().startActivity(PlaybackService
+                        .getPlayerActivityIntent(getContext(), controller.getMedia()));
+            } else {
+                controller.playPause();
+            }
         });
         loadMediaInfo();
     }
 
     private PlaybackController setupPlaybackController() {
         return new PlaybackController(getActivity()) {
-
             @Override
-            public void onPositionObserverUpdate() {
-                ExternalPlayerFragment.this.onPositionObserverUpdate();
+            protected void updatePlayButtonShowsPlay(boolean showPlay) {
+                butPlay.setIsShowPlay(showPlay);
             }
 
             @Override
-            public ImageButton getPlayButton() {
-                return butPlay;
-            }
-
-            @Override
-            public boolean loadMediaInfo() {
-                return ExternalPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 ExternalPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
-            public void onShutdownNotification() {
-                ((MainActivity) getActivity()).setPlayerVisible(false);
             }
 
             @Override
@@ -149,8 +136,22 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) {
-        onPositionObserverUpdate();
+    public void onPositionObserverUpdate(PlaybackPositionEvent event) {
+        if (controller == null) {
+            return;
+        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
+                || controller.getDuration() == PlaybackService.INVALID_TIME) {
+            return;
+        }
+        progressBar.setProgress((int)
+                ((double) controller.getPosition() / controller.getDuration() * 100));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlaybackServiceChanged(PlaybackServiceEvent event) {
+        if (event.action == PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN) {
+            ((MainActivity) getActivity()).setPlayerVisible(false);
+        }
     }
 
     @Override
@@ -170,11 +171,11 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    private boolean loadMediaInfo() {
+    private void loadMediaInfo() {
         Log.d(TAG, "Loading media info");
         if (controller == null) {
             Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
-            return false;
+            return;
         }
 
         if (disposable != null) {
@@ -186,7 +187,6 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribe(this::updateUi,
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
                         () -> ((MainActivity) getActivity()).setPlayerVisible(false));
-        return true;
     }
 
     private void updateUi(Playable media) {
@@ -196,16 +196,21 @@ public class ExternalPlayerFragment extends Fragment {
         ((MainActivity) getActivity()).setPlayerVisible(true);
         txtvTitle.setText(media.getEpisodeTitle());
         feedName.setText(media.getFeedTitle());
-        onPositionObserverUpdate();
+        onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate();
 
         Glide.with(getActivity())
-                .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
+                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {
@@ -215,16 +220,5 @@ public class ExternalPlayerFragment extends Fragment {
             butPlay.setVisibility(View.VISIBLE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
         }
-    }
-
-    private void onPositionObserverUpdate() {
-        if (controller == null) {
-            return;
-        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
-                || controller.getDuration() == PlaybackService.INVALID_TIME) {
-            return;
-        }
-        progressBar.setProgress((int)
-                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 }

@@ -9,20 +9,23 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterJobService;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
     public static final String PREFS_NAME = "PlayerWidgetPrefs";
     private static final String KEY_ENABLED = "WidgetEnabled";
     public static final String KEY_WIDGET_COLOR = "widget_color";
+    public static final String KEY_WIDGET_SKIP = "widget_skip";
+    public static final String KEY_WIDGET_FAST_FORWARD = "widget_fast_forward";
+    public static final String KEY_WIDGET_REWIND = "widget_rewind";
     public static final int DEFAULT_COLOR = 0x00262C31;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
-        PlayerWidgetJobService.updateWidget(context);
+        WidgetUpdaterJobService.performBackgroundUpdate(context);
     }
 
     @Override
@@ -30,13 +33,14 @@ public class PlayerWidget extends AppWidgetProvider {
         super.onEnabled(context);
         Log.d(TAG, "Widget enabled");
         setEnabled(context, true);
-        PlayerWidgetJobService.updateWidget(context);
+        WidgetUpdaterJobService.performBackgroundUpdate(context);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Log.d(TAG, "onUpdate() called with: " + "context = [" + context + "], appWidgetManager = [" + appWidgetManager + "], appWidgetIds = [" + Arrays.toString(appWidgetIds) + "]");
-        PlayerWidgetJobService.updateWidget(context);
+        Log.d(TAG, "onUpdate() called with: " + "context = [" + context + "], appWidgetManager = ["
+                + appWidgetManager + "], appWidgetIds = [" + Arrays.toString(appWidgetIds) + "]");
+        WidgetUpdaterJobService.performBackgroundUpdate(context);
     }
 
     @Override
@@ -52,6 +56,9 @@ public class PlayerWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             prefs.edit().remove(KEY_WIDGET_COLOR + appWidgetId).apply();
+            prefs.edit().remove(KEY_WIDGET_REWIND + appWidgetId).apply();
+            prefs.edit().remove(KEY_WIDGET_FAST_FORWARD + appWidgetId).apply();
+            prefs.edit().remove(KEY_WIDGET_SKIP + appWidgetId).apply();
         }
         super.onDeleted(context, appWidgetIds);
     }

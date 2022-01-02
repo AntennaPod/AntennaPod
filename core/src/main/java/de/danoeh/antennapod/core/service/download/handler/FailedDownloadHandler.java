@@ -1,9 +1,8 @@
 package de.danoeh.antennapod.core.service.download.handler;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 /**

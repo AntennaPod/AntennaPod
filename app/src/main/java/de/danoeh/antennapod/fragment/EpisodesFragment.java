@@ -18,12 +18,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
 public class EpisodesFragment extends PagedToolbarFragment {
 
     public static final String TAG = "EpisodesFragment";
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private static final int POS_NEW_EPISODES = 0;
     private static final int POS_ALL_EPISODES = 1;
@@ -31,6 +31,7 @@ public class EpisodesFragment extends PagedToolbarFragment {
     private static final int TOTAL_COUNT = 3;
 
     private TabLayout tabLayout;
+    private boolean displayUpArrow;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +44,11 @@ public class EpisodesFragment extends PagedToolbarFragment {
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.episodes_label);
         toolbar.inflateMenu(R.menu.episodes);
-        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new EpisodesPagerAdapter(this));
@@ -86,6 +90,12 @@ public class EpisodesFragment extends PagedToolbarFragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_LAST_TAB_POSITION, tabLayout.getSelectedTabPosition());
         editor.apply();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     static class EpisodesPagerAdapter extends FragmentStateAdapter {

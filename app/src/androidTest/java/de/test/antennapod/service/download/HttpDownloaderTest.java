@@ -7,7 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.FeedFile;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;

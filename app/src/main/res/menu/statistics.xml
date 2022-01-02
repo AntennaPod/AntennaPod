@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/statistics_mode"
-        android:icon="?attr/ic_filter"
+        android:icon="@drawable/ic_filter"
         android:title="@string/statistics_mode"
         custom:showAsAction="never">
     </item>

@@ -5,19 +5,24 @@ import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceFragmentCompat;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
+    private static final String PREF_SWIPE = "prefSwipe";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -35,10 +40,19 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
-                            getActivity().recreate();
+                            ActivityCompat.recreate(getActivity());
                             return true;
-                        }
-                );
+                        });
+
+        findPreference(UserPreferences.PREF_SHOW_TIME_LEFT)
+                .setOnPreferenceChangeListener(
+                        (preference, newValue) -> {
+                            UserPreferences.setShowRemainTimeSetting((Boolean) newValue);
+                            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                            EventBus.getDefault().post(new PlayerStatusEvent());
+                            return true;
+                        });
+
         findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {
                     showDrawerPreferencesDialog();
@@ -86,6 +100,11 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     FeedSortDialog.showDialog(requireContext());
                     return true;
                 }));
+        findPreference(PREF_SWIPE)
+                .setOnPreferenceClickListener(preference -> {
+                    ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
+                    return true;
+                });
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);

@@ -12,9 +12,6 @@ public final class Converter {
     private Converter() {
     }
 
-    /** Logging tag. */
-    private static final String TAG = "Converter";
-
     private static final int HOURS_MIL = 3600000;
     private static final int MINUTES_MIL = 60000;
     private static final int SECONDS_MIL = 1000;
@@ -23,8 +20,12 @@ public final class Converter {
      * Converts milliseconds to a string containing hours, minutes and seconds.
      */
     public static String getDurationStringLong(int duration) {
-        int[] hms = millisecondsToHms(duration);
-        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hms[0], hms[1], hms[2]);
+        if (duration <= 0) {
+            return "00:00:00";
+        } else {
+            int[] hms = millisecondsToHms(duration);
+            return String.format(Locale.getDefault(), "%02d:%02d:%02d", hms[0], hms[1], hms[2]);
+        }
     }
 
     private static int[] millisecondsToHms(long duration) {
@@ -103,18 +104,5 @@ public final class Converter {
     public static String shortLocalizedDuration(Context context, long time) {
         float hours = (float) time / 3600f;
         return String.format(Locale.getDefault(), "%.1f ", hours) + context.getString(R.string.time_hours);
-    }
-
-    /**
-     * Converts the volume as read as the progress from a SeekBar scaled to 100 and as saved in
-     * UserPreferences to the format taken by setVolume methods.
-     * @param progress integer between 0 to 100 taken from the SeekBar progress
-     * @return the appropriate volume as float taken by setVolume methods
-     */
-    public static float getVolumeFromPercentage(int progress) {
-        if (progress == 100) {
-            return 1f;
-        }
-        return (float) (1 - (Math.log(101 - progress) / Math.log(101)));
     }
 }

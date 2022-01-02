@@ -1,4 +1,4 @@
-AntennaPod ist ein Podcast-Manager und -Player, der dir unmittelbar Zugriff auf Millionen von freien und bezahlten Podcasts ermöglicht. Angefangen von unabhängigen Podcastern zu großen Rundfunkanstalten oder Hörfunksendern wie BBC, NPR und CNN. Abonniere, importiere und exportiere deine Feeds mühelos mit Hilfe des iTunes-Verzeichnisses, OPML-Dateien oder einfachen RSS-URLs.
+AntennaPod ist ein Podcast-Manager und -Player, mit dem Du direkten Zugriff auf Millionen von freien und kostenpflichtigen Podcasts hast. Angefangen von unabhängigen Podcastern zu großen Rundfunkanstalten oder Hörfunksendern wie BBC, NPR und CNN. Abonniere, importiere und exportiere deine Feeds mühelos mit Hilfe des iTunes-Podcast-Verzeichnisses, OPML-Dateien oder RSS-URLs.
 Downloade, streame oder sortiere Episoden in der Abspielliste und genieße sie mit einstellbarer Abspielgeschwindigkeit, Unterstützung von Kapiteln und Schlummerfunktion.
 Reduziere Aufwand, Stromverbrauch und Datenverbrauch durch leistungsfähige Kontrolle der Downloads (bestimmte Uhrzeiten, Intervalle, WiFi-Netze) und des Löschens (basierend auf deinen Favoriten und weiteren Einstellungen).
 

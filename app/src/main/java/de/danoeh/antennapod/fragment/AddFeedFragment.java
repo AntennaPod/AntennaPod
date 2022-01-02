@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -12,10 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
@@ -26,10 +29,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.databinding.AddfeedBinding;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
@@ -49,10 +52,16 @@ import java.util.Collections;
 public class AddFeedFragment extends Fragment {
 
     public static final String TAG = "AddFeedFragment";
-    private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 1;
-    private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
+    private static final String KEY_UP_ARROW = "up_arrow";
 
+    private AddfeedBinding viewBinding;
     private MainActivity activity;
+    private boolean displayUpArrow;
+
+    private final ActivityResultLauncher<String> chooseOpmlImportPathLauncher =
+            registerForActivityResult(new GetContent(), this::chooseOpmlImportPathResult);
+    private final ActivityResultLauncher<Uri> addLocalFolderLauncher =
+            registerForActivityResult(new AddLocalFolder(), this::addLocalFolderResult);
 
     @Override
     @Nullable
@@ -60,11 +69,15 @@ public class AddFeedFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        AddfeedBinding viewBinding = AddfeedBinding.inflate(getLayoutInflater());
+        viewBinding = AddfeedBinding.inflate(getLayoutInflater());
         activity = (MainActivity) getActivity();
 
         Toolbar toolbar = viewBinding.toolbar;
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         viewBinding.searchItunesButton.setOnClickListener(v
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(ItunesPodcastSearcher.class)));
@@ -76,8 +89,7 @@ public class AddFeedFragment extends Fragment {
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
         viewBinding.combinedFeedSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            String query = viewBinding.combinedFeedSearchEditText.getText().toString();
-            performSearch(query);
+            performSearch();
             return true;
         });
 
@@ -86,10 +98,7 @@ public class AddFeedFragment extends Fragment {
 
         viewBinding.opmlImportButton.setOnClickListener(v -> {
             try {
-                Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
-                intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
-                intentGetContentAction.setType("*/*");
-                startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
+                chooseOpmlImportPathLauncher.launch("*/*");
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 ((MainActivity) getActivity())
@@ -102,9 +111,7 @@ public class AddFeedFragment extends Fragment {
                 return;
             }
             try {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
+                addLocalFolderLauncher.launch(null);
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 ((MainActivity) getActivity())
@@ -115,10 +122,15 @@ public class AddFeedFragment extends Fragment {
             viewBinding.addLocalFolderButton.setVisibility(View.GONE);
         }
 
-        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
-        viewBinding.searchButton.setOnClickListener(view -> performSearch(query));
+        viewBinding.searchButton.setOnClickListener(view -> performSearch());
 
         return viewBinding.getRoot();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private void showAddViaUrlDialog() {
@@ -146,8 +158,12 @@ public class AddFeedFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void performSearch(String query) {
-
+    private void performSearch() {
+        viewBinding.combinedFeedSearchEditText.clearFocus();
+        InputMethodManager in = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(viewBinding.combinedFeedSearchEditText.getWindowToken(), 0);
+        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
         if (query.matches("http[s]?://.*")) {
             addUrl(query);
             return;
@@ -161,22 +177,23 @@ public class AddFeedFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) {
+    private void chooseOpmlImportPathResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        Uri uri = data.getData();
+        final Intent intent = new Intent(getContext(), OpmlImportActivity.class);
+        intent.setData(uri);
+        startActivity(intent);
+    }
 
-        if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
-            Intent intent = new Intent(getContext(), OpmlImportActivity.class);
-            intent.setData(uri);
-            startActivity(intent);
-        } else if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
-            Observable.fromCallable(() -> addLocalFolder(uri))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
+    private void addLocalFolderResult(final Uri uri) {
+        if (uri == null) {
+            return;
+        }
+        Observable.fromCallable(() -> addLocalFolder(uri))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
                         feed -> {
                             Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
                             ((MainActivity) getActivity()).loadChildFragment(fragment);
@@ -185,7 +202,6 @@ public class AddFeedFragment extends Fragment {
                             ((MainActivity) getActivity())
                                     .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG);
                         });
-        }
     }
 
     private Feed addLocalFolder(Uri uri) throws DownloadRequestException {
@@ -198,11 +214,25 @@ public class AddFeedFragment extends Fragment {
         if (documentFile == null) {
             throw new IllegalArgumentException("Unable to retrieve document tree");
         }
-        Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
+        String title = documentFile.getName();
+        if (title == null) {
+            title = getString(R.string.local_folder);
+        }
+        Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, title);
         dirFeed.setItems(Collections.emptyList());
         dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
         Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
         DBTasks.forceRefreshFeed(getContext(), fromDatabase, true);
         return fromDatabase;
+    }
+
+    private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
+            return super.createIntent(context, input)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
     }
 }

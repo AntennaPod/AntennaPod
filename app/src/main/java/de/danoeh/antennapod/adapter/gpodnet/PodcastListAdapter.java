@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
 import org.apache.commons.lang3.StringUtils;
 
 

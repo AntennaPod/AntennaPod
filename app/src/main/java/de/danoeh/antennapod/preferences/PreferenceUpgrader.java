@@ -2,6 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
@@ -10,6 +11,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 
 public class PreferenceUpgrader {
     private static final String PREF_CONFIGURED_VERSION = "version_code";
@@ -27,12 +31,12 @@ public class PreferenceUpgrader {
             AutoUpdateManager.restartUpdateAlarm(context);
             CrashReportWriter.getFile().delete();
 
-            upgrade(oldVersion);
+            upgrade(oldVersion, context);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
         }
     }
 
-    private static void upgrade(int oldVersion) {
+    private static void upgrade(int oldVersion, Context context) {
         if (oldVersion == -1) {
             //New installation
             if (UserPreferences.getUsageCountingDateMillis() < 0) {
@@ -91,6 +95,25 @@ public class PreferenceUpgrader {
         }
         if (oldVersion < 1080100) {
             prefs.edit().putString(UserPreferences.PREF_VIDEO_BEHAVIOR, "pip").apply();
+        }
+        if (oldVersion < 2010300) {
+            // Migrate hardware button preferences
+            if (prefs.getBoolean("prefHardwareForwardButtonSkips", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_FORWARD_BUTTON,
+                        String.valueOf(KeyEvent.KEYCODE_MEDIA_NEXT)).apply();
+            }
+            if (prefs.getBoolean("prefHardwarePreviousButtonRestarts", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON,
+                        String.valueOf(KeyEvent.KEYCODE_MEDIA_PREVIOUS)).apply();
+            }
+        }
+        if (oldVersion < 2040000) {
+            SharedPreferences swipePrefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+            swipePrefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + QueueFragment.TAG,
+                    SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE).apply();
+        }
+        if (oldVersion < 2050000) {
+            prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, true).apply();
         }
     }
 }

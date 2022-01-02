@@ -10,13 +10,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.view.PlaybackSpeedSeekBar;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +26,8 @@ import java.util.Locale;
 public class PlaybackControlsDialog extends DialogFragment {
     private PlaybackController controller;
     private AlertDialog dialog;
+    private PlaybackSpeedSeekBar speedSeekBar;
+    private TextView txtvPlaybackSpeed;
 
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
@@ -41,13 +45,15 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
+                updateSpeed(new SpeedChangedEvent(getCurrentPlaybackSpeedMultiplier()));
             }
         };
         controller.init();
         setupUi();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -55,6 +61,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStop();
         controller.release();
         controller = null;
+        EventBus.getDefault().unregister(this);
     }
 
     @NonNull
@@ -63,36 +70,26 @@ public class PlaybackControlsDialog extends DialogFragment {
         dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.audio_controls)
                 .setView(R.layout.audio_controls)
-                .setPositiveButton(R.string.close_label, (dialog1, which) -> {
-                    final SeekBar left = dialog.findViewById(R.id.volume_left);
-                    final SeekBar right = dialog.findViewById(R.id.volume_right);
-                    UserPreferences.setVolume(left.getProgress(), right.getProgress());
-                }).create();
+                .setPositiveButton(R.string.close_label, null).create();
         return dialog;
     }
 
     private void setupUi() {
-        final TextView txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
+        txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
+        speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
+        speedSeekBar.setProgressChangedListener(speed -> {
+            if (controller != null) {
+                controller.setPlaybackSpeed(speed);
+            }
+        });
+        updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
 
-        PlaybackSpeedSeekBar speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
-        speedSeekBar.setController(controller);
-        speedSeekBar.setProgressChangedListener(speed
-                -> txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
-
-        final SeekBar barLeftVolume = dialog.findViewById(R.id.volume_left);
-        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
-        final SeekBar barRightVolume = dialog.findViewById(R.id.volume_right);
-        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
         if (controller != null && !controller.canDownmix()) {
             stereoToMono.setEnabled(false);
             String sonicOnly = getString(R.string.sonic_only);
             stereoToMono.setText(getString(R.string.stereo_to_mono) + " [" + sonicOnly + "]");
-        }
-
-        if (UserPreferences.useExoplayer()) {
-            barRightVolume.setEnabled(false);
         }
 
         final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
@@ -106,45 +103,18 @@ public class PlaybackControlsDialog extends DialogFragment {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
         });
-
-        barLeftVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                controller.setVolume(
-                        Converter.getVolumeFromPercentage(progress),
-                        Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        barRightVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                controller.setVolume(
-                        Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
-                        Converter.getVolumeFromPercentage(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
         stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.stereoToMono(isChecked);
             if (controller != null) {
                 controller.setDownmix(isChecked);
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSpeed(SpeedChangedEvent event) {
+        txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", event.getNewSpeed()));
+        speedSeekBar.updateSpeed(event.getNewSpeed());
     }
 
     private void setupAudioTracks() {

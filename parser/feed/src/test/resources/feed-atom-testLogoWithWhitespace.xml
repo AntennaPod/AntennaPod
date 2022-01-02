@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8' ?><feed xmlns="http://www.w3.org/2005/Atom"><id>http://example.com/feed</id><title>title</title><link rel="alternate" href="http://example.com" /><subtitle>This is the description</subtitle><link rel="payment" href="http://example.com/payment" type="text/html" /><logo> https://example.com/image.png
+</logo></feed>

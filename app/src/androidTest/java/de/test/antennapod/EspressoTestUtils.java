@@ -3,8 +3,10 @@ package de.test.antennapod;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
@@ -15,6 +17,9 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
+
+import junit.framework.AssertionFailedError;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -33,6 +38,7 @@ import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -57,7 +63,7 @@ public class EspressoTestUtils {
 
             @Override
             public String getDescription() {
-                return "wait for a specific view for" + millis + " millis.";
+                return "wait for a specific view for " + millis + " millis.";
             }
 
             @Override
@@ -88,6 +94,33 @@ public class EspressoTestUtils {
     }
 
     /**
+     * Wait until a certain view becomes visible, but at the longest until the timeout.
+     * Unlike {@link #waitForView(Matcher, long)} it doesn't stick to the initial root view.
+     *
+     * @param viewMatcher The view to wait for.
+     * @param timeoutMillis Maximum waiting period in milliseconds.
+     * @throws Exception Throws an Exception in case of a timeout.
+     */
+    public static void waitForViewGlobally(@NonNull Matcher<View> viewMatcher, long timeoutMillis) throws Exception {
+        long startTime = System.currentTimeMillis();
+        long endTime = startTime + timeoutMillis;
+
+        do {
+            try {
+                onView(viewMatcher).check(matches(isDisplayed()));
+                // no Exception thrown -> check successful
+                return;
+            } catch (NoMatchingViewException | AssertionFailedError ignore) {
+                // check was not successful "not found" -> continue waiting
+            }
+            //noinspection BusyWait
+            Thread.sleep(50);
+        } while (System.currentTimeMillis() < endTime);
+
+        throw new Exception("Timeout after " + timeoutMillis + " ms");
+    }
+
+    /**
      * Perform action of waiting for a specific view id.
      * https://stackoverflow.com/a/30338665/
      * @param id The id of the child to click.
@@ -113,7 +146,7 @@ public class EspressoTestUtils {
     }
 
     /**
-     * Clear all app databases
+     * Clear all app databases.
      */
     public static void clearPreferences() {
         File root = InstrumentationRegistry.getInstrumentation().getTargetContext().getFilesDir().getParentFile();

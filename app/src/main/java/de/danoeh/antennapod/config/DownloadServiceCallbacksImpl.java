@@ -3,6 +3,7 @@ package de.danoeh.antennapod.config;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import de.danoeh.antennapod.R;
@@ -21,19 +22,21 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
         Bundle args = new Bundle();
-        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_RUNNING);
+        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
         return PendingIntent.getActivity(context,
-                R.id.pending_intent_download_service_notification, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                R.id.pending_intent_download_service_notification, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     @Override
     public PendingIntent getAuthentificationNotificationContentIntent(Context context, DownloadRequest request) {
         final Intent activityIntent = new Intent(context.getApplicationContext(), DownloadAuthenticationActivity.class);
+        activityIntent.setAction("request" + request.getFeedfileId());
         activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, request);
-        activityIntent.putExtra(DownloadAuthenticationActivity.ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, true);
         return PendingIntent.getActivity(context.getApplicationContext(),
-                R.id.pending_intent_download_service_auth, activityIntent, PendingIntent.FLAG_ONE_SHOT);
+                R.id.pending_intent_download_service_auth, activityIntent,
+                PendingIntent.FLAG_ONE_SHOT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     @Override
@@ -43,15 +46,15 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
         Bundle args = new Bundle();
         args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
-        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     @Override
     public PendingIntent getAutoDownloadReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
-        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_autodownload_report,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, R.id.pending_intent_download_service_autodownload_report, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 }

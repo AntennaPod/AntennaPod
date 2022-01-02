@@ -6,11 +6,11 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import androidx.core.view.MotionEventCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
@@ -19,13 +19,13 @@ import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     private static final String TAG = "QueueRecyclerAdapter";
 
-    private final ItemTouchHelper itemTouchHelper;
+    private final SwipeActions swipeActions;
     private boolean dragDropEnabled;
 
 
-    public QueueRecyclerAdapter(MainActivity mainActivity, ItemTouchHelper itemTouchHelper) {
+    public QueueRecyclerAdapter(MainActivity mainActivity, SwipeActions swipeActions) {
         super(mainActivity);
-        this.itemTouchHelper = itemTouchHelper;
+        this.swipeActions = swipeActions;
         dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
     }
 
@@ -37,22 +37,32 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     @Override
     @SuppressLint("ClickableViewAccessibility")
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-        View.OnTouchListener startDragTouchListener = (v1, event) -> {
-            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                Log.d(TAG, "startDrag()");
-                itemTouchHelper.startDrag(holder);
-            }
-            return false;
-        };
-
-        if (!dragDropEnabled) {
+        if (!dragDropEnabled || inActionMode()) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);
         } else {
             holder.dragHandle.setVisibility(View.VISIBLE);
-            holder.dragHandle.setOnTouchListener(startDragTouchListener);
-            holder.coverHolder.setOnTouchListener(startDragTouchListener);
+            holder.dragHandle.setOnTouchListener((v1, event) -> {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "startDrag()");
+                    swipeActions.startDrag(holder);
+                }
+                return false;
+            });
+            holder.coverHolder.setOnTouchListener((v1, event) -> {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    boolean isLtr = holder.itemView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR;
+                    float factor = isLtr ? 1 : -1;
+                    if (factor * event.getX() < factor * 0.5 * v1.getWidth()) {
+                        Log.d(TAG, "startDrag()");
+                        swipeActions.startDrag(holder);
+                    } else {
+                        Log.d(TAG, "Ignoring drag in right half of the image");
+                    }
+                }
+                return false;
+            });
         }
 
         holder.isInQueue.setVisibility(View.GONE);
@@ -64,11 +74,17 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         inflater.inflate(R.menu.queue_context, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        final boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        if (getItem(0).getId() == getSelectedItem().getId() || keepSorted) {
+        if (!inActionMode()) {
+            menu.findItem(R.id.multi_select).setVisible(true);
+            final boolean keepSorted = UserPreferences.isQueueKeepSorted();
+            if (getItem(0).getId() == getLongPressedItem().getId() || keepSorted) {
+                menu.findItem(R.id.move_to_top_item).setVisible(false);
+            }
+            if (getItem(getItemCount() - 1).getId() == getLongPressedItem().getId() || keepSorted) {
+                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
+            }
+        } else {
             menu.findItem(R.id.move_to_top_item).setVisible(false);
-        }
-        if (getItem(getItemCount() - 1).getId() == getSelectedItem().getId() || keepSorted) {
             menu.findItem(R.id.move_to_bottom_item).setVisible(false);
         }
     }

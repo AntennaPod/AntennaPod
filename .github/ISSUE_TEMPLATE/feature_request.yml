@@ -1,0 +1,48 @@
+name: Feature request
+description: Request a new feature or enhancement
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have used the search function to see if someone else has already submitted the same feature request.
+          required: true
+        - label: I will describe the problem with as much detail as possible.
+          required: true
+        - label: This request contains only one single feature, **not** a list of multiple (related) features.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: The latest version is different on each device, so we need the actual version number found on the settings screen.
+      placeholder: x.y.z
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where did you get the app from
+      multiple: false
+      options:
+        - Google Play
+        - F-Droid
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem you may be having, or feature you want
+      description: Give a brief explanation about the problem that may currently exist
+  - type: textarea
+    id: solution
+    attributes:
+      label: Suggested solution
+      description: Describe how your requested feature solves this problem. Try to be as specific as possible. Please not only explain what the feature does, but also how.
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Drawings / Technical details
+      description: If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.

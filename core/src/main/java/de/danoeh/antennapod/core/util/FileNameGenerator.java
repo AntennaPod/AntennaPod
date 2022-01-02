@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
     @VisibleForTesting
-    public static final int MAX_FILENAME_LENGTH = 255; // Limited by ext4
+    public static final int MAX_FILENAME_LENGTH = 242; // limited by CircleCI
     private static final int MD5_HEX_LENGTH = 32;
 
     private static final char[] validChars =

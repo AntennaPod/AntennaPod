@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<rss version="2.0" xmlns:podcast="https://podcastindex.org/namespace/1.0">
+    <channel>
+        <title>title</title>
+    </channel>
+    <podcast:funding url="https://example.com/funding1">Text 1</podcast:funding>
+    <podcast:funding url="https://example.com/funding2">Text 2</podcast:funding>
+    <podcast:funding url="https://example.com/funding3" />
+</rss>

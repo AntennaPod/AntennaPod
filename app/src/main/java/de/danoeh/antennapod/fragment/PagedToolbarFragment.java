@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,12 +15,12 @@ public abstract class PagedToolbarFragment extends Fragment {
 
     /**
      * Invalidate the toolbar menu if the current child fragment is visible.
-     * @param child The fragment, or null to force-refresh whatever the active fragment is.
+     * @param child The fragment to invalidate
      */
-    void invalidateOptionsMenuIfActive(Fragment child) {
+    void invalidateOptionsMenuIfActive(@NonNull Fragment child) {
         Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + viewPager.getCurrentItem());
-        if (visibleChild == child || child == null) {
-            child.onPrepareOptionsMenu(toolbar.getMenu());
+        if (visibleChild == child) {
+            visibleChild.onPrepareOptionsMenu(toolbar.getMenu());
         }
     }
 

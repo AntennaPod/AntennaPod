@@ -8,5 +8,4 @@
                     android:minWidth="250dp"
                     android:minResizeWidth="40dp"
                     android:configure="de.danoeh.antennapod.activity.WidgetConfigActivity">
-
 </appwidget-provider>

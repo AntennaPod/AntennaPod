@@ -6,21 +6,22 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.sync.SyncService;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
-import org.greenrobot.eventbus.EventBus;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
  * Handles a completed media download.
@@ -56,7 +57,7 @@ public class MediaDownloadedHandler implements Runnable {
 
         // check if file has chapters
         if (media.getItem() != null && !media.getItem().hasChapters()) {
-            media.setChapters(ChapterUtils.loadChaptersFromFileUrl(media));
+            media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
         }
 
         // Get duration
@@ -82,7 +83,7 @@ public class MediaDownloadedHandler implements Runnable {
 
             // we've received the media, we don't want to autodownload it again
             if (item != null) {
-                item.setAutoDownload(false);
+                item.disableAutoDownload();
                 // setFeedItem() signals (via EventBus) that the item has been updated,
                 // so we do it after the enclosing media has been updated above,
                 // to ensure subscribers will get the updated FeedMedia as well
@@ -103,7 +104,7 @@ public class MediaDownloadedHandler implements Runnable {
             EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
                     .currentTimestamp()
                     .build();
-            SyncService.enqueueEpisodeAction(context, action);
+            SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
     }
 

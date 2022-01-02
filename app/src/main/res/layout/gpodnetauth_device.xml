@@ -1,114 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
-
-    <TextView
-        android:id="@+id/txtvTitle"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_device_title"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="16dp"
-        style="@style/AntennaPod.TextView.Heading"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtvDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_device_descr"
-        android:layout_below="@id/txtvTitle"
-        android:textSize="@dimen/text_size_medium"
-        android:textColor="?android:attr/textColorPrimary"/>
+    <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etxtCaption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/gpodnetauth_device_caption"
-        android:layout_below="@id/txtvDescription"
-        android:imeOptions="flagNoFullscreen"/>
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/deviceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/gpodnetauth_device_name"
+                android:lines="1"
+                android:imeOptions="actionNext|flagNoFullscreen"/>
 
-    <TextView
-        android:id="@+id/txtvDeviceID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_device_deviceID"
-        android:textSize="@dimen/text_size_medium"
-        android:layout_below="@id/etxtCaption"/>
-
-    <EditText
-        android:id="@+id/etxtDeviceID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvDeviceID"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:imeOptions="flagNoFullscreen"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/butCreateNewDevice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/etxtDeviceID"
-        android:text="@string/gpodnetauth_device_butCreateNewDevice"/>
+            android:id="@+id/createDeviceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:text="@string/gpodnetauth_create_device"/>
 
     <TextView
-        android:id="@+id/txtvError"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/etxtDeviceID"
-        android:layout_toLeftOf="@id/butCreateNewDevice"
-        android:layout_toStartOf="@id/butCreateNewDevice"
+        style="@style/AntennaPod.TextView.Heading"
+        android:layout_marginTop="16dp"
+        android:text="@string/gpodnetauth_existing_devices"/>
+
+    <TextView
+        android:id="@+id/deviceSelectError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/download_failed_red"
         android:textSize="@dimen/text_size_small"
+        android:visibility="gone"
         tools:text="Error message"
         tools:background="@android:color/holo_green_dark" />
+
+    <LinearLayout
+        android:id="@+id/devicesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
     <ProgressBar
         android:id="@+id/progbarCreateDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/butCreateNewDevice"
-        android:layout_toLeftOf="@id/butCreateNewDevice"
-        android:layout_toStartOf="@id/butCreateNewDevice"
         android:textColor="@color/download_failed_red"
-        android:textSize="@dimen/text_size_medium"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txtvChooseExistingDevice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_device_chooseExistingDevice"
-        android:layout_below="@id/butCreateNewDevice"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_medium"
-        android:layout_marginTop="32dp"/>
-
-    <Button
-        android:id="@+id/butChooseExistingDevice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_device_butChoose"
-        android:layout_below="@+id/spinnerChooseDevice"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <Spinner
-        android:id="@+id/spinnerChooseDevice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvChooseExistingDevice"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-</RelativeLayout>
+</LinearLayout>

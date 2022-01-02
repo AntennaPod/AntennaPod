@@ -14,7 +14,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:visibility="gone"
-            tools:src="@drawable/ic_feed_black"
+            tools:src="@drawable/ic_feed"
             tools:visibility="visible"/>
 
     <TextView

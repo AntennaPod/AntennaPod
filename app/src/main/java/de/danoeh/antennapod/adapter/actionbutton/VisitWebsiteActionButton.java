@@ -1,13 +1,11 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
-import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class VisitWebsiteActionButton extends ItemActionButton {
@@ -23,9 +21,9 @@ public class VisitWebsiteActionButton extends ItemActionButton {
     }
 
     @Override
-    @AttrRes
+    @DrawableRes
     public int getDrawable() {
-        return R.attr.location_web_site;
+        return R.drawable.ic_web;
     }
 
     @Override

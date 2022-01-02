@@ -1,0 +1,6 @@
+apply plugin: "com.android.library"
+apply from: "../../common.gradle"
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+}

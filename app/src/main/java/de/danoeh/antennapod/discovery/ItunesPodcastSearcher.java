@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.discovery;
 
-import android.content.Context;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -19,9 +17,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ItunesPodcastSearcher implements PodcastSearcher {
     private static final String ITUNES_API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
+    private static final String PATTERN_BY_ID = ".*/podcasts\\.apple\\.com/.*/podcast/.*/id(\\d+).*";
 
     public ItunesPodcastSearcher() {
     }
@@ -72,9 +73,12 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
 
     @Override
     public Single<String> lookupUrl(String url) {
+        Pattern pattern = Pattern.compile(PATTERN_BY_ID);
+        Matcher matcher = pattern.matcher(url);
+        final String lookupUrl = matcher.find() ? ("https://itunes.apple.com/lookup?id=" + matcher.group(1)) : url;
         return Single.create(emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            Request.Builder httpReq = new Request.Builder().url(url);
+            Request.Builder httpReq = new Request.Builder().url(lookupUrl);
             try {
                 Response response = client.newCall(httpReq.build()).execute();
                 if (response.isSuccessful()) {
@@ -94,7 +98,7 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
 
     @Override
     public boolean urlNeedsLookup(String url) {
-        return url.contains("itunes.apple.com");
+        return url.contains("itunes.apple.com") || url.matches(PATTERN_BY_ID);
     }
 
     @Override

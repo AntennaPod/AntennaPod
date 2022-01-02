@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.VisibleForTesting;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;

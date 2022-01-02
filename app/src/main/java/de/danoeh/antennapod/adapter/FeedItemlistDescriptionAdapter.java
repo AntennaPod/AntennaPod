@@ -12,16 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.playback.RemoteMedia;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.playback.RemoteMedia;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.DateFormatter;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 
 import java.util.List;
@@ -59,9 +58,9 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         }
 
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatAbbrev(getContext(), item.getPubDate()));
+        holder.pubDate.setText(DateFormatter.formatAbbrev(getContext(), item.getPubDate()));
         if (item.getDescription() != null) {
-            String description = item.getDescription()
+            String description = HtmlToPlainText.getPlainText(item.getDescription())
                     .replaceAll("\n", " ")
                     .replaceAll("\\s+", " ")
                     .trim();
@@ -96,7 +95,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                 holder.preview.setVisibility(View.GONE);
                 holder.description.setTag(Boolean.FALSE);
             } else {
-                holder.description.setMaxLines(2000);
+                holder.description.setMaxLines(30);
                 holder.description.setTag(Boolean.TRUE);
 
                 holder.preview.setVisibility(item.getMedia() != null ? View.VISIBLE : View.GONE);

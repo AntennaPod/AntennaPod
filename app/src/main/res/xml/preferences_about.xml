@@ -7,21 +7,21 @@
     <Preference
             android:key="about_version"
             android:title="@string/antennapod_version"
-            android:icon="?attr/ic_unfav"
+            android:icon="@drawable/ic_star"
             android:summary="1.7.2 (asd8qs)"/>
     <Preference
             android:key="about_contributors"
-            android:icon="?attr/ic_settings"
+            android:icon="@drawable/ic_settings"
             android:summary="@string/contributors_summary"
             android:title="@string/contributors"/>
     <Preference
             android:key="about_privacy_policy"
-            android:icon="?attr/ic_questionmark"
+            android:icon="@drawable/ic_questionmark"
             android:summary="www.antennapod.org/privacy"
             android:title="@string/privacy_policy"/>
     <Preference
             android:key="about_licenses"
-            android:icon="?attr/action_about"
+            android:icon="@drawable/ic_info"
             android:summary="@string/licenses_summary"
             android:title="@string/licenses"/>
 

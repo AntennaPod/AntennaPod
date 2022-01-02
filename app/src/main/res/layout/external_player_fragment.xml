@@ -57,16 +57,16 @@
         </LinearLayout>
 
 
-        <ImageButton
+        <de.danoeh.antennapod.view.PlayButton
                 android:id="@+id/butPlay"
                 android:layout_width="52dp"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/pause_label"
                 android:background="?attr/selectableItemBackground"
-                app:srcCompat="?attr/av_play"
+                app:srcCompat="@drawable/ic_play_48dp"
                 android:scaleType="fitCenter"
                 android:padding="8dp"
-                tools:src="@drawable/ic_av_play_white_48dp"/>
+                tools:src="@drawable/ic_play_48dp"/>
 
     </LinearLayout>
 

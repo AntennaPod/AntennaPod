@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
@@ -10,23 +9,25 @@ import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
@@ -36,30 +37,28 @@ import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Displays information about a feed.
@@ -68,26 +67,22 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
-    private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
+    private final ActivityResultLauncher<Uri> addLocalFolderLauncher =
+            registerForActivityResult(new AddLocalFolder(), this::addLocalFolderResult);
 
     private Feed feed;
     private Disposable disposable;
-    private Disposable disposableStatistics;
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
-    private TextView lblStatistics;
-    private TextView txtvPodcastTime;
-    private TextView txtvPodcastSpace;
-    private TextView txtvPodcastEpisodeCount;
-    private Button btnvOpenStatistics;
+    private TextView txtvFundingUrl;
+    private TextView lblSupport;
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
     private ImageView imgvBackground;
     private View infoContainer;
     private View header;
     private Toolbar toolbar;
-    private ToolbarIconTintManager iconTintManager;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -125,11 +120,13 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
-        iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
+        ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
-                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.location_web_site));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
+                toolbar.getMenu().findItem(R.id.share_parent)
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
             }
         };
         iconTintManager.updateTint();
@@ -147,21 +144,20 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         txtvDescription = root.findViewById(R.id.txtvDescription);
-        lblStatistics = root.findViewById(R.id.lblStatistics);
-        txtvPodcastSpace = root.findViewById(R.id.txtvPodcastSpaceUsed);
-        txtvPodcastEpisodeCount = root.findViewById(R.id.txtvPodcastEpisodeCount);
-        txtvPodcastTime = root.findViewById(R.id.txtvPodcastTime);
-        btnvOpenStatistics = root.findViewById(R.id.btnvOpenStatistics);
         txtvUrl = root.findViewById(R.id.txtvUrl);
+        lblSupport = root.findViewById(R.id.lblSupport);
+        txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        btnvOpenStatistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
-            }
+        long feedId = getArguments().getLong(EXTRA_FEED_ID);
+        getParentFragmentManager().beginTransaction().replace(R.id.statisticsFragmentContainer,
+                        FeedStatisticsFragment.newInstance(feedId, false), "feed_statistics_fragment")
+                .commitAllowingStateLoss();
+
+        root.findViewById(R.id.btnvOpenStatistics).setOnClickListener(view -> {
+            StatisticsFragment fragment = new StatisticsFragment();
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         });
 
         return root;
@@ -183,7 +179,6 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 .subscribe(result -> {
                     feed = result;
                     showFeed();
-                    loadStatistics();
                 }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
     }
 
@@ -201,7 +196,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
@@ -210,7 +205,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                         .dontAnimate())
                 .into(imgvCover);
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)
@@ -220,6 +215,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 .into(imgvBackground);
 
         txtvTitle.setText(feed.getTitle());
+        txtvTitle.setMaxLines(6);
 
         String description = HtmlToPlainText.getPlainText(feed.getDescription());
 
@@ -230,45 +226,31 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         }
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
-        Iconify.addIcons(txtvUrl);
-        refreshToolbarState();
-    }
 
-    private void loadStatistics() {
-        if (disposableStatistics != null) {
-            disposableStatistics.dispose();
+        if (feed.getPaymentLinks() == null || feed.getPaymentLinks().size() == 0) {
+            lblSupport.setVisibility(View.GONE);
+            txtvFundingUrl.setVisibility(View.GONE);
+        } else {
+            lblSupport.setVisibility(View.VISIBLE);
+            ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
+            StringBuilder str = new StringBuilder();
+            HashSet<String> seen = new HashSet<String>();
+            for (FeedFunding funding : fundingList) {
+                if (seen.contains(funding.url)) {
+                    continue;
+                }
+                seen.add(funding.url);
+                str.append(funding.content.isEmpty()
+                        ? getContext().getResources().getString(R.string.support_podcast)
+                        : funding.content).append(" ").append(funding.url);
+                str.append("\n");
+            }
+            str = new StringBuilder(StringUtils.trim(str.toString()));
+            txtvFundingUrl.setText(str.toString());
         }
 
-        disposableStatistics =
-                Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
-
-                    for (StatisticsItem statisticsItem : statisticsData) {
-                        if (statisticsItem.feed.getId() == feed.getId()) {
-                            return statisticsItem;
-                        }
-                    }
-
-                    return null;
-                })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            txtvPodcastTime.setText(Converter.shortLocalizedDuration(
-                                        getContext(), result.timePlayed));
-                            txtvPodcastSpace.setText(Formatter.formatShortFileSize(
-                                        getContext(), result.totalDownloadSize));
-                            txtvPodcastEpisodeCount.setText(String.format(Locale.getDefault(),
-                                        "%d%s", result.episodesDownloadCount,
-                                        getString(R.string.episodes_suffix)));
-                        }, error -> {
-                                Log.d(TAG, Log.getStackTraceString(error));
-                                lblStatistics.setVisibility(View.GONE);
-                                txtvPodcastSpace.setVisibility(View.GONE);
-                                txtvPodcastTime.setVisibility(View.GONE);
-                                txtvPodcastEpisodeCount.setVisibility(View.GONE);
-                                btnvOpenStatistics.setVisibility(View.GONE);
-                            });
+        Iconify.addIcons(txtvUrl);
+        refreshToolbarState();
     }
 
     @Override
@@ -277,16 +259,16 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         if (disposable != null) {
             disposable.dispose();
         }
-
-        if (disposableStatistics != null) {
-            disposableStatistics.dispose();
-        }
     }
 
     private void refreshToolbarState() {
+        boolean shareLinkVisible = feed != null && feed.getLink() != null;
+        boolean downloadUrlVisible = feed != null && !feed.isLocalFeed();
+
         toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(feed != null && !feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
+        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(downloadUrlVisible);
+        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(shareLinkVisible);
+        toolbar.getMenu().findItem(R.id.share_parent).setVisible(downloadUrlVisible || shareLinkVisible);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
     }
@@ -311,9 +293,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
+                    addLocalFolderLauncher.launch(null);
                 } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "No activity found. Should never happen...");
                 }
@@ -326,16 +306,11 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         return handled;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) {
+    private void addLocalFolderResult(final Uri uri) {
+        if (uri == null) {
             return;
         }
-        Uri uri = data.getData();
-
-        if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
-            reconnectLocalFolder(uri);
-        }
+        reconnectLocalFolder(uri);
     }
 
     private void reconnectLocalFolder(Uri uri) {
@@ -360,5 +335,15 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                                 .showSnackbarAbovePlayer(android.R.string.ok, Snackbar.LENGTH_SHORT),
                         error -> ((MainActivity) getActivity())
                                 .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG));
+    }
+
+    private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @NonNull
+        @Override
+        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
+            return super.createIntent(context, input)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
     }
 }

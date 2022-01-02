@@ -1,11 +1,5 @@
-@font-face {
-     font-family: 'Roboto-Light';
-     src: url('file:///android_asset/Roboto-Light.ttf');
-}
 * {
      color: %s;
-     font-family: roboto-Light;
-     font-size: 13pt;
      overflow-wrap: break-word;
 }
 a {
@@ -33,5 +27,4 @@ p#apNoShownotes {
     transform: translate(-50%%, -50%%);
     text-align: center;
     -webkit-text-size-adjust: none;
-    font-size: 80%%;
 }

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
@@ -21,14 +21,12 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URIUtil;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -137,6 +135,9 @@ public class HttpDownloader extends Downloader {
                 } else if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                     error = DownloadError.ERROR_FORBIDDEN;
                     details = String.valueOf(response.code());
+                } else if (response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    error = DownloadError.ERROR_NOT_FOUND;
+                    details = String.valueOf(response.code());
                 } else {
                     error = DownloadError.ERROR_HTTP_DATA_ERROR;
                     details = String.valueOf(response.code());
@@ -185,8 +186,11 @@ public class HttpDownloader extends Downloader {
                 out = new RandomAccessFile(destination, "rw");
                 out.seek(request.getSoFar());
             } else {
-                destination.delete();
-                destination.createNewFile();
+                boolean success = destination.delete();
+                success |= destination.createNewFile();
+                if (!success) {
+                    throw new IOException("Unable to recreate partially downloaded file");
+                }
                 out = new RandomAccessFile(destination, "rw");
             }
 
@@ -226,7 +230,7 @@ public class HttpDownloader extends Downloader {
                 // written file. This check cannot be made if compression was used
                 if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
                         request.getSoFar() != request.getSize()) {
-                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed but size: " +
+                    onFail(DownloadError.ERROR_IO_WRONG_SIZE, "Download completed but size: " +
                             request.getSoFar() + " does not equal expected size " + request.getSize());
                     return;
                 } else if (request.getSize() > 0 && request.getSoFar() == 0) {
@@ -253,6 +257,15 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_UNKNOWN_HOST, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            if (NetworkUtils.wasDownloadBlocked(e)) {
+                onFail(DownloadError.ERROR_IO_BLOCKED, e.getMessage());
+                return;
+            }
+            String message = e.getMessage();
+            if (message != null && message.contains("Trust anchor for certification path not found")) {
+                onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
+                return;
+            }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
         } catch (NullPointerException e) {
             // might be thrown by connection.getInputStream()

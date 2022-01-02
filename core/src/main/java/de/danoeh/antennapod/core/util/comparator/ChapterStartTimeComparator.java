@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.util.comparator;
 
 import java.util.Comparator;
 
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Chapter;
 
 public class ChapterStartTimeComparator implements Comparator<Chapter> {
 

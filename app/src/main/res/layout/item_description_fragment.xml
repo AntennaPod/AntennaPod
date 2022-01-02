@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<de.danoeh.antennapod.view.NestedScrollableHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="false">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="false"
+    app:preferVertical="10"
+    android:nestedScrollingEnabled="true">
 
-    <de.danoeh.antennapod.view.NestedScrollableHost
+    <de.danoeh.antennapod.view.ShownotesWebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <de.danoeh.antennapod.view.ShownotesWebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </de.danoeh.antennapod.view.NestedScrollableHost>
-
-</androidx.core.widget.NestedScrollView>
+</de.danoeh.antennapod.view.NestedScrollableHost>

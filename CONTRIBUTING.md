@@ -18,6 +18,7 @@ How to submit a feature request
 - To make it easier for us to keep track of requests, please only make one feature request per issue.
 - Give a brief explanation about the problem that may currently exist and how your requested feature solves this problem.
 - Try to be as specific as possible. Please not only explain what the feature does, but also how. If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.
+- Please use the following **[template](.github/ISSUE_TEMPLATE/feature_request.md)**. 
 
 
 Translating AntennaPod
@@ -34,4 +35,34 @@ Submit a pull request
 - If possible, add unit tests for your pull request and make sure that they pass.
 - Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
 - If you plan to do a change that touches many files (10+), please ask beforehand. This usually causes merge conflicts for other developers.
-- Please follow our code style. You can use Checkstyle within Android Studio using our [coniguration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
+- Please follow our code style. You can use Checkstyle within Android Studio using our [configuration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
+- Please only change the English string resources. Translations are handled on [Transifex](https://www.transifex.com/antennapod/antennapod/).
+
+Building From Source
+--------------------------
+1. Fork this repository
+1. Download Android Studio
+1. In Android Studio
+   1. File » New » Project from version control
+   2. Enter the remote url of the forked repo
+   2. Wait for a long time until all progress bars go away
+   3. Press the Play button
+
+Testing and Verifying
+--------------------------
+As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
+
+### Running Unit Tests
+* `./gradlew :core:testPlayDebugUnitTest`
+
+### Running Integration Tests
+
+#### Using Android Studio
+* Create a configuration via 'Run->Edit Configurations...'
+
+<img width="768" alt="antennapod-run-tests"
+src="https://user-images.githubusercontent.com/149837/105122859-e1317180-5a8b-11eb-8d45-d54a3b051a9b.png">
+
+#### Using the command line
+* Start an AVD or plug in your phone
+* `sh .github/workflows/runTests.sh`

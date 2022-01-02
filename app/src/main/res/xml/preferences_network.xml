@@ -6,8 +6,8 @@
     <PreferenceCategory android:title="@string/automation">
         <Preference
                 android:key="prefAutoUpdateIntervall"
-                android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
-                android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
+                android:summary="@string/feed_refresh_sum"
+                android:title="@string/feed_refresh_title"/>
         <Preference
                 android:summary="@string/pref_automatic_download_sum"
                 android:key="prefAutoDownloadSettings"

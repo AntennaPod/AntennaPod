@@ -1,28 +1,22 @@
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
-        classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.3'
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.0'
+        classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.4'
+        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
-    }
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint"
-        }
     }
 }
 
@@ -42,15 +36,16 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 30
-    minSdkVersion = 16
-    targetSdkVersion = 30
-
     // AndroidX
-    annotationVersion = "1.1.0"
-    appcompatVersion = "1.2.0"
-    mediaVersion = "1.1.0"
+    annotationVersion = "1.2.0"
+    appcompatVersion = "1.3.1"
+    coreVersion = "1.5.0"
+    fragmentVersion = "1.3.6"
+    mediaVersion = "1.4.3"
+    paletteVersion = "1.0.0"
     preferenceVersion = "1.1.1"
+    recyclerViewVersion = "1.2.1"
+    viewPager2Version = "1.1.0-beta01"
     workManagerVersion = "2.3.4"
     googleMaterialVersion = "1.1.0"
 
@@ -65,29 +60,24 @@ project.ext {
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
+    exoPlayerVersion = "2.14.2"
     audioPlayerVersion = "v2.0.0"
 
     // Only used for free builds. This version should be updated regularly.
-    conscryptVersion = "2.4.0"
+    conscryptVersion = "2.5.2"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
+    playServicesVersion = "8.4.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
+    junitVersion = "4.13"
+    robolectricVersion = "4.5-alpha-1"
     robotiumSoloVersion = "5.6.3"
     espressoVersion = "3.2.0"
     runnerVersion = "1.2.0"
     rulesVersion = "1.2.0"
-}
-
-wrapper {
-    gradleVersion = "6.3"
-}
-
-// free build hack: common functions
-def doFreeBuild() {
-    return hasProperty("freeBuild")
 }
 
 apply plugin: "checkstyle"

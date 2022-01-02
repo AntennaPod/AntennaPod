@@ -1,17 +1,14 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
-import org.apache.commons.lang3.Validate;
-
-import de.danoeh.antennapod.activity.MainActivity;
+import androidx.annotation.NonNull;
 
 import java.util.List;
+
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
 
 /**
  * Shows all podcasts from gpodder.net that belong to a specific tag.
@@ -24,8 +21,7 @@ public class TagFragment extends PodcastListFragment {
 
     private GpodnetTag tag;
 
-    public static TagFragment newInstance(GpodnetTag tag) {
-        Validate.notNull(tag);
+    public static TagFragment newInstance(@NonNull GpodnetTag tag) {
         TagFragment fragment = new TagFragment();
         Bundle args = new Bundle();
         args.putParcelable("tag", tag);
@@ -38,14 +34,10 @@ public class TagFragment extends PodcastListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        Validate.isTrue(args != null && args.getParcelable("tag") != null, "args invalid");
+        if (args == null || args.getParcelable("tag") == null) {
+            throw new IllegalArgumentException("Arguments not given");
+        }
         tag = args.getParcelable("tag");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(tag.getTitle());
     }
 
     @Override

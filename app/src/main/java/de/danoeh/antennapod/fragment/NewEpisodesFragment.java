@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.view.MenuInflater;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;

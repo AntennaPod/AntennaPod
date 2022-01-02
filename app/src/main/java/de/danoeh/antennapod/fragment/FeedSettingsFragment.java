@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,27 +7,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
-import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
-import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedFilter;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
+import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
+import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
+import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedFilter;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,11 +38,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.util.Collections;
 import java.util.Locale;
-
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedSettingsFragment extends Fragment {
     private static final String TAG = "FeedSettingsFragment";
@@ -105,8 +103,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
-        private static final DecimalFormat SPEED_FORMAT =
-                new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
+        private static final String PREF_TAGS = "tags";
 
         private Feed feed;
         private Disposable disposable;
@@ -159,11 +156,12 @@ public class FeedSettingsFragment extends Fragment {
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
                         setupFeedAutoSkipPreference();
+                        setupEpisodeNotificationPreference();
+                        setupTags();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
-                        updatePlaybackSpeedPreference();
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
@@ -192,7 +190,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(int skipIntro, int skipEnding) {
                         feedPreferences.setFeedSkipIntro(skipIntro);
                         feedPreferences.setFeedSkipEnding(skipEnding);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                         EventBus.getDefault().post(
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
@@ -204,27 +202,34 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupPlaybackSpeedPreference() {
-            ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
-
-            final String[] speeds = getResources().getStringArray(R.array.playback_speed_values);
-            String[] values = new String[speeds.length + 1];
-            values[0] = SPEED_FORMAT.format(SPEED_USE_GLOBAL);
-
-            String[] entries = new String[speeds.length + 1];
-            entries[0] = getString(R.string.feed_auto_download_global);
-
-            System.arraycopy(speeds, 0, values, 1, speeds.length);
-            System.arraycopy(speeds, 0, entries, 1, speeds.length);
-
-            feedPlaybackSpeedPreference.setEntryValues(values);
-            feedPlaybackSpeedPreference.setEntries(entries);
-            feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
-                feed.savePreferences();
-                updatePlaybackSpeedPreference();
-                EventBus.getDefault().post(
-                        new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
-                return false;
+            Preference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
+            feedPlaybackSpeedPreference.setOnPreferenceClickListener(preference -> {
+                PlaybackSpeedFeedSettingDialogBinding viewBinding =
+                        PlaybackSpeedFeedSettingDialogBinding.inflate(getLayoutInflater());
+                viewBinding.seekBar.setProgressChangedListener(speed ->
+                        viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
+                float speed = feedPreferences.getFeedPlaybackSpeed();
+                viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    viewBinding.seekBar.setEnabled(!isChecked);
+                    viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
+                    viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
+                });
+                viewBinding.useGlobalCheckbox.setChecked(speed == FeedPreferences.SPEED_USE_GLOBAL);
+                viewBinding.seekBar.updateSpeed(speed == FeedPreferences.SPEED_USE_GLOBAL ? 1 : speed);
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.playback_speed)
+                        .setView(viewBinding.getRoot())
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
+                                    ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
+                            feedPreferences.setFeedPlaybackSpeed(newSpeed);
+                            DBWriter.setFeedPreferences(feedPreferences);
+                            EventBus.getDefault().post(
+                                    new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
+                        })
+                        .setNegativeButton(R.string.cancel_label, null)
+                        .show();
+                return true;
             });
         }
 
@@ -234,7 +239,7 @@ public class FeedSettingsFragment extends Fragment {
                     @Override
                     protected void onConfirmed(FeedFilter filter) {
                         feedPreferences.setFilter(filter);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                     }
                 }.show();
                 return false;
@@ -250,7 +255,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(String username, String password) {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                     }
                 }.show();
                 return false;
@@ -270,17 +275,10 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
                         break;
                 }
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDeleteSummary();
                 return false;
             });
-        }
-
-        private void updatePlaybackSpeedPreference() {
-            ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
-
-            float speedValue = feedPreferences.getFeedPlaybackSpeed();
-            feedPlaybackSpeedPreference.setValue(SPEED_FORMAT.format(speedValue));
         }
 
         private void updateAutoDeleteSummary() {
@@ -316,7 +314,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
                 }
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateVolumeReductionValue();
                 EventBus.getDefault().post(
                         new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
@@ -347,7 +345,7 @@ public class FeedSettingsFragment extends Fragment {
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
                 feedPreferences.setKeepUpdated(checked);
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);
                 return false;
             });
@@ -378,10 +376,8 @@ public class FeedSettingsFragment extends Fragment {
                 boolean checked = newValue == Boolean.TRUE;
 
                 feedPreferences.setAutoDownload(checked);
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
-                ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(getActivity(), checked);
-                dialog.createNewDialog().show();
                 pref.setChecked(checked);
                 return false;
             });
@@ -394,21 +390,25 @@ public class FeedSettingsFragment extends Fragment {
             }
         }
 
-        private class ApplyToEpisodesDialog extends ConfirmationDialog {
-            private final boolean autoDownload;
+        private void setupTags() {
+            findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
+                TagSettingsDialog.newInstance(Collections.singletonList(feedPreferences))
+                        .show(getChildFragmentManager(), TagSettingsDialog.TAG);
+                return true;
+            });
+        }
 
-            ApplyToEpisodesDialog(Context context, boolean autoDownload) {
-                super(context, R.string.auto_download_apply_to_items_title,
-                        R.string.auto_download_apply_to_items_message);
-                this.autoDownload = autoDownload;
-                setPositiveText(R.string.yes);
-                setNegativeText(R.string.no);
-            }
+        private void setupEpisodeNotificationPreference() {
+            SwitchPreferenceCompat pref = findPreference("episodeNotification");
 
-            @Override
-            public void onConfirmButtonPressed(DialogInterface dialog) {
-                DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
-            }
+            pref.setChecked(feedPreferences.getShowEpisodeNotification());
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean checked = newValue == Boolean.TRUE;
+                feedPreferences.setShowEpisodeNotification(checked);
+                DBWriter.setFeedPreferences(feedPreferences);
+                pref.setChecked(checked);
+                return false;
+            });
         }
     }
 }

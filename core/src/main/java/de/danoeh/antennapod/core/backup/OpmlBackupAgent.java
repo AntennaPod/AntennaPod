@@ -20,6 +20,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -30,11 +31,10 @@ import java.util.Arrays;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LangUtils;
 
 public class OpmlBackupAgent extends BackupAgentHelper {
     private static final String OPML_BACKUP_KEY = "opml";
@@ -73,9 +73,9 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             try {
                 digester = MessageDigest.getInstance("MD5");
                 writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester),
-                        LangUtils.UTF_8);
+                        Charset.forName("UTF-8"));
             } catch (NoSuchAlgorithmException e) {
-                writer = new OutputStreamWriter(byteStream, LangUtils.UTF_8);
+                writer = new OutputStreamWriter(byteStream, Charset.forName("UTF-8"));
             }
 
             try {
@@ -94,7 +94,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
                         if (len != -1) {
                             byte[] oldChecksum = new byte[len];
-                            inState.read(oldChecksum);
+                            IOUtils.read(inState, oldChecksum, 0, len);
                             Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
 
                             if (Arrays.equals(oldChecksum, newChecksum)) {
@@ -138,9 +138,9 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             try {
                 digester = MessageDigest.getInstance("MD5");
                 reader = new InputStreamReader(new DigestInputStream(data, digester),
-                        LangUtils.UTF_8);
+                        Charset.forName("UTF-8"));
             } catch (NoSuchAlgorithmException e) {
-                reader = new InputStreamReader(data, LangUtils.UTF_8);
+                reader = new InputStreamReader(data, Charset.forName("UTF-8"));
             }
 
             try {

@@ -3,7 +3,7 @@ package de.test.antennapod.util.syndication.feedgenerator;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.model.feed.Feed;
 
 /**
  * Generates a machine-readable, platform-independent representation of a Feed object.

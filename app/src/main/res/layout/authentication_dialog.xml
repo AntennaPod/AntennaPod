@@ -1,30 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical" >
-
-    <EditText
-        android:id="@+id/etxtUsername"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="16dp"
-        android:hint="@string/username_label"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:cursorVisible="true"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etxtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="16dp"
-        android:inputType="textPassword"
-        android:hint="@string/password_label"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:cursorVisible="true"/>
+    <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username_label"
+                android:lines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_label"
+                    android:inputType="textPassword"
+                    android:lines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/showPasswordButton"
+                android:text="{fa-eye}"
+                android:padding="8dp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:alpha="0.6"
+                android:textSize="20sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
 </LinearLayout>

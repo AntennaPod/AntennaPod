@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.model.feed.Feed;
+
 public class FeedMother {
     public static final String IMAGE_URL = "http://example.com/image";
 
