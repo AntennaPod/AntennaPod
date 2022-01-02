@@ -25,11 +25,13 @@ public abstract class IntraFeedSortDialog {
 
         if (isLocalFeed) {
             sortItems = context.getResources().getStringArray(R.array.local_feed_episodes_sort_options);
-            final String[] localSortStringValues = context.getResources().getStringArray(R.array.local_feed_episodes_sort_values);
+            final String[] localSortStringValues =
+                    context.getResources().getStringArray(R.array.local_feed_episodes_sort_values);
             sortValues = SortOrder.valuesOf(localSortStringValues);
         } else {
             sortItems = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
-            final String[] commonSortStringValues = context.getResources().getStringArray(R.array.feed_episodes_sort_values);
+            final String[] commonSortStringValues =
+                    context.getResources().getStringArray(R.array.feed_episodes_sort_values);
             sortValues = SortOrder.valuesOf(commonSortStringValues);
         }
     }
