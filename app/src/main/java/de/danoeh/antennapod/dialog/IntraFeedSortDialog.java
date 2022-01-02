@@ -16,33 +16,27 @@ public abstract class IntraFeedSortDialog {
     @NonNull
     protected Context context;
 
-    private String[] localSortItems;
-    private SortOrder[] localSortValues;
+    final private String[] sortItems;
+    final private SortOrder[] sortValues;
 
-    private String[] commonSortItems;
-    private SortOrder[] commonSortValues;
-
-    public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder) {
+    public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder, @NonNull boolean isLocalFeed) {
         this.context = context;
         this.currentSortOrder = sortOrder;
-        setSortOptions();
+
+        if (isLocalFeed) {
+            sortItems = context.getResources().getStringArray(R.array.local_feed_episodes_sort_options);
+            final String[] localSortStringValues = context.getResources().getStringArray(R.array.local_feed_episodes_sort_values);
+            sortValues = SortOrder.valuesOf(localSortStringValues);
+        } else {
+            sortItems = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
+            final String[] commonSortStringValues = context.getResources().getStringArray(R.array.feed_episodes_sort_values);
+            sortValues = SortOrder.valuesOf(commonSortStringValues);
+        }
     }
 
-    private void setSortOptions() {
-        localSortItems = context.getResources().getStringArray(R.array.local_feed_episodes_sort_options);
-        final String[] localSortStringValues = context.getResources().getStringArray(R.array.local_feed_episodes_sort_values);
-        localSortValues = SortOrder.getSortOrderValuesFromStringValues(localSortStringValues);
-
-        commonSortItems = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
-        final String[] commonSortStringValues = context.getResources().getStringArray(R.array.feed_episodes_sort_values);
-        commonSortValues = SortOrder.getSortOrderValuesFromStringValues(commonSortStringValues);
-
-    }
-
-    public void openDialog(boolean showSortOptionsLocalFeed) {
-        final SortOrder[] values = showSortOptionsLocalFeed ? localSortValues : commonSortValues;
-        final String [] items = showSortOptionsLocalFeed ? localSortItems : commonSortItems;
-        ;
+    public void openDialog() {
+        final SortOrder[] values = sortValues;
+        final String [] items = sortItems;
 
         int idxCurrentSort = getCurrentSortOrderIndex(values);
 
