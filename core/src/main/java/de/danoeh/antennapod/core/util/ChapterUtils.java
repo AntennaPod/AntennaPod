@@ -163,7 +163,7 @@ public class ChapterUtils {
 
                     if (jsonObject.opt("title") != null) {
                         title = jsonObject.getString("title");
-                    };
+                    }
                     if (jsonObject.opt("url") != null) {
                         link = jsonObject.getString("url");
                     }
