@@ -15,10 +15,10 @@
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/share_episode_website_and_media_url_radio"
+            android:id="@+id/share_link_to_episode_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_episode_website_and_file_url_label"
+            android:text="@string/share_link_to_episode"
             android:checked="true" />
 
         <RadioButton

@@ -27,7 +27,7 @@ public class ShareDialog extends DialogFragment {
     private SharedPreferences prefs;
 
     private RadioButton radioMediaFile;
-    private RadioButton radioEpisodeWebsiteAndFileUrl;
+    private RadioButton radioLinkToEpisode;
     private CheckBox checkBoxStartAt;
 
     public ShareDialog() {
@@ -60,7 +60,7 @@ public class ShareDialog extends DialogFragment {
         radioGroup.setOnCheckedChangeListener((group, checkedId) ->
                 checkBoxStartAt.setEnabled(checkedId != R.id.share_media_file_radio));
 
-        radioEpisodeWebsiteAndFileUrl = content.findViewById(R.id.share_episode_website_and_media_url_radio);
+        radioLinkToEpisode = content.findViewById(R.id.share_link_to_episode_radio);
         radioMediaFile = content.findViewById(R.id.share_media_file_radio);
         checkBoxStartAt = content.findViewById(R.id.share_start_at_timer_dialog);
 
@@ -68,7 +68,7 @@ public class ShareDialog extends DialogFragment {
 
         builder.setPositiveButton(R.string.share_label, (dialog, id) -> {
             boolean includePlaybackPosition = checkBoxStartAt.isChecked();
-            if (radioEpisodeWebsiteAndFileUrl.isChecked()) {
+            if (radioLinkToEpisode.isChecked()) {
                 ShareUtils.shareFeedItemLinkWithDownloadLink(ctx, item, includePlaybackPosition);
             } else if (radioMediaFile.isChecked()) {
                 ShareUtils.shareFeedItemFile(ctx, item.getMedia());
@@ -89,7 +89,7 @@ public class ShareDialog extends DialogFragment {
 
         boolean hasDownloadUrl = hasMedia && item.getMedia().getDownload_url() != null;
         if (!ShareUtils.hasLinkToShare(item) && !hasDownloadUrl) {
-            radioEpisodeWebsiteAndFileUrl.setVisibility(View.GONE);
+            radioLinkToEpisode.setVisibility(View.GONE);
         }
 
         radioMediaFile.setChecked(false);
