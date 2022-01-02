@@ -11,6 +11,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
+import de.danoeh.antennapod.model.feed.PodcastIndexChapter;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -19,11 +20,16 @@ import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.helper.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,6 +63,7 @@ public class ChapterUtils {
         }
 
         List<Chapter> chaptersFromDatabase = null;
+        List<Chapter> chaptersFromPodcastIndex = null;
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
             if (feedMedia.getItem() == null) {
@@ -65,16 +72,23 @@ public class ChapterUtils {
             if (feedMedia.getItem().hasChapters()) {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
             }
+
+            if (! StringUtil.isBlank(feedMedia.getItem().getChapterURL())) {
+                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromURL(feedMedia.getItem().getChapterURL(), context);
+            }
+
         }
 
         List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
-        List<Chapter> chapters = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        List<Chapter> chaptersPhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        List<Chapter> chapters = ChapterMerger.merge(chaptersPhase1, chaptersFromPodcastIndex);
         if (chapters == null) {
             // Do not try loading again. There are no chapters.
             playable.setChapters(Collections.emptyList());
         } else {
             playable.setChapters(chapters);
         }
+
     }
 
     public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context) {
@@ -121,6 +135,57 @@ public class ChapterUtils {
             }
             return new CountingInputStream(response.body().byteStream());
         }
+    }
+
+    public static List<Chapter> loadChaptersFromURL(String url, Context context) {
+        List<Chapter> chapters = new ArrayList<>();
+        try {
+            Request request = new Request.Builder().url(url).build();
+            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+
+            if (response.body() == null) {
+                throw new IOException("Body is null");
+            }
+            String body = response.body().string();
+            Log.d(TAG, body);
+            try {
+                JSONObject obj = new JSONObject(body);
+                JSONArray objChapters = obj.getJSONArray("chapters");
+                for (int i = 0; i < objChapters.length(); i++) {
+                    String title = null;
+                    String link = null;
+                    String img = null;
+                    int startTime = 0;
+                    JSONObject jsonObject = objChapters.getJSONObject(i);
+                    if (jsonObject.opt("startTime") != null) {
+                        startTime = jsonObject.getInt("startTime");
+                    }
+
+                    if (jsonObject.opt("title") != null) {
+                        title = jsonObject.getString("title");
+                    };
+                    if (jsonObject.opt("url") != null) {
+                        link = jsonObject.getString("url");
+                    }
+                    if (jsonObject.opt("url") != null) {
+                        img = jsonObject.getString("img");
+                    }
+                    PodcastIndexChapter chapter = new PodcastIndexChapter(
+                            startTime,
+                            title,
+                            link,
+                            img);
+                    chapters.add(chapter);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (IOException e) {
+            Log.d(TAG, "Error loading Chapter" + url + e.toString());
+            return null;
+        }
+        return chapters;
     }
 
     @NonNull
