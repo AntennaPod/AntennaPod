@@ -653,7 +653,7 @@ public class PodDBAdapter {
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_AUTO_DOWNLOAD_ATTEMPTS, item.getAutoDownloadAttemptsAndTime());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
-        values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getChapterURL());
+        values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getChapterUrl());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

@@ -159,7 +159,7 @@ public class FeedItem extends FeedComponent implements Serializable {
                 chapters = other.chapters;
             }
         }
-        if (other.podcastIndexChapterUrl!= null) {
+        if (other.podcastIndexChapterUrl != null) {
             podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
     }
@@ -432,11 +432,11 @@ public class FeedItem extends FeedComponent implements Serializable {
         tags.remove(tag);
     }
 
-    public String getChapterURL() {
+    public String getChapterUrl() {
         return podcastIndexChapterUrl;
     }
 
-    public void setChapterURL(String url) {
+    public void setChapterUrl(String url) {
         podcastIndexChapterUrl = url;
     }
 

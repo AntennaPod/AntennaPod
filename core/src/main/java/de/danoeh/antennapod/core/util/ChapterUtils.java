@@ -73,8 +73,9 @@ public class ChapterUtils {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
             }
 
-            if (! StringUtil.isBlank(feedMedia.getItem().getChapterURL())) {
-                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromURL(feedMedia.getItem().getChapterURL(), context);
+            if (! StringUtil.isBlank(feedMedia.getItem().getChapterUrl())) {
+                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
+                        feedMedia.getItem().getChapterUrl(), context);
             }
 
         }
@@ -137,7 +138,7 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromURL(String url, Context context) {
+    public static List<Chapter> loadChaptersFromUrl(String url, Context context) {
         List<Chapter> chapters = new ArrayList<>();
         try {
             Request request = new Request.Builder().url(url).build();
