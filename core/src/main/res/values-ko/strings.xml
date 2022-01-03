@@ -13,6 +13,7 @@
   <string name="new_label">최신</string>
   <string name="settings_label">설정</string>
   <string name="downloads_label">다운로드</string>
+  <string name="open_autodownload_settings">설정 열기</string>
   <string name="downloads_completed_label">완료</string>
   <string name="downloads_log_label">기록</string>
   <string name="subscriptions_label">구독</string>

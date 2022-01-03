@@ -103,7 +103,8 @@ public class NetworkUtils {
             NetworkCapabilities capabilities = connManager.getNetworkCapabilities(
                     connManager.getActiveNetwork());
 
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            if (capabilities != null
+                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
                 return false;
             }

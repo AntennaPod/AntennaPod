@@ -780,9 +780,10 @@
     <!-- Share episode dialog -->
     <string name="share_dialog_include_label">Include:</string>
     <string name="share_playback_position_dialog_label">Playback position</string>
-    <string name="share_dialog_media_file_url_label">Media file address</string>
     <string name="share_dialog_episode_website_label">Episode webpage</string>
+    <string name="share_dialog_link_to_episode">Link to episode</string>
     <string name="share_dialog_media_file_label">Media file</string>
+    <string name="share_starting_position_label">Starting from</string>
 
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
