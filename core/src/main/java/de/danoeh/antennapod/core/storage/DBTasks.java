@@ -354,40 +354,11 @@ public final class DBTasks {
      */
     private static FeedItem searchFeedItemGuessDuplicate(List<FeedItem> items, FeedItem searchItem) {
         for (FeedItem item : items) {
-            if ((item.getMedia() != null)
-                    && (searchItem.getMedia() != null)
-                    && !TextUtils.isEmpty(item.getMedia().getStreamUrl())
-                    && !TextUtils.isEmpty(searchItem.getMedia().getStreamUrl())
-                    && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
+            if (FeedItemDuplicateGuesser.seemDuplicates(item, searchItem)) {
                 return item;
-            } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
-                if (searchItem.getPubDate() == null || item.getPubDate() == null) {
-                    continue;
-                }
-                long dateOriginal = item.getPubDate().getTime();
-                long dateNew = searchItem.getPubDate().getTime();
-                if (Math.abs(dateOriginal - dateNew) < 7L * 24L * 3600L * 1000L) { // Same week
-                    return item;
-                }
             }
         }
         return null;
-    }
-
-    private static boolean titlesLookSimilar(String title1, String title2) {
-        if (TextUtils.isEmpty(title1) || TextUtils.isEmpty(title2)) {
-            return false;
-        }
-        return canonicalizeTitle(title1).equals(canonicalizeTitle(title2));
-    }
-
-    private static String canonicalizeTitle(String title) {
-        return title
-                .trim()
-                .replace('“', '"')
-                .replace('”', '"')
-                .replace('„', '"')
-                .replace('—', '-');
     }
 
     /**

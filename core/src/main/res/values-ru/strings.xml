@@ -615,19 +615,19 @@
   <string name="time_minutes">мин</string>
   <string name="time_hours">ч</string>
   <plurals name="time_seconds_quantified">
-    <item quantity="one">1 секунда</item>
+    <item quantity="one">%d секунда</item>
     <item quantity="few">%d секунды</item>
     <item quantity="many">%d секунд</item>
     <item quantity="other">%d секунды</item>
   </plurals>
   <plurals name="time_minutes_quantified">
-    <item quantity="one">1 минута</item>
+    <item quantity="one">%d минута</item>
     <item quantity="few">%d минуты</item>
     <item quantity="many">%d минут</item>
     <item quantity="other">%d минуты</item>
   </plurals>
   <plurals name="time_hours_quantified">
-    <item quantity="one">1 час</item>
+    <item quantity="one">%d час</item>
     <item quantity="few">%d часа</item>
     <item quantity="many">%d часов</item>
     <item quantity="other">%d часа</item>
