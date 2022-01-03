@@ -27,6 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -108,6 +110,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private boolean isPaused;
     private boolean didPressSubscribe = false;
+    private boolean isFeedFoundBySearch = false;
 
     private Dialog dialog;
 
@@ -263,6 +266,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         String url = searchFeedUrlByTrackName(error.getTrackName(), error.getArtistName());
         if (url != null) {
             Log.d(TAG, "Successfully retrieve feed url");
+            isFeedFoundBySearch = true;
             startFeedDownload(url);
         } else {
             showNoPodcastFoundError();
@@ -414,6 +418,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
         viewBinding.progressBar.setVisibility(View.GONE);
         viewBinding.feedDisplayContainer.setVisibility(View.VISIBLE);
+        if (isFeedFoundBySearch) {
+            int resId = R.string.no_feed_url_podcast_found_by_search;
+            Snackbar.make(findViewById(android.R.id.content), resId, Snackbar.LENGTH_LONG).show();
+        }
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
 
