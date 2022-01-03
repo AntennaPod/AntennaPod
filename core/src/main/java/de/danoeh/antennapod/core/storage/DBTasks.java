@@ -435,10 +435,9 @@ public final class DBTasks {
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
-                                    + "{" + possibleDuplicate.getTitle() + "} with ID "
-                                    + possibleDuplicate.getItemIdentifier()
-                                    + " seems to be the same as {" + item.getTitle() + "} with ID "
-                                    + item.getItemIdentifier(), false));
+                                    + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
+                                    + "\n\nSecond episode that is also in the feed:\n"
+                                    + duplicateEpisodeDetails(possibleDuplicate), false));
                     continue;
                 }
 
@@ -451,10 +450,9 @@ public final class DBTasks {
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
-                                        + "attempted to repair it.\n\n"
-                                        + "{" + oldItem.getTitle() + "} with ID " + oldItem.getItemIdentifier()
-                                        + " seems to be the same as {" + item.getTitle() + "} with ID "
-                                        + item.getItemIdentifier(), false));
+                                        + "attempted to repair it."
+                                        + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item), false));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null) {
@@ -540,6 +538,12 @@ public final class DBTasks {
         }
 
         return resultFeed;
+    }
+
+    private static String duplicateEpisodeDetails(FeedItem item) {
+        return "Title: " + item.getTitle()
+                + "\nID: " + item.getItemIdentifier()
+                + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownload_url());
     }
 
     /**
