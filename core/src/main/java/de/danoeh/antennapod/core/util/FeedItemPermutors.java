@@ -51,12 +51,10 @@ public class FeedItemPermutors {
                 comparator = (f1, f2) -> Integer.compare(duration(f2), duration(f1));
                 break;
             case EPISODE_FILENAME_A_Z:
-                comparator =
-                        (feedItem1, feedItem2) -> itemLink(feedItem1).compareTo(itemLink(feedItem2));
+                comparator = (f1, f2) -> itemLink(f1).compareTo(itemLink(f2));
                 break;
             case EPISODE_FILENAME_Z_A:
-                comparator =
-                        (feedItem1, feedItem2) -> itemLink(feedItem2).compareTo(itemLink(feedItem1));
+                comparator = (f1, f2) -> itemLink(f2).compareTo(itemLink(f1));
                 break;
             case FEED_TITLE_A_Z:
                 comparator = (f1, f2) -> feedTitle(f1).compareTo(feedTitle(f2));
@@ -100,7 +98,8 @@ public class FeedItemPermutors {
 
     @NonNull
     private static String itemLink(@Nullable FeedItem item) {
-        return (item != null && item.getLink() != null) ? item.getLink() : "";
+        return (item != null && item.getLink() != null)
+                ? item.getLink().toLowerCase(Locale.getDefault()) : "";
     }
 
     @NonNull
