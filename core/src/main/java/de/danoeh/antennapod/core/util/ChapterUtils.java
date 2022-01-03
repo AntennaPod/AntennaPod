@@ -81,15 +81,15 @@ public class ChapterUtils {
         }
 
         List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
-        List<Chapter> chaptersPhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
-        List<Chapter> chapters = ChapterMerger.merge(chaptersPhase1, chaptersFromPodcastIndex);
+        List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        // Very slight preference to PodcastIndex chapters if the length is the same
+        List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
         if (chapters == null) {
             // Do not try loading again. There are no chapters.
             playable.setChapters(Collections.emptyList());
         } else {
             playable.setChapters(chapters);
         }
-
     }
 
     public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context) {
@@ -139,7 +139,7 @@ public class ChapterUtils {
     }
 
     public static List<Chapter> loadChaptersFromUrl(String url, Context context) {
-        List<Chapter> chapters = new ArrayList<>();
+        List<Chapter> chapters = null;
         try {
             Request request = new Request.Builder().url(url).build();
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
@@ -176,6 +176,9 @@ public class ChapterUtils {
                             title,
                             link,
                             img);
+                    if (chapters == null) {
+                        chapters = new ArrayList<>();
+                    }
                     chapters.add(chapter);
                 }
             } catch (JSONException e) {

@@ -30,14 +30,14 @@ public class ChapterMerger {
             return chapters1;
         } else {
             // Merge chapter lists of same length. Store in chapters2 array.
-            // In case the lists can not be merged, return chapters1 array.
+            // In case the lists can not be merged, return chapters2 array.
             for (int i = 0; i < chapters2.size(); i++) {
                 Chapter chapterTarget = chapters2.get(i);
                 Chapter chapterOther = chapters1.get(i);
 
                 if (Math.abs(chapterTarget.getStart() - chapterOther.getStart()) > 1000) {
                     Log.e(TAG, "Chapter lists are too different. Cancelling merge.");
-                    return chapters1;
+                    return chapters2;
                 }
 
                 if (TextUtils.isEmpty(chapterTarget.getImageUrl())) {
