@@ -86,7 +86,7 @@ public class DownloadService extends Service {
     // Add while iterating: We think it is not downloading and might start a second download with the same file.
     static final List<Downloader> downloads = Collections.synchronizedList(new CopyOnWriteArrayList<>());
 
-    private Handler handler;
+    private Handler mainThreadHandler;
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
@@ -140,7 +140,7 @@ public class DownloadService extends Service {
     public void onCreate() {
         Log.d(TAG, "Service started");
         isRunning = true;
-        handler = new Handler(Looper.getMainLooper());
+        mainThreadHandler = new Handler(Looper.getMainLooper());
         notificationManager = new DownloadServiceNotification(this);
 
         IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
@@ -474,7 +474,7 @@ public class DownloadService extends Service {
         for (DownloadRequest request : requests) {
             addNewRequest(request);
         }
-        handler.post(() -> {
+        mainThreadHandler.post(() -> {
             postDownloaders();
             stopServiceIfEverythingDone();
         });
@@ -523,7 +523,7 @@ public class DownloadService extends Service {
                 addNewRequest(builder.build());
             }
         }
-        handler.post(() -> {
+        mainThreadHandler.post(() -> {
             postDownloaders();
             stopServiceIfEverythingDone();
         });
@@ -536,7 +536,7 @@ public class DownloadService extends Service {
         writeFileUrl(request);
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
-            handler.post(() -> {
+            mainThreadHandler.post(() -> {
                 downloads.add(downloader);
                 downloadExecutor.submit(downloader);
             });
@@ -560,7 +560,7 @@ public class DownloadService extends Service {
      * DownloadService list.
      */
     private void removeDownload(final Downloader d) {
-        handler.post(() -> {
+        mainThreadHandler.post(() -> {
             Log.d(TAG, "Removing downloader: " + d.getDownloadRequest().getSource());
             downloads.remove(d);
             postDownloaders();
@@ -583,7 +583,7 @@ public class DownloadService extends Service {
      * used from a thread other than the main thread.
      */
     private void stopServiceIfEverythingDoneAsync() {
-        handler.post(DownloadService.this::stopServiceIfEverythingDone);
+        mainThreadHandler.post(DownloadService.this::stopServiceIfEverythingDone);
     }
 
     /**
@@ -692,7 +692,7 @@ public class DownloadService extends Service {
         if (notificationUpdater != null) {
             notificationUpdater.run();
         }
-        handler.post(() -> {
+        mainThreadHandler.post(() -> {
             cancelNotificationUpdater();
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
             stopSelf();
