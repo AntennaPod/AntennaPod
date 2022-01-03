@@ -26,6 +26,7 @@
   <string name="download_statistics_label">Descargues</string>
   <string name="notification_pref_fragment">Avisos</string>
   <!--Google Assistant-->
+  <string name="app_action_not_found">Nun s\'atopó «%1$s»</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">Aiciones al eslizar</string>
   <string name="swipeactions_summary">Escueyi qué asocede al eslizar un episodiu que tea nuna llista</string>
@@ -574,6 +575,7 @@
   <string name="sort_old_new">Vieyo \u2192 Nuevo</string>
   <!--Rating dialog-->
   <string name="rating_title" tools:ignore="UnusedResources">¿Préstate AntennaPod?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Agradecemos que valores AntennaPod, si tienes tiempu.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">Non, nin</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">Recordámelo dempués</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Sí, ho</string>
