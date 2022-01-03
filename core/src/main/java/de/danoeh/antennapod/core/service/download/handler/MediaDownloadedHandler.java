@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -19,6 +20,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
@@ -60,6 +62,9 @@ public class MediaDownloadedHandler implements Runnable {
             media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
         }
 
+        if (media.getItem() != null && media.getItem().getChapterUrl() != null) {
+            ChapterUtils.loadChaptersFromUrl("url");
+        }
         // Get duration
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         String durationStr = null;
