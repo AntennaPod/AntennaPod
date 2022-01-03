@@ -354,40 +354,11 @@ public final class DBTasks {
      */
     private static FeedItem searchFeedItemGuessDuplicate(List<FeedItem> items, FeedItem searchItem) {
         for (FeedItem item : items) {
-            if ((item.getMedia() != null)
-                    && (searchItem.getMedia() != null)
-                    && !TextUtils.isEmpty(item.getMedia().getStreamUrl())
-                    && !TextUtils.isEmpty(searchItem.getMedia().getStreamUrl())
-                    && TextUtils.equals(item.getMedia().getStreamUrl(), searchItem.getMedia().getStreamUrl())) {
+            if (FeedItemDuplicateGuesser.seemDuplicates(item, searchItem)) {
                 return item;
-            } else if (titlesLookSimilar(item.getTitle(), searchItem.getTitle())) {
-                if (searchItem.getPubDate() == null || item.getPubDate() == null) {
-                    continue;
-                }
-                long dateOriginal = item.getPubDate().getTime();
-                long dateNew = searchItem.getPubDate().getTime();
-                if (Math.abs(dateOriginal - dateNew) < 7L * 24L * 3600L * 1000L) { // Same week
-                    return item;
-                }
             }
         }
         return null;
-    }
-
-    private static boolean titlesLookSimilar(String title1, String title2) {
-        if (TextUtils.isEmpty(title1) || TextUtils.isEmpty(title2)) {
-            return false;
-        }
-        return canonicalizeTitle(title1).equals(canonicalizeTitle(title2));
-    }
-
-    private static String canonicalizeTitle(String title) {
-        return title
-                .trim()
-                .replace('“', '"')
-                .replace('”', '"')
-                .replace('„', '"')
-                .replace('—', '-');
     }
 
     /**
@@ -464,10 +435,9 @@ public final class DBTasks {
                             item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                             "The podcast host appears to have added the same episode twice. "
                                     + "AntennaPod still refreshed the feed and attempted to repair it."
-                                    + "{" + possibleDuplicate.getTitle() + "} with ID "
-                                    + possibleDuplicate.getItemIdentifier()
-                                    + " seems to be the same as {" + item.getTitle() + "} with ID "
-                                    + item.getItemIdentifier(), false));
+                                    + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(item)
+                                    + "\n\nSecond episode that is also in the feed:\n"
+                                    + duplicateEpisodeDetails(possibleDuplicate), false));
                     continue;
                 }
 
@@ -480,10 +450,9 @@ public final class DBTasks {
                                 item.getTitle(), DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE, false,
                                 "The podcast host changed the ID of an existing episode instead of just "
                                         + "updating the episode itself. AntennaPod still refreshed the feed and "
-                                        + "attempted to repair it.\n\n"
-                                        + "{" + oldItem.getTitle() + "} with ID " + oldItem.getItemIdentifier()
-                                        + " seems to be the same as {" + item.getTitle() + "} with ID "
-                                        + item.getItemIdentifier(), false));
+                                        + "attempted to repair it."
+                                        + "\n\nOriginal episode:\n" + duplicateEpisodeDetails(oldItem)
+                                        + "\n\nNow the feed contains:\n" + duplicateEpisodeDetails(item), false));
                         oldItem.setItemIdentifier(item.getItemIdentifier());
 
                         if (oldItem.isPlayed() && oldItem.getMedia() != null) {
@@ -569,6 +538,12 @@ public final class DBTasks {
         }
 
         return resultFeed;
+    }
+
+    private static String duplicateEpisodeDetails(FeedItem item) {
+        return "Title: " + item.getTitle()
+                + "\nID: " + item.getItemIdentifier()
+                + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownload_url());
     }
 
     /**
