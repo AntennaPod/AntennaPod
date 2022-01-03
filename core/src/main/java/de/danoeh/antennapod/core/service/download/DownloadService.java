@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -374,59 +372,51 @@ public class DownloadService extends Service {
         }
     }
 
-    private Downloader getDownloader(String downloadUrl) {
-        for (Downloader downloader : downloads) {
-            if (downloader.getDownloadRequest().getSource().equals(downloadUrl)) {
-                return downloader;
-            }
-        }
-        return null;
-    }
-
     private final BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "cancelDownloadReceiver: " + intent.getAction());
             if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
                 if (url == null) {
                     throw new IllegalArgumentException("ACTION_CANCEL_DOWNLOAD intent needs download url extra");
                 }
-                downloadEnqueueExecutor.execute(() -> doCancel(url));
+                downloadEnqueueExecutor.execute(() -> {
+                    doCancel(url);
+                    postDownloaders();
+                    stopServiceIfEverythingDone();
+                });
             } else if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 downloadEnqueueExecutor.execute(() -> {
                     for (Downloader d : downloads) {
                         d.cancel();
-                        Log.d(TAG, "Cancelled all downloads");
                     }
+                    Log.d(TAG, "Cancelled all downloads");
+                    postDownloaders();
+                    stopServiceIfEverythingDone();
                 });
             }
-            postDownloaders();
-            stopServiceIfEverythingDone();
         }
     };
 
     private void doCancel(String url) {
         Log.d(TAG, "Cancelling download with url " + url);
-        Downloader d = getDownloader(url);
-        if (d != null) {
-            d.cancel();
-            DownloadRequest request = d.getDownloadRequest();
+        for (Downloader downloader : downloads) {
+            if (downloader.cancelled || !downloader.getDownloadRequest().getSource().equals(url)) {
+                continue;
+            }
+            downloader.cancel();
+            DownloadRequest request = downloader.getDownloadRequest();
             FeedItem item = getFeedItemFromId(request.getFeedfileId());
             if (item != null) {
+                EventBus.getDefault().post(FeedItemEvent.updated(item));
                 // undo enqueue upon cancel
                 if (request.isMediaEnqueued()) {
                     Log.v(TAG, "Undoing enqueue upon cancelling download");
-                    try {
-                        DBWriter.removeQueueItem(getApplicationContext(), false, item).get();
-                    } catch (Throwable t) {
-                        Log.e(TAG, "Unexpected exception during undoing enqueue upon cancel", t);
-                    }
+                    DBWriter.removeQueueItem(getApplicationContext(), false, item);
                 }
-                EventBus.getDefault().post(FeedItemEvent.updated(item));
             }
-        } else {
-            Log.e(TAG, "Could not cancel download with url " + url);
         }
     }
 
@@ -441,15 +431,15 @@ public class DownloadService extends Service {
             UserPreferences.getEpisodeCleanupAlgorithm().makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
-        // First, add to-download items to the queue before actual download
-        // so that the resulting queue order is the same as when download is clicked
-        enqueueFeedItems(requests);
-
         for (DownloadRequest request : requests) {
             addNewRequest(request);
         }
         postDownloaders();
         stopServiceIfEverythingDone();
+
+        // Add to-download items to the queue before actual download completed
+        // so that the resulting queue order is the same as when download is clicked
+        enqueueFeedItems(requests);
     }
 
     private void enqueueFeedItems(@NonNull List<DownloadRequest> requests) {
@@ -501,6 +491,7 @@ public class DownloadService extends Service {
 
     private void addNewRequest(@NonNull DownloadRequest request) {
         if (isDownloadingFile(request.getSource())) {
+            Log.d(TAG, "Skipped enqueueing request. Already running.");
             return;
         }
         writeFileUrl(request);
@@ -619,7 +610,6 @@ public class DownloadService extends Service {
             if (n != null) {
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.notify(R.id.notification_downloading, n);
-                Log.d(TAG, "Download progress notification was posted");
             }
         }
     }

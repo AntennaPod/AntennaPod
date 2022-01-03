@@ -203,7 +203,7 @@ public final class DBTasks {
                     itemsToEnqueue.add(item);
                 }
             }
-            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0])).get();
+            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0]));
         }
         return itemsToEnqueue;
     }
