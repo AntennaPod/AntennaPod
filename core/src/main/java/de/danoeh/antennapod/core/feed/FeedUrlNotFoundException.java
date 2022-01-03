@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.feed;
 
-public class FeedUrlNotFoundException extends RuntimeException {
+import java.io.IOException;
+
+public class FeedUrlNotFoundException extends IOException {
     private final String artistName;
     private final String trackName;
 
@@ -15,5 +17,10 @@ public class FeedUrlNotFoundException extends RuntimeException {
 
     public String getTrackName() {
         return trackName;
+    }
+
+    @Override
+    public String getMessage() {
+        return "Result does not specify a feed url";
     }
 }
