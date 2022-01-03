@@ -75,7 +75,7 @@ public class ChapterUtils {
 
             if (! StringUtil.isBlank(feedMedia.getItem().getChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getChapterUrl(), context);
+                        feedMedia.getItem().getChapterUrl());
             }
 
         }
@@ -138,7 +138,7 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromUrl(String url, Context context) {
+    public static List<Chapter> loadChaptersFromUrl(String url) {
         List<Chapter> chapters = null;
         try {
             Request request = new Request.Builder().url(url).build();
