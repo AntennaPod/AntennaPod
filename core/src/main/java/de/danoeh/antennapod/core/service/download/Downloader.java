@@ -49,10 +49,6 @@ public abstract class Downloader implements Callable<Downloader> {
             wifiLock.release();
         }
 
-        if (result == null) {
-            throw new IllegalStateException(
-                    "Downloader hasn't created DownloadStatus object");
-        }
         finished = true;
         return this;
     }

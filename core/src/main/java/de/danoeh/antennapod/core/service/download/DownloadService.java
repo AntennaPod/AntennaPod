@@ -30,10 +30,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletionService;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -76,17 +74,16 @@ public class DownloadService extends Service {
 
     public static boolean isRunning = false;
 
-    private final List<DownloadStatus> reportQueue = new ArrayList<>();
-    private final ExecutorService syncExecutor;
-    private final CompletionService<Downloader> downloadExecutor;
-    private DownloadServiceNotification notificationManager;
-    private final NewEpisodesNotification newEpisodesNotification;
     // Can be modified from another thread while iterating. Both possible race conditions are not critical:
     // Remove while iterating: We think it is still downloading and don't start a new download with the same file.
     // Add while iterating: We think it is not downloading and might start a second download with the same file.
     static final List<Downloader> downloads = Collections.synchronizedList(new CopyOnWriteArrayList<>());
+    private final ExecutorService downloadHandleExecutor;
+    private final ExecutorService downloadEnqueueExecutor;
 
-    private Handler mainThreadHandler;
+    private final List<DownloadStatus> reportQueue = new ArrayList<>();
+    private DownloadServiceNotification notificationManager;
+    private final NewEpisodesNotification newEpisodesNotification;
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
@@ -109,24 +106,21 @@ public class DownloadService extends Service {
     public DownloadService() {
         newEpisodesNotification = new NewEpisodesNotification();
 
-        syncExecutor = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r, "SyncThread");
+        downloadEnqueueExecutor = Executors.newSingleThreadExecutor(r -> {
+            Thread t = new Thread(r, "EnqueueThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
         // Must be the first runnable in syncExecutor
-        syncExecutor.execute(newEpisodesNotification::loadCountersBeforeRefresh);
+        downloadEnqueueExecutor.execute(newEpisodesNotification::loadCountersBeforeRefresh);
 
         Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
-        downloadExecutor = new ExecutorCompletionService<>(
-                Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
-                        r -> {
-                            Thread t = new Thread(r, "DownloadThread");
-                            t.setPriority(Thread.MIN_PRIORITY);
-                            return t;
-                        }
-                )
-        );
+        downloadHandleExecutor = Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
+            r -> {
+                Thread t = new Thread(r, "DownloadThread");
+                t.setPriority(Thread.MIN_PRIORITY);
+                return t;
+            });
         notificationUpdateExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
                 r -> {
                     Thread t = new Thread(r, "NotificationUpdateExecutor");
@@ -140,7 +134,6 @@ public class DownloadService extends Service {
     public void onCreate() {
         Log.d(TAG, "Service started");
         isRunning = true;
-        mainThreadHandler = new Handler(Looper.getMainLooper());
         notificationManager = new DownloadServiceNotification(this);
 
         IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
@@ -152,8 +145,6 @@ public class DownloadService extends Service {
             connectionMonitor = new ConnectionStateMonitor();
             connectionMonitor.enable(getApplicationContext());
         }
-
-        downloadCompletionThread.start();
     }
 
     public static void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
@@ -242,12 +233,12 @@ public class DownloadService extends Service {
             Notification notification = notificationManager.updateNotifications(downloads);
             startForeground(R.id.notification_downloading, notification);
             setupNotificationUpdaterIfNecessary();
-            syncExecutor.execute(() -> onDownloadQueued(intent));
+            downloadEnqueueExecutor.execute(() -> onDownloadQueued(intent));
         } else if (intent != null && intent.getBooleanExtra(EXTRA_REFRESH_ALL, false)) {
             Notification notification = notificationManager.updateNotifications(downloads);
             startForeground(R.id.notification_downloading, notification);
             setupNotificationUpdaterIfNecessary();
-            syncExecutor.execute(() -> enqueueAll(intent));
+            downloadEnqueueExecutor.execute(() -> enqueueAll(intent));
         } else if (downloads.size() == 0) {
             shutdown();
         } else {
@@ -268,15 +259,9 @@ public class DownloadService extends Service {
         }
 
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
-
-        downloadCompletionThread.interrupt();
-        try {
-            downloadCompletionThread.join(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         cancelNotificationUpdater();
-        syncExecutor.shutdown();
+        downloadHandleExecutor.shutdown();
+        downloadEnqueueExecutor.shutdown();
         notificationUpdateExecutor.shutdown();
         if (downloadPostFuture != null) {
             downloadPostFuture.cancel(true);
@@ -291,39 +276,26 @@ public class DownloadService extends Service {
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
-    private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
-        private static final String TAG = "downloadCompletionThd";
-
-        @Override
-        public void run() {
-            Log.d(TAG, "downloadCompletionThread was started");
-            while (!isInterrupted()) {
-                try {
-                    Downloader downloader = downloadExecutor.take().get();
-                    Log.d(TAG, "Received 'Download Complete' - message.");
-
-                    if (downloader.getResult().isSuccessful()) {
-                        syncExecutor.execute(() -> {
-                            handleSuccessfulDownload(downloader);
-                            removeDownload(downloader);
-                            stopServiceIfEverythingDoneAsync();
-                        });
-                    } else {
-                        handleFailedDownload(downloader);
-                        removeDownload(downloader);
-                        stopServiceIfEverythingDoneAsync();
-                    }
-                } catch (InterruptedException e) {
-                    Log.e(TAG, "DownloadCompletionThread was interrupted");
-                    return;
-                } catch (ExecutionException e) {
-                    Log.e(TAG, "ExecutionException in DownloadCompletionThread: " + e.getMessage());
-                    return;
-                }
-            }
-            Log.d(TAG, "End of downloadCompletionThread");
+    private void performDownload(Downloader downloader) {
+        try {
+            downloader.call();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    };
+        try {
+            if (downloader.getResult().isSuccessful()) {
+                handleSuccessfulDownload(downloader);
+            } else {
+                handleFailedDownload(downloader);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        downloadEnqueueExecutor.submit(() -> {
+            downloads.remove(downloader);
+            stopServiceIfEverythingDone();
+        });
+    }
 
     private void handleSuccessfulDownload(Downloader downloader) {
         DownloadRequest request = downloader.getDownloadRequest();
@@ -376,7 +348,7 @@ public class DownloadService extends Service {
             } else {
                 Log.e(TAG, "Download failed");
                 saveDownloadStatus(status);
-                syncExecutor.execute(new FailedDownloadHandler(downloader.getDownloadRequest()));
+                new FailedDownloadHandler(downloader.getDownloadRequest()).run();
 
                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     FeedItem item = getFeedItemFromId(status.getFeedfileId());
@@ -420,41 +392,43 @@ public class DownloadService extends Service {
                 if (url == null) {
                     throw new IllegalArgumentException("ACTION_CANCEL_DOWNLOAD intent needs download url extra");
                 }
-
-                Log.d(TAG, "Cancelling download with url " + url);
-                Downloader d = getDownloader(url);
-                if (d != null) {
-                    d.cancel();
-                    DownloadRequest request = d.getDownloadRequest();
-                    FeedItem item = getFeedItemFromId(request.getFeedfileId());
-                    if (item != null) {
-                        // undo enqueue upon cancel
-                        if (request.isMediaEnqueued()) {
-                            Log.v(TAG, "Undoing enqueue upon cancelling download");
-                            try {
-                                DBWriter.removeQueueItem(getApplicationContext(), false, item).get();
-                            } catch (Throwable t) {
-                                Log.e(TAG, "Unexpected exception during undoing enqueue upon cancel", t);
-                            }
-                        }
-                        EventBus.getDefault().post(FeedItemEvent.updated(item));
-                    }
-                } else {
-                    Log.e(TAG, "Could not cancel download with url " + url);
-                }
-                postDownloaders();
-
+                downloadEnqueueExecutor.execute(() -> doCancel(url));
             } else if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
-                for (Downloader d : downloads) {
-                    d.cancel();
-                    Log.d(TAG, "Cancelled all downloads");
-                }
-                postDownloaders();
+                downloadEnqueueExecutor.execute(() -> {
+                    for (Downloader d : downloads) {
+                        d.cancel();
+                        Log.d(TAG, "Cancelled all downloads");
+                    }
+                });
             }
+            postDownloaders();
             stopServiceIfEverythingDone();
         }
-
     };
+
+    private void doCancel(String url) {
+        Log.d(TAG, "Cancelling download with url " + url);
+        Downloader d = getDownloader(url);
+        if (d != null) {
+            d.cancel();
+            DownloadRequest request = d.getDownloadRequest();
+            FeedItem item = getFeedItemFromId(request.getFeedfileId());
+            if (item != null) {
+                // undo enqueue upon cancel
+                if (request.isMediaEnqueued()) {
+                    Log.v(TAG, "Undoing enqueue upon cancelling download");
+                    try {
+                        DBWriter.removeQueueItem(getApplicationContext(), false, item).get();
+                    } catch (Throwable t) {
+                        Log.e(TAG, "Unexpected exception during undoing enqueue upon cancel", t);
+                    }
+                }
+                EventBus.getDefault().post(FeedItemEvent.updated(item));
+            }
+        } else {
+            Log.e(TAG, "Could not cancel download with url " + url);
+        }
+    }
 
     private void onDownloadQueued(Intent intent) {
         List<DownloadRequest> requests = intent.getParcelableArrayListExtra(EXTRA_REQUESTS);
@@ -474,10 +448,8 @@ public class DownloadService extends Service {
         for (DownloadRequest request : requests) {
             addNewRequest(request);
         }
-        mainThreadHandler.post(() -> {
-            postDownloaders();
-            stopServiceIfEverythingDone();
-        });
+        postDownloaders();
+        stopServiceIfEverythingDone();
     }
 
     private void enqueueFeedItems(@NonNull List<DownloadRequest> requests) {
@@ -523,10 +495,8 @@ public class DownloadService extends Service {
                 addNewRequest(builder.build());
             }
         }
-        mainThreadHandler.post(() -> {
-            postDownloaders();
-            stopServiceIfEverythingDone();
-        });
+        postDownloaders();
+        stopServiceIfEverythingDone();
     }
 
     private void addNewRequest(@NonNull DownloadRequest request) {
@@ -536,10 +506,8 @@ public class DownloadService extends Service {
         writeFileUrl(request);
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
-            mainThreadHandler.post(() -> {
-                downloads.add(downloader);
-                downloadExecutor.submit(downloader);
-            });
+            downloads.add(downloader);
+            downloadHandleExecutor.submit(() -> performDownload(downloader));
         }
     }
 
@@ -556,18 +524,6 @@ public class DownloadService extends Service {
     }
 
     /**
-     * Remove download from the DownloadRequester list and from the
-     * DownloadService list.
-     */
-    private void removeDownload(final Downloader d) {
-        mainThreadHandler.post(() -> {
-            Log.d(TAG, "Removing downloader: " + d.getDownloadRequest().getSource());
-            downloads.remove(d);
-            postDownloaders();
-        });
-    }
-
-    /**
      * Adds a new DownloadStatus object to the list of completed downloads and
      * saves it in the database
      *
@@ -576,14 +532,6 @@ public class DownloadService extends Service {
     private void saveDownloadStatus(DownloadStatus status) {
         reportQueue.add(status);
         DBWriter.addDownloadStatus(status);
-    }
-
-    /**
-     * Calls query downloads on the services main thread. This method should be used instead of queryDownloads if it is
-     * used from a thread other than the main thread.
-     */
-    private void stopServiceIfEverythingDoneAsync() {
-        mainThreadHandler.post(DownloadService.this::stopServiceIfEverythingDone);
     }
 
     /**
@@ -692,10 +640,9 @@ public class DownloadService extends Service {
         if (notificationUpdater != null) {
             notificationUpdater.run();
         }
-        mainThreadHandler.post(() -> {
-            cancelNotificationUpdater();
-            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
-            stopSelf();
-        });
+        downloadEnqueueExecutor.shutdown(); // Do not accept new downloads
+        cancelNotificationUpdater();
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
+        stopSelf();
     }
 }
