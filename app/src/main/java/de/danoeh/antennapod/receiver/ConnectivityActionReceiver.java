@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {
@@ -17,18 +15,11 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (!TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
-            return;
-        }
-        Log.d(TAG, "Received intent");
+        if (TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
+            Log.d(TAG, "Received intent");
 
-        ClientConfig.initialize(context);
-        if (NetworkUtils.isAutoDownloadAllowed()) {
-            Log.d(TAG, "auto-dl network available, starting auto-download");
-            DBTasks.autodownloadUndownloadedItems(context);
-        } else if (NetworkUtils.isNetworkRestricted())  {
-            Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
-            DownloadService.cancelAll(context);
+            ClientConfig.initialize(context);
+            NetworkUtils.networkChangedDetected();
         }
     }
 }

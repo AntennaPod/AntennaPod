@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
@@ -42,7 +40,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -169,21 +166,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void exportDatabase() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
-        } else {
-            File sd = Environment.getExternalStorageDirectory();
-            File backupDB = new File(sd, dateStampFilename(DATABASE_EXPORT_FILENAME));
-            progressDialog.show();
-            disposable = Completable.fromAction(() ->
-                        DatabaseExporter.exportToStream(new FileOutputStream(backupDB), getContext()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
-                        progressDialog.dismiss();
-                    }, this::showExportErrorDialog);
-        }
+        backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
     }
 
     private void importDatabase() {
@@ -195,18 +178,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         // add a button
         builder.setNegativeButton(R.string.no, null);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(intent);
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(Intent.createChooser(intent,
-                                getString(R.string.import_select_file)));
-                    }
-                }
-        );
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            restoreDatabaseLauncher.launch(intent);
+        });
 
         // create and show the alert dialog
         builder.show();
@@ -318,20 +293,18 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private void openExportPathPicker(String contentType, String title,
                                       final ActivityResultLauncher<Intent> result, ExportWriter writer) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(contentType)
-                    .putExtra(Intent.EXTRA_TITLE, title);
+        Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType(contentType)
+                .putExtra(Intent.EXTRA_TITLE, title);
 
-            // Creates an implicit intent to launch a file manager which lets
-            // the user choose a specific directory to export to.
-            try {
-                result.launch(intentPickAction);
-                return;
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
-            }
+        // Creates an implicit intent to launch a file manager which lets
+        // the user choose a specific directory to export to.
+        try {
+            result.launch(intentPickAction);
+            return;
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "No activity found. Should never happen...");
         }
 
         // If we are using a SDK lower than API 21 or the implicit intent failed

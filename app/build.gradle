@@ -11,8 +11,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2040095
-        versionName "2.4.0"
+        versionCode 2040195
+        versionName "2.4.1"
 
         def commit = ""
         try {
@@ -116,6 +116,8 @@ dependencies {
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
+    implementation project(':playback:base')
+    implementation project(':playback:cast')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
 
@@ -126,9 +128,10 @@ dependencies {
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
+    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
 

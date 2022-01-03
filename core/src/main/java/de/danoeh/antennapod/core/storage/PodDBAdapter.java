@@ -44,8 +44,6 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.model.feed.SortOrder.toCodeString;
 
-// TODO Remove media column from feeditem table
-
 /**
  * Implements methods for accessing the database
  */
@@ -842,43 +840,32 @@ public class PodDBAdapter {
         db.delete(TABLE_NAME_QUEUE, null, null);
     }
 
-    private void removeFeedMedia(FeedMedia media) {
-        // delete download log entries for feed media
-        db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE + "=?",
-                new String[]{String.valueOf(media.getId()), String.valueOf(FeedMedia.FEEDFILETYPE_FEEDMEDIA)});
-
-        db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?",
-                new String[]{String.valueOf(media.getId())});
-    }
-
-    private void removeChaptersOfItem(FeedItem item) {
-        db.delete(TABLE_NAME_SIMPLECHAPTERS, KEY_FEEDITEM + "=?",
-                new String[]{String.valueOf(item.getId())});
-    }
-
-    /**
-     * Remove a FeedItem and its FeedMedia entry.
-     */
-    private void removeFeedItem(FeedItem item) {
-        if (item.getMedia() != null) {
-            removeFeedMedia(item.getMedia());
-        }
-        if (item.hasChapters() || item.getChapters() != null) {
-            removeChaptersOfItem(item);
-        }
-        db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
-                new String[]{String.valueOf(item.getId())});
-    }
-
     /**
      * Remove the listed items and their FeedMedia entries.
      */
     public void removeFeedItems(@NonNull List<FeedItem> items) {
         try {
-            db.beginTransactionNonExclusive();
+            StringBuilder mediaIds = new StringBuilder();
+            StringBuilder itemIds = new StringBuilder();
             for (FeedItem item : items) {
-                removeFeedItem(item);
+                if (item.getMedia() != null) {
+                    if (mediaIds.length() != 0) {
+                        mediaIds.append(",");
+                    }
+                    mediaIds.append(item.getMedia().getId());
+                }
+                if (itemIds.length() != 0) {
+                    itemIds.append(",");
+                }
+                itemIds.append(item.getId());
             }
+
+            db.beginTransactionNonExclusive();
+            db.delete(TABLE_NAME_SIMPLECHAPTERS, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
+            db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILETYPE + "=" + FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            + " AND " + KEY_FEEDFILE + " IN (" + mediaIds + ")", null);
+            db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + " IN (" + mediaIds + ")", null);
+            db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + " IN (" + itemIds + ")", null);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -894,9 +881,7 @@ public class PodDBAdapter {
         try {
             db.beginTransactionNonExclusive();
             if (feed.getItems() != null) {
-                for (FeedItem item : feed.getItems()) {
-                    removeFeedItem(item);
-                }
+                removeFeedItems(feed.getItems());
             }
             // delete download log entries for feed
             db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE + "=?",
@@ -1359,25 +1344,7 @@ public class PodDBAdapter {
     }
 
     /**
-     * Select number of items, new items, the date of the latest episode and the number of episodes in progress. The result
-     * is sorted by the title of the feed.
-     */
-    private static final String FEED_STATISTICS_QUERY = "SELECT Feeds.id, num_items, new_items, latest_episode, in_progress FROM " +
-            " Feeds LEFT JOIN " +
-            "(SELECT feed,count(*) AS num_items," +
-            " COUNT(CASE WHEN read=0 THEN 1 END) AS new_items," +
-            " MAX(pubDate) AS latest_episode," +
-            " COUNT(CASE WHEN position>0 THEN 1 END) AS in_progress," +
-            " COUNT(CASE WHEN downloaded=1 THEN 1 END) AS episodes_downloaded " +
-            " FROM FeedItems LEFT JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
-            " ON Feeds.id = feed ORDER BY Feeds.title COLLATE NOCASE ASC;";
-
-    public Cursor getFeedStatisticsCursor() {
-        return db.rawQuery(FEED_STATISTICS_QUERY, null);
-    }
-
-    /**
-     * Insert raw data to the database.     *
+     * Insert raw data to the database.
      * Call method only for unit tests.
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)

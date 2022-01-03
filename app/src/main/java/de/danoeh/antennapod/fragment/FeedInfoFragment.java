@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatDrawableManager;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -122,9 +122,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             @Override
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_web));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
                 toolbar.getMenu().findItem(R.id.share_parent)
-                        .setIcon(AppCompatDrawableManager.get().getDrawable(themedContext, R.drawable.ic_share));
+                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
             }
         };
         iconTintManager.updateTint();

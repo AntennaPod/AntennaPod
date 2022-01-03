@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -40,6 +41,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.util.download.ConnectionStateMonitor;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -90,8 +92,8 @@ public class DownloadService extends Service {
     private ScheduledFuture<?> downloadPostFuture;
     private final ScheduledThreadPoolExecutor notificationUpdateExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
-
     private final IBinder binder = new LocalBinder();
+    private ConnectionStateMonitor connectionMonitor;
 
     private class LocalBinder extends Binder {
         public DownloadService getService() {
@@ -145,6 +147,11 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectionMonitor = new ConnectionStateMonitor();
+            connectionMonitor.enable(getApplicationContext());
+        }
 
         downloadCompletionThread.start();
     }
@@ -276,6 +283,9 @@ public class DownloadService extends Service {
         }
         downloads.clear();
         unregisterReceiver(cancelDownloadReceiver);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectionMonitor.disable(getApplicationContext());
+        }
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());

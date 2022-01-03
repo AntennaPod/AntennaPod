@@ -1,9 +1,10 @@
 package de.test.antennapod.service.playback;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 
 public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallback {
 
@@ -43,14 +44,6 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
     }
 
     @Override
-    public boolean onMediaPlayerInfo(int code, int resourceId) {
-        if (isCancelled) {
-            return true;
-        }
-        return originalCallback.onMediaPlayerInfo(code, resourceId);
-    }
-
-    @Override
     public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext) {
         if (isCancelled) {
             return;
@@ -82,11 +75,28 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
         return originalCallback.getNextInQueue(currentMedia);
     }
 
+    @Nullable
+    @Override
+    public Playable findMedia(@NonNull String url) {
+        if (isCancelled) {
+            return null;
+        }
+        return originalCallback.findMedia(url);
+    }
+
     @Override
     public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         if (isCancelled) {
             return;
         }
         originalCallback.onPlaybackEnded(mediaType, stopPlaying);
+    }
+
+    @Override
+    public void ensureMediaInfoLoaded(@NonNull Playable media) {
+        if (isCancelled) {
+            return;
+        }
+        originalCallback.ensureMediaInfoLoaded(media);
     }
 }

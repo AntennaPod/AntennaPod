@@ -17,7 +17,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadStatisticsListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -75,7 +74,7 @@ public class DownloadStatisticsFragment extends Fragment {
                 Observable.fromCallable(() -> {
                     List<StatisticsItem> statisticsData = DBReader.getStatistics();
                     Collections.sort(statisticsData, (item1, item2) ->
-                            CompareCompat.compareLong(item1.totalDownloadSize, item2.totalDownloadSize));
+                            Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
                     return statisticsData;
                 })
                 .subscribeOn(Schedulers.io())

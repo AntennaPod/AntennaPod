@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <dimen name="widget_margin">0dp</dimen>
     <dimen name="external_player_height">64dp</dimen>
     <dimen name="text_size_micro">12sp</dimen>
@@ -28,11 +27,5 @@
     <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>
     <dimen name="audioplayer_playercontrols_margin">12dp</dimen>
 
-    <dimen name="media_router_controller_playback_control_vertical_padding">16dp</dimen>
-    <dimen name="media_router_controller_playback_control_horizontal_spacing">12dp</dimen>
-    <dimen name="media_router_controller_playback_control_start_padding">24dp</dimen>
-    <dimen name="media_router_controller_bottom_margin">8dp</dimen>
-
     <dimen name="nav_drawer_max_screen_size">480dp</dimen>
-
 </resources>

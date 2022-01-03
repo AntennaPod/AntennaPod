@@ -7,19 +7,19 @@
   <string name="add_feed_label">Додати подкаст</string>
   <string name="episodes_label">Епізоди</string>
   <string name="queue_label">Черга</string>
-  <string name="all_episodes_short_label">Всі</string>
-  <string name="new_episodes_label">Новий</string>
-  <string name="favorite_episodes_label">Улюблені</string>
-  <string name="new_label">Нові</string>
+  <string name="all_episodes_short_label">Усі</string>
+  <string name="new_episodes_label">Нові</string>
+  <string name="favorite_episodes_label">Відібрані</string>
+  <string name="new_label">Нове</string>
   <string name="settings_label">Налаштування</string>
   <string name="downloads_label">Завантаження</string>
-  <string name="open_autodownload_settings">Налаштування</string>
+  <string name="open_autodownload_settings">Відкрити налаштування</string>
   <string name="downloads_completed_label">Завершено</string>
   <string name="downloads_log_label">Журнал</string>
   <string name="subscriptions_label">Підписки</string>
   <string name="subscriptions_list_label">Перелік підписок</string>
-  <string name="cancel_download_label">Відмінити завантаження</string>
-  <string name="playback_history_label">Історія</string>
+  <string name="cancel_download_label">Скасувати завантаження</string>
+  <string name="playback_history_label">Історія відтворення</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Його можна збільшити в налаштуваннях.</string>
@@ -27,33 +27,33 @@
   <string name="download_statistics_label">Завантаження</string>
   <string name="notification_pref_fragment">Сповіщення</string>
   <!--Google Assistant-->
-  <string name="app_action_not_found">\"%1$s\" не знайдено</string>
+  <string name="app_action_not_found">«%1$s» не знайдено</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">Дії проведення пальцями</string>
-  <string name="swipeactions_summary">Виберіть, що відбувається під час прокручування епізоду зі списку</string>
-  <string name="swipe_right">Проведіть пальцем вправо</string>
-  <string name="swipe_left">Проведіть пальцем вліво</string>
-  <string name="enable_swipeactions">Увімкнути дії для цього екрана</string>
+  <string name="swipeactions_summary">Оберіть, що відбуватиметься під час прокручування епізоду зі списку</string>
+  <string name="swipe_right">Проведіть вправо</string>
+  <string name="swipe_left">Проведіть вліво</string>
+  <string name="enable_swipeactions">Дозволити дії ковзанням для цього екрана</string>
   <string name="change_setting">Змінити</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
+  <string name="total_time_listened_to_podcasts">Загальний час прослуханих епізодів:</string>
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
   <string name="statistics_mode">Режим статистики</string>
   <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується </string>
-  <string name="statistics_mode_count_all">Підсумок всіх епізодів, позначених як відтворені</string>
-  <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
+  <string name="statistics_mode_count_all">Підсумок усіх епізодів, позначених як відтворені</string>
+  <string name="statistics_speed_not_counted">Зауваження: Швидкість відтворення не береться до уваги.</string>
   <string name="statistics_reset_data">Cкинути статистику</string>
   <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
-  <string name="statistics_counting_since">З %s,\nви відтворили</string>
+  <string name="statistics_counting_since">З %s,\nВи відтворили</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Загальний розмір епізодів на пристрої:</string>
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
-  <string name="drawer_preferences">Налаштування меню навігації</string>
+  <string name="drawer_preferences">Налаштування шторки</string>
   <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
   <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
-  <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
+  <string name="drawer_feed_order_last_update">Сортувати за датою опублікування</string>
   <string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих епізодів</string>
   <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
   <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
@@ -65,7 +65,7 @@
   <string name="export_logs_menu_title">Експорт детальних журналів</string>
   <string name="confirm_export_log_dialog_message">Детальні журнали можуть містити конфіденційну інформацію, наприклад, список ваших підписок</string>
   <!--Webview actions-->
-  <string name="open_in_browser_label">Відкрити в браузері</string>
+  <string name="open_in_browser_label">Відкрити в оглядачі</string>
   <string name="copy_url_label">Копіювати URL</string>
   <string name="share_url_label">Поділитися URL</string>
   <string name="copied_url_msg">Посилання скопійовано в буфер</string>
@@ -98,13 +98,13 @@
   <string name="feed_volume_reduction">Зменшення гучності</string>
   <string name="feed_volume_reduction_summary">Зменшити гучність для епізодів цього подкасту: %1$s</string>
   <string name="feed_volume_reduction_off">Вимк.</string>
-  <string name="feed_volume_reduction_light">Світла</string>
+  <string name="feed_volume_reduction_light">Слабо</string>
   <string name="feed_volume_reduction_heavy">Сильно</string>
   <string name="parallel_downloads">%1$d паралельні завантаження </string>
   <string name="feed_auto_download_global">За замовчуванням</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
-  <string name="send_label">Відправити…</string>
+  <string name="send_label">Надіслати…</string>
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>
   <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
@@ -119,33 +119,33 @@
     <item quantity="one">1 день після закінчення</item>
     <item quantity="few">%d дні після закінчення</item>
     <item quantity="many">%d днів після закінчення</item>
-    <item quantity="other">%d днів після закінчення</item>
+    <item quantity="other">%d днів після завершення</item>
   </plurals>
   <plurals name="num_selected_label">
-    <item quantity="one">%1$d/%2$d selected</item>
-    <item quantity="few">%1$d/%2$d selected</item>
-    <item quantity="many">%1$d/%2$d selected</item>
-    <item quantity="other">%1$d/%2$dвибрано</item>
+    <item quantity="one">%1$d/%2$d вибрано</item>
+    <item quantity="few">%1$d/%2$d вибрано</item>
+    <item quantity="many">%1$d/%2$d вибрано</item>
+    <item quantity="other">%1$d/%2$d вибрано</item>
   </plurals>
   <plurals name="num_episodes">
-    <item quantity="one">%d episode</item>
-    <item quantity="few">%d episodes</item>
-    <item quantity="many">%d episodes</item>
-    <item quantity="other">%dепізоди</item>
+    <item quantity="one">%d епізод</item>
+    <item quantity="few">%d епізоди</item>
+    <item quantity="many">%d епізодів</item>
+    <item quantity="other">%d епізоди</item>
   </plurals>
   <string name="loading_more">Завантажити більше…</string>
   <string name="episode_notification">Сповіщення про епізоди</string>
   <string name="episode_notification_summary">Показувати сповіщення, коли виходить нова серія.</string>
   <plurals name="new_episode_notification_message">
-    <item quantity="one">%2$s has a new episode</item>
-    <item quantity="few">%2$s has %1$d new episodes</item>
-    <item quantity="many">%2$s has %1$d new episodes</item>
+    <item quantity="one">%2$s має новий епізод</item>
+    <item quantity="few">%2$s має %1$d нових епізоди</item>
+    <item quantity="many">%2$s має %1$d нові епізодів</item>
     <item quantity="other">%2$s має %1$d нових епізодів</item>
   </plurals>
   <plurals name="new_episode_notification_title">
-    <item quantity="one">New Episode</item>
-    <item quantity="few">New Episodes</item>
-    <item quantity="many">New Episodes</item>
+    <item quantity="one">Новий епізод</item>
+    <item quantity="few">Нових епізоди</item>
+    <item quantity="many">Нові епізоди</item>
     <item quantity="other">Нові епізоди</item>
   </plurals>
   <string name="new_episode_notification_group_text">Ваші підписки мають нові епізоди.</string>
@@ -154,18 +154,18 @@
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
   <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
   <string name="mark_all_read_feed_confirmation_msg">Підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені. </string>
-  <string name="remove_all_new_flags_label">Видаліть усі \"нові\" прапорці</string>
-  <string name="removed_all_new_flags_msg">Видалено всі \"нові\" прапорці</string>
-  <string name="remove_all_new_flags_confirmation_msg">Будь ласка, підтвердьте, що хочете видалити \"новий\" прапорець з усіх епізодів.</string>
+  <string name="remove_all_new_flags_label">Видаліть усі «нові» прапорці</string>
+  <string name="removed_all_new_flags_msg">Видалено всі «нові» прапорці</string>
+  <string name="remove_all_new_flags_confirmation_msg">Будь ласка, підтвердьте, що хочете видалити «новий» прапорець з усіх епізодів.</string>
   <string name="show_info_label">Інформація</string>
-  <string name="show_feed_settings_label">Установки подкасту</string>
-  <string name="feed_settings_label">Установки подкасту</string>
+  <string name="show_feed_settings_label">Показати налаштування подкасту</string>
+  <string name="feed_settings_label">Налаштування подкасту</string>
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися</string>
   <string name="share_label_with_ellipses">Поділитися…</string>
   <string name="share_file_label">Поділитися файлом</string>
-  <string name="share_website_url_label">Адреса веб-сайту</string>
+  <string name="share_website_url_label">Адреса вебсайту</string>
   <string name="share_feed_url_label">URL канал подкасту</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
   <string name="feed_delete_confirmation_msg_batch">Підтвердьте, що хочете видалити вибрані подкасти та ВСІ їх епізоди (включаючи завантажені).</string>
@@ -181,9 +181,9 @@
   <string name="please_wait_for_data">Зачекайте, поки завантажаться дані</string>
   <string name="updates_disabled_label">Оновлення вимкнено</string>
   <plurals name="updated_feeds_batch_label">
-    <item quantity="one">%d subscription updated.</item>
-    <item quantity="few">%d subscriptions updated.</item>
-    <item quantity="many">%d subscriptions updated.</item>
+    <item quantity="one">%d підписку оновлено.</item>
+    <item quantity="few">%d підписки оновлено.</item>
+    <item quantity="many">%d підписок оновлено.</item>
     <item quantity="other">%d підписки оновлено.</item>
   </plurals>
   <string name="add_to_folder">Додати до папки</string>
@@ -202,9 +202,9 @@
   <string name="delete_failed">Файл не видалено. Можливо, перезавантаження пристрою допоможе.</string>
   <string name="delete_episode_label">Видалити епізод</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d episode selected, %d download deleted.</item>
-    <item quantity="few">%d episodes selected, %d download(s) deleted.</item>
-    <item quantity="many">%d episodes selected, %d download(s) deleted.</item>
+    <item quantity="one">%d епізод вибрано, %d завантежений видалено.</item>
+    <item quantity="few">%d епізоди вибрані, %d завантежених видалено.</item>
+    <item quantity="many">%d епізодів вибрано, %d завантежених видалено.</item>
     <item quantity="other">%d епізодів вибрано, %d завантажених видалено.</item>
   </plurals>
   <string name="remove_new_flag_label">Видалити \"нові\" прапорці</string>
@@ -231,17 +231,17 @@
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="added_to_queue_label">Додано до черги</string>
   <plurals name="added_to_queue_batch_label">
-    <item quantity="one">%dепізод додано до черги. </item>
-    <item quantity="few">%dепізоди додано до черги. </item>
-    <item quantity="many">%dепізодів додано до черги. </item>
+    <item quantity="one">%d епізод додано до черги. </item>
+    <item quantity="few">%d епізоди додано до черги. </item>
+    <item quantity="many">%d епізодів додано до черги. </item>
     <item quantity="other">%d епізодів додано до черги.</item>
   </plurals>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <plurals name="removed_from_queue_batch_label">
-    <item quantity="one">%dепізод видалено з черги. </item>
-    <item quantity="few">%dепізоди видалено з черги. </item>
-    <item quantity="many">%dепізодів видалено з черги. </item>
-    <item quantity="other">%dепізодів видалено з черги.</item>
+    <item quantity="one">%d епізод видалено з черги. </item>
+    <item quantity="few">%d епізоди видалено з черги. </item>
+    <item quantity="many">%d епізодів видалено з черги. </item>
+    <item quantity="other">%d епізодів видалено з черги.</item>
   </plurals>
   <string name="add_to_favorite_label">Додати до улюблених</string>
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
@@ -408,12 +408,12 @@
   <string name="feed_refresh_never">Ніколи</string>
   <string name="feed_refresh_interval_at">в %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
-    <item quantity="one">Every hour</item>
-    <item quantity="few">Every %d hours</item>
-    <item quantity="many">Every %d hours</item>
-    <item quantity="other">Що %d години</item>
+    <item quantity="one">Що годину</item>
+    <item quantity="few">Що %d години</item>
+    <item quantity="many">Що %d годин</item>
+    <item quantity="other">Що %d годин</item>
   </plurals>
-  <string name="pref_followQueue_title">Грати безперервно</string>
+  <string name="pref_followQueue_title">Постійне відтворення</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Навушники або Bluetooth вимкнено</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Повторне під’єднання навушників</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Повторне під’єднання блютуз</string>
@@ -491,11 +491,11 @@
   <string name="pref_lockscreen_background_sum">Встановити картинку поточного епізоду як фон екрана блокування. Побічний ефект - це зображення також буде видимим в інших додатках.</string>
   <string name="pref_enqueue_location_title">Розташування черги</string>
   <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
-  <string name="enqueue_location_back">Back</string>
-  <string name="enqueue_location_front">Front</string>
+  <string name="enqueue_location_back">В кінець</string>
+  <string name="enqueue_location_front">На початок</string>
   <string name="enqueue_location_after_current">Після поточного епізоду</string>
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
-  <string name="documentation_support">Документація &amp; Підтримка</string>
+  <string name="documentation_support">Документація і Підтримка</string>
   <string name="visit_user_forum">Форум користувачів</string>
   <string name="bug_report_title">Повідомити про помилку</string>
   <string name="open_bug_tracker">Відкрити трекер помилок</string>
@@ -518,7 +518,7 @@
   <string name="media_player_switch_to_exoplayer">Перейти в ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Переключено на ExoPlayer.</string>
   <string name="pref_skip_silence_title">Пропуск тиші</string>
-  <string name="pref_videoBehavior_title"> При виході з відеорежиму</string>
+  <string name="pref_videoBehavior_title">При виході з відеорежиму</string>
   <string name="pref_videoBehavior_sum">Поведінка при виході з відео</string>
   <string name="stop_playback">Зупинити програвання</string>
   <string name="continue_playback">Продовжити відтворення аудіо</string>
@@ -677,7 +677,7 @@
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>
   <string name="increase_speed">Збільшити швидкість</string>
-  <string name="decrease_speed">Decrease speed</string>
+  <string name="decrease_speed">Зменшити швидкість</string>
   <string name="media_type_video_label">Відео</string>
   <string name="status_downloading_label">Епізод завантажується</string>
   <string name="in_queue_label">Епізод чекає в черзі</string>
@@ -703,7 +703,7 @@
   <string name="keep_updated">Підтримувати оновленим</string>
   <string name="keep_updated_summary">Включати цей подкаст під час (автоматичного) оновлення всіх подкастів</string>
   <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>
-  <string name="statistics_listened_for">Слухав:</string>
+  <string name="statistics_listened_for">Прослухано:</string>
   <string name="statistics_episodes_on_device">Епізоди на пристрої:</string>
   <string name="statistics_space_used">Використано простору:</string>
   <string name="statistics_view_all">Переглянути всі подкасти »</string>
@@ -737,28 +737,28 @@
   <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
   <string name="queued_label">В черзі</string>
   <string name="not_queued_label">Не в черзі</string>
-  <string name="has_media">Має медіа</string>
-  <string name="no_media">Не має медіа</string>
+  <string name="has_media">З медіа</string>
+  <string name="no_media">Без медіа</string>
   <string name="hide_paused_episodes_label">Призупинені</string>
   <string name="not_paused">Не призупинені</string>
   <string name="hide_played_episodes_label">Відтворені</string>
   <string name="not_played">Не відтворені</string>
   <!--Sort-->
-  <string name="sort_title_a_z">Назва (А до Я)</string>
-  <string name="sort_title_z_a">Назва (Я до А)</string>
-  <string name="sort_date_new_old">Дата (від Нової до Старої)</string>
-  <string name="sort_date_old_new">Дата (від Старої до Нової)</string>
-  <string name="sort_duration_short_long">Тривалість (від Короткої до Довгої)</string>
-  <string name="sort_duration_long_short">Тривалість (від Довгої до Короткої)</string>
-  <string name="sort_a_z">A до Z</string>
-  <string name="sort_z_a">Z до A</string>
-  <string name="sort_new_old">Від Нового до Старого</string>
-  <string name="sort_old_new">Від Старого до Нового</string>
-  <string name="sort_short_long">Від Короткого до Довгого</string>
-  <string name="sort_long_short">Від Довгого до Короткого</string>
+  <string name="sort_title_a_z">Назва (А - Я)</string>
+  <string name="sort_title_z_a">Назва (Я - А)</string>
+  <string name="sort_date_new_old">Дата (Нова - Стара)</string>
+  <string name="sort_date_old_new">Дата (Стара - Нова)</string>
+  <string name="sort_duration_short_long">Тривалість (Довга - Коротка)</string>
+  <string name="sort_duration_long_short">Тривалість (Коротка - Довга)</string>
+  <string name="sort_a_z">A - Z</string>
+  <string name="sort_z_a">Z - A</string>
+  <string name="sort_new_old">Нове - Старе</string>
+  <string name="sort_old_new">Старе - Нове</string>
+  <string name="sort_short_long">Коротка - Довга</string>
+  <string name="sort_long_short">Довга - Коротка</string>
   <!--Rating dialog-->
   <string name="rating_title" tools:ignore="UnusedResources">Подобається AntennaPod?</string>
-  <string name="rating_message" tools:ignore="UnusedResources">Ми будемо вдячні якщо ви поставите свою оцінку AntennaPod.</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Ми будемо вдячні, якщо ви поставите свою оцінку AntennaPod.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">Не зараз</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">Нагадати згодом</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Звичайно, з задоволенням!</string>
@@ -790,7 +790,7 @@
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Кількість стовпців</string>
   <!--Casting-->
-  <string name="cast_media_route_menu_title">Грати на…</string>
+  <string name="cast_media_route_menu_title">Відтворити на…</string>
   <string name="cast_disconnect_label">Від’єднатись від пристрою програвання</string>
   <string name="cast_not_castable">Обраний файл не сумісний з пристроєм програвання</string>
   <string name="cast_failed_to_play">Помилка програвання файла</string>

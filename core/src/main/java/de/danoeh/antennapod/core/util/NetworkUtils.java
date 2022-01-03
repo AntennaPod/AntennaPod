@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import androidx.core.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -16,7 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -30,6 +33,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkUtils {
+    private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
+
     private NetworkUtils(){}
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
@@ -93,7 +98,18 @@ public class NetworkUtils {
 
     private static boolean isNetworkMetered() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            NetworkCapabilities capabilities = connManager.getNetworkCapabilities(
+                    connManager.getActiveNetwork());
+
+            if (capabilities != null
+                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                return false;
+            }
+        }
+        return connManager.isActiveNetworkMetered();
     }
 
     private static boolean isNetworkCellular() {
@@ -140,6 +156,22 @@ public class NetworkUtils {
             return wifiInfo.getSSID();
         }
         return null;
+    }
+
+    public static boolean wasDownloadBlocked(Throwable throwable) {
+        String message = throwable.getMessage();
+        if (message != null) {
+            Pattern pattern = Pattern.compile(REGEX_PATTERN_IP_ADDRESS);
+            Matcher matcher = pattern.matcher(message);
+            if (matcher.find()) {
+                String ip = matcher.group();
+                return ip.startsWith("127.") || ip.startsWith("0.");
+            }
+        }
+        if (throwable.getCause() != null) {
+            return wasDownloadBlocked(throwable.getCause());
+        }
+        return false;
     }
 
     public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
@@ -198,4 +230,16 @@ public class NetworkUtils {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static void networkChangedDetected() {
+        if (NetworkUtils.isAutoDownloadAllowed()) {
+            Log.d(TAG, "auto-dl network available, starting auto-download");
+            DBTasks.autodownloadUndownloadedItems(context);
+        } else { // if new network is Wi-Fi, finish ongoing downloads,
+            // otherwise cancel all downloads
+            if (NetworkUtils.isNetworkRestricted()) {
+                Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
+                DownloadService.cancelAll(context);
+            }
+        }
+    }
 }

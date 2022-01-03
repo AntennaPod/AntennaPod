@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import org.greenrobot.eventbus.EventBus;
@@ -129,6 +130,9 @@ public class DBWriter {
             if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+
+                NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+                nm.cancel(R.id.notification_playing);
             }
 
             // Gpodder: queue delete action for synchronization
@@ -167,7 +171,9 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+            if (!feed.isLocalFeed()) {
+                SynchronizationQueueSink.enqueueFeedRemovedIfSynchronizationIsActive(context, feed.getDownload_url());
+            }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
@@ -777,7 +783,9 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                if (!feed.isLocalFeed()) {
+                    SynchronizationQueueSink.enqueueFeedAddedIfSynchronizationIsActive(context, feed.getDownload_url());
+                }
             }
 
             BackupManager backupManager = new BackupManager(context);

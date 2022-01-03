@@ -17,8 +17,9 @@ import androidx.media.AudioManagerCompat;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -39,7 +40,7 @@ import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -148,7 +149,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     public LocalPSMP(@NonNull Context context,
-                     @NonNull PSMPCallback callback) {
+                     @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback) {
         super(context, callback);
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new PlayerLock();
@@ -265,9 +266,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         LocalPSMP.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
-            if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
-                ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
-            }
+            callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
@@ -1098,7 +1097,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 EventBus.getDefault().post(BufferUpdateEvent.ended());
                 return true;
             default:
-                return callback.onMediaPlayerInfo(what, 0);
+                return true;
         }
     }
 
@@ -1147,5 +1146,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         } else {
             executor.submit(r);
         }
+    }
+
+    @Override
+    public boolean isCasting() {
+        return false;
     }
 }

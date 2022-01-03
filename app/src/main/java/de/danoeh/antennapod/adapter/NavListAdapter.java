@@ -194,10 +194,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             bindListItem(item, (FeedHolder) holder);
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
-                holder.itemView.setOnCreateContextMenuListener(itemAccess);
             } else {
                 bindTagView((NavDrawerData.TagDrawerItem) item, (FeedHolder) holder);
             }
+            holder.itemView.setOnCreateContextMenuListener(itemAccess);
         }
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();

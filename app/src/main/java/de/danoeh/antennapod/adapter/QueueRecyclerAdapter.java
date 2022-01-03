@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.core.view.ViewCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -53,7 +52,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             });
             holder.coverHolder.setOnTouchListener((v1, event) -> {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    boolean isLtr = ViewCompat.getLayoutDirection(holder.itemView) == ViewCompat.LAYOUT_DIRECTION_LTR;
+                    boolean isLtr = holder.itemView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR;
                     float factor = isLtr ? 1 : -1;
                     if (factor * event.getX() < factor * 0.5 * v1.getWidth()) {
                         Log.d(TAG, "startDrag()");

@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.dialog;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -118,9 +117,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Chip chip = new Chip(getContext());
-            if (Build.VERSION.SDK_INT >= 17) {
-                chip.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            }
+            chip.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             return new ViewHolder(chip);
         }
 
