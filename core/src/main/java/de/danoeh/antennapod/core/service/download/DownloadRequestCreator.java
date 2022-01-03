@@ -10,7 +10,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
-
 /**
  * Creates download requests that can be sent to the DownloadService.
  */
@@ -20,11 +19,8 @@ public class DownloadRequestCreator {
     private static final String MEDIA_DOWNLOADPATH = "media/";
 
     public static DownloadRequest.Builder create(Feed feed) {
-        final boolean partiallyDownloadedFileExists =
-                feed.getFile_url() != null && new File(feed.getFile_url()).exists();
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
-
-        if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
+        if (!isFilenameAvailable(dest.toString())) {
             dest = findUnusedFile(dest);
         }
         Log.d(TAG, "Requesting download of url " + feed.getDownload_url());
@@ -34,6 +30,7 @@ public class DownloadRequestCreator {
 
         return new DownloadRequest.Builder(dest.toString(), feed)
                 .withAuthentication(username, password)
+                .deleteOnFailure(true)
                 .lastModified(feed.getLastUpdate());
     }
 
@@ -58,34 +55,28 @@ public class DownloadRequestCreator {
                 ? media.getItem().getFeed().getPreferences().getPassword() : null;
 
         return new DownloadRequest.Builder(dest.toString(), media)
+                .deleteOnFailure(false)
                 .withAuthentication(username, password);
     }
 
     private static File findUnusedFile(File dest) {
-        Log.d(TAG, "Filename already used.");
-        if (isFilenameAvailable(dest.toString()) /*&& overwriteIfExists*/) {
-            boolean result = dest.delete();
-            Log.d(TAG, "Deleting file. Result: " + result);
-            return dest;
-        } else {
-            // find different name
-            File newDest = null;
-            for (int i = 1; i < Integer.MAX_VALUE; i++) {
-                String newName = FilenameUtils.getBaseName(dest
-                        .getName())
-                        + "-"
-                        + i
-                        + FilenameUtils.EXTENSION_SEPARATOR
-                        + FilenameUtils.getExtension(dest.getName());
-                Log.d(TAG, "Testing filename " + newName);
-                newDest = new File(dest.getParent(), newName);
-                if (!newDest.exists() && isFilenameAvailable(newDest.toString())) {
-                    Log.d(TAG, "File doesn't exist yet. Using " + newName);
-                    break;
-                }
+        // find different name
+        File newDest = null;
+        for (int i = 1; i < Integer.MAX_VALUE; i++) {
+            String newName = FilenameUtils.getBaseName(dest
+                    .getName())
+                    + "-"
+                    + i
+                    + FilenameUtils.EXTENSION_SEPARATOR
+                    + FilenameUtils.getExtension(dest.getName());
+            Log.d(TAG, "Testing filename " + newName);
+            newDest = new File(dest.getParent(), newName);
+            if (!newDest.exists() && isFilenameAvailable(newDest.toString())) {
+                Log.d(TAG, "File doesn't exist yet. Using " + newName);
+                break;
             }
-            return newDest;
         }
+        return newDest;
     }
 
     /**
