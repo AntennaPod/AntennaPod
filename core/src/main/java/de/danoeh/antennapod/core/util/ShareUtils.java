@@ -52,18 +52,25 @@ public class ShareUtils {
     }
 
     public static void shareFeedItemLinkWithDownloadLink(Context context, FeedItem item, boolean withPosition) {
-        String text = getItemShareText(item) + " ";
+        String text = getItemShareText(item);
+        int pos = 0;
+        if (item.getMedia() != null && withPosition) {
+            text += "\n" + context.getResources().getString(R.string.share_starting_position_label) + ": ";
+            pos = item.getMedia().getPosition();
+            text +=  Converter.getDurationStringLong(pos);
+        }
+
         if (hasLinkToShare(item)) {
-            text +=  "\n\n" + R.string.share_dialog_episode_website_label + ": ";
+            text +=  "\n\n" + context.getResources().getString(R.string.share_dialog_episode_website_label) + ": ";
             text += FeedItemUtil.getLinkWithFallback(item);
         }
+
         if (item.getMedia() != null && item.getMedia().getDownload_url() != null) {
-            text += "\n\n" + R.string.share_dialog_media_file_label + ": " + item.getMedia().getDownload_url();
-        }
-        if (withPosition) {
-            int pos = item.getMedia().getPosition();
-            text += "#t=" + pos / 1000;
-            text += " [" + Converter.getDurationStringLong(pos) + "]";
+            text += "\n\n" + context.getResources().getString(R.string.share_dialog_media_file_label) + ": ";
+            text +=  item.getMedia().getDownload_url();
+            if (withPosition) {
+                text += "#t=" + pos / 1000;
+            }
         }
         shareLink(context, text);
     }
