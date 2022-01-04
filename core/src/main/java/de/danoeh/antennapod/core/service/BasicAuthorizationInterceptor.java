@@ -53,8 +53,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         }
 
         Request.Builder newRequest = request.newBuilder();
-        if (0 != StringUtils.compare(
-                response.request().url().toString(),
+        if (! TextUtils.equals(response.request().url().toString(),
                 request.url().toString())) {
             newRequest.url(response.request().url());
         }
