@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.service;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
-
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -51,8 +50,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         }
 
         Request.Builder newRequest = request.newBuilder();
-        if (! TextUtils.equals(response.request().url().toString(),
-                request.url().toString())) {
+        if (!TextUtils.equals(response.request().url().toString(), request.url().toString())) {
             newRequest.url(response.request().url());
         }
 
