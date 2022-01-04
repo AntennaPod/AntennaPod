@@ -45,3 +45,5 @@ libs
 gradle.properties
 *.keystore
 *.p12
+app/free/
+app/play/
