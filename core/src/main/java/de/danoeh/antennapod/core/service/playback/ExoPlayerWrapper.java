@@ -113,6 +113,11 @@ public class ExoPlayerWrapper implements IPlayer {
                     } else {
                         Throwable cause = error.getCause();
                         if (cause instanceof HttpDataSource.HttpDataSourceException) {
+                            if (cause.getCause() != null) {
+                                cause = cause.getCause();
+                            }
+                        }
+                        if (cause != null && "Source error".equals(cause.getMessage())) {
                             cause = cause.getCause();
                         }
                         audioErrorListener.accept(cause != null ? cause.getMessage() : error.getMessage());

@@ -1,7 +1,7 @@
 plugins {
     id('com.android.application')
     id('com.getkeepsafe.dexcount')
-    id('com.github.triplet.play') version '3.6.0-agp4.2' apply false
+    id('com.github.triplet.play') version '3.7.0-agp4.2' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -11,8 +11,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2040195
-        versionName "2.4.1"
+        versionCode 2040295
+        versionName "2.4.2"
 
         def commit = ""
         try {
@@ -155,7 +155,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-    implementation 'com.github.skydoves:balloon:1.1.5'
+    implementation 'com.github.skydoves:balloon:1.4.0'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
     implementation 'com.annimon:stream:1.2.2'
 

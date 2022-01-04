@@ -104,7 +104,7 @@ public class FeedMenuHandler {
 
 
     private static void showSortDialog(Context context, Feed selectedFeed) {
-        IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder()) {
+        IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder(), selectedFeed.isLocalFeed()) {
             @Override
             protected void updateSort(@NonNull SortOrder sortOrder) {
                 selectedFeed.setSortOrder(sortOrder);

@@ -50,6 +50,10 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         }
 
         Request.Builder newRequest = request.newBuilder();
+        if (!TextUtils.equals(response.request().url().toString(), request.url().toString())) {
+            newRequest.url(response.request().url());
+        }
+
         Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
         String credentials = HttpDownloader.encodeCredentials(parts[0], parts[1], "ISO-8859-1");
         newRequest.header("Authorization", credentials);
