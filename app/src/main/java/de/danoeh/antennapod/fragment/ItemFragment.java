@@ -193,6 +193,8 @@ public class ItemFragment extends Fragment {
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
                 .setWidthRatio(1.0f)
+                .setMarginLeft(8)
+                .setMarginRight(8)
                 .setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSecondary))
                 .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                 .setLayout(R.layout.popup_bubble_view)
