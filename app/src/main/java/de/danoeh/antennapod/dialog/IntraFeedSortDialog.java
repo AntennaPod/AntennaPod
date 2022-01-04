@@ -16,8 +16,8 @@ public abstract class IntraFeedSortDialog {
     @NonNull
     protected Context context;
 
-    final private String[] sortItems;
-    final private SortOrder[] sortValues;
+    private final String[] sortItems;
+    private final SortOrder[] sortValues;
 
     public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder, @NonNull boolean isLocalFeed) {
         this.context = context;
