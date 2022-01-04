@@ -17,14 +17,14 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:gravity="end">
 
         <Button
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textColor="?attr/colorOnSecondary"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/no"
                 android:id="@+id/balloon_button_negative"/>
 
@@ -32,7 +32,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textColor="?attr/colorOnSecondary"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:text="@string/yes"
                 android:id="@+id/balloon_button_positive"/>
 
