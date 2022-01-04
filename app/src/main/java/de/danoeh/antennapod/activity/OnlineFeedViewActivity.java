@@ -27,10 +27,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
+import de.danoeh.antennapod.discovery.CombinedSearcher;
+import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -105,6 +110,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private boolean isPaused;
     private boolean didPressSubscribe = false;
+    private boolean isFeedFoundBySearch = false;
 
     private Dialog dialog;
 
@@ -246,9 +252,40 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .observeOn(Schedulers.io())
                 .subscribe(this::startFeedDownload,
                         error -> {
-                            showNoPodcastFoundError();
-                            Log.e(TAG, Log.getStackTraceString(error));
+                            if (error instanceof FeedUrlNotFoundException) {
+                                tryToRetrieveFeedUrlBySearch((FeedUrlNotFoundException) error);
+                            } else {
+                                showNoPodcastFoundError();
+                                Log.e(TAG, Log.getStackTraceString(error));
+                            }
                         });
+    }
+
+    private void tryToRetrieveFeedUrlBySearch(FeedUrlNotFoundException error) {
+        Log.d(TAG, "Unable to retrieve feed url, trying to retrieve feed url from search");
+        String url = searchFeedUrlByTrackName(error.getTrackName(), error.getArtistName());
+        if (url != null) {
+            Log.d(TAG, "Successfully retrieve feed url");
+            isFeedFoundBySearch = true;
+            startFeedDownload(url);
+        } else {
+            showNoPodcastFoundError();
+            Log.d(TAG, "Failed to retrieve feed url");
+        }
+    }
+
+    private String searchFeedUrlByTrackName(String trackName, String artistName) {
+        CombinedSearcher searcher = new CombinedSearcher();
+        String query = trackName + " " + artistName;
+        List<PodcastSearchResult> results = searcher.search(query).blockingGet();
+        for (PodcastSearchResult result : results) {
+            if (result.feedUrl != null && result.author != null
+                    && result.author.equalsIgnoreCase(artistName) && result.title.equalsIgnoreCase(trackName)) {
+                return result.feedUrl;
+
+            }
+        }
+        return null;
     }
 
     private void startFeedDownload(String url) {
@@ -381,6 +418,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
         viewBinding.progressBar.setVisibility(View.GONE);
         viewBinding.feedDisplayContainer.setVisibility(View.VISIBLE);
+        if (isFeedFoundBySearch) {
+            int resId = R.string.no_feed_url_podcast_found_by_search;
+            Snackbar.make(findViewById(android.R.id.content), resId, Snackbar.LENGTH_LONG).show();
+        }
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
 
