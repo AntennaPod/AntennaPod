@@ -72,7 +72,6 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
@@ -997,13 +996,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
         FeedItem nextItem;
-        try {
-            final List<FeedItem> queue = taskManager.getQueue();
-            nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
-            return null;
-        }
+        nextItem = DBReader.getNextInQueue(item);
 
         if (nextItem == null || nextItem.getMedia() == null) {
             PlaybackPreferences.writeNoMediaPlaying();
@@ -1021,16 +1014,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
-                    .prepareImmediately(true)
-                    .startWhenPrepared(true)
-                    .shouldStream(true)
-                    .getIntent());
+                            .prepareImmediately(true)
+                            .startWhenPrepared(true)
+                            .shouldStream(true)
+                            .getIntent());
             PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
             return null;
         }
         return nextItem.getMedia();
-
     }
 
     /**
