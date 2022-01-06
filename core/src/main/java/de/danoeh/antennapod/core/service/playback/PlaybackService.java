@@ -1014,16 +1014,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
-                    .prepareImmediately(true)
-                    .startWhenPrepared(true)
-                    .shouldStream(true)
-                    .getIntent());
+                            .prepareImmediately(true)
+                            .startWhenPrepared(true)
+                            .shouldStream(true)
+                            .getIntent());
             PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
             return null;
         }
-        // After PlayableUtils::saveCurrentPosition saves position, load the position from the DB
-        return DBReader.getFeedMedia(nextItem.getMedia().getId());
+        return nextItem.getMedia();
     }
 
     /**
