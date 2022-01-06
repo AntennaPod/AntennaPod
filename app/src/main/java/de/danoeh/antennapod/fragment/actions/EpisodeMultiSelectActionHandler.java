@@ -11,10 +11,10 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
@@ -78,19 +78,14 @@ public class EpisodeMultiSelectActionHandler {
 
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
-        List<FeedItem> toDownload = new ArrayList<>(selectedItems.size());
+        List<DownloadRequest> requests = new ArrayList<>();
         for (FeedItem episode : selectedItems) {
             if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
-                toDownload.add(episode);
+                requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
             }
         }
-        try {
-            DownloadRequester.getInstance().downloadMedia(activity, true, toDownload.toArray(new FeedItem[0]));
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(activity, e.getMessage());
-        }
-        showMessage(R.plurals.downloading_batch_label, toDownload.size());
+        DownloadService.download(activity, true, requests.toArray(new DownloadRequest[0]));
+        showMessage(R.plurals.downloading_batch_label, requests.size());
     }
 
     private void deleteChecked() {

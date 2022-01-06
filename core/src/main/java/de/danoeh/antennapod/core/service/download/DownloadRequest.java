@@ -12,6 +12,8 @@ import de.danoeh.antennapod.model.feed.FeedFile;
 import de.danoeh.antennapod.core.util.URLChecker;
 
 public class DownloadRequest implements Parcelable {
+    public static final String REQUEST_ARG_PAGE_NR = "page";
+    public static final String REQUEST_ARG_LOAD_ALL_PAGES = "loadAllPages";
 
     private final String destination;
     private final String source;
@@ -128,7 +130,6 @@ public class DownloadRequest implements Parcelable {
         if (size != that.size) return false;
         if (soFar != that.soFar) return false;
         if (statusMsg != that.statusMsg) return false;
-        if (!arguments.equals(that.arguments)) return false;
         if (!destination.equals(that.destination)) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
@@ -269,16 +270,25 @@ public class DownloadRequest implements Parcelable {
         private boolean deleteOnFailure = false;
         private final long feedfileId;
         private final int feedfileType;
-        private Bundle arguments;
-        private boolean initiatedByUser;
+        private Bundle arguments = new Bundle();
+        private boolean initiatedByUser = true;
 
-        public Builder(@NonNull String destination, @NonNull FeedFile item, boolean initiatedByUser) {
+        public Builder(@NonNull String destination, @NonNull FeedFile item) {
             this.destination = destination;
             this.source = URLChecker.prepareURL(item.getDownload_url());
             this.title = item.getHumanReadableIdentifier();
             this.feedfileId = item.getId();
             this.feedfileType = item.getTypeAsInt();
+        }
+
+        public void setInitiatedByUser(boolean initiatedByUser) {
             this.initiatedByUser = initiatedByUser;
+        }
+
+        public void setForce(boolean force) {
+            if (force) {
+                lastModified = null;
+            }
         }
 
         public Builder deleteOnFailure(boolean deleteOnFailure) {
@@ -297,14 +307,14 @@ public class DownloadRequest implements Parcelable {
             return this;
         }
 
+        public void loadAllPages(boolean loadAllPages) {
+            if (loadAllPages) {
+                arguments.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, true);
+            }
+        }
+
         public DownloadRequest build() {
             return new DownloadRequest(this);
         }
-
-        public Builder withArguments(Bundle args) {
-            this.arguments = args;
-            return this;
-        }
-
     }
 }

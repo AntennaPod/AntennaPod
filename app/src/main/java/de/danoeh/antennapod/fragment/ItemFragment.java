@@ -39,6 +39,7 @@ import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -50,7 +51,6 @@ import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -336,7 +336,7 @@ public class ItemFragment extends Fragment {
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+            if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item);

@@ -4,10 +4,10 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 import java.util.List;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
@@ -21,9 +21,6 @@ class ItemEnqueuePositionCalculator {
 
     @NonNull
     private final EnqueueLocation enqueueLocation;
-
-    @VisibleForTesting
-    DownloadStateProvider downloadStateProvider = DownloadRequester.getInstance();
 
     public ItemEnqueuePositionCalculator(@NonNull EnqueueLocation enqueueLocation) {
         this.enqueueLocation = enqueueLocation;
@@ -71,14 +68,9 @@ class ItemEnqueuePositionCalculator {
         } catch (IndexOutOfBoundsException e) {
             curItem = null;
         }
-
-        if (curItem != null
+        return curItem != null
                 && curItem.getMedia() != null
-                && downloadStateProvider.isDownloadingFile(curItem.getMedia())) {
-            return true;
-        } else {
-            return false;
-        }
+                && DownloadService.isDownloadingFile(curItem.getMedia().getDownload_url());
     }
 
     private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,

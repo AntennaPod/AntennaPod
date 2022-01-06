@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 

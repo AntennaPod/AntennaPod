@@ -31,7 +31,6 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.databinding.AddfeedBinding;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -204,7 +203,7 @@ public class AddFeedFragment extends Fragment {
                         });
     }
 
-    private Feed addLocalFolder(Uri uri) throws DownloadRequestException {
+    private Feed addLocalFolder(Uri uri) {
         if (Build.VERSION.SDK_INT < 21) {
             return null;
         }
