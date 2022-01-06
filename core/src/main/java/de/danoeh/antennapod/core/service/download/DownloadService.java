@@ -20,6 +20,7 @@ import androidx.core.app.ServiceCompat;
 
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -274,6 +275,10 @@ public class DownloadService extends Service {
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
+    /**
+     * This method MUST NOT, in any case, throw an exception.
+     * Otherwise, it hangs up the refresh thread pool.
+     */
     private void performDownload(Downloader downloader) {
         try {
             downloader.call();
@@ -294,6 +299,24 @@ public class DownloadService extends Service {
             stopServiceIfEverythingDone();
         });
     }
+
+    /**
+     * This method MUST NOT, in any case, throw an exception.
+     * Otherwise, it hangs up the refresh thread pool.
+     */
+    private void performLocalFeedRefresh(Downloader downloader, DownloadRequest request) {
+        try {
+            Feed feed = DBReader.getFeed(request.getFeedfileId());
+            LocalFeedUpdater.updateFeed(feed, DownloadService.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        downloadEnqueueExecutor.submit(() -> {
+            downloads.remove(downloader);
+            stopServiceIfEverythingDone();
+        });
+    }
+
 
     private void handleSuccessfulDownload(Downloader downloader) {
         DownloadRequest request = downloader.getDownloadRequest();
@@ -479,7 +502,7 @@ public class DownloadService extends Service {
         boolean initiatedByUser = intent.getBooleanExtra(EXTRA_INITIATED_BY_USER, false);
         List<Feed> feeds = DBReader.getFeedList();
         for (Feed feed : feeds) {
-            if (feed.getPreferences().getKeepUpdated() && !feed.isLocalFeed()) {
+            if (feed.getPreferences().getKeepUpdated()) {
                 DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
                 builder.setInitiatedByUser(initiatedByUser);
                 addNewRequest(builder.build());
@@ -494,11 +517,18 @@ public class DownloadService extends Service {
             Log.d(TAG, "Skipped enqueueing request. Already running.");
             return;
         }
-        writeFileUrl(request);
-        Downloader downloader = downloaderFactory.create(request);
-        if (downloader != null) {
+        Log.d(TAG, "Add new request: " + request.getSource());
+        if (request.getSource().startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
+            Downloader downloader = new LocalFeedStubDownloader(request);
             downloads.add(downloader);
-            downloadHandleExecutor.submit(() -> performDownload(downloader));
+            downloadHandleExecutor.submit(() -> performLocalFeedRefresh(downloader, request));
+        } else {
+            writeFileUrl(request);
+            Downloader downloader = downloaderFactory.create(request);
+            if (downloader != null) {
+                downloads.add(downloader);
+                downloadHandleExecutor.submit(() -> performDownload(downloader));
+            }
         }
     }
 

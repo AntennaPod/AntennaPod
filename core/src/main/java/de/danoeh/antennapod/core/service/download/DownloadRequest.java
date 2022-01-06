@@ -8,8 +8,9 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.model.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.util.URLChecker;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public class DownloadRequest implements Parcelable {
     public static final String REQUEST_ARG_PAGE_NR = "page";
@@ -273,12 +274,20 @@ public class DownloadRequest implements Parcelable {
         private Bundle arguments = new Bundle();
         private boolean initiatedByUser = true;
 
-        public Builder(@NonNull String destination, @NonNull FeedFile item) {
+        public Builder(@NonNull String destination, @NonNull FeedMedia media) {
             this.destination = destination;
-            this.source = URLChecker.prepareURL(item.getDownload_url());
-            this.title = item.getHumanReadableIdentifier();
-            this.feedfileId = item.getId();
-            this.feedfileType = item.getTypeAsInt();
+            this.source = URLChecker.prepareURL(media.getDownload_url());
+            this.title = media.getHumanReadableIdentifier();
+            this.feedfileId = media.getId();
+            this.feedfileType = media.getTypeAsInt();
+        }
+
+        public Builder(@NonNull String destination, @NonNull Feed feed) {
+            this.destination = destination;
+            this.source = feed.isLocalFeed() ? feed.getDownload_url() : URLChecker.prepareURL(feed.getDownload_url());
+            this.title = feed.getHumanReadableIdentifier();
+            this.feedfileId = feed.getId();
+            this.feedfileType = feed.getTypeAsInt();
         }
 
         public void setInitiatedByUser(boolean initiatedByUser) {

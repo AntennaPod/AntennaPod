@@ -3,13 +3,12 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
-
-import de.danoeh.antennapod.model.feed.FeedFile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -40,7 +39,7 @@ public class DownloadRequestTest {
         String destStr = "file://location/media.mp3";
         String username = "testUser";
         String password = "testPassword";
-        FeedFile item = createFeedItem(1);
+        FeedMedia item = createFeedItem(1);
         DownloadRequest request1 = new DownloadRequest.Builder(destStr, item)
                 .deleteOnFailure(true)
                 .withAuthentication(username, password)
@@ -68,12 +67,12 @@ public class DownloadRequestTest {
         ArrayList<DownloadRequest> toParcel;
         { // test DownloadRequests to parcel
             String destStr = "file://location/media.mp3";
-            FeedFile item1 = createFeedItem(1);
+            FeedMedia item1 = createFeedItem(1);
             DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1)
                     .withAuthentication(username1, password1)
                     .build();
 
-            FeedFile item2 = createFeedItem(2);
+            FeedMedia item2 = createFeedItem(2);
             DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2)
                     .withAuthentication(username2, password2)
                     .build();
@@ -118,28 +117,8 @@ public class DownloadRequestTest {
         return sb.toString();
     }
 
-    private FeedFile createFeedItem(final int id) {
+    private FeedMedia createFeedItem(final int id) {
         // Use mockito would be less verbose, but it'll take extra 1 second for this tiny test
-        return new FeedFile() {
-            @Override
-            public long getId() {
-                return id;
-            }
-
-            @Override
-            public String getDownload_url() {
-                return "http://example.com/episode" + id;
-            }
-
-            @Override
-            public int getTypeAsInt() {
-                return 0;
-            }
-
-            @Override
-            public String getHumanReadableIdentifier() {
-                return "human-id-" + id;
-            }
-        };
+        return new FeedMedia(id, null, 0, 0, 0, "", "", "http://example.com/episode" + id, false, null, 0, 0);
     }
 }
