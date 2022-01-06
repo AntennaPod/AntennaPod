@@ -8,5 +8,6 @@
     
     <suppress checks="." files="[\\/]generated-sources[\\/]"/>
     <suppress checks="." files="[\\/]build[\\/]"/>
+    <suppress checks="." files="[\\/]gen[\\/]"/>
     <suppress checks="." files="[\\/].idea[\\/]"/>
 </suppressions>
