@@ -565,6 +565,34 @@ public final class DBReader {
     }
 
     /**
+     * Get next feed item in queue following a particular feeditem
+     *
+     * @param item The FeedItem
+     * @return The FeedItem next in queue or null if the FeedItem could not be found.
+     */
+    @Nullable
+    public static FeedItem getNextInQueue(FeedItem item) {
+        Log.d(TAG, "getNextInQueue() called with: " + "itemId = [" + item.getId() + "]");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            FeedItem nextItem = null;
+            try (Cursor cursor = adapter.getNextInQueue(item)) {
+                List<FeedItem> list = extractItemlistFromCursor(adapter, cursor);
+                if (!list.isEmpty()) {
+                    nextItem = list.get(0);
+                    loadAdditionalFeedItemListData(list);
+                }
+                return nextItem;
+            } catch (Exception e) {
+                return null;
+            }
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
      * Loads a specific FeedItem from the database.
      *
      * @param guid feed item guid

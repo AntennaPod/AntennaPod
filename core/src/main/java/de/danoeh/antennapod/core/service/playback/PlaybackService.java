@@ -997,13 +997,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
         FeedItem nextItem;
-        try {
-            final List<FeedItem> queue = taskManager.getQueue();
-            nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
-            return null;
-        }
+        nextItem = DBReader.getNextInQueue(item);
 
         if (nextItem == null || nextItem.getMedia() == null) {
             PlaybackPreferences.writeNoMediaPlaying();
