@@ -367,7 +367,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void loadQueueForMediaSession() {
         Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
             List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-            for (FeedItem feedItem : taskManager.getQueue()) {
+            for (FeedItem feedItem : DBReader.getQueue()) {
                 if (feedItem.getMedia() != null) {
                     MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
                     queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
@@ -440,7 +440,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_black,
-                    taskManager.getQueue().size()));
+                    DBReader.getQueue().size()));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
                     DBReader.getDownloadedItems().size()));
             List<Feed> feeds = DBReader.getFeedList();
@@ -452,7 +452,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         List<FeedItem> feedItems;
         if (parentId.equals(getResources().getString(R.string.queue_label))) {
-            feedItems = taskManager.getQueue();
+            feedItems = DBReader.getQueue();
         } else if (parentId.equals(getResources().getString(R.string.downloads_label))) {
             feedItems = DBReader.getDownloadedItems();
         } else if (parentId.startsWith("FeedId:")) {
@@ -1427,10 +1427,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             i.putExtra("album", info.playable.getFeedTitle());
             i.putExtra("track", info.playable.getEpisodeTitle());
             i.putExtra("playing", isPlaying);
-            final List<FeedItem> queue = taskManager.getQueueIfLoaded();
-            if (queue != null) {
-                i.putExtra("ListSize", queue.size());
-            }
             i.putExtra("duration", (long) info.playable.getDuration());
             i.putExtra("position", (long) info.playable.getPosition());
             sendBroadcast(i);
