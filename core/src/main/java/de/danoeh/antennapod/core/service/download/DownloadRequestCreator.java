@@ -14,13 +14,13 @@ import java.io.File;
  * Creates download requests that can be sent to the DownloadService.
  */
 public class DownloadRequestCreator {
-    private static final String TAG = "DownloadRequester";
+    private static final String TAG = "DownloadRequestCreat";
     private static final String FEED_DOWNLOADPATH = "cache/";
     private static final String MEDIA_DOWNLOADPATH = "media/";
 
     public static DownloadRequest.Builder create(Feed feed) {
         File dest = new File(getFeedfilePath(), getFeedfileName(feed));
-        if (!isFilenameAvailable(dest.toString())) {
+        if (!isFilenameAvailable(dest.toString()) && !feed.isLocalFeed()) {
             dest = findUnusedFile(dest);
         }
         Log.d(TAG, "Requesting download of url " + feed.getDownload_url());

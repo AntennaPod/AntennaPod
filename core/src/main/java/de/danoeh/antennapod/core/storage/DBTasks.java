@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
@@ -114,14 +113,6 @@ public final class DBTasks {
      * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
      */
     public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
-        new Thread(() -> {
-            List<Feed> feeds = DBReader.getFeedList();
-            for (Feed feed : feeds) {
-                if (feed.isLocalFeed() && feed.getPreferences().getKeepUpdated()) {
-                    LocalFeedUpdater.updateFeed(feed, context);
-                }
-            }
-        }).start();
         DownloadService.refreshAllFeeds(context, initiatedByUser);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -169,15 +160,11 @@ public final class DBTasks {
     }
 
     private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
-        if (feed.isLocalFeed()) {
-            new Thread(() -> LocalFeedUpdater.updateFeed(feed, context)).start();
-        } else {
-            DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-            builder.setInitiatedByUser(initiatedByUser);
-            builder.setForce(true);
-            builder.loadAllPages(loadAllPages);
-            DownloadService.download(context, false, builder.build());
-        }
+        DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+        builder.setInitiatedByUser(initiatedByUser);
+        builder.setForce(true);
+        builder.loadAllPages(loadAllPages);
+        DownloadService.download(context, false, builder.build());
     }
 
     /**
