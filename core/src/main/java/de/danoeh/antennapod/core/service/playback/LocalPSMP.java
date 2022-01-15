@@ -725,7 +725,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();
                 }
-            } catch (Exception ignore) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mediaPlayer.release();
             mediaPlayer = null;
         }

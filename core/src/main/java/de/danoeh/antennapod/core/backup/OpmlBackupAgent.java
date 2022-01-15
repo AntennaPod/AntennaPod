@@ -115,12 +115,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             } catch (IOException e) {
                 Log.e(TAG, "Error during backup", e);
             } finally {
-                if (writer != null) {
-                    try {
-                        writer.close();
-                    } catch (IOException e) {
-                    }
-                }
+                IOUtils.closeQuietly(writer);
             }
         }
 
