@@ -160,6 +160,7 @@ public class HttpDownloader extends Downloader {
                     try {
                         contentLength = Integer.parseInt(contentLen);
                     } catch (NumberFormatException e) {
+                        e.printStackTrace();
                     }
                 }
                 Log.d(TAG, "content length: " + contentLength);
