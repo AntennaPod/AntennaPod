@@ -3,12 +3,15 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.view.ContextMenu;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -208,6 +211,16 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
+            holder.itemView.setOnTouchListener((v, e) -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                            && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                        itemAccess.onItemLongClick(position);
+                        return false;
+                    }
+                }
+                return false;
+            });
         }
     }
 
