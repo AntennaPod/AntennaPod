@@ -85,8 +85,8 @@ public class MainActivityTest {
 
         // subscribe podcast
         Espresso.closeSoftKeyboard();
-        waitForViewGlobally(withText(R.string.subscribe_label), 15000);
-        onView(withText(R.string.subscribe_label)).perform(click());
+        waitForViewGlobally(withText(R.string.add_feed_label), 15000);
+        onView(withText(R.string.add_feed_label)).perform(click());
 
         // wait for podcast feed item list
         waitForViewGlobally(withId(R.id.butShowSettings), 15000);

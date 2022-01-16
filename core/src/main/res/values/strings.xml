@@ -666,7 +666,6 @@
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
 
     <!-- Online feed view -->
-    <string name="subscribe_label">Subscribe</string>
     <string name="subscribing_label">Subscribing&#8230;</string>
     <string name="preview_episode">Preview</string>
     <string name="stop_preview">Stop preview</string>
