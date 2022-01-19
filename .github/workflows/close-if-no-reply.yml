@@ -21,5 +21,5 @@ jobs:
           labels-to-remove-when-unstale: 'Awaiting reply'
           close-issue-label: "Close reason: no reply"
           close-pr-label: "Close reason: no reply"
-          close-issue-message: 'This issue was closed because we didn't get a reply for 20 days.'
-          close-pr-message: 'This pr was closed because we didn't get a reply for 20 days.'
+          close-issue-message: "This issue was closed because we didn't get a reply for 20 days."
+          close-pr-message: "This pr was closed because we didn't get a reply for 20 days."
