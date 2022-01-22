@@ -223,10 +223,6 @@ public class PlaybackTest {
         startLocalPlayback();
     }
 
-    protected MainActivity getActivity() {
-        return activityTestRule.getActivity();
-    }
-
     protected void setContinuousPlaybackPreference(boolean value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).commit();

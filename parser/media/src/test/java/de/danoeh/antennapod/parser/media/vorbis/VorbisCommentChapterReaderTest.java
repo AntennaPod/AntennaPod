@@ -2,6 +2,8 @@ package de.danoeh.antennapod.parser.media.vorbis;
 
 import de.danoeh.antennapod.model.feed.Chapter;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(RobolectricTestRunner.class)
 public class VorbisCommentChapterReaderTest {
 
     @Test

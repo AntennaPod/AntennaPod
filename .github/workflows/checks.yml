@@ -67,12 +67,15 @@ jobs:
       matrix:
         include:
           - variant: "PlayDebug"
+            base-variant: "Debug"
             execute-tests: true
             upload-artifact: true
           - variant: "PlayRelease"
+            base-variant: "Release"
             execute-tests: true
             upload-artifact: false
           - variant: "FreeRelease"
+            base-variant: "Release"
             execute-tests: false
             upload-artifact: false
     steps:
@@ -90,7 +93,7 @@ jobs:
         run: ./gradlew assemble${{ matrix.variant }}
       - name: Test
         if: matrix.execute-tests == true
-        run: ./gradlew test${{ matrix.variant }}UnitTest
+        run: ./gradlew test${{ matrix.variant }}UnitTest test${{ matrix.base-variant }}UnitTest
       - uses: actions/upload-artifact@v2
         if: matrix.upload-artifact == true
         with:
