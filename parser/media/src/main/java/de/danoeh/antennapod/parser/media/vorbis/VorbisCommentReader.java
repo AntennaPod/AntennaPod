@@ -41,7 +41,7 @@ public abstract class VorbisCommentReader {
 
     public void readInputStream(InputStream input) throws VorbisCommentReaderException {
         try {
-            findIdentificationHeader(input);
+            skipIdentificationHeader(input);
             onVorbisCommentFound();
             findOggPage(input);
             findCommentHeader(input);
@@ -101,21 +101,20 @@ public abstract class VorbisCommentReader {
 
     /**
      * Looks for an identification header in the first page of the file. If an
-     * identification header is found, it will be skipped completely and the
-     * method will return true, otherwise false.
+     * identification header is found, it will be skipped completely
      */
-    private void findIdentificationHeader(InputStream input) throws IOException {
+    private void skipIdentificationHeader(InputStream input) throws IOException {
         byte[] buffer = new byte[FIRST_OPUS_PAGE_LENGTH];
         IOUtils.readFully(input, buffer);
         final byte[] oggIdentificationHeader = new byte[]{ PACKET_TYPE_IDENTIFICATION, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int i = 6; i < buffer.length; i++) {
             if (bufferMatches(buffer, oggIdentificationHeader, i)) {
                 IOUtils.skip(input, FIRST_OGG_PAGE_LENGTH - FIRST_OPUS_PAGE_LENGTH);
+                return;
             } else if (bufferMatches(buffer, "OpusHead".getBytes(), i)) {
                 return;
             }
         }
-        throw new IOException("No identification header found");
     }
 
     private void findCommentHeader(InputStream input) throws IOException {
