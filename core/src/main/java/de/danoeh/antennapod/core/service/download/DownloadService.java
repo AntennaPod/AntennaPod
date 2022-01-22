@@ -257,6 +257,11 @@ public class DownloadService extends Service {
             reportQueue.clear();
         }
 
+        unregisterReceiver(cancelDownloadReceiver);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectionMonitor.disable(getApplicationContext());
+        }
+
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
         cancelNotificationUpdater();
         downloadHandleExecutor.shutdown();
@@ -266,10 +271,6 @@ public class DownloadService extends Service {
             downloadPostFuture.cancel(true);
         }
         downloads.clear();
-        unregisterReceiver(cancelDownloadReceiver);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor.disable(getApplicationContext());
-        }
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
