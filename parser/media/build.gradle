@@ -9,4 +9,5 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }
