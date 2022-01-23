@@ -12,7 +12,7 @@ Gjord av podcastenthusiaster, AntennaPod är fri i alla ordets bemärkelser: öp
 
 <b>Håll reda på, dela & uppskatta</b>
 • Håll ordning på de bästa av de bästa med favoritmarkering av episoder
-• Hitta just den där episoden i uppspelningshistoriken eller genom sökning (titel och shownotes)
+• Hitta just den där episoden i uppspelningshistoriken eller genom sökning i titel och avsnittsanteckningar
 • Dela episoder och flöden med avancerade vald för social media och och email, tjänsten gPodder.net och via OPML export
 
 <b>Kontroller systemet</b>
