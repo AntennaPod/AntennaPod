@@ -37,7 +37,6 @@
   <string name="change_setting">Endre</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total tid, avspilte episoder</string>
-  <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
   <string name="statistics_mode">Statistikkmodus</string>
   <string name="statistics_mode_normal">Beregn faktisk avspilt varighet. Dobbel avspilling telles to ganger, mens markering som avspilt telles ikke</string>
   <string name="statistics_mode_count_all">Oppsummer alle podkaster merket som avspilt</string>
@@ -152,7 +151,6 @@
   <string name="open_podcast">Åpne podkast</string>
   <string name="please_wait_for_data">Vent til dataene er lastet inn</string>
   <string name="updates_disabled_label">Oppdateringer slått av.</string>
-  <string name="add_to_folder">Legg til i mappen</string>
   <!--actions on feeditems-->
   <string name="download_label">Last ned</string>
   <plurals name="downloading_batch_label">
@@ -222,8 +220,6 @@
   <string name="download_error_forbidden">Podkastens host server svarer ikke.</string>
   <string name="download_canceled_msg">Nedlasting avbrutt</string>
   <string name="download_error_wrong_size">Mistet server tilkoblingen før nedlastingen var fullstendig.</string>
-  <string name="download_error_blocked">Nedlastingen ble blokkert av en annen app på enheten din.</string>
-  <string name="download_error_certificate">Kan ikke opprette en sikkert tilkobling. Det kan bety at en annen app på enheten din blokkerer nedlastingen eller at noe er galt med sertifikater til serveren.</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
   <string name="auto_download_report_title">Auto-nedlasting fullført</string>
   <string name="download_error_io_error">IO feil</string>
@@ -238,7 +234,6 @@
   <string name="download_log_title_unknown">Ukjent tittel</string>
   <string name="download_type_feed">Strøm</string>
   <string name="download_type_media">Mediafil</string>
-  <string name="download_request_error_dialog_message_prefix">En feil oppsto under nedlastningen av filen:\u0020</string>
   <string name="null_value_podcast_error">Ingen podkast ble gitt som kunne vises.</string>
   <string name="authentication_notification_title">Autentisering påkreves</string>
   <string name="authentication_notification_msg">Ressursen du forespør krever brukernavn og passord</string>
@@ -252,7 +247,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Legg til i kø</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tillat midlertidig</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Feil</string>
   <string name="playback_error_server_died">Serveren døde</string>
   <string name="playback_error_unsupported">Ikke støttet media-type</string>
   <string name="playback_error_timeout">Operasjon tidsavbrutt</string>
@@ -309,7 +303,6 @@
   <string name="storage_sum">Auto-slett episoder, importer, eksporter</string>
   <string name="project_pref">Prosjekt</string>
   <string name="synchronization_pref">Synkronisering</string>
-  <string name="synchronization_sum">Synkroniser med andre enheter over gpodder.net</string>
   <string name="automation">Automasjon</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importer/Eksporter</string>
@@ -396,17 +389,8 @@
   <string name="pref_theme_title_dark">Mørkt</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ulimitert</string>
-  <string name="pref_gpodnet_authenticate_title">Logg inn</string>
-  <string name="pref_gpodnet_authenticate_sum">Logg inn med din gpodder.net konto for å synkronisere dine abonnementer.</string>
-  <string name="pref_gpodnet_logout_title">Logg ut</string>
-  <string name="pref_gpodnet_logout_toast">Utloggelse lyktes</string>
   <string name="pref_gpodnet_setlogin_information_title">Endre innloggingsinformasjon</string>
   <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
-  <string name="pref_gpodnet_sync_changes_title">Synkroniser nå</string>
-  <string name="pref_gpodnet_sync_changes_sum">Synkroniser abonnement og episoder med gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Tving fram full synkronisering</string>
-  <string name="pref_gpodnet_full_sync_sum">Synkroniser alle abonnement og episoder med gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Logget inn som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Definer hastighetene tilgjengelig for variabel avspillingshastighet</string>
   <string name="pref_feed_playback_speed_sum">Hastigheten som brukes når episoder av denne podkasten spilles av</string>
   <string name="pref_feed_skip">Automatisk hopp</string>
@@ -449,9 +433,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Velg en nettverk-proxy</string>
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
-  <string name="pref_cast_title">Chromecast støtte</string>
-  <string name="pref_cast_message_play_flavor">Aktiver støtte for fjern-avspilling på Cast-enheter (som Chromecast, høyttalere eller Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast krever proprietær tredjeparts programvare som er deaktivert i denne utgaven av AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Legg til nedlastede i køen</string>
   <string name="pref_enqueue_downloaded_summary">Legg til nedlastede episoder i køen</string>
   <string name="media_player_builtin">Innebygd Android-spiller (avskrevet)</string>
@@ -539,7 +520,6 @@
   <string name="export_success_title">Eksportering vellykket!</string>
   <string name="export_success_sum">Den eksporterte filen ble skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Tilgang til ekstern lagring er nødvendig for å lese OPML filen</string>
-  <string name="import_select_file">Velg fil å importere</string>
   <string name="successful_import_label">Eksportering vellykket</string>
   <string name="import_ok">Trykk OK for å starte AntennaPod på nytt</string>
   <string name="import_no_downgrade">Denne databasen ble eksportert fra en nyere versjon av AntennaPod. Din versjon av AntennaPod kan ikke lese denne filen enda.</string>
@@ -603,7 +583,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Pause for avbrytelser</string>
   <string name="pref_resumeAfterCall_sum">Gjenoppta avspilling etter at telefonsamtaler avsluttes</string>
   <string name="pref_resumeAfterCall_title">Gjenoppta etter samtale</string>
-  <string name="pref_restart_required">AntennaPod må startes om for at denne endringen skal lagres.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribing_label">Abonnerer...</string>
@@ -627,8 +606,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Endre brukernavnet og passordet for denne podkasten og dens episoder</string>
-  <string name="feed_folders_label">Mapper</string>
-  <string name="feed_folders_summary">Endre mappene som viser denne podkasten.</string>
   <string name="feed_folders_include_root">Vis i hovet lista</string>
   <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>
   <string name="episode_filters_label">Episodefilter</string>
@@ -639,7 +616,6 @@
   <string name="keep_updated">Hold oppdatert</string>
   <string name="keep_updated_summary">Inkluder denne podkasten når alle podkaster oppdateres</string>
   <string name="auto_download_disabled_globally">Automatisk nedlasting er deaktivert i AntennaPod-innstillingene</string>
-  <string name="statistics_listened_for">Hørte på for:</string>
   <string name="statistics_episodes_on_device">Episoder på enhenten:</string>
   <string name="statistics_space_used">Minne brukt:</string>
   <string name="statistics_view_all">Vis for alle podkaster »</string>
@@ -701,7 +677,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Inkluder:</string>
   <string name="share_playback_position_dialog_label">Avspillingsposisjon</string>
-  <string name="share_dialog_media_file_url_label">Media fil adressen</string>
   <string name="share_dialog_episode_website_label">Episodens webside</string>
   <string name="share_dialog_media_file_label">Media fil</string>
   <!--Audio controls-->
@@ -725,20 +700,6 @@
   <string name="proxy_port_invalid_error">Ikke gyldig port</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Antall kolonner</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Spill på...</string>
-  <string name="cast_disconnect_label">Koble fra casting</string>
-  <string name="cast_not_castable">Valgt media er ikke kompatibel med strømmingsenhet</string>
-  <string name="cast_failed_to_play">Feilet å starte avspilling av media</string>
-  <string name="cast_failed_to_stop">Feilet å stoppe avspillingen av media</string>
-  <string name="cast_failed_to_pause">Feilet å sette avspillingen av media på pause</string>
-  <string name="cast_failed_setting_volume">Kunne ikke justere volum</string>
-  <string name="cast_failed_no_connection">Ikke koblet til noen cast-enhet</string>
-  <string name="cast_failed_no_connection_trans">Tilkoblingen til cast-enheten ble tapt. Appen prøver å gjenopprette tilkoblingen, vennligst vent noen sekunder og prøv igjen.</string>
-  <string name="cast_failed_status_request">Kunne ikke synkronisere med cast-enheten</string>
-  <string name="cast_failed_seek">Kunne ikke spole til ny posisjon på cast-enheten</string>
-  <string name="cast_failed_receiver_player_error">En alvorlig feil har oppstått på mottaker-apilleren</string>
-  <string name="cast_failed_media_error_skipping">Feil ved avspilling av media. Hopper over...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Feiler</string>
   <string name="notification_group_news">Nyheter</string>

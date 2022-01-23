@@ -37,7 +37,6 @@
   <string name="change_setting">Canvia</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Temps total d\'episodis reproduïts:</string>
-  <string name="statistics_details_dialog">%1$d de %2$depisodis començats.\n\nReproduïts %3$s de %4$s.</string>
   <string name="statistics_mode">Mode d\'estadístiques</string>
   <string name="statistics_mode_normal">Calcula el temps que realment s\'ha reproduït. La reproducció repetida es comptarà repetides vegades, mentre que no es tindrà en compte si s\'ha marcat com a reproduït.  </string>
   <string name="statistics_mode_count_all">Suma tots els episodis marcats com a reproduïts</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d subscripció actualizada.</item>
     <item quantity="other">%d subscripcions actualizades.</item>
   </plurals>
-  <string name="add_to_folder">Afegeix a la carpeta</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
   <string name="delete_episode_label">Esborrar episodi.</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d episodi seleccionat, %d descàrrega eliminada. </item>
-    <item quantity="other">%d episodis seleccionats, %d descàrregues eliminades.</item>
-  </plurals>
   <string name="remove_new_flag_label">Retirar bandera de \"nou\"</string>
   <string name="removed_new_flag_label">Retirada bandera de \"nou\"</string>
   <string name="mark_read_label">Marca com a llegit</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">El servidor de l\'amfitrió del podcast no respon.</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_error_wrong_size">La connexió del servidor s\'ha perdut abans de completar la descàrrega</string>
-  <string name="download_error_blocked">Una altra aplicació del dispositiu ha bloquejat la descàrrega.</string>
-  <string name="download_error_certificate">No es pot establir una connexió segura. Això pot significar que una altra aplicació del dispositiu ha bloquejat la descàrrega, o que els certificats del servidor no funcionen correctament.</string>
   <string name="download_report_title">Baixades completades amb error(s)</string>
   <string name="auto_download_report_title">Auto-baixades completades.</string>
   <string name="download_error_io_error">Error d\'E/S</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">Títol desconegut</string>
   <string name="download_type_feed">Canal</string>
   <string name="download_type_media">Fitxer</string>
-  <string name="download_request_error_dialog_message_prefix">S\'ha produït un error en intentar baixar el fitxer:\u0020</string>
   <string name="null_value_podcast_error">No s\'ha proporcionat cap podcast que puga mostrar-se.</string>
   <string name="authentication_notification_title">Cal autenticar-se</string>
   <string name="authentication_notification_msg">Es necessita un usuari i una contrasenya per accedir al recurs</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">En cua</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permetre temporalment</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Error</string>
   <string name="playback_error_server_died">El servidor no està operatiu</string>
   <string name="playback_error_unsupported">Tipus de medi no suportat.</string>
   <string name="playback_error_timeout">La operació ha tardat massa.</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">Auto-esborrat d\'episodis, Importar, Exportar</string>
   <string name="project_pref">Projecte</string>
   <string name="synchronization_pref">Sincronització</string>
-  <string name="synchronization_sum">Sincronitza amb altres dispositius usant gpodder.net</string>
   <string name="automation">Automatització</string>
   <string name="download_pref_details">Detalls</string>
   <string name="import_export_pref">Importa/Exporta</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">Fosc</string>
   <string name="pref_theme_title_trueblack">Negra (per AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Sense límits</string>
-  <string name="pref_gpodnet_authenticate_title">Inici de sessió</string>
-  <string name="pref_gpodnet_authenticate_sum">Inicieu sessió a gpodder.net per tal de sincronitzar les vostres subscripcions.</string>
-  <string name="pref_gpodnet_logout_title">Surt</string>
-  <string name="pref_gpodnet_logout_toast">Heu sortit de la sessió</string>
   <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronitza ara</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sincronitza amb gpodder.net les subscripcions i els estats dels episodis.</string>
-  <string name="pref_gpodnet_full_sync_title">Força sincronització completa</string>
-  <string name="pref_gpodnet_full_sync_sum">Sincronitza amb gpodder.net totes les subscripcions i els estats dels episodis.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Connectat com a <i>%1$s</i> amb el dispositiu <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Personalitza les velocitats disponibles per a la reproducció a velocitat variable</string>
   <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>
   <string name="pref_feed_skip">Auto Ometre</string>
@@ -477,9 +457,6 @@
   <string name="pref_proxy_title">Servidor intermediari</string>
   <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
   <string name="pref_no_browser_found">No s\'ha trobat cap navegador web.</string>
-  <string name="pref_cast_title">Suport per a Chromecast</string>
-  <string name="pref_cast_message_play_flavor">Habilita el suport per la reproducció remota en dispositius de difusió (com ara Chromecast, Audio Speakers o Android TV). </string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast requereix de llibreries propietàries de terceres parts que estan inhabilitades en aquesta versió d\'AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Afegeix les baixades a la cua</string>
   <string name="pref_enqueue_downloaded_summary">Afegeix els episodis descarregats a la cua</string>
   <string name="media_player_builtin">Reproductor Android integrat (obsolet)</string>
@@ -567,7 +544,6 @@
   <string name="export_success_title">Exportació correcta</string>
   <string name="export_success_sum">S\'ha exportat el fitxer a:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
-  <string name="import_select_file">Tria un fitxer per a importar</string>
   <string name="successful_import_label">Importació correcta</string>
   <string name="import_ok">Si us plau, premeu D\'acord per reiniciar AntennaPod</string>
   <string name="import_no_downgrade">Aquesta base de dades va ser exportada amb una versió més nova d\'AntennaPod. La versió que tens ara mateixa no sap com processar-la.</string>
@@ -631,7 +607,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa en interrompre</string>
   <string name="pref_resumeAfterCall_sum">Reprén la reproducció després d\'una trucada telefònica</string>
   <string name="pref_resumeAfterCall_title">Reprén després d\'una trucada</string>
-  <string name="pref_restart_required">AntennaPod s\'ha de reiniciar perquè aquest canvi tingui efecte.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribing_label">Subscrivint...</string>
@@ -655,8 +630,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
-  <string name="feed_folders_label">Carpetes</string>
-  <string name="feed_folders_summary">Canvia les carpetes on es mostra aquest podcast.</string>
   <string name="feed_folders_include_root">Mostra a la llista principal</string>
   <string name="auto_download_settings_label">Opcions d\'Auto Descàrrega</string>
   <string name="episode_filters_label">Filtre d\'episodis</string>
@@ -667,7 +640,6 @@
   <string name="keep_updated">Manté actualitzat</string>
   <string name="keep_updated_summary">Incloure aquest podcast quan (auto-)actualitzen tots els podcasts</string>
   <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>
-  <string name="statistics_listened_for">Escoltat durant:</string>
   <string name="statistics_episodes_on_device">Episodis al dispositiu:</string>
   <string name="statistics_space_used">Espai utilitzat:</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
@@ -729,7 +701,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Inclou:</string>
   <string name="share_playback_position_dialog_label">Posició de reproducció</string>
-  <string name="share_dialog_media_file_url_label">Adreça del fitxer multimèdia</string>
   <string name="share_dialog_episode_website_label">Pàgina web de l\'episodi</string>
   <string name="share_dialog_media_file_label">Fitxer multimèdia</string>
   <!--Audio controls-->
@@ -753,20 +724,6 @@
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Número de columnes</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Reproduir a...</string>
-  <string name="cast_disconnect_label">Desconnectar la sessió de difusió </string>
-  <string name="cast_not_castable">Els mitjans seleccionats no són compatibles amb el dispositiu de difusió</string>
-  <string name="cast_failed_to_play">Error en començar la reproducció del medi</string>
-  <string name="cast_failed_to_stop">Error en aturar la reproducció del medi</string>
-  <string name="cast_failed_to_pause">Error en pausar la reproducció del medi</string>
-  <string name="cast_failed_setting_volume">Error en establir el volum</string>
-  <string name="cast_failed_no_connection">No hi ha cap connexió amb el dispositiu de difusió </string>
-  <string name="cast_failed_no_connection_trans">S\'ha perdut la connexió amb el dispositiu de difusió. L\'aplicació està tractant de restablir la connexió, si això és possible. Espereu uns segons i torneu-ho a provar.</string>
-  <string name="cast_failed_status_request">No s\'ha pogut sincronitzar amb el dispositiu de difusió</string>
-  <string name="cast_failed_seek">No s\'ha pogut cercar la nova posició al dispositiu de difusió</string>
-  <string name="cast_failed_receiver_player_error">El reproductor receptor ha trobat un error greu</string>
-  <string name="cast_failed_media_error_skipping">Error en la reproducció. Saltant...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Errors</string>
   <string name="notification_group_news">Notícies</string>

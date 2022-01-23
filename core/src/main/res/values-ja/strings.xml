@@ -30,7 +30,6 @@
   <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">エピソード総再生時間:</string>
-  <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
   <string name="statistics_mode">統計情報モード</string>
   <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
   <string name="statistics_mode_count_all">再生済みとマークされたすべてのポッドキャストを集計する</string>
@@ -202,7 +201,6 @@
   <string name="download_log_title_unknown">タイトル不明</string>
   <string name="download_type_feed">フィード</string>
   <string name="download_type_media">メディアファイル</string>
-  <string name="download_request_error_dialog_message_prefix">ファイルのダウンロード中にエラーが発生しました:\u0020</string>
   <string name="null_value_podcast_error">表示できるポッドキャストがありません。</string>
   <string name="authentication_notification_title">認証が必要です</string>
   <string name="authentication_notification_msg">リクエストしたリソースは、ユーザー名とパスワードが必要です</string>
@@ -215,7 +213,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">キューに追加するだけ</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">一時的に有効にする</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">エラー!</string>
   <string name="playback_error_server_died">サーバーがダウンしています</string>
   <string name="playback_error_unsupported">サポートされていないメディアタイプ</string>
   <string name="playback_error_timeout">操作がタイムアウトしました</string>
@@ -334,15 +331,8 @@
   <string name="pref_theme_title_dark">ダーク</string>
   <string name="pref_theme_title_trueblack">黒 (AMOLED 対応)</string>
   <string name="pref_episode_cache_unlimited">無制限</string>
-  <string name="pref_gpodnet_authenticate_title">ログイン</string>
-  <string name="pref_gpodnet_authenticate_sum">購読を同期するために、あなたのgpodder.netアカウントにログインします。</string>
-  <string name="pref_gpodnet_logout_title">ログアウト</string>
-  <string name="pref_gpodnet_logout_toast">ログアウトしました</string>
   <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
-  <string name="pref_gpodnet_sync_changes_sum">購読とエピソードの状態の変更を gpodder.net で同期します。</string>
-  <string name="pref_gpodnet_full_sync_sum">すべての購読とエピソードの状態を gpodder.net で同期します。</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> としてデバイス <i>%2$s</i> でログインしました]]></string>
   <string name="pref_feed_playback_speed_sum">このポッドキャストでエピソードのオーディオ再生を開始するときに使用する速度</string>
   <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に調整</string>
   <string name="pref_playback_time_respects_speed_sum">表示される位置と時間が再生速度に調整されます</string>
@@ -375,9 +365,6 @@
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
-  <string name="pref_cast_title">Chromecast サポート</string>
-  <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast は AntennaPod のこのバージョンで無効になっているサードパーティ独自のライブラリーが必要です</string>
   <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <string name="pref_skip_silence_title">音声の無音をスキップ</string>
@@ -435,7 +422,6 @@
   <string name="export_success_title">エクスポートしました</string>
   <string name="export_success_sum">エクスポートしたファイルを書き込みました:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML ファイルを読み込むために、外部ストレージへのアクセスが必要です</string>
-  <string name="import_select_file">インポートするファイルを選択してください</string>
   <string name="import_no_downgrade">このデータベースは、AntennaPodの新しいバージョンでエクスポートされました。 現在インストールされたアプリでは、このファイルの処理方法がまだわかりません。</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">スリープタイマーをセット</string>
@@ -480,7 +466,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
   <string name="pref_resumeAfterCall_sum">着信が完了した後に再生を再開します</string>
   <string name="pref_resumeAfterCall_title">着信後に再開</string>
-  <string name="pref_restart_required">この変更を有効にするには AntennaPod を再起動する必要があります。</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribing_label">購読中…</string>
@@ -559,20 +544,6 @@
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">カラムの数</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">…で再生</string>
-  <string name="cast_disconnect_label">キャストセッションを切断</string>
-  <string name="cast_not_castable">選択したメディアはキャストデバイスと互換性がありません</string>
-  <string name="cast_failed_to_play">メディア再生の開始に失敗しました</string>
-  <string name="cast_failed_to_stop">メディア再生の停止に失敗しました</string>
-  <string name="cast_failed_to_pause">メディア再生の一時停止に失敗しました</string>
-  <string name="cast_failed_setting_volume">音量の設定に失敗しました</string>
-  <string name="cast_failed_no_connection">キャストデバイスへの接続が存在しません</string>
-  <string name="cast_failed_no_connection_trans">キャストデバイスへの接続が失われました。可能な場合、アプリケーションは接続を再確立しようとします。数秒待ってから、もう一度お試しください。</string>
-  <string name="cast_failed_status_request">キャストデバイスとの同期に失敗しました</string>
-  <string name="cast_failed_seek">キャストデバイスの新しい位置への移動に失敗しました</string>
-  <string name="cast_failed_receiver_player_error">レシーバープレーヤーで深刻なエラーが発生しました</string>
-  <string name="cast_failed_media_error_skipping">メディアの再生時にエラーが発生しました。スキップしています…</string>
   <!--Notification channels-->
   <string name="notification_channel_user_action">操作が必要</string>
   <string name="notification_channel_user_action_description">たとえばパスワードを入力する必要がある場合など、操作が必要な場合に表示されます。</string>

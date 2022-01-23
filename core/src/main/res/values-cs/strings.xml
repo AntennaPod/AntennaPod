@@ -31,7 +31,6 @@
   <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas přehraných epizod:</string>
-  <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
   <string name="statistics_mode">Režim statistik</string>
   <string name="statistics_mode_normal">Počítat skutečně přehraný čas. Tj. 5 minutová epizoda poslechnutá dvakrát je 10 minut, 7 minutová epizoda pouze označená jako poslechnutá je 0 minut.</string>
   <string name="statistics_mode_count_all">Sečíst délky všech epizod označených jako poslechnuté</string>
@@ -182,12 +181,6 @@
   <string name="delete_label">Smazat</string>
   <string name="delete_failed">Nelze smazat soubor. Restart přístroje může pomoci.</string>
   <string name="delete_episode_label">Smazat epizodu</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d epizoda vybrána, %d stažení smazáno.</item>
-    <item quantity="few">%d epizody vybrány, %d stažení smazáno.</item>
-    <item quantity="many">%d epizod vybráno, %d stažení smazáno.</item>
-    <item quantity="other">%d epizod vybráno, %d stažení smazáno.</item>
-  </plurals>
   <string name="remove_new_flag_label">Odstranit příznak „nová“</string>
   <string name="removed_new_flag_label">Příznak „nová“ odstraněn</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
@@ -251,8 +244,6 @@
   <string name="download_error_forbidden">Server podcastu nereaguje.</string>
   <string name="download_canceled_msg">Stahování zrušeno</string>
   <string name="download_error_wrong_size">Před dokončením stahování došlo ke ztrátě připojení k serveru</string>
-  <string name="download_error_blocked">Stahování bylo blokováno jinou aplikací ve vašem zařízení.</string>
-  <string name="download_error_certificate">Nelze navázat zabezpečené připojení. To může znamenat, že stahování zablokovala jiná aplikace ve vašem zařízení nebo že něco není v pořádku s certifikáty serveru.</string>
   <string name="download_report_title">Stahování dokončeno s chybou</string>
   <string name="auto_download_report_title">Automatické stahování dokončeno</string>
   <string name="download_error_io_error">IO chyba</string>
@@ -268,7 +259,6 @@
   <string name="download_log_title_unknown">Neznámý název</string>
   <string name="download_type_feed">Kanál</string>
   <string name="download_type_media">Soubor</string>
-  <string name="download_request_error_dialog_message_prefix">Nastala chyba při pokusu o stažení souboru:\u0020</string>
   <string name="null_value_podcast_error">Nebyl poskytnut žádný podcast, co by mohl být zobrazen.</string>
   <string name="authentication_notification_title">Vyžadováno ověření</string>
   <string name="authentication_notification_msg">Zdroj který jste vybrali vyžaduje zadání uživatelského jména a hesla</string>
@@ -282,7 +272,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Pouze přidat do fronty</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Dočasně povolit</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Chyba!</string>
   <string name="playback_error_server_died">Server nereaguje</string>
   <string name="playback_error_unsupported">Nepodporovaný typ média</string>
   <string name="playback_error_timeout">Vypršel časový limit operace</string>
@@ -339,7 +328,6 @@
   <string name="storage_sum">Automatické mazání epizod, Import, Export</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synchronizace</string>
-  <string name="synchronization_sum">Synchronizace s dalšími zařízeními pomocí služby gpodder.net</string>
   <string name="automation">Automatizace</string>
   <string name="download_pref_details">Detaily</string>
   <string name="import_export_pref">Importovat/Exportovat</string>
@@ -432,17 +420,8 @@
   <string name="pref_theme_title_dark">Tmavý</string>
   <string name="pref_theme_title_trueblack">Černá (vhodná pro AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Bez omezení</string>
-  <string name="pref_gpodnet_authenticate_title">Přihlásit</string>
-  <string name="pref_gpodnet_authenticate_sum">Přihlašte se pomocí vašeho gpodder.net účtu pro synchronizaci odebíraných podcastů. </string>
-  <string name="pref_gpodnet_logout_title">Odhlásit</string>
-  <string name="pref_gpodnet_logout_toast">Úspěšně odhlášeno</string>
   <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synchronizovat ihned</string>
-  <string name="pref_gpodnet_sync_changes_sum">Synchronizovat odběr a změny stavu epizody s gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Synchronizovat vše ihned</string>
-  <string name="pref_gpodnet_full_sync_sum">Synchronizovat všechny odběry a stav epizod s gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> z přístroje <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Upravit předvybrané možnosti pro přehrávání zvuku různými rychlostmi</string>
   <string name="pref_feed_playback_speed_sum">Rychlost, která bude použita při zahájení přehrávání epizod tohoto podcastu</string>
   <string name="pref_feed_skip">Automatické přeskočení</string>
@@ -485,9 +464,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Nastavit síťovou proxy</string>
   <string name="pref_no_browser_found">Webový prohlížeč nenalezen.</string>
-  <string name="pref_cast_title">Chromecast podpora</string>
-  <string name="pref_cast_message_play_flavor">Povolit podporu vzdáleného přehrávání médií na Cast přístrojích (jako třeba Chromecast, Audio Speakers nebo Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast vyžaduje proprietární knihovny třetích stran, které jsou vypnuty v této verzi AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Zařadit stažené</string>
   <string name="pref_enqueue_downloaded_summary">Přidat stažené epizody do fronty</string>
   <string name="media_player_builtin">Vestavěný přehrávač Androidu (zastaralé)</string>
@@ -574,7 +550,6 @@
   <string name="export_success_title">Export úspěšný</string>
   <string name="export_success_sum">Exportovaný soubor zapsán do:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Pro přečtení OPML souboru je vyžadován  přístup k externímu úložišti</string>
-  <string name="import_select_file">Vybrat soubor pro import</string>
   <string name="successful_import_label">Import úspěšný</string>
   <string name="import_ok">Ťuknutím na OK restartujte AntenaPod</string>
   <string name="import_no_downgrade">Tato databáze byla exportována z novější verze aplikace AntennaPod. Vaše instalovaná verze není schopná ji zpracovat.</string>
@@ -644,7 +619,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
   <string name="pref_resumeAfterCall_sum">Pokračovat v přehrávání po ukončení telefonního hovoru</string>
   <string name="pref_resumeAfterCall_title">Pokračovat po telefonátu</string>
-  <string name="pref_restart_required">Pro aktivování změn nastavení bylo třeba restartovat aplikaci AntennaPod.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribing_label">Přidává se do odběrů…</string>
@@ -668,8 +642,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Ověření</string>
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
-  <string name="feed_folders_label">Adresáře</string>
-  <string name="feed_folders_summary">Upravit adresáře pod kterými je tento podcast zobrazen.</string>
   <string name="feed_folders_include_root">Zobrazit v hlavním seznamu</string>
   <string name="auto_download_settings_label">Nastavení automatického stahování</string>
   <string name="episode_filters_label">Filtr epizod</string>
@@ -680,7 +652,6 @@
   <string name="keep_updated">Udržovat aktuální</string>
   <string name="keep_updated_summary">Zahrnout tento podcast při (automatickém) obnovování všech podcastů</string>
   <string name="auto_download_disabled_globally">Automatické stahování je zakázané v hlavním nastavení AntennaPodu</string>
-  <string name="statistics_listened_for">Posloucháno po:</string>
   <string name="statistics_episodes_on_device">Epizod na přístroji:</string>
   <string name="statistics_space_used">Zabírá místa:</string>
   <string name="statistics_view_all">Náhled všech podcastů »</string>
@@ -742,7 +713,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Zahrnout:</string>
   <string name="share_playback_position_dialog_label">Pozice přehrávání</string>
-  <string name="share_dialog_media_file_url_label">Adresa souboru media</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizody</string>
   <string name="share_dialog_media_file_label">Soubor medií</string>
   <!--Audio controls-->
@@ -766,20 +736,6 @@
   <string name="proxy_port_invalid_error">Neplatný port</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Počet sloupců</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Přehrát na...</string>
-  <string name="cast_disconnect_label">Odpojit sezení vysílání</string>
-  <string name="cast_not_castable">Vybraná média nejsou kompatibilní s přehrávacím přístrojem</string>
-  <string name="cast_failed_to_play">Selhalo spuštění přehrávání média</string>
-  <string name="cast_failed_to_stop">Selhalo zastavení přehrávání média</string>
-  <string name="cast_failed_to_pause">Selhalo pozastavení přehrávání média</string>
-  <string name="cast_failed_setting_volume">Selhalo nastavení hlasitosti</string>
-  <string name="cast_failed_no_connection">Není dostupné připojení k přehrávacímu přístroji</string>
-  <string name="cast_failed_no_connection_trans">Došlo ke ztrátě připojení k přehrávacímu přístroji. Aplikace se pokouší znovu připojit, pokud to bude možné. Počkejte několik sekund a zkuste znovu.</string>
-  <string name="cast_failed_status_request">Selhala synchronizace s vysílačem</string>
-  <string name="cast_failed_seek">Selhal posun na novou pozici na vysílači</string>
-  <string name="cast_failed_receiver_player_error">Přijímač zaznamenal závažnou chybu</string>
-  <string name="cast_failed_media_error_skipping">Chyba přehrávání médií. Přeskakuji...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Chyby</string>
   <string name="notification_group_news">Novinky</string>

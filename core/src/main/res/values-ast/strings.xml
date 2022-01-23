@@ -31,7 +31,6 @@
   <string name="swipeactions_label">Aiciones al eslizar</string>
   <string name="swipeactions_summary">Escueyi qué asocede al eslizar un episodiu que tea nuna llista</string>
   <!--Statistics fragment-->
-  <string name="statistics_details_dialog">Aniciáronse %1$d de %2$d episodios.\n\nReproduciéronse %3$s de %4$s.</string>
   <string name="statistics_mode">Mou de les estadístiques</string>
   <string name="statistics_speed_not_counted">Avisu: la velocidá de reproducción enxamás se tien en cuenta.</string>
   <string name="statistics_reset_data">Reafitar les estadístiques</string>
@@ -157,10 +156,6 @@
   <string name="delete_label">Desaniciar</string>
   <string name="delete_failed">Nun ye posible desaniciar el ficheru. Reaniciar el preséu podría ayudar.</string>
   <string name="delete_episode_label">Desaniciar</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">Esbillóse %d episodiu y desanicióse %d descarga.</item>
-    <item quantity="other">Esbilláronse %d episodios Númberu de descargues desaniciaes: %d.</item>
-  </plurals>
   <string name="remove_new_flag_label">Quitar la bandera «Novedá»</string>
   <string name="removed_new_flag_label">Quitóse la bandera «Novedá»</string>
   <string name="mark_read_label">Marcar como «Reprodúxose»</string>
@@ -195,8 +190,6 @@
   <string name="download_error_unauthorized">Fallu de l\'autenticación</string>
   <string name="download_error_forbidden">L\'agospiador del podcast refuga responder.</string>
   <string name="download_error_wrong_size">Perdióse la conexón al sirvidor enantes de completar la descarga</string>
-  <string name="download_error_blocked">Hai otra aplicación que bloquió la descarga.</string>
-  <string name="download_error_certificate">Nun ye posible afitar una conexón segura. Esto pue significar qu\'otra aplicación del preséu bloquió la descarga o asocedió daqué malo colos certificaos del sirvidor.</string>
   <string name="download_report_title">Les descargues completáronse con fallos</string>
   <string name="auto_download_report_title">Completáronse les descargues automátiques</string>
   <string name="download_error_io_error">Fallu d\'E/S</string>
@@ -207,13 +200,11 @@
   <string name="completing">Completando…</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Ficheru multimedia</string>
-  <string name="download_request_error_dialog_message_prefix">Asocedió un fallu al tentar de baxar el ficheru:\u0020</string>
   <string name="authentication_notification_msg">El recursu que solicitesti rique un nome d\'usuariu y una contraseña</string>
   <string name="confirm_mobile_streaming_button_always">Siempres</string>
   <string name="confirm_mobile_streaming_button_once">Una vegada</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporalmente</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">¡Fallu!</string>
   <string name="playback_error_server_died">El sirvidor morrió</string>
   <string name="playback_error_source">Nun ye posible acceder al ficheru multimedia</string>
   <string name="player_go_to_picture_in_picture">Mou d\'Imaxe sobre Imaxe</string>
@@ -334,17 +325,8 @@
   <string name="pref_theme_title_dark">Escuridá</string>
   <string name="pref_theme_title_trueblack">Escuridá (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ensin llende</string>
-  <string name="pref_gpodnet_authenticate_title">Aniciar sesión</string>
-  <string name="pref_gpodnet_authenticate_sum">Anicia sesión en gpodder.net pa sincronizar les soscripciones.</string>
-  <string name="pref_gpodnet_logout_title">Zarrar sesión</string>
-  <string name="pref_gpodnet_logout_toast">Zarresti sesión correutamente</string>
   <string name="pref_gpodnet_setlogin_information_title">Camudar la información del aniciu de sesión</string>
   <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net .</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronizar agora</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sincroniza los cambeos de les soscripciones y los episodios con gpodder.net .</string>
-  <string name="pref_gpodnet_full_sync_title">Forciar la sincronización completa</string>
-  <string name="pref_gpodnet_full_sync_sum">Sincroniza los estaos de toles soscripciones y tolos episodios con gpodder.net .</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Aniciesti sesión como <i>%1$s</i> col preséu <i>%2$s</i>]]></string>
   <string name="pref_feed_playback_speed_sum">La velocidá que s\'usa al aniciar la reproducción de los episodios d\'esti podcast</string>
   <string name="pref_feed_skip">Saltu automáticu</string>
   <string name="pref_feed_skip_sum">Salta les introducciones y los creitos del final</string>
@@ -378,7 +360,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Afita un proxy de rede</string>
   <string name="pref_no_browser_found">Nun s\'atopó nengún restolador web.</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast rique biblioteques privatives de terceros que tán desactivaes nesta versión d\'AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Amestar lo baxao a la cola</string>
   <string name="pref_enqueue_downloaded_summary">Amiesta los episodios baxaos a la cola</string>
   <string name="pref_videoBehavior_title">Dempués de colar de los vídeos</string>
@@ -497,7 +478,6 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Posa la reproducción en cuentes de baxar el volume cuando otra aplicación quier reproducir soníos</string>
   <string name="pref_resumeAfterCall_sum">Sigue cola reproducción dempués de colgar les llamaes telefóniques</string>
   <string name="pref_resumeAfterCall_title">Siguir dempués de les llamaes</string>
-  <string name="pref_restart_required">Tienes de reaniciar AntennaPod pa qu\'esti cambéu faiga efeutu.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Soscribise</string>
   <string name="subscribing_label">Soscribiéndote…</string>
@@ -518,8 +498,6 @@
   <string name="next_chapter">Capítulu siguiente</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticación</string>
-  <string name="feed_folders_label">Carpetes</string>
-  <string name="feed_folders_summary">Camuda les carpetes nes qu\'apaez esti podcast.</string>
   <string name="feed_folders_include_root">Amosar na llista principal</string>
   <string name="auto_download_settings_label">Axustes de la descarga automática</string>
   <string name="episode_filters_label">Peñera d\'episodios</string>
@@ -530,7 +508,6 @@
   <string name="keep_updated">Anovamientu automáticu</string>
   <string name="keep_updated_summary">Inclúi esti podcast al refrescar (automáticamente) tolos podcasts</string>
   <string name="auto_download_disabled_globally">La descarga automática ta desactivada nos axustes principales d\'AntennaPod</string>
-  <string name="statistics_listened_for">Sintióse demientres:</string>
   <string name="statistics_episodes_on_device">Episodios nel preséu:</string>
   <string name="statistics_space_used">Espaciu n\'usu:</string>
   <string name="statistics_view_all">Ver lo de tolos podcasts »</string>
@@ -582,7 +559,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Incluyir:</string>
   <string name="share_playback_position_dialog_label">Puntu de reproducción</string>
-  <string name="share_dialog_media_file_url_label">Direición del ficheru multimedia</string>
   <string name="share_dialog_episode_website_label">Páxina web del episodiu</string>
   <string name="share_dialog_media_file_label">Ficheru multimedia</string>
   <!--Audio controls-->
@@ -602,13 +578,6 @@
   <string name="proxy_port_invalid_error">El puertu nun ye válidu</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Númberu de columnes</string>
-  <!--Casting-->
-  <string name="cast_failed_to_play">Hebo un fallu al aniciar la reproducción</string>
-  <string name="cast_failed_to_stop">Hebo un fallu al parar la reproducción</string>
-  <string name="cast_failed_to_pause">Hebo un fallu al posar la reproducción</string>
-  <string name="cast_failed_setting_volume">Hebo un fallu al afitar el volume</string>
-  <string name="cast_failed_seek">Hebo un fallu al guetar el puntu nuevu nel preséu de tresmisión</string>
-  <string name="cast_failed_media_error_skipping">Hebo un fallu al reproducir el conteníu multimedia. Saltando…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fallos</string>
   <string name="notification_group_news">Noticies</string>

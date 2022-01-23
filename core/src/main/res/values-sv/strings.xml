@@ -37,7 +37,6 @@
   <string name="change_setting">Ändra</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
-  <string name="statistics_details_dialog">%1$d av %2$d episoder startade.\n\nSpelat %3$s av %4$s.</string>
   <string name="statistics_mode">Statistikläge</string>
   <string name="statistics_mode_normal">Beräkna faktisk speltid. Att spela två gånger räknas två gånger, men att markera som spelad räknas inte</string>
   <string name="statistics_mode_count_all">Summera alla episoder som är markerade som spelade</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d prenumeration uppdaterad.</item>
     <item quantity="other">%d prenumerationer uppdaterade.</item>
   </plurals>
-  <string name="add_to_folder">Lägg till i katalog</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">Ta bort</string>
   <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
   <string name="delete_episode_label">Radera episod</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d episod vald, %d nedladdning raderad.</item>
-    <item quantity="other">%d episoder valda, %d nedladdning(ar) raderade.</item>
-  </plurals>
   <string name="remove_new_flag_label">Ta bort \"ny\"-flagga</string>
   <string name="removed_new_flag_label">Tog bort \"ny\"-flagga</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">Podcastens server svarade inte.</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
   <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar.</string>
-  <string name="download_error_blocked">Nedladdningen blockerades av en annan app på enheten.</string>
-  <string name="download_error_certificate">Kunde inte etablera en säker anslutning. Detta kan betyda att en annan app på din enhet har blockerat nedladdningen eller att något är fel på serverns certifikat.</string>
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="auto_download_report_title">Automatiska nedladdningar klara</string>
   <string name="download_error_io_error">IO fel</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">Okänd titel</string>
   <string name="download_type_feed">Flöde</string>
   <string name="download_type_media">Mediafil</string>
-  <string name="download_request_error_dialog_message_prefix">Ett fel uppstod vid försöket att ladda ner filen:\u0020</string>
   <string name="null_value_podcast_error">Inga tillhandahållna podcasts som kunde visas.</string>
   <string name="authentication_notification_title">Autentisering krävs</string>
   <string name="authentication_notification_msg">Resursen du begärde kräver ett användarnamn och ett lösenord</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Köa</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tillåt tillfälligt</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Fel! </string>
   <string name="playback_error_server_died">Servern dog</string>
   <string name="playback_error_unsupported">Mediatypen stöds inte</string>
   <string name="playback_error_timeout">Åtgärden tog för lång tid</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">Automatisk episodradering, Import, Export</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synkronisering</string>
-  <string name="synchronization_sum">Synkronisera med andra enheter via gpodder.net</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importera/Exportera</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">Mörkt</string>
   <string name="pref_theme_title_trueblack">Svart (AMOLED redo)</string>
   <string name="pref_episode_cache_unlimited">Obegränsat</string>
-  <string name="pref_gpodnet_authenticate_title">Logga in</string>
-  <string name="pref_gpodnet_authenticate_sum">Logga in med ditt gpodder.net konto för att synkronisera dina prenumerationer.</string>
-  <string name="pref_gpodnet_logout_title">Logga ut</string>
-  <string name="pref_gpodnet_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synkronisera nu</string>
-  <string name="pref_gpodnet_sync_changes_sum">Synkronisera ändringar i prenumerationer och episodstatus med gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Tvinga full synkronisering</string>
-  <string name="pref_gpodnet_full_sync_sum">Synkronisera alla prenumerationer och episodstatus med gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet</string>
   <string name="pref_feed_playback_speed_sum">Uppspelningshastigheten att använda för episoder i denna podcast</string>
   <string name="pref_feed_skip">Automatisk överhoppning</string>
@@ -477,9 +457,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Använd en nätverksproxy</string>
   <string name="pref_no_browser_found">Ingen webbläsare hittades.</string>
-  <string name="pref_cast_title">Chromecast-stöd</string>
-  <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <string name="media_player_builtin">Androids inbyggda spelare (föråldrad)</string>
@@ -567,7 +544,6 @@
   <string name="export_success_title">Exporten lyckades</string>
   <string name="export_success_sum">Den exporterade filen skrevs till:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Tillgång till extern lagring krävs för att läsa OPML-filen</string>
-  <string name="import_select_file">Välj fil att importera</string>
   <string name="successful_import_label">Importering lyckades</string>
   <string name="import_ok">Tryck OK för att starta om AntennaPod</string>
   <string name="import_no_downgrade">Denna databas var exporterad med en nyare version av AntennaPod. Din nuvarande installation vet inte hur den ska hantera filen än.</string>
@@ -631,7 +607,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa vid avbrott</string>
   <string name="pref_resumeAfterCall_sum">Återuppta uppspelning när ett telefonsamtal avslutas</string>
   <string name="pref_resumeAfterCall_title">Fortsätt efter samtal</string>
-  <string name="pref_restart_required">AntennaPod behöver startas om för att denna inställning ska gälla.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribing_label">Prenumererar...</string>
@@ -655,8 +630,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>
-  <string name="feed_folders_label">Kataloger</string>
-  <string name="feed_folders_summary">Byt kataloger som denna podcast visas i.</string>
   <string name="feed_folders_include_root">Visa i huvudlistan</string>
   <string name="auto_download_settings_label">Automatisk nedladdningsinställningar</string>
   <string name="episode_filters_label">Episodfilter</string>
@@ -667,7 +640,6 @@
   <string name="keep_updated">Håll uppdaterad</string>
   <string name="keep_updated_summary">Inkludera detta flöde vid (auto-)uppdatering av alla podcasts</string>
   <string name="auto_download_disabled_globally">Automatisk nedladdning är avstängt i AntennaPods huvudinställningar</string>
-  <string name="statistics_listened_for">Lyssnat i:</string>
   <string name="statistics_episodes_on_device">Episoder på enheten:</string>
   <string name="statistics_space_used">Använt utrymme:</string>
   <string name="statistics_view_all">Visa för alla podcasts »</string>
@@ -729,7 +701,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Inkludera:</string>
   <string name="share_playback_position_dialog_label">Uppspelningsposition</string>
-  <string name="share_dialog_media_file_url_label">Mediafils adress</string>
   <string name="share_dialog_episode_website_label">Episodes webbplats</string>
   <string name="share_dialog_media_file_label">Mediafil</string>
   <!--Audio controls-->
@@ -753,20 +724,6 @@
   <string name="proxy_port_invalid_error">Porten är inte giltig</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Antal kolumner</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Spela på...</string>
-  <string name="cast_disconnect_label">Koppla loss castningen</string>
-  <string name="cast_not_castable">Vald media är inte kompatibelt med cast-enheten</string>
-  <string name="cast_failed_to_play">Misslyckades att starta uppspelningen av media</string>
-  <string name="cast_failed_to_stop">Misslyckades att stoppa uppspelning av media</string>
-  <string name="cast_failed_to_pause">Misslyckades att pausa uppspelningen av media</string>
-  <string name="cast_failed_setting_volume">Misslyckades att ändra volymen</string>
-  <string name="cast_failed_no_connection">Det finns ingen koppling till cast-enheten</string>
-  <string name="cast_failed_no_connection_trans">Kopplingen till cast-enheten tappades. Applikationen försöker att återansluta, om det är möjligt. Vänta en stund och försök igen.</string>
-  <string name="cast_failed_status_request">Misslyckades att synkronisera med cast-enheten</string>
-  <string name="cast_failed_seek">Misslyckades att söka till den nya positionen på cast-enheten</string>
-  <string name="cast_failed_receiver_player_error">Mottagande uppspelaren har stött på ett allvarligt fel</string>
-  <string name="cast_failed_media_error_skipping">Fel vid uppspelning av media. Hoppar över...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Fel</string>
   <string name="notification_group_news">Nyheter</string>

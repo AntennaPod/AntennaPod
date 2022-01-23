@@ -37,7 +37,6 @@
   <string name="change_setting">Изменить</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время воспроизведения выпусков:</string>
-  <string name="statistics_details_dialog">Начато %1$d выпусков из %2$d.\n\nВоспроизведено %3$s из %4$s.</string>
   <string name="statistics_mode">Режим подсчета статистики</string>
   <string name="statistics_mode_normal">Рассчитывать длительность действительного воспроизведения. Повторное воспроизведение засчитывается, а отметка о прослушивании — нет</string>
   <string name="statistics_mode_count_all">Прибавлять также все выпуски, отмеченные как прослушанные</string>
@@ -186,7 +185,6 @@
     <item quantity="many">%d подписок обновлено.</item>
     <item quantity="other">%d подписок обновлено.</item>
   </plurals>
-  <string name="add_to_folder">Добавить в папку</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <plurals name="downloading_batch_label">
@@ -201,12 +199,6 @@
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
   <string name="delete_episode_label">Удалить выпуск</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d выпуск выбран, %d загрузка удалена</item>
-    <item quantity="few">%d выпуска выбрано, %d загрузка(и) удалены</item>
-    <item quantity="many">%d выпусков выбрано, %d загрузок удалено</item>
-    <item quantity="other">%d выпусков выбрано, %d загрузок удалено</item>
-  </plurals>
   <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
   <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
@@ -272,8 +264,6 @@
   <string name="download_error_forbidden">Сервер подкаста отказывает в ответе.</string>
   <string name="download_canceled_msg">Загрузка отменена</string>
   <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки.</string>
-  <string name="download_error_blocked">Загрузке препятствует другое приложение на устройстве.</string>
-  <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение либо что-то не так с сертификатом сервера.</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
   <string name="auto_download_report_title">Автозагрузка завершена</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
@@ -290,7 +280,6 @@
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
-  <string name="download_request_error_dialog_message_prefix">Ошибка при загрузке файла:\u0020</string>
   <string name="null_value_podcast_error">Не указан подкаст, который следовало бы показать.</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
   <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
@@ -304,7 +293,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Добавить в очередь</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Разрешить временно</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Ошибка</string>
   <string name="playback_error_server_died">Сервер недоступен</string>
   <string name="playback_error_unsupported">Не поддерживаемый формат</string>
   <string name="playback_error_timeout">Время ожидания истекло</string>
@@ -361,7 +349,6 @@
   <string name="storage_sum">Автоматическое удаление выпусков, импорт, экспорт</string>
   <string name="project_pref">Проект</string>
   <string name="synchronization_pref">Синхронизация</string>
-  <string name="synchronization_sum">Синхронизация с другими устройствами с помощью gpodder.net</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
@@ -454,17 +441,8 @@
   <string name="pref_theme_title_dark">Темная</string>
   <string name="pref_theme_title_trueblack">Черная (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
-  <string name="pref_gpodnet_authenticate_title">Войти</string>
-  <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации подписок.</string>
-  <string name="pref_gpodnet_logout_title">Выход из gpodder.net</string>
-  <string name="pref_gpodnet_logout_toast">Выход успешно выполнен</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Синхронизировать сейчас</string>
-  <string name="pref_gpodnet_sync_changes_sum">Синхронизировать изменения подписок и выпусков при помощи gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Выполнить полную синхронизацию</string>
-  <string name="pref_gpodnet_full_sync_sum">Синхронизировать состояния всех подписок и выпусков при помощи gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Вход как <i>%1$s</i> с устройства <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
   <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
   <string name="pref_feed_skip">Автоматический пропуск</string>
@@ -475,9 +453,9 @@
   <string name="pref_feed_skip_intro_toast">Пропущено %d сек. в начале</string>
   <string name="pref_playback_time_respects_speed_title">Подстройка метаданных под скорость воспроизведения</string>
   <string name="pref_playback_time_respects_speed_sum">Значения позиции и длительности зависят от скорости воспроизведения</string>
-  <string name="pref_fast_forward">Интервал быстрой перемотки вперед</string>
+  <string name="pref_fast_forward">Интервал перемотки вперёд</string>
   <string name="pref_fast_forward_sum">Настройте длину шага в секундах при нажатии кнопки перемотки вперед</string>
-  <string name="pref_rewind">Интервал быстрой перемотки назад</string>
+  <string name="pref_rewind">Интервал перемотки назад</string>
   <string name="pref_rewind_sum">Настройте длину шага в секундах при нажатии кнопки перемотки назад</string>
   <string name="pref_expandNotify_title">Уведомление с высоким приоритетом</string>
   <string name="pref_expandNotify_sum">Как правило, разворачивает уведомление, показывая кнопки управления воспроизведением.</string>
@@ -507,9 +485,6 @@
   <string name="pref_proxy_title">Прокси</string>
   <string name="pref_proxy_sum">Настройки прокси</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
-  <string name="pref_cast_title">Поддержка Chromecast</string>
-  <string name="pref_cast_message_play_flavor">Включить воспроизведение на устройствах с Google Cast (Chromecast, колонки, ТВ на Android TV и др.)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Для работы Chromecast требуются собственнические библиотеки третьей стороны, которые не включены в данную версию AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Добавлять загруженные в очередь</string>
   <string name="pref_enqueue_downloaded_summary">Добавлять загруженные выпуски в очередь</string>
   <string name="media_player_builtin">Встроенный Android (устарел)</string>
@@ -597,7 +572,6 @@
   <string name="export_success_title">Экспорт выполнен</string>
   <string name="export_success_sum">Файл экспорта был сохранен в папку:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Для чтения файла OPML необходим доступ к внешнему хранилищу</string>
-  <string name="import_select_file">Выбрать файл для импорта</string>
   <string name="successful_import_label">Импорт успешен</string>
   <string name="import_ok">Нажмите OK, чтобы перезапустить AntennaPod</string>
   <string name="import_no_downgrade">Выбранная база данных экспортирована из более поздней версии AntennaPod. Установленная версия не сможет воспользоваться этой базой.</string>
@@ -667,7 +641,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза при прерывании</string>
   <string name="pref_resumeAfterCall_sum">Продолжать воспроизведение после завершения звонка</string>
   <string name="pref_resumeAfterCall_title">Продолжать после вызова</string>
-  <string name="pref_restart_required">Следует перезапустить AntennaPod для применения настроек.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribing_label">Подписка оформляется…</string>
@@ -691,8 +664,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Авторизация</string>
   <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков.</string>
-  <string name="feed_folders_label">Каталоги</string>
-  <string name="feed_folders_summary">Измените каталоги в которых отображается этот подкаст.</string>
   <string name="feed_folders_include_root">Показывать в основном списке</string>
   <string name="auto_download_settings_label">Настройки автозагрузки</string>
   <string name="episode_filters_label">Фильтр выпусков</string>
@@ -703,7 +674,6 @@
   <string name="keep_updated">Постоянно обновлять</string>
   <string name="keep_updated_summary">Обновлять подкаст при (авто)обновлении всех подкастов</string>
   <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
-  <string name="statistics_listened_for">Слушали:</string>
   <string name="statistics_episodes_on_device">Выпуски на устройстве:</string>
   <string name="statistics_space_used">Используемое пространство:</string>
   <string name="statistics_view_all">Просмотреть все подкасты »</string>
@@ -765,7 +735,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Включая:</string>
   <string name="share_playback_position_dialog_label">Позиция воспроизведения</string>
-  <string name="share_dialog_media_file_url_label">Адрес медиафайла</string>
   <string name="share_dialog_episode_website_label">Вебстраница выпуска</string>
   <string name="share_dialog_media_file_label">Медиафайл</string>
   <!--Audio controls-->
@@ -789,20 +758,6 @@
   <string name="proxy_port_invalid_error">Неверный порт</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Количество колонок</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Воспроизвести на…</string>
-  <string name="cast_disconnect_label">Закрыть сеанс передачи Google cast</string>
-  <string name="cast_not_castable">Выбранный файл не поддерживается устройством Google Cast</string>
-  <string name="cast_failed_to_play">Невозможно начать воспроизведение</string>
-  <string name="cast_failed_to_stop">Невозможно остановить воспроизведение</string>
-  <string name="cast_failed_to_pause">Невозможно приостановить воспроизведение</string>
-  <string name="cast_failed_setting_volume">Невозможно установить громкость</string>
-  <string name="cast_failed_no_connection">Нет соединений с устройствами Google cast</string>
-  <string name="cast_failed_no_connection_trans">Соединение с устройством Google Cast потеряно. Соединение восстанавливается. Попробуйте снова через несколько секунд.</string>
-  <string name="cast_failed_status_request">Не удалось синхронизироваться с устройством Google cast</string>
-  <string name="cast_failed_seek">Не удалось выполнить перемотку на устройстве Google cast</string>
-  <string name="cast_failed_receiver_player_error">Серьезная ошибка воспроизведения в устройстве Google cast</string>
-  <string name="cast_failed_media_error_skipping">Ошибка воспроизведения. Пропускаю…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Ошибки</string>
   <string name="notification_group_news">Обновления</string>

@@ -31,7 +31,6 @@
   <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Oynatılan bölümlerin toplam süresi:</string>
-  <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
   <string name="statistics_mode">İstatistik modu</string>
   <string name="statistics_mode_normal">Gerçek oynatılan süreyi hesaplayın. Oynatıldı olarak işaretlemeler sayılmazken, iki kez oynatılan iki kez sayılır</string>
   <string name="statistics_mode_count_all">Sum up all episodes marked as played</string>
@@ -215,8 +214,6 @@
   <string name="download_error_forbidden">Podcast\'in bulunduğu sunucu cevap vermeyi reddediyor.</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
   <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
-  <string name="download_error_blocked">İndirme, cihazınızdaki başka bir uygulama tarafından engellendi.</string>
-  <string name="download_error_certificate">Güvenli bağlantı kurulamıyor. Bu, cihazınızdaki başka bir uygulamanın indirmeyi engellediği ya da sunucunun sertifikalarında bazı sorunlar olduğu anlamına gelebilir.</string>
   <string name="download_report_title">İndirme hata(lar) ile tamamlandı</string>
   <string name="auto_download_report_title">Auto-downloads completed</string>
   <string name="download_error_io_error">G/Ç Hatası</string>
@@ -230,7 +227,6 @@
   <string name="download_log_title_unknown">bilinmeyen başlık</string>
   <string name="download_type_feed">Besleme</string>
   <string name="download_type_media">Medya dosyası</string>
-  <string name="download_request_error_dialog_message_prefix">Dosyayı indirmeye çalışırken bir hata oluştu:\u0020</string>
   <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
   <string name="authentication_notification_title">Yetkilendirme gerekiyor</string>
   <string name="authentication_notification_msg">İstediğiniz kaynak kullanıcı adı ve şifre istiyor</string>
@@ -244,7 +240,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Sadece Kuyruğa ekle</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Geçici olarak aç</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Hata!</string>
   <string name="playback_error_server_died">Sunucu geberdi</string>
   <string name="playback_error_unsupported">Unsupported media type</string>
   <string name="playback_error_timeout">Operation timed out</string>
@@ -301,7 +296,6 @@
   <string name="storage_sum">Episode auto delete, Import, Export</string>
   <string name="project_pref">Proje</string>
   <string name="synchronization_pref">Synchronization</string>
-  <string name="synchronization_sum">Synchronize with other devices using gpodder.net</string>
   <string name="automation">Otomasyon</string>
   <string name="download_pref_details">Detaylar</string>
   <string name="import_export_pref">Al/Aktar</string>
@@ -372,17 +366,8 @@
   <string name="pref_theme_title_dark">Karanlık</string>
   <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
   <string name="pref_episode_cache_unlimited">Sınırsız</string>
-  <string name="pref_gpodnet_authenticate_title">Giriş</string>
-  <string name="pref_gpodnet_authenticate_sum">Üyeliklerinizi senkronize etmek için gpodder.net hesabınızla oturum açın.</string>
-  <string name="pref_gpodnet_logout_title">Çıkış</string>
-  <string name="pref_gpodnet_logout_toast">Çıkış başarılı</string>
   <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synchronize now</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
-  <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
   <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
   <string name="pref_feed_skip">Auto Skip</string>
@@ -424,9 +409,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Set a network proxy</string>
   <string name="pref_no_browser_found">No web browser found.</string>
-  <string name="pref_cast_title">Chromecast support</string>
-  <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
   <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (tavsiye edilen)</string>
@@ -507,7 +489,6 @@
   <string name="export_success_title">Export successful</string>
   <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
-  <string name="import_select_file">Select file to import</string>
   <string name="successful_import_label">Import successful</string>
   <string name="import_ok">Please press OK to restart AntennaPod</string>
   <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
@@ -559,7 +540,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Kesintiler için duraklat</string>
   <string name="pref_resumeAfterCall_sum">Bir telefon konuşması tamamlandıktan sonra çalmaya kaldığı yerden devam et</string>
   <string name="pref_resumeAfterCall_title">Konuşmadan sonra devam et</string>
-  <string name="pref_restart_required">Bu değişikliğin geçerli olması için AntennaPod yeniden başlatılmalıdır.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribing_label">Subscribing…</string>
@@ -589,7 +569,6 @@
   <string name="keep_updated">Keep Updated</string>
   <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
   <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-  <string name="statistics_listened_for">Listened for:</string>
   <string name="statistics_episodes_on_device">Episodes on the device:</string>
   <string name="statistics_space_used">Space used:</string>
   <string name="statistics_view_all">View for all podcasts »</string>
@@ -651,7 +630,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Include:</string>
   <string name="share_playback_position_dialog_label">Playback position</string>
-  <string name="share_dialog_media_file_url_label">Media file address</string>
   <string name="share_dialog_episode_website_label">Episode webpage</string>
   <string name="share_dialog_media_file_label">Media file</string>
   <!--Audio controls-->
@@ -675,20 +653,6 @@
   <string name="proxy_port_invalid_error">Port not valid</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Number of columns</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Play on…</string>
-  <string name="cast_disconnect_label">Disconnect the cast session</string>
-  <string name="cast_not_castable">Media selected is not compatible with cast device</string>
-  <string name="cast_failed_to_play">Failed to start the playback of media</string>
-  <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
-  <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
-  <string name="cast_failed_setting_volume">Failed to set the volume</string>
-  <string name="cast_failed_no_connection">No connection to the cast device is present</string>
-  <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
-  <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
-  <string name="cast_failed_seek">Yayın aygıtındaki yeni pozisyona erişilemedi</string>
-  <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
-  <string name="cast_failed_media_error_skipping">Error playing media. Skipping…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Hatalar</string>
   <string name="notification_group_news">Haberler</string>
