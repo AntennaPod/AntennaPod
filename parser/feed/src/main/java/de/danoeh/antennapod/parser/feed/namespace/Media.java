@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.element.AtomText;
-import de.danoeh.antennapod.parser.feed.util.SyndTypeUtils;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 /** Processes tags from the http://search.yahoo.com/mrss/ namespace. */
 public class Media extends Namespace {
@@ -43,13 +43,12 @@ public class Media extends Namespace {
                                           Attributes attributes) {
         if (CONTENT.equals(localName)) {
             String url = attributes.getValue(DOWNLOAD_URL);
-            String type = attributes.getValue(MIME_TYPE);
             String defaultStr = attributes.getValue(DEFAULT);
             String medium = attributes.getValue(MEDIUM);
             boolean validTypeMedia = false;
             boolean validTypeImage = false;
             boolean isDefault = "true".equals(defaultStr);
-            String mimeType = SyndTypeUtils.getMimeType(type, url);
+            String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(MIME_TYPE), url);
 
             if (MEDIUM_AUDIO.equals(medium)) {
                 validTypeMedia = true;
@@ -63,9 +62,9 @@ public class Media extends Namespace {
                 validTypeImage = true;
                 mimeType = "image/*";
             } else {
-                if (SyndTypeUtils.isMediaFile(mimeType)) {
+                if (MimeTypeUtils.isMediaFile(mimeType)) {
                     validTypeMedia = true;
-                } else if (SyndTypeUtils.isImageFile(mimeType)) {
+                } else if (MimeTypeUtils.isImageFile(mimeType)) {
                     validTypeImage = true;
                 }
             }

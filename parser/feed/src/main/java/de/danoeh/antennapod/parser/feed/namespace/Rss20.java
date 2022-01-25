@@ -12,7 +12,7 @@ import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.parser.feed.util.SyndTypeUtils;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 import java.util.Locale;
 
@@ -46,13 +46,12 @@ public class Rss20 extends Namespace {
             state.getItems().add(state.getCurrentItem());
             state.getCurrentItem().setFeed(state.getFeed());
         } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())) {
-            String type = attributes.getValue(ENC_TYPE);
             String url = attributes.getValue(ENC_URL);
-            String mimeType = SyndTypeUtils.getMimeType(type, url);
+            String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(ENC_TYPE), url);
 
             boolean validUrl = !TextUtils.isEmpty(url);
             if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null
-                    && SyndTypeUtils.isMediaFile(mimeType) && validUrl) {
+                    && MimeTypeUtils.isMediaFile(mimeType) && validUrl) {
                 long size = 0;
                 try {
                     size = Long.parseLong(attributes.getValue(ENC_LEN));

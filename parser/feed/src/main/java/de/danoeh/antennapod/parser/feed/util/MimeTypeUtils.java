@@ -4,13 +4,27 @@ import android.webkit.MimeTypeMap;
 import androidx.annotation.Nullable;
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Utility class for handling MIME-Types of enclosures.
  * */
-public class SyndTypeUtils {
+public class MimeTypeUtils {
     public static final String OCTET_STREAM = "application/octet-stream";
 
-    private SyndTypeUtils() {
+    // based on https://developer.android.com/guide/topics/media/media-formats
+    static final Set<String> AUDIO_FILE_EXTENSIONS = new HashSet<>(Arrays.asList(
+            "3gp", "aac", "amr", "flac", "imy", "m4a", "mid", "mkv", "mp3", "mp4", "mxmf", "oga",
+            "ogg", "ogx", "opus", "ota", "rtttl", "rtx", "wav", "xmf"
+    ));
+
+    static final Set<String> VIDEO_FILE_EXTENSIONS = new HashSet<>(Arrays.asList(
+            "3gp", "mkv", "mp4", "ogg", "ogv", "ogx", "webm"
+    ));
+
+    private MimeTypeUtils() {
 
     }
 
@@ -19,7 +33,7 @@ public class SyndTypeUtils {
         if (isMediaFile(type) && !OCTET_STREAM.equals(type)) {
             return type;
         }
-        String filenameType = SyndTypeUtils.getMimeTypeFromUrl(filename);
+        String filenameType = MimeTypeUtils.getMimeTypeFromUrl(filename);
         if (isMediaFile(filenameType)) {
             return filenameType;
         }
@@ -54,6 +68,16 @@ public class SyndTypeUtils {
             return null;
         }
         String extension = FilenameUtils.getExtension(url);
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        String mapResult = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (mapResult != null) {
+            return mapResult;
+        }
+
+        if (AUDIO_FILE_EXTENSIONS.contains(extension)) {
+            return "audio/*";
+        } else if (VIDEO_FILE_EXTENSIONS.contains(extension)) {
+            return "video/*";
+        }
+        return null;
     }
 }
