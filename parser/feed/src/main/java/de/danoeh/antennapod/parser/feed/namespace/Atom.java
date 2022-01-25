@@ -92,14 +92,11 @@ public class Atom extends Namespace {
                         Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String type = attributes.getValue(LINK_TYPE);
-
-                    if (type == null) {
-                        type = SyndTypeUtils.getMimeTypeFromUrl(href);
-                    }
+                    String mimeType = SyndTypeUtils.getMimeType(type, href);
 
                     FeedItem currItem = state.getCurrentItem();
-                    if (SyndTypeUtils.enclosureTypeValid(type) && currItem != null && !currItem.hasMedia()) {
-                        currItem.setMedia(new FeedMedia(currItem, href, size, type));
+                    if (SyndTypeUtils.isMediaFile(mimeType) && currItem != null && !currItem.hasMedia()) {
+                        currItem.setMedia(new FeedMedia(currItem, href, size, mimeType));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
                     state.getCurrentItem().setPaymentLink(href);

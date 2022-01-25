@@ -49,27 +49,23 @@ public class Media extends Namespace {
             boolean validTypeMedia = false;
             boolean validTypeImage = false;
             boolean isDefault = "true".equals(defaultStr);
-            String guessedType = SyndTypeUtils.getMimeTypeFromUrl(url);
+            String mimeType = SyndTypeUtils.getMimeType(type, url);
 
             if (MEDIUM_AUDIO.equals(medium)) {
                 validTypeMedia = true;
-                type = "audio/*";
+                mimeType = "audio/*";
             } else if (MEDIUM_VIDEO.equals(medium)) {
                 validTypeMedia = true;
-                type = "video/*";
-            } else if (MEDIUM_IMAGE.equals(medium) && (guessedType == null
-                    || (!guessedType.startsWith("audio/") && !guessedType.startsWith("video/")))) {
+                mimeType = "video/*";
+            } else if (MEDIUM_IMAGE.equals(medium) && (mimeType == null
+                    || (!mimeType.startsWith("audio/") && !mimeType.startsWith("video/")))) {
                 // Apparently, some publishers explicitly specify the audio file as an image
                 validTypeImage = true;
-                type = "image/*";
+                mimeType = "image/*";
             } else {
-                if (type == null) {
-                    type = guessedType;
-                }
-
-                if (SyndTypeUtils.enclosureTypeValid(type)) {
+                if (SyndTypeUtils.isMediaFile(mimeType)) {
                     validTypeMedia = true;
-                } else if (SyndTypeUtils.imageTypeValid(type)) {
+                } else if (SyndTypeUtils.isImageFile(mimeType)) {
                     validTypeImage = true;
                 }
             }
@@ -94,7 +90,7 @@ public class Media extends Namespace {
                         Log.e(TAG, "Duration \"" + durationStr + "\" could not be parsed");
                     }
                 }
-                FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
+                FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, mimeType);
                 if (durationMs > 0) {
                     media.setDuration(durationMs);
                 }
