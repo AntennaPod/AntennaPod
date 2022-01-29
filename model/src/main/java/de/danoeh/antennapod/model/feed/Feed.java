@@ -19,6 +19,7 @@ public class Feed extends FeedFile {
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
+    public static final String PREFIX_GENERATIVE_COVER = "antennapod_generative_cover:";
 
     /**
      * title as defined by the feed.
