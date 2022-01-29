@@ -34,6 +34,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 public class LocalFeedUpdater {
 
@@ -74,21 +75,8 @@ public class LocalFeedUpdater {
         List<DocumentFile> mediaFiles = new ArrayList<>();
         Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
-            String mime = file.getType();
-            if (mime == null) {
-                continue;
-            }
-
-            MediaType mediaType = MediaType.fromMimeType(mime);
-            if (mediaType == MediaType.UNKNOWN) {
-                String path = file.getUri().toString();
-                int fileExtensionPosition = path.lastIndexOf('.');
-                if (fileExtensionPosition >= 0) {
-                    String extensionWithoutDot = path.substring(fileExtensionPosition + 1);
-                    mediaType = MediaType.fromFileExtension(extensionWithoutDot);
-                }
-            }
-
+            String mimeType = MimeTypeUtils.getMimeType(file.getType(), file.getUri().toString());
+            MediaType mediaType = MediaType.fromMimeType(mimeType);
             if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
                 mediaFiles.add(file);
                 mediaFileNames.add(file.getName());

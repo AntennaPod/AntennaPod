@@ -12,7 +12,7 @@ import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.parser.feed.util.SyndTypeUtils;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 import java.util.Locale;
 
@@ -46,18 +46,12 @@ public class Rss20 extends Namespace {
             state.getItems().add(state.getCurrentItem());
             state.getCurrentItem().setFeed(state.getFeed());
         } else if (ENCLOSURE.equals(localName) && ITEM.equals(state.getTagstack().peek().getName())) {
-            String type = attributes.getValue(ENC_TYPE);
             String url = attributes.getValue(ENC_URL);
-
-            boolean validType = SyndTypeUtils.enclosureTypeValid(type);
-            if (!validType) {
-                type = SyndTypeUtils.getMimeTypeFromUrl(url);
-                validType = SyndTypeUtils.enclosureTypeValid(type);
-            }
+            String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(ENC_TYPE), url);
 
             boolean validUrl = !TextUtils.isEmpty(url);
             if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null
-                    && validType && validUrl) {
+                    && MimeTypeUtils.isMediaFile(mimeType) && validUrl) {
                 long size = 0;
                 try {
                     size = Long.parseLong(attributes.getValue(ENC_LEN));
@@ -68,7 +62,7 @@ public class Rss20 extends Namespace {
                 } catch (NumberFormatException e) {
                     Log.d(TAG, "Length attribute could not be parsed.");
                 }
-                FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
+                FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, mimeType);
                 state.getCurrentItem().setMedia(media);
             }
         }
