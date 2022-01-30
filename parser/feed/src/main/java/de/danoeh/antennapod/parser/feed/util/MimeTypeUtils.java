@@ -16,7 +16,7 @@ public class MimeTypeUtils {
 
     // based on https://developer.android.com/guide/topics/media/media-formats
     static final Set<String> AUDIO_FILE_EXTENSIONS = new HashSet<>(Arrays.asList(
-            "3gp", "aac", "amr", "flac", "imy", "m4a", "mid", "mkv", "mp3", "mp4", "mxmf", "oga",
+            "3gp", "aac", "amr", "flac", "imy", "m4a", "m4b", "mid", "mkv", "mp3", "mp4", "mxmf", "oga",
             "ogg", "ogx", "opus", "ota", "rtttl", "rtx", "wav", "xmf"
     ));
 
