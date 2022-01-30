@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -104,7 +103,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        feed.setImageUrl(getImageUrl(context, documentFolder));
+        feed.setImageUrl(getImageUrl(documentFolder));
 
         feed.getPreferences().setAutoDownload(false);
         feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
@@ -122,7 +121,7 @@ public class LocalFeedUpdater {
      * Returns the image URL for the local feed.
      */
     @NonNull
-    static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
+    static String getImageUrl(@NonNull DocumentFile documentFolder) {
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
             DocumentFile image = documentFolder.findFile(iconLocation);
@@ -140,17 +139,7 @@ public class LocalFeedUpdater {
         }
 
         // use default icon as fallback
-        return getDefaultIconUrl(context);
-    }
-
-    /**
-     * Returns the URL of the default icon for a local feed. The URL refers to an app resource file.
-     */
-    public static String getDefaultIconUrl(Context context) {
-        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + context.getPackageName() + "/raw/"
-                + resourceEntryName;
+        return Feed.PREFIX_GENERATIVE_COVER + documentFolder.getUri();
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {

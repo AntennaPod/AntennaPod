@@ -31,7 +31,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -41,6 +40,7 @@ import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -158,8 +158,7 @@ public class LocalFeedUpdaterTest {
         callUpdateFeed(LOCAL_FEED_DIR1);
 
         Feed feedAfter = verifySingleFeedInDatabase();
-        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertThat(feedAfter.getImageUrl(), endsWith(resourceEntryName));
+        assertThat(feedAfter.getImageUrl(), startsWith(Feed.PREFIX_GENERATIVE_COVER));
     }
 
     /**
@@ -191,17 +190,15 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testGetImageUrl_EmptyFolder() {
         DocumentFile documentFolder = mockDocumentFolder();
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertThat(imageUrl, endsWith(defaultImageName));
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
+        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
     }
 
     @Test
     public void testGetImageUrl_NoImageButAudioFiles() {
         DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertThat(imageUrl, endsWith(defaultImageName));
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
+        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
     }
 
     @Test
@@ -209,7 +206,7 @@ public class LocalFeedUpdaterTest {
         for (String filename : LocalFeedUpdater.PREFERRED_FEED_IMAGE_FILENAMES) {
             DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
                     mockDocumentFile(filename, "image/jpeg")); // image MIME type doesn't matter
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
             assertThat(imageUrl, endsWith(filename));
         }
     }
@@ -218,7 +215,7 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenameJpg() {
         DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.jpg", "image/jpeg"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
         assertThat(imageUrl, endsWith("my-image.jpg"));
     }
 
@@ -226,7 +223,7 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenameJpeg() {
         DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.jpeg", "image/jpeg"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
         assertThat(imageUrl, endsWith("my-image.jpeg"));
     }
 
@@ -234,7 +231,7 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenamePng() {
         DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.png", "image/png"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
         assertThat(imageUrl, endsWith("my-image.png"));
     }
 
@@ -242,9 +239,8 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenameUnsupportedMimeType() {
         DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.svg", "image/svg+xml"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertThat(imageUrl, endsWith(defaultImageName));
+        String imageUrl = LocalFeedUpdater.getImageUrl(documentFolder);
+        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
     }
 
     /**
