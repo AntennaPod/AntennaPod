@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -140,9 +141,12 @@ public class AddFeedFragment extends Fragment {
         alertViewBinding.urlEditText.setHint(R.string.add_podcast_by_url_hint);
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        String clipboardContent = clipboard.getText() != null ? clipboard.getText().toString() : "";
-        if (clipboardContent.trim().startsWith("http")) {
-            alertViewBinding.urlEditText.setText(clipboardContent.trim());
+        final ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData != null && clipData.getItemCount() > 0 && clipData.getItemAt(0).getText() != null) {
+            final String clipboardContent = clipData.getItemAt(0).getText().toString();
+            if (clipboardContent.trim().startsWith("http")) {
+                alertViewBinding.urlEditText.setText(clipboardContent.trim());
+            }
         }
         builder.setView(alertViewBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label,
