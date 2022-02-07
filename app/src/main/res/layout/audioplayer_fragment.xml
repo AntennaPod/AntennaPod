@@ -199,33 +199,6 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
-            <de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView
-                    android:id="@+id/butPlaybackSpeed"
-                    android:layout_width="@dimen/audioplayer_playercontrols_length"
-                    android:layout_height="@dimen/audioplayer_playercontrols_length"
-                    android:layout_toLeftOf="@id/butRev"
-                    android:layout_toStartOf="@id/butRev"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/playback_speed"
-                    tools:srcCompat="@drawable/ic_playback_speed"
-                    app:foregroundColor="?attr/action_icon_color"/>
-
-            <TextView
-                    android:id="@+id/txtvPlaybackSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/butPlaybackSpeed"
-                    android:layout_alignLeft="@id/butPlaybackSpeed"
-                    android:layout_alignStart="@id/butPlaybackSpeed"
-                    android:layout_alignRight="@id/butPlaybackSpeed"
-                    android:layout_alignEnd="@id/butPlaybackSpeed"
-                    android:gravity="center"
-                    android:text="1.00"
-                    android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:clickable="false"/>
-
             <ImageButton
                     android:id="@+id/butFF"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"

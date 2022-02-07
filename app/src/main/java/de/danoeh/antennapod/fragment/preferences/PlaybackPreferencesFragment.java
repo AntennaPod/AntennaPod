@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import java.util.Map;
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,10 +41,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
     private void setupPlaybackScreen() {
         final Activity activity = getActivity();
 
-        findPreference(PREF_PLAYBACK_SPEED_LAUNCHER).setOnPreferenceClickListener(preference -> {
-            new VariableSpeedDialog().show(getChildFragmentManager(), null);
-            return true;
-        });
         findPreference(PREF_PLAYBACK_REWIND_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_REWIND, null);
             return true;

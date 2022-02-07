@@ -48,12 +48,11 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
-                updateSpeed(new SpeedChangedEvent(getCurrentPlaybackSpeedMultiplier()));
             }
         };
         controller.init();
         setupUi();
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override
@@ -75,14 +74,7 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
-        speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
-        speedSeekBar.setProgressChangedListener(speed -> {
-            if (controller != null) {
-                controller.setPlaybackSpeed(speed);
-            }
-        });
-        updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+
 
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
@@ -111,11 +103,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updateSpeed(SpeedChangedEvent event) {
-        txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", event.getNewSpeed()));
-        speedSeekBar.updateSpeed(event.getNewSpeed());
-    }
+
 
     private void setupAudioTracks() {
         List<String> audioTracks = controller.getAudioTracks();

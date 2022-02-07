@@ -31,7 +31,6 @@ import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,7 +48,6 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
@@ -59,7 +57,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
 import de.danoeh.antennapod.view.ChapterSeekBar;
@@ -121,8 +118,7 @@ public class AudioPlayerFragment extends Fragment implements
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
 
-        butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
-        txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);
+
         sbPosition = root.findViewById(R.id.sbPosition);
         txtvPosition = root.findViewById(R.id.txtvPosition);
         txtvLength = root.findViewById(R.id.txtvLength);
@@ -138,7 +134,6 @@ public class AudioPlayerFragment extends Fragment implements
 
         setupLengthTextView();
         setupControlButtons();
-        butPlaybackSpeed.setOnClickListener(v -> new VariableSpeedDialog().show(getChildFragmentManager(), null));
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
@@ -246,12 +241,7 @@ public class AudioPlayerFragment extends Fragment implements
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updatePlaybackSpeedButton(SpeedChangedEvent event) {
-        String speedStr = new DecimalFormat("0.00").format(event.getNewSpeed());
-        txtvPlaybackSpeed.setText(speedStr);
-        butPlaybackSpeed.setSpeed(event.getNewSpeed());
-    }
+
 
     private void loadMediaInfo(boolean includingChapters) {
         if (disposable != null) {
@@ -304,7 +294,6 @@ public class AudioPlayerFragment extends Fragment implements
         }
         duration = controller.getDuration();
         updatePosition(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
-        updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
         setChapterDividers(media);
         setupOptionsMenu(media);
     }
