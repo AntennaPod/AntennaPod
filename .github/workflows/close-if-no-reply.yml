@@ -13,13 +13,15 @@ jobs:
     steps:
       - uses: actions/stale@v4
         with:
-          days-before-stale: 10
-          days-before-close: 10
+          days-before-stale: 15
+          days-before-close: 15
           only-labels: 'Awaiting reply'
           stale-issue-label: 'Still awaiting reply'
           stale-pr-label: 'Still awaiting reply'
+          stale-issue-message: "This issue will be closed when we don't get a reply within 15 days."
+          stale-pr-message: "This PR will be closed when we don't get a reply within 15 days."
           labels-to-remove-when-unstale: 'Awaiting reply'
           close-issue-label: "Close reason: no reply"
           close-pr-label: "Close reason: no reply"
-          close-issue-message: "This issue was closed because we didn't get a reply for 20 days."
-          close-pr-message: "This pr was closed because we didn't get a reply for 20 days."
+          close-issue-message: "This issue was closed because we didn't get a reply for 30 days."
+          close-pr-message: "This PR was closed because we didn't get a reply for 30 days."
