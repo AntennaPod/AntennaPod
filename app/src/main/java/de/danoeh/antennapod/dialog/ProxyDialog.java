@@ -148,32 +148,24 @@ public class ProxyDialog {
     }
 
     private void setProxyConfig() {
-        String type = (String) spType.getSelectedItem();
-        ProxyConfig proxy;
-        if (Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
-            proxy = ProxyConfig.direct();
-        } else {
-            String host = etHost.getText().toString();
-            String port = etPort.getText().toString();
-            String username = etUsername.getText().toString();
-            if (TextUtils.isEmpty(username)) {
-                username = null;
-            }
-            String password = etPassword.getText().toString();
-            if (TextUtils.isEmpty(password)) {
-                password = null;
-            }
-            int portValue = 0;
-            if (!TextUtils.isEmpty(port)) {
-                portValue = Integer.parseInt(port);
-            }
-            if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
-                proxy = ProxyConfig.socks(host, portValue, username, password);
-            } else {
-                proxy = ProxyConfig.http(host, portValue, username, password);
-            }
+        final String type = (String) spType.getSelectedItem();
+        final Proxy.Type typeEnum = Proxy.Type.valueOf(type);
+        final String host = etHost.getText().toString();
+        final String port = etPort.getText().toString();
+
+        String username = etUsername.getText().toString();
+        if (TextUtils.isEmpty(username)) {
+            username = null;
         }
-        UserPreferences.setProxyConfig(proxy);
+        String password = etPassword.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            password = null;
+        }
+        int portValue = 0;
+        if (!TextUtils.isEmpty(port)) {
+            portValue = Integer.parseInt(port);
+        }
+        UserPreferences.setProxyConfig(new ProxyConfig(typeEnum, host, portValue, username, password));
     }
 
     private final TextWatcher requireTestOnChange = new TextWatcher() {
