@@ -185,6 +185,9 @@
     <item quantity="many">%d подписок обновлено.</item>
     <item quantity="other">%d подписок обновлено.</item>
   </plurals>
+  <string name="edit_tags">Редактировать метки</string>
+  <string name="rename_tag_label">Переименовать метку</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Загрузка выпусков через мобильное соединение отключена в настройках.\n\nВы действительно хотите обновить подкасты через мобильное соединение?</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <plurals name="downloading_batch_label">
@@ -199,6 +202,12 @@
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
   <string name="delete_episode_label">Удалить выпуск</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">%d загруженный выпуск удалён.</item>
+    <item quantity="few">%d загруженных выпуска удалёно.</item>
+    <item quantity="many">%d загруженных выпусков удалёно.</item>
+    <item quantity="other">%d загруженных выпусков удалёно.</item>
+  </plurals>
   <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
   <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
@@ -264,6 +273,8 @@
   <string name="download_error_forbidden">Сервер подкаста отказывает в ответе.</string>
   <string name="download_canceled_msg">Загрузка отменена</string>
   <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки.</string>
+  <string name="download_error_blocked">Загрузка была заблокирована другим приложением на вашем устройстве (например, VPN или блокировщиком рекламы).</string>
+  <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение (например, VPN или блокировщик рекламы), либо что-то не так с сертификатом сервера.</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
   <string name="auto_download_report_title">Автозагрузка завершена</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
@@ -281,6 +292,7 @@
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
   <string name="null_value_podcast_error">Не указан подкаст, который следовало бы показать.</string>
+  <string name="no_feed_url_podcast_found_by_search">У предложенного подкаста отсутствует RSS-ссылка, AntennaPod нашел подкаст, который возможно ему соответствует</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
   <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
   <string name="confirm_mobile_download_dialog_title">Подтвердите загрузку через мобильное соединение</string>
@@ -349,6 +361,7 @@
   <string name="storage_sum">Автоматическое удаление выпусков, импорт, экспорт</string>
   <string name="project_pref">Проект</string>
   <string name="synchronization_pref">Синхронизация</string>
+  <string name="synchronization_sum">Синхронизация с другими устройствами</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
@@ -441,8 +454,20 @@
   <string name="pref_theme_title_dark">Темная</string>
   <string name="pref_theme_title_trueblack">Черная (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
+  <string name="synchronization_logout">Выход</string>
+  <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
+  <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
+  <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
+  <string name="synchronization_summary_unchoosen">Вы можете выбрать провайдера для сихронизации ваших подписок и состояния воспроизведения выпусков</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync — приложение с открытым исходным кодом для Nextcloud, которое вы можете установить на свой сервер. Это приложение не связано с проектом AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Предоставить доступ, открыв веб-браузер, и вернуться в AntennaPod.</string>
+  <string name="synchronization_choose_title">Выберите провайдера синхронизации</string>
+  <string name="synchronization_force_sync_summary">Пересихронизировать ваши подписки и состояние выпусков</string>
+  <string name="synchronization_sync_summary">Сихронизировать ваши подписки и изменения состояния выпусков</string>
+  <string name="dialog_choose_sync_service_title">Выберите провайдера синхронизации</string>
   <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
   <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
   <string name="pref_feed_skip">Автоматический пропуск</string>
@@ -522,6 +547,8 @@
   <string name="new_episode_notification_disabled">Без уведомления</string>
   <string name="pref_feed_settings_dialog_msg">Эта настройка у каждого подкаста своя. Изменить её можно открыв страницу подкаста.</string>
   <string name="pref_contribute">Поучаствовать</string>
+  <string name="pref_show_subscription_title">Показать название подписки</string>
+  <string name="pref_show_subscription_title_summary">Отображать название подписки внизу обложки.</string>
   <!--About screen-->
   <string name="about_pref">О программе</string>
   <string name="antennapod_version">Версия AntennaPod</string>
@@ -544,6 +571,7 @@
   <string name="sync_status_episodes_download">Загрузка изменений выпуска…</string>
   <string name="sync_status_upload_played">Отправка состояния прослушивания…</string>
   <string name="sync_status_subscriptions">Синхронизация подписок…</string>
+  <string name="sync_status_wait_for_downloads">Ожидаем завершения загрузок…</string>
   <string name="sync_status_success">Синхронизация выполнена</string>
   <string name="sync_status_error">Сбой синхронизации</string>
   <!--import and export-->
@@ -647,6 +675,7 @@
   <string name="preview_episode">Предпросмотр</string>
   <string name="stop_preview">Остановить предпросмотр</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Назад</string>
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперед</string>
   <string name="increase_speed">Увеличить скорость</string>
@@ -664,18 +693,26 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Авторизация</string>
   <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков.</string>
+  <string name="feed_tags_label">Метки</string>
+  <string name="feed_tags_summary">Измените метки для этого подкаста, чтобы помочь организовать ваши подписки</string>
   <string name="feed_folders_include_root">Показывать в основном списке</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Отображаются только общие метки для всех выбранных подписок. Другие метки остаются незатронутыми.</string>
   <string name="auto_download_settings_label">Настройки автозагрузки</string>
   <string name="episode_filters_label">Фильтр выпусков</string>
   <string name="episode_filters_description">Перечень условий по включению или исключению выпуска из списков автоматической загрузки</string>
   <string name="episode_filters_include">Включить</string>
   <string name="episode_filters_exclude">Исключить</string>
+  <string name="episode_filters_duration">Минимальная продолжительность (в минутах)</string>
   <string name="episode_filters_hint">По одному слову \n\"По фразе\"</string>
   <string name="keep_updated">Постоянно обновлять</string>
   <string name="keep_updated_summary">Обновлять подкаст при (авто)обновлении всех подкастов</string>
   <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
+  <string name="statistics_time_played">Времени прослушано:</string>
+  <string name="statistics_total_duration">Общая продолжительность (примерно):</string>
+  <string name="statistics_duration_played_episodes">Длительность прослушанных выпусков:</string>
   <string name="statistics_episodes_on_device">Выпуски на устройстве:</string>
   <string name="statistics_space_used">Используемое пространство:</string>
+  <string name="statistics_episodes_started_total">Выпусков начато/всего:</string>
   <string name="statistics_view_all">Просмотреть все подкасты »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из моноприложений…</string>
@@ -720,6 +757,8 @@
   <string name="sort_date_old_new">от старых к новым</string>
   <string name="sort_duration_short_long">от коротких к длинным</string>
   <string name="sort_duration_long_short">от длинных к коротким</string>
+  <string name="sort_filename_a_z">имя файла от А к Я</string>
+  <string name="sort_filename_z_a">имя файла от Я к А</string>
   <string name="sort_a_z">от А к Я</string>
   <string name="sort_z_a">от Я к А</string>
   <string name="sort_new_old">от новых к старым</string>
@@ -736,7 +775,9 @@
   <string name="share_dialog_include_label">Включая:</string>
   <string name="share_playback_position_dialog_label">Позиция воспроизведения</string>
   <string name="share_dialog_episode_website_label">Вебстраница выпуска</string>
+  <string name="share_dialog_link_to_episode">Ссылка на выпуск</string>
   <string name="share_dialog_media_file_label">Медиафайл</string>
+  <string name="share_starting_position_label">начиная с</string>
   <!--Audio controls-->
   <string name="audio_controls">Управление звучанием</string>
   <string name="playback_speed">Скорость воспроизведения</string>
@@ -783,4 +824,7 @@
   <string name="on_demand_config_setting_changed">Настройки успешно обновлены.</string>
   <string name="on_demand_config_stream_text">Похоже, вы часто слушаете по сети. Хотите, чтобы в списке выпусков отображались кнопки для потокового воспроизведения?</string>
   <string name="on_demand_config_download_text">Похоже, вы часто слушаете загружаете выпуски. Хотите, чтобы в списке выпусков отображались кнопки для загрузки?</string>
+  <string name="shortcut_subscription_label">Ярлык подписки</string>
+  <string name="shortcut_select_subscription">Выбрать подписку</string>
+  <string name="add_shortcut">Добавить ярлык</string>
 </resources>

@@ -185,6 +185,8 @@
     <item quantity="many">%d prenumeratų atnaujinta.</item>
     <item quantity="other">%d prenumeratų atnaujinta.</item>
   </plurals>
+  <string name="edit_tags">Redaguoti žymes</string>
+  <string name="rename_tag_label">Pervadinti žymę</string>
   <!--actions on feeditems-->
   <string name="download_label">Atsisiųsti</string>
   <plurals name="downloading_batch_label">
@@ -349,6 +351,7 @@
   <string name="storage_sum">Automatinis epizodų trynimas, importas, eksportas</string>
   <string name="project_pref">Projektas</string>
   <string name="synchronization_pref">Sinchronizavimas</string>
+  <string name="synchronization_sum">Sinchronizuoti su kitais įrenginiais</string>
   <string name="automation">Automatizacija</string>
   <string name="download_pref_details">Išsamiau</string>
   <string name="import_export_pref">Importas/Eksportas</string>
@@ -441,8 +444,17 @@
   <string name="pref_theme_title_dark">Tamsi</string>
   <string name="pref_theme_title_trueblack">Juoda (paruošta AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Neribojamas</string>
+  <string name="synchronization_logout">Atsijungti</string>
+  <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
   <string name="pref_gpodnet_setlogin_information_title">Keisti prisijungimo duomenis</string>
   <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
+  <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>
+  <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
+  <string name="synchronization_summary_unchoosen">Galite pasirinkti iš keleto teikėjų prenumeratų ir epizodų atkūrimo būsenai sinchronizuoti</string>
+  <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
+  <string name="synchronization_force_sync_summary">Sinchronizuoti visų prenumeratų ir epizodų būsenas iš naujo</string>
+  <string name="synchronization_sync_summary">Sinchronizuoti prenumeratų ir epizodų būsenų pokyčius</string>
+  <string name="dialog_choose_sync_service_title">Pasirinkite sinchronizavimo teikėją</string>
   <string name="pref_playback_speed_sum">Derinkite prieinamas garso atkūrimo spartas</string>
   <string name="pref_feed_playback_speed_sum">Atkūrimo sparta, naudojama pradedant šios tinklalaidės epizodų atkūrimą</string>
   <string name="pref_feed_skip">Automatinis praleidimas</string>
@@ -522,6 +534,7 @@
   <string name="new_episode_notification_disabled">Pranešimas išjungtas</string>
   <string name="pref_feed_settings_dialog_msg">Šis nustatymas individualus kiekvienai tinklalaidei. Jį pakeisti galite atvėrę tinklalaidės langą.</string>
   <string name="pref_contribute">Prisidėti</string>
+  <string name="pref_show_subscription_title">Rodyti prenumeratos pavadinimą</string>
   <!--About screen-->
   <string name="about_pref">Apie</string>
   <string name="antennapod_version">„AntennaPod“ versija</string>
@@ -647,6 +660,7 @@
   <string name="preview_episode">Peržiūra</string>
   <string name="stop_preview">Stabdyti peržiūrą</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Atgal</string>
   <string name="rewind_label">Atsukti</string>
   <string name="fast_forward_label">Persukti į priekį</string>
   <string name="increase_speed">Padidinti spartą</string>
@@ -664,12 +678,16 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Tapatumo nustatymas</string>
   <string name="authentication_descr">Keisti vartotojo vardą ir slaptažodį šiai tinklalaidei ir jos epizodams.</string>
+  <string name="feed_tags_label">Žymės</string>
+  <string name="feed_tags_summary">Keisti tinklalaidės žymes, kad palengvinti prenumeratų tvarkymą</string>
   <string name="feed_folders_include_root">Rodyti pagrindiniame sąraše</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Rodomos tik žymės, bendros visoms pažymėtoms prenumeratoms. Kitos žymės liks nepaveiktos.</string>
   <string name="auto_download_settings_label">Automatinio atsiuntimo nustatymai</string>
   <string name="episode_filters_label">Epizodų filtras</string>
   <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
   <string name="episode_filters_include">Įtraukti</string>
   <string name="episode_filters_exclude">Išbraukti</string>
+  <string name="episode_filters_duration">Minimali trukmė (minutėmis)</string>
   <string name="episode_filters_hint">Pavieniai žodžiai\n\"frazės kabutėse\"</string>
   <string name="keep_updated">Pastoviai atnaujinti</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
@@ -783,4 +801,5 @@
   <string name="on_demand_config_setting_changed">Nustatymas sėkmingai atnaujintas.</string>
   <string name="on_demand_config_stream_text">Panašu, jog dažnai klausotės tiesiogiai. Ar norite, jog epizodų sąraše būtų rodomi tiesioginio klausymosi mygtukai?</string>
   <string name="on_demand_config_download_text">Panašu, jog dažnai atsisiunčiate epizodus. Ar norite, jog epizodų sąraše būtų rodomi atsiuntimo mygtukai?</string>
+  <string name="shortcut_select_subscription">Pažymėti prenumeratą</string>
 </resources>
