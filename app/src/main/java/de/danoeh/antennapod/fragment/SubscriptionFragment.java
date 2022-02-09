@@ -230,7 +230,7 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
-        } else if(itemId == R.id.action_statistics) {
+        } else if (itemId == R.id.action_statistics) {
             ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             return true;
         }
