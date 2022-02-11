@@ -1,4 +1,5 @@
 package de.danoeh.antennapod.dialog;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,15 +16,19 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import org.greenrobot.eventbus.EventBus;
 import java.util.List;
+
 public class PlaybackControlsDialog extends DialogFragment {
+
     private PlaybackController controller;
     private AlertDialog dialog;
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
         PlaybackControlsDialog dialog = new PlaybackControlsDialog();
+
         dialog.setArguments(arguments);
         return dialog;
     }
+
     public PlaybackControlsDialog() {
         // Empty constructor required for DialogFragment
     }
@@ -35,12 +40,14 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
+
             }
         };
         controller.init();
         setupUi();
     }
     @Override
+
     public void onStop() {
         super.onStop();
         controller.release();
@@ -49,6 +56,7 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
     @NonNull
     @Override
+
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.audio_controls)
@@ -74,6 +82,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
+
         });
         stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.stereoToMono(isChecked);
