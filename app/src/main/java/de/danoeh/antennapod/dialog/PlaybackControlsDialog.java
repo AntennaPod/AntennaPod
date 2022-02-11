@@ -21,6 +21,7 @@ public class PlaybackControlsDialog extends DialogFragment {
 
     private PlaybackController controller;
     private AlertDialog dialog;
+
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
         PlaybackControlsDialog dialog = new PlaybackControlsDialog();
@@ -32,6 +33,7 @@ public class PlaybackControlsDialog extends DialogFragment {
     public PlaybackControlsDialog() {
         // Empty constructor required for DialogFragment
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -46,17 +48,17 @@ public class PlaybackControlsDialog extends DialogFragment {
         controller.init();
         setupUi();
     }
-    @Override
 
+    @Override
     public void onStop() {
         super.onStop();
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);
     }
+
     @NonNull
     @Override
-
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.audio_controls)
@@ -64,6 +66,7 @@ public class PlaybackControlsDialog extends DialogFragment {
                 .setPositiveButton(R.string.close_label, null).create();
         return dialog;
     }
+
     private void setupUi() {
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
@@ -91,6 +94,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             }
         });
     }
+
     private void setupAudioTracks() {
         List<String> audioTracks = controller.getAudioTracks();
         int selectedAudioTrack = controller.getSelectedAudioTrack();
