@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 public class PlaybackControlsDialog extends DialogFragment {
@@ -25,7 +24,6 @@ public class PlaybackControlsDialog extends DialogFragment {
     public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
         PlaybackControlsDialog dialog = new PlaybackControlsDialog();
-
         dialog.setArguments(arguments);
         return dialog;
     }
@@ -42,7 +40,6 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
-
             }
         };
         controller.init();
@@ -54,7 +51,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStop();
         controller.release();
         controller = null;
-        EventBus.getDefault().unregister(this);
+
     }
 
     @NonNull
