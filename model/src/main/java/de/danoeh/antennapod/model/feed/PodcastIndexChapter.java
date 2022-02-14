@@ -47,7 +47,7 @@ public class PodcastIndexChapter extends Chapter {
                 String img;
                 int startTime = 0;
                 JSONObject jsonObject = objChapters.getJSONObject(i);
-                startTime = jsonObject.optInt("startTime", 0)
+                startTime = jsonObject.optInt("startTime", 0);
 
                 title = jsonObject.optString("title", null);
 
