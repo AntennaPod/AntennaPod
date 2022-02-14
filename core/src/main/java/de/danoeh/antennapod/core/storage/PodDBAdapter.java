@@ -51,7 +51,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2090000;
+    public static final int VERSION = 2060000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -653,7 +653,7 @@ public class PodDBAdapter {
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_AUTO_DOWNLOAD_ATTEMPTS, item.getAutoDownloadAttemptsAndTime());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
-        values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getChapterUrl());
+        values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

@@ -1,8 +1,11 @@
 package de.danoeh.antennapod.core.util;
 
+import static de.danoeh.antennapod.model.feed.PodcastIndexChapter.parseChapters;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -23,7 +26,6 @@ import org.apache.commons.io.input.CountingInputStream;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.helper.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,9 +75,9 @@ public class ChapterUtils {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
             }
 
-            if (! StringUtil.isBlank(feedMedia.getItem().getChapterUrl())) {
+            if (! TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getChapterUrl());
+                        feedMedia.getItem().getPodcastIndexChapterUrl());
             }
 
         }
@@ -140,55 +142,13 @@ public class ChapterUtils {
 
     public static List<Chapter> loadChaptersFromUrl(String url) {
         List<Chapter> chapters = null;
-        try {
-            Request request = new Request.Builder().url(url).build();
-            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+        Request request = new Request.Builder().url(url).build();
+        Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
 
-            if (response.body() == null) {
-                throw new IOException("Body is null");
-            }
-            String body = response.body().string();
-            Log.d(TAG, body);
-            try {
-                JSONObject obj = new JSONObject(body);
-                JSONArray objChapters = obj.getJSONArray("chapters");
-                for (int i = 0; i < objChapters.length(); i++) {
-                    String title = null;
-                    String link = null;
-                    String img = null;
-                    int startTime = 0;
-                    JSONObject jsonObject = objChapters.getJSONObject(i);
-                    if (jsonObject.opt("startTime") != null) {
-                        startTime = jsonObject.getInt("startTime");
-                    }
-
-                    if (jsonObject.opt("title") != null) {
-                        title = jsonObject.getString("title");
-                    }
-                    if (jsonObject.opt("url") != null) {
-                        link = jsonObject.getString("url");
-                    }
-                    if (jsonObject.opt("url") != null) {
-                        img = jsonObject.getString("img");
-                    }
-                    PodcastIndexChapter chapter = new PodcastIndexChapter(
-                            startTime,
-                            title,
-                            link,
-                            img);
-                    if (chapters == null) {
-                        chapters = new ArrayList<>();
-                    }
-                    chapters.add(chapter);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-        } catch (IOException e) {
-            Log.d(TAG, "Error loading Chapter" + url + e.toString());
+        if (response.body() == null) {
             return null;
         }
+        chapters = parseChapters(response.body().toString());
         return chapters;
     }
 
@@ -203,7 +163,6 @@ public class ChapterUtils {
             Log.e(TAG, "Chapter data was invalid");
             return Collections.emptyList();
         }
-        return chapters;
     }
 
     @NonNull

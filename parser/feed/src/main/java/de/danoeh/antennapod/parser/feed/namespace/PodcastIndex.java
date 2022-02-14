@@ -28,7 +28,7 @@ public class PodcastIndex extends Namespace {
         if (CHAPTERS.equals(localName)) {
             String href = attributes.getValue(URL);
             if (! StringUtil.isBlank(href)) {
-                state.getCurrentItem().setChapterUrl(href);
+                state.getCurrentItem().setPodcastIndexChapterUrl(href);
             }
         }
         return new SyndElement(localName, this);

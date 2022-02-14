@@ -432,11 +432,11 @@ public class FeedItem extends FeedComponent implements Serializable {
         tags.remove(tag);
     }
 
-    public String getChapterUrl() {
+    public String getPodcastIndexChapterUrl() {
         return podcastIndexChapterUrl;
     }
 
-    public void setChapterUrl(String url) {
+    public void setPodcastIndexChapterUrl(String url) {
         podcastIndexChapterUrl = url;
     }
 
