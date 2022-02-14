@@ -19,11 +19,8 @@ public class PodcastIndexChapter extends Chapter {
     public String toString() {
         return "PodcastIndexChapter "
                 + getTitle()
-                + " "
-                + getStart()
-                + " "
-                + getLink()
-                + " "
-                + getImageUrl();
+                + " " + getStart()
+                + " " + getLink()
+                + " " + getImageUrl();
     }
 }
