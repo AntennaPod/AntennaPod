@@ -37,7 +37,7 @@ import static de.test.antennapod.NthMatcher.first;
 import static org.hamcrest.CoreMatchers.allOf;
 
 /**
- * User interface tests for share dialog. 
+ * User interface tests for share dialog..
  */
 @RunWith(AndroidJUnit4.class)
 public class ShareDialogTest {
