@@ -51,7 +51,6 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStop();
         controller.release();
         controller = null;
-
     }
 
     @NonNull
@@ -82,7 +81,6 @@ public class PlaybackControlsDialog extends DialogFragment {
         skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
-
         });
         stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.stereoToMono(isChecked);
