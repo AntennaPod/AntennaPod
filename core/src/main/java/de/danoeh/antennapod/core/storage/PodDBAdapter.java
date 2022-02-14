@@ -986,6 +986,18 @@ public class PodDBAdapter {
         return db.query(TABLE_NAME_QUEUE, new String[]{KEY_FEEDITEM}, null, null, null, null, KEY_ID + " ASC", null);
     }
 
+    public Cursor getNextInQueue(final FeedItem item) {
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + "INNER JOIN " + TABLE_NAME_QUEUE
+                + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                + " WHERE Queue.ID > (SELECT Queue.ID FROM Queue WHERE Queue.FeedItem = "
+                +  item.getId()
+                + ")"
+                + " ORDER BY Queue.ID"
+                + " LIMIT 1";
+        return db.rawQuery(query, null);
+    }
+
     public final Cursor getFavoritesCursor(int offset, int limit) {
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FAVORITES

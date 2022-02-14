@@ -37,7 +37,6 @@
   <string name="change_setting">Módosítás</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">A lejátszott epizódok összideje:</string>
-  <string name="statistics_details_dialog">%1$d/%2$d epizód elindítva.\n\n%3$s/%4$s lejátszva.</string>
   <string name="statistics_mode">Statisztikai mód</string>
   <string name="statistics_mode_normal">A tényleges lejátszási idő számítása. A kétszeri lejátszás kétszer lesz számolva, míg a lejátszottként megjelölés nem számít bele</string>
   <string name="statistics_mode_count_all">Az összes lejátszottnak jelölt epizód összeszámolása</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d feliratkozás frissítve.</item>
     <item quantity="other">%d feliratkozás frissítve.</item>
   </plurals>
-  <string name="add_to_folder">Hozzáadás a mappához</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">Törlés</string>
   <string name="delete_failed">A fájl nem törölhető. Az eszköz újraindítása segíthet a probléma megoldásában.</string>
   <string name="delete_episode_label">Epizód törlése</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d epizód kiválasztva, %d letöltés törölve.</item>
-    <item quantity="other">%d epizód kiválasztva, %d letöltés törölve.</item>
-  </plurals>
   <string name="remove_new_flag_label">Az „új” jelző eltávolítása</string>
   <string name="removed_new_flag_label">Az „új” jelző eltávolítva</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">A podcast kiszolgálója nem válaszol.</string>
   <string name="download_canceled_msg">Letöltés megszakítva</string>
   <string name="download_error_wrong_size">A kiszolgálókapcsolat elveszett a letöltés befejezése előtt</string>
-  <string name="download_error_blocked">A letöltést egy másik, az eszközön lévő alkalmazás megakadályozta.</string>
-  <string name="download_error_certificate">A biztonságos kapcsolat nem építhető fel. Ez azt jelentheti, hogy egy másik, az eszközön lévő alkalmazás blokkolta a letöltést, vagy valami hibás a kiszolgálótanúsítványokban.</string>
   <string name="download_report_title">A letöltések hibákkal fejeződtek be</string>
   <string name="auto_download_report_title">Elkészültek az automatikus letöltések</string>
   <string name="download_error_io_error">Ki-/bemeneti hiba</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">Ismeretlen cím</string>
   <string name="download_type_feed">Csatorna</string>
   <string name="download_type_media">Médiafájl</string>
-  <string name="download_request_error_dialog_message_prefix">Hiba történt a fájl letöltésekor:\u0020</string>
   <string name="null_value_podcast_error">Nem lett megjeleníthető podcast megadva.</string>
   <string name="authentication_notification_title">Hitelesítés szükséges</string>
   <string name="authentication_notification_msg">A kért erőforráshoz felhasználónév és jelszó szükséges</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Sorbaállítás</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Engedélyezés átmenetileg</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Hiba!</string>
   <string name="playback_error_server_died">A kiszolgálókapcsolat megszakadt</string>
   <string name="playback_error_unsupported">Nem támogatott médiatípus</string>
   <string name="playback_error_timeout">Műveleti időtúllépés</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">Epizódok automatikus törlése, importálása, exportálása</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Szinkronizálás</string>
-  <string name="synchronization_sum">Szinkronizáció más eszközökkel a gpodder.net segítségével</string>
   <string name="automation">Automatizálás</string>
   <string name="download_pref_details">Részletek</string>
   <string name="import_export_pref">Importálás/exportálás</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">Sötét</string>
   <string name="pref_theme_title_trueblack">Fekete (AMOLED-hez alkalmas)</string>
   <string name="pref_episode_cache_unlimited">Korlátlan</string>
-  <string name="pref_gpodnet_authenticate_title">Bejelentkezés</string>
-  <string name="pref_gpodnet_authenticate_sum">Jelentkezzen be a gpodder.net fiókjába a feliratkozásai szinkronizálásához.</string>
-  <string name="pref_gpodnet_logout_title">Kijelentkezés</string>
-  <string name="pref_gpodnet_logout_toast">Kijelentkezés sikeres</string>
   <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
   <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
-  <string name="pref_gpodnet_sync_changes_title">Szinkronizálás most</string>
-  <string name="pref_gpodnet_sync_changes_sum">A feliratkozásai és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
-  <string name="pref_gpodnet_full_sync_title">Teljes szinkronizáció kényszerítése</string>
-  <string name="pref_gpodnet_full_sync_sum">Az összes feliratkozásának és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, a(z) <i>%2$s</i> eszközzel]]></string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
   <string name="pref_feed_skip">Automatikus kihagyás</string>
@@ -477,9 +457,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Hálózati proxy beállítása</string>
   <string name="pref_no_browser_found">Nem található webböngésző.</string>
-  <string name="pref_cast_title">Chromecast támogatás</string>
-  <string name="pref_cast_message_play_flavor">A távoli médialejátszás engedélyezése a Cast eszközökön (mint a Chromecast, hangfalak vagy Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">A Chromecast harmadik féltől származó zárt programkönyvtárakat igényel, amelyek le vannak tiltva az AntennaPod jelen verziójában.</string>
   <string name="pref_enqueue_downloaded_title">Letöltött elemek sorbaállítása</string>
   <string name="pref_enqueue_downloaded_summary">Letöltött epizódok sorhoz adása</string>
   <string name="media_player_builtin">Beépített androidos lejátszó (elavult)</string>
@@ -567,7 +544,6 @@
   <string name="export_success_title">Exportálás sikeres</string>
   <string name="export_success_sum">Az exportált fájl ide lett kiírva:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">A külső tároló elérése szükséges az OPML fájl olvasásához</string>
-  <string name="import_select_file">Importálandó fájl kiválasztása</string>
   <string name="successful_import_label">Importálás sikeres</string>
   <string name="import_ok">Nyomja meg az OK gombot az AntennaPod újraindításához</string>
   <string name="import_no_downgrade">Az adatbázis az AntennaPod egy újabb verziójából lett exportálva. A jelenlegi telepítése még nem tudja, hogyan kezelje ezt a fájlt.</string>
@@ -631,7 +607,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Megszakítások esetén szüneteltetés</string>
   <string name="pref_resumeAfterCall_sum">Lejátszás folytatása a telefonhívás befejeztekor</string>
   <string name="pref_resumeAfterCall_title">Folytatás hívás után</string>
-  <string name="pref_restart_required">A változás életbe lépéséhez az AntennaPod újraindítása szükséges.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Feliratkozás</string>
   <string name="subscribing_label">Feliratkozás…</string>
@@ -655,8 +630,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Hitelesítés</string>
   <string name="authentication_descr">A felhasználónév és jelszó módosítása ennél a podcastnál és az epizódoknál.</string>
-  <string name="feed_folders_label">Mappák</string>
-  <string name="feed_folders_summary">Mappák módosítása, amelyben a podcast megjelenik</string>
   <string name="feed_folders_include_root">Megjelenítés a fő listában</string>
   <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
   <string name="episode_filters_label">Epizódszűrő</string>
@@ -667,7 +640,6 @@
   <string name="keep_updated">Frissítse</string>
   <string name="keep_updated_summary">Vegye bele ezt a podcastot is az összes podcast (automatikus) frissítésébe</string>
   <string name="auto_download_disabled_globally">Az automatikus letöltés ki van kapcsolva a fő AntennaPod beállításokban</string>
-  <string name="statistics_listened_for">Ennyit hallgatta:</string>
   <string name="statistics_episodes_on_device">Epizódok az eszközön:</string>
   <string name="statistics_space_used">Használt tárhely: </string>
   <string name="statistics_view_all">Megtekintés az összes podcasthoz »</string>
@@ -729,7 +701,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Belevétel:</string>
   <string name="share_playback_position_dialog_label">Lejátszási pozíció</string>
-  <string name="share_dialog_media_file_url_label">Médiafájl címe</string>
   <string name="share_dialog_episode_website_label">Epizód weboldala</string>
   <string name="share_dialog_media_file_label">Médiafájl</string>
   <!--Audio controls-->
@@ -753,20 +724,6 @@
   <string name="proxy_port_invalid_error">A port nem helyes</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Oszlopok száma</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Lejátszás ezen…</string>
-  <string name="cast_disconnect_label">A továbbítási munkamenet bontása</string>
-  <string name="cast_not_castable">A kiválasztott média nem kompatibilis a továbbításhoz használt eszközzel</string>
-  <string name="cast_failed_to_play">A médialejátszás indítása sikertelen</string>
-  <string name="cast_failed_to_stop">A médialejátszás leállítása sikertelen</string>
-  <string name="cast_failed_to_pause">A médialejátszás szüneteltetése sikertelen</string>
-  <string name="cast_failed_setting_volume">A hangerő beállítása sikertelen</string>
-  <string name="cast_failed_no_connection">Nincs kapcsolat a továbbításhoz használandó eszközzel</string>
-  <string name="cast_failed_no_connection_trans">A kapcsolat megszakadt a továbbításhoz használandó eszközzel. Az alkalmazás próbál újrakapcsolódni, ha lehetséges. Várjon néhány másodpercet, és próbálja újra.</string>
-  <string name="cast_failed_status_request">Nem sikerült szinkronizálni a továbbításhoz használt eszközön</string>
-  <string name="cast_failed_seek">Nem sikerült az új pozícióra tekerni a továbbításhoz használt eszközön</string>
-  <string name="cast_failed_receiver_player_error">A fogadó lejátszó súlyos hibát tapasztalt</string>
-  <string name="cast_failed_media_error_skipping">Hiba a média lejátszásakor. Átugrás…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Hibák</string>
   <string name="notification_group_news">Újdonságok</string>

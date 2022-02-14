@@ -37,7 +37,6 @@
   <string name="change_setting">Змінити</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих епізодів:</string>
-  <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
   <string name="statistics_mode">Режим статистики</string>
   <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується </string>
   <string name="statistics_mode_count_all">Підсумок усіх епізодів, позначених як відтворені</string>
@@ -186,7 +185,6 @@
     <item quantity="many">%d підписок оновлено.</item>
     <item quantity="other">%d підписки оновлено.</item>
   </plurals>
-  <string name="add_to_folder">Додати до папки</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <plurals name="downloading_batch_label">
@@ -201,12 +199,6 @@
   <string name="delete_label">Видалити</string>
   <string name="delete_failed">Файл не видалено. Можливо, перезавантаження пристрою допоможе.</string>
   <string name="delete_episode_label">Видалити епізод</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d епізод вибрано, %d завантежений видалено.</item>
-    <item quantity="few">%d епізоди вибрані, %d завантежених видалено.</item>
-    <item quantity="many">%d епізодів вибрано, %d завантежених видалено.</item>
-    <item quantity="other">%d епізодів вибрано, %d завантажених видалено.</item>
-  </plurals>
   <string name="remove_new_flag_label">Видалити \"нові\" прапорці</string>
   <string name="removed_new_flag_label">Видалено \"нові\" прапорці</string>
   <string name="mark_read_label">Позначити як відтворений</string>
@@ -272,8 +264,6 @@
   <string name="download_error_forbidden">Сервер подкасту відмовляється відповідати.</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
   <string name="download_error_wrong_size">З\'єднання з сервером було втрачено перед завершенням завантаження</string>
-  <string name="download_error_blocked">Завантаження було заблоковано іншою програмою на вашому пристрої.</string>
-  <string name="download_error_certificate">Неможливо встановити безпечне з\'єднання. Це може означати, що інший додаток на вашому пристрої заблокував завантаження, або щось не так із сертифікатами сервера.</string>
   <string name="download_report_title">Завантаження завершені з помилками</string>
   <string name="auto_download_report_title">Автозавантаження завершено</string>
   <string name="download_error_io_error">Помилка IO</string>
@@ -290,7 +280,6 @@
   <string name="download_log_title_unknown">Невідомий заголовок</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Файл з медіа</string>
-  <string name="download_request_error_dialog_message_prefix">Помилка при завантажені файлу:\u0020</string>
   <string name="null_value_podcast_error">Не надано подкаст для перегляду.</string>
   <string name="authentication_notification_title">Потрібна автентифікація</string>
   <string name="authentication_notification_msg">Для доступа до цього ресурса потрібні ім\'я та пароль </string>
@@ -304,7 +293,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Помилка!</string>
   <string name="playback_error_server_died">Сервер помер</string>
   <string name="playback_error_unsupported">Тип медіа не підтримується</string>
   <string name="playback_error_timeout">Операція минула</string>
@@ -361,7 +349,6 @@
   <string name="storage_sum">Епізод автовидалення, Імпорт, Експорт</string>
   <string name="project_pref">Проект</string>
   <string name="synchronization_pref">Синхронізація</string>
-  <string name="synchronization_sum">Синхронізуйте з іншими пристроями за допомогою gpodder.net</string>
   <string name="automation">Автоматизація</string>
   <string name="download_pref_details">Детально</string>
   <string name="import_export_pref">Імпорт/Експорт</string>
@@ -454,17 +441,8 @@
   <string name="pref_theme_title_dark">Темна</string>
   <string name="pref_theme_title_trueblack">Чорна (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Без обмежень</string>
-  <string name="pref_gpodnet_authenticate_title">Логін</string>
-  <string name="pref_gpodnet_authenticate_sum">Увійти до свого облікового запису gpodder.net для сінхронізації ваших каналів</string>
-  <string name="pref_gpodnet_logout_title">Вихід</string>
-  <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
   <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
   <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Синхронізувати зараз</string>
-  <string name="pref_gpodnet_sync_changes_sum">Синхронізувати підписки та зміни стану епізодів з gpodder.net</string>
-  <string name="pref_gpodnet_full_sync_title">Примусова повну синхронізація</string>
-  <string name="pref_gpodnet_full_sync_sum">Синхронізувати всі підписки та стан епізодів з gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Ви увійшли як <i>%1$s</i> з пристрою <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Налаштування доступних швидкостей для відтворення зі зміненою швидкістю</string>
   <string name="pref_feed_playback_speed_sum">Швидкість, яку слід використовувати при запуску відтворення аудіо для епізодів у цьому подкасті</string>
   <string name="pref_feed_skip">Автоматичний пропуск</string>
@@ -507,9 +485,6 @@
   <string name="pref_proxy_title">Проксі</string>
   <string name="pref_proxy_sum">Застосувати проксі сервер</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
-  <string name="pref_cast_title">Підтримка для Chromecast</string>
-  <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Додати завантаження до черги</string>
   <string name="pref_enqueue_downloaded_summary">Додавати завантажені епізоди до черги</string>
   <string name="media_player_builtin">Built-in Android player (застарілий) </string>
@@ -597,7 +572,6 @@
   <string name="export_success_title">Успішний експорт</string>
   <string name="export_success_sum">Файл було записано в:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Щоб прочитати файл OPML потрібен доступ до зовнішнього носія</string>
-  <string name="import_select_file">Обрати файл для імпорту</string>
   <string name="successful_import_label">Імпорт - успішний</string>
   <string name="import_ok">Будь ласка, натисніть OK, щоб перезапустити AntennaPod</string>
   <string name="import_no_downgrade">Ця база даних була експортована з новішою версією AntennaPod. Ваша поточна установка ще не знає, як обробляти цей файл.</string>
@@ -667,7 +641,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза в разі переривання</string>
   <string name="pref_resumeAfterCall_sum">Поновити відтворення після закінчення дзвінка</string>
   <string name="pref_resumeAfterCall_title">Поновити після дзвінка</string>
-  <string name="pref_restart_required">Для застосування змін потрібно перезапустити AntennaPod</string>
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribing_label">Підписка...</string>
@@ -691,8 +664,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
-  <string name="feed_folders_label">Папки</string>
-  <string name="feed_folders_summary">Змінити папки, у яких відображається цей подкаст.</string>
   <string name="feed_folders_include_root">Показати в основному списку</string>
   <string name="auto_download_settings_label">Налаштування автозавантаження</string>
   <string name="episode_filters_label">Фільтр епізодів</string>
@@ -703,7 +674,6 @@
   <string name="keep_updated">Підтримувати оновленим</string>
   <string name="keep_updated_summary">Включати цей подкаст під час (автоматичного) оновлення всіх подкастів</string>
   <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>
-  <string name="statistics_listened_for">Прослухано:</string>
   <string name="statistics_episodes_on_device">Епізоди на пристрої:</string>
   <string name="statistics_space_used">Використано простору:</string>
   <string name="statistics_view_all">Переглянути всі подкасти »</string>
@@ -765,7 +735,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Включити:</string>
   <string name="share_playback_position_dialog_label">Положення відтворення</string>
-  <string name="share_dialog_media_file_url_label">Адреса медіа файлу</string>
   <string name="share_dialog_episode_website_label">Веб-сторінка епізоду</string>
   <string name="share_dialog_media_file_label">Медіафайл</string>
   <!--Audio controls-->
@@ -789,20 +758,6 @@
   <string name="proxy_port_invalid_error">Порт недійсний</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Кількість стовпців</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Відтворити на…</string>
-  <string name="cast_disconnect_label">Від’єднатись від пристрою програвання</string>
-  <string name="cast_not_castable">Обраний файл не сумісний з пристроєм програвання</string>
-  <string name="cast_failed_to_play">Помилка програвання файла</string>
-  <string name="cast_failed_to_stop">Помилка спроби зупинки програвання</string>
-  <string name="cast_failed_to_pause">Помилка спроби призупинення програвання</string>
-  <string name="cast_failed_setting_volume">Помилка встановлення гучності</string>
-  <string name="cast_failed_no_connection">Немає з’єднання з пристроєм програвання</string>
-  <string name="cast_failed_no_connection_trans">Зв’язок з пристроєм програвання втрачено. Програма намагається поновити з\'єднання, якщо це можливо. Будь ласка зачекайте кілька секунд і спробуйте знов.</string>
-  <string name="cast_failed_status_request">Помилка синхронизації з пристроєм програвання</string>
-  <string name="cast_failed_seek">Помилка перехода на нову позицію програвання на пристрої.</string>
-  <string name="cast_failed_receiver_player_error">Серйозна помилка відтворення на пристрої</string>
-  <string name="cast_failed_media_error_skipping">Помилка програвання файла. Пропускаю...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Помилки</string>
   <string name="notification_group_news">Новини</string>

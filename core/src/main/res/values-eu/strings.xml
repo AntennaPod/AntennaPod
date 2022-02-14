@@ -37,7 +37,6 @@
   <string name="change_setting">Aldatu</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Ikusitako saio denen denbora:</string>
-  <string name="statistics_details_dialog">%1$d kanpo %2$d hasitako saioetatik. %3$s \n\nErreproduzituak %4$setatik.</string>
   <string name="statistics_mode">Estatistika modua</string>
   <string name="statistics_mode_normal">Benetan ikusitakoen iraupena kalkulatzea. Bi aldiz ikustean bi aldiz kontatzen da; ikusita bezala markatzea, berriz, ez da kontatzen</string>
   <string name="statistics_mode_count_all">Ikusita markatutako saio guztien laburpena</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d harpidetza eguneratu da.</item>
     <item quantity="other">%d harpidetzak eguneratu dira.</item>
   </plurals>
-  <string name="add_to_folder">Gehitu karpetara</string>
   <!--actions on feeditems-->
   <string name="download_label">Deskargatu</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">Ezabatu</string>
   <string name="delete_failed">Ezin da fitxategia ezabatu. Gailua berrabiarazteak lagun dezake.</string>
   <string name="delete_episode_label">Saioa ezabatu</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%dsaio aukeratuta, jaitsiera %d ezabatuta.</item>
-    <item quantity="other">%d saio aukeratuta, %d jaitsiera ezabatuta.</item>
-  </plurals>
   <string name="remove_new_flag_label">Kendu \"berria\" ikurra</string>
   <string name="removed_new_flag_label">\"Berria\" ikurra kendu da</string>
   <string name="mark_read_label">Markatu ikusita bezala</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">Podcast ostalariaren zerbitzariak ez du erantzun nahi.</string>
   <string name="download_canceled_msg">Deskarga ezeztatua</string>
   <string name="download_error_wrong_size">Zerbitzariaren konexioa galdu egin da deskarga amaitu aurretik</string>
-  <string name="download_error_blocked">Deskarga zure gailuko beste aplikazio batek blokeatu du.</string>
-  <string name="download_error_certificate">Ezin da konexio segururik ezarri. Horrek esan nahi du zure gailuko beste aplikazio batek deskarga blokeatu duela edo zerbitzariaren ziurtagiriekin zerbait gaizki dagoela.</string>
   <string name="download_report_title">Deskarga(k) osatu d(ir)a errorea(k) d(it)uela</string>
   <string name="auto_download_report_title">Deskargatu automatikoak osatuta</string>
   <string name="download_error_io_error">E/S errorea</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">Izenburu ezezaguna</string>
   <string name="download_type_feed">Kanala</string>
   <string name="download_type_media">Media artxibategia</string>
-  <string name="download_request_error_dialog_message_prefix">Errore bat gertatu da fitxategia deskargatzen saiatzean:\u0020</string>
   <string name="null_value_podcast_error">Ez da erakutsi zitekeen podcast-ik eman.</string>
   <string name="authentication_notification_title">Egiaztatzea beharrezkoa da</string>
   <string name="authentication_notification_msg">Eskatutako baliabideak erabiltzaile bat eta pasahitza behar ditu</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Gehitu ilaran</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Baimendu aldi baterako</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Errorea!</string>
   <string name="playback_error_server_died">Zerbitzaria hil da</string>
   <string name="playback_error_unsupported">Media mota hori ez da onartzen</string>
   <string name="playback_error_timeout">Ekintzak denbora muga gainditu du</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">Ezabatze automatikoa, jaso, bidali</string>
   <string name="project_pref">Proiektua</string>
   <string name="synchronization_pref">Sinkronizazioa</string>
-  <string name="synchronization_sum">Sinkronizatzen gpodder.net erabiltzen duten beste gailu batzuekin</string>
   <string name="automation">Automatizazioa</string>
   <string name="download_pref_details">Xehetasunak</string>
   <string name="import_export_pref">Inportatu/esportatu</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">Iluna</string>
   <string name="pref_theme_title_trueblack">Beltza (AMOLEDentzako)</string>
   <string name="pref_episode_cache_unlimited">Neurri gabe</string>
-  <string name="pref_gpodnet_authenticate_title">Hasi saioa</string>
-  <string name="pref_gpodnet_authenticate_sum">Hasi saioa zure gpodder.net kontuan zure harpidetzak sinkronizatzeko</string>
-  <string name="pref_gpodnet_logout_title">Itxi saioa</string>
-  <string name="pref_gpodnet_logout_toast">Saioa ongi itxi duzu</string>
   <string name="pref_gpodnet_setlogin_information_title">Aldatu saio hasieraren informazioa</string>
   <string name="pref_gpodnet_setlogin_information_sum">Aldatu saio hasierako datuak zure gpodder.net-en kontuan.</string>
-  <string name="pref_gpodnet_sync_changes_title">Sinkronizatu orain</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sinkronizatu harpidetza aldaketak eta saioak gpodder.net-ekin</string>
-  <string name="pref_gpodnet_full_sync_title">Sinkronizazio osoa behartu</string>
-  <string name="pref_gpodnet_full_sync_sum">Sinkronizatu harpidetza denak eta saioak gpodder.net-ekin</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Horrela hasi du saioa <i>%1$s</i> gailu honekin <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Pertsonalizatu abiadura aldakorreko erreprodukzioan dauden abiadurak</string>
   <string name="pref_feed_playback_speed_sum">Podcast hauen berezko irakurtze abiadura</string>
   <string name="pref_feed_skip">Salto automatikoa</string>
@@ -479,9 +459,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Konfiguratu sareko proxya</string>
   <string name="pref_no_browser_found">Ez da web nabigatzailea aurkitu</string>
-  <string name="pref_cast_title">Chromecasterako euskarria</string>
-  <string name="pref_cast_message_play_flavor">Gaitu Cast gailuetan urrutira erreproduzitzeko euskarria (chromecast, altabozak edo Android TB modukoak)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecastek AntennaPod bertsio honetan desgaiturik dauden hirugarrenen liburutegiak behar ditu</string>
   <string name="pref_enqueue_downloaded_title">Gehitu deskargatutakoak ilarara</string>
   <string name="pref_enqueue_downloaded_summary">Gehitu deskargatutako saioak ilarara</string>
   <string name="media_player_builtin">Integratutako Android erreproduzigailua (zaharkituta)</string>
@@ -569,7 +546,6 @@
   <string name="export_success_title">Esportatzea ongi burutu da</string>
   <string name="export_success_sum">Esportatutako artxibategia hemen gorde da:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Kanpo biltegirako sarrera behar duzu OPML artxibategiak irakurtzeko</string>
-  <string name="import_select_file">Aukeratu inportatzeko fitxategia</string>
   <string name="successful_import_label">Inportate arrakastatsua</string>
   <string name="import_ok">Sakatu OK AntennaPod berrabiarazteko</string>
   <string name="import_no_downgrade">Datu-basea AntennaPod-en bertsio berriago batekin esportatu zen. Uneko aplikazioak ez daki nola inportatu.</string>
@@ -633,7 +609,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Gelditu etenaldiak daudenean</string>
   <string name="pref_resumeAfterCall_sum">Jarraitu erreprodukzioa dei baten ondoren</string>
   <string name="pref_resumeAfterCall_title">Berrekin dei baten ondoren</string>
-  <string name="pref_restart_required">Beharrezkoa da AntennaPod berrabiaraztea aldaketak gauzatzeko.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Harpidetu</string>
   <string name="subscribing_label">Harpidetzen...</string>
@@ -657,8 +632,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Egiaztatzea</string>
   <string name="authentication_descr">Aldatu podcast honen eta bere saioen erabiltzaile izena eta pasahitza.</string>
-  <string name="feed_folders_label">Karpetak</string>
-  <string name="feed_folders_summary">Aldatu podcast hau erakusten duten karpetak.</string>
   <string name="feed_folders_include_root">Erakutsi zerrenda nagusian</string>
   <string name="auto_download_settings_label">Deskargatu automatikoko aukerak</string>
   <string name="episode_filters_label">Saioen iragazkia</string>
@@ -669,7 +642,6 @@
   <string name="keep_updated">Eguneratuta eduki</string>
   <string name="keep_updated_summary">Sartu podcast hau (auto-) freskatzeko podcast guztiak</string>
   <string name="auto_download_disabled_globally">Deskarga automatikoa desgaituta dago AntennaPod-en lehentasun orokorretan</string>
-  <string name="statistics_listened_for">Zenbat denboran entzuna:</string>
   <string name="statistics_episodes_on_device">Gailuko saioak:</string>
   <string name="statistics_space_used">Erabilitako espazioa:</string>
   <string name="statistics_view_all">Podcast guztietarako ikusi »</string>
@@ -731,7 +703,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Gehitu:</string>
   <string name="share_playback_position_dialog_label">Erreprodukzioaren unea</string>
-  <string name="share_dialog_media_file_url_label">Media artxibategien helbidea</string>
   <string name="share_dialog_episode_website_label">Saioaren orrialdea</string>
   <string name="share_dialog_media_file_label">Media artxibategiak</string>
   <!--Audio controls-->
@@ -755,20 +726,6 @@
   <string name="proxy_port_invalid_error">Balio gabeko Portua</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Zutabe kopurua</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Ikusi hemen...</string>
-  <string name="cast_disconnect_label">Cast saioa deskonektatu</string>
-  <string name="cast_not_castable">Hautatutako bitartekoa ez da bateragarria cast gailuarekin</string>
-  <string name="cast_failed_to_play">Errorea medioaren erreprodukzioa hastean</string>
-  <string name="cast_failed_to_stop">Errorea medioaren erreprodukzioa uztean</string>
-  <string name="cast_failed_to_pause">Errorea medioaren erreprodukzioa gelditzean</string>
-  <string name="cast_failed_setting_volume">Errorea bolumena doitzean</string>
-  <string name="cast_failed_no_connection">Ez dago inolako konexiorik cast gailuarekin</string>
-  <string name="cast_failed_no_connection_trans">Cast gailuarekin konexioa galdu da. Aplikazioa konexioa berrezartzen saiatzen ari da. Itxaron pixka batean eta saiatu berriro.</string>
-  <string name="cast_failed_status_request">Errorea cast gailuarekin sinkronizatzean</string>
-  <string name="cast_failed_seek">Errorea cast gailuan posizio berria bilatzean</string>
-  <string name="cast_failed_receiver_player_error">Erreproduzigailuak akats larria aurkitu du</string>
-  <string name="cast_failed_media_error_skipping">Errorea medioa erreproduzitzean. Jauzi egiten …</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Erroreak</string>
   <string name="notification_group_news">Berriak</string>

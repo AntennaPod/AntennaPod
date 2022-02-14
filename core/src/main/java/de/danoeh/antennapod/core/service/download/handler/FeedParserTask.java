@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download.handler;
 
+import android.text.TextUtils;
 import android.util.Log;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -7,7 +8,6 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
@@ -38,7 +38,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         feed.setDownloaded(true);
         feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
                 VolumeAdaptionSetting.OFF, request.getUsername(), request.getPassword()));
-        feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
+        feed.setPageNr(request.getArguments().getInt(DownloadRequest.REQUEST_ARG_PAGE_NR, 0));
 
         DownloadError reason = null;
         String reasonDetailed = null;
@@ -49,6 +49,9 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             result = feedHandler.parseFeed(feed);
             Log.d(TAG, feed.getTitle() + " parsed");
             checkFeedData(feed);
+            if (TextUtils.isEmpty(feed.getImageUrl())) {
+                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownload_url());
+            }
         } catch (SAXException | IOException | ParserConfigurationException e) {
             successful = false;
             e.printStackTrace();

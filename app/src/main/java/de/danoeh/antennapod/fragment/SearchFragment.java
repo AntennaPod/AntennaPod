@@ -73,6 +73,7 @@ public class SearchFragment extends Fragment {
     private SearchView searchView;
     private Handler automaticSearchDebouncer;
     private long lastQueryChange = 0;
+
     /**
      * Create a new SearchFragment that searches all feeds.
      */

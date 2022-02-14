@@ -3,7 +3,7 @@
 set -o pipefail
 
 runTests() {
-    ./gradlew connectedPlayDebugAndroidTest \
+    ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest \
         -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi \
         | grep -v "V/InstrumentationResultParser: INSTRUMENTATION_STATUS"
 }

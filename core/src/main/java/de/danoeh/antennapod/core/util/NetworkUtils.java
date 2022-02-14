@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -103,7 +103,8 @@ public class NetworkUtils {
             NetworkCapabilities capabilities = connManager.getNetworkCapabilities(
                     connManager.getActiveNetwork());
 
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            if (capabilities != null
+                    && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
                 return false;
             }
@@ -237,7 +238,7 @@ public class NetworkUtils {
             // otherwise cancel all downloads
             if (NetworkUtils.isNetworkRestricted()) {
                 Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
-                DownloadRequester.getInstance().cancelAllDownloads(context);
+                DownloadService.cancelAll(context);
             }
         }
     }

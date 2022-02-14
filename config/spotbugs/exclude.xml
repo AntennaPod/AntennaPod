@@ -57,6 +57,10 @@
         <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
     </Match>
     <Match>
+        <Bug pattern="MS_CANNOT_BE_FINAL"/>
+        <Class name="de.danoeh.antennapod.core.service.download.DownloadService"/>
+    </Match>
+    <Match>
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
         <Class name="de.danoeh.antennapod.core.service.playback.PlaybackService"/>
     </Match>

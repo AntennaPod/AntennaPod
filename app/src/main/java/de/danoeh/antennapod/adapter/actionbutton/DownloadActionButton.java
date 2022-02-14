@@ -9,21 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class DownloadActionButton extends ItemActionButton {
-    private boolean isInQueue;
 
     public DownloadActionButton(FeedItem item) {
         super(item);
-        this.isInQueue = item.isTagged(FeedItem.TAG_QUEUE);;
     }
 
     @Override
@@ -53,30 +50,17 @@ public class DownloadActionButton extends ItemActionButton {
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
         if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
-            downloadEpisode(context);
-        } else if (MobileDownloadHelper.userChoseAddToQueue() && !isInQueue) {
-            addEpisodeToQueue(context);
+            DownloadService.download(context, false, DownloadRequestCreator.create(item.getMedia()).build());
+        } else if (MobileDownloadHelper.userChoseAddToQueue() && !item.isTagged(FeedItem.TAG_QUEUE)) {
+            DBWriter.addQueueItem(context, item);
+            Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
         } else {
             MobileDownloadHelper.confirmMobileDownload(context, item);
         }
     }
 
     private boolean shouldNotDownload(@NonNull FeedMedia media) {
-        boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
+        boolean isDownloading = DownloadService.isDownloadingFile(media.getDownload_url());
         return isDownloading || media.isDownloaded();
-    }
-
-    private void addEpisodeToQueue(Context context) {
-        DBWriter.addQueueItem(context, item);
-        Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
-    }
-
-    private void downloadEpisode(Context context) {
-        try {
-            DownloadRequester.getInstance().downloadMedia(context, true, item);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
-        }
     }
 }

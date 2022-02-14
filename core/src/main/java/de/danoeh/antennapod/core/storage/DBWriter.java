@@ -6,7 +6,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -128,6 +130,9 @@ public class DBWriter {
             if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+
+                NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+                nm.cancel(R.id.notification_playing);
             }
 
             // Gpodder: queue delete action for synchronization
@@ -187,7 +192,6 @@ public class DBWriter {
      * Deleting media also removes the download log entries.
      */
     private static void deleteFeedItemsSynchronous(@NonNull Context context, @NonNull List<FeedItem> items) {
-        DownloadRequester requester = DownloadRequester.getInstance();
         List<FeedItem> queue = DBReader.getQueue();
         List<FeedItem> removedFromQueue = new ArrayList<>();
         for (FeedItem item : items) {
@@ -202,9 +206,8 @@ public class DBWriter {
                 }
                 if (item.getMedia().isDownloaded()) {
                     deleteFeedMediaSynchronous(context, item.getMedia());
-                } else if (requester.isDownloadingFile(item.getMedia())) {
-                    requester.cancelDownload(context, item.getMedia());
                 }
+                DownloadService.cancel(context, item.getMedia().getDownload_url());
             }
         }
 

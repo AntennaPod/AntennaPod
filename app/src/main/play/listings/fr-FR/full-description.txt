@@ -12,7 +12,7 @@ Conçu par des fans de podcast, AntennaPod est gratuit, open source et sans publ
 
 <b>Suivez, partagez et appréciez</b>
 • Enregistrez les meilleurs épisodes en tant que favoris
-• Retrouvez un épisode à partir de l'historique de lecture ou en recherchant les titres et commentaires des épisodes
+• Trouvez un épisode à partir de l'historique de lecture ou en cherchant les titres et les notes/descriptions des épisodes
 • Partagez vos épisodes et flux sur les réseaux sociaux, par email, sur gPodder.net ou en les exportant au format OPML
 
 <b>Contrôlez</b>

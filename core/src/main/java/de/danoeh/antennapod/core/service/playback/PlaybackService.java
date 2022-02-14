@@ -72,7 +72,6 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
@@ -368,7 +367,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void loadQueueForMediaSession() {
         Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
             List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-            for (FeedItem feedItem : taskManager.getQueue()) {
+            for (FeedItem feedItem : DBReader.getQueue()) {
                 if (feedItem.getMedia() != null) {
                     MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
                     queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
@@ -441,7 +440,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_black,
-                    taskManager.getQueue().size()));
+                    DBReader.getQueue().size()));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
                     DBReader.getDownloadedItems().size()));
             List<Feed> feeds = DBReader.getFeedList();
@@ -453,7 +452,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         List<FeedItem> feedItems;
         if (parentId.equals(getResources().getString(R.string.queue_label))) {
-            feedItems = taskManager.getQueue();
+            feedItems = DBReader.getQueue();
         } else if (parentId.equals(getResources().getString(R.string.downloads_label))) {
             feedItems = DBReader.getDownloadedItems();
         } else if (parentId.startsWith("FeedId:")) {
@@ -997,13 +996,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
         FeedItem nextItem;
-        try {
-            final List<FeedItem> queue = taskManager.getQueue();
-            nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
-            return null;
-        }
+        nextItem = DBReader.getNextInQueue(item);
 
         if (nextItem == null || nextItem.getMedia() == null) {
             PlaybackPreferences.writeNoMediaPlaying();
@@ -1021,16 +1014,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
-                    .prepareImmediately(true)
-                    .startWhenPrepared(true)
-                    .shouldStream(true)
-                    .getIntent());
+                            .prepareImmediately(true)
+                            .startWhenPrepared(true)
+                            .shouldStream(true)
+                            .getIntent());
             PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
             return null;
         }
         return nextItem.getMedia();
-
     }
 
     /**
@@ -1435,10 +1427,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             i.putExtra("album", info.playable.getFeedTitle());
             i.putExtra("track", info.playable.getEpisodeTitle());
             i.putExtra("playing", isPlaying);
-            final List<FeedItem> queue = taskManager.getQueueIfLoaded();
-            if (queue != null) {
-                i.putExtra("ListSize", queue.size());
-            }
             i.putExtra("duration", (long) info.playable.getDuration());
             i.putExtra("position", (long) info.playable.getPosition());
             sendBroadcast(i);
@@ -1529,8 +1517,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void pauseIfPauseOnDisconnect() {
         Log.d(TAG, "pauseIfPauseOnDisconnect()");
+        transientPause = (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING);
         if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            transientPause = true;
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }

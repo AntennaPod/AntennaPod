@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -34,6 +33,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
 public class LocalFeedUpdater {
 
@@ -74,21 +74,8 @@ public class LocalFeedUpdater {
         List<DocumentFile> mediaFiles = new ArrayList<>();
         Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
-            String mime = file.getType();
-            if (mime == null) {
-                continue;
-            }
-
-            MediaType mediaType = MediaType.fromMimeType(mime);
-            if (mediaType == MediaType.UNKNOWN) {
-                String path = file.getUri().toString();
-                int fileExtensionPosition = path.lastIndexOf('.');
-                if (fileExtensionPosition >= 0) {
-                    String extensionWithoutDot = path.substring(fileExtensionPosition + 1);
-                    mediaType = MediaType.fromFileExtension(extensionWithoutDot);
-                }
-            }
-
+            String mimeType = MimeTypeUtils.getMimeType(file.getType(), file.getUri().toString());
+            MediaType mediaType = MediaType.fromMimeType(mimeType);
             if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
                 mediaFiles.add(file);
                 mediaFileNames.add(file.getName());
@@ -116,7 +103,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        feed.setImageUrl(getImageUrl(context, documentFolder));
+        feed.setImageUrl(getImageUrl(documentFolder));
 
         feed.getPreferences().setAutoDownload(false);
         feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
@@ -134,7 +121,7 @@ public class LocalFeedUpdater {
      * Returns the image URL for the local feed.
      */
     @NonNull
-    static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
+    static String getImageUrl(@NonNull DocumentFile documentFolder) {
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
             DocumentFile image = documentFolder.findFile(iconLocation);
@@ -152,17 +139,7 @@ public class LocalFeedUpdater {
         }
 
         // use default icon as fallback
-        return getDefaultIconUrl(context);
-    }
-
-    /**
-     * Returns the URL of the default icon for a local feed. The URL refers to an app resource file.
-     */
-    public static String getDefaultIconUrl(Context context) {
-        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + context.getPackageName() + "/raw/"
-                + resourceEntryName;
+        return Feed.PREFIX_GENERATIVE_COVER + documentFolder.getUri();
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {

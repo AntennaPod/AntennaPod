@@ -1,9 +1,9 @@
 android {
-    compileSdkVersion 31
+    compileSdk 31
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdk 19
+        targetSdk 30
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -86,7 +86,7 @@ gradle.taskGraph.beforeTask { task ->
         task.doLast {
             def reportFile = task.project.file("build/reports/spotbugs/playDebug.xml")
             if (!reportFile.exists()) return
-            def slurped = new XmlSlurper().parse(reportFile)
+            def slurped = new groovy.xml.XmlSlurper().parse(reportFile)
 
             def foundErrors = false
             slurped['BugInstance'].each { bug ->

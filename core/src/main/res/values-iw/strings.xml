@@ -37,7 +37,6 @@
   <string name="change_setting">שינוי</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">זמן הנגינה הכולל של הפרקים:</string>
-  <string name="statistics_details_dialog">%1$d מתוך %2$d פרקים החלו.\n\nנוגנו %3$s מתוך %4$s.</string>
   <string name="statistics_mode">מצב סטטיסטיקה</string>
   <string name="statistics_mode_normal">חישוב זמן שנוגן בפועל. נגינה כפולה נספרת פעמיים, בעוד שסימון כנוגן לא נחשב.</string>
   <string name="statistics_mode_count_all">סכימת כל הפרקים שסומנו שהושמעו</string>
@@ -186,7 +185,9 @@
     <item quantity="many">%d מינויים עודכנו.</item>
     <item quantity="other">%d מינויים עודכנו.</item>
   </plurals>
-  <string name="add_to_folder">הוספה לתיקייה</string>
+  <string name="edit_tags">עריכת תגיות</string>
+  <string name="rename_tag_label">שינוי שם תגית</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">הורדת פרקים דרך חיבור סלולרי ושבתת בהגדרות.\n\nהאם עדיין לרענן את כל הפודקאסטים דרך חיבור סלולרי?</string>
   <!--actions on feeditems-->
   <string name="download_label">הורדה</string>
   <plurals name="downloading_batch_label">
@@ -202,10 +203,10 @@
   <string name="delete_failed">לא ניתן למחוק קובץ. הפעלת המכשיר מחדש עשויה לסייע.</string>
   <string name="delete_episode_label">מחיקת פרק</string>
   <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">פרק אחד נבחר, הורדה אחת נמחקה.</item>
-    <item quantity="two">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
-    <item quantity="many">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
-    <item quantity="other">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
+    <item quantity="one">פרק שהורד נמחק.</item>
+    <item quantity="two">שני פרקים שהורדו נמחקו.</item>
+    <item quantity="many">%d פרקים שהורדו נמחקו.</item>
+    <item quantity="other">%d פרקים שהורדו נמחקו.</item>
   </plurals>
   <string name="remove_new_flag_label">הסרת הסימון „חדש”</string>
   <string name="removed_new_flag_label">הוסר הסימון „חדש”</string>
@@ -272,8 +273,8 @@
   <string name="download_error_forbidden">השרת של מארח הפודקאסט מסרב להגיב.</string>
   <string name="download_canceled_msg">הורדה בוטלה</string>
   <string name="download_error_wrong_size">החיבור לשרת אבד לפני השלמת ההורדה</string>
-  <string name="download_error_blocked">ההורדה נחסמה על ידי יישומון אחר במכשיר שלך.</string>
-  <string name="download_error_certificate">לא ניתן ליצור חיבור מאובטח. יכול להיות שיישומון אחר במכשיר שלך חסם את ההורדה או שמשהו השתבש באישורי השרת.</string>
+  <string name="download_error_blocked">ההורדה נחסמה על ידי יישומון אחר במכשיר שלך (כנראה VPN או חוסם פרסומות).</string>
+  <string name="download_error_certificate">לא ניתן ליצור חיבור מאובטח. יכול להיות שיישומון אחר במכשיר שלך חסם את ההורדה (כנראה VPN או חוסם פרסומות) או שמשהו השתבש באישורי השרת.</string>
   <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
   <string name="auto_download_report_title">ההורדות האוטומטיות הושלמו</string>
   <string name="download_error_io_error">שגיאת קלט פלט</string>
@@ -290,8 +291,8 @@
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
   <string name="download_type_feed">הזנה</string>
   <string name="download_type_media">קובץ מדיה</string>
-  <string name="download_request_error_dialog_message_prefix">אירעה שגיאה בעת הניסיון הורדת הקובץ:\u0020</string>
   <string name="null_value_podcast_error">לא סופקו פרקים שניתן להציג.</string>
+  <string name="no_feed_url_podcast_found_by_search">לפודקאסט המוצע לא היה קישור RSS,‏ AntennaPod מצאה פודקאסט שכנראה יתאים</string>
   <string name="authentication_notification_title">נדרש אימות</string>
   <string name="authentication_notification_msg">המשאב שביקשת דורש שם משתמש וססמה</string>
   <string name="confirm_mobile_download_dialog_title">אישור הורדה דרך רשת סלולרית</string>
@@ -304,7 +305,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">הוספה לתור</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">לאפשר לבינתיים</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">שגיאה!</string>
   <string name="playback_error_server_died">השרת לא מגיב</string>
   <string name="playback_error_unsupported">אין תמיכה בסוג המדיה הזה</string>
   <string name="playback_error_timeout">הזמן שהוקצב לפעולה תם</string>
@@ -361,7 +361,7 @@
   <string name="storage_sum">מחיקה אוטומטית של פרקים, ייבוא, ייצוא</string>
   <string name="project_pref">מיזם</string>
   <string name="synchronization_pref">סנכרון</string>
-  <string name="synchronization_sum">סנכרון עם מכשירים אחרים דרך gpodder.net</string>
+  <string name="synchronization_sum">סנכרון עם מכשירים אחרים</string>
   <string name="automation">אוטומציה</string>
   <string name="download_pref_details">פרטים</string>
   <string name="import_export_pref">ייבוא/ייצוא</string>
@@ -454,17 +454,20 @@
   <string name="pref_theme_title_dark">כהה</string>
   <string name="pref_theme_title_trueblack">שחור (תואם AMOLED)</string>
   <string name="pref_episode_cache_unlimited">בלתי מוגבל</string>
-  <string name="pref_gpodnet_authenticate_title">כניסה</string>
-  <string name="pref_gpodnet_authenticate_sum">ניתן להיכנס לחשבונך ב־gpodder.net כדי לסנכרן את המינויים שלך.</string>
-  <string name="pref_gpodnet_logout_title">יציאה</string>
-  <string name="pref_gpodnet_logout_toast">הצלחת לצאת</string>
+  <string name="synchronization_logout">יציאה</string>
+  <string name="pref_synchronization_logout_toast">היציאה הצליחה</string>
   <string name="pref_gpodnet_setlogin_information_title">שינוי פרטי הכניסה</string>
   <string name="pref_gpodnet_setlogin_information_sum">שינוי פרטי הכניסה לחשבון ה־gpodder.net שלך.</string>
-  <string name="pref_gpodnet_sync_changes_title">לסנכרן כעת</string>
-  <string name="pref_gpodnet_sync_changes_sum">סנכרון שינויי מצב במינויים ובפרקים מול gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">לכפות סנכרון מלא</string>
-  <string name="pref_gpodnet_full_sync_sum">סנכרון כל המינויים ומצבי הפרקים עם gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[נכנסת בשם <i>%1$s</i> עם ההתקן <i>%2$s</i>]]></string>
+  <string name="synchronization_sync_changes_title">לסנכרן עכשיו</string>
+  <string name="synchronization_full_sync_title">אילוץ סנכרון מלא</string>
+  <string name="synchronization_login_status"><![CDATA[נכנסת בתור <i>%1$s</i> אל <i>%2$s</i>. <br/><br/>אפשר לבחור את שרת הסנכרון שלך שוב לאחר היציאה מהחשבון]]></string>
+  <string name="synchronization_summary_unchoosen">אפשר לבחור בין מגוון ספקית לסנכרון המינויים ומצב נגינ הפרקים שלך עם</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. היישומון אינו תלוי במיזם AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">יש להעניק גישה באמצעות הדפדפן שנפתח ולחזור ל־AntennaPod.</string>
+  <string name="synchronization_choose_title">בחירת ספק סנכרון</string>
+  <string name="synchronization_force_sync_summary">סנכרון המינוי ושינויי מצב הפרקים מחדש</string>
+  <string name="synchronization_sync_summary">סנכרון המינוי ושינויי מצב הפרקים</string>
+  <string name="dialog_choose_sync_service_title">בחירת ספק סנכרון</string>
   <string name="pref_playback_speed_sum">התאמת המהירויות הזמינות למהירות נגינה משתנה</string>
   <string name="pref_feed_playback_speed_sum">המהירות שתחול על פרקים בפודקאסט זה כשאלו מתחילים להתנגן</string>
   <string name="pref_feed_skip">לדלג אוטומטית</string>
@@ -507,9 +510,6 @@
   <string name="pref_proxy_title">מתווך</string>
   <string name="pref_proxy_sum">הגדרת מתווך רשת</string>
   <string name="pref_no_browser_found">לא נמצא דפדפן.</string>
-  <string name="pref_cast_title">תמיכה ב־Chromecast</string>
-  <string name="pref_cast_message_play_flavor">הפעלת תמיכה בנגינת מדיה על התקני שידור מרוחקים (כגון Chromecast, רמקולים דיגיטליים או Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">לתמיכה ב־Chromecast נדרשות ספריות קנייניות מאת צד־שלישי שמושבתות בגרסה זו של אנטנה־פּוֹד</string>
   <string name="pref_enqueue_downloaded_title">הוספת הורדות לתור</string>
   <string name="pref_enqueue_downloaded_summary">הוספת פרקים שהתקבלו לתור</string>
   <string name="media_player_builtin">הנגן המובנה ב־Android (לא זמין עוד)</string>
@@ -547,6 +547,8 @@
   <string name="new_episode_notification_disabled">ההתראות מושבתות</string>
   <string name="pref_feed_settings_dialog_msg">הגדרה זו היא ייחודית לפי פודקאסט. ניתן לשנות אותה על ידי פתיחת עמוד הפודקאסט.</string>
   <string name="pref_contribute">תרומה</string>
+  <string name="pref_show_subscription_title">הצגת כותרת מינוי</string>
+  <string name="pref_show_subscription_title_summary">הצגת כותרת המינוי מתחת לתמונת העטיפה.</string>
   <!--About screen-->
   <string name="about_pref">על אודות</string>
   <string name="antennapod_version">גרסת אנטנה־פּוֹד</string>
@@ -569,6 +571,7 @@
   <string name="sync_status_episodes_download">השינויים לפרק מתקבלים…</string>
   <string name="sync_status_upload_played">מצב הנגינה נשלח…</string>
   <string name="sync_status_subscriptions">המינויים מסונכרנים…</string>
+  <string name="sync_status_wait_for_downloads">בהמתנה להשלמת ההורדות…</string>
   <string name="sync_status_success">הסנכרון הצליח</string>
   <string name="sync_status_error">הסנכרון נכשל</string>
   <!--import and export-->
@@ -597,7 +600,6 @@
   <string name="export_success_title">הייצוא הצליח</string>
   <string name="export_success_sum">הקובץ שייוצא נכתב אל:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
-  <string name="import_select_file">בחירת קובץ לייבוא</string>
   <string name="successful_import_label">הייבוא הצליח</string>
   <string name="import_ok">נא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
   <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של אנטנה־פ‎וֹד</string>
@@ -667,13 +669,13 @@
   <string name="pref_pausePlaybackForFocusLoss_title">להשהות במהלך הפרעות</string>
   <string name="pref_resumeAfterCall_sum">להמשיך בנגינה לאחר השלמת שיחת הטלפון</string>
   <string name="pref_resumeAfterCall_title">להמשיך לאחר שיחה</string>
-  <string name="pref_restart_required">יש להפעיל את אנטנה־פּוֹד מחדש כדי שהשינויים ייכנסו לתוקף.</string>
   <!--Online feed view-->
   <string name="subscribe_label">הרשמה</string>
   <string name="subscribing_label">מתבצע רישום…</string>
   <string name="preview_episode">תצוגה מקדימה</string>
   <string name="stop_preview">עצירת התצוגה המקדימה</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">חזרה</string>
   <string name="rewind_label">חזרה לאחור</string>
   <string name="fast_forward_label">הרצה קדימה</string>
   <string name="increase_speed">האצה</string>
@@ -691,21 +693,26 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">אימות</string>
   <string name="authentication_descr">שינוי שם המשתמש והססמה שלך לפודקאסט הזה ולפרקים שלו.</string>
-  <string name="feed_folders_label">תיקיות</string>
-  <string name="feed_folders_summary">ניתן לשנות את התיקיות בהן מופיע הפודקאסט הזה.</string>
+  <string name="feed_tags_label">תגיות</string>
+  <string name="feed_tags_summary">ניתן לערוך את תגיות הפודקאסט הזה כדי לסייע בארגון המינויים שלך</string>
   <string name="feed_folders_include_root">הצגה ברשימה הראשית</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} רק תגיות שמשותפות לכל המינויים הנבחרים מוצגות. תגיות אחרות לא משתתפות.</string>
   <string name="auto_download_settings_label">הגדרות הורדה אוטומטית</string>
   <string name="episode_filters_label">מסנן פרקים</string>
   <string name="episode_filters_description">רשימת המונחים בהם יעשה שימוש כדי להחליט אם להכליל או להחריג פרק כלשהו במהלך הורדה אוטומטית</string>
   <string name="episode_filters_include">להכליל</string>
   <string name="episode_filters_exclude">להחריג</string>
+  <string name="episode_filters_duration">משך זמן מזערי (בדקות)</string>
   <string name="episode_filters_hint">מילים בודדות \n\"אוסף מילים\"</string>
   <string name="keep_updated">לשמור על עדכניות</string>
   <string name="keep_updated_summary">לכלול את הפודקאסט בעת רענון (אוטומטי) של כל הפודקאסטים</string>
   <string name="auto_download_disabled_globally">הורדה אוטומטית מושבתת בהגדרות הראשיות של אנטנה־פּוֹד</string>
-  <string name="statistics_listened_for">הואזן למשך:</string>
+  <string name="statistics_time_played">זמן הנגינה:</string>
+  <string name="statistics_total_duration">משך זמן כולל (הערכה):</string>
+  <string name="statistics_duration_played_episodes">משך הפרקים שנוגנו:</string>
   <string name="statistics_episodes_on_device">פרקים על המכשיר הזה:</string>
   <string name="statistics_space_used">מקום תפוס:</string>
+  <string name="statistics_episodes_started_total">פרקים שהותחלו/סך הכול:</string>
   <string name="statistics_view_all">להציג לכל הפודקאסטים »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מתבצע ייבוא מינויים מיישומונים ממוקדי מטרה…</string>
@@ -750,6 +757,8 @@
   <string name="sort_date_old_new">תאריך (ישן \u2192 חדש)</string>
   <string name="sort_duration_short_long">משך (קצר \u2192 ארוך)</string>
   <string name="sort_duration_long_short">משך (קצר \u2192 ארוך)</string>
+  <string name="sort_filename_a_z">שם קובץ (א \u2190 ת)</string>
+  <string name="sort_filename_z_a">שם קובץ (ת \u2190 א)</string>
   <string name="sort_a_z">א \u2192 ת</string>
   <string name="sort_z_a">ת \u2192 א</string>
   <string name="sort_new_old">חדש \u2192 ישן</string>
@@ -765,9 +774,10 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">כולל:</string>
   <string name="share_playback_position_dialog_label">מיקום הנגינה</string>
-  <string name="share_dialog_media_file_url_label">כתובת קובץ מדיה</string>
   <string name="share_dialog_episode_website_label">עמוד הפרק</string>
+  <string name="share_dialog_link_to_episode">קישור לפרק</string>
   <string name="share_dialog_media_file_label">קובץ מדיה</string>
+  <string name="share_starting_position_label">החל מ־</string>
   <!--Audio controls-->
   <string name="audio_controls">פקדי שמע</string>
   <string name="playback_speed">מהירות נגינה</string>
@@ -789,20 +799,6 @@
   <string name="proxy_port_invalid_error">הפתחה אינה תקנית</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">מספר העמודות</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">ניגון דרך…</string>
-  <string name="cast_disconnect_label">ניתוק השידור</string>
-  <string name="cast_not_castable">המדיה הנבחרת אינה תואמת להתקן שידור</string>
-  <string name="cast_failed_to_play">התחלת נגינת המדיה נכשלה</string>
-  <string name="cast_failed_to_stop">עצירת נגינת המדיה נכשלה</string>
-  <string name="cast_failed_to_pause">השהיית נגינת המדיה נכשלה</string>
-  <string name="cast_failed_setting_volume">הגדרת עצמת השמע נכשלה</string>
-  <string name="cast_failed_no_connection">אין חיבור להתקן שידור</string>
-  <string name="cast_failed_no_connection_trans">החיבור להתקן שידור אבד. היישומון מנסה להתחבר שוב, אם ניתן. נא להמתין מספר שניות ואז לנסות שוב.</string>
-  <string name="cast_failed_status_request">הסנכרון עם התקן השידור נכשל</string>
-  <string name="cast_failed_seek">ההקפצה למיקום נגינה אחר בהתקן השידור נכשלה</string>
-  <string name="cast_failed_receiver_player_error">הנגן המקבל נתקל בשגיאה חמורה</string>
-  <string name="cast_failed_media_error_skipping">שגיאה בנגינת המדיה. מתבצע דילוג…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">שגיאות</string>
   <string name="notification_group_news">חדשות</string>
@@ -828,4 +824,7 @@
   <string name="on_demand_config_setting_changed">ההגדרות עודכנו בהצלחה.</string>
   <string name="on_demand_config_stream_text">נראה כי הזרמה משמשת אותך רבות. מעניין אותך שרשימות פרקים יציגו כפתורי הזרמה?</string>
   <string name="on_demand_config_download_text">נראה כי הורדה משמשת אותך רבות. מעניין אותך שרשימות פרקים יציגו כפתורי הורדה?</string>
+  <string name="shortcut_subscription_label">קיצור למינוי</string>
+  <string name="shortcut_select_subscription">בחירת מינוי</string>
+  <string name="add_shortcut">הוספת קיצור דרך</string>
 </resources>

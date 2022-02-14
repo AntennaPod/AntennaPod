@@ -8,10 +8,13 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.model.feed.FeedFile;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.util.URLChecker;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public class DownloadRequest implements Parcelable {
+    public static final String REQUEST_ARG_PAGE_NR = "page";
+    public static final String REQUEST_ARG_LOAD_ALL_PAGES = "loadAllPages";
 
     private final String destination;
     private final String source;
@@ -128,7 +131,6 @@ public class DownloadRequest implements Parcelable {
         if (size != that.size) return false;
         if (soFar != that.soFar) return false;
         if (statusMsg != that.statusMsg) return false;
-        if (!arguments.equals(that.arguments)) return false;
         if (!destination.equals(that.destination)) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
@@ -269,16 +271,33 @@ public class DownloadRequest implements Parcelable {
         private boolean deleteOnFailure = false;
         private final long feedfileId;
         private final int feedfileType;
-        private Bundle arguments;
-        private boolean initiatedByUser;
+        private Bundle arguments = new Bundle();
+        private boolean initiatedByUser = true;
 
-        public Builder(@NonNull String destination, @NonNull FeedFile item, boolean initiatedByUser) {
+        public Builder(@NonNull String destination, @NonNull FeedMedia media) {
             this.destination = destination;
-            this.source = URLChecker.prepareURL(item.getDownload_url());
-            this.title = item.getHumanReadableIdentifier();
-            this.feedfileId = item.getId();
-            this.feedfileType = item.getTypeAsInt();
+            this.source = URLChecker.prepareURL(media.getDownload_url());
+            this.title = media.getHumanReadableIdentifier();
+            this.feedfileId = media.getId();
+            this.feedfileType = media.getTypeAsInt();
+        }
+
+        public Builder(@NonNull String destination, @NonNull Feed feed) {
+            this.destination = destination;
+            this.source = feed.isLocalFeed() ? feed.getDownload_url() : URLChecker.prepareURL(feed.getDownload_url());
+            this.title = feed.getHumanReadableIdentifier();
+            this.feedfileId = feed.getId();
+            this.feedfileType = feed.getTypeAsInt();
+        }
+
+        public void setInitiatedByUser(boolean initiatedByUser) {
             this.initiatedByUser = initiatedByUser;
+        }
+
+        public void setForce(boolean force) {
+            if (force) {
+                lastModified = null;
+            }
         }
 
         public Builder deleteOnFailure(boolean deleteOnFailure) {
@@ -297,14 +316,14 @@ public class DownloadRequest implements Parcelable {
             return this;
         }
 
+        public void loadAllPages(boolean loadAllPages) {
+            if (loadAllPages) {
+                arguments.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, true);
+            }
+        }
+
         public DownloadRequest build() {
             return new DownloadRequest(this);
         }
-
-        public Builder withArguments(Bundle args) {
-            this.arguments = args;
-            return this;
-        }
-
     }
 }

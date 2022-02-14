@@ -37,7 +37,6 @@
   <string name="change_setting">Alterar</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total dos episódios reproduzidos:</string>
-  <string name="statistics_details_dialog">%1$d de %2$d episódios iniciados.\n\nReproduzidos %3$s de %4$s.</string>
   <string name="statistics_mode">Modo estatístico</string>
   <string name="statistics_mode_normal">Calcula a duração dos podcasts reproduzidos. Se os reproduzir duas vezes, serão contados duas vezes mas se os marcar como reproduzidos não serão contados.</string>
   <string name="statistics_mode_count_all">Soma todos os episódios que tenham sido marcados como reproduzidos</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d subscrição atualizada.</item>
     <item quantity="other">%d subscrições atualizadas.</item>
   </plurals>
-  <string name="add_to_folder">Adicionar à pasta</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarregar</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">Eliminar</string>
   <string name="delete_failed">Episódio não eliminado. Tente reiniciar o dispositivo.</string>
   <string name="delete_episode_label">Eliminar episódio</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d episódio selecionado, %d descarga removida.</item>
-    <item quantity="other">%d episódios selecionados, %d descargas removidas.</item>
-  </plurals>
   <string name="remove_new_flag_label">Remover a marca \"novo\"</string>
   <string name="removed_new_flag_label">A marca \"novo\" foi removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">O servidor do podcast não respondeu.</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_error_wrong_size">A ligação ao servidor foi terminada antes de terminar a descarga.</string>
-  <string name="download_error_blocked">A descarga foi bloqueada por uma aplicação do seu dispositivo.</string>
-  <string name="download_error_certificate">Não foi possível estabelecer uma ligação segura. Isto pode significar que uma aplicação está a bloquear a descarga ou que existe algum erros com os certificados do servidor.</string>
   <string name="download_report_title">Descargas terminadas com erros</string>
   <string name="auto_download_report_title">Descargas automáticas terminadas</string>
   <string name="download_error_io_error">Erro I/O</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">Título desconhecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro multimédia</string>
-  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao tentar descarregar o ficheiro:\u0020</string>
   <string name="null_value_podcast_error">Não foi possível mostrar o podcast.</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma palavra-passe</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Apenas adicionados à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Ativar temporariamente</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Erro!</string>
   <string name="playback_error_server_died">Erro de servidor</string>
   <string name="playback_error_unsupported">Tipo de ficheiro não suportado</string>
   <string name="playback_error_timeout">Operação expirada</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">Eliminação automática, importação e exportação</string>
   <string name="project_pref">Projeto</string>
   <string name="synchronization_pref">Sincronização</string>
-  <string name="synchronization_sum">Sincronizar com outros dispositivos via gpodder.net</string>
   <string name="automation">Automatização</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">Escuro</string>
   <string name="pref_theme_title_trueblack">Preto (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Sem limite</string>
-  <string name="pref_gpodnet_authenticate_title">Acesso</string>
-  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições.</string>
-  <string name="pref_gpodnet_logout_title">Sair</string>
-  <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar a informação de acesso à sua conta gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronizar agora</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sincronizar subscrição e estado do episódio com o gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Impor sincronização total</string>
-  <string name="pref_gpodnet_full_sync_sum">Sincronizar todas as subscrições e estados dos episódios com o gpodder.net.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Sessão iniciada como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Personalizar disponibilidade das velocidades variáveis de reprodução</string>
   <string name="pref_feed_playback_speed_sum">Velocidade utilizada para a reprodução áudio dos episódios deste podcast</string>
   <string name="pref_feed_skip">Ignorar automaticamente</string>
@@ -477,9 +457,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Definir um proxy de rede.</string>
   <string name="pref_no_browser_found">Navegador web não encontrado</string>
-  <string name="pref_cast_title">Suporte Chromecast</string>
-  <string name="pref_cast_message_play_flavor">Ativar suporte a reprodução multimédia em dispositivos Cast (tais como Chromecast, Android TV...)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod.</string>
   <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados.</string>
   <string name="media_player_builtin">Reprodutor nativo Android (descontinuado)</string>
@@ -567,7 +544,6 @@
   <string name="export_success_title">Exportação com sucesso</string>
   <string name="export_success_sum">O ficheiro exportado foi guardado em:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Requer acesso ao armazenamento externo para ler o ficheiro OPML</string>
-  <string name="import_select_file">Selecione o ficheiro a importar</string>
   <string name="successful_import_label">Importação bem sucedida</string>
   <string name="import_ok">Prima OK para reiniciar a aplicação</string>
   <string name="import_no_downgrade">A base de dados foi exportada de uma versão mais recente do AntennaPod. A sua versão da aplicação não sabe como manipular este ficheiro.</string>
@@ -631,7 +607,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
   <string name="pref_resumeAfterCall_sum">Continuar reprodução ao terminar a chamada.</string>
   <string name="pref_resumeAfterCall_title">Continuar após a chamada</string>
-  <string name="pref_restart_required">Tem que reiniciar o AntennaPod para aplicar as alterações</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribing_label">Subscrição em curso...</string>
@@ -655,8 +630,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altere o seu nome de utilizador e palavra-passe para este podcast e seus episódios</string>
-  <string name="feed_folders_label">Pastas</string>
-  <string name="feed_folders_summary">Alterar as pastas em que este podcast é mostrado.</string>
   <string name="feed_folders_include_root">Mostrar na lista principal</string>
   <string name="auto_download_settings_label">Definições de descarga automática</string>
   <string name="episode_filters_label">Filtro de episódios</string>
@@ -667,7 +640,6 @@
   <string name="keep_updated">Manter atualizada</string>
   <string name="keep_updated_summary">Incluir este podcast ao recarregar automaticamente todos os podcasts</string>
   <string name="auto_download_disabled_globally">A descarga automática está desativada nas definições do AntennaPod</string>
-  <string name="statistics_listened_for">Reproduzido durante:</string>
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
   <string name="statistics_view_all">Ver para todos os podcasts »</string>
@@ -729,7 +701,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Incluir:</string>
   <string name="share_playback_position_dialog_label">Posição de reprodução</string>
-  <string name="share_dialog_media_file_url_label">Endereço do ficheiro multimédia</string>
   <string name="share_dialog_episode_website_label">Página web do episódio</string>
   <string name="share_dialog_media_file_label">Ficheiro multimédia</string>
   <!--Audio controls-->
@@ -753,20 +724,6 @@
   <string name="proxy_port_invalid_error">Porta inválido</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Número de colunas</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Reproduzir em...</string>
-  <string name="cast_disconnect_label">Desligar da última sessão</string>
-  <string name="cast_not_castable">O ficheiro selecionado não é compatível com este dispositivo</string>
-  <string name="cast_failed_to_play">Falha ao iniciar a reprodução</string>
-  <string name="cast_failed_to_stop">Falha ao parar a reprodução</string>
-  <string name="cast_failed_to_pause">Falha ao pausar a reprodução</string>
-  <string name="cast_failed_setting_volume">Falha ao definir o volume</string>
-  <string name="cast_failed_no_connection">Não existe uma ligação ao dispositivo \'cast\'</string>
-  <string name="cast_failed_no_connection_trans">Falha de ligação ao dispositivo. A aplicação está a tentar estabelecer uma nova ligação. Por favor aguarde alguns segundos e tente novamente.</string>
-  <string name="cast_failed_status_request">Falha de sincronização com o dispositivo</string>
-  <string name="cast_failed_seek">Falha ao procurar a nova posição no dispositivo</string>
-  <string name="cast_failed_receiver_player_error">O reprodutor encontrou um erro crítico</string>
-  <string name="cast_failed_media_error_skipping">Erro de reprodução. A ignorar...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Erros</string>
   <string name="notification_group_news">Notícias</string>

@@ -725,9 +725,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();
                 }
-            } catch (Exception ignore) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mediaPlayer.release();
             mediaPlayer = null;
+            playerStatus = PlayerStatus.STOPPED;
         }
         isShutDown = true;
         executor.shutdown();
@@ -834,6 +837,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
         if (media == null) {
             mediaPlayer = null;
+            playerStatus = PlayerStatus.STOPPED;
             return;
         }
 

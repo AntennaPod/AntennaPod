@@ -1,9 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.os.Build;
 import android.view.ContextMenu;
+import android.view.InputDevice;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -85,6 +88,17 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             longPressedPosition = holder.getBindingAdapterPosition();
             return false;
         });
+        holder.itemView.setOnTouchListener((v, e) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                        && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                    longPressedItem = getItem(holder.getBindingAdapterPosition());
+                    longPressedPosition = holder.getBindingAdapterPosition();
+                    return false;
+                }
+            }
+            return false;
+        });
 
         if (inActionMode()) {
             holder.secondaryActionButton.setVisibility(View.GONE);
@@ -162,6 +176,9 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         if (inActionMode()) {
             inflater.inflate(R.menu.multi_select_context_popup, menu);
         } else {
+            if (longPressedItem == null) {
+                return;
+            }
             inflater.inflate(R.menu.feeditemlist_context, menu);
             menu.setHeaderTitle(longPressedItem.getTitle());
             FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);

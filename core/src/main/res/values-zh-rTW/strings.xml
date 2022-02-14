@@ -29,7 +29,6 @@
   <!--SwipeActions-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">總播放時長：</string>
-  <string name="statistics_details_dialog">聽過 %1$d/%2$d集。\n\n播過%3$s/%4$s集。</string>
   <string name="statistics_mode">統計模式</string>
   <string name="statistics_mode_normal">計算真實的播放時長。如果播放同一劇集兩遍，則會記錄兩遍的時間；如果只是標記為已播放，則不會被計入播放時長</string>
   <string name="statistics_mode_count_all">累加所有標記為已播放的單集</string>
@@ -210,7 +209,6 @@
   <string name="download_log_title_unknown">標題不明</string>
   <string name="download_type_feed">資料來源</string>
   <string name="download_type_media">媒體檔案</string>
-  <string name="download_request_error_dialog_message_prefix">下載此檔案時出錯：\u0020</string>
   <string name="null_value_podcast_error">無法顯示 Podcast</string>
   <string name="authentication_notification_title">需要驗證</string>
   <string name="authentication_notification_msg">這項資源需要帳號及密碼</string>
@@ -224,7 +222,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">列入待播清單</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">暫時允許</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">錯誤！</string>
   <string name="playback_error_server_died">主機未回應</string>
   <string name="playback_error_unsupported">不支援的媒體格式</string>
   <string name="playback_error_timeout">操作逾時</string>
@@ -280,7 +277,6 @@
   <string name="storage_sum">自動刪除、匯入、匯出</string>
   <string name="project_pref">專案</string>
   <string name="synchronization_pref">同步</string>
-  <string name="synchronization_sum">利用 gpodder.net 與其他裝置同步</string>
   <string name="automation">自動化</string>
   <string name="download_pref_details">細節</string>
   <string name="import_export_pref">匯入/匯出</string>
@@ -360,17 +356,8 @@
   <string name="pref_theme_title_dark">深色</string>
   <string name="pref_theme_title_trueblack">黑色 (適用 AMOLED 螢幕)</string>
   <string name="pref_episode_cache_unlimited">無限</string>
-  <string name="pref_gpodnet_authenticate_title">登入</string>
-  <string name="pref_gpodnet_authenticate_sum">登入您的 gpodder.net 帳戶以同步訂閱資訊</string>
-  <string name="pref_gpodnet_logout_title">登出</string>
-  <string name="pref_gpodnet_logout_toast">成功登出</string>
   <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
   <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
-  <string name="pref_gpodnet_sync_changes_title">馬上同步</string>
-  <string name="pref_gpodnet_sync_changes_sum">與 gpodder.net 同步訂閱及聆聽狀態。</string>
-  <string name="pref_gpodnet_full_sync_title">強制全部同步</string>
-  <string name="pref_gpodnet_full_sync_sum">與 gpodder.net 同步所有的訂閱及聆聽狀態。</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[以 <i>%1$s</i> 登入，設備為 <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">自訂可選用的播放速度</string>
   <string name="pref_feed_playback_speed_sum">播放此 Podcast 中各單集時的播放速度</string>
   <string name="pref_feed_skip">自動跳過</string>
@@ -413,9 +400,6 @@
   <string name="pref_proxy_title">代理伺服器</string>
   <string name="pref_proxy_sum">設定代理伺服器</string>
   <string name="pref_no_browser_found">找不到任何瀏覽器</string>
-  <string name="pref_cast_title">支援 Chromecast</string>
-  <string name="pref_cast_message_play_flavor">啟用 Cast 設備（如 Chromecast、Audio Speakers、Google TV 等）遙控播放</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast 相關支援需要其他第三方的私權軟體，所以在此版 AntennaPod 中停用。</string>
   <string name="pref_enqueue_downloaded_title">下載後加入待播清單</string>
   <string name="pref_enqueue_downloaded_summary">下載單集以後自動加入待播清單</string>
   <string name="media_player_builtin">內建 Android 播放器 (已棄用)</string>
@@ -498,7 +482,6 @@
   <string name="export_success_title">匯出成功</string>
   <string name="export_success_sum">檔案已匯出至：\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">讀取 OPML 檔需要存取外部儲存空間的權限</string>
-  <string name="import_select_file">選取要匯入的檔案</string>
   <string name="successful_import_label">匯入完畢</string>
   <string name="import_ok">請按下 OK 重新啟動 AntennaPod</string>
   <string name="import_no_downgrade">此資料庫是以新版 AntennaPod 匯出的，您目前使用的版本無法使用這份資料。</string>
@@ -558,7 +541,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">其他音訊介入時暫停播放</string>
   <string name="pref_resumeAfterCall_sum">通話結束後，繼續播放 Podcast</string>
   <string name="pref_resumeAfterCall_title">通話後繼續播放</string>
-  <string name="pref_restart_required">此更動需要重新啟動 AntennaPod。</string>
   <!--Online feed view-->
   <string name="subscribe_label">訂閱</string>
   <string name="subscribing_label">訂閱中</string>
@@ -589,7 +571,6 @@
   <string name="keep_updated">維持更新</string>
   <string name="keep_updated_summary">自動更新所有 Podcast 時，也包括此 Podcast</string>
   <string name="auto_download_disabled_globally">AntennaPod 的主設定中已停用自動下載功能</string>
-  <string name="statistics_listened_for">聆聽時間：</string>
   <string name="statistics_episodes_on_device">裝置上的單集：</string>
   <string name="statistics_space_used">佔用空間：</string>
   <string name="statistics_view_all">檢視所有 Podcast »</string>
@@ -651,7 +632,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">包括：</string>
   <string name="share_playback_position_dialog_label">播放進度</string>
-  <string name="share_dialog_media_file_url_label">媒體檔網址</string>
   <string name="share_dialog_episode_website_label">此單集的網頁</string>
   <string name="share_dialog_media_file_label">媒體檔案</string>
   <!--Audio controls-->
@@ -675,20 +655,6 @@
   <string name="proxy_port_invalid_error">埠號無效</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">顯示欄數</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">播放到…</string>
-  <string name="cast_disconnect_label">中止 Cast 連線</string>
-  <string name="cast_not_castable">此 Cast 設備不支援所選的媒體</string>
-  <string name="cast_failed_to_play">媒體播放失敗</string>
-  <string name="cast_failed_to_stop">媒體停止播放失敗</string>
-  <string name="cast_failed_to_pause">媒體暫停播放失敗</string>
-  <string name="cast_failed_setting_volume">音量設定失敗</string>
-  <string name="cast_failed_no_connection">沒有連結到任何 Cast 設備</string>
-  <string name="cast_failed_no_connection_trans">與 Cast 設備的連線中斷了，App 將試著重新連線。請稍候幾秒後再試一次。</string>
-  <string name="cast_failed_status_request">與 Cast 設備同步時發生錯誤</string>
-  <string name="cast_failed_seek">Cast 設備的播放進度調整失敗</string>
-  <string name="cast_failed_receiver_player_error">Cast 播放器發生錯誤</string>
-  <string name="cast_failed_media_error_skipping">播放錯誤，跳過此項…</string>
   <!--Notification channels-->
   <string name="notification_group_errors">錯誤</string>
   <string name="notification_group_news">新單集到</string>

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -30,7 +33,6 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
@@ -120,6 +122,20 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             return false;
         });
 
+        holder.itemView.setOnTouchListener((v, e) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                        &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                    if (!inActionMode()) {
+                        if (isFeed) {
+                            longPressedPosition = holder.getBindingAdapterPosition();
+                        }
+                        selectedItem = (NavDrawerData.DrawerItem) getItem(holder.getBindingAdapterPosition());
+                    }
+                }
+            }
+            return false;
+        });
         holder.itemView.setOnClickListener(v -> {
             if (isFeed) {
                 if (inActionMode()) {
@@ -238,7 +254,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
                 boolean textAndImageCombind = feed.isLocalFeed()
-                        && LocalFeedUpdater.getDefaultIconUrl(itemView.getContext()).equals(feed.getImageUrl());
+                        && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
                 new CoverLoader(mainActivityRef.get())
                         .withUri(feed.getImageUrl())
                         .withPlaceholderView(feedTitle, textAndImageCombind)

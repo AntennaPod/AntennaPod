@@ -37,7 +37,6 @@
   <string name="change_setting">تغییر</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">مجموع زمان پادکست‌های پخش‌شده:</string>
-  <string name="statistics_details_dialog">%1$d از %2$d قسمت‌ها شروع شده است.\n\n%3$s از %4$s پخش.</string>
   <string name="statistics_mode">حالت آمار</string>
   <string name="statistics_mode_normal">مدت زمان واقعی پخش را محاسبه کنید. دو بار پخش کردن دو بار شمارش می‌شود، در حالیکه علامت‌گذاری‌شده به‌عنوان پخش‌شده محاسبه نمی‌شود.</string>
   <string name="statistics_mode_count_all">مجموع اپیزودها را به عنوان پخش شده علامت گذاری کن.</string>
@@ -172,7 +171,6 @@
     <item quantity="one">%d اشتراک به‌روز شد.</item>
     <item quantity="other">%d اشتراک به‌روز شد.</item>
   </plurals>
-  <string name="add_to_folder">افزودن به پوشه</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
   <plurals name="downloading_batch_label">
@@ -185,10 +183,6 @@
   <string name="delete_label">حذف</string>
   <string name="delete_failed">پرونده حذف نشد. راه‌اندازی مجدد دستگاه می‌تواند کمک کند.</string>
   <string name="delete_episode_label">حذف قسمت</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">تعداد %d اپیزود انتخاب شد و %d اپیزود دانلود شده حذف شد.</item>
-    <item quantity="other">تعداد </item>
-  </plurals>
   <string name="remove_new_flag_label">حذف نشان «جدید»</string>
   <string name="removed_new_flag_label">نشان «جدید» حذف شد</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>
@@ -246,8 +240,6 @@
   <string name="download_error_forbidden">سرور میزبان پادکست از پاسخ دادن خودداری می کند.</string>
   <string name="download_canceled_msg">بارگیری لغو شد</string>
   <string name="download_error_wrong_size">اتصال به سرور قبل از اتمام بارگیری قطع شده است. </string>
-  <string name="download_error_blocked">بارگیری توسط برنامه دیگری در دستگاه شما مسدود شده است.</string>
-  <string name="download_error_certificate">برقراری ارتباط امن امکان پذیر نیست. این می تواند به این معنی باشد که برنامه دیگری در دستگاه شما بارگیری را مسدود کرده است یا مشکلی در گواهی سرور وجود دارد.</string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
   <string name="auto_download_report_title">بارگیری‌های خودکار کامل شد</string>
   <string name="download_error_io_error">خطای ورودی/خروجی</string>
@@ -262,7 +254,6 @@
   <string name="download_log_title_unknown">عنوان ناشناخته</string>
   <string name="download_type_feed">خوراک</string>
   <string name="download_type_media">پرونده رسانه</string>
-  <string name="download_request_error_dialog_message_prefix">ایرادی هنگام بارگیری پرونده روی داد:\u0020</string>
   <string name="null_value_podcast_error">پادکستی که بتواند نمایش داده شود فراهم نشده است.</string>
   <string name="authentication_notification_title">هویت‌سنجی مورد نیاز است</string>
   <string name="authentication_notification_msg">منبعی که درخواست کرده بودید نیازمند نام کاربری و گذرواژه است</string>
@@ -276,7 +267,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">در صف قرار دادن</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">اجازهٔ موقت</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">خطا!</string>
   <string name="playback_error_server_died">کارساز مرده است.</string>
   <string name="playback_error_unsupported">نوع رسانه‌ای حمایت نشده</string>
   <string name="playback_error_timeout">عملیات منقضی شد</string>
@@ -333,7 +323,6 @@
   <string name="storage_sum">حذف خودکار قسمت، درون‌ریزی، برون‌ریزی</string>
   <string name="project_pref">پروژه</string>
   <string name="synchronization_pref">هم‌گام‌سازی</string>
-  <string name="synchronization_sum">با کمک gpodder.net با دستگاه‌های دیگر هم‌گام کنید</string>
   <string name="automation">اتوماسیون</string>
   <string name="download_pref_details">جزئیات</string>
   <string name="import_export_pref">وارد/صادر کرد</string>
@@ -424,17 +413,8 @@
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_theme_title_trueblack">سیاه (مناسب AMOLED)</string>
   <string name="pref_episode_cache_unlimited">نامحدود</string>
-  <string name="pref_gpodnet_authenticate_title">ورود</string>
-  <string name="pref_gpodnet_authenticate_sum">برای همگام‌سازی اشتراک‌های خود با حساب gpodder.net وارد شوید.</string>
-  <string name="pref_gpodnet_logout_title">خروج</string>
-  <string name="pref_gpodnet_logout_toast">خروج موفقیت‌آمیز بود</string>
   <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
   <string name="pref_gpodnet_setlogin_information_sum">اطلاعات ورود به سیستم حساب gpodder.net خود را تغییر دهید.</string>
-  <string name="pref_gpodnet_sync_changes_title">اکنون همگام سازی کنید</string>
-  <string name="pref_gpodnet_sync_changes_sum">تغییرات اشتراک و وضعیت اپیزود را با gpodder.net همگام سازی کنید.</string>
-  <string name="pref_gpodnet_full_sync_title">همگام سازی کامل را اجبار کن</string>
-  <string name="pref_gpodnet_full_sync_sum">همه اشتراک ها و حالت های قسمت را با gpodder.net همگام سازی کنید.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[وارد شد به عنوان <i>%1$s</i> با وسیله <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
   <string name="pref_feed_playback_speed_sum">سرعت شروع  بازپخش صدا برای قسمت های این پادکست</string>
   <string name="pref_feed_skip">پرش خودکار</string>
@@ -477,9 +457,6 @@
   <string name="pref_proxy_title">پروکسی</string>
   <string name="pref_proxy_sum">تنظیم پروکسی شبکه</string>
   <string name="pref_no_browser_found">مرورگر وب پیدا نشد.</string>
-  <string name="pref_cast_title">پشتیبانی از کروم‌کست</string>
-  <string name="pref_cast_message_play_flavor">پشتیبانی از پخش از راه دور رسانه را در دستگاه های Cast فعال کنید (مانند Chromecast ، بلندگوهای صوتی یا Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">کروم‌کست نیازمند کتاب‌خانه‌های غیرآزاد است که در این نسخه از AntennaPod غیر فعال هستند</string>
   <string name="pref_enqueue_downloaded_title">در صف نهادن بارگیری‌شده‌ها</string>
   <string name="pref_enqueue_downloaded_summary">قسمتهای بارگیری شده را به صف اضافه کنید</string>
   <string name="media_player_builtin">پخش‌کننده پیش‌فرض اندروید</string>
@@ -567,7 +544,6 @@
   <string name="export_success_title">خارج کردن موفقیت آمیز</string>
   <string name="export_success_sum">پرونده  خارج شده در اینجا نوشته شده است :\n\n %1$s</string>
   <string name="opml_import_ask_read_permission">برای خواندن فایل OPML دسترسی به حافظه خارجی لازم است</string>
-  <string name="import_select_file">فایل را برای وارد کردن انتخاب کنید</string>
   <string name="successful_import_label">وارد کردن موفقیت آمیز</string>
   <string name="import_ok">لطفاً OK را فشار دهید تا آنتن پاد دوباره راه اندازی شود</string>
   <string name="import_no_downgrade">پایگاه داده با نسخه‌از جدیدتر از AntennaPod خروجی گرفته شده است. نسخه نصب شده فعلی شما هنوز نمی‌داند که چگونه باید با این پرونده کار کند.</string>
@@ -631,7 +607,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه ها</string>
   <string name="pref_resumeAfterCall_sum">پس از اتمام تماس تلفنی ، پخش را از سر بگیرید</string>
   <string name="pref_resumeAfterCall_title">بعد از تماس ادامه بده</string>
-  <string name="pref_restart_required">برای اینکه این تغییر اعمال شود ، آنتن پاد باید دوباره راه اندازی شود.</string>
   <!--Online feed view-->
   <string name="subscribe_label">اشتراک</string>
   <string name="subscribing_label">مشترک شدن ...</string>
@@ -655,8 +630,6 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
   <string name="authentication_descr">تغییر نام کاربری و رمز ورود خود را برای این پادکست و قسمت های آن</string>
-  <string name="feed_folders_label">پوشه ها</string>
-  <string name="feed_folders_summary">پوشه هایی که این پادکست در آنها نمایش داده می شود را تغییر دهید.</string>
   <string name="feed_folders_include_root">نمایش در لیست اصلی</string>
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
   <string name="episode_filters_label">فیلتر قسمت</string>
@@ -667,7 +640,6 @@
   <string name="keep_updated">به روز باش</string>
   <string name="keep_updated_summary">هنگام بازخوانی (خودکار) همه پادکست ها ، این پادکست را وارد کنید</string>
   <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی  آنتن پاد غیرفعال است</string>
-  <string name="statistics_listened_for">گوش داده شده برای:</string>
   <string name="statistics_episodes_on_device">قسمت های موجود در دستگاه:</string>
   <string name="statistics_space_used">فضای مورد استفاده:</string>
   <string name="statistics_view_all">مشاهده همه پادکست ها »</string>
@@ -729,7 +701,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">عبارتند از:</string>
   <string name="share_playback_position_dialog_label">موقعیت پخش</string>
-  <string name="share_dialog_media_file_url_label">آدرس فایل رسانه</string>
   <string name="share_dialog_episode_website_label">صفحه وب این قسمت</string>
   <string name="share_dialog_media_file_label">فایل رسانه</string>
   <!--Audio controls-->
@@ -753,20 +724,6 @@
   <string name="proxy_port_invalid_error">پورت معتبر نیست</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">تعداد ستون ها</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">اجرا در ...</string>
-  <string name="cast_disconnect_label">جلسه cast را قطع کنید</string>
-  <string name="cast_not_castable">رسانه انتخاب شده با دستگاه cast سازگار نیست</string>
-  <string name="cast_failed_to_play">شروع در پخش رسانه موفقیت آمیر نبود</string>
-  <string name="cast_failed_to_stop">توقف در پخش رسانه موفقیت آمیر نبود</string>
-  <string name="cast_failed_to_pause">مکث در پخش رسانه موفقیت آمیر نبود</string>
-  <string name="cast_failed_setting_volume">میزان صدا تنظیم نشد</string>
-  <string name="cast_failed_no_connection">هیچ ارتباطی با دستگاه cast وجود ندارد</string>
-  <string name="cast_failed_no_connection_trans">اتصال به دستگاه cast متوقف شده است. در صورت امکان ، برنامه در تلاش برای برقراری مجدد اتصال است. لطفا چند ثانیه صبر کنید و دوباره امتحان کنید.</string>
-  <string name="cast_failed_status_request">همگام سازی با دستگاه cast انجام نشد</string>
-  <string name="cast_failed_seek">جستجوی موقعیت جدید در دستگاه cast انجام نشد</string>
-  <string name="cast_failed_receiver_player_error">پخش کننده گیرنده با خطای شدیدی روبرو شده است</string>
-  <string name="cast_failed_media_error_skipping">خطا در پخش رسانه. رد شدن</string>
   <!--Notification channels-->
   <string name="notification_group_errors">خطاها</string>
   <string name="notification_group_news">اخبار</string>

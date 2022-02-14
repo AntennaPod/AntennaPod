@@ -37,7 +37,6 @@
   <string name="change_setting">Muuda</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Saadete kogupikkus:</string>
-  <string name="statistics_details_dialog">%1$d %2$d-st saatest on alustatud.\n\nKuulatud on %3$s saadet %4$s-st.</string>
   <string name="statistics_mode">Statistika režiim</string>
   <string name="statistics_mode_normal">Arvuta kuulamise pikkus tegelikult kuulatud aja järgi. Kaks korda kuulatud koht arvestatakse topelt, aga kuulatuks märkimist ei arvestata</string>
   <string name="statistics_mode_count_all">Kokkuvõte kõigist esitatud saadetest</string>
@@ -167,7 +166,6 @@
   <string name="open_podcast">Ava taskuhääling</string>
   <string name="please_wait_for_data">Palun oota andmete laadimist</string>
   <string name="updates_disabled_label">Värskendused keelatud</string>
-  <string name="add_to_folder">Lisa kausta</string>
   <!--actions on feeditems-->
   <string name="download_label">Laadi alla</string>
   <plurals name="downloading_batch_label">
@@ -180,10 +178,6 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
-  <plurals name="deleted_multi_episode_batch_label">
-    <item quantity="one">%d saade valitud, %d allalaadimine kustutatud.</item>
-    <item quantity="other">%d saadet valitud, %d allalaadimist kustutatud.</item>
-  </plurals>
   <string name="remove_new_flag_label">Eemalda silt \"uus\"</string>
   <string name="removed_new_flag_label">Eemaldati silt \"uus\"</string>
   <string name="mark_read_label">Märgi kuulatuks</string>
@@ -241,8 +235,6 @@
   <string name="download_error_forbidden">Taskuhäälingut hostiv server keeldub vastamast.</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_error_wrong_size">Ühendus serveriga katkes enne allalaadimise lõppu</string>
-  <string name="download_error_blocked">Allalaadimise blokeeris mingi teine rakendus sinu telefonis.</string>
-  <string name="download_error_certificate">Turvalist ühendust pole võimalik luua. See võib tähendada, et mõni teine rakendus su seadmes blokeeris allalaadimise või on serveri sertifikaatidel midagi viga.</string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
   <string name="auto_download_report_title">Automaatsed allalaadimised lõpetatud</string>
   <string name="download_error_io_error">IO viga</string>
@@ -257,7 +249,6 @@
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>
-  <string name="download_request_error_dialog_message_prefix">Faili allalaadimisel esines viga:\u0020</string>
   <string name="null_value_podcast_error">Pole ühtegi taskuhäälingut, mida näidata.</string>
   <string name="authentication_notification_title">Autentimine on nõutud</string>
   <string name="authentication_notification_msg">Soovitud ressurss vajab kasutajanime ja parooli</string>
@@ -271,7 +262,6 @@
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Järjekorda</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Luba ajutiselt</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Viga!</string>
   <string name="playback_error_server_died">Server suri ära</string>
   <string name="playback_error_unsupported">Toetamata meedia liik</string>
   <string name="playback_error_timeout">Tegevus aegus</string>
@@ -328,7 +318,6 @@
   <string name="storage_sum">Saate automaatne kustutamine, importimine, eksportimine</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Sünkroonimine</string>
-  <string name="synchronization_sum">Sünkrooni teiste seadmetega gpodder.net abil</string>
   <string name="automation">Automaatika</string>
   <string name="download_pref_details">Üksikasjad</string>
   <string name="import_export_pref">Import/eksport</string>
@@ -414,17 +403,8 @@
   <string name="pref_theme_title_dark">Tume</string>
   <string name="pref_theme_title_trueblack">Must (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Piiramatult</string>
-  <string name="pref_gpodnet_authenticate_title">Logi sisse</string>
-  <string name="pref_gpodnet_authenticate_sum">Logi sisse oma gpodder.net kontoga, et oma tellimused sünkroonida.</string>
-  <string name="pref_gpodnet_logout_title">Logi välja</string>
-  <string name="pref_gpodnet_logout_toast">Väljalogimine oli edukas</string>
   <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
   <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
-  <string name="pref_gpodnet_sync_changes_title">Sünkroniseeri kohe</string>
-  <string name="pref_gpodnet_sync_changes_sum">Sünkroniseeri oma tellimuste ja saadete olekute muutuseid gpodder.net-iga</string>
-  <string name="pref_gpodnet_full_sync_title">Nõua täielikku sünkroonimist</string>
-  <string name="pref_gpodnet_full_sync_sum">Sünkroniseeri kõiki tellimusi ja saate olekuid gpodder.net-iga.</string>
-  <string name="pref_gpodnet_login_status"><![CDATA[Sisseloginud kui <i>%1$s</i> seadmega <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_sum">Kohanda kiiruseid, mis on esitamisel saadaval</string>
   <string name="pref_feed_playback_speed_sum">Millise kiirusega esitatakse selle tellimuse saadete heli</string>
   <string name="pref_feed_skip">Automaatne vahelejätmine</string>
@@ -467,9 +447,6 @@
   <string name="pref_proxy_title">Vaheserver</string>
   <string name="pref_proxy_sum">Määra võrgu vaheserver</string>
   <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
-  <string name="pref_cast_title">Chromecasti tugi</string>
-  <string name="pref_cast_message_play_flavor">Luba meedia esitamine kaugseadmetest (Chromecast, kõlarid või Android TV)</string>
-  <string name="pref_cast_message_free_flavor" tools:ignore="UnusedResources">Chromecast vajab kolmanda osapoole omanduslikke teeke, mis on selles AntennaPodi versioonis välja lülitatud</string>
   <string name="pref_enqueue_downloaded_title">Järjekord allalaaditud</string>
   <string name="pref_enqueue_downloaded_summary">Allalaaditud saadete lisamine järjekorda</string>
   <string name="media_player_builtin">Sisseehitatud Androidi esitaja (aegunud)</string>
@@ -554,7 +531,6 @@
   <string name="export_success_title">Eksportimine edukas</string>
   <string name="export_success_sum">Eksporditud fail salvestati asukohta:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML faili lugemiseks on vajalik ligipääs välisele salvestusruumile</string>
-  <string name="import_select_file">Vali fail, mida importida</string>
   <string name="successful_import_label">Importimine oli edukas</string>
   <string name="import_ok">Vajuta OK, et AntennaPod taaskäivitada</string>
   <string name="import_no_downgrade">See andmebaas on eksporditud AntennaPodi uuemast versioonist. Sinu praegune äpp ei oska seda faili käsitseda.</string>
@@ -618,7 +594,6 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Peata kõne korral</string>
   <string name="pref_resumeAfterCall_sum">Taasta esitamine pärast telefonikõne lõppu</string>
   <string name="pref_resumeAfterCall_title">Taasta pärast kõne lõppu</string>
-  <string name="pref_restart_required">Selle muudatuse mõjumiseks tuleb AntennaPod taaskäivitada.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Telli</string>
   <string name="subscribing_label">Tellimine...</string>
@@ -651,7 +626,6 @@
   <string name="keep_updated">Hoia uuendatuna</string>
   <string name="keep_updated_summary">Uuenda koos teiste taskuhäälingute (automaatse) värskendamisega ka seda</string>
   <string name="auto_download_disabled_globally">Automaatne allalaadimine on keelatud AntennaPodi peamistes seadetes</string>
-  <string name="statistics_listened_for">Kuulatud:</string>
   <string name="statistics_episodes_on_device">Saated seadmes:</string>
   <string name="statistics_space_used">Kasutatud kettaruum:</string>
   <string name="statistics_view_all">Vaata kõiki taskuhäälinguid »</string>
@@ -713,7 +687,6 @@
   <!--Share episode dialog-->
   <string name="share_dialog_include_label">Kaasa:</string>
   <string name="share_playback_position_dialog_label">Esitamise asukoht</string>
-  <string name="share_dialog_media_file_url_label">Meediafaili aadress</string>
   <string name="share_dialog_episode_website_label">Saate veebisait</string>
   <string name="share_dialog_media_file_label">Meediafail</string>
   <!--Audio controls-->
@@ -737,20 +710,6 @@
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Tulpade arv</string>
-  <!--Casting-->
-  <string name="cast_media_route_menu_title">Esita...</string>
-  <string name="cast_disconnect_label">Katkesta kaugesitus</string>
-  <string name="cast_not_castable">Valitud meedia ei ühildu kaugseadmega</string>
-  <string name="cast_failed_to_play">Meedia esitamise alustamine nurjus</string>
-  <string name="cast_failed_to_stop">Meedia esitamise peatamine nurjus</string>
-  <string name="cast_failed_to_pause">Meedia esitamise pausimine nurjus</string>
-  <string name="cast_failed_setting_volume">Helivaljuse määramine nurjus</string>
-  <string name="cast_failed_no_connection">Kaugseadmega pole ühendust</string>
-  <string name="cast_failed_no_connection_trans">Ühendus kaugseadmega on katkenud. Rakendus püüab ühenduse taastada. Palun oota mõned sekundid ja proovi uuesti.</string>
-  <string name="cast_failed_status_request">Sünkroniseerimine kaugseadmega nurjus</string>
-  <string name="cast_failed_seek">Kerimine uuele asukohale kaugseadmes nurjus</string>
-  <string name="cast_failed_receiver_player_error">Vastuvõtval esitajal esines tõsine viga</string>
-  <string name="cast_failed_media_error_skipping">Tõrge meedia esitamisel. Jääb vahele...</string>
   <!--Notification channels-->
   <string name="notification_group_errors">Vead</string>
   <string name="notification_group_news">Uudised</string>
