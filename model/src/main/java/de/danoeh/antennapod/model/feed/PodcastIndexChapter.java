@@ -66,7 +66,7 @@ public class PodcastIndexChapter extends Chapter {
                 chapters.add(chapter);
                 return chapters;
             }
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             Log.d(TAG, "Error loading Chapter" + e.toString());
             return null;
         }
