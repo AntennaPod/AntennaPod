@@ -41,18 +41,11 @@ public class PodcastIndexChapter extends Chapter {
             JSONObject obj = new JSONObject(body);
             JSONArray objChapters = obj.getJSONArray("chapters");
             for (int i = 0; i < objChapters.length(); i++) {
-                String title;
-                String link;
-                String img;
-                int startTime = 0;
                 JSONObject jsonObject = objChapters.getJSONObject(i);
-                startTime = jsonObject.optInt("startTime", 0);
-
-                title = jsonObject.optString("title", null);
-
-                link = jsonObject.optString("url", null);
-
-                img = jsonObject.optString("url", null);
+                int startTime = jsonObject.optInt("startTime", 0);
+                String title = jsonObject.optString("title", null);
+                String link = jsonObject.optString("url", null);
+                String img = jsonObject.optString("img", null);
 
                 PodcastIndexChapter chapter = new PodcastIndexChapter(
                         startTime,
