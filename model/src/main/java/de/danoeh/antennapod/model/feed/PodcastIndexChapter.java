@@ -68,8 +68,8 @@ public class PodcastIndexChapter extends Chapter {
             }
         } catch (JSONException e) {
             Log.d(TAG, "Error loading Chapter" + e.toString());
-            return null;
+        } finally {
+            return null; 
         }
-        return null;
     }
 }

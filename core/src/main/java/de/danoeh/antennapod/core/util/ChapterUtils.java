@@ -143,13 +143,18 @@ public class ChapterUtils {
     public static List<Chapter> loadChaptersFromUrl(String url) {
         List<Chapter> chapters = null;
         Request request = new Request.Builder().url(url).build();
-        Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-
-        if (response.body() == null) {
+        try {
+            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (response.body() == null) {
+                return null;
+            }
+            chapters = parseChapters(response.body().toString());
+            return chapters;
+        } catch (IOException e) {
+            Log.d(TAG, "error loading data from " + url) ;
+        } finally {
             return null;
         }
-        chapters = parseChapters(response.body().toString());
-        return chapters;
     }
 
     @NonNull
@@ -163,6 +168,7 @@ public class ChapterUtils {
             Log.e(TAG, "Chapter data was invalid");
             return Collections.emptyList();
         }
+        return chapters;
     }
 
     @NonNull
