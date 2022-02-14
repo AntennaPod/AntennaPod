@@ -14,7 +14,6 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
-import de.danoeh.antennapod.model.feed.PodcastIndexChapter;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -23,9 +22,6 @@ import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
