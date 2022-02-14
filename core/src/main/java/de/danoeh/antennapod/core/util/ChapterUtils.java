@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
-import static de.danoeh.antennapod.model.feed.PodcastIndexChapter.parseChapters;
+import de.danoeh.antennapod.model.feed.PodcastIndexChapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -137,17 +136,17 @@ public class ChapterUtils {
     }
 
     public static List<Chapter> loadChaptersFromUrl(String url) {
-        List<Chapter> chapters = null;
+        List<Chapter> chapters;
         Request request = new Request.Builder().url(url).build();
         try {
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.body() == null) {
                 return null;
             }
-            chapters = parseChapters(response.body().toString());
+            chapters = PodcastIndexChapter.parseChapters(response.body().toString());
             return chapters;
         } catch (IOException e) {
-            Log.d(TAG, "error loading data from " + url) ;
+            Log.d(TAG, "error loading data from " + url);
         } finally {
             return null;
         }
