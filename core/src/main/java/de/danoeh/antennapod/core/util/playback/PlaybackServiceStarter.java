@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Parcelable;
 import androidx.core.content.ContextCompat;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.model.playback.Playable;
 
@@ -13,7 +12,6 @@ public class PlaybackServiceStarter {
     private final Context context;
     private final Playable media;
     private boolean startWhenPrepared = false;
-    private boolean shouldStream = false;
     private boolean shouldStreamThisTime = false;
     private boolean callEvenIfRunning = false;
     private boolean prepareImmediately = true;
@@ -21,19 +19,6 @@ public class PlaybackServiceStarter {
     public PlaybackServiceStarter(Context context, Playable media) {
         this.context = context;
         this.media = media;
-    }
-
-    /**
-     * Default value: false
-     */
-    public PlaybackServiceStarter shouldStream(boolean shouldStream) {
-        this.shouldStream = shouldStream;
-        return this;
-    }
-
-    public PlaybackServiceStarter streamIfLastWasStream() {
-        boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
-        return shouldStream(lastIsStream);
     }
 
     /**
@@ -69,7 +54,6 @@ public class PlaybackServiceStarter {
         Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, (Parcelable) media);
         launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
-        launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
         launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, prepareImmediately);
         launchIntent.putExtra(PlaybackService.EXTRA_ALLOW_STREAM_THIS_TIME, shouldStreamThisTime);
 
