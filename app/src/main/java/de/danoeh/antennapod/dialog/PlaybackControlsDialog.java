@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -17,7 +16,6 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import java.util.List;
 
 public class PlaybackControlsDialog extends DialogFragment {
-
     private PlaybackController controller;
     private AlertDialog dialog;
 
@@ -71,6 +69,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             String sonicOnly = getString(R.string.sonic_only);
             stereoToMono.setText(getString(R.string.stereo_to_mono) + " [" + sonicOnly + "]");
         }
+
         final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
         skipSilence.setChecked(UserPreferences.isSkipSilence());
         if (!UserPreferences.useExoplayer()) {
@@ -98,6 +97,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             butAudioTracks.setVisibility(View.GONE);
             return;
         }
+
         butAudioTracks.setVisibility(View.VISIBLE);
         butAudioTracks.setText(audioTracks.get(selectedAudioTrack));
         butAudioTracks.setOnClickListener(v -> {
