@@ -119,13 +119,12 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
         if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
-            errorTextView.setText(String.format(getResources().getString(R.string.discover_is_hidden),
-                    getResources().getString(R.string.discover_hide)));
+            errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            discoverGridLayout.setVisibility(View.INVISIBLE);
-            errorRetry.setVisibility(View.INVISIBLE);
-            poweredByTextView.setVisibility(View.INVISIBLE);
+            discoverGridLayout.setVisibility(View.GONE);
+            errorRetry.setVisibility(View.GONE);
+            poweredByTextView.setVisibility(View.GONE);
             return;
         }
 
