@@ -128,7 +128,7 @@
   <string name="episode_notification">Notifikationer om afsnit</string>
   <string name="episode_notification_summary">Vis en notifikation når der er nye afsnit</string>
   <plurals name="new_episode_notification_message">
-    <item quantity="one">%2$s har en ny udsendelse</item>
+    <item quantity="one">%2$s har et nyt afsnit</item>
     <item quantity="other">%2$s har %1$d nye afsnit</item>
   </plurals>
   <plurals name="new_episode_notification_title">
@@ -177,7 +177,7 @@
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <plurals name="downloading_batch_label">
-    <item quantity="one">Henter %d udsendelse.</item>
+    <item quantity="one">Henter %d afsnit.</item>
     <item quantity="other">Henter %d afsnit.</item>
   </plurals>
   <string name="play_label">Afspil</string>
@@ -198,24 +198,24 @@
   <string name="mark_read_no_media_label">Marker som læst</string>
   <string name="play_this_to_seek_position">For at springe til positioner, er du nødt til at afspille afsnittet</string>
   <plurals name="marked_read_batch_label">
-    <item quantity="one">%d udsendelse markeret som afspillet.</item>
+    <item quantity="one">%d afsnit markeret som afspillet.</item>
     <item quantity="other">%d afsnit markeret som afspillet.</item>
   </plurals>
   <string name="mark_unread_label">Marker som uafspillet</string>
   <string name="mark_unread_label_no_media">Marker som ulæst</string>
   <plurals name="marked_unread_batch_label">
-    <item quantity="one">%d udsendelse markeret som uafspillet.</item>
+    <item quantity="one">%d afsnit markeret som uafspillet.</item>
     <item quantity="other">%d afsnit markeret som uafspillede.</item>
   </plurals>
   <string name="add_to_queue_label">Føj til kø</string>
   <string name="added_to_queue_label">Føjet til kø</string>
   <plurals name="added_to_queue_batch_label">
-    <item quantity="one">%d udsendelse føjet til køen.</item>
+    <item quantity="one">%d afsnit føjet til køen.</item>
     <item quantity="other">%d afsnit føjet til køen.</item>
   </plurals>
   <string name="remove_from_queue_label">Fjern fra kø</string>
   <plurals name="removed_from_queue_batch_label">
-    <item quantity="one">%d udsendelse fjernet fra køen.</item>
+    <item quantity="one">%d afsnit fjernet fra køen.</item>
     <item quantity="other">%d afsnit fjernet fra køen.</item>
   </plurals>
   <string name="add_to_favorite_label">Føj til favoritter</string>
@@ -505,7 +505,7 @@
   <string name="back_button_go_to_page_title">Vælg side</string>
   <string name="pref_delete_removes_from_queue_title">Slet fjernet fra kø</string>
   <string name="pref_delete_removes_from_queue_sum">Fjern automatisk afsnit fra køen, når det slettes.</string>
-  <string name="pref_filter_feed_title">Abonnement filter</string>
+  <string name="pref_filter_feed_title">Abonnementsfilter</string>
   <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
   <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>

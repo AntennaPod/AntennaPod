@@ -173,7 +173,7 @@
   </plurals>
   <string name="edit_tags">Modifier les tags</string>
   <string name="rename_tag_label">Renommer le tag</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Le téléchargement d\'épisodes par la connexion mobile est désactivé dans les paramètres.\n\nVoulez-vous quand même actualiser les podcasts ?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Le téléchargement d\'épisodes par la connexion mobile est désactivé dans les options.\n\nVoulez-vous quand même actualiser tous les podcasts ?</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
   <plurals name="downloading_batch_label">
@@ -432,7 +432,7 @@
   <string name="synchronization_full_sync_title">Forcer une synchronisation complète</string>
   <string name="synchronization_login_status"><![CDATA[Connecté en tant que <i>%1$s</i> sur <i>%2$s</i>. <br/><br/>Déconnectez-vous pour pouvoir changer le service de synchronisation]]></string>
   <string name="synchronization_summary_unchoosen">Vous pouvez choisir entre plusieurs services pour synchroniser les abonnements et les statuts des épisodes</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud et open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
   <string name="synchronization_nextcloud_authenticate_browser">Autoriser l\'accès à l\'aide du navigateur qui a été ouvert puis revenez sur AntennaPod.</string>
   <string name="synchronization_choose_title">Choisir le service de synchronisation</string>
   <string name="synchronization_force_sync_summary">Resynchroniser tous les abonnements et tous les statuts d\'épisodes</string>
@@ -518,7 +518,7 @@
   <string name="pref_feed_settings_dialog_msg">Ce paramètre est spécifique à chaque podcast. Vous pouvez le changer en ouvrant la page du podcast.</string>
   <string name="pref_contribute">Contribuer</string>
   <string name="pref_show_subscription_title">Afficher les noms des podcasts</string>
-  <string name="pref_show_subscription_title_summary">Affiche le nom des abonnements en dessous des images des podcasts.</string>
+  <string name="pref_show_subscription_title_summary">Affiche le nom des podcasts en dessous de leur image.</string>
   <!--About screen-->
   <string name="about_pref">À propos</string>
   <string name="antennapod_version">Version d\'AntennaPod</string>
@@ -541,7 +541,7 @@
   <string name="sync_status_episodes_download">Import des statuts des épisodes...</string>
   <string name="sync_status_upload_played">Export des statuts de lecture...</string>
   <string name="sync_status_subscriptions">Synchronisation des abonnements...</string>
-  <string name="sync_status_wait_for_downloads">En attente de la fin des téléchargements...</string>
+  <string name="sync_status_wait_for_downloads">En attente que la récupération des données finissent...</string>
   <string name="sync_status_success">Synchronisation réussie</string>
   <string name="sync_status_error">Echec de la synchronisation</string>
   <!--import and export-->
@@ -658,7 +658,7 @@
   <string name="authentication_label">Authentification</string>
   <string name="authentication_descr">Identifiant et mot de passe pour ce podcast.</string>
   <string name="feed_tags_label">Tags</string>
-  <string name="feed_tags_summary">Modifier les tags de ce podcast pour organiser vos abonnements</string>
+  <string name="feed_tags_summary">Modifier les tags de ce podcast pour classer vos abonnements</string>
   <string name="feed_folders_include_root">Montrer dans la liste principale</string>
   <string name="multi_feed_common_tags_info">{fa-info-circle} Seul les tags communs à tous les abonnements sélectionnés sont montrés. Les autres tags ne seront pas modifiés.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
@@ -674,9 +674,9 @@
   <string name="statistics_time_played">Temps de lecture :</string>
   <string name="statistics_total_duration">Durée totale (estimation) :</string>
   <string name="statistics_duration_played_episodes">Durée des épisodes lus :</string>
-  <string name="statistics_episodes_on_device">Episodes sur l\'appareil :</string>
+  <string name="statistics_episodes_on_device">Episode(s) sur l\'appareil :</string>
   <string name="statistics_space_used">Espace utilisé :</string>
-  <string name="statistics_episodes_started_total">Episodes commencés / total :</string>
+  <string name="statistics_episodes_started_total">Episodes démarrés / total :</string>
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
@@ -741,7 +741,7 @@
   <string name="share_dialog_episode_website_label">Lien de la page web de l\'épisode</string>
   <string name="share_dialog_link_to_episode">Lien de l\'épisode</string>
   <string name="share_dialog_media_file_label">Fichier de l\'épisode</string>
-  <string name="share_starting_position_label">A partir de</string>
+  <string name="share_starting_position_label">A partir de </string>
   <!--Audio controls-->
   <string name="audio_controls">Contrôles audio</string>
   <string name="playback_speed">Vitesse de lecture</string>
