@@ -238,6 +238,10 @@ public class PlaybackStatisticsFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     statisticsResult = result;
+                    // When "from" is "today", set it to today
+                    listAdapter.setTimeFilter(Math.max(
+                                Math.min(timeFilterFrom, System.currentTimeMillis()), result.oldestDate),
+                            Math.min(timeFilterTo, System.currentTimeMillis()));
                     listAdapter.update(result.feedTime);
                     progressBar.setVisibility(View.GONE);
                     feedStatisticsList.setVisibility(View.VISIBLE);

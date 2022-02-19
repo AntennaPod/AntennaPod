@@ -19,7 +19,7 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:text="@string/statistics_until"
+            android:text="@string/statistics_to"
             android:layout_width="0dp"
             android:padding="4dp"
             android:layout_height="wrap_content"

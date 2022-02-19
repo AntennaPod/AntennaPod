@@ -48,10 +48,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == TYPE_HEADER) {
-            View view = inflater.inflate(R.layout.statistics_listitem_total, parent, false);
-            TextView totalText = view.findViewById(R.id.total_description);
-            totalText.setText(getHeaderCaption());
-            return new HeaderHolder(view);
+            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_total, parent, false));
         }
         return new StatisticsHolder(inflater.inflate(R.layout.statistics_listitem, parent, false));
     }
@@ -62,6 +59,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
             HeaderHolder holder = (HeaderHolder) h;
             holder.pieChart.setData(pieChartData);
             holder.totalTime.setText(getHeaderValue());
+            holder.totalText.setText(getHeaderCaption());
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             StatisticsItem statsItem = statisticsData.get(position - 1);
@@ -90,11 +88,13 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
     static class HeaderHolder extends RecyclerView.ViewHolder {
         TextView totalTime;
         PieChartView pieChart;
+        TextView totalText;
 
         HeaderHolder(View itemView) {
             super(itemView);
             totalTime = itemView.findViewById(R.id.total_time);
             pieChart = itemView.findViewById(R.id.pie_chart);
+            totalText = itemView.findViewById(R.id.total_description);
         }
     }
 

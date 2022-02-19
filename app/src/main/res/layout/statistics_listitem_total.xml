@@ -16,27 +16,26 @@
         android:layout_marginLeft="8dp" />
 
     <TextView
-        android:id="@+id/total_description"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:layout_marginLeft="56dp"
-        android:layout_marginRight="56dp"
-        android:maxLines="3"
-        android:layout_above="@id/total_time"
-        android:textSize="14sp" />
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/total_time"
         android:textColor="?android:attr/textColorPrimary"
         android:gravity="center_horizontal"
         android:textSize="28sp"
-        android:layout_marginBottom="16dp"
-        android:layout_alignBottom="@id/pie_chart"
+        android:layout_marginBottom="4dp"
+        android:layout_above="@id/total_description"
         tools:text="10.0 hours"/>
+
+    <TextView
+        android:id="@+id/total_description"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:maxLines="3"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignBottom="@id/pie_chart" />
 
     <View
         android:layout_width="match_parent"

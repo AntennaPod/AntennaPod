@@ -2,15 +2,15 @@ package de.danoeh.antennapod.adapter;
 
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.fragment.FeedStatisticsDialogFragment;
 import de.danoeh.antennapod.view.PieChartView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Adapter for the playback statistics list.
@@ -18,21 +18,25 @@ import java.util.List;
 public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
 
     private final Fragment fragment;
+    private long timeFilterFrom = 0;
+    private long timeFilterTo = Long.MAX_VALUE;
 
     public PlaybackStatisticsListAdapter(Fragment fragment) {
         super(fragment.getContext());
         this.fragment = fragment;
     }
 
+    public void setTimeFilter(long timeFilterFrom, long timeFilterTo) {
+        this.timeFilterFrom = timeFilterFrom;
+        this.timeFilterTo = timeFilterTo;
+    }
+
     @Override
     String getHeaderCaption() {
-        long usageCounting = UserPreferences.getUsageCountingDateMillis();
-        if (usageCounting > 0) {
-            String date = DateFormatter.formatAbbrev(context, new Date(usageCounting));
-            return context.getString(R.string.statistics_counting_since, date);
-        } else {
-            return context.getString(R.string.total_time_listened_to_podcasts);
-        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+        String dateFrom = dateFormat.format(new Date(timeFilterFrom));
+        String dateTo = dateFormat.format(new Date(timeFilterTo));
+        return context.getString(R.string.statistics_counting_range, dateFrom, dateTo);
     }
 
     @Override

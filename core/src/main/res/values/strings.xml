@@ -44,18 +44,17 @@
     <string name="change_setting">Change</string>
 
     <!-- Statistics fragment -->
-    <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
     <string name="statistics_include_marked">Include duration of episodes that are just marked as played</string>
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_from">From</string>
-    <string name="statistics_until">Until</string>
+    <string name="statistics_to">To</string>
     <string name="statistics_today">Today</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
-    <string name="statistics_counting_since">Since %s,\nyou played</string>
+    <string name="statistics_counting_range">Played between %1$s and %2$s</string>
 
     <!-- Download Statistics fragment -->
-    <string name="total_size_downloaded_podcasts">Total size of episodes on the device:</string>
+    <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
