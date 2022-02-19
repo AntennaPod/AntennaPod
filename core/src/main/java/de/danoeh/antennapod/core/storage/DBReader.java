@@ -803,7 +803,7 @@ public final class DBReader {
                     continue;
                 }
 
-                if (media.getLastPlayedTime() > 0) {
+                if (media.getLastPlayedTime() > 0 && media.getPlayedDuration() != 0) {
                     result.oldestDate = Math.min(result.oldestDate, media.getLastPlayedTime());
                 }
                 if (media.getLastPlayedTime() >= timeFilterFrom
