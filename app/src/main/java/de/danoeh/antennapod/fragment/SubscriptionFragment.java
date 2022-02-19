@@ -357,7 +357,7 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.rename_item) {
             new RenameItemDialog(getActivity(), feed).show();
             return true;
-        } else if (itemId == R.id.remove_item) {
+        } else if (itemId == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.multi_select) {
