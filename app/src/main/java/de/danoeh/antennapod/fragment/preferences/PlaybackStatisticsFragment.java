@@ -122,6 +122,12 @@ public class PlaybackStatisticsFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogBinding.getRoot());
         builder.setTitle(R.string.filter);
+        dialogBinding.includeMarkedCheckbox.setOnCheckedChangeListener((compoundButton, checked) -> {
+            dialogBinding.timeToSpinner.setEnabled(!checked);
+            dialogBinding.timeToSpinner.setAlpha(checked ? 0.5f : 1f);
+            dialogBinding.timeFromSpinner.setEnabled(!checked);
+            dialogBinding.timeFromSpinner.setAlpha(checked ? 0.5f : 1f);
+        });
         dialogBinding.includeMarkedCheckbox.setChecked(includeMarkedAsPlayed);
 
         Pair<String[], Long[]> filterDates = makeMonthlyList(statisticsResult.oldestDate);
@@ -150,8 +156,14 @@ public class PlaybackStatisticsFragment extends Fragment {
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             includeMarkedAsPlayed = dialogBinding.includeMarkedCheckbox.isChecked();
-            timeFilterFrom = filterDates.second[dialogBinding.timeFromSpinner.getSelectedItemPosition()];
-            timeFilterTo = filterDates.second[dialogBinding.timeToSpinner.getSelectedItemPosition()];
+            if (includeMarkedAsPlayed) {
+                // We do not know the date at which something was marked as played, so filtering does not make sense
+                timeFilterFrom = 0;
+                timeFilterTo = Long.MAX_VALUE;
+            } else {
+                timeFilterFrom = filterDates.second[dialogBinding.timeFromSpinner.getSelectedItemPosition()];
+                timeFilterTo = filterDates.second[dialogBinding.timeToSpinner.getSelectedItemPosition()];
+            }
             prefs.edit()
                     .putBoolean(PREF_INCLUDE_MARKED_PLAYED, includeMarkedAsPlayed)
                     .putLong(PREF_FILTER_FROM, timeFilterFrom)
@@ -165,6 +177,7 @@ public class PlaybackStatisticsFragment extends Fragment {
     private Pair<String[], Long[]> makeMonthlyList(long oldestDate) {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(oldestDate);
+        date.set(Calendar.DAY_OF_MONTH, 1);
         ArrayList<String> names = new ArrayList<>();
         ArrayList<Long> timestamps = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
@@ -239,7 +252,7 @@ public class PlaybackStatisticsFragment extends Fragment {
                 .subscribe(result -> {
                     statisticsResult = result;
                     // When "from" is "today", set it to today
-                    listAdapter.setTimeFilter(Math.max(
+                    listAdapter.setTimeFilter(includeMarkedAsPlayed, Math.max(
                                 Math.min(timeFilterFrom, System.currentTimeMillis()), result.oldestDate),
                             Math.min(timeFilterTo, System.currentTimeMillis()));
                     listAdapter.update(result.feedTime);

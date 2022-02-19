@@ -20,19 +20,24 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     private final Fragment fragment;
     private long timeFilterFrom = 0;
     private long timeFilterTo = Long.MAX_VALUE;
+    private boolean includeMarkedAsPlayed = false;
 
     public PlaybackStatisticsListAdapter(Fragment fragment) {
         super(fragment.getContext());
         this.fragment = fragment;
     }
 
-    public void setTimeFilter(long timeFilterFrom, long timeFilterTo) {
+    public void setTimeFilter(boolean includeMarkedAsPlayed, long timeFilterFrom, long timeFilterTo) {
+        this.includeMarkedAsPlayed = includeMarkedAsPlayed;
         this.timeFilterFrom = timeFilterFrom;
         this.timeFilterTo = timeFilterTo;
     }
 
     @Override
     String getHeaderCaption() {
+        if (includeMarkedAsPlayed) {
+            return context.getString(R.string.statistics_counting_total);
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         String dateFrom = dateFormat.format(new Date(timeFilterFrom));
         String dateTo = dateFormat.format(new Date(timeFilterTo));
