@@ -110,9 +110,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
     public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
     public static final String EXTRA_ALLOW_STREAM_ALWAYS = "extra.de.danoeh.antennapod.core.service.allowStreamAlways";
-    public static final String EXTRA_START_WHEN_PREPARED = "extra.de.danoeh.antennapod.core.service.startWhenPrepared";
-
-    public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
@@ -523,8 +520,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 stateManager.validStartCommandWasReceived();
                 boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
                 boolean allowStreamAlways = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_ALWAYS, false);
-                boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
-                boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
@@ -540,8 +535,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime,
-                                        startWhenPrepared, prepareImmediately),
+                                loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime),
                                 error -> {
                                     Log.d(TAG, "Playable was not found. Stopping service.");
                                     error.printStackTrace();
@@ -725,7 +719,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        playable -> startPlaying(playable, false, true, true),
+                        playable -> startPlaying(playable, false),
                         error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
                             error.printStackTrace();
@@ -733,15 +727,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         });
     }
 
-    private void startPlaying(Playable playable, boolean allowStreamThisTime,
-                              boolean startWhenPrepared, boolean prepareImmediately) {
+    private void startPlaying(Playable playable, boolean allowStreamThisTime) {
         boolean localFeed = URLUtil.isContentUrl(playable.getStreamUrl());
         boolean stream = !playable.localFileAvailable() || localFeed;
         if (stream && !localFeed && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, playable)
-                            .prepareImmediately(true)
-                            .startWhenPrepared(true)
                             .getIntent());
             PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
@@ -752,7 +743,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         }
 
-        mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+        mediaPlayer.playMediaObject(playable, stream, true, true);
         stateManager.validStartCommandWasReceived();
         updateNotificationAndMediaSession(playable);
         addPlayableToQueue(playable);
@@ -1005,8 +996,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
-                            .prepareImmediately(true)
-                            .startWhenPrepared(true)
                             .getIntent());
             PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
@@ -1795,7 +1784,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onPlayFromMediaId: mediaId: " + mediaId + " extras: " + extras.toString());
             FeedMedia p = DBReader.getFeedMedia(Long.parseLong(mediaId));
             if (p != null) {
-                startPlaying(p, false, true, true);
+                startPlaying(p, false);
             }
         }
 
@@ -1806,7 +1795,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             List<FeedItem> results = FeedSearcher.searchFeedItems(getBaseContext(), query, 0);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
-                startPlaying(media, false, true, true);
+                startPlaying(media, false);
                 return;
             }
             onPlay();

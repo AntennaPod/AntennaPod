@@ -47,7 +47,6 @@ public class StreamActionButton extends ItemActionButton {
         }
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
-                .startWhenPrepared(true)
                 .start();
 
         if (media.getMediaType() == MediaType.VIDEO) {
