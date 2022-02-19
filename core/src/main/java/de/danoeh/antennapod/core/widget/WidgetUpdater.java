@@ -45,20 +45,17 @@ public abstract class WidgetUpdater {
         final int position;
         final int duration;
         final float playbackSpeed;
-        final boolean isCasting;
 
-        public WidgetState(Playable media, PlayerStatus status, int position, int duration,
-                           float playbackSpeed, boolean isCasting) {
+        public WidgetState(Playable media, PlayerStatus status, int position, int duration, float playbackSpeed) {
             this.media = media;
             this.status = status;
             this.position = position;
             this.duration = duration;
             this.playbackSpeed = playbackSpeed;
-            this.isCasting = isCasting;
         }
 
         public WidgetState(PlayerStatus status) {
-            this(null, status, Playable.INVALID_TIME, Playable.INVALID_TIME, 1.0f, false);
+            this(null, status, Playable.INVALID_TIME, Playable.INVALID_TIME, 1.0f);
         }
     }
 
@@ -71,8 +68,7 @@ public abstract class WidgetUpdater {
         }
 
         PendingIntent startMediaPlayer;
-        if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO
-                && !widgetState.isCasting) {
+        if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO) {
             startMediaPlayer = new VideoPlayerActivityStarter(context).getPendingIntent();
         } else {
             startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();

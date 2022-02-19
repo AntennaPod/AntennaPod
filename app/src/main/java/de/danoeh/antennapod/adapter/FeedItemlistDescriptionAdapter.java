@@ -80,7 +80,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             }
 
             new PlaybackServiceStarter(getContext(), playable)
-                    .shouldStream(true)
                     .startWhenPrepared(true)
                     .callEvenIfRunning(true)
                     .start();
