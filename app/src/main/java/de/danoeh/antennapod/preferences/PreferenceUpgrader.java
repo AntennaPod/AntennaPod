@@ -39,9 +39,6 @@ public class PreferenceUpgrader {
     private static void upgrade(int oldVersion, Context context) {
         if (oldVersion == -1) {
             //New installation
-            if (UserPreferences.getUsageCountingDateMillis() < 0) {
-                UserPreferences.resetUsageCountingDate();
-            }
             return;
         }
         if (oldVersion < 1070196) {

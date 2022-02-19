@@ -23,7 +23,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1069,22 +1068,6 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, value.serialize())
                 .apply();
-    }
-
-    public static long getUsageCountingDateMillis() {
-        return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
-    }
-
-    private static void setUsageCountingDateMillis(long value) {
-        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
-    }
-
-    public static void resetUsageCountingDate() {
-        setUsageCountingDateMillis(Calendar.getInstance().getTimeInMillis());
-    }
-
-    public static void unsetUsageCountingDate() {
-        setUsageCountingDateMillis(-1);
     }
 
     public static boolean shouldShowSubscriptionTitle() {

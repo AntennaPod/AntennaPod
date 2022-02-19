@@ -263,7 +263,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
-                    UserPreferences.unsetUsageCountingDate();
                     progressDialog.dismiss();
                 }, this::showExportErrorDialog);
     }
