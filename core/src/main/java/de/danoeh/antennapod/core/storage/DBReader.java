@@ -771,18 +771,23 @@ public final class DBReader {
         }
     }
 
+    public static class StatisticsResult {
+        public List<StatisticsItem> feedTime = new ArrayList<>();
+        public long oldestDate = System.currentTimeMillis();
+    }
+
     /**
      * Searches the DB for statistics.
      *
      * @return The list of statistics objects
      */
     @NonNull
-    public static List<StatisticsItem> getStatistics(boolean includeMarkedAsPlayed) {
+    public static StatisticsResult getStatistics(boolean includeMarkedAsPlayed,
+                                                 long timeFilterFrom, long timeFilterTo) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        List<StatisticsItem> feedTime = new ArrayList<>();
-
+        StatisticsResult result = new StatisticsResult();
         List<Feed> feeds = getFeedList();
         for (Feed feed : feeds) {
             long feedPlayedTime = 0;
@@ -798,10 +803,16 @@ public final class DBReader {
                     continue;
                 }
 
-                if (media.getPlayedDuration() != 0) {
-                    feedPlayedTime += media.getPlayedDuration() / 1000;
-                } else if (includeMarkedAsPlayed && item.isPlayed()) {
-                    feedPlayedTime += media.getDuration() / 1000;
+                if (media.getLastPlayedTime() > 0) {
+                    result.oldestDate = Math.min(result.oldestDate, media.getLastPlayedTime());
+                }
+                if (media.getLastPlayedTime() >= timeFilterFrom
+                        && media.getLastPlayedTime() <= timeFilterTo) {
+                    if (media.getPlayedDuration() != 0) {
+                        feedPlayedTime += media.getPlayedDuration() / 1000;
+                    } else if (includeMarkedAsPlayed && item.isPlayed()) {
+                        feedPlayedTime += media.getDuration() / 1000;
+                    }
                 }
 
                 boolean markedAsStarted = item.isPlayed() || media.getPosition() != 0;
@@ -819,14 +830,12 @@ public final class DBReader {
 
                 episodes++;
             }
-            feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
+            result.feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
                     episodesStarted, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
-        Collections.sort(feedTime, (item1, item2) ->
-                Long.compare(item2.timePlayed, item1.timePlayed));
-        return feedTime;
+        return result;
     }
 
     /**

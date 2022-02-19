@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadStatisticsListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -44,7 +43,8 @@ public class DownloadStatisticsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
         downloadStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
@@ -80,15 +80,16 @@ public class DownloadStatisticsFragment extends Fragment {
 
         disposable =
                 Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics(false); // Does not matter here
-                    Collections.sort(statisticsData, (item1, item2) ->
+                    // Filters do not matter here
+                    DBReader.StatisticsResult statisticsData = DBReader.getStatistics(false, 0, Long.MAX_VALUE);
+                    Collections.sort(statisticsData.feedTime, (item1, item2) ->
                             Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
                     return statisticsData;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    listAdapter.update(result);
+                    listAdapter.update(result.feedTime);
                     progressBar.setVisibility(View.GONE);
                     downloadStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
