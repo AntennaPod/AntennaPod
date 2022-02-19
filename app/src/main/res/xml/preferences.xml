@@ -45,9 +45,9 @@
             android:icon="@drawable/ic_notifications"/>
 
     <Preference
+            android:icon="@drawable/chart_box_outline"
             android:key="statistics"
-            android:title="@string/statistics_label"
-            android:icon="@drawable/ic_statistics" />
+            android:title="@string/statistics_label" />
 
     <PreferenceCategory
             android:key="project"
