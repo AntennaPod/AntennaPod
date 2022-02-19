@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -57,6 +58,13 @@ public class DownloadStatisticsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         refreshDownloadStatistics();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.statistics_reset).setVisible(false);
+        menu.findItem(R.id.statistics_mode).setVisible(false);
     }
 
     private void refreshDownloadStatistics() {

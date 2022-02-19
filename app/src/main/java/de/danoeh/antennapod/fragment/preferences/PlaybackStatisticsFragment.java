@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,9 +88,10 @@ public class PlaybackStatisticsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.statistics, menu);
-        menu.findItem(R.id.statistics_reset).setEnabled(!countAll);
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.statistics_reset).setVisible(true);
+        menu.findItem(R.id.statistics_mode).setVisible(true);
     }
 
     @Override

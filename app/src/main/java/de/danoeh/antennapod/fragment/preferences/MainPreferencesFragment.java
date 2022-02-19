@@ -29,7 +29,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String PREF_CATEGORY_PROJECT = "project";
-    private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
@@ -103,14 +102,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.settingsContainer, new AboutFragment())
                             .addToBackStack(getString(R.string.about_pref)).commit();
-                    return true;
-                }
-        );
-        findPreference(STATISTICS).setOnPreferenceClickListener(
-                preference -> {
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.settingsContainer, new StatisticsFragment())
-                            .addToBackStack(getString(R.string.statistics_label)).commit();
                     return true;
                 }
         );
