@@ -99,7 +99,6 @@ public class AutoDownloadTest {
         FeedMedia media = item.getMedia();
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
-                .startWhenPrepared(true)
                 .start();
         Awaitility.await("episode is playing")
                 .atMost(2000, MILLISECONDS)

@@ -867,7 +867,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
                     pausedBecauseOfTransientAudiofocusLoss = false;
                     new PlaybackServiceStarter(context, getPlayable())
-                            .startWhenPrepared(true)
                             .callEvenIfRunning(false)
                             .start();
                 }
