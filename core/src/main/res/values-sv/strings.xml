@@ -171,11 +171,14 @@
     <item quantity="one">%d prenumeration uppdaterad.</item>
     <item quantity="other">%d prenumerationer uppdaterade.</item>
   </plurals>
+  <string name="edit_tags">Redigera etiketter</string>
+  <string name="rename_tag_label">Byt namn på etikett</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Nedladdning av episoder över mobil dataanslutning är avstängt i inställningarna.\n\nVill du fortfarande uppdatera alla podcasts över mobildata?</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <plurals name="downloading_batch_label">
     <item quantity="one">Laddar ner 1%d episod.</item>
-    <item quantity="other">Laddar ner 1%d episoder.</item>
+    <item quantity="other">Laddar ner %d episoder.</item>
   </plurals>
   <string name="play_label">Spela</string>
   <string name="pause_label">Pausa</string>
@@ -183,6 +186,10 @@
   <string name="delete_label">Ta bort</string>
   <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
   <string name="delete_episode_label">Radera episod</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 nedladdad episod borttagen.</item>
+    <item quantity="other">%d nedladdade episoder borttagna.</item>
+  </plurals>
   <string name="remove_new_flag_label">Ta bort \"ny\"-flagga</string>
   <string name="removed_new_flag_label">Tog bort \"ny\"-flagga</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -192,24 +199,24 @@
   <string name="play_this_to_seek_position">Spela episoden för att kunna hoppa till olika positioner</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">1%d episod markerad som spelad.</item>
-    <item quantity="other">1%d episoder markerade som spelade.</item>
+    <item quantity="other">%d episoder markerade som spelade.</item>
   </plurals>
   <string name="mark_unread_label">Markera som ospelad</string>
   <string name="mark_unread_label_no_media">Markera som ospelad</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">1%d episod markerad som ospelad.</item>
-    <item quantity="other">1%d episoder markerade som ospelade.</item>
+    <item quantity="other">%d episoder markerade som ospelade.</item>
   </plurals>
   <string name="add_to_queue_label">Lägg till i kön</string>
   <string name="added_to_queue_label">Tillagd i kön</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">1%d episod tillagd i kön.</item>
-    <item quantity="other">1%d episoder tillagda i kön.</item>
+    <item quantity="other">%d episoder tillagda i kön.</item>
   </plurals>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">1%d episod borttagen från kön.</item>
-    <item quantity="other">1%d episoder borttagna från kön.</item>
+    <item quantity="other">%d episoder borttagna från kön.</item>
   </plurals>
   <string name="add_to_favorite_label">Lägg till i favoriter</string>
   <string name="remove_from_favorite_label">Ta bort från favoriter</string>
@@ -240,6 +247,8 @@
   <string name="download_error_forbidden">Podcastens server svarade inte.</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
   <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar.</string>
+  <string name="download_error_blocked">Nedladdningen blockerades av en annan app på din enhet (exepelvis en VPN eller reklamblockerare).</string>
+  <string name="download_error_certificate">Kan inte etablera en säker anslutning. Detta kan betyda att en annan app på din enhet (exempelvis en VPN eller reklamblockerare) blockerade nedladdningen, eller att någonting är fel med servercertifikaten.</string>
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="auto_download_report_title">Automatiska nedladdningar klara</string>
   <string name="download_error_io_error">IO fel</string>
@@ -255,6 +264,7 @@
   <string name="download_type_feed">Flöde</string>
   <string name="download_type_media">Mediafil</string>
   <string name="null_value_podcast_error">Inga tillhandahållna podcasts som kunde visas.</string>
+  <string name="no_feed_url_podcast_found_by_search">Den föreslagna podcasten hade inte en RSS-länk, AntennaPod hittade en podcast som kunde matcha</string>
   <string name="authentication_notification_title">Autentisering krävs</string>
   <string name="authentication_notification_msg">Resursen du begärde kräver ett användarnamn och ett lösenord</string>
   <string name="confirm_mobile_download_dialog_title">Bekräfta mobil nedladdning</string>
@@ -323,6 +333,7 @@
   <string name="storage_sum">Automatisk episodradering, Import, Export</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synkronisering</string>
+  <string name="synchronization_sum">Synkronisera med andra enheter</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importera/Exportera</string>
@@ -413,8 +424,20 @@
   <string name="pref_theme_title_dark">Mörkt</string>
   <string name="pref_theme_title_trueblack">Svart (AMOLED redo)</string>
   <string name="pref_episode_cache_unlimited">Obegränsat</string>
+  <string name="synchronization_logout">Logga ut</string>
+  <string name="pref_synchronization_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
+  <string name="synchronization_sync_changes_title">Synkronisera nu</string>
+  <string name="synchronization_full_sync_title">Tvinga full synkronisering</string>
+  <string name="synchronization_login_status"><![CDATA[Inloggad som <i>%1$s</i> på <i>%2$s</i>. <br/><br/> Du kan välja en ny synkroniseringsleverantör när du har loggat ut]]></string>
+  <string name="synchronization_summary_unchoosen">Du kan välja från flera leverantörer att synkronisera dina prenumerationer och episoders uppspelningsstatus med</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync är en Nexcloud-app med öppen källkod som du enkelt kan installera på din egen server. Appen är oberoende från AntennaPod-projektet.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Get tillåtelse med webbläsaren som öppnades och kom tillbaka till AntennaPod.</string>
+  <string name="synchronization_choose_title">Välj din synkroniseringsleverantör</string>
+  <string name="synchronization_force_sync_summary">Synkronisera om alla prenumerationer och episodstatusar</string>
+  <string name="synchronization_sync_summary">Synkronisera ändringar i prenumerationer och episodstatusar</string>
+  <string name="dialog_choose_sync_service_title">Välj synkroniseringsleverantör</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet</string>
   <string name="pref_feed_playback_speed_sum">Uppspelningshastigheten att använda för episoder i denna podcast</string>
   <string name="pref_feed_skip">Automatisk överhoppning</string>
@@ -494,6 +517,8 @@
   <string name="new_episode_notification_disabled">Avisering avstängt</string>
   <string name="pref_feed_settings_dialog_msg">Denna inställning är unik för var podcast. Du kan ändra den genom att öppna podcastsidan.</string>
   <string name="pref_contribute">Bidra</string>
+  <string name="pref_show_subscription_title">Visa Prenumerationstitel</string>
+  <string name="pref_show_subscription_title_summary">Visa titel på prenumerationen under omslagsbilden.</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
   <string name="antennapod_version">AntennaPod version</string>
@@ -516,6 +541,7 @@
   <string name="sync_status_episodes_download">Laddar ner episodändringar...</string>
   <string name="sync_status_upload_played">Laddar upp spelliststatus</string>
   <string name="sync_status_subscriptions">Synkroniserar prenumerationer</string>
+  <string name="sync_status_wait_for_downloads">Väntar på nedladdningar...</string>
   <string name="sync_status_success">Synkronisering lyckades</string>
   <string name="sync_status_error">Synkronisering misslyckades</string>
   <!--import and export-->
@@ -613,6 +639,7 @@
   <string name="preview_episode">Förhandsvisning</string>
   <string name="stop_preview">Stoppa förhandsvisning</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Tillbaka</string>
   <string name="rewind_label">Backa</string>
   <string name="fast_forward_label">Snabbspola</string>
   <string name="increase_speed">Öka hastigheten</string>
@@ -630,18 +657,26 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>
+  <string name="feed_tags_label">Etiketter</string>
+  <string name="feed_tags_summary">Ändra etiketterna för denna podcast för att organisera prenumerationerna</string>
   <string name="feed_folders_include_root">Visa i huvudlistan</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Bara etiketter gemensamma med alla valda prenumerationer visas. Andra etiketter påverkas inte.</string>
   <string name="auto_download_settings_label">Automatisk nedladdningsinställningar</string>
   <string name="episode_filters_label">Episodfilter</string>
   <string name="episode_filters_description">Lista av termer som används för att avgöra om en episod ska inkluderas eller exkluderas vid automatisk nedladdning</string>
   <string name="episode_filters_include">Inkludera</string>
   <string name="episode_filters_exclude">Exkludera</string>
+  <string name="episode_filters_duration">Minsta längd (i minuter)</string>
   <string name="episode_filters_hint">Enstaka ord \n\"Flera ord\"</string>
   <string name="keep_updated">Håll uppdaterad</string>
   <string name="keep_updated_summary">Inkludera detta flöde vid (auto-)uppdatering av alla podcasts</string>
   <string name="auto_download_disabled_globally">Automatisk nedladdning är avstängt i AntennaPods huvudinställningar</string>
+  <string name="statistics_time_played">Tid spelad:</string>
+  <string name="statistics_total_duration">Total längd (uppskattning):</string>
+  <string name="statistics_duration_played_episodes">Längd på spelade episoder:</string>
   <string name="statistics_episodes_on_device">Episoder på enheten:</string>
   <string name="statistics_space_used">Använt utrymme:</string>
+  <string name="statistics_episodes_started_total">Episoder startade/totalt:</string>
   <string name="statistics_view_all">Visa för alla podcasts »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
@@ -686,6 +721,8 @@
   <string name="sort_date_old_new">Datum (Gammal \u2192 Ny)</string>
   <string name="sort_duration_short_long">Längd (Kort \u2192 Lång)</string>
   <string name="sort_duration_long_short">Längd (Lång \u2192 Kort)</string>
+  <string name="sort_filename_a_z">Filnamn (A \u2192 Ö)</string>
+  <string name="sort_filename_z_a">Filnamne (Ö \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Ö</string>
   <string name="sort_z_a">Ö \u2192 A</string>
   <string name="sort_new_old">Ny \u2192 Gammal</string>
@@ -702,7 +739,9 @@
   <string name="share_dialog_include_label">Inkludera:</string>
   <string name="share_playback_position_dialog_label">Uppspelningsposition</string>
   <string name="share_dialog_episode_website_label">Episodes webbplats</string>
+  <string name="share_dialog_link_to_episode">Länk till episod</string>
   <string name="share_dialog_media_file_label">Mediafil</string>
+  <string name="share_starting_position_label">Startar från</string>
   <!--Audio controls-->
   <string name="audio_controls">Ljudkontroller</string>
   <string name="playback_speed">Uppspelningshastighet</string>
@@ -749,4 +788,7 @@
   <string name="on_demand_config_setting_changed">Inställningen sparad.</string>
   <string name="on_demand_config_stream_text">Det verkar som att du strömmar mycket. Vill du att episodlistan ska visa strömmningsknapparna?</string>
   <string name="on_demand_config_download_text">Det verkar som at du laddar ner mycket. Vill du att episodlistan ska visa nedladdningsknapparna?</string>
+  <string name="shortcut_subscription_label">Prenumerationsgenväg</string>
+  <string name="shortcut_select_subscription">Välj prenumeration</string>
+  <string name="add_shortcut">Lägg till genväg</string>
 </resources>

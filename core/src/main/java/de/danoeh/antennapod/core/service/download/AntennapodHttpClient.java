@@ -118,7 +118,7 @@ public class AntennapodHttpClient {
         builder.followSslRedirects(true);
 
         ProxyConfig config = UserPreferences.getProxyConfig();
-        if (config.type != Proxy.Type.DIRECT) {
+        if (config.type != Proxy.Type.DIRECT && !TextUtils.isEmpty(config.host)) {
             int port = config.port > 0 ? config.port : ProxyConfig.DEFAULT_PORT;
             SocketAddress address = InetSocketAddress.createUnresolved(config.host, port);
             builder.proxy(new Proxy(config.type, address));

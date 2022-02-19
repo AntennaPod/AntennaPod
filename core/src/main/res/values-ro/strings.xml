@@ -178,6 +178,9 @@
     <item quantity="few">%d abonamente actualizate.</item>
     <item quantity="other">%d de abonamente actualizate.</item>
   </plurals>
+  <string name="edit_tags">Editează etichetele</string>
+  <string name="rename_tag_label">Redenumește etichetele</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Descărcarea episoadelor folosint datele mobile este oprită din setări.\n\nDoriți să reîmprospătați toate podcasturile folosint datele mobile ?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
   <plurals name="downloading_batch_label">
@@ -191,6 +194,11 @@
   <string name="delete_label">Șterge</string>
   <string name="delete_failed">Imposibil de șters. Restartarea dispozitivului ar putea ajuta.</string>
   <string name="delete_episode_label">Șterge episod</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 episod descărcat a fost șters.</item>
+    <item quantity="few">%d episoade descărcare au fost șterse.</item>
+    <item quantity="other">%d de episoade descărcare au fost șterse.</item>
+  </plurals>
   <string name="remove_new_flag_label">Îndepărtați semnul \"nou\"</string>
   <string name="removed_new_flag_label">Semnul \"nou\" a fost șters</string>
   <string name="mark_read_label">Marchează ca citit</string>
@@ -252,6 +260,8 @@
   <string name="download_error_forbidden">Serverul podcastului refuză să răspundă.</string>
   <string name="download_canceled_msg">Descărcare anulată</string>
   <string name="download_error_wrong_size">Conexiunea cu serverul a fost pierdută înainte să se termine descărcarea.</string>
+  <string name="download_error_blocked">Descărcarea a fost blocată de o altă aplicație de pe dispozitivul dumneavoastră (VPN sau ad blocker).</string>
+  <string name="download_error_certificate">Nu s-a putut stabili o conexiune securizată. Acest lucru poate sugera că o aplicație de pe dispozitivul dumoneavoastră (VPN sau ad blocker) a blocat descărcarea, sau că ceva este în neregulă cu certificatele de la server.</string>
   <string name="download_report_title">Descărcări terminate</string>
   <string name="auto_download_report_title">Descărcările automate sunt complete</string>
   <string name="download_error_io_error">Eroare IO</string>
@@ -268,6 +278,7 @@
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Fișier media</string>
   <string name="null_value_podcast_error">Nu a fost furnizat niciun podcast ce ar putea fi arătat.</string>
+  <string name="no_feed_url_podcast_found_by_search">Podcastul sugerat nu are un link RSS, AntennaPod a găsit un podcast care s-ar putea potrivi</string>
   <string name="authentication_notification_title">Autentificare necesară</string>
   <string name="authentication_notification_msg">Resursele cerute necesită un username si parolă</string>
   <string name="confirm_mobile_download_dialog_title">Confirmați descărcarea folosind datele mobile</string>
@@ -336,6 +347,7 @@
   <string name="storage_sum">Episoadele se șterg automat, Importă, Exportă</string>
   <string name="project_pref">Proiect</string>
   <string name="synchronization_pref">Sincronizare</string>
+  <string name="synchronization_sum">Sincronizare cu alte dispozitive</string>
   <string name="automation">Automatizare</string>
   <string name="download_pref_details">Detalii</string>
   <string name="import_export_pref">Importă/Exportă</string>
@@ -427,8 +439,20 @@
   <string name="pref_theme_title_dark">Întunecat</string>
   <string name="pref_theme_title_trueblack">Negru (pentru AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Nelimitat</string>
+  <string name="synchronization_logout">Deconectare</string>
+  <string name="pref_synchronization_logout_toast">Deconectarea a reușit</string>
   <string name="pref_gpodnet_setlogin_information_title">Schimbă informațiile de autentificare</string>
   <string name="pref_gpodnet_setlogin_information_sum">Schimbă informațiile de autentificare pentru contul tău gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Sincronizează acum</string>
+  <string name="synchronization_full_sync_title">Forțează sincronizarea completă</string>
+  <string name="synchronization_login_status"><![CDATA[Conectat ca <i>%1$s</i> pe <i>%2$s</i>. <br/><br/>Puteți să vă alegeți furnizorul de sincronizare din nou, după ce v-ați deconectat]]></string>
+  <string name="synchronization_summary_unchoosen">Puteți alege dintre furnizori multipli pentru a vă sincroniza abonamentele dumneavoastră și starea episoadelor</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync este o aplicație Nextcould cu sursă deschisă ce poate fii instalată cu ușurință pe serverul dumneavoastră. Aceasta aplicație este independenta de proiectul AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Oferă acces folosint web browserul deschis și întorcețivă la AntennaPod.</string>
+  <string name="synchronization_choose_title">Alege furnizorul de sincronizare</string>
+  <string name="synchronization_force_sync_summary">Resincronizează toate abonamentele și starea episoadelor</string>
+  <string name="synchronization_sync_summary">Sincronizează schimbările abonamentelor și starea episoadelor </string>
+  <string name="dialog_choose_sync_service_title">Alege furnizorul de sincronizare</string>
   <string name="pref_playback_speed_sum">Personalizați viteza variabilă pentru redare</string>
   <string name="pref_feed_playback_speed_sum">Viteza de redare folosită la pornirea redării audio pentru episoadele din acest podcast</string>
   <string name="pref_feed_skip">Ignorare automată</string>
@@ -508,6 +532,8 @@
   <string name="new_episode_notification_disabled">Notificări oprite</string>
   <string name="pref_feed_settings_dialog_msg">Această setare este unică pentru fiecare podcast. Poți schimba această setare dacă deschizi pagina podcastului.</string>
   <string name="pref_contribute">Contribuie</string>
+  <string name="pref_show_subscription_title">Arată titlul abonamentului</string>
+  <string name="pref_show_subscription_title_summary">Arată titlul abonamentului sub imaginea de copertă.</string>
   <!--About screen-->
   <string name="about_pref">Despre</string>
   <string name="antennapod_version">Versiune AntennaPod</string>
@@ -530,6 +556,7 @@
   <string name="sync_status_episodes_download">Se descarcă modificările episoadelor...</string>
   <string name="sync_status_upload_played">Se încarcă starea fișierelor redate...</string>
   <string name="sync_status_subscriptions">Se sincronizează abonamentele...</string>
+  <string name="sync_status_wait_for_downloads">Aștepați ca descărcarea să se încheie...</string>
   <string name="sync_status_success">Sincronizarea a reușit</string>
   <string name="sync_status_error">Sincronizarea a eșuat</string>
   <!--import and export-->
@@ -630,6 +657,7 @@
   <string name="preview_episode">Previzualizare</string>
   <string name="stop_preview">Oprește previzualizarea</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Înapoi</string>
   <string name="rewind_label">Înapoi</string>
   <string name="fast_forward_label">Repede înainte</string>
   <string name="increase_speed">Mărește viteza</string>
@@ -647,18 +675,26 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autentificare</string>
   <string name="authentication_descr">Schimbăți numele si parola pentru acest podcast și episoadele sale,</string>
+  <string name="feed_tags_label">Etichete</string>
+  <string name="feed_tags_summary">Schimbă etichetele acestui podcast pentru a putea organiza abonamentele dumneavoastră</string>
   <string name="feed_folders_include_root">Arată în lista principală</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Doar etichetele comune din toate abonamentele selectate sunt arătate. Alte etichete rămân neafectate.</string>
   <string name="auto_download_settings_label">Descarcă automat setările</string>
   <string name="episode_filters_label">Filtru setări</string>
   <string name="episode_filters_description">Listă de termeni folosită pentru a decide dacă un episod va fi sau nu inclus când descărcarea automată este pornită</string>
   <string name="episode_filters_include">Include</string>
   <string name="episode_filters_exclude">Exclude</string>
+  <string name="episode_filters_duration">Durata minimă (în minute)</string>
   <string name="episode_filters_hint">Un singur cuvânt \n\"Cuvinte multiple\"</string>
   <string name="keep_updated">Menține actualizat</string>
   <string name="keep_updated_summary">Include acest podcast când reîmprospătarea automată a podcasturilor este pornită</string>
   <string name="auto_download_disabled_globally">Descărcarea automată este oprită în setările generale ale AntennaPod</string>
+  <string name="statistics_time_played">Timpul redat:</string>
+  <string name="statistics_total_duration">Durata totală (estimată):</string>
+  <string name="statistics_duration_played_episodes">Durata episoadelor redate:</string>
   <string name="statistics_episodes_on_device">Episoade pe acest dispozitiv:</string>
   <string name="statistics_space_used">Spațiu folosit:</string>
+  <string name="statistics_episodes_started_total">Episoade pornite/total:</string>
   <string name="statistics_view_all">Vizualizare a tuturor podcasturilor »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importare abonamente din aplicații cu un singur scop...</string>
@@ -703,6 +739,8 @@
   <string name="sort_date_old_new">Data  (Nouă \u2192 Veche)</string>
   <string name="sort_duration_short_long">Durată  (Shortă \u2192 Lungă)</string>
   <string name="sort_duration_long_short">Durată (Lungă \u2192 Scurtă)</string>
+  <string name="sort_filename_a_z">Numele fișierului (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Numele fișierului (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Nou \u2192 Vechi</string>
@@ -719,7 +757,9 @@
   <string name="share_dialog_include_label">Include:</string>
   <string name="share_playback_position_dialog_label">Poziția de redare</string>
   <string name="share_dialog_episode_website_label">Pagina web a episodului</string>
+  <string name="share_dialog_link_to_episode">Linkul episodului</string>
   <string name="share_dialog_media_file_label">Fișier media</string>
+  <string name="share_starting_position_label">Pornind de la </string>
   <!--Audio controls-->
   <string name="audio_controls">Control audio</string>
   <string name="playback_speed">Viteza de redare</string>
@@ -766,4 +806,7 @@
   <string name="on_demand_config_setting_changed">Setarea a fost actualizată cu succes</string>
   <string name="on_demand_config_stream_text">Se pare că faci streaming foarte mult. Dorești ca lista de episoade să arate butonul de stream ?</string>
   <string name="on_demand_config_download_text">Se pare că descarci foarte mult. Dorești ca lista de episoade să arate butonul de descărcare ?</string>
+  <string name="shortcut_subscription_label">Scurtătură pentru abonamente</string>
+  <string name="shortcut_select_subscription">Selectează abonamentul</string>
+  <string name="add_shortcut">Adaugă scurtătură</string>
 </resources>

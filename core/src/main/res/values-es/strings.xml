@@ -171,6 +171,8 @@
     <item quantity="one">%d suscripción actualizada.</item>
     <item quantity="other">%d suscripciones actualizadas.</item>
   </plurals>
+  <string name="edit_tags">Editar etiquetas</string>
+  <string name="rename_tag_label">Renombrar etiqueta</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">

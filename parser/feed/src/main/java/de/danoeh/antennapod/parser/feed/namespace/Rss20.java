@@ -130,7 +130,7 @@ public class Rss20 extends Namespace {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
                     state.getFeed().setDescription(contentFromHtml);
                 } else if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setDescriptionIfLonger(contentFromHtml);
+                    state.getCurrentItem().setDescriptionIfLonger(content); // fromHtml here breaks \n when not html
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase(Locale.US));
