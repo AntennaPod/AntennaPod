@@ -46,24 +46,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/statistics_duration_played_episodes" />
-
-        <TextView
-            android:id="@+id/durationPlayedLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            tools:text="0 min" />
-
-    </TableRow>
-
-    <TableRow
-        android:tag="detailed">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/statistics_total_duration" />
 
         <TextView

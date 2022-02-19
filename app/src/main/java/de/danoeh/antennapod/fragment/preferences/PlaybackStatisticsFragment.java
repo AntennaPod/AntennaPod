@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,15 +25,12 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.databinding.StatisticsFilterDialogBinding;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Displays the 'playback statistics' screen
@@ -42,20 +38,20 @@ import java.util.List;
 public class PlaybackStatisticsFragment extends Fragment {
     private static final String TAG = PlaybackStatisticsFragment.class.getSimpleName();
     private static final String PREF_NAME = "StatisticsActivityPrefs";
-    private static final String PREF_COUNT_ALL = "countAll";
+    private static final String PREF_INCLUDE_MARKED_PLAYED = "countAll";
 
     private Disposable disposable;
     private RecyclerView feedStatisticsList;
     private ProgressBar progressBar;
     private PlaybackStatisticsListAdapter listAdapter;
-    private boolean countAll = false;
+    private boolean includeMarkedAsPlayed = false;
     private SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
+        includeMarkedAsPlayed = prefs.getBoolean(PREF_INCLUDE_MARKED_PLAYED, false);
         setHasOptionsMenu(true);
     }
 
@@ -67,7 +63,6 @@ public class PlaybackStatisticsFragment extends Fragment {
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
         listAdapter = new PlaybackStatisticsListAdapter(this);
-        listAdapter.setCountAll(countAll);
         feedStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         feedStatisticsList.setAdapter(listAdapter);
         return root;
@@ -91,47 +86,37 @@ public class PlaybackStatisticsFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.statistics_reset).setVisible(true);
-        menu.findItem(R.id.statistics_mode).setVisible(true);
+        menu.findItem(R.id.statistics_filter).setVisible(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.statistics_mode) {
-            selectStatisticsMode();
+        if (item.getItemId() == R.id.statistics_filter) {
+            selectStatisticsFilter();
             return true;
-        }
-        if (item.getItemId() == R.id.statistics_reset) {
+        } else if (item.getItemId() == R.id.statistics_reset) {
             confirmResetStatistics();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void selectStatisticsMode() {
-        View contentView = View.inflate(getContext(), R.layout.statistics_mode_select_dialog, null);
+    private void selectStatisticsFilter() {
+        StatisticsFilterDialogBinding dialogBinding = StatisticsFilterDialogBinding.inflate(getLayoutInflater());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(contentView);
-        builder.setTitle(R.string.statistics_mode);
-
-        if (countAll) {
-            ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).setChecked(true);
-        } else {
-            ((RadioButton) contentView.findViewById(R.id.statistics_mode_normal)).setChecked(true);
-        }
-
+        builder.setView(dialogBinding.getRoot());
+        builder.setTitle(R.string.filter);
+        dialogBinding.statisticsIncludeMarked.setChecked(includeMarkedAsPlayed);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            countAll = ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).isChecked();
-            listAdapter.setCountAll(countAll);
-            prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).apply();
+            includeMarkedAsPlayed = dialogBinding.statisticsIncludeMarked.isChecked();
+            prefs.edit().putBoolean(PREF_INCLUDE_MARKED_PLAYED, includeMarkedAsPlayed).apply();
             refreshStatistics();
-            getActivity().invalidateOptionsMenu();
         });
-
         builder.show();
     }
 
     private void confirmResetStatistics() {
-        if (!countAll) {
+        if (!includeMarkedAsPlayed) {
             ConfirmationDialog conDialog = new ConfirmationDialog(
                     getActivity(),
                     R.string.statistics_reset_data,
@@ -173,7 +158,7 @@ public class PlaybackStatisticsFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(this::fetchStatistics)
+        disposable = Observable.fromCallable(() -> DBReader.getStatistics(includeMarkedAsPlayed))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -181,17 +166,5 @@ public class PlaybackStatisticsFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     feedStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    private List<StatisticsItem> fetchStatistics() {
-        List<StatisticsItem> statisticsData = DBReader.getStatistics();
-        if (countAll) {
-            Collections.sort(statisticsData, (item1, item2) ->
-                    Long.compare(item2.timePlayedCountAll, item1.timePlayedCountAll));
-        } else {
-            Collections.sort(statisticsData, (item1, item2) ->
-                    Long.compare(item2.timePlayed, item1.timePlayed));
-        }
-        return statisticsData;
     }
 }

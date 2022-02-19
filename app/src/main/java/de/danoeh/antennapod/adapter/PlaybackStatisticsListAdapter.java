@@ -18,15 +18,10 @@ import java.util.List;
 public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
 
     private final Fragment fragment;
-    boolean countAll = true;
 
     public PlaybackStatisticsListAdapter(Fragment fragment) {
         super(fragment.getContext());
         this.fragment = fragment;
-    }
-
-    public void setCountAll(boolean countAll) {
-        this.countAll = countAll;
     }
 
     @Override
@@ -50,14 +45,14 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
         float[] dataValues = new float[statisticsData.size()];
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
-            dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
+            dataValues[i] = item.timePlayed;
         }
         return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
-        long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
+        long time = statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 
         holder.itemView.setOnClickListener(v -> {

@@ -777,7 +777,7 @@ public final class DBReader {
      * @return The list of statistics objects
      */
     @NonNull
-    public static List<StatisticsItem> getStatistics() {
+    public static List<StatisticsItem> getStatistics(boolean includeMarkedAsPlayed) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
@@ -785,12 +785,10 @@ public final class DBReader {
 
         List<Feed> feeds = getFeedList();
         for (Feed feed : feeds) {
-            long feedPlayedTimeCountAll = 0;
             long feedPlayedTime = 0;
             long feedTotalTime = 0;
             long episodes = 0;
             long episodesStarted = 0;
-            long episodesStartedIncludingMarked = 0;
             long totalDownloadSize = 0;
             long episodesDownloadCount = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
@@ -800,20 +798,16 @@ public final class DBReader {
                     continue;
                 }
 
-                feedPlayedTime += media.getPlayedDuration() / 1000;
-
-                if (item.isPlayed()) {
-                    feedPlayedTimeCountAll += media.getDuration() / 1000;
-                } else {
-                    feedPlayedTimeCountAll += media.getPosition() / 1000;
+                if (media.getPlayedDuration() != 0) {
+                    feedPlayedTime += media.getPlayedDuration() / 1000;
+                } else if (includeMarkedAsPlayed && item.isPlayed()) {
+                    feedPlayedTime += media.getDuration() / 1000;
                 }
 
-                if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
+                boolean markedAsStarted = item.isPlayed() || media.getPosition() != 0;
+                boolean hasStatistics = media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0;
+                if (hasStatistics || (includeMarkedAsPlayed && markedAsStarted)) {
                     episodesStarted++;
-                }
-
-                if (item.isPlayed() || media.getPosition() != 0) {
-                    episodesStartedIncludingMarked++;
                 }
 
                 feedTotalTime += media.getDuration() / 1000;
@@ -825,12 +819,13 @@ public final class DBReader {
 
                 episodes++;
             }
-            feedTime.add(new StatisticsItem(
-                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize, episodesDownloadCount));
+            feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
+                    episodesStarted, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
+        Collections.sort(feedTime, (item1, item2) ->
+                Long.compare(item2.timePlayed, item1.timePlayed));
         return feedTime;
     }
 

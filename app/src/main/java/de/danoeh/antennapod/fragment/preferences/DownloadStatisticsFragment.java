@@ -64,7 +64,7 @@ public class DownloadStatisticsFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.statistics_reset).setVisible(false);
-        menu.findItem(R.id.statistics_mode).setVisible(false);
+        menu.findItem(R.id.statistics_filter).setVisible(false);
     }
 
     private void refreshDownloadStatistics() {
@@ -80,7 +80,7 @@ public class DownloadStatisticsFragment extends Fragment {
 
         disposable =
                 Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
+                    List<StatisticsItem> statisticsData = DBReader.getStatistics(false); // Does not matter here
                     Collections.sort(statisticsData, (item1, item2) ->
                             Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
                     return statisticsData;

@@ -60,7 +60,7 @@ public class FeedStatisticsFragment extends Fragment {
     private void loadStatistics() {
         disposable =
                 Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
+                    List<StatisticsItem> statisticsData = DBReader.getStatistics(true);
                     for (StatisticsItem statisticsItem : statisticsData) {
                         if (statisticsItem.feed.getId() == feedId) {
                             return statisticsItem;
@@ -77,7 +77,6 @@ public class FeedStatisticsFragment extends Fragment {
         viewBinding.startedTotalLabel.setText(String.format(Locale.getDefault(), "%d / %d",
                 s.episodesStarted, s.episodes));
         viewBinding.timePlayedLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayed));
-        viewBinding.durationPlayedLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayedCountAll));
         viewBinding.totalDurationLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
         viewBinding.onDeviceLabel.setText(String.format(Locale.getDefault(), "%d", s.episodesDownloadCount));
         viewBinding.spaceUsedLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
