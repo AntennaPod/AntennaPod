@@ -23,7 +23,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Displays the 'download statistics' screen
