@@ -6,6 +6,13 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <CheckBox
+        android:id="@+id/includeMarkedCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics_include_marked"
+        android:layout_marginBottom="8dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,17 +53,10 @@
 
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/includeMarkedCheckbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/statistics_include_marked"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/statistics_speed_not_counted" />
+        android:text="@string/statistics_speed_not_counted"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>

@@ -196,20 +196,18 @@ public class PlaybackStatisticsFragment extends Fragment {
     }
 
     private void confirmResetStatistics() {
-        if (!includeMarkedAsPlayed) {
-            ConfirmationDialog conDialog = new ConfirmationDialog(
-                    getActivity(),
-                    R.string.statistics_reset_data,
-                    R.string.statistics_reset_data_msg) {
+        ConfirmationDialog conDialog = new ConfirmationDialog(
+                getActivity(),
+                R.string.statistics_reset_data,
+                R.string.statistics_reset_data_msg) {
 
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    doResetStatistics();
-                }
-            };
-            conDialog.createNewDialog().show();
-        }
+            @Override
+            public void onConfirmButtonPressed(DialogInterface dialog) {
+                dialog.dismiss();
+                doResetStatistics();
+            }
+        };
+        conDialog.createNewDialog().show();
     }
 
     private void doResetStatistics() {
@@ -218,6 +216,15 @@ public class PlaybackStatisticsFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+
+        includeMarkedAsPlayed = false;
+        timeFilterFrom = 0;
+        timeFilterTo = Long.MAX_VALUE;
+        prefs.edit()
+                .putBoolean(PREF_INCLUDE_MARKED_PLAYED, includeMarkedAsPlayed)
+                .putLong(PREF_FILTER_FROM, timeFilterFrom)
+                .putLong(PREF_FILTER_TO, timeFilterTo)
+                .apply();
 
         disposable = Completable.fromFuture(DBWriter.resetStatistics())
                 .subscribeOn(Schedulers.io())
