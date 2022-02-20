@@ -1133,6 +1133,17 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getMonthlyStatisticsCursor() {
+        final String query = "SELECT SUM(" + KEY_PLAYED_DURATION + ") AS total_duration"
+                + ", strftime('%m', datetime(" + KEY_LAST_PLAYED_TIME + "/1000, 'unixepoch')) AS month"
+                + ", strftime('%Y', datetime(" + KEY_LAST_PLAYED_TIME + "/1000, 'unixepoch')) AS year"
+                + " FROM " + TABLE_NAME_FEED_MEDIA
+                + " WHERE " + KEY_LAST_PLAYED_TIME + " > 0 AND " + KEY_PLAYED_DURATION + " > 0"
+                + " GROUP BY year, month"
+                + " ORDER BY year, month";
+        return db.rawQuery(query, null);
+    }
+
     public int getQueueSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_QUEUE);
         Cursor c = db.rawQuery(query, null);

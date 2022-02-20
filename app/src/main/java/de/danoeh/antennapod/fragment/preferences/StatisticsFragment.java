@@ -25,9 +25,10 @@ public class StatisticsFragment extends PagedToolbarFragment {
 
     public static final String TAG = "StatisticsFragment";
 
-    private static final int POS_LISTENED_HOURS = 0;
-    private static final int POS_SPACE_TAKEN = 1;
-    private static final int TOTAL_COUNT = 2;
+    private static final int POS_SUBSCRIPTIONS = 0;
+    private static final int POS_YEARS = 1;
+    private static final int POS_SPACE_TAKEN = 2;
+    private static final int TOTAL_COUNT = 3;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -51,11 +52,14 @@ public class StatisticsFragment extends PagedToolbarFragment {
         super.setupPagedToolbar(toolbar, viewPager);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
-                case POS_LISTENED_HOURS:
-                    tab.setText(R.string.playback_statistics_label);
+                case POS_SUBSCRIPTIONS:
+                    tab.setText(R.string.subscriptions_label);
+                    break;
+                case POS_YEARS:
+                    tab.setText(R.string.years_statistics_label);
                     break;
                 case POS_SPACE_TAKEN:
-                    tab.setText(R.string.download_statistics_label);
+                    tab.setText(R.string.downloads_label);
                     break;
                 default:
                     break;
@@ -82,8 +86,10 @@ public class StatisticsFragment extends PagedToolbarFragment {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case POS_LISTENED_HOURS:
-                    return new PlaybackStatisticsFragment();
+                case POS_SUBSCRIPTIONS:
+                    return new SubscriptionStatisticsFragment();
+                case POS_YEARS:
+                    return new YearsStatisticsFragment();
                 default:
                 case POS_SPACE_TAKEN:
                     return new DownloadStatisticsFragment();
