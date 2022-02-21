@@ -49,6 +49,8 @@
     <string name="statistics_from">From</string>
     <string name="statistics_to">To</string>
     <string name="statistics_today">Today</string>
+    <string name="statistics_filter_all_time">All time</string>
+    <string name="statistics_filter_last_year">Last year</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
     <string name="statistics_counting_range">Played between %1$s and %2$s</string>

@@ -117,15 +117,19 @@ public class PlaybackStatisticsFragment extends Fragment {
     }
 
     private void selectStatisticsFilter() {
+        if (statisticsResult == null) {
+            return;
+        }
         StatisticsFilterDialogBinding dialogBinding = StatisticsFilterDialogBinding.inflate(getLayoutInflater());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogBinding.getRoot());
         builder.setTitle(R.string.filter);
         dialogBinding.includeMarkedCheckbox.setOnCheckedChangeListener((compoundButton, checked) -> {
             dialogBinding.timeToSpinner.setEnabled(!checked);
-            dialogBinding.timeToSpinner.setAlpha(checked ? 0.5f : 1f);
             dialogBinding.timeFromSpinner.setEnabled(!checked);
-            dialogBinding.timeFromSpinner.setAlpha(checked ? 0.5f : 1f);
+            dialogBinding.lastYearButton.setEnabled(!checked);
+            dialogBinding.allTimeButton.setEnabled(!checked);
+            dialogBinding.dateSelectionContainer.setAlpha(checked ? 0.5f : 1f);
         });
         dialogBinding.includeMarkedCheckbox.setChecked(includeMarkedAsPlayed);
 
@@ -152,6 +156,15 @@ public class PlaybackStatisticsFragment extends Fragment {
                 break;
             }
         }
+
+        dialogBinding.allTimeButton.setOnClickListener(v -> {
+            dialogBinding.timeFromSpinner.setSelection(0);
+            dialogBinding.timeToSpinner.setSelection(filterDates.first.length - 1);
+        });
+        dialogBinding.lastYearButton.setOnClickListener(v -> {
+            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDates.first.length - 14));
+            dialogBinding.timeToSpinner.setSelection(filterDates.first.length - 2);
+        });
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             includeMarkedAsPlayed = dialogBinding.includeMarkedCheckbox.isChecked();
