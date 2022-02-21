@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.text.TextUtils;
@@ -144,18 +143,6 @@ public class NetworkUtils {
         WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<String> selectedNetworks = Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks());
         return selectedNetworks.contains(Integer.toString(wm.getConnectionInfo().getNetworkId()));
-    }
-
-    /**
-     * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
-     */
-    public static String getWifiSsid() {
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        if (wifiInfo != null) {
-            return wifiInfo.getSSID();
-        }
-        return null;
     }
 
     public static boolean wasDownloadBlocked(Throwable throwable) {

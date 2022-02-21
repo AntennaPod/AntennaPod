@@ -104,7 +104,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         title.setText(item.getTitle());
         leftPadding.setContentDescription(item.getTitle());
         pubDate.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
-        pubDate.setContentDescription(DateFormatter.formatForAccessibility(activity, item.getPubDate()));
+        pubDate.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         isNew.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);

@@ -10,7 +10,6 @@ import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 import java.io.File;
 
 public class StoragePreferencesFragment extends PreferenceFragmentCompat {
-    private static final String TAG = "StoragePrefFragment";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String PREF_IMPORT_EXPORT = "prefImportExport";
 

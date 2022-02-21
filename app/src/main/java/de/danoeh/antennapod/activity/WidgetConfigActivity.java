@@ -47,7 +47,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
-        findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
+        findViewById(R.id.butConfirm).setOnClickListener(v -> confirmCreateWidget());
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -94,7 +94,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
     }
 
-    private void confirmCreateWidget(View v) {
+    private void confirmCreateWidget() {
         int backgroundColor = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
 
         SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);

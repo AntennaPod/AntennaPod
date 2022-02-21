@@ -23,10 +23,6 @@ public enum PlayerStatus {
         statusValue = val;
     }
 
-    public static PlayerStatus fromOrdinal(int o) {
-        return fromOrdinalLookup[o];
-    }
-
     public boolean isAtLeast(PlayerStatus other) {
         return other == null || this.statusValue >= other.statusValue;
     }

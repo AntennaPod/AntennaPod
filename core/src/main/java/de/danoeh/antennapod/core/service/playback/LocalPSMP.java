@@ -713,7 +713,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         return stream;
     }
 
-
     /**
      * Releases internally used resources. This method should only be called when the object is not used anymore.
      */
@@ -736,16 +735,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         executor.shutdown();
         abandonAudioFocus();
         releaseWifiLockIfNecessary();
-    }
-
-    /**
-     * Releases internally used resources. This method should only be called when the object is not used anymore.
-     * This method is executed on an internal executor service.
-     */
-    @Override
-    public void shutdownQuietly() {
-        executor.submit(this::shutdown);
-        executor.shutdown();
     }
 
     @Override

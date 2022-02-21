@@ -176,7 +176,7 @@ public final class DBTasks {
         media.setDownloaded(false);
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
-        EventBus.getDefault().post(FeedItemEvent.deletedMedia(media.getItem()));
+        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
     }
 
@@ -230,36 +230,7 @@ public final class DBTasks {
         UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context);
     }
 
-    /**
-     * Returns the successor of a FeedItem in the queue.
-     *
-     * @param itemId  ID of the FeedItem
-     * @param queue   Used for determining the successor of the item. If this parameter is null, the method will load
-     *                the queue from the database in the same thread.
-     * @return Successor of the FeedItem or null if the FeedItem is not in the queue or has no successor.
-     */
-    public static FeedItem getQueueSuccessorOfItem(final long itemId, List<FeedItem> queue) {
-        FeedItem result = null;
-        if (queue == null) {
-            queue = DBReader.getQueue();
-        }
-        if (queue != null) {
-            Iterator<FeedItem> iterator = queue.iterator();
-            while (iterator.hasNext()) {
-                FeedItem item = iterator.next();
-                if (item.getId() == itemId) {
-                    if (iterator.hasNext()) {
-                        result = iterator.next();
-                    }
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
-                                                         Feed feed) {
+    private static Feed searchFeedByIdentifyingValueOrID(Feed feed) {
         if (feed.getId() != 0) {
             return DBReader.getFeed(feed.getId());
         } else {
@@ -322,7 +293,7 @@ public final class DBTasks {
         adapter.open();
 
         // Look up feed in the feedslist
-        final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+        final Feed savedFeed = searchFeedByIdentifyingValueOrID(newFeed);
         if (savedFeed == null) {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
@@ -456,7 +427,7 @@ public final class DBTasks {
             if (savedFeed == null) {
                 DBWriter.addNewFeed(context, newFeed).get();
                 // Update with default values that are set in database
-                resultFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+                resultFeed = searchFeedByIdentifyingValueOrID(newFeed);
             } else {
                 DBWriter.setCompleteFeed(savedFeed).get();
             }
@@ -487,15 +458,13 @@ public final class DBTasks {
     /**
      * Searches the FeedItems of a specific Feed for a given string.
      *
-     * @param context Used for accessing the DB.
      * @param feedID  The id of the feed whose items should be searched.
      * @param query   The search string.
      * @return A FutureTask object that executes the search request
      *         and returns the search result as a List of FeedItems.
      */
-    public static FutureTask<List<FeedItem>> searchFeedItems(final Context context,
-                                                                 final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
+    public static FutureTask<List<FeedItem>> searchFeedItems(final long feedID, final String query) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>() {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItems(feedID, query);
@@ -507,8 +476,8 @@ public final class DBTasks {
         });
     }
 
-    public static FutureTask<List<Feed>> searchFeeds(final Context context, final String query) {
-        return new FutureTask<>(new QueryTask<List<Feed>>(context) {
+    public static FutureTask<List<Feed>> searchFeeds(final String query) {
+        return new FutureTask<>(new QueryTask<List<Feed>>() {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor cursor = adapter.searchFeeds(query);
@@ -533,7 +502,7 @@ public final class DBTasks {
     abstract static class QueryTask<T> implements Callable<T> {
         private T result;
 
-        public QueryTask(Context context) {
+        public QueryTask() {
         }
 
         @Override

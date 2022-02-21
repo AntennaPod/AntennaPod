@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -213,45 +212,6 @@ public class GpodnetService implements ISyncService {
     }
 
     /**
-     * Returns synchronization status of devices.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public List<List<String>> getSynchronizedDevices() throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/sync-devices/%s.json", username), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-            JSONObject syncStatus = new JSONObject(response);
-            List<List<String>> result = new ArrayList<>();
-
-            JSONArray synchronizedDevices = syncStatus.getJSONArray("synchronized");
-            for (int i = 0; i < synchronizedDevices.length(); i++) {
-                JSONArray groupDevices = synchronizedDevices.getJSONArray(i);
-                List<String> group = new ArrayList<>();
-                for (int j = 0; j < groupDevices.length(); j++) {
-                    group.add(groupDevices.getString(j));
-                }
-                result.add(group);
-            }
-
-            JSONArray notSynchronizedDevices = syncStatus.getJSONArray("not-synchronized");
-            for (int i = 0; i < notSynchronizedDevices.length(); i++) {
-                result.add(Collections.singletonList(notSynchronizedDevices.getString(i)));
-            }
-
-            return result;
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
      * Configures the device of a given user.
      * <p/>
      * This method requires authentication.
@@ -279,39 +239,6 @@ public class GpodnetService implements ISyncService {
                 content = "";
             }
             RequestBody body = RequestBody.create(JSON, content);
-            Request.Builder request = new Request.Builder().post(body).url(url);
-            executeRequest(request);
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Links devices for synchronization.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public void linkDevices(@NonNull List<String> deviceIds) throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            final URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/sync-devices/%s.json", username), null, null).toURL();
-            JSONObject jsonContent = new JSONObject();
-            JSONArray group = new JSONArray();
-            for (String deviceId : deviceIds) {
-                group.put(deviceId);
-            }
-
-            JSONArray synchronizedGroups = new JSONArray();
-            synchronizedGroups.put(group);
-            jsonContent.put("synchronize", synchronizedGroups);
-            jsonContent.put("stop-synchronize", new JSONArray());
-
-            Log.d("aaaa", jsonContent.toString());
-            RequestBody body = RequestBody.create(JSON, jsonContent.toString());
             Request.Builder request = new Request.Builder().post(body).url(url);
             executeRequest(request);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {

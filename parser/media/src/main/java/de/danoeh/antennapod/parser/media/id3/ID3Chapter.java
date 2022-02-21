@@ -30,9 +30,4 @@ public class ID3Chapter extends Chapter {
     public int getChapterType() {
         return CHAPTERTYPE_ID3CHAPTER;
     }
-
-    public String getId3ID() {
-        return id3ID;
-    }
-
 }

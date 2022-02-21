@@ -17,9 +17,6 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
  * Displays the 'about->Contributors' pager screen.
  */
 public class ContributorsPagerFragment extends Fragment {
-
-    public static final String TAG = "StatisticsFragment";
-
     private static final int POS_DEVELOPERS = 0;
     private static final int POS_TRANSLATORS = 1;
     private static final int POS_SPECIAL_THANKS = 2;
