@@ -36,11 +36,6 @@ public class DownloadStatisticsFragment extends Fragment {
     private ProgressBar progressBar;
     private DownloadStatisticsListAdapter listAdapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

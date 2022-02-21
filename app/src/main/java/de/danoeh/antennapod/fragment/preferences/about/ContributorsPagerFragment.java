@@ -26,10 +26,6 @@ public class ContributorsPagerFragment extends Fragment {
     private static final int TOTAL_COUNT = 3;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
