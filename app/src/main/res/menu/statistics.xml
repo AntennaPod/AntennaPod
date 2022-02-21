@@ -5,14 +5,13 @@
     <item
         android:id="@+id/statistics_reset"
         android:title="@string/statistics_reset_data"
-        custom:showAsAction="never"
-        />
+        custom:showAsAction="never" />
 
     <item
-        android:id="@+id/statistics_mode"
+        android:id="@+id/statistics_filter"
         android:icon="@drawable/ic_filter"
-        android:title="@string/statistics_mode"
-        custom:showAsAction="never">
+        android:title="@string/filter"
+        custom:showAsAction="always">
     </item>
 
 </menu>

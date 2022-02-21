@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -16,14 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadStatisticsListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Displays the 'download statistics' screen
@@ -38,7 +37,8 @@ public class DownloadStatisticsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
         downloadStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
@@ -54,6 +54,13 @@ public class DownloadStatisticsFragment extends Fragment {
         refreshDownloadStatistics();
     }
 
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.statistics_reset).setVisible(false);
+        menu.findItem(R.id.statistics_filter).setVisible(false);
+    }
+
     private void refreshDownloadStatistics() {
         progressBar.setVisibility(View.VISIBLE);
         downloadStatisticsList.setVisibility(View.GONE);
@@ -67,15 +74,16 @@ public class DownloadStatisticsFragment extends Fragment {
 
         disposable =
                 Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
-                    Collections.sort(statisticsData, (item1, item2) ->
+                    // Filters do not matter here
+                    DBReader.StatisticsResult statisticsData = DBReader.getStatistics(false, 0, Long.MAX_VALUE);
+                    Collections.sort(statisticsData.feedTime, (item1, item2) ->
                             Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
                     return statisticsData;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    listAdapter.update(result);
+                    listAdapter.update(result.feedTime);
                     progressBar.setVisibility(View.GONE);
                     downloadStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

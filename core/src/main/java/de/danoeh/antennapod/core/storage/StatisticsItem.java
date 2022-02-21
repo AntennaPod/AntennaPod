@@ -12,11 +12,6 @@ public class StatisticsItem {
     public final long timePlayed;
 
     /**
-     * Simply sums up time of podcasts that are marked as played.
-     */
-    public final long timePlayedCountAll;
-
-    /**
      * Number of episodes.
      */
     public final long episodes;
@@ -25,11 +20,6 @@ public class StatisticsItem {
      * Episodes that are actually played.
      */
     public final long episodesStarted;
-
-    /**
-     * All episodes that are marked as played (or have position != 0).
-     */
-    public final long episodesStartedIncludingMarked;
 
     /**
      * Simply sums up the size of download podcasts.
@@ -41,16 +31,14 @@ public class StatisticsItem {
      */
     public final long episodesDownloadCount;
 
-    public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
-                          long episodes, long episodesStarted, long episodesStartedIncludingMarked,
+    public StatisticsItem(Feed feed, long time, long timePlayed,
+                          long episodes, long episodesStarted,
                           long totalDownloadSize, long episodesDownloadCount) {
         this.feed = feed;
         this.time = time;
         this.timePlayed = timePlayed;
-        this.timePlayedCountAll = timePlayedCountAll;
         this.episodes = episodes;
         this.episodesStarted = episodesStarted;
-        this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
         this.totalDownloadSize = totalDownloadSize;
         this.episodesDownloadCount = episodesDownloadCount;
     }

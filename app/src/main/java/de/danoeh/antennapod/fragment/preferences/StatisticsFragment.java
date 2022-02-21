@@ -16,18 +16,18 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.PagedToolbarFragment;
 
 /**
  * Displays the 'statistics' screen
  */
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends PagedToolbarFragment {
 
     public static final String TAG = "StatisticsFragment";
 
     private static final int POS_LISTENED_HOURS = 0;
     private static final int POS_SPACE_TAKEN = 1;
     private static final int TOTAL_COUNT = 2;
-
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -42,9 +42,13 @@ public class StatisticsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         viewPager = rootView.findViewById(R.id.viewpager);
         toolbar = rootView.findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.statistics_label));
+        toolbar.inflateMenu(R.menu.statistics);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         viewPager.setAdapter(new StatisticsPagerAdapter(this));
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
+        super.setupPagedToolbar(toolbar, viewPager);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case POS_LISTENED_HOURS:
@@ -57,14 +61,6 @@ public class StatisticsFragment extends Fragment {
                     break;
             }
         }).attach();
-
-        if (getActivity().getClass() == PreferenceActivity.class) {
-            rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
-        } else {
-            toolbar.setTitle(getString(R.string.statistics_label));
-            toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
-        }
-
         return rootView;
     }
 

@@ -2,15 +2,15 @@ package de.danoeh.antennapod.adapter;
 
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.fragment.FeedStatisticsDialogFragment;
 import de.danoeh.antennapod.view.PieChartView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Adapter for the playback statistics list.
@@ -18,26 +18,30 @@ import java.util.List;
 public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
 
     private final Fragment fragment;
-    boolean countAll = true;
+    private long timeFilterFrom = 0;
+    private long timeFilterTo = Long.MAX_VALUE;
+    private boolean includeMarkedAsPlayed = false;
 
     public PlaybackStatisticsListAdapter(Fragment fragment) {
         super(fragment.getContext());
         this.fragment = fragment;
     }
 
-    public void setCountAll(boolean countAll) {
-        this.countAll = countAll;
+    public void setTimeFilter(boolean includeMarkedAsPlayed, long timeFilterFrom, long timeFilterTo) {
+        this.includeMarkedAsPlayed = includeMarkedAsPlayed;
+        this.timeFilterFrom = timeFilterFrom;
+        this.timeFilterTo = timeFilterTo;
     }
 
     @Override
     String getHeaderCaption() {
-        long usageCounting = UserPreferences.getUsageCountingDateMillis();
-        if (usageCounting > 0) {
-            String date = DateFormatter.formatAbbrev(context, new Date(usageCounting));
-            return context.getString(R.string.statistics_counting_since, date);
-        } else {
-            return context.getString(R.string.total_time_listened_to_podcasts);
+        if (includeMarkedAsPlayed) {
+            return context.getString(R.string.statistics_counting_total);
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+        String dateFrom = dateFormat.format(new Date(timeFilterFrom));
+        String dateTo = dateFormat.format(new Date(timeFilterTo));
+        return context.getString(R.string.statistics_counting_range, dateFrom, dateTo);
     }
 
     @Override
@@ -50,14 +54,14 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
         float[] dataValues = new float[statisticsData.size()];
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
-            dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
+            dataValues[i] = item.timePlayed;
         }
         return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
-        long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
+        long time = statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 
         holder.itemView.setOnClickListener(v -> {

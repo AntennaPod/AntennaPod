@@ -17,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Locale;
 
 public class FeedStatisticsFragment extends Fragment {
@@ -60,8 +60,11 @@ public class FeedStatisticsFragment extends Fragment {
     private void loadStatistics() {
         disposable =
                 Observable.fromCallable(() -> {
-                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
-                    for (StatisticsItem statisticsItem : statisticsData) {
+                    DBReader.StatisticsResult statisticsData = DBReader.getStatistics(true, 0, Long.MAX_VALUE);
+                    Collections.sort(statisticsData.feedTime, (item1, item2) ->
+                            Long.compare(item2.timePlayed, item1.timePlayed));
+
+                    for (StatisticsItem statisticsItem : statisticsData.feedTime) {
                         if (statisticsItem.feed.getId() == feedId) {
                             return statisticsItem;
                         }
@@ -77,7 +80,6 @@ public class FeedStatisticsFragment extends Fragment {
         viewBinding.startedTotalLabel.setText(String.format(Locale.getDefault(), "%d / %d",
                 s.episodesStarted, s.episodes));
         viewBinding.timePlayedLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayed));
-        viewBinding.durationPlayedLabel.setText(Converter.shortLocalizedDuration(getContext(), s.timePlayedCountAll));
         viewBinding.totalDurationLabel.setText(Converter.shortLocalizedDuration(getContext(), s.time));
         viewBinding.onDeviceLabel.setText(String.format(Locale.getDefault(), "%d", s.episodesDownloadCount));
         viewBinding.spaceUsedLabel.setText(Formatter.formatShortFileSize(getContext(), s.totalDownloadSize));
