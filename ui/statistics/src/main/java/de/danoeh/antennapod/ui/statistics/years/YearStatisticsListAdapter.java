@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.statistics.years;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.view.LineChartView;
+import de.danoeh.antennapod.ui.statistics.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

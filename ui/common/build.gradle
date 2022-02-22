@@ -6,4 +6,6 @@ apply from: "../../common.gradle"
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
 }

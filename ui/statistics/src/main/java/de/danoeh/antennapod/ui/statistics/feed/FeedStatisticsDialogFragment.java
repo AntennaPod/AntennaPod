@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.ui.statistics.feed;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.statistics.R;
 
 public class FeedStatisticsDialogFragment extends DialogFragment {
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";

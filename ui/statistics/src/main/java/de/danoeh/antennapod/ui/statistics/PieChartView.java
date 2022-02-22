@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.ui.statistics;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

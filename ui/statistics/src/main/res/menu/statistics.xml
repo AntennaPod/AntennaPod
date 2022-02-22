@@ -11,7 +11,7 @@
         android:id="@+id/statistics_filter"
         android:icon="@drawable/ic_filter"
         android:title="@string/filter"
-        custom:showAsAction="always">
+        custom:showAsAction="ifRoom">
     </item>
 
 </menu>
