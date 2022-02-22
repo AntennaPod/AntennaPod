@@ -171,6 +171,7 @@
     <item quantity="one">%d assinatura atualizada.</item>
     <item quantity="other">%d assinaturas atualizadas.</item>
   </plurals>
+  <string name="confirm_mobile_feed_refresh_dialog_message">O download de episódios pela conexão de dados móveis está desabilitado nas configurações.\n\nVocê ainda deseja atualizar todas as podcasts pelos dados móveis?</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
@@ -240,6 +241,8 @@
   <string name="download_error_forbidden">O servidor de hospedagem do podcast se recusa a responder.</string>
   <string name="download_canceled_msg">Download cancelado</string>
   <string name="download_error_wrong_size">A conexão com o servidor foi perdida antes de completar o download</string>
+  <string name="download_error_blocked">O download foi bloqueado por outro aplicativo no seu dispositivo (como um VPN ou ad blocker).</string>
+  <string name="download_error_certificate">Não foi possível estabelecer uma conexão segura. Isso pode significar que outro aplicativo (como um VPN ou ad blocker), no seu dispositivo, bloqueou o download, ou que alguma coisa está errada com os certificados do servidor.</string>
   <string name="download_report_title">Downloads finalizados com erro(s)</string>
   <string name="auto_download_report_title">Download automático finalizado</string>
   <string name="download_error_io_error">Erro de IO</string>
@@ -255,6 +258,7 @@
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Arquivo de mídia</string>
   <string name="null_value_podcast_error">Nenhum podcast foi fornecido para ser exibido.</string>
+  <string name="no_feed_url_podcast_found_by_search">A podcast sugerida não tem um link RSS mas AntennaPod achou uma podcast que pode corresponder</string>
   <string name="authentication_notification_title">Autenticação requerida</string>
   <string name="authentication_notification_msg">O recurso que você solicitou requer um usuário e uma senha</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar Download utilizando dados móveis</string>
@@ -323,6 +327,7 @@
   <string name="storage_sum">Exclusão automática de episódio, importação, exportação</string>
   <string name="project_pref">Projeto</string>
   <string name="synchronization_pref">Sincronização</string>
+  <string name="synchronization_sum">Sincronizar com outros dispositivos</string>
   <string name="automation">Automação</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
@@ -415,6 +420,11 @@
   <string name="pref_episode_cache_unlimited">Ilimitado</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Sincronizar agora</string>
+  <string name="synchronization_full_sync_title">Forçar sincronização completa</string>
+  <string name="synchronization_summary_unchoosen">Você pode escolher de vários serviços para sincronizar suas assinaturas e o estado de reprodução dos episódios com</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync é um aplicativo Nextcloud de código aberto que você pode facilmente instalar em seu próprio servidor. O aplicativo é independente do projeto AntennaPod.</string>
+  <string name="synchronization_choose_title">Escolher o serviço de sincronização</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades disponíveis para reprodução de áudio.</string>
   <string name="pref_feed_playback_speed_sum">A velocidade a ser usada ao iniciar a reprodução de áudio para episódios neste podcast</string>
   <string name="pref_feed_skip">Salto automático</string>
@@ -494,6 +504,7 @@
   <string name="new_episode_notification_disabled">Notificação desabilitada</string>
   <string name="pref_feed_settings_dialog_msg">Essa configuração é única para cada podcast. Você pode alterá-la abrindo a página do podcast.</string>
   <string name="pref_contribute">Contribuir</string>
+  <string name="pref_show_subscription_title_summary">Mostrar o título da assinatura abaixo da imagem da capa.</string>
   <!--About screen-->
   <string name="about_pref">Sobre</string>
   <string name="antennapod_version">Versão do AntennaPod</string>
@@ -516,6 +527,7 @@
   <string name="sync_status_episodes_download">Baixando alterações de episódio…</string>
   <string name="sync_status_upload_played">Enviando status de reprodução...</string>
   <string name="sync_status_subscriptions">Sincronizando assinaturas...</string>
+  <string name="sync_status_wait_for_downloads">Esperando os downloads terminarem...</string>
   <string name="sync_status_success">Sincronização bem sucedida</string>
   <string name="sync_status_error">Falha na sincronização</string>
   <!--import and export-->

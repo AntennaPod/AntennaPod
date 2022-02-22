@@ -165,7 +165,7 @@
   <string name="share_label_with_ellipses">Поделиться…</string>
   <string name="share_file_label">Поделиться файлом</string>
   <string name="share_website_url_label">Адрес вебсайта</string>
-  <string name="share_feed_url_label">Ссылка на канал</string>
+  <string name="share_feed_url_label">Rss-фид подкаста</string>
   <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его выпуски (включая загруженные).</string>
   <string name="feed_delete_confirmation_msg_batch">Подтвердите, что хотите удалить выбранные подкасты и все их выпуски (включая загруженные).</string>
   <string name="feed_delete_confirmation_local_msg">Подтвердите, что хотите удалить подкаст «%1$s». Файлы в локальной исходной папке не будут удалены.</string>
@@ -749,7 +749,7 @@
   <string name="hide_paused_episodes_label">Приостановленное</string>
   <string name="not_paused">Не на паузе</string>
   <string name="hide_played_episodes_label">Прослушанное</string>
-  <string name="not_played">Не проигрывается</string>
+  <string name="not_played">Непрослушанное</string>
   <!--Sort-->
   <string name="sort_title_a_z">от А к Я</string>
   <string name="sort_title_z_a">от Я к А</string>

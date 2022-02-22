@@ -4,7 +4,7 @@
   <string name="feed_update_receiver_name">Actualitzar subscripcions</string>
   <string name="feeds_label">Podcasts</string>
   <string name="statistics_label">Estadístiques</string>
-  <string name="add_feed_label">Afegeix podcast</string>
+  <string name="add_feed_label">Afegir podcast</string>
   <string name="episodes_label">Episodis</string>
   <string name="queue_label">Cua</string>
   <string name="all_episodes_short_label">Tot</string>
@@ -139,7 +139,7 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
-  <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduits.</string>
+  <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduïts.</string>
   <string name="mark_all_read_feed_confirmation_msg">Si us plau, confirmeu que voleu marcar tots els episodis d\'aquest podcast com a reproduïts.</string>
   <string name="remove_all_new_flags_label">Retirar totes les banderes de \"nou\"</string>
   <string name="removed_all_new_flags_msg">Retirades totes les banderes de \"nou\"</string>
@@ -182,7 +182,7 @@
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="delete_episode_label">Esborrar episodi.</string>
+  <string name="delete_episode_label">Esborrar episodi</string>
   <string name="remove_new_flag_label">Retirar bandera de \"nou\"</string>
   <string name="removed_new_flag_label">Retirada bandera de \"nou\"</string>
   <string name="mark_read_label">Marca com a llegit</string>
@@ -211,7 +211,7 @@
     <item quantity="one">%d episodi retirat de la cua.</item>
     <item quantity="other">%d episodis retirats de la cua.</item>
   </plurals>
-  <string name="add_to_favorite_label">Afegit a preferits</string>
+  <string name="add_to_favorite_label">Afegir a preferits</string>
   <string name="remove_from_favorite_label">Suprimeix de preferits</string>
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
@@ -352,7 +352,7 @@
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
-  <string name="pref_smart_mark_as_played_sum">Marca episodis com com reproduits, encara que quedi menys d\'una certa quantitat de segons de temps</string>
+  <string name="pref_smart_mark_as_played_sum">Marca episodis com reproduïts, encara que quedi menys d\'una certa quantitat de segons de temps per escoltar</string>
   <string name="pref_smart_mark_as_played_title">Marca intel·ligent com a reproduït</string>
   <string name="pref_skip_keeps_episodes_sum">Mantenir episodis quan són passats de llarg</string>
   <string name="pref_skip_keeps_episodes_title">Mantenir els episodis passats de llarg</string>
@@ -440,7 +440,7 @@
   <string name="pref_lockscreen_background_title">Estableix el fons del bloqueig de pantalla</string>
   <string name="pref_lockscreen_background_sum">Estableix el fons del bloqueig de pantalla a la imatge de l\'episodi actual. Com a efecte secundari, això també mostrarà la imatge en aplicacions de tercers.</string>
   <string name="pref_enqueue_location_title">Posició d\'entrada en cola</string>
-  <string name="pref_enqueue_location_sum">Afegit episodis a: %1$s</string>
+  <string name="pref_enqueue_location_sum">Afegir episodis a: %1$s</string>
   <string name="enqueue_location_back">Final</string>
   <string name="enqueue_location_front">Principi</string>
   <string name="enqueue_location_after_current">Després de l\'episodi actual</string>
@@ -660,24 +660,24 @@
   <string name="discover_powered_by_itunes">Suggeriments d\'iTunes</string>
   <string name="search_powered_by">Resultats per %1$s</string>
   <!--Local feeds-->
-  <string name="add_local_folder">Afegeix carpeta local</string>
+  <string name="add_local_folder">Afegir carpeta local</string>
   <string name="local_folder">Carpeta local</string>
   <string name="reconnect_local_folder">Torna a connectar la carpeta local</string>
   <string name="reconnect_local_folder_warning">En cas de denegació de permisos, pots utilitzar-ho per tornar a connectar a la mateixa carpeta. No seleccionis cap altra carpeta.</string>
   <string name="local_feed_description">Aquest podcast virtual es va crear afegint una carpeta a AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">No es pot iniciar el gestor de fitxers del sistema</string>
   <string name="filter">Filtra</string>
-  <string name="hide_is_favorite_label">És preferint</string>
+  <string name="hide_is_favorite_label">És favorit</string>
   <string name="not_favorite">No és favorit</string>
   <string name="hide_downloaded_episodes_label">Baixat</string>
   <string name="hide_not_downloaded_episodes_label">No baixat</string>
   <string name="queued_label">En cua</string>
   <string name="not_queued_label">No encuat</string>
   <string name="has_media">Té mitjans</string>
-  <string name="no_media">No hi ha multimèdia</string>
+  <string name="no_media">No te multimèdia</string>
   <string name="hide_paused_episodes_label">Pausat</string>
   <string name="not_paused">No pausat</string>
-  <string name="hide_played_episodes_label">Reproduit</string>
+  <string name="hide_played_episodes_label">Reproduït</string>
   <string name="not_played">No reproduït</string>
   <!--Sort-->
   <string name="sort_title_a_z">Títol (A \u2192 Z)</string>

@@ -172,6 +172,8 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">%d Abonnement aktualisiert.</item>
     <item quantity="other">%d Abonnemnts aktualisiert.</item>
   </plurals>
+  <string name="edit_tags">Tags bearbeiten</string>
+  <string name="rename_tag_label">Tag umbenennen</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <plurals name="downloading_batch_label">
@@ -631,6 +633,8 @@ Tippen, um Details anzuzeigen.</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
+  <string name="feed_tags_label">Tags</string>
+  <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
   <string name="feed_folders_include_root">In Hauptliste anzeigen</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>

@@ -25,7 +25,7 @@
   <string name="episode_cache_full_message">Episodcachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
   <string name="playback_statistics_label">Uppspelning</string>
   <string name="download_statistics_label">Nedladdningar</string>
-  <string name="notification_pref_fragment">Notifieringar</string>
+  <string name="notification_pref_fragment">Aviseringar</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" hittades inte</string>
   <!--SwipeActions-->
@@ -36,7 +36,7 @@
   <string name="enable_swipeactions">Aktivera svepåtgärder för denna skärm</string>
   <string name="change_setting">Ändra</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
+  <string name="total_time_listened_to_podcasts">Total spelad tid:</string>
   <string name="statistics_mode">Statistikläge</string>
   <string name="statistics_mode_normal">Beräkna faktisk speltid. Att spela två gånger räknas två gånger, men att markera som spelad räknas inte</string>
   <string name="statistics_mode_count_all">Summera alla episoder som är markerade som spelade</string>
@@ -50,7 +50,7 @@
   <string name="drawer_open">Öppna meny</string>
   <string name="drawer_close">Stäng meny</string>
   <string name="drawer_preferences">Menyinställningar</string>
-  <string name="drawer_feed_order_unplayed_episodes">Sortera efter räknare</string>
+  <string name="drawer_feed_order_unplayed_episodes">Sortera efter antal ospelade</string>
   <string name="drawer_feed_order_alphabetical">Sortera alfabetiskt</string>
   <string name="drawer_feed_order_last_update">Sortera efter publiceringsdatum</string>
   <string name="drawer_feed_order_most_played">Sortera efter antal spelade episoder</string>
@@ -153,7 +153,7 @@
   <string name="share_label_with_ellipses">Dela...</string>
   <string name="share_file_label">Dela fil</string>
   <string name="share_website_url_label">Webbsideadress</string>
-  <string name="share_feed_url_label">Podcasflödes URL</string>
+  <string name="share_feed_url_label">Podcastflödes URL</string>
   <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort podcast \"%1$s\" och ALLA dess episoder (inklusive nedladdade episoder).</string>
   <string name="feed_delete_confirmation_msg_batch">Bekräfta att du vill ta bort valda podcasts och ALLA deras episoder (inklusive nedladdade episoder).</string>
   <string name="feed_delete_confirmation_local_msg">Bekräfta att du vill ta bort alla podcasts \"%1$s\". Filerna i den lokala källkatalogen kommer inte att raderas.</string>
@@ -387,7 +387,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar eller Bluetooth kopplas bort</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Hörlurar återanslutna</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth återansluts</string>
-  <string name="pref_stream_over_download_title">Föredra Strömmning</string>
+  <string name="pref_stream_over_download_title">Föredra strömmning</string>
   <string name="pref_stream_over_download_sum">Visa strömningsknappen istället för nedlanningsknappen i listor.</string>
   <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
   <string name="pref_mobileUpdate_sum">Välj vad som ska tillåtas över mobila dataanslutningar</string>
@@ -452,11 +452,11 @@
   <string name="pref_fast_forward_sum">Anpassa antalet sekunder att hoppa framåt när snabbspolningsknappen används</string>
   <string name="pref_rewind">Snabbspolningslängd bakåt</string>
   <string name="pref_rewind_sum">Anpassa antalet sekunder att hoppa bakåt när snabbspolningsknappen bakåt används</string>
-  <string name="pref_expandNotify_title">Hög notifieringsprioritet</string>
+  <string name="pref_expandNotify_title">Hög aviseringsprioritet</string>
   <string name="pref_expandNotify_sum">Detta expanderar oftast notifieringen och visar uppspelningskontroller.</string>
   <string name="pref_persistNotify_title">Bestående uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll avisering och kontroller på låsskärmen när uppspelningen pausas.</string>
-  <string name="pref_compact_notification_buttons_title">Kompakta Notifieringsknappar</string>
+  <string name="pref_compact_notification_buttons_title">Kompakta aviseringsknappar</string>
   <string name="pref_compact_notification_buttons_sum">Ändra uppspelningsknapparna när notifieringen är kollapsad. Spela/paus-knappen visas alltid.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Välj maximalt %1$d st.</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kan bara välja maximalt %1$d st.</string>
@@ -480,7 +480,7 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Använd en nätverksproxy</string>
   <string name="pref_no_browser_found">Ingen webbläsare hittades.</string>
-  <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
+  <string name="pref_enqueue_downloaded_title">Köa nedladdad</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <string name="media_player_builtin">Androids inbyggda spelare (föråldrad)</string>
   <string name="media_player_sonic">Sonic Mediaspelare (föråldrad)</string>
@@ -626,7 +626,7 @@
   <string name="gpodnetsync_pref_report_failed">Misslyckades</string>
   <string name="gpodnetsync_username_characters_error">Användarnamn får bara innehålla bokstäver, siffror, bindesstreck och understreck.</string>
   <!--Directory chooser-->
-  <string name="choose_data_directory">Välj Datakatalog</string>
+  <string name="choose_data_directory">Välj katalog</string>
   <string name="choose_data_directory_message">Välj rotkatalogen för din data. AntennaPod skapar de underkataloger som behövs.</string>
   <string name="choose_data_directory_available_space">%1$s av %2$s ledigt</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa uppspelning istället för att sänka volymen när en annan app vill spela ljud</string>
@@ -771,7 +771,7 @@
   <string name="notification_channel_downloading">Laddar ner</string>
   <string name="notification_channel_downloading_description">Visas under tiden som nedladdning pågår.</string>
   <string name="notification_channel_playing">Uppspelning pågår</string>
-  <string name="notification_channel_playing_description">Medger kontroll över uppspelning. Detta är huvudnotifieringen som du ser när en podcast spelas.</string>
+  <string name="notification_channel_playing_description">Tillåt kontroll över uppspelning. Detta är huvudaviseringen som du ser när en podcast spelas.</string>
   <string name="notification_channel_download_error">Nedladdning misslyckads</string>
   <string name="notification_channel_download_error_description">Visas när nedladdning eller flödesuppdatering misslyckas.</string>
   <string name="notification_channel_sync_error">Synkronisering misslyckades</string>
