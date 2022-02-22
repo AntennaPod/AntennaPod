@@ -52,10 +52,10 @@
     </item>
 
     <item
-            android:id="@+id/player_go_to_picture_in_picture"
-            custom:showAsAction="collapseActionView"
-            android:title="@string/player_go_to_picture_in_picture"
-            android:visible="false">
+        android:id="@+id/player_switch_to_audio_only"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/player_switch_to_audio_only"
+        android:visible="false">
     </item>
 
     <item

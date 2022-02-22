@@ -87,7 +87,6 @@ public class UserPreferences {
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
-    public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
@@ -846,15 +845,6 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
-        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
-            case "stop": return VideoBackgroundBehavior.STOP;
-            case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
-            case "pip": //Deliberate fall-through
-            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
-        }
-    }
-
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
         if (!isEnableAutodownload()) {
             return new APNullCleanupAlgorithm();
@@ -971,10 +961,6 @@ public class UserPreferences {
      */
     public static boolean isCastEnabled() {
         return prefs.getBoolean(PREF_CAST_ENABLED, false);
-    }
-
-    public enum VideoBackgroundBehavior {
-        STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
     }
 
     public enum BackButtonBehavior {

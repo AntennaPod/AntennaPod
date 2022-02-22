@@ -247,28 +247,6 @@
         <item>@string/skip_episode_label</item>
     </string-array>
 
-    <string-array name="video_background_behavior_options">
-        <item>@string/stop_playback</item>
-        <item>@string/player_go_to_picture_in_picture</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values">
-        <item>stop</item>
-        <item>pip</item>
-        <item>continue</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_options_without_pip">
-        <item>@string/stop_playback</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values_without_pip">
-        <item>stop</item>
-        <item>continue</item>
-    </string-array>
-
     <string-array name="back_button_behavior_options">
         <item>@string/back_button_default</item>
         <item>@string/back_button_go_to_page</item>

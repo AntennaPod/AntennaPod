@@ -304,7 +304,6 @@
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translatable="false">00:00:00</string>
-    <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
     <string name="error_file_not_found">File not found</string>
     <string name="no_media_label">Item does not contain a media file</string>
@@ -513,10 +512,6 @@
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
-    <string name="pref_videoBehavior_title">Upon exiting video</string>
-    <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
-    <string name="stop_playback">Stop playback</string>
-    <string name="continue_playback">Continue audio playback</string>
     <string name="behavior">Behavior</string>
     <string name="pref_back_button_behavior_title">Back Button Behavior</string>
     <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
@@ -794,6 +789,7 @@
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
     <string name="exoplayer_only">ExoPlayer only</string>
+    <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->
     <string name="proxy_type_label">Type</string>
