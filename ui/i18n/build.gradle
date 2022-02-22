@@ -1,0 +1,15 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    lintOptions {
+        disable "Typos", "ExtraTranslation", "ImpliedQuantity",
+                "PluralsCandidate", "UnusedQuantity", "TypographyEllipsis"
+    }
+}
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+}
