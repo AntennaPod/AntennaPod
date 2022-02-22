@@ -771,6 +771,33 @@ public final class DBReader {
         }
     }
 
+    public static class MonthlyStatisticsItem {
+        public int year = 0;
+        public int month = 0;
+        public long timePlayed = 0;
+    }
+
+    @NonNull
+    public static List<MonthlyStatisticsItem> getMonthlyTimeStatistics() {
+        List<MonthlyStatisticsItem> months = new ArrayList<>();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getMonthlyStatisticsCursor()) {
+            int indexMonth = cursor.getColumnIndexOrThrow("month");
+            int indexYear = cursor.getColumnIndexOrThrow("year");
+            int indexTotalDuration = cursor.getColumnIndexOrThrow("total_duration");
+            while (cursor.moveToNext()) {
+                MonthlyStatisticsItem item = new MonthlyStatisticsItem();
+                item.month = Integer.parseInt(cursor.getString(indexMonth));
+                item.year = Integer.parseInt(cursor.getString(indexYear));
+                item.timePlayed = cursor.getLong(indexTotalDuration);
+                months.add(item);
+            }
+        }
+        adapter.close();
+        return months;
+    }
+
     public static class StatisticsResult {
         public List<StatisticsItem> feedTime = new ArrayList<>();
         public long oldestDate = System.currentTimeMillis();

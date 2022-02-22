@@ -43,8 +43,8 @@ import java.util.Locale;
 /**
  * Displays the 'playback statistics' screen
  */
-public class PlaybackStatisticsFragment extends Fragment {
-    private static final String TAG = PlaybackStatisticsFragment.class.getSimpleName();
+public class SubscriptionStatisticsFragment extends Fragment {
+    private static final String TAG = SubscriptionStatisticsFragment.class.getSimpleName();
     private static final String PREF_NAME = "StatisticsActivityPrefs";
     private static final String PREF_INCLUDE_MARKED_PLAYED = "countAll";
     private static final String PREF_FILTER_FROM = "filterFrom";

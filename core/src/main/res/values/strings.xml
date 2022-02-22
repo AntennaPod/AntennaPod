@@ -28,8 +28,7 @@
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
-    <string name="playback_statistics_label">Playback</string>
-    <string name="download_statistics_label">Downloads</string>
+    <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
 
     <!-- Google Assistant -->
