@@ -15,8 +15,6 @@ import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
  * Use the newInstance method of this class to create a new TagFragment.
  */
 public class TagFragment extends PodcastListFragment {
-
-    private static final String TAG = "TagFragment";
     private static final int PODCAST_COUNT = 50;
 
     private GpodnetTag tag;

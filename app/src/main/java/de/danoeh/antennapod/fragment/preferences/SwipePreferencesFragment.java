@@ -11,8 +11,6 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 public class SwipePreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SWIPE_FEED = "prefSwipeFeed";
     private static final String PREF_SWIPE_QUEUE = "prefSwipeQueue";
-    //private static final String PREF_SWIPE_INBOX = "prefSwipeInbox";
-    //private static final String PREF_SWIPE_EPISODES = "prefSwipeEpisodes";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

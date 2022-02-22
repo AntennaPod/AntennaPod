@@ -82,7 +82,6 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
-import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -1663,21 +1662,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.setStartWhenPrepared(s);
     }
 
-
     public void seekTo(final int t) {
         mediaPlayer.seekTo(t);
     }
 
-
     private void seekDelta(final int d) {
         mediaPlayer.seekDelta(d);
-    }
-
-    /**
-     * Seek to the start of the specified chapter.
-     */
-    public void seekToChapter(Chapter c) {
-        seekTo((int) c.getStart());
     }
 
     /**
@@ -1792,7 +1782,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
-            List<FeedItem> results = FeedSearcher.searchFeedItems(getBaseContext(), query, 0);
+            List<FeedItem> results = FeedSearcher.searchFeedItems(query, 0);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 startPlaying(media, false);

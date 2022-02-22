@@ -8,7 +8,6 @@ import org.xml.sax.Attributes;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class DublinCore extends Namespace {
-    private static final String TAG = "NSDublinCore";
     public static final String NSTAG = "dc";
     public static final String NSURI = "http://purl.org/dc/elements/1.1/";
 

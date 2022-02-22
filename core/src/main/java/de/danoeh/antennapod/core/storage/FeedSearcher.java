@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -19,9 +18,9 @@ public class FeedSearcher {
     }
 
     @NonNull
-    public static List<FeedItem> searchFeedItems(final Context context, final String query, final long selectedFeed) {
+    public static List<FeedItem> searchFeedItems(final String query, final long selectedFeed) {
         try {
-            FutureTask<List<FeedItem>> itemSearchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
+            FutureTask<List<FeedItem>> itemSearchTask = DBTasks.searchFeedItems(selectedFeed, query);
             itemSearchTask.run();
             return itemSearchTask.get();
         } catch (ExecutionException | InterruptedException e) {
@@ -31,9 +30,9 @@ public class FeedSearcher {
     }
 
     @NonNull
-    public static List<Feed> searchFeeds(final Context context, final String query) {
+    public static List<Feed> searchFeeds(final String query) {
         try {
-            FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
+            FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(query);
             feedSearchTask.run();
             return feedSearchTask.get();
         } catch (ExecutionException | InterruptedException e) {

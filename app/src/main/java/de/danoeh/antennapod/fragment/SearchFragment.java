@@ -335,8 +335,8 @@ public class SearchFragment extends Fragment {
             return new Pair<>(Collections.emptyList(), Collections.emptyList());
         }
         long feed = getArguments().getLong(ARG_FEED);
-        List<FeedItem> items = FeedSearcher.searchFeedItems(getContext(), query, feed);
-        List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
+        List<FeedItem> items = FeedSearcher.searchFeedItems(query, feed);
+        List<Feed> feeds = FeedSearcher.searchFeeds(query);
         return new Pair<>(items, feeds);
     }
     
