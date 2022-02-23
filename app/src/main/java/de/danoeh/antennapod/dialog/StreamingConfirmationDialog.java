@@ -33,7 +33,6 @@ public class StreamingConfirmationDialog {
         new PlaybackServiceStarter(context, playable)
                 .callEvenIfRunning(true)
                 .startWhenPrepared(true)
-                .shouldStream(true)
                 .shouldStreamThisTime(true)
                 .start();
     }

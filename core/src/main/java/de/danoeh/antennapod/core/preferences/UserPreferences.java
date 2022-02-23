@@ -611,27 +611,22 @@ public class UserPreferences {
     public static void setProxyConfig(ProxyConfig config) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_PROXY_TYPE, config.type.name());
-        Proxy.Type type = Proxy.Type.valueOf(config.type.name());
-        if (type == Proxy.Type.DIRECT) {
-            editor.apply();
-            return;
-        }
-        if(TextUtils.isEmpty(config.host)) {
+        if (TextUtils.isEmpty(config.host)) {
             editor.remove(PREF_PROXY_HOST);
         } else {
             editor.putString(PREF_PROXY_HOST, config.host);
         }
-        if(config.port <= 0 || config.port > 65535) {
+        if (config.port <= 0 || config.port > 65535) {
             editor.remove(PREF_PROXY_PORT);
         } else {
             editor.putInt(PREF_PROXY_PORT, config.port);
         }
-        if(TextUtils.isEmpty(config.username)) {
+        if (TextUtils.isEmpty(config.username)) {
             editor.remove(PREF_PROXY_USER);
         } else {
             editor.putString(PREF_PROXY_USER, config.username);
         }
-        if(TextUtils.isEmpty(config.password)) {
+        if (TextUtils.isEmpty(config.password)) {
             editor.remove(PREF_PROXY_PASSWORD);
         } else {
             editor.putString(PREF_PROXY_PASSWORD, config.password);

@@ -135,7 +135,6 @@ public class ChapterUtils {
     }
 
     public static List<Chapter> loadChaptersFromUrl(String url) {
-        List<Chapter> chapters;
         Request request = new Request.Builder().url(url).build();
         try {
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
@@ -145,6 +144,7 @@ public class ChapterUtils {
                 }
                 return PodcastIndexChapter.parseChapters(response.body().string());
             }
+            return PodcastIndexChapter.parseChapters(response.body().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

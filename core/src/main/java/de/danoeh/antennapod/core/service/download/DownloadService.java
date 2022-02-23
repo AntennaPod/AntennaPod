@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -88,18 +87,11 @@ public class DownloadService extends Service {
     private ScheduledFuture<?> downloadPostFuture;
     private final ScheduledThreadPoolExecutor notificationUpdateExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
-    private final IBinder binder = new LocalBinder();
     private ConnectionStateMonitor connectionMonitor;
-
-    private class LocalBinder extends Binder {
-        public DownloadService getService() {
-            return DownloadService.this;
-        }
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return binder;
+        return null;
     }
 
     public DownloadService() {
@@ -264,9 +256,9 @@ public class DownloadService extends Service {
 
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
         cancelNotificationUpdater();
-        downloadHandleExecutor.shutdown();
-        downloadEnqueueExecutor.shutdown();
-        notificationUpdateExecutor.shutdown();
+        downloadEnqueueExecutor.shutdownNow();
+        downloadHandleExecutor.shutdownNow();
+        notificationUpdateExecutor.shutdownNow();
         if (downloadPostFuture != null) {
             downloadPostFuture.cancel(true);
         }
@@ -401,6 +393,9 @@ public class DownloadService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "cancelDownloadReceiver: " + intent.getAction());
+            if (!isRunning) {
+                return;
+            }
             if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
                 if (url == null) {
