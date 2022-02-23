@@ -79,7 +79,6 @@ public class ChapterUtils {
 
         List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
         List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
-        // Very slight preference to PodcastIndex chapters if the length is the same
         List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
         if (chapters == null) {
             // Do not try loading again. There are no chapters.
@@ -140,16 +139,16 @@ public class ChapterUtils {
         Request request = new Request.Builder().url(url).build();
         try {
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-            if (response.body() == null) {
-                return null;
+            if (response.isSuccessful()) {
+                if (response.body() == null) {
+                    return null;
+                }
+                return PodcastIndexChapter.parseChapters(response.body().string());
             }
-            chapters = PodcastIndexChapter.parseChapters(response.body().toString());
-            return chapters;
         } catch (IOException e) {
-            Log.d(TAG, "error loading data from " + url);
-        } finally {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
     @NonNull

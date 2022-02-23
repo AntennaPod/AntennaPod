@@ -56,12 +56,11 @@ public class PodcastIndexChapter extends Chapter {
                     chapters = new ArrayList<>();
                 }
                 chapters.add(chapter);
-                return chapters;
             }
+            return chapters;
         } catch (JSONException e) {
-            Log.d(TAG, "Error loading Chapter" + e.toString());
-        } finally {
-            return null; 
+            e.printStackTrace();
         }
+        return null;
     }
 }
