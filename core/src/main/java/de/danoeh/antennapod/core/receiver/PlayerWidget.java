@@ -9,7 +9,7 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-import de.danoeh.antennapod.core.widget.WidgetUpdaterJobService;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
@@ -25,7 +25,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
-        WidgetUpdaterJobService.performBackgroundUpdate(context);
+        WidgetUpdaterWorker.enqueueWork(context);
     }
 
     @Override
@@ -33,14 +33,14 @@ public class PlayerWidget extends AppWidgetProvider {
         super.onEnabled(context);
         Log.d(TAG, "Widget enabled");
         setEnabled(context, true);
-        WidgetUpdaterJobService.performBackgroundUpdate(context);
+        WidgetUpdaterWorker.enqueueWork(context);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(TAG, "onUpdate() called with: " + "context = [" + context + "], appWidgetManager = ["
                 + appWidgetManager + "], appWidgetIds = [" + Arrays.toString(appWidgetIds) + "]");
-        WidgetUpdaterJobService.performBackgroundUpdate(context);
+        WidgetUpdaterWorker.enqueueWork(context);
     }
 
     @Override
