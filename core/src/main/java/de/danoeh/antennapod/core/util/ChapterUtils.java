@@ -144,7 +144,6 @@ public class ChapterUtils {
                 }
                 return PodcastIndexChapter.parseChapters(response.body().string());
             }
-            return PodcastIndexChapter.parseChapters(response.body().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
