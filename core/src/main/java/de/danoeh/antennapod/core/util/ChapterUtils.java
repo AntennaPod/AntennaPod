@@ -143,8 +143,7 @@ public class ChapterUtils {
             if (response.body() == null) {
                 return null;
             }
-            chapters = PodcastIndexChapter.parseChapters(response.body().toString());
-            return chapters;
+            return PodcastIndexChapter.parseChapters(response.body().toString());
         } catch (IOException e) {
             Log.d(TAG, "error loading data from " + url);
         } finally {
