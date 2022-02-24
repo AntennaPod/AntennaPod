@@ -19,6 +19,7 @@ import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentChapterReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
@@ -135,9 +136,13 @@ public class ChapterUtils {
     }
 
     public static List<Chapter> loadChaptersFromUrl(String url) {
-        Request request = new Request.Builder().url(url).build();
         try {
+            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (!response.isSuccessful()) {
+                request = new Request.Builder().url(url).build();
+                response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            }
             if (response.isSuccessful()) {
                 if (response.body() == null) {
                     return null;
