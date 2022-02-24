@@ -12,4 +12,6 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
+    testImplementation "junit:junit:$junitVersion"
 }

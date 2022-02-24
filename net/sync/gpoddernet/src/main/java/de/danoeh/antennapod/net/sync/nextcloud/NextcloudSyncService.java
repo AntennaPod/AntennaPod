@@ -28,9 +28,7 @@ import java.util.List;
 public class NextcloudSyncService implements ISyncService {
     private static final int UPLOAD_BULK_SIZE = 30;
     private final OkHttpClient httpClient;
-    private final String baseScheme;
-    private final int basePort;
-    private final String baseHost;
+    private final HostnameParser hostname;
     private final String username;
     private final String password;
 
@@ -39,10 +37,7 @@ public class NextcloudSyncService implements ISyncService {
         this.httpClient = httpClient;
         this.username = username;
         this.password = password;
-        HostnameParser hostname = new HostnameParser(baseHosturl);
-        this.baseHost = hostname.host;
-        this.basePort = hostname.port;
-        this.baseScheme = hostname.scheme;
+        this.hostname = new HostnameParser(baseHosturl);
     }
 
     @Override
@@ -150,10 +145,10 @@ public class NextcloudSyncService implements ISyncService {
 
     private HttpUrl.Builder makeUrl(String path) {
         return new HttpUrl.Builder()
-                .scheme(baseScheme)
-                .host(baseHost)
-                .port(basePort)
-                .addPathSegments(path);
+                .scheme(hostname.scheme)
+                .host(hostname.host)
+                .port(hostname.port)
+                .addPathSegments(hostname.subfolder + path);
     }
 
     @Override
