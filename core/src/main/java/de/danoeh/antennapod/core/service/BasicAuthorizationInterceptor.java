@@ -59,14 +59,15 @@ public class BasicAuthorizationInterceptor implements Interceptor {
             return response;
         }
 
-        String[] parts = userInfo.split(":");
-        if (parts.length != 2) {
+        if (!userInfo.contains(":")) {
             Log.d(TAG, "Invalid credentials for '" + request.url() + "'");
             return response;
         }
+        String username = userInfo.substring(0, userInfo.indexOf(':'));
+        String password = userInfo.substring(userInfo.indexOf(':') + 1);
 
         Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
-        String credentials = HttpDownloader.encodeCredentials(parts[0], parts[1], "ISO-8859-1");
+        String credentials = HttpDownloader.encodeCredentials(username, password, "ISO-8859-1");
         newRequest.header(HEADER_AUTHORIZATION, credentials);
         response = chain.proceed(newRequest.build());
 
@@ -75,7 +76,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         }
 
         Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoded credentials");
-        credentials = HttpDownloader.encodeCredentials(parts[0], parts[1], "UTF-8");
+        credentials = HttpDownloader.encodeCredentials(username, password, "UTF-8");
         newRequest.header(HEADER_AUTHORIZATION, credentials);
         return chain.proceed(newRequest.build());
     }
