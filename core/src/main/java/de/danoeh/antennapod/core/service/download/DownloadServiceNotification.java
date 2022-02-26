@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -117,7 +118,7 @@ public class DownloadServiceNotification {
                 continue;
             }
             sb.append("• ").append(statuses.get(i).getTitle());
-            sb.append(": ").append(statuses.get(i).getReason().getErrorString(context));
+            sb.append(": ").append(DownloadErrorLabel.from(statuses.get(i).getReason()));
             if (i != statuses.size() - 1) {
                 sb.append("\n");
             }
