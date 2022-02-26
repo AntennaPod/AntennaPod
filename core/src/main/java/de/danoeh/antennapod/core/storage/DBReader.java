@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.danoeh.antennapod.core.storage.mapper.DownloadStatusCursorMapper;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -451,7 +452,7 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatus.fromCursor(cursor));
+                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
@@ -475,7 +476,7 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatus.fromCursor(cursor));
+                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
