@@ -5,7 +5,7 @@ android {
         minSdk 19
         targetSdk 30
 
-        multiDexEnabled false
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
 
@@ -18,12 +18,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
         }
         debug {
-            // debug build has method count over 64k single-dex threshold.
-            // For building debug build to use on Android < 21 (pre-Android 5) devices,
-            // you need to manually change class
-            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication .
-            // See Issue #2813
-            multiDexEnabled true
         }
     }
 
