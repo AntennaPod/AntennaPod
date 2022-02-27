@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.ui.statistics.R;
+import de.danoeh.antennapod.ui.statistics.StatisticsColorScheme;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,8 +24,8 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     final Context context;
-    private List<DBReader.MonthlyStatisticsItem> statisticsData = new ArrayList<>();
-    LineChartView.LineChartData lineChartData;
+    private final List<DBReader.MonthlyStatisticsItem> statisticsData = new ArrayList<>();
+    BarChartView.BarChartData barChartData;
 
     public YearStatisticsListAdapter(Context context) {
         this.context = context;
@@ -54,13 +55,15 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
             HeaderHolder holder = (HeaderHolder) h;
-            holder.lineChart.setData(lineChartData);
+            holder.lineChart.setData(barChartData);
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.MonthlyStatisticsItem statsItem = statisticsData.get(position - 1);
             holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.year));
             holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.timePlayed / 3600000.0f)
                     + context.getString(R.string.time_hours));
+            holder.chip.setTextColor(StatisticsColorScheme.COLOR_VALUES[
+                    (getItemCount() - position - 1) % StatisticsColorScheme.COLOR_VALUES.length]);
         }
     }
 
@@ -94,12 +97,12 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
         yearAggregate.timePlayed = yearSum;
         statisticsData.add(yearAggregate);
         Collections.reverse(statisticsData);
-        lineChartData = new LineChartView.LineChartData(lineChartValues.toArray(), lineChartHorizontalLines.toArray());
+        barChartData = new BarChartView.BarChartData(lineChartValues.toArray(), lineChartHorizontalLines.toArray());
         notifyDataSetChanged();
     }
 
     static class HeaderHolder extends RecyclerView.ViewHolder {
-        LineChartView lineChart;
+        BarChartView lineChart;
 
         HeaderHolder(View itemView) {
             super(itemView);
@@ -110,11 +113,13 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     static class StatisticsHolder extends RecyclerView.ViewHolder {
         TextView year;
         TextView hours;
+        TextView chip;
 
         StatisticsHolder(View itemView) {
             super(itemView);
             year = itemView.findViewById(R.id.yearLabel);
             hours = itemView.findViewById(R.id.hoursLabel);
+            chip = itemView.findViewById(R.id.chip);
         }
     }
 }
