@@ -30,6 +30,7 @@ dependencies {
     implementation project(':parser:media')
     implementation project(':playback:base')
     implementation project(':playback:cast')
+    implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:i18n')

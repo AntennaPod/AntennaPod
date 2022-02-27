@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -141,11 +142,6 @@ public class UserPreferences {
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
-    public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
-    public static final int FEED_COUNTER_SHOW_NEW = 1;
-    public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
-    public static final int FEED_COUNTER_SHOW_NONE = 3;
-    public static final int FEED_COUNTER_SHOW_DOWNLOADED = 4;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -247,9 +243,9 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static int getFeedCounterSetting() {
-        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FEED_COUNTER_SHOW_NEW);
-        return Integer.parseInt(value);
+    public static FeedCounter getFeedCounterSetting() {
+        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FeedCounter.SHOW_NEW.id);
+        return FeedCounter.fromOrdinal(Integer.parseInt(value));
     }
 
     /**

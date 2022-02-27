@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.danoeh.antennapod.core.storage.mapper.DownloadStatusCursorMapper;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -24,13 +23,15 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.mapper.ChapterCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedItemCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedMediaCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedPreferencesCursorMapper;
-import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.storage.database.mapper.DownloadStatusCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.ChapterCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedItemCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedMediaCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedPreferencesCursorMapper;
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -877,7 +878,7 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        final LongIntMap feedCounters = adapter.getFeedCounters();
+        final LongIntMap feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 

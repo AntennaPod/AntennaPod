@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.model.download.DownloadError;
 
 /**
  * Provides user-visible labels for download errors.

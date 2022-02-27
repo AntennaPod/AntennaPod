@@ -1,9 +1,9 @@
-package de.danoeh.antennapod.core.storage.mapper;
+package de.danoeh.antennapod.storage.database.mapper;
 
 import android.database.Cursor;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 import java.util.Date;
 

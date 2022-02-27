@@ -8,6 +8,7 @@ import android.os.ParcelFileDescriptor;
 import android.text.format.Formatter;
 import android.util.Log;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 

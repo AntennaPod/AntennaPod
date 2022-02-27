@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
