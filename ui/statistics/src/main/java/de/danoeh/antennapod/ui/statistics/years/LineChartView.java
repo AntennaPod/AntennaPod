@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.ui.statistics.years;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,8 +15,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.ThemeUtils;
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.statistics.R;
 import io.reactivex.annotations.Nullable;
 
 public class LineChartView extends AppCompatImageView {
@@ -82,7 +82,7 @@ public class LineChartView extends AppCompatImageView {
             paintLine.setStyle(Paint.Style.STROKE);
             paintLine.setStrokeJoin(Paint.Join.ROUND);
             paintLine.setStrokeCap(Paint.Cap.ROUND);
-            paintLine.setColor(ThemeUtils.getThemeAttrColor(getContext(), R.attr.colorAccent));
+            paintLine.setColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorAccent));
             paintBackground = new Paint();
             paintBackground.setStyle(Paint.Style.FILL);
             paintVerticalLines = new Paint();
@@ -117,7 +117,7 @@ public class LineChartView extends AppCompatImageView {
             path.lineTo(data.values.length * stepSize, height);
             path.lineTo(stepSize, height);
             paintBackground.setShader(new LinearGradient(0, 0, 0, height,
-                    (ThemeUtils.getThemeAttrColor(getContext(), R.attr.colorAccent) & 0xffffff) + 0x66000000,
+                    (ThemeUtils.getColorFromAttr(getContext(), R.attr.colorAccent) & 0xffffff) + 0x66000000,
                     Color.TRANSPARENT, Shader.TileMode.CLAMP));
             canvas.drawPath(path, paintBackground);
         }

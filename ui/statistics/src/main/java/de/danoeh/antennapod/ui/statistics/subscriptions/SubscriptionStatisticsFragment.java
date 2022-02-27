@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.ui.statistics.subscriptions;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,12 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.PlaybackStatisticsListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.databinding.StatisticsFilterDialogBinding;
+import de.danoeh.antennapod.ui.statistics.R;
+import de.danoeh.antennapod.ui.statistics.databinding.StatisticsFilterDialogBinding;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -74,7 +73,7 @@ public class SubscriptionStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.statistics_activity, container, false);
+        View root = inflater.inflate(R.layout.statistics_fragment, container, false);
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
         listAdapter = new PlaybackStatisticsListAdapter(this);

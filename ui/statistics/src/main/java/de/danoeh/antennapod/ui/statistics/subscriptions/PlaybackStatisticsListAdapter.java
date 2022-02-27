@@ -1,11 +1,12 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.statistics.subscriptions;
 
 import androidx.fragment.app.Fragment;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.fragment.FeedStatisticsDialogFragment;
-import de.danoeh.antennapod.view.PieChartView;
+import de.danoeh.antennapod.ui.statistics.PieChartView;
+import de.danoeh.antennapod.ui.statistics.R;
+import de.danoeh.antennapod.ui.statistics.StatisticsListAdapter;
+import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +35,7 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    String getHeaderCaption() {
+    protected String getHeaderCaption() {
         if (includeMarkedAsPlayed) {
             return context.getString(R.string.statistics_counting_total);
         }
@@ -45,12 +46,12 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    String getHeaderValue() {
+    protected String getHeaderValue() {
         return Converter.shortLocalizedDuration(context, (long) pieChartData.getSum());
     }
 
     @Override
-    PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
+    protected PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
         float[] dataValues = new float[statisticsData.size()];
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
@@ -60,7 +61,7 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
+    protected void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
         long time = statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 

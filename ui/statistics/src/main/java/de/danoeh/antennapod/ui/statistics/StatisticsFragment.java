@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.ui.statistics;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,10 +13,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.fragment.PagedToolbarFragment;
+import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
+import de.danoeh.antennapod.ui.statistics.downloads.DownloadStatisticsFragment;
+import de.danoeh.antennapod.ui.statistics.subscriptions.SubscriptionStatisticsFragment;
+import de.danoeh.antennapod.ui.statistics.years.YearsStatisticsFragment;
 
 /**
  * Displays the 'statistics' screen
@@ -66,14 +66,6 @@ public class StatisticsFragment extends PagedToolbarFragment {
             }
         }).attach();
         return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity().getClass() == PreferenceActivity.class) {
-            ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
-        }
     }
 
     public static class StatisticsPagerAdapter extends FragmentStateAdapter {

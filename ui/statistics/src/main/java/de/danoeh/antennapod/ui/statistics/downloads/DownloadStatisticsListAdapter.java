@@ -1,14 +1,14 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.statistics.downloads;
 
 import android.content.Context;
 import android.text.format.Formatter;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.ui.statistics.PieChartView;
+import de.danoeh.antennapod.ui.statistics.R;
+import de.danoeh.antennapod.ui.statistics.StatisticsListAdapter;
 
 import java.util.List;
 import java.util.Locale;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.view.PieChartView;
 
 /**
  * Adapter for the download statistics list.
@@ -20,17 +20,17 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    String getHeaderCaption() {
+    protected String getHeaderCaption() {
         return context.getString(R.string.total_size_downloaded_podcasts);
     }
 
     @Override
-    String getHeaderValue() {
+    protected String getHeaderValue() {
         return Formatter.formatShortFileSize(context, (long) pieChartData.getSum());
     }
 
     @Override
-    PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
+    protected PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
         float[] dataValues = new float[statisticsData.size()];
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
@@ -40,7 +40,7 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
+    protected void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
         holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize)
                 + " • "
                 + String.format(Locale.getDefault(), "%d%s",

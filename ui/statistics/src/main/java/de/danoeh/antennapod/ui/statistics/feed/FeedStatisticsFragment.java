@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment;
+package de.danoeh.antennapod.ui.statistics.feed;
 
 import android.os.Bundle;
 import android.text.format.Formatter;
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.databinding.FeedStatisticsBinding;
+import de.danoeh.antennapod.ui.statistics.databinding.FeedStatisticsBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.ui.statistics.downloads;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,55 +7,50 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.YearStatisticsListAdapter;
+
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.ui.statistics.R;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.Collections;
+
 /**
- * Displays the yearly statistics screen
+ * Displays the 'download statistics' screen
  */
-public class YearsStatisticsFragment extends Fragment {
-    private static final String TAG = YearsStatisticsFragment.class.getSimpleName();
+public class DownloadStatisticsFragment extends Fragment {
+    private static final String TAG = DownloadStatisticsFragment.class.getSimpleName();
 
     private Disposable disposable;
-    private RecyclerView yearStatisticsList;
+    private RecyclerView downloadStatisticsList;
     private ProgressBar progressBar;
-    private YearStatisticsListAdapter listAdapter;
+    private DownloadStatisticsListAdapter listAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.statistics_activity, container, false);
-        yearStatisticsList = root.findViewById(R.id.statistics_list);
+        View root = inflater.inflate(R.layout.statistics_fragment, container, false);
+        downloadStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
-        listAdapter = new YearStatisticsListAdapter(getContext());
-        yearStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        yearStatisticsList.setAdapter(listAdapter);
+        listAdapter = new DownloadStatisticsListAdapter(getContext());
+        downloadStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        downloadStatisticsList.setAdapter(listAdapter);
         return root;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        refreshStatistics();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null) {
-            disposable.dispose();
-        }
+        refreshDownloadStatistics();
     }
 
     @Override
@@ -65,9 +60,9 @@ public class YearsStatisticsFragment extends Fragment {
         menu.findItem(R.id.statistics_filter).setVisible(false);
     }
 
-    private void refreshStatistics() {
+    private void refreshDownloadStatistics() {
         progressBar.setVisibility(View.VISIBLE);
-        yearStatisticsList.setVisibility(View.GONE);
+        downloadStatisticsList.setVisibility(View.GONE);
         loadStatistics();
     }
 
@@ -75,13 +70,21 @@ public class YearsStatisticsFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(DBReader::getMonthlyTimeStatistics)
+
+        disposable =
+                Observable.fromCallable(() -> {
+                    // Filters do not matter here
+                    DBReader.StatisticsResult statisticsData = DBReader.getStatistics(false, 0, Long.MAX_VALUE);
+                    Collections.sort(statisticsData.feedTime, (item1, item2) ->
+                            Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
+                    return statisticsData;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    listAdapter.update(result);
+                    listAdapter.update(result.feedTime);
                     progressBar.setVisibility(View.GONE);
-                    yearStatisticsList.setVisibility(View.VISIBLE);
+                    downloadStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

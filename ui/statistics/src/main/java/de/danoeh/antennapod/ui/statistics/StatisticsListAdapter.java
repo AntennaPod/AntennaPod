@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.adapter;
+package de.danoeh.antennapod.ui.statistics;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -12,10 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.view.PieChartView;
 
 import java.util.List;
 
@@ -25,11 +23,11 @@ import java.util.List;
 public abstract class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
-    final Context context;
+    protected final Context context;
     private List<StatisticsItem> statisticsData;
-    PieChartView.PieChartData pieChartData;
+    protected PieChartView.PieChartData pieChartData;
 
-    StatisticsListAdapter(Context context) {
+    protected StatisticsListAdapter(Context context) {
         this.context = context;
     }
 
@@ -98,11 +96,11 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    static class StatisticsHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView title;
-        TextView value;
-        TextView chip;
+    public static class StatisticsHolder extends RecyclerView.ViewHolder {
+        public ImageView image;
+        public TextView title;
+        public TextView value;
+        public TextView chip;
 
         StatisticsHolder(View itemView) {
             super(itemView);
@@ -113,11 +111,11 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    abstract String getHeaderCaption();
+    protected abstract String getHeaderCaption();
 
-    abstract String getHeaderValue();
+    protected abstract String getHeaderValue();
 
-    abstract PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData);
+    protected abstract PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData);
 
-    abstract void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item);
+    protected abstract void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item);
 }
