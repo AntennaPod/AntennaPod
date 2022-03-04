@@ -118,7 +118,7 @@ public class DownloadServiceNotification {
                 continue;
             }
             sb.append("• ").append(statuses.get(i).getTitle());
-            sb.append(": ").append(DownloadErrorLabel.from(statuses.get(i).getReason()));
+            sb.append(": ").append(context.getString(DownloadErrorLabel.from(statuses.get(i).getReason())));
             if (i != statuses.size() - 1) {
                 sb.append("\n");
             }

@@ -84,8 +84,8 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
                                                 successful, reasonDetailed, request.isInitiatedByUser());
             return result;
         } else {
-            downloadStatus = new DownloadStatus(feed, feed.getTitle(), reason, successful,
-                                                reasonDetailed, request.isInitiatedByUser());
+            downloadStatus = new DownloadStatus(feed, feed.getHumanReadableIdentifier(), reason,
+                                                successful, reasonDetailed, request.isInitiatedByUser());
             return null;
         }
     }
