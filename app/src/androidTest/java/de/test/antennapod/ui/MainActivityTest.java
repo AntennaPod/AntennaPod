@@ -10,6 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.robotium.solo.Solo;
 
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.test.antennapod.EspressoTestUtils;
 
 import static androidx.test.espresso.Espresso.onView;

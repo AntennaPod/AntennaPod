@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.model.download;
 
 /** Utility class for Download Errors. */
 public enum DownloadError {

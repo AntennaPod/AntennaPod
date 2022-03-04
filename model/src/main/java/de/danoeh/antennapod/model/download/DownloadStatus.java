@@ -1,11 +1,10 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapod.model.download;
 
 import androidx.annotation.NonNull;
 
 import java.util.Date;
 
 import de.danoeh.antennapod.model.feed.FeedFile;
-import de.danoeh.antennapod.core.util.DownloadError;
 
 /**
  * Contains status attributes for one download

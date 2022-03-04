@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.storage.database;
 
 
 import java.util.Arrays;

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 

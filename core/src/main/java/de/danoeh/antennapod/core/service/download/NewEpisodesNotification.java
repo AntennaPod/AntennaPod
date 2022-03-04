@@ -17,12 +17,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 public class NewEpisodesNotification {
     private static final String TAG = "NewEpisodesNotification";
@@ -36,7 +36,7 @@ public class NewEpisodesNotification {
     public void loadCountersBeforeRefresh() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        countersBefore = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW);
+        countersBefore = adapter.getFeedCounters(FeedCounter.SHOW_NEW);
         adapter.close();
     }
 
@@ -130,7 +130,7 @@ public class NewEpisodesNotification {
     private static int getNewEpisodeCount(long feedId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        int episodeCount = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW, feedId).get(feedId);
+        int episodeCount = adapter.getFeedCounters(FeedCounter.SHOW_NEW, feedId).get(feedId);
         adapter.close();
         return episodeCount;
     }

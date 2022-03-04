@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.storage.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -39,7 +39,7 @@ class DBUpgrader {
         }
         if (oldVersion <= 6) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_CHAPTER_TYPE + " INTEGER");
+                    + " ADD COLUMN type INTEGER");
         }
         if (oldVersion <= 7) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
@@ -117,7 +117,7 @@ class DBUpgrader {
                     PodDBAdapter.KEY_START,
                     PodDBAdapter.KEY_FEEDITEM,
                     PodDBAdapter.KEY_LINK,
-                    PodDBAdapter.KEY_CHAPTER_TYPE));
+                    "type"));
         }
         if (oldVersion <= 14) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS

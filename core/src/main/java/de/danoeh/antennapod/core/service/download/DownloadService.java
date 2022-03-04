@@ -20,6 +20,7 @@ import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -50,7 +51,7 @@ import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage.mapper;
+package de.danoeh.antennapod.storage.database.mapper;
 
 import android.database.Cursor;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 /**
  * Converts a {@link Cursor} to a {@link Feed} object.
