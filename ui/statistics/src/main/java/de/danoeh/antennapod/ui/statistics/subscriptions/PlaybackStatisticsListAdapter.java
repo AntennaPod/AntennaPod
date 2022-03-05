@@ -41,7 +41,8 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         String dateFrom = dateFormat.format(new Date(timeFilterFrom));
-        String dateTo = dateFormat.format(new Date(timeFilterTo));
+        // FilterTo is first day of next month => Subtract one day
+        String dateTo = dateFormat.format(new Date(timeFilterTo - 24L * 3600000L));
         return context.getString(R.string.statistics_counting_range, dateFrom, dateTo);
     }
 

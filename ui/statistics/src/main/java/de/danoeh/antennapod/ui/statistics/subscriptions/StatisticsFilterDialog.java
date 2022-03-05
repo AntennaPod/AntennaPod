@@ -20,19 +20,21 @@ import java.util.Locale;
 
 public class StatisticsFilterDialog {
     private final Context context;
-    private final long oldestDate;
     private final SharedPreferences prefs;
     private boolean includeMarkedAsPlayed;
     private long timeFilterFrom;
     private long timeFilterTo;
+    private final Pair<String[], Long[]> filterDatesFrom;
+    private final Pair<String[], Long[]> filterDatesTo;
 
     public StatisticsFilterDialog(Context context, long oldestDate) {
         this.context = context;
-        this.oldestDate = oldestDate;
         prefs = context.getSharedPreferences(StatisticsFragment.PREF_NAME, Context.MODE_PRIVATE);
         includeMarkedAsPlayed = prefs.getBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, false);
         timeFilterFrom = prefs.getLong(StatisticsFragment.PREF_FILTER_FROM, 0);
         timeFilterTo = prefs.getLong(StatisticsFragment.PREF_FILTER_TO, Long.MAX_VALUE);
+        filterDatesFrom = makeMonthlyList(oldestDate, false);
+        filterDatesTo = makeMonthlyList(oldestDate, true);
     }
 
     public void show() {
@@ -50,25 +52,24 @@ public class StatisticsFilterDialog {
         });
         dialogBinding.includeMarkedCheckbox.setChecked(includeMarkedAsPlayed);
 
-        Pair<String[], Long[]> filterDates = makeMonthlyList(oldestDate);
 
         ArrayAdapter<String> adapterFrom = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item, filterDates.first);
+                android.R.layout.simple_spinner_item, filterDatesFrom.first);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialogBinding.timeFromSpinner.setAdapter(adapterFrom);
-        for (int i = 0; i < filterDates.second.length; i++) {
-            if (filterDates.second[i] >= timeFilterFrom) {
+        for (int i = 0; i < filterDatesFrom.second.length; i++) {
+            if (filterDatesFrom.second[i] >= timeFilterFrom) {
                 dialogBinding.timeFromSpinner.setSelection(i);
                 break;
             }
         }
 
         ArrayAdapter<String> adapterTo = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item, filterDates.first);
+                android.R.layout.simple_spinner_item, filterDatesTo.first);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialogBinding.timeToSpinner.setAdapter(adapterTo);
-        for (int i = 0; i < filterDates.second.length; i++) {
-            if (filterDates.second[i] >= timeFilterTo) {
+        for (int i = 0; i < filterDatesTo.second.length; i++) {
+            if (filterDatesTo.second[i] >= timeFilterTo) {
                 dialogBinding.timeToSpinner.setSelection(i);
                 break;
             }
@@ -76,11 +77,11 @@ public class StatisticsFilterDialog {
 
         dialogBinding.allTimeButton.setOnClickListener(v -> {
             dialogBinding.timeFromSpinner.setSelection(0);
-            dialogBinding.timeToSpinner.setSelection(filterDates.first.length - 1);
+            dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 1);
         });
         dialogBinding.lastYearButton.setOnClickListener(v -> {
-            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDates.first.length - 14));
-            dialogBinding.timeToSpinner.setSelection(filterDates.first.length - 2);
+            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDatesFrom.first.length - 14));
+            dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 2);
         });
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -90,8 +91,8 @@ public class StatisticsFilterDialog {
                 timeFilterFrom = 0;
                 timeFilterTo = Long.MAX_VALUE;
             } else {
-                timeFilterFrom = filterDates.second[dialogBinding.timeFromSpinner.getSelectedItemPosition()];
-                timeFilterTo = filterDates.second[dialogBinding.timeToSpinner.getSelectedItemPosition()];
+                timeFilterFrom = filterDatesFrom.second[dialogBinding.timeFromSpinner.getSelectedItemPosition()];
+                timeFilterTo = filterDatesTo.second[dialogBinding.timeToSpinner.getSelectedItemPosition()];
             }
             prefs.edit()
                     .putBoolean(StatisticsFragment.PREF_INCLUDE_MARKED_PLAYED, includeMarkedAsPlayed)
@@ -103,7 +104,7 @@ public class StatisticsFilterDialog {
         builder.show();
     }
 
-    private Pair<String[], Long[]> makeMonthlyList(long oldestDate) {
+    private Pair<String[], Long[]> makeMonthlyList(long oldestDate, boolean inclusive) {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(oldestDate);
         date.set(Calendar.DAY_OF_MONTH, 1);
@@ -112,12 +113,17 @@ public class StatisticsFilterDialog {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         while (date.getTimeInMillis() < System.currentTimeMillis()) {
             names.add(dateFormat.format(new Date(date.getTimeInMillis())));
-            timestamps.add(date.getTimeInMillis());
+            if (!inclusive) {
+                timestamps.add(date.getTimeInMillis());
+            }
             if (date.get(Calendar.MONTH) == Calendar.DECEMBER) {
                 date.set(Calendar.MONTH, Calendar.JANUARY);
                 date.set(Calendar.YEAR, date.get(Calendar.YEAR) + 1);
             } else {
                 date.set(Calendar.MONTH, date.get(Calendar.MONTH) + 1);
+            }
+            if (inclusive) {
+                timestamps.add(date.getTimeInMillis());
             }
         }
         names.add(context.getString(R.string.statistics_today));
