@@ -46,7 +46,7 @@ public class StatisticsFilterDialog {
         dialogBinding.includeMarkedCheckbox.setOnCheckedChangeListener((compoundButton, checked) -> {
             dialogBinding.timeToSpinner.setEnabled(!checked);
             dialogBinding.timeFromSpinner.setEnabled(!checked);
-            dialogBinding.lastYearButton.setEnabled(!checked);
+            dialogBinding.pastYearButton.setEnabled(!checked);
             dialogBinding.allTimeButton.setEnabled(!checked);
             dialogBinding.dateSelectionContainer.setAlpha(checked ? 0.5f : 1f);
         });
@@ -79,8 +79,8 @@ public class StatisticsFilterDialog {
             dialogBinding.timeFromSpinner.setSelection(0);
             dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 1);
         });
-        dialogBinding.lastYearButton.setOnClickListener(v -> {
-            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDatesFrom.first.length - 14));
+        dialogBinding.pastYearButton.setOnClickListener(v -> {
+            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDatesFrom.first.length - 13));
             dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 2);
         });
 
