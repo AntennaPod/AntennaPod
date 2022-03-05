@@ -126,8 +126,10 @@ public class StatisticsFilterDialog {
                 timestamps.add(date.getTimeInMillis());
             }
         }
-        names.add(context.getString(R.string.statistics_today));
-        timestamps.add(Long.MAX_VALUE);
+        if (inclusive) {
+            names.add(context.getString(R.string.statistics_today));
+            timestamps.add(Long.MAX_VALUE);
+        }
         return new Pair<>(names.toArray(new String[0]), timestamps.toArray(new Long[0]));
     }
 }
