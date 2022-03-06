@@ -50,7 +50,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2050000;
+    public static final int VERSION = 2060000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -116,6 +116,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
     public static final String KEY_FEED_TAGS = "tags";
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
+    public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -166,7 +167,8 @@ public class PodDBAdapter {
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_IMAGE_URL + " TEXT,"
-            + KEY_AUTO_DOWNLOAD_ATTEMPTS + " INTEGER)";
+            + KEY_AUTO_DOWNLOAD_ATTEMPTS + " INTEGER,"
+            + KEY_PODCASTINDEX_CHAPTER_URL + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
@@ -292,7 +294,8 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + ", "
-            + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ATTEMPTS;
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ATTEMPTS + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL;
 
     private static final String KEYS_FEED_MEDIA =
             TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " AS " + SELECT_KEY_MEDIA_ID + ", "
@@ -648,6 +651,7 @@ public class PodDBAdapter {
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_AUTO_DOWNLOAD_ATTEMPTS, item.getAutoDownloadAttemptsAndTime());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
+        values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

@@ -41,6 +41,7 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     private transient Feed feed;
     private long feedId;
+    private String podcastIndexChapterUrl;
 
     private int state;
     public static final int NEW = -1;
@@ -81,7 +82,7 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload) {
+                    String itemIdentifier, long autoDownload, String podcastIndexChapterUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -93,6 +94,7 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.state = state;
         this.itemIdentifier = itemIdentifier;
         this.autoDownload = autoDownload;
+        this.podcastIndexChapterUrl = podcastIndexChapterUrl;
     }
 
     /**
@@ -156,6 +158,9 @@ public class FeedItem extends FeedComponent implements Serializable {
             if (!hasChapters) {
                 chapters = other.chapters;
             }
+        }
+        if (other.podcastIndexChapterUrl != null) {
+            podcastIndexChapterUrl = other.podcastIndexChapterUrl;
         }
     }
 
@@ -425,6 +430,14 @@ public class FeedItem extends FeedComponent implements Serializable {
      */
     public void removeTag(String tag) {
         tags.remove(tag);
+    }
+
+    public String getPodcastIndexChapterUrl() {
+        return podcastIndexChapterUrl;
+    }
+
+    public void setPodcastIndexChapterUrl(String url) {
+        podcastIndexChapterUrl = url;
     }
 
     @NonNull
