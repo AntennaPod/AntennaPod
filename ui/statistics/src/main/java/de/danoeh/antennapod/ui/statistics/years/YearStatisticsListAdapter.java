@@ -55,7 +55,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
             HeaderHolder holder = (HeaderHolder) h;
-            holder.lineChart.setData(barChartData);
+            holder.barChart.setData(barChartData);
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.MonthlyStatisticsItem statsItem = statisticsData.get(position - 1);
@@ -72,8 +72,8 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
         int lastDataPoint = statistics.size() > 0 ? (statistics.get(0).month - 1) + lastYear * 12 : 0;
         long yearSum = 0;
         statisticsData.clear();
-        LongList lineChartValues = new LongList();
-        LongList lineChartHorizontalLines = new LongList();
+        LongList barChartValues = new LongList();
+        LongList barChartDivider = new LongList();
         for (DBReader.MonthlyStatisticsItem statistic : statistics) {
             if (statistic.year != lastYear) {
                 DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
@@ -82,14 +82,14 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
                 statisticsData.add(yearAggregate);
                 yearSum = 0;
                 lastYear = statistic.year;
-                lineChartHorizontalLines.add(lineChartValues.size());
+                barChartDivider.add(barChartValues.size());
             }
             yearSum += statistic.timePlayed;
             while (lastDataPoint + 1 < (statistic.month - 1) + statistic.year * 12) {
-                lineChartValues.add(0); // Compensate for months without playback
+                barChartValues.add(0); // Compensate for months without playback
                 lastDataPoint++;
             }
-            lineChartValues.add(statistic.timePlayed);
+            barChartValues.add(statistic.timePlayed);
             lastDataPoint = (statistic.month - 1) + statistic.year * 12;
         }
         DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
@@ -97,16 +97,16 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
         yearAggregate.timePlayed = yearSum;
         statisticsData.add(yearAggregate);
         Collections.reverse(statisticsData);
-        barChartData = new BarChartView.BarChartData(lineChartValues.toArray(), lineChartHorizontalLines.toArray());
+        barChartData = new BarChartView.BarChartData(barChartValues.toArray(), barChartDivider.toArray());
         notifyDataSetChanged();
     }
 
     static class HeaderHolder extends RecyclerView.ViewHolder {
-        BarChartView lineChart;
+        BarChartView barChart;
 
         HeaderHolder(View itemView) {
             super(itemView);
-            lineChart = itemView.findViewById(R.id.lineChart);
+            barChart = itemView.findViewById(R.id.barChart);
         }
     }
 

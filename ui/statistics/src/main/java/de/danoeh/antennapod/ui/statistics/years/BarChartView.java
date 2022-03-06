@@ -10,10 +10,10 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.statistics.StatisticsColorScheme;
-import io.reactivex.annotations.Nullable;
 
 public class BarChartView extends AppCompatImageView {
     private BarChartDrawable drawable;
