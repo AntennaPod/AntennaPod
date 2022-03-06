@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.model.feed.PodcastIndexChapter;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
@@ -14,6 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
+import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -71,7 +70,7 @@ public class ChapterUtils {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
             }
 
-            if (! TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
+            if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
                         feedMedia.getItem().getPodcastIndexChapterUrl());
             }
@@ -139,15 +138,16 @@ public class ChapterUtils {
         try {
             Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-            if (!response.isSuccessful()) {
-                request = new Request.Builder().url(url).build();
-                response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-            }
-            if (response.isSuccessful()) {
-                if (response.body() == null) {
-                    return null;
+            if (response.isSuccessful() && response.body() != null) {
+                List<Chapter> chapters = PodcastIndexChapterParser.parse(response.body().string());
+                if (chapters != null && !chapters.isEmpty()) {
+                    return chapters;
                 }
-                return PodcastIndexChapter.parseChapters(response.body().string());
+            }
+            request = new Request.Builder().url(url).build();
+            response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return PodcastIndexChapterParser.parse(response.body().string());
             }
         } catch (IOException e) {
             e.printStackTrace();

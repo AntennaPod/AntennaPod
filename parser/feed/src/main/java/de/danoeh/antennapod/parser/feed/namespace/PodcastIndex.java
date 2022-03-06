@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.parser.feed.namespace;
 
+import android.text.TextUtils;
 import de.danoeh.antennapod.parser.feed.HandlerState;
 import de.danoeh.antennapod.parser.feed.element.SyndElement;
-import org.jsoup.helper.StringUtil;
 import org.xml.sax.Attributes;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 
@@ -23,11 +23,9 @@ public class PodcastIndex extends Namespace {
             FeedFunding funding = new FeedFunding(href, "");
             state.setCurrentFunding(funding);
             state.getFeed().addPayment(state.getCurrentFunding());
-        }
-
-        if (CHAPTERS.equals(localName)) {
+        } else if (CHAPTERS.equals(localName)) {
             String href = attributes.getValue(URL);
-            if (! StringUtil.isBlank(href)) {
+            if (!TextUtils.isEmpty(href)) {
                 state.getCurrentItem().setPodcastIndexChapterUrl(href);
             }
         }
@@ -40,7 +38,7 @@ public class PodcastIndex extends Namespace {
             return;
         }
         String content = state.getContentBuf().toString();
-        if (FUNDING.equals(localName) && state.getCurrentFunding() != null && !StringUtil.isBlank(content)) {
+        if (FUNDING.equals(localName) && state.getCurrentFunding() != null && !TextUtils.isEmpty(content)) {
             state.getCurrentFunding().setContent(content);
         }
     }
