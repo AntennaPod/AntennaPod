@@ -7,9 +7,8 @@ apply from: "../playFlavor.gradle"
 android {
     lintOptions {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
-                "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity", "CheckResult",
-                "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates"
+                "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
+                "StaticFieldLeak", "IconDensities", "IconDuplicates"
     }
 
     defaultConfig {
@@ -31,8 +30,10 @@ dependencies {
     implementation project(':parser:media')
     implementation project(':playback:base')
     implementation project(':playback:cast')
+    implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:i18n')
     implementation project(':ui:png-icons')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"

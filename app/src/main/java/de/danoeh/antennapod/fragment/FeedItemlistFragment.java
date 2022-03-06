@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,14 +20,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
@@ -35,43 +35,36 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.leinardi.android.speeddial.SpeedDialView;
-
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-import java.util.Set;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.event.FavoritesEvent;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
-import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -80,12 +73,18 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import android.view.KeyEvent;
-import androidx.fragment.app.Fragment;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Displays a list of FeedItems.
@@ -547,15 +546,32 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
         });
-        txtvFailure.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
-            Bundle args = new Bundle();
-            args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
-            intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
-            startActivity(intent);
-        });
+        txtvFailure.setOnClickListener(v -> showErrorDetails());
         headerCreated = true;
+    }
+
+    private void showErrorDetails() {
+        Maybe.fromCallable(
+                () -> {
+                    List<DownloadStatus> feedDownloadLog = DBReader.getFeedDownloadLog(feedID);
+                    if (feedDownloadLog.size() == 0 || feedDownloadLog.get(0).isSuccessful()) {
+                        return null;
+                    }
+                    return feedDownloadLog.get(0);
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
+                    error -> error.printStackTrace(),
+                    () -> {
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
+                        Bundle args = new Bundle();
+                        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
+                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+                        startActivity(intent);
+                    });
     }
 
     private void showFeedInfo() {

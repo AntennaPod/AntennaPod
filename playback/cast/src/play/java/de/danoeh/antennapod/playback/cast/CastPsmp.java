@@ -456,11 +456,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void shutdownQuietly() {
-        shutdown();
-    }
-
-    @Override
     public void setVideoSurface(SurfaceHolder surface) {
         throw new UnsupportedOperationException("Setting Video Surface unsupported in Remote Media Player");
     }

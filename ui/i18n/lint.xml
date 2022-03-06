@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>    
+    <issue id="MissingDefaultResource">
+        <ignore path="**/values-**/strings.xml" />
+    </issue>
+
+    <issue id="UnusedResources" severity="error">
+        <ignore path="**/values-**/strings.xml" />
+    </issue>
+</lint>

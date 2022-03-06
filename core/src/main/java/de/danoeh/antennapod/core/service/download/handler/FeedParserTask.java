@@ -7,11 +7,11 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
 import org.xml.sax.SAXException;
 
@@ -84,8 +84,8 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
                                                 successful, reasonDetailed, request.isInitiatedByUser());
             return result;
         } else {
-            downloadStatus = new DownloadStatus(feed, feed.getTitle(), reason, successful,
-                                                reasonDetailed, request.isInitiatedByUser());
+            downloadStatus = new DownloadStatus(feed, feed.getHumanReadableIdentifier(), reason,
+                                                successful, reasonDetailed, request.isInitiatedByUser());
             return null;
         }
     }

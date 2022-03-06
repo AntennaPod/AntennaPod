@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
+import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -44,7 +45,7 @@ import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -53,7 +54,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -327,7 +328,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 dialog.show();
             }
         } else {
-            showErrorDialog(status.getReason().getErrorString(OnlineFeedViewActivity.this), status.getReasonDetailed());
+            showErrorDialog(getString(DownloadErrorLabel.from(status.getReason())), status.getReasonDetailed());
         }
     }
 

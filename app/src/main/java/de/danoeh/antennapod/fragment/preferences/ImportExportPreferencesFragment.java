@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.favorites.FavoritesWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DatabaseExporter;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -263,7 +262,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
-                    UserPreferences.unsetUsageCountingDate();
                     progressDialog.dismiss();
                 }, this::showExportErrorDialog);
     }

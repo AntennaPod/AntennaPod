@@ -17,10 +17,11 @@ import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -109,7 +110,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                 holder.icon.setText("{fa-times-circle}");
             }
             holder.icon.setContentDescription(context.getString(R.string.error_label));
-            holder.reason.setText(status.getReason().getErrorString(context));
+            holder.reason.setText(DownloadErrorLabel.from(status.getReason()));
             holder.reason.setVisibility(View.VISIBLE);
             holder.tapForDetails.setVisibility(View.VISIBLE);
 

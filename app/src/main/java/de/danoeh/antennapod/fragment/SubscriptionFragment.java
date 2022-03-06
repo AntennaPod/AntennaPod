@@ -28,6 +28,7 @@ import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -228,6 +229,9 @@ public class SubscriptionFragment extends Fragment
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            return true;
+        } else if (itemId == R.id.action_statistics) {
+            ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             return true;
         }
         return false;

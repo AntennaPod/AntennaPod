@@ -9,11 +9,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +35,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
@@ -142,7 +142,7 @@ public class DBWriter {
                     .build();
             SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
-        EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
+        EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         return true;
     }
 
@@ -550,7 +550,7 @@ public class DBWriter {
             adapter.addFavoriteItem(item);
             adapter.close();
             item.addTag(FeedItem.TAG_FAVORITE);
-            EventBus.getDefault().post(FavoritesEvent.added(item));
+            EventBus.getDefault().post(new FavoritesEvent());
             EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
@@ -561,7 +561,7 @@ public class DBWriter {
             adapter.removeFavoriteItem(item);
             adapter.close();
             item.removeTag(FeedItem.TAG_FAVORITE);
-            EventBus.getDefault().post(FavoritesEvent.removed(item));
+            EventBus.getDefault().post(new FavoritesEvent());
             EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }

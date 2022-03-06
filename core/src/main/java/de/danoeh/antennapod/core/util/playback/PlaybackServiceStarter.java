@@ -11,10 +11,8 @@ import de.danoeh.antennapod.model.playback.Playable;
 public class PlaybackServiceStarter {
     private final Context context;
     private final Playable media;
-    private boolean startWhenPrepared = false;
     private boolean shouldStreamThisTime = false;
     private boolean callEvenIfRunning = false;
-    private boolean prepareImmediately = true;
 
     public PlaybackServiceStarter(Context context, Playable media) {
         this.context = context;
@@ -24,24 +22,8 @@ public class PlaybackServiceStarter {
     /**
      * Default value: false
      */
-    public PlaybackServiceStarter startWhenPrepared(boolean startWhenPrepared) {
-        this.startWhenPrepared = startWhenPrepared;
-        return this;
-    }
-
-    /**
-     * Default value: false
-     */
     public PlaybackServiceStarter callEvenIfRunning(boolean callEvenIfRunning) {
         this.callEvenIfRunning = callEvenIfRunning;
-        return this;
-    }
-
-    /**
-     * Default value: true
-     */
-    public PlaybackServiceStarter prepareImmediately(boolean prepareImmediately) {
-        this.prepareImmediately = prepareImmediately;
         return this;
     }
 
@@ -53,10 +35,7 @@ public class PlaybackServiceStarter {
     public Intent getIntent() {
         Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, (Parcelable) media);
-        launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
-        launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, prepareImmediately);
         launchIntent.putExtra(PlaybackService.EXTRA_ALLOW_STREAM_THIS_TIME, shouldStreamThisTime);
-
         return launchIntent;
     }
 

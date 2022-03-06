@@ -283,7 +283,7 @@ public class ItemFragment extends Fragment {
         if (item.getPubDate() != null) {
             String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
-            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(getContext(), item.getPubDate()));
+            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
 
         RequestOptions options = new RequestOptions()

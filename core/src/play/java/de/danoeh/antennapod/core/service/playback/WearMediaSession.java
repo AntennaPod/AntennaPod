@@ -6,8 +6,6 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.wearable.media.MediaControlConstants;
 
 public class WearMediaSession {
-    public static final String TAG = "WearMediaSession";
-
     static void sessionStateAddActionForWear(PlaybackStateCompat.Builder sessionState, String actionName,
               CharSequence name, int icon) {
         PlaybackStateCompat.CustomAction.Builder actionBuilder =

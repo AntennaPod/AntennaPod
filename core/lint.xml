@@ -4,12 +4,4 @@
         <ignore path="res/drawable/ic_settings.xml" />
         <ignore path="res/drawable/ic_settings_white.xml" />
     </issue>
-    
-    <issue id="MissingDefaultResource">
-        <ignore path="**/values-**/strings.xml" />
-    </issue>
-
-    <issue id="UnusedResources" severity="error">
-        <ignore path="**/values-**/strings.xml" />
-    </issue>
 </lint>

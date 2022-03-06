@@ -10,8 +10,6 @@ import android.os.BatteryManager;
  */
 public class PowerUtils {
 
-    private static final String TAG = "PowerUtils";
-
     private PowerUtils() {
 
     }

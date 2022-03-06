@@ -9,8 +9,8 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.parser.feed.element.SimpleChapter;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +56,7 @@ abstract class DbTestUtils {
                     List<Chapter> chapters = new ArrayList<>();
                     item.setChapters(chapters);
                     for (int k = 0; k < numChapters; k++) {
-                        chapters.add(new SimpleChapter(k, "item " + j + " chapter " + k,
+                        chapters.add(new Chapter(k, "item " + j + " chapter " + k,
                                 "http://example.com", "http://example.com/image.png"));
                     }
                 }

@@ -71,7 +71,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             }
             Chapter chapter = adapter.getItem(pos);
             controller.seekTo((int) chapter.getStart());
-            updateChapterSelection(pos);
+            updateChapterSelection(pos, true);
         });
         recyclerView.setAdapter(adapter);
 
@@ -117,7 +117,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        updateChapterSelection(getCurrentChapter(media));
+        updateChapterSelection(getCurrentChapter(media), false);
         adapter.notifyTimeChanged(event.getPosition());
     }
 
@@ -160,10 +160,10 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         }
         adapter.setMedia(media);
         int positionOfCurrentChapter = getCurrentChapter(media);
-        updateChapterSelection(positionOfCurrentChapter);
+        updateChapterSelection(positionOfCurrentChapter, true);
     }
 
-    private void updateChapterSelection(int position) {
+    private void updateChapterSelection(int position, boolean scrollTo) {
         if (adapter == null) {
             return;
         }
@@ -171,8 +171,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         if (position != -1 && focusedChapter != position) {
             focusedChapter = position;
             adapter.notifyChapterChanged(focusedChapter);
-            if (layoutManager.findFirstCompletelyVisibleItemPosition() >= position
-                    || layoutManager.findLastCompletelyVisibleItemPosition() <= position) {
+            if (scrollTo && (layoutManager.findFirstCompletelyVisibleItemPosition() >= position
+                    || layoutManager.findLastCompletelyVisibleItemPosition() <= position)) {
                 layoutManager.scrollToPositionWithOffset(position, 100);
             }
         }

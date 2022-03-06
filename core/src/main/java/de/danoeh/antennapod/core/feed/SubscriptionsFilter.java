@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 

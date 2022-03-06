@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 
 public class StubDownloader extends Downloader {
 

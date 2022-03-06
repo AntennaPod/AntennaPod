@@ -179,12 +179,6 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public abstract void shutdown();
 
-    /**
-     * Releases internally used resources. This method should only be called when the object is not used anymore.
-     * This method is executed on an internal executor service.
-     */
-    public abstract void shutdownQuietly();
-
     public abstract void setVideoSurface(SurfaceHolder surface);
 
     public abstract void resetVideoSurface();
