@@ -29,6 +29,9 @@ public abstract class PagedToolbarFragment extends Fragment {
         this.viewPager = viewPager;
 
         toolbar.setOnMenuItemClickListener(item -> {
+            if (this.onOptionsItemSelected(item)) {
+                return true;
+            }
             Fragment child = getChildFragmentManager().findFragmentByTag("f" + viewPager.getCurrentItem());
             if (child != null) {
                 return child.onOptionsItemSelected(item);

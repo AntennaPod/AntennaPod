@@ -65,10 +65,10 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/lastYearButton"
+                android:id="@+id/past_year_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/statistics_filter_last_year"
+                android:text="@string/statistics_filter_past_year"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
