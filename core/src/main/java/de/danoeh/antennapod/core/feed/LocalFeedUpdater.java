@@ -4,11 +4,13 @@ import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,8 +36,12 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
+import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
+import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
+import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
+    private static final String TAG = "LocalFeedUpdater";
 
     static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
 
@@ -197,6 +203,15 @@ public class LocalFeedUpdater {
         item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
         item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
+
+        try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+            Id3MetadataReader reader = new Id3MetadataReader(new CountingInputStream(inputStream));
+            reader.readInputStream();
+            item.setDescriptionIfLonger(reader.getComment());
+        } catch (IOException | ID3ReaderException e) {
+            // Do not flood Logcat with full stack traces
+            Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+        }
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {
