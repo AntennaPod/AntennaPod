@@ -107,13 +107,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Skip" />
+
             </LinearLayout>
+
             <Button
                 android:id="@+id/butConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/widget_create_button" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
