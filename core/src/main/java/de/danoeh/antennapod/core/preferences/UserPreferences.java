@@ -191,6 +191,14 @@ public class UserPreferences {
         }
     }
 
+    public static int getTranslucentDialogTheme() {
+        if (getTheme() == R.style.Theme_AntennaPod_Light) {
+            return R.style.Theme_Base_AntennaPod_Light_Translucent_Dialog;
+        } else {
+            return R.style.Theme_Base_AntennaPod_Dark_Translucent_Dialog;
+        }
+    }
+
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
