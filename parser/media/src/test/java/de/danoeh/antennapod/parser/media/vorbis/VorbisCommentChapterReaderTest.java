@@ -23,8 +23,8 @@ public class VorbisCommentChapterReaderTest {
     public void testRealFileAuphonic(String filename) throws IOException, VorbisCommentReaderException {
         InputStream inputStream = getClass().getClassLoader()
                 .getResource(filename).openStream();
-        VorbisCommentChapterReader reader = new VorbisCommentChapterReader();
-        reader.readInputStream(inputStream);
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(inputStream);
+        reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
 
         assertEquals(4, chapters.size());

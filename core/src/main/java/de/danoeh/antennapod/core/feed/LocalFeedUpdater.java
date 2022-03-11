@@ -38,6 +38,8 @@ import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
@@ -209,8 +211,15 @@ public class LocalFeedUpdater {
             reader.readInputStream();
             item.setDescriptionIfLonger(reader.getComment());
         } catch (IOException | ID3ReaderException e) {
-            // Do not flood Logcat with full stack traces
             Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+
+            try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+                VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                reader.readInputStream();
+                item.setDescriptionIfLonger(reader.getDescription());
+            } catch (IOException | VorbisCommentReaderException e2) {
+                Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+            }
         }
     }
 

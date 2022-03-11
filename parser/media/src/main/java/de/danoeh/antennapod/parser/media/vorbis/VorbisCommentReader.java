@@ -3,6 +3,7 @@ package de.danoeh.antennapod.parser.media.vorbis;
 import androidx.annotation.NonNull;
 import org.apache.commons.io.EndianUtils;
 import org.apache.commons.io.IOUtils;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,51 +13,35 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 
 public abstract class VorbisCommentReader {
-    /** Length of first page in an ogg file in bytes. */
+    private static final String TAG = "VorbisCommentReader";
     private static final int FIRST_OGG_PAGE_LENGTH = 58;
     private static final int FIRST_OPUS_PAGE_LENGTH = 47;
     private static final int SECOND_PAGE_MAX_LENGTH = 64 * 1024 * 1024;
     private static final int PACKET_TYPE_IDENTIFICATION = 1;
     private static final int PACKET_TYPE_COMMENT = 3;
 
-    /** Called when Reader finds identification header. */
-    protected abstract void onVorbisCommentFound();
+    private final InputStream input;
 
-    protected abstract void onVorbisCommentHeaderFound(VorbisCommentHeader header);
+    VorbisCommentReader(InputStream input) {
+        this.input = input;
+    }
 
-    /**
-     * Is called every time the Reader finds a content vector. The handler
-     * should return true if it wants to handle the content vector.
-     */
-    protected abstract boolean onContentVectorKey(String content);
-
-    /**
-     * Is called if onContentVectorKey returned true for the key.
-     */
-    protected abstract void onContentVectorValue(String key, String value) throws VorbisCommentReaderException;
-
-    protected abstract void onEndOfComment();
-
-    protected abstract void onError(VorbisCommentReaderException exception);
-
-    public void readInputStream(InputStream input) throws VorbisCommentReaderException {
+    public void readInputStream() throws VorbisCommentReaderException {
         try {
-            findIdentificationHeader(input);
-            onVorbisCommentFound();
-            findOggPage(input);
-            findCommentHeader(input);
-            VorbisCommentHeader commentHeader = readCommentHeader(input);
-            onVorbisCommentHeaderFound(commentHeader);
+            findIdentificationHeader();
+            findOggPage();
+            findCommentHeader();
+            VorbisCommentHeader commentHeader = readCommentHeader();
+            Log.d(TAG, commentHeader.toString());
             for (int i = 0; i < commentHeader.getUserCommentLength(); i++) {
-                readUserComment(input);
+                readUserComment();
             }
-            onEndOfComment();
         } catch (IOException e) {
-            onError(new VorbisCommentReaderException(e));
+            e.printStackTrace();
         }
     }
 
-    private void findOggPage(InputStream input) throws IOException {
+    private void findOggPage() throws IOException {
         // find OggS
         byte[] buffer = new byte[4];
         final byte[] oggPageHeader = {'O', 'g', 'g', 'S'};
@@ -76,17 +61,19 @@ public abstract class VorbisCommentReader {
         IOUtils.skipFully(input, numSegments);
     }
 
-    private void readUserComment(InputStream input) throws VorbisCommentReaderException {
+    private void readUserComment() throws VorbisCommentReaderException {
         try {
             long vectorLength = EndianUtils.readSwappedUnsignedInteger(input);
             if (vectorLength > 20 * 1024 * 1024) {
-                // Avoid reading entire file if it is encoded incorrectly
-                throw new VorbisCommentReaderException("User comment unrealistically long: " + vectorLength);
+                String keyPart = readUtf8String(10);
+                throw new VorbisCommentReaderException("User comment unrealistically long. "
+                        + "key=" + keyPart + ", length=" + vectorLength);
             }
-            String key = readContentVectorKey(input, vectorLength).toLowerCase(Locale.US);
-            boolean readValue = onContentVectorKey(key);
-            if (readValue) {
-                String value = readUtf8String(input, vectorLength - key.length() - 1);
+            String key = readContentVectorKey(vectorLength).toLowerCase(Locale.US);
+            boolean shouldReadValue = handles(key);
+            Log.d(TAG, "key=" + key + ", length=" + vectorLength + ", handles=" + shouldReadValue);
+            if (shouldReadValue) {
+                String value = readUtf8String(vectorLength - key.length() - 1);
                 onContentVectorValue(key, value);
             } else {
                 IOUtils.skipFully(input, vectorLength - key.length() - 1);
@@ -96,7 +83,7 @@ public abstract class VorbisCommentReader {
         }
     }
 
-    private String readUtf8String(InputStream input, long length) throws IOException {
+    private String readUtf8String(long length) throws IOException {
         byte[] buffer = new byte[(int) length];
         IOUtils.readFully(input, buffer);
         Charset charset = Charset.forName("UTF-8");
@@ -107,7 +94,7 @@ public abstract class VorbisCommentReader {
      * Looks for an identification header in the first page of the file. If an
      * identification header is found, it will be skipped completely
      */
-    private void findIdentificationHeader(InputStream input) throws IOException {
+    private void findIdentificationHeader() throws IOException {
         byte[] buffer = new byte[FIRST_OPUS_PAGE_LENGTH];
         IOUtils.readFully(input, buffer);
         final byte[] oggIdentificationHeader = new byte[]{ PACKET_TYPE_IDENTIFICATION, 'v', 'o', 'r', 'b', 'i', 's' };
@@ -122,7 +109,7 @@ public abstract class VorbisCommentReader {
         throw new IOException("No vorbis identification header found");
     }
 
-    private void findCommentHeader(InputStream input) throws IOException {
+    private void findCommentHeader() throws IOException {
         byte[] buffer = new byte[64]; // Enough space for some bytes. Used circularly.
         final byte[] oggCommentHeader = new byte[]{ PACKET_TYPE_COMMENT, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
@@ -155,10 +142,10 @@ public abstract class VorbisCommentReader {
     }
 
     @NonNull
-    private VorbisCommentHeader readCommentHeader(InputStream input) throws IOException, VorbisCommentReaderException {
+    private VorbisCommentHeader readCommentHeader() throws IOException, VorbisCommentReaderException {
         try {
             long vendorLength = EndianUtils.readSwappedUnsignedInteger(input);
-            String vendorName = readUtf8String(input, vendorLength);
+            String vendorName = readUtf8String(vendorLength);
             long userCommentLength = EndianUtils.readSwappedUnsignedInteger(input);
             return new VorbisCommentHeader(vendorName, userCommentLength);
         } catch (UnsupportedEncodingException e) {
@@ -166,7 +153,7 @@ public abstract class VorbisCommentReader {
         }
     }
 
-    private String readContentVectorKey(InputStream input, long vectorLength) throws IOException {
+    private String readContentVectorKey(long vectorLength) throws IOException {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < vectorLength; i++) {
             char c = (char) input.read();
@@ -178,4 +165,15 @@ public abstract class VorbisCommentReader {
         }
         return null; // no key found
     }
+
+    /**
+     * Is called every time the Reader finds a content vector. The handler
+     * should return true if it wants to handle the content vector.
+     */
+    protected abstract boolean handles(String key);
+
+    /**
+     * Is called if onContentVectorKey returned true for the key.
+     */
+    protected abstract void onContentVectorValue(String key, String value) throws VorbisCommentReaderException;
 }
