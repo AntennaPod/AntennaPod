@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -23,8 +22,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -98,17 +95,7 @@ public class DownloadLogFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         Object item = adapter.getItem(position);
-        if (item instanceof Downloader) {
-            DownloadRequest downloadRequest = ((Downloader) item).getDownloadRequest();
-            DownloadService.cancel(getContext(), downloadRequest.getSource());
-
-            if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                FeedMedia media = DBReader.getFeedMedia(downloadRequest.getFeedfileId());
-                FeedItem feedItem = media.getItem();
-                feedItem.disableAutoDownload();
-                DBWriter.setFeedItem(feedItem);
-            }
-        } else if (item instanceof DownloadStatus) {
+        if (item instanceof DownloadStatus) {
             new DownloadLogDetailsDialog(getContext(), (DownloadStatus) item).show();
         }
     }
