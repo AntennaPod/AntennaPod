@@ -135,10 +135,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
-        } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
-                || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            feedUrl = TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
-                    ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
+        } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)) {
+            feedUrl = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            feedUrl = getIntent().getDataString();
         }
 
         if (feedUrl == null) {
