@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
@@ -41,7 +40,6 @@ import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
@@ -201,19 +199,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         alert.setTitle(R.string.export_success_title);
         alert.setMessage(getContext().getString(R.string.export_success_sum, path));
         alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
-            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
-            sendIntent.setType("text/plain");
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Intent chooserIntent = Intent.createChooser(sendIntent, getString(R.string.send_label));
-            List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                    .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-            getContext().startActivity(chooserIntent);
+            new ShareCompat.IntentBuilder(getContext())
+                    .setType("text/*")
+                    .setSubject(getString(R.string.opml_export_label))
+                    .addStream(streamUri)
+                    .setChooserTitle(R.string.send_label)
+                    .startChooser();
         });
         alert.create().show();
     }
