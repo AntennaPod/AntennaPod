@@ -55,7 +55,7 @@ public class Itunes extends Namespace {
             return;
         }
 
-        if (AUTHOR.equals(localName) && state.getFeed() != null) {
+        if (AUTHOR.equals(localName) && state.getFeed() != null && state.getTagstack().size() <= 3) {
             state.getFeed().setAuthor(contentFromHtml);
         } else if (DURATION.equals(localName)) {
             try {
