@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -522,7 +523,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (queue != null) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions) {
+                    @Override
+                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                        super.onCreateContextMenu(menu, v, menuInfo);
+                        MenuItemUtils.setOnClickListeners(menu, QueueFragment.this::onContextItemSelected);
+                    }
+                };
                 recyclerAdapter.setOnSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);

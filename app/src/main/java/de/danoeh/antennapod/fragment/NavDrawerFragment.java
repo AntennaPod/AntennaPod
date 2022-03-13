@@ -28,6 +28,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -132,6 +133,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         } else {
             inflater.inflate(R.menu.nav_folder_context, menu);
         }
+        MenuItemUtils.setOnClickListeners(menu, this::onContextItemSelected);
     }
 
     @Override
