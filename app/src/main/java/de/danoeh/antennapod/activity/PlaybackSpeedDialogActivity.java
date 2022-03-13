@@ -9,18 +9,20 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 public class PlaybackSpeedDialogActivity extends AppCompatActivity {
 
-    VariableSpeedDialog speedDialog = new VariableSpeedDialog();
+    VariableSpeedDialog speedDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTranslucentDialogTheme());
         super.onCreate(savedInstanceState);
+        speedDialog = new VariableSpeedDialog();
         speedDialog.show(getSupportFragmentManager(), null);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    protected void onResume() {
+        super.onResume();
+        speedDialog.getDialog().setCanceledOnTouchOutside(true);
+        speedDialog.getDialog().setOnDismissListener(dialogInterface -> finish());
     }
 }
