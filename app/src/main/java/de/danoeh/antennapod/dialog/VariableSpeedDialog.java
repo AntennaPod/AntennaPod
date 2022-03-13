@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.dialog;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PlaybackSpeedDialogActivity;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -66,14 +64,6 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (getActivity().getClass().getName().equals(PlaybackSpeedDialogActivity.class.getName())) {
-            getActivity().finish();
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
