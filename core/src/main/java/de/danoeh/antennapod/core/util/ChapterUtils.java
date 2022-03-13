@@ -171,8 +171,8 @@ public class ChapterUtils {
 
     @NonNull
     private static List<Chapter> readOggChaptersFromInputStream(InputStream input) throws VorbisCommentReaderException {
-        VorbisCommentChapterReader reader = new VorbisCommentChapterReader();
-        reader.readInputStream(input);
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(input);
+        reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {
             return Collections.emptyList();

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.parser.media.vorbis;
 
 import android.util.Log;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,25 +18,15 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
     private static final String CHAPTER_ATTRIBUTE_LINK = "url";
     private static final int CHAPTERXXX_LENGTH = "chapterxxx".length();
 
-    private List<Chapter> chapters;
+    private final List<Chapter> chapters = new ArrayList<>();
 
-    public VorbisCommentChapterReader() {
+    public VorbisCommentChapterReader(InputStream input) {
+        super(input);
     }
 
     @Override
-    public void onVorbisCommentFound() {
-        System.out.println("Vorbis comment found");
-    }
-
-    @Override
-    public void onVorbisCommentHeaderFound(VorbisCommentHeader header) {
-        chapters = new ArrayList<>();
-        System.out.println(header.toString());
-    }
-
-    @Override
-    public boolean onContentVectorKey(String content) {
-        return content.matches(CHAPTER_KEY);
+    public boolean handles(String key) {
+        return key.matches(CHAPTER_KEY);
     }
 
     @Override
@@ -66,19 +57,6 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
                 chapter.setLink(value);
             }
         }
-    }
-
-    @Override
-    public void onEndOfComment() {
-        System.out.println("End of comment");
-        for (Chapter c : chapters) {
-            System.out.println(c.toString());
-        }
-    }
-
-    @Override
-    public void onError(VorbisCommentReaderException exception) {
-        exception.printStackTrace();
     }
 
     private Chapter getChapterById(long id) {
