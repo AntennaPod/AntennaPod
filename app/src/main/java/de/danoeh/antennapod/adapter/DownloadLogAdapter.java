@@ -17,12 +17,14 @@ import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.view.viewholder.DownloadLogItemViewHolder;
@@ -157,8 +159,15 @@ public class DownloadLogAdapter extends BaseAdapter {
         holder.secondaryActionButton.setContentDescription(context.getString(R.string.cancel_download_label));
         holder.secondaryActionButton.setVisibility(View.VISIBLE);
         holder.secondaryActionButton.setTag(downloader);
-        holder.secondaryActionButton.setOnClickListener(v ->
-                listFragment.onListItemClick(null, holder.itemView, position, 0));
+        holder.secondaryActionButton.setOnClickListener(v -> {
+            DownloadService.cancel(context, request.getSource());
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
+                FeedItem feedItem = media.getItem();
+                feedItem.disableAutoDownload();
+                DBWriter.setFeedItem(feedItem);
+            }
+        });
         holder.reason.setVisibility(View.GONE);
         holder.tapForDetails.setVisibility(View.GONE);
         holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.colorPrimary));
