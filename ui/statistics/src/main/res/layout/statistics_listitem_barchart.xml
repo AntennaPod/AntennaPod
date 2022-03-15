@@ -6,12 +6,10 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <de.danoeh.antennapod.ui.statistics.years.LineChartView
-        android:id="@+id/lineChart"
+    <de.danoeh.antennapod.ui.statistics.years.BarChartView
+        android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_height="200dp" />
 
     <View
         android:layout_width="match_parent"
