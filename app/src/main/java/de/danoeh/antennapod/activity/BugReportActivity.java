@@ -99,13 +99,13 @@ public class BugReportActivity extends AppCompatActivity {
             Runtime.getRuntime().exec(cmd);
             //share file
             try {
-                String authority = getString(de.danoeh.antennapod.core.R.string.provider_authority);
+                String authority = getString(R.string.provider_authority);
                 Uri fileUri = FileProvider.getUriForFile(this, authority, filename);
 
                 new ShareCompat.IntentBuilder(this)
                         .setType("text/*")
                         .addStream(fileUri)
-                        .setChooserTitle(de.danoeh.antennapod.core.R.string.share_file_label)
+                        .setChooserTitle(R.string.share_file_label)
                         .startChooser();
             } catch (Exception e) {
                 e.printStackTrace();
