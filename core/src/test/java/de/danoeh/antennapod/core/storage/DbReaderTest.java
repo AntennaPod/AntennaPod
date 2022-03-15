@@ -290,9 +290,10 @@ public class DbReaderTest {
 
     @Test
     public void testGetPlaybackHistory() {
-        final int numItems = (DBReader.PLAYBACK_HISTORY_SIZE + 1) * 2;
-        final int playedItems = DBReader.PLAYBACK_HISTORY_SIZE + 1;
-        final int numReturnedItems = Math.min(playedItems, DBReader.PLAYBACK_HISTORY_SIZE);
+        final int playback_history_length = UserPreferences.getPlaybackHistoryLength();
+        final int numItems = (playback_history_length + 1) * 2;
+        final int playedItems = playback_history_length + 1;
+        final int numReturnedItems = Math.min(playedItems, playback_history_length);
         final int numFeeds = 1;
 
         Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);

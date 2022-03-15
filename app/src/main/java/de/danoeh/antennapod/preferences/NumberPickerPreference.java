@@ -68,6 +68,10 @@ public class NumberPickerPreference extends Preference {
             try {
                 String newVal = dest.toString().substring(0, dstart) + dest.toString().substring(dend);
                 newVal = newVal.substring(0, dstart) + source.toString() + newVal.substring(dstart);
+                // Allow entering negative numbers
+                if (newVal.equals("-")) {
+                    return null;
+                }
                 int input = Integer.parseInt(newVal);
                 if (input >= minValue && input <= maxValue) {
                     return null;

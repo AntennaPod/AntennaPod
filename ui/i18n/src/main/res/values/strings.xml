@@ -86,6 +86,9 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
+    <string name="pref_playback_history_length_label">Playback History Length</string>
+    <string name="pref_playback_history_length_summary">%1$d</string>
+    <string name="pref_playback_history_length_summary_unlimited">Unlimited</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>

@@ -1069,17 +1069,22 @@ public class PodDBAdapter {
      * completion date in ascending order.
      *
      * @param limit The maximum row count of the returned cursor. Must be an
-     *              integer >= 0.
-     * @throws IllegalArgumentException if limit < 0
+     *              integer >= -1. If -1, all rows are returned.
+     * @throws IllegalArgumentException if limit < -1
      */
     public final Cursor getCompletedMediaCursor(int limit) {
-        if (limit < 0) {
-            throw new IllegalArgumentException("Limit must be >= 0");
+        if (limit < -1) {
+            throw new IllegalArgumentException("Limit must be >= -1");
+        }
+
+        String query = String.format(Locale.US, "%s DESC", KEY_PLAYBACK_COMPLETION_DATE);
+        if (limit != -1) {
+            query = query + String.format(Locale.US, " LIMIT %d", limit);
         }
 
         return db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format(Locale.US, "%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
+                null, query);
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,6 +35,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.user_interface_label);
+    }
+
+    @Override
+    public void onResume() {
+       super.onResume();
+       setPlaybackHistoryLengthText(UserPreferences.getPlaybackHistoryLength());
     }
 
     private void setupInterfaceScreen() {
@@ -109,6 +116,14 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
+
+        findPreference(UserPreferences.PREF_PLAYBACK_HISTORY_LENGTH)
+                .setOnPreferenceChangeListener((preference, o) -> {
+                    if (o instanceof Integer) {
+                        setPlaybackHistoryLengthText((Integer) o);
+                    }
+                    return true;
+                });
     }
 
     private void showDrawerPreferencesDialog() {
@@ -181,5 +196,18 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                 UserPreferences.setCompactNotificationButtons(preferredButtons));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private void setPlaybackHistoryLengthText(int playback_history_length) {
+        final Resources res = getActivity().getResources();
+        String s;
+
+        if (playback_history_length == -1) {
+            s = res.getString(R.string.pref_playback_history_length_summary_unlimited);
+        } else {
+            s = res.getString(R.string.pref_playback_history_length_summary, playback_history_length);
+        }
+
+        findPreference(UserPreferences.PREF_PLAYBACK_HISTORY_LENGTH).setSummary(s);
     }
 }
