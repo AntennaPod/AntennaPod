@@ -3,9 +3,6 @@ package de.danoeh.antennapod.activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
 
@@ -32,7 +30,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 
 /**
  * Displays the 'crash report' screen
@@ -102,21 +99,14 @@ public class BugReportActivity extends AppCompatActivity {
             Runtime.getRuntime().exec(cmd);
             //share file
             try {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/*");
-                String authString = getString(de.danoeh.antennapod.core.R.string.provider_authority);
-                Uri fileUri = FileProvider.getUriForFile(this, authString, filename);
-                intent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String chooserTitle = getString(de.danoeh.antennapod.core.R.string.share_file_label);
-                Intent chooser = Intent.createChooser(intent, chooserTitle);
-                List<ResolveInfo> resInfos = getPackageManager()
-                        .queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfos) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-                startActivity(chooser);
+                String authority = getString(R.string.provider_authority);
+                Uri fileUri = FileProvider.getUriForFile(this, authority, filename);
+
+                new ShareCompat.IntentBuilder(this)
+                        .setType("text/*")
+                        .addStream(fileUri)
+                        .setChooserTitle(R.string.share_file_label)
+                        .startChooser();
             } catch (Exception e) {
                 e.printStackTrace();
                 int strResId = R.string.log_file_share_exception;

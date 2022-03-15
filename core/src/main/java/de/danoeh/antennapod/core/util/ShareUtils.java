@@ -2,8 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -12,7 +10,6 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
-import java.util.List;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -76,20 +73,15 @@ public class ShareUtils {
     }
 
     public static void shareFeedItemFile(Context context, FeedMedia media) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(media.getMime_type());
         Uri fileUri = FileProvider.getUriForFile(context, context.getString(R.string.provider_authority),
                 new File(media.getLocalMediaUrl()));
-        intent.putExtra(Intent.EXTRA_STREAM,  fileUri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Intent chooserIntent = Intent.createChooser(intent, context.getString(R.string.share_file_label));
-        List<ResolveInfo> resInfoList = context.getPackageManager()
-                .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        context.startActivity(chooserIntent);
+
+        new ShareCompat.IntentBuilder(context)
+                .setType(media.getMime_type())
+                .addStream(fileUri)
+                .setChooserTitle(R.string.share_file_label)
+                .startChooser();
+
         Log.e(TAG, "shareFeedItemFile called");
     }
 }
