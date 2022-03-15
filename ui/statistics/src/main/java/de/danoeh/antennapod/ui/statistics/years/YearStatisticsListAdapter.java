@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.ui.statistics.R;
-import de.danoeh.antennapod.ui.statistics.StatisticsColorScheme;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +44,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == TYPE_HEADER) {
-            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_linechart, parent, false));
+            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_barchart, parent, false));
         }
         return new StatisticsHolder(inflater.inflate(R.layout.statistics_year_listitem, parent, false));
     }
@@ -61,8 +60,6 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
             holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.year));
             holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.timePlayed / 3600000.0f)
                     + context.getString(R.string.time_hours));
-            holder.chip.setTextColor(StatisticsColorScheme.COLOR_VALUES[
-                    (getItemCount() - position - 1) % StatisticsColorScheme.COLOR_VALUES.length]);
         }
     }
 
@@ -83,12 +80,14 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
             }
             yearSum += statistic.timePlayed;
             while (lastDataPoint + 1 < (statistic.month - 1) + statistic.year * 12) {
+                lastDataPoint++;
                 DBReader.MonthlyStatisticsItem item = new DBReader.MonthlyStatisticsItem();
                 item.year = lastDataPoint / 12;
-                item.month = lastDataPoint % 12;
+                item.month = lastDataPoint % 12 + 1;
                 statisticsData.add(item); // Compensate for months without playback
-                lastDataPoint++;
+                System.out.println("aaaaa extra:" + item.month + "/" + item.year);
             }
+            System.out.println("aaaaa add:" + statistic.month + "/" + statistic.year);
             statisticsData.add(statistic);
             lastDataPoint = (statistic.month - 1) + statistic.year * 12;
         }
@@ -112,13 +111,11 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     static class StatisticsHolder extends RecyclerView.ViewHolder {
         TextView year;
         TextView hours;
-        TextView chip;
 
         StatisticsHolder(View itemView) {
             super(itemView);
             year = itemView.findViewById(R.id.yearLabel);
             hours = itemView.findViewById(R.id.hoursLabel);
-            chip = itemView.findViewById(R.id.chip);
         }
     }
 }

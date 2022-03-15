@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.statistics.StatisticsColorScheme;
+import de.danoeh.antennapod.ui.statistics.R;
 
 import java.util.List;
 
@@ -54,14 +54,16 @@ public class BarChartView extends AppCompatImageView {
     }
 
     private class BarChartDrawable extends Drawable {
+        private static final long ONE_HOUR = 3600000L;
         private List<DBReader.MonthlyStatisticsItem> data;
         private long maxValue = 1;
         private final Paint paintBars;
         private final Paint paintGridLines;
         private final Paint paintGridText;
-        private static final long ONE_HOUR = 3600000L;
+        private final int[] colors = {0, 0xff9c27b0};
 
         private BarChartDrawable() {
+            colors[0] = ThemeUtils.getColorFromAttr(getContext(), R.attr.colorAccent);
             paintBars = new Paint();
             paintBars.setStyle(Paint.Style.FILL);
             paintBars.setAntiAlias(true);
@@ -78,37 +80,41 @@ public class BarChartView extends AppCompatImageView {
         public void draw(@NonNull Canvas canvas) {
             final float width = getBounds().width();
             final float height = getBounds().height();
-            final float usableHeight = height * 0.9f;
-            final float textPadding = width * 0.06f;
+            final float barHeight = height * 0.9f;
+            final float textPadding = width * 0.05f;
             final float stepSize = (width - textPadding) / (data.size() + 2);
+            final float textSize = height * 0.06f;
+            paintGridText.setTextSize(textSize);
 
             paintBars.setStrokeWidth(height * 0.015f);
-            paintBars.setColor(StatisticsColorScheme.COLOR_VALUES[0]);
+            paintBars.setColor(colors[0]);
             int colorIndex = 0;
             int lastYear = data.size() > 0 ? data.get(0).year : 0;
             for (int i = 0; i < data.size(); i++) {
+                float x = textPadding + (i + 1) * stepSize;
                 if (lastYear != data.get(i).year) {
                     lastYear = data.get(i).year;
                     colorIndex++;
-                    paintBars.setColor(StatisticsColorScheme.COLOR_VALUES[
-                            colorIndex % StatisticsColorScheme.COLOR_VALUES.length]);
+                    paintBars.setColor(colors[colorIndex % 2]);
+                    if (i < data.size() - 2) {
+                        canvas.drawText(String.valueOf(data.get(i).year), x + stepSize,
+                                barHeight + (height - barHeight + textSize) / 2, paintGridText);
+                    }
+                    canvas.drawLine(x, height, x, barHeight, paintGridText);
                 }
 
-                float x = textPadding + (i + 1) * stepSize;
                 float valuePercentage = (float) Math.max(0.005, (float) data.get(i).timePlayed / maxValue);
-                float y = (1 - valuePercentage) * usableHeight + height * 0.05f;
-                canvas.drawRect(x, y, x + stepSize * 0.95f, usableHeight + height * 0.05f, paintBars);
+                float y = (1 - valuePercentage) * barHeight;
+                canvas.drawRect(x, y, x + stepSize * 0.95f, barHeight, paintBars);
             }
 
-            float textSize = height * 0.07f;
-            paintGridText.setTextSize(textSize);
             float maxLine = (float) (Math.floor(maxValue / (10.0 * ONE_HOUR)) * 10 * ONE_HOUR);
-            float y = (1 - (maxLine / maxValue)) * usableHeight + height * 0.05f;
+            float y = (1 - (maxLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
             canvas.drawText(String.valueOf((long) maxLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
 
             float midLine = maxLine / 2;
-            y = (1 - (midLine / maxValue)) * usableHeight + height * 0.05f;
+            y = (1 - (midLine / maxValue)) * barHeight;
             canvas.drawLine(0, y, width, y, paintGridLines);
             canvas.drawText(String.valueOf((long) midLine / ONE_HOUR), 0, y + 1.2f * textSize, paintGridText);
         }

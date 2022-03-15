@@ -53,6 +53,10 @@ public class PieChartView extends AppCompatImageView {
     }
 
     public static class PieChartData {
+        private static final int[] COLOR_VALUES = new int[]{0xFF3775E6, 0xffe51c23, 0xffff9800, 0xff259b24, 0xff9c27b0,
+                0xff0099c6, 0xffdd4477, 0xff66aa00, 0xffb82e2e, 0xff316395,
+                0xff994499, 0xff22aa99, 0xffaaaa11, 0xff6633cc, 0xff0073e6};
+
         private final float valueSum;
         private final float[] values;
 
@@ -84,7 +88,7 @@ public class PieChartView extends AppCompatImageView {
             if (!isLargeEnoughToDisplay(index)) {
                 return Color.GRAY;
             }
-            return StatisticsColorScheme.COLOR_VALUES[index % StatisticsColorScheme.COLOR_VALUES.length];
+            return COLOR_VALUES[index % COLOR_VALUES.length];
         }
     }
 
