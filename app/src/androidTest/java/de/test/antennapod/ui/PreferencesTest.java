@@ -547,4 +547,28 @@ public class PreferencesTest {
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> deleteRemovesFromQueue == UserPreferences.shouldDeleteRemoveFromQueue());
     }
+
+    @Test
+    public void testPlaybackHistoryLengthLimited() {
+        clickPreference(R.string.user_interface_label);
+        clickPreference(R.string.pref_playback_history_length_label);
+        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
+        onView(withClassName(endsWith("EditText"))).perform(replaceText("1"));
+        onView(withText(android.R.string.ok)).perform(click());
+
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.getPlaybackHistoryLength() == 1);
+    }
+
+    @Test
+    public void testPlaybackHistoryLengthUnlimited() {
+        clickPreference(R.string.user_interface_label);
+        clickPreference(R.string.pref_playback_history_length_label);
+        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
+        onView(withClassName(endsWith("EditText"))).perform(replaceText("-1"));
+        onView(withText(android.R.string.ok)).perform(click());
+
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.getPlaybackHistoryLength() == -1);
+    }
 }
