@@ -161,7 +161,7 @@ public final class DBTasks {
 
     private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
         DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-        builder.setInitiatedByUser(initiatedByUser);
+        builder.withInitiatedByUser(initiatedByUser);
         builder.setForce(true);
         builder.loadAllPages(loadAllPages);
         DownloadService.download(context, false, builder.build());

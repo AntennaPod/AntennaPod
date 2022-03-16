@@ -290,8 +290,9 @@ public class DownloadRequest implements Parcelable {
             this.feedfileType = feed.getTypeAsInt();
         }
 
-        public void setInitiatedByUser(boolean initiatedByUser) {
+        public Builder withInitiatedByUser(boolean initiatedByUser) {
             this.initiatedByUser = initiatedByUser;
+            return this;
         }
 
         public void setForce(boolean force) {

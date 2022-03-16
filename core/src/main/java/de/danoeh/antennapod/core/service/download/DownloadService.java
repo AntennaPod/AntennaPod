@@ -500,7 +500,7 @@ public class DownloadService extends Service {
         for (Feed feed : feeds) {
             if (feed.getPreferences().getKeepUpdated()) {
                 DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-                builder.setInitiatedByUser(initiatedByUser);
+                builder.withInitiatedByUser(initiatedByUser);
                 addNewRequest(builder.build());
             }
         }
