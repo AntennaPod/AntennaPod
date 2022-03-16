@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -285,7 +286,13 @@ public abstract class EpisodesListFragment extends Fragment {
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new EpisodeItemListAdapter(mainActivity);
+        listAdapter = new EpisodeItemListAdapter(mainActivity) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+        };
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);

@@ -639,7 +639,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private static class FeedItemListAdapter extends EpisodeItemListAdapter {
+    private class FeedItemListAdapter extends EpisodeItemListAdapter {
         public FeedItemListAdapter(MainActivity mainActivity) {
             super(mainActivity);
         }
@@ -655,6 +655,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (!inActionMode()) {
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
+            MenuItemUtils.setOnClickListeners(menu, FeedItemlistFragment.this::onContextItemSelected);
         }
     }
 }

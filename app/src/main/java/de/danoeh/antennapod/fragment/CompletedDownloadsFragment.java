@@ -265,7 +265,7 @@ public class CompletedDownloadsFragment extends Fragment implements
         speedDialView.setVisibility(View.GONE);
     }
 
-    private static class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
+    private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
 
         public CompletedDownloadsListAdapter(MainActivity mainActivity) {
             super(mainActivity);
@@ -285,6 +285,7 @@ public class CompletedDownloadsFragment extends Fragment implements
             if (!inActionMode()) {
                 menu.findItem(R.id.multi_select).setVisible(true);
             }
+            MenuItemUtils.setOnClickListeners(menu, CompletedDownloadsFragment.this::onContextItemSelected);
         }
     }
 }
