@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -101,15 +102,13 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private void setupStorageScreen() {
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_OPML, dateStampFilename(DEFAULT_OPML_OUTPUT_NAME),
-                            chooseOpmlExportPathLauncher, new OpmlWriter());
+                    openExportPathPicker(Export.OPML, chooseOpmlExportPathLauncher, new OpmlWriter());
                     return true;
                 }
         );
         findPreference(PREF_HTML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_HTML, dateStampFilename(DEFAULT_HTML_OUTPUT_NAME),
-                            chooseHtmlExportPathLauncher, new HtmlWriter());
+                    openExportPathPicker(Export.HTML, chooseHtmlExportPathLauncher, new HtmlWriter());
                     return true;
                 });
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
@@ -133,13 +132,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_FAVORITE_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_HTML, dateStampFilename(DEFAULT_FAVORITES_OUTPUT_NAME),
-                            chooseFavoritesExportPathLauncher, new FavoritesWriter());
+                    openExportPathPicker(Export.FAVORITES, chooseFavoritesExportPathLauncher, new FavoritesWriter());
                     return true;
                 });
     }
 
-    private void exportWithWriter(ExportWriter exportWriter, final Uri uri) {
+    private void exportWithWriter(ExportWriter exportWriter, Uri uri, Export exportType) {
         Context context = getActivity();
         progressDialog.show();
         if (uri == null) {
@@ -149,7 +147,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
                                 context.getString(R.string.provider_authority), output);
-                        showExportSuccessDialog(output.toString(), fileUri);
+                        showExportSuccessDialog(output.toString(), fileUri, exportType);
                     }, this::showExportErrorDialog, progressDialog::dismiss);
         } else {
             DocumentFileExportWorker worker = new DocumentFileExportWorker(exportWriter, context, uri);
@@ -157,7 +155,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output ->
-                            showExportSuccessDialog(output.getUri().toString(), output.getUri()),
+                            showExportSuccessDialog(output.getUri().toString(), output.getUri(), exportType),
                             this::showExportErrorDialog, progressDialog::dismiss);
         }
     }
@@ -193,15 +191,15 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.show();
     }
 
-    private void showExportSuccessDialog(final String path, final Uri streamUri) {
+    private void showExportSuccessDialog(String path, Uri streamUri, Export exportType) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_success_title);
         alert.setMessage(getContext().getString(R.string.export_success_sum, path));
         alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
             new ShareCompat.IntentBuilder(getContext())
-                    .setType("text/*")
-                    .setSubject(getString(R.string.opml_export_label))
+                    .setType(exportType.contentType)
+                    .setSubject(getString(exportType.labelResId))
                     .addStream(streamUri)
                     .setChooserTitle(R.string.send_label)
                     .startChooser();
@@ -223,7 +221,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new OpmlWriter(), uri);
+        exportWithWriter(new OpmlWriter(), uri, Export.OPML);
     }
 
     private void chooseHtmlExportPathResult(final ActivityResult result) {
@@ -231,7 +229,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new HtmlWriter(), uri);
+        exportWithWriter(new HtmlWriter(), uri, Export.HTML);
     }
 
     private void chooseFavoritesExportPathResult(final ActivityResult result) {
@@ -239,7 +237,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new FavoritesWriter(), uri);
+        exportWithWriter(new FavoritesWriter(), uri, Export.FAVORITES);
     }
 
     private void restoreDatabaseResult(final ActivityResult result) {
@@ -280,11 +278,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         startActivity(intent);
     }
 
-    private void openExportPathPicker(String contentType, String title,
-                                      final ActivityResultLauncher<Intent> result, ExportWriter writer) {
+    private void openExportPathPicker(Export exportType, ActivityResultLauncher<Intent> result, ExportWriter writer) {
+        String title = dateStampFilename(exportType.outputNameTemplate);
+
         Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
-                .setType(contentType)
+                .setType(exportType.contentType)
                 .putExtra(Intent.EXTRA_TITLE, title);
 
         // Creates an implicit intent to launch a file manager which lets
@@ -298,7 +297,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
         // If we are using a SDK lower than API 21 or the implicit intent failed
         // fallback to the legacy export process
-        exportWithWriter(writer, null);
+        exportWithWriter(writer, null, exportType);
     }
 
     private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
@@ -308,6 +307,23 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return super.createIntent(context, input)
                     .addCategory(Intent.CATEGORY_OPENABLE)
                     .setType("application/x-sqlite3");
+        }
+    }
+
+    private enum Export {
+        OPML(CONTENT_TYPE_OPML, DEFAULT_OPML_OUTPUT_NAME, R.string.opml_export_label),
+        HTML(CONTENT_TYPE_HTML, DEFAULT_HTML_OUTPUT_NAME, R.string.html_export_label),
+        FAVORITES(CONTENT_TYPE_HTML, DEFAULT_FAVORITES_OUTPUT_NAME, R.string.favorites_export_label);
+
+        final String contentType;
+        final String outputNameTemplate;
+        @StringRes
+        final int labelResId;
+
+        Export(String contentType, String outputNameTemplate, int labelResId) {
+            this.contentType = contentType;
+            this.outputNameTemplate = outputNameTemplate;
+            this.labelResId = labelResId;
         }
     }
 }
