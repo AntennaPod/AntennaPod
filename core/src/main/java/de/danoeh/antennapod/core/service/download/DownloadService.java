@@ -301,7 +301,11 @@ public class DownloadService extends Service {
     private void performLocalFeedRefresh(Downloader downloader, DownloadRequest request) {
         try {
             Feed feed = DBReader.getFeed(request.getFeedfileId());
-            LocalFeedUpdater.updateFeed(feed, DownloadService.this);
+            LocalFeedUpdater.updateFeed(feed, DownloadService.this, (scanned, totalFiles) -> {
+                request.setSize(totalFiles);
+                request.setSoFar(scanned);
+                request.setProgressPercent((int) (100.0 * scanned / totalFiles));
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -73,24 +73,18 @@ public class DownloadServiceNotification {
             }
             stringBuilder.append("• ");
             DownloadRequest request = downloader.getDownloadRequest();
-            switch (request.getFeedfileType()) {
-                case Feed.FEEDFILETYPE_FEED:
-                    if (request.getTitle() != null) {
-                        stringBuilder.append(request.getTitle());
-                    }
-                    break;
-                case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
-                    if (request.getTitle() != null) {
-                        stringBuilder.append(request.getTitle())
-                                .append(" (")
-                                .append(request.getProgressPercent())
-                                .append("%)");
-                    }
-                    break;
-                default:
-                    stringBuilder.append("Unknown: ").append(request.getFeedfileType());
+            if (request.getTitle() != null) {
+                stringBuilder.append(request.getTitle());
+            } else {
+                stringBuilder.append(request.getSource());
             }
-            if (i != downloads.size()) {
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                stringBuilder.append(" (").append(request.getProgressPercent()).append("%)");
+            } else if (request.getSource().startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
+                stringBuilder.append(" (").append(request.getSoFar())
+                        .append("/").append(request.getSize()).append(")");
+            }
+            if (i != downloads.size() - 1) {
                 stringBuilder.append("\n");
             }
         }

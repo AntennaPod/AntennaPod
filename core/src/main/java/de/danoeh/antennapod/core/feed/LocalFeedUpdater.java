@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
@@ -47,9 +48,10 @@ public class LocalFeedUpdater {
 
     static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
 
-    public static void updateFeed(Feed feed, Context context) {
+    public static void updateFeed(Feed feed, Context context,
+                                  @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
-            tryUpdateFeed(feed, context);
+            tryUpdateFeed(feed, context, updaterProgressListener);
 
             if (mustReportDownloadSuccessful(feed)) {
                 reportSuccess(feed);
@@ -60,7 +62,8 @@ public class LocalFeedUpdater {
         }
     }
 
-    private static void tryUpdateFeed(Feed feed, Context context) throws IOException {
+    private static void tryUpdateFeed(Feed feed, Context context, UpdaterProgressListener updaterProgressListener)
+            throws IOException {
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
@@ -92,13 +95,16 @@ public class LocalFeedUpdater {
 
         // add new files to feed and update item data
         List<FeedItem> newItems = feed.getItems();
-        for (DocumentFile f : mediaFiles) {
-            FeedItem oldItem = feedContainsFile(feed, f.getName());
-            FeedItem newItem = createFeedItem(feed, f, context);
+        for (int i = 0; i < mediaFiles.size(); i++) {
+            FeedItem oldItem = feedContainsFile(feed, mediaFiles.get(i).getName());
+            FeedItem newItem = createFeedItem(feed, mediaFiles.get(i), context);
             if (oldItem == null) {
                 newItems.add(newItem);
             } else {
                 oldItem.updateFromOther(newItem);
+            }
+            if (updaterProgressListener != null) {
+                updaterProgressListener.onLocalFileScanned(i, mediaFiles.size());
             }
         }
 
@@ -259,5 +265,10 @@ public class LocalFeedUpdater {
         // report success if the last update was not successful
         // (avoid logging success again if the last update was ok)
         return !lastDownloadStatus.isSuccessful();
+    }
+
+    @FunctionalInterface
+    public interface UpdaterProgressListener {
+        void onLocalFileScanned(int scanned, int totalFiles);
     }
 }

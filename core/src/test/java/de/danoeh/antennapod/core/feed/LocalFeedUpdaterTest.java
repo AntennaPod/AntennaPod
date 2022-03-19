@@ -276,7 +276,7 @@ public class LocalFeedUpdaterTest {
 
             // call method to test
             Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
+            LocalFeedUpdater.updateFeed(feed, context, null);
         }
     }
 
