@@ -62,13 +62,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -822,13 +820,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
-                    // set sleep timer if auto-enabled
-                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
-                            && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
-                        setSleepTimer(SleepTimerPreferences.timerMillis());
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                                PlaybackService.this::disableSleepTimer));
-                    }
                     loadQueueForMediaSession();
                     break;
                 case ERROR:

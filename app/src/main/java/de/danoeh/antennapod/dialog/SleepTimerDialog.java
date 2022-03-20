@@ -115,18 +115,14 @@ public class SleepTimerDialog extends DialogFragment {
 
         CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
-        CheckBox chAutoEnable = content.findViewById(R.id.chAutoEnable);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
-        chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
         cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
         cbVibrate.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setVibrate(isChecked));
-        chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
-                -> SleepTimerPreferences.setAutoEnable(isChecked));
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
         disableButton.setOnClickListener(v -> {

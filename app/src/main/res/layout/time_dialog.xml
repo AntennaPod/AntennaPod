@@ -134,12 +134,6 @@
             android:layout_height="wrap_content"
             android:text="@string/timer_vibration_label" />
 
-        <CheckBox
-            android:id="@+id/chAutoEnable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_enable_label" />
-
     </LinearLayout>
 
 </LinearLayout>
