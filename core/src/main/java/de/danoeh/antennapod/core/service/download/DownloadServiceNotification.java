@@ -52,16 +52,39 @@ public class DownloadServiceNotification {
             return null;
         }
 
-        String contentTitle = context.getString(R.string.download_notification_title);
-        String downloadsLeft = (downloads.size() > 0)
+        String contentTitle;
+        if (typeIsOnly(downloads, Feed.FEEDFILETYPE_FEED)) {
+            contentTitle = context.getString(R.string.download_notification_title_feeds);
+        } else if (typeIsOnly(downloads, FeedMedia.FEEDFILETYPE_FEEDMEDIA)) {
+            contentTitle = context.getString(R.string.download_notification_title_episodes);
+        } else {
+            contentTitle = context.getString(R.string.download_notification_title);
+        }
+        String contentText = (downloads.size() > 0)
                 ? context.getResources().getQuantityString(R.plurals.downloads_left, downloads.size(), downloads.size())
                 : context.getString(R.string.completing);
         String bigText = compileNotificationString(downloads);
+        if (!bigText.contains("\n")) {
+            contentText = bigText;
+        }
 
         notificationCompatBuilder.setContentTitle(contentTitle);
-        notificationCompatBuilder.setContentText(downloadsLeft);
+        notificationCompatBuilder.setContentText(contentText);
         notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
         return notificationCompatBuilder.build();
+    }
+
+    private boolean typeIsOnly(List<Downloader> downloads, int feedFileType) {
+        for (Downloader downloader : downloads) {
+            if (downloader.cancelled) {
+                continue;
+            }
+            DownloadRequest request = downloader.getDownloadRequest();
+            if (request.getFeedfileType() != feedFileType) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static String compileNotificationString(List<Downloader> downloads) {

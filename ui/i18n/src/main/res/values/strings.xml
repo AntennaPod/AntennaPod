@@ -279,6 +279,8 @@
     </plurals>
     <string name="completing">Completing…</string>
     <string name="download_notification_title">Downloading podcast data</string>
+    <string name="download_notification_title_feeds">Refreshing podcasts</string>
+    <string name="download_notification_title_episodes">Downloading episodes</string>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
