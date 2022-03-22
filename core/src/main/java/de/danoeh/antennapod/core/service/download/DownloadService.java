@@ -656,7 +656,6 @@ public class DownloadService extends Service {
         if (notificationUpdater != null) {
             notificationUpdater.run();
         }
-        downloadEnqueueExecutor.shutdown(); // Do not accept new downloads
         cancelNotificationUpdater();
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
         stopSelf();
