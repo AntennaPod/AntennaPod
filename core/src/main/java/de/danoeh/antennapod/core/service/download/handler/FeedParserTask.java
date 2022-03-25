@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.download.handler;
 
 import android.util.Log;
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -27,6 +28,8 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
 
     public FeedParserTask(DownloadRequest request) {
         this.request = request;
+        downloadStatus = new DownloadStatus(request, DownloadError.ERROR_REQUEST_ERROR,
+                false, false, "Unknown error: Status not set");
     }
 
     @Override
@@ -108,6 +111,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         }
     }
 
+    @NonNull
     public DownloadStatus getDownloadStatus() {
         return downloadStatus;
     }

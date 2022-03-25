@@ -29,20 +29,18 @@ import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 public class MediaDownloadedHandler implements Runnable {
     private static final String TAG = "MediaDownloadedHandler";
     private final DownloadRequest request;
-    private final DownloadStatus status;
     private final Context context;
     private DownloadStatus updatedStatus;
 
     public MediaDownloadedHandler(@NonNull Context context, @NonNull DownloadStatus status,
                                   @NonNull DownloadRequest request) {
-        this.status = status;
         this.request = request;
         this.context = context;
+        this.updatedStatus = status;
     }
 
     @Override
     public void run() {
-        updatedStatus = status;
         FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
         if (media == null) {
             Log.e(TAG, "Could not find downloaded media object in database");
@@ -108,6 +106,7 @@ public class MediaDownloadedHandler implements Runnable {
         }
     }
 
+    @NonNull
     public DownloadStatus getUpdatedStatus() {
         return updatedStatus;
     }

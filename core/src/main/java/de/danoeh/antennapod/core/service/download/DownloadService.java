@@ -546,7 +546,7 @@ public class DownloadService extends Service {
      *
      * @param status the download that is going to be saved
      */
-    private void saveDownloadStatus(DownloadStatus status) {
+    private void saveDownloadStatus(@NonNull DownloadStatus status) {
         reportQueue.add(status);
         DBWriter.addDownloadStatus(status);
     }
