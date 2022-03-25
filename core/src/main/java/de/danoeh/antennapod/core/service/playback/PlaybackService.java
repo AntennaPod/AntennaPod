@@ -1664,6 +1664,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void seekTo(final int t) {
         mediaPlayer.seekTo(t);
+        EventBus.getDefault().post(new PlaybackPositionEvent(t, getDuration()));
     }
 
     private void seekDelta(final int d) {
