@@ -145,6 +145,10 @@ public class SyncService extends Worker {
 
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
+            if (!downloadUrl.startsWith("http")) { // Also matches https
+                Log.d(TAG, "Skipping url: " + downloadUrl);
+                continue;
+            }
             if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
                 DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
