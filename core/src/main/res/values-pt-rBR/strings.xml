@@ -171,6 +171,8 @@
     <item quantity="one">%d assinatura atualizada.</item>
     <item quantity="other">%d assinaturas atualizadas.</item>
   </plurals>
+  <string name="edit_tags">Editar etiquetas</string>
+  <string name="rename_tag_label">Renomear etiqueta</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">O download de episódios pela conexão de dados móveis está desabilitado nas configurações.\n\nVocê ainda deseja atualizar todas as podcasts pelos dados móveis?</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
@@ -418,6 +420,8 @@
   <string name="pref_theme_title_dark">Escuro</string>
   <string name="pref_theme_title_trueblack">Preto (preparado para AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ilimitado</string>
+  <string name="synchronization_logout">Terminar sessão</string>
+  <string name="pref_synchronization_logout_toast">Sessão terminada com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
   <string name="synchronization_sync_changes_title">Sincronizar agora</string>
@@ -625,6 +629,7 @@
   <string name="preview_episode">Pré-visualizar</string>
   <string name="stop_preview">Parar pré-visualização</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Voltar</string>
   <string name="rewind_label">Retroceder</string>
   <string name="fast_forward_label">Avançar</string>
   <string name="increase_speed">Aumentar velocidade</string>
@@ -642,6 +647,7 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altera seu nome de usuário e sua senha para este podcast e seus episódios.</string>
+  <string name="feed_tags_label">Etiquetas</string>
   <string name="feed_folders_include_root">Exibir na lista principal</string>
   <string name="auto_download_settings_label">Configurações do download automático</string>
   <string name="episode_filters_label">Filtro de episódios</string>
@@ -715,6 +721,7 @@
   <string name="share_playback_position_dialog_label">Posição do playback</string>
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>
   <string name="share_dialog_media_file_label">Arquivo de media</string>
+  <string name="share_starting_position_label">Iniciando em</string>
   <!--Audio controls-->
   <string name="audio_controls">Controles de áudio</string>
   <string name="playback_speed">Velocidade de reprodução</string>

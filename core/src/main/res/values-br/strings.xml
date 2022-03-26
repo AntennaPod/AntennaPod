@@ -122,6 +122,13 @@
     <item quantity="many">%d a zevezhioù goude vefe echuet </item>
     <item quantity="other">%d devezh goude vefe echuet </item>
   </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d diuzet</item>
+    <item quantity="two">%1$d/%2$d diuzet</item>
+    <item quantity="few">%1$d/%2$d diuzet</item>
+    <item quantity="many">%1$d/%2$d diuzet</item>
+    <item quantity="other">%1$d/%2$d diuzet</item>
+  </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d rann</item>
     <item quantity="two">%d rann</item>
@@ -202,6 +209,13 @@
   <string name="delete_label">Dilemel</string>
   <string name="delete_failed">N\'haller ket dilemel ar restr. Gallout a rit klask adloc\'hañ.</string>
   <string name="delete_episode_label">Dilemel ar rann</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">Dilamet ez eus bet 1 rann bellgarget.</item>
+    <item quantity="two">Dilamet ez eus bet %d rann pellgarget.</item>
+    <item quantity="few">Dilamet ez eus bet %d rann pellgarget.</item>
+    <item quantity="many">Dilamet ez eus bet %d rann pellgarget.</item>
+    <item quantity="other">Dilamet ez eus bet %d rann pellgarget.</item>
+  </plurals>
   <string name="remove_new_flag_label">Tennañ ar merk \"nevez\"</string>
   <string name="removed_new_flag_label">Tennet eo bet ar merk \"nevez\"</string>
   <string name="mark_read_label">Merkañ evel lennet</string>
@@ -357,6 +371,7 @@
   <string name="storage_sum">Dilemel emgefreek ar rannoù, Enporzhiañ, Ezporzhiañ</string>
   <string name="project_pref">Raktres</string>
   <string name="synchronization_pref">Goubredañ</string>
+  <string name="synchronization_sum">Goubredañ gant binvioù all</string>
   <string name="automation">Emgefreekañ</string>
   <string name="download_pref_details">Munudoù</string>
   <string name="import_export_pref">Enporzhiadur / Ezporzhiadur</string>
@@ -450,8 +465,14 @@
   <string name="pref_theme_title_dark">Teñval</string>
   <string name="pref_theme_title_trueblack">Du (evit ar skrammoù AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Divevenn</string>
+  <string name="synchronization_logout">Digennaskañ</string>
+  <string name="pref_synchronization_logout_toast">Digennasket gant berzh</string>
   <string name="pref_gpodnet_setlogin_information_title">Kemmañ an titouroù kennaskañ</string>
   <string name="pref_gpodnet_setlogin_information_sum">Kemmañ ho titouroù kennaskañ evit ho kont gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Goubredañ bremañ</string>
+  <string name="synchronization_full_sync_title">Rediañ ur goubredañ klok</string>
+  <string name="synchronization_login_status"><![CDATA[Kennasket evel <i>%1$s</i> war <i>%2$s</i>. <br/><br/>Ho pourchaser a c\'hellot dibab en-dro pa vioc\'h digennasket]]></string>
+  <string name="synchronization_choose_title">Dibab ur pourchaser goubredañ</string>
   <string name="pref_playback_speed_sum">Dibab an tizhioù a c\'haller dibab pa vez lennet ar son</string>
   <string name="pref_feed_playback_speed_sum">Tizh dre ziouer ar rannoù</string>
   <string name="pref_feed_skip">Lamm emgefreek</string>
