@@ -205,6 +205,7 @@ public class ItemFragment extends Fragment {
                 .build();
         Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
         Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
+        Button neverButton = balloon.getContentView().findViewById(R.id.balloon_button_never);
         TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
         message.setText(offerStreaming
                 ? R.string.on_demand_config_stream_text : R.string.on_demand_config_download_text);
@@ -218,6 +219,10 @@ public class ItemFragment extends Fragment {
         });
         negativeButton.setOnClickListener(v1 -> {
             UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
+            balloon.dismiss();
+        });
+        neverButton.setOnClickListener(v1 -> {
+            UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
             balloon.dismiss();
         });
         balloon.showAlignBottom(butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));

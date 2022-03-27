@@ -24,6 +24,7 @@ public class UsageStatistics {
     private static final float MOVING_AVERAGE_BIAS_THRESHOLD = 0.1f;
     private static final long ASK_AGAIN_LATER_DELAY = 1000 * 3600 * 24 * 10; // 10 days
     private static final String SUFFIX_HIDDEN_UNTIL = "_hiddenUntil";
+    private static final String SUFFIX_HIDDEN_FOREVER = "_hiddenForever";
     private static SharedPreferences prefs;
 
     public static final StatsAction ACTION_STREAM = new StatsAction("downloadVsStream", 0);
@@ -51,7 +52,8 @@ public class UsageStatistics {
     public static boolean hasSignificantBiasTo(StatsAction action) {
         final float movingAverage = prefs.getFloat(action.type, 0.5f);
         final long askAfter = prefs.getLong(action.type + SUFFIX_HIDDEN_UNTIL, 0);
-        return Math.abs(action.value - movingAverage) < MOVING_AVERAGE_BIAS_THRESHOLD
+        final boolean dontAsk = prefs.getBoolean(action.type + SUFFIX_HIDDEN_FOREVER, false);
+        return !dontAsk && Math.abs(action.value - movingAverage) < MOVING_AVERAGE_BIAS_THRESHOLD
                 && Calendar.getInstance().getTimeInMillis() > askAfter;
     }
 
@@ -59,6 +61,10 @@ public class UsageStatistics {
         prefs.edit().putLong(action.type + SUFFIX_HIDDEN_UNTIL,
                 Calendar.getInstance().getTimeInMillis() + ASK_AGAIN_LATER_DELAY)
                 .apply();
+    }
+
+    public static void doNotAskAgain(StatsAction action) {
+        prefs.edit().putBoolean(action.type + SUFFIX_HIDDEN_FOREVER, true).apply();
     }
 
     public static final class StatsAction {
