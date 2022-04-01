@@ -18,8 +18,8 @@ public abstract class Downloader implements Callable<Downloader> {
     private static final String TAG = "Downloader";
 
     private volatile boolean finished;
-
     public volatile boolean cancelled;
+    public String permanentRedirectUrl = null;
 
     @NonNull
     final DownloadRequest request;

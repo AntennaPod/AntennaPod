@@ -7,6 +7,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import okhttp3.CacheControl;
+import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -19,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
@@ -173,6 +175,7 @@ public class HttpDownloader extends Downloader {
                     return;
                 }
             }
+            checkIfRedirect(response);
 
             connection = new BufferedInputStream(responseBody.byteStream());
 
@@ -276,6 +279,25 @@ public class HttpDownloader extends Downloader {
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(responseBody);
+        }
+    }
+
+    private void checkIfRedirect(Response response) {
+        // detect 301 Moved permanently and 308 Permanent Redirect
+        ArrayList<Response> responses = new ArrayList<>();
+        while (response != null) {
+            responses.add(response);
+            response = response.priorResponse();
+        }
+        if (responses.isEmpty()) {
+            return;
+        }
+        Collections.reverse(responses);
+        int firstCode = responses.get(0).code();
+        if (firstCode == HttpURLConnection.HTTP_MOVED_PERM || firstCode == StatusLine.HTTP_PERM_REDIRECT) {
+            String secondUrl = responses.get(1).request().url().toString();
+            Log.d(TAG, "Detected permanent redirect from " + request.getSource() + " to " + secondUrl);
+            permanentRedirectUrl = secondUrl;
         }
     }
 
