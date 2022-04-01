@@ -27,7 +27,7 @@ public class DatabaseExporter {
         ParcelFileDescriptor pfd = null;
         FileOutputStream fileOutputStream = null;
         try {
-            pfd = context.getContentResolver().openFileDescriptor(uri, "w");
+            pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
             fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
             exportToStream(fileOutputStream, context);
         } catch (IOException e) {
