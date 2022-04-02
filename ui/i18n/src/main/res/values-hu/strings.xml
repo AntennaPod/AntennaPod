@@ -171,6 +171,8 @@
     <item quantity="one">%d feliratkozás frissítve.</item>
     <item quantity="other">%d feliratkozás frissítve.</item>
   </plurals>
+  <string name="edit_tags">Címkék szerkesztése</string>
+  <string name="rename_tag_label">Címke átnevezése</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
   <plurals name="downloading_batch_label">
@@ -183,6 +185,10 @@
   <string name="delete_label">Törlés</string>
   <string name="delete_failed">A fájl nem törölhető. Az eszköz újraindítása segíthet a probléma megoldásában.</string>
   <string name="delete_episode_label">Epizód törlése</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 letöltött epizód törölve.</item>
+    <item quantity="other">%d letöltött epizód törölve.</item>
+  </plurals>
   <string name="remove_new_flag_label">Az „új” jelző eltávolítása</string>
   <string name="removed_new_flag_label">Az „új” jelző eltávolítva</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>
@@ -240,6 +246,8 @@
   <string name="download_error_forbidden">A podcast kiszolgálója nem válaszol.</string>
   <string name="download_canceled_msg">Letöltés megszakítva</string>
   <string name="download_error_wrong_size">A kiszolgálókapcsolat elveszett a letöltés befejezése előtt</string>
+  <string name="download_error_blocked">A letöltést egy másik, az eszközön lévő alkalmazás megakadályozta (például egy VPN vagy egy reklámblokkoló).</string>
+  <string name="download_error_certificate">A biztonságos kapcsolat nem építhető fel. Ez azt jelentheti, hogy egy másik, az eszközön lévő alkalmazás (például egy VPN vagy egy reklámblokkoló) blokkolta a letöltést, vagy valami hibás a kiszolgálótanúsítványokban.</string>
   <string name="download_report_title">A letöltések hibákkal fejeződtek be</string>
   <string name="auto_download_report_title">Elkészültek az automatikus letöltések</string>
   <string name="download_error_io_error">Ki-/bemeneti hiba</string>
@@ -255,6 +263,7 @@
   <string name="download_type_feed">Csatorna</string>
   <string name="download_type_media">Médiafájl</string>
   <string name="null_value_podcast_error">Nem lett megjeleníthető podcast megadva.</string>
+  <string name="no_feed_url_podcast_found_by_search">A javasolt podcastnek nem volt RSS-hivatkozása, az AntennaPod talált egy podcastet, amely lehet, hogy egyezik.</string>
   <string name="authentication_notification_title">Hitelesítés szükséges</string>
   <string name="authentication_notification_msg">A kért erőforráshoz felhasználónév és jelszó szükséges</string>
   <string name="confirm_mobile_download_dialog_title">Mobilos letöltés megerősítése</string>
@@ -323,6 +332,7 @@
   <string name="storage_sum">Epizódok automatikus törlése, importálása, exportálása</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Szinkronizálás</string>
+  <string name="synchronization_sum">Szinkronizáció más eszközökkel</string>
   <string name="automation">Automatizálás</string>
   <string name="download_pref_details">Részletek</string>
   <string name="import_export_pref">Importálás/exportálás</string>
@@ -413,8 +423,13 @@
   <string name="pref_theme_title_dark">Sötét</string>
   <string name="pref_theme_title_trueblack">Fekete (AMOLED-hez alkalmas)</string>
   <string name="pref_episode_cache_unlimited">Korlátlan</string>
+  <string name="synchronization_logout">Kijelentkezés</string>
+  <string name="pref_synchronization_logout_toast">Kijelentkezés sikeres</string>
   <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
   <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
+  <string name="synchronization_sync_changes_title">Szinkronizálás most</string>
+  <string name="synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
+  <string name="synchronization_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, ekkor: <i>%2$s</i>. <br/><br/>Ha kijelentkezett, akkor újra kiválaszthatja a szinkronizációs szolgáltatóját]]></string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
   <string name="pref_feed_skip">Automatikus kihagyás</string>
@@ -516,6 +531,7 @@
   <string name="sync_status_episodes_download">Epizódváltozások letöltése…</string>
   <string name="sync_status_upload_played">Lejátszott állapot feltöltése…</string>
   <string name="sync_status_subscriptions">Feliratkozások szinkronizálása…</string>
+  <string name="sync_status_wait_for_downloads">Várakozás a letöltések befejezésére…</string>
   <string name="sync_status_success">Szinkronizálás sikeres</string>
   <string name="sync_status_error">Szinkronizálás sikertelen</string>
   <!--import and export-->
@@ -613,6 +629,7 @@
   <string name="preview_episode">Előnézet</string>
   <string name="stop_preview">Előnézet leállítása</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Vissza</string>
   <string name="rewind_label">Visszatekerés</string>
   <string name="fast_forward_label">Előretekerés</string>
   <string name="increase_speed">Sebesség növelése</string>
@@ -630,6 +647,7 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Hitelesítés</string>
   <string name="authentication_descr">A felhasználónév és jelszó módosítása ennél a podcastnál és az epizódoknál.</string>
+  <string name="feed_tags_label">Címkék</string>
   <string name="feed_folders_include_root">Megjelenítés a fő listában</string>
   <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
   <string name="episode_filters_label">Epizódszűrő</string>
@@ -686,6 +704,8 @@
   <string name="sort_date_old_new">Dátum (régi \u2192 új)</string>
   <string name="sort_duration_short_long">Hossz (rövid \u2192 hosszú)</string>
   <string name="sort_duration_long_short">Hossz (hosszú \u2192 rövid)</string>
+  <string name="sort_filename_a_z">Fájlnév (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Fájlnév (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Új \u2192 régi</string>
@@ -702,7 +722,9 @@
   <string name="share_dialog_include_label">Belevétel:</string>
   <string name="share_playback_position_dialog_label">Lejátszási pozíció</string>
   <string name="share_dialog_episode_website_label">Epizód weboldala</string>
+  <string name="share_dialog_link_to_episode">Hivatkozás az epizódhoz</string>
   <string name="share_dialog_media_file_label">Médiafájl</string>
+  <string name="share_starting_position_label">Ettől kezdve:</string>
   <!--Audio controls-->
   <string name="audio_controls">Hangvezérlők</string>
   <string name="playback_speed">Lejátszási sebesség</string>
@@ -749,4 +771,5 @@
   <string name="on_demand_config_setting_changed">Beállítás sikeresen frissítve.</string>
   <string name="on_demand_config_stream_text">Úgy néz ki, hogy sokszor használja a közvetítést. Szeretné megjeleníteni a közvetítési gombokat az epizódlistákban?</string>
   <string name="on_demand_config_download_text">Úgy néz ki, hogy sokszor tölt le. Szeretné megjeleníteni a letöltési gombokat az epizódlistákban?</string>
+  <string name="shortcut_select_subscription">Feliratkozás kiválasztása</string>
 </resources>

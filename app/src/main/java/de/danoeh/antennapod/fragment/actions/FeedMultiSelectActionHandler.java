@@ -34,7 +34,7 @@ public class FeedMultiSelectActionHandler {
     }
 
     public void handleAction(int id) {
-        if (id == R.id.remove_item) {
+        if (id == R.id.remove_feed) {
             RemoveFeedDialog.show(activity, selectedItems);
         } else if (id == R.id.keep_updated) {
             keepUpdatedPrefHandler();

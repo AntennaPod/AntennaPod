@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download.handler;
 
 import android.text.TextUtils;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -18,6 +19,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 public class FeedParserTask implements Callable<FeedHandlerResult> {
@@ -28,6 +30,10 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
 
     public FeedParserTask(DownloadRequest request) {
         this.request = request;
+        downloadStatus = new DownloadStatus(
+        0, request.getTitle(), 0, request.getFeedfileType(), false,
+                false, true, DownloadError.ERROR_REQUEST_ERROR, new Date(),
+                "Unknown error: Status not set", request.isInitiatedByUser());
     }
 
     @Override
@@ -112,6 +118,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         }
     }
 
+    @NonNull
     public DownloadStatus getDownloadStatus() {
         return downloadStatus;
     }

@@ -702,8 +702,8 @@
   <string name="local_feed_description">Ce podcast a été crée à partir d\'un dossier ajouté à AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Impossible d\'ouvrir le gestionnaire de fichier</string>
   <string name="filter">Filtrer</string>
-  <string name="hide_is_favorite_label">Est un favori</string>
-  <string name="not_favorite">N\'est pas un favori</string>
+  <string name="hide_is_favorite_label">Favori</string>
+  <string name="not_favorite">Pas favori</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="queued_label">Dans la liste de lecture</string>

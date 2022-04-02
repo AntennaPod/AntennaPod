@@ -123,7 +123,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "Run auto update immediately in background.");
         if (!NetworkUtils.networkAvailable()) {
             Log.d(TAG, "Ignoring: No network connection.");
-        } else if (NetworkUtils.isEpisodeDownloadAllowed()) {
+        } else if (NetworkUtils.isFeedRefreshAllowed()) {
             startRefreshAllFeeds(context);
         } else {
             confirmMobileAllFeedsRefresh(context);
@@ -134,8 +134,12 @@ public class AutoUpdateManager {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(R.string.feed_refresh_title)
                 .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
-                .setPositiveButton(R.string.yes,
+                .setPositiveButton(R.string.confirm_mobile_streaming_button_once,
                         (dialog, which) -> startRefreshAllFeeds(context))
+                .setNeutralButton(R.string.confirm_mobile_streaming_button_always, (dialog, which) -> {
+                    UserPreferences.setAllowMobileFeedRefresh(true);
+                    startRefreshAllFeeds(context);
+                })
                 .setNegativeButton(R.string.no, null);
         builder.show();
     }

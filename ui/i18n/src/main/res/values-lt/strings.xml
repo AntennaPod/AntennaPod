@@ -187,6 +187,7 @@
   </plurals>
   <string name="edit_tags">Redaguoti žymes</string>
   <string name="rename_tag_label">Pervadinti žymę</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Epizodų atsiuntimas mobiliuoju internetu išjungtas nustatymuose.\n\nAr vis tiek norite atnaujinti visas tinklalaides mobiliuoju internetu?</string>
   <!--actions on feeditems-->
   <string name="download_label">Atsisiųsti</string>
   <plurals name="downloading_batch_label">
@@ -201,6 +202,12 @@
   <string name="delete_label">Ištrinti</string>
   <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <string name="delete_episode_label">Ištrinti epizodą</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 atsiųstas epizodas ištrintas.</item>
+    <item quantity="few">%d atsiųsti epizodai ištrinti.</item>
+    <item quantity="many">%d atsiųsti epizodai ištrinti.</item>
+    <item quantity="other">%d atsiųsti epizodai ištrinti.</item>
+  </plurals>
   <string name="remove_new_flag_label">Pašalinti „naujas“ gairelę</string>
   <string name="removed_new_flag_label">„naujas“ gairelė pašalinta</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
@@ -266,6 +273,8 @@
   <string name="download_error_forbidden">Tinklalaidę talpinantis serveris atsisako atsakyti.</string>
   <string name="download_canceled_msg">Atsiuntimas atšauktas</string>
   <string name="download_error_wrong_size">Ryšys su serveriu nutrūko prieš užbaigiant atsiuntimą</string>
+  <string name="download_error_blocked">Atsiuntimą blokavo kita įrenginyje esanti programėlė (pvz. VPN ar reklamos blokavimo programa).</string>
+  <string name="download_error_certificate">Nepavyko užmegzti saugaus ryšio. Tai gali reikšti, jog kita įrenginyje esanti programėlė (pvz. VPN ar reklamos blokavimo programa) blokavo atsiuntimą arba kilo problemų su serverio sertifikatais.</string>
   <string name="download_report_title">Atsiuntimai užbaigti su klaida (-omis)</string>
   <string name="auto_download_report_title">Automatiniai atsiuntimai užbaigti</string>
   <string name="download_error_io_error">Įvesties/išvesties klaida</string>
@@ -283,6 +292,7 @@
   <string name="download_type_feed">Sklaidos kanalas</string>
   <string name="download_type_media">Medijos failas</string>
   <string name="null_value_podcast_error">Nėra pateiktų tinklalaidžių, kurios galėtų būti rodomos.</string>
+  <string name="no_feed_url_podcast_found_by_search">Pasiūlyta tinklalaidė neturi RSS nuorodos, „AntennaPod“ rado galimą tinklalaidės atitikmenį</string>
   <string name="authentication_notification_title">Reikalingas tapatumo nustatymas</string>
   <string name="authentication_notification_msg">Šis išteklius reikalauja vartotojo vardo bei slaptažodžio</string>
   <string name="confirm_mobile_download_dialog_title">Patvirtinkite atsiuntimą mobiliuoju internetu</string>
@@ -450,7 +460,10 @@
   <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
   <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>
   <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
+  <string name="synchronization_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> <i>%2$s</i> serveryje. <br/><br/>Atsijungę vėl galėsite pasirinkti sinchronizavimo teikėją]]></string>
   <string name="synchronization_summary_unchoosen">Galite pasirinkti iš keleto teikėjų prenumeratų ir epizodų atkūrimo būsenai sinchronizuoti</string>
+  <string name="synchronization_summary_nextcloud">„Gpoddersync“ ir atvirojo kodo „Nextcloud“ programėlė, kurią nesunkiai galite įsidiegti savo serveryje. Ši programėlė yra nepriklausoma nuo „AntennaPod“ projekto.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Suteikite prieigą atsivėrusioje interneto naršyklėje ir sugrįžkite į „AntennaPod“.</string>
   <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
   <string name="synchronization_force_sync_summary">Sinchronizuoti visų prenumeratų ir epizodų būsenas iš naujo</string>
   <string name="synchronization_sync_summary">Sinchronizuoti prenumeratų ir epizodų būsenų pokyčius</string>
@@ -535,6 +548,7 @@
   <string name="pref_feed_settings_dialog_msg">Šis nustatymas individualus kiekvienai tinklalaidei. Jį pakeisti galite atvėrę tinklalaidės langą.</string>
   <string name="pref_contribute">Prisidėti</string>
   <string name="pref_show_subscription_title">Rodyti prenumeratos pavadinimą</string>
+  <string name="pref_show_subscription_title_summary">Atvaizduoti prenumeratos pavadinimą viršelio paveikslėlio apačioje.</string>
   <!--About screen-->
   <string name="about_pref">Apie</string>
   <string name="antennapod_version">„AntennaPod“ versija</string>
@@ -557,6 +571,7 @@
   <string name="sync_status_episodes_download">Atsiunčiami epizodų pasikeitimai...</string>
   <string name="sync_status_upload_played">Išsiunčiama atkūrimo būsena...</string>
   <string name="sync_status_subscriptions">Sinchronizuojamos prenumeratos...</string>
+  <string name="sync_status_wait_for_downloads">Laukiama, kol bus užbaigti atsiuntimai...</string>
   <string name="sync_status_success">Sinchronizavimas sėkmingas</string>
   <string name="sync_status_error">Sinchronizavimas nepavyko</string>
   <!--import and export-->
@@ -692,8 +707,12 @@
   <string name="keep_updated">Pastoviai atnaujinti</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
+  <string name="statistics_time_played">Atkūrimo trukmė:</string>
+  <string name="statistics_total_duration">Bendra trukmė (apytikslė):</string>
+  <string name="statistics_duration_played_episodes">Atkurtų epizodų trukmė:</string>
   <string name="statistics_episodes_on_device">Epizodai įrenginyje:</string>
   <string name="statistics_space_used">Naudojama disko vieta:</string>
+  <string name="statistics_episodes_started_total">Pradėti epizodai/iš viso:</string>
   <string name="statistics_view_all">Žiūrėti visoms tinklalaidėms »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
@@ -738,6 +757,8 @@
   <string name="sort_date_old_new">Data (Seni \u2192 Nauji)</string>
   <string name="sort_duration_short_long">Trukmė (Trumpi \u2192 Ilgi)</string>
   <string name="sort_duration_long_short">Trukmė (Ilgi \u2192 Trumpi)</string>
+  <string name="sort_filename_a_z">Failo vardas (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Failo vardas (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Nauji \u2192 Seni</string>
@@ -754,7 +775,9 @@
   <string name="share_dialog_include_label">Įtraukti:</string>
   <string name="share_playback_position_dialog_label">Atkūrimo poziciją</string>
   <string name="share_dialog_episode_website_label">Epizodo tinklalapiu</string>
+  <string name="share_dialog_link_to_episode">Epizodo nuoroda</string>
   <string name="share_dialog_media_file_label">Medijos failu</string>
+  <string name="share_starting_position_label">Pradedant nuo</string>
   <!--Audio controls-->
   <string name="audio_controls">Garso valdikliai</string>
   <string name="playback_speed">Atkūrimo sparta</string>
@@ -801,5 +824,7 @@
   <string name="on_demand_config_setting_changed">Nustatymas sėkmingai atnaujintas.</string>
   <string name="on_demand_config_stream_text">Panašu, jog dažnai klausotės tiesiogiai. Ar norite, jog epizodų sąraše būtų rodomi tiesioginio klausymosi mygtukai?</string>
   <string name="on_demand_config_download_text">Panašu, jog dažnai atsisiunčiate epizodus. Ar norite, jog epizodų sąraše būtų rodomi atsiuntimo mygtukai?</string>
+  <string name="shortcut_subscription_label">Prenumeratos trumpinys</string>
   <string name="shortcut_select_subscription">Pažymėti prenumeratą</string>
+  <string name="add_shortcut">Pridėti trumpinį</string>
 </resources>

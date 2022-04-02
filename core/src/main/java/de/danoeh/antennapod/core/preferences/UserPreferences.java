@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
@@ -866,51 +867,39 @@ public class UserPreferences {
      *
      * @param type The name of the folder inside the data folder. May be null
      *             when accessing the root of the data folder.
-     * @return The data folder that has been requested or null if the folder
-     * could not be created.
+     * @return The data folder that has been requested or null if the folder could not be created.
      */
-    public static File getDataFolder(String type) {
-        String strDir = prefs.getString(PREF_DATA_FOLDER, null);
-        if (strDir == null) {
-            Log.d(TAG, "Using default data folder");
-            return context.getExternalFilesDir(type);
-        } else {
-            File dataDir = new File(strDir);
-            if (!dataDir.exists()) {
-                if (!dataDir.mkdir()) {
-                    Log.w(TAG, "Could not create data folder");
-                    return null;
-                }
-            }
+    public static File getDataFolder(@Nullable String type) {
+        File dataFolder = getTypeDir(prefs.getString(PREF_DATA_FOLDER, null), type);
+        if (dataFolder == null || !dataFolder.canWrite()) {
+            Log.d(TAG, "User data folder not writable or not set. Trying default.");
+            dataFolder = context.getExternalFilesDir(type);
+        }
+        if (dataFolder == null || !dataFolder.canWrite()) {
+            Log.d(TAG, "Default data folder not available or not writable. Falling back to internal memory.");
+            dataFolder = getTypeDir(context.getFilesDir().getAbsolutePath(), type);
+        }
+        return dataFolder;
+    }
 
-            if (type == null) {
-                return dataDir;
-            } else {
-                // handle path separators
-                String[] dirs = type.split("/");
-                for (int i = 0; i < dirs.length; i++) {
-                    if (dirs.length > 0) {
-                        if (i < dirs.length - 1) {
-                            dataDir = getDataFolder(dirs[i]);
-                            if (dataDir == null) {
-                                return null;
-                            }
-                        }
-                        type = dirs[i];
-                    }
-                }
-                File typeDir = new File(dataDir, type);
-                if (!typeDir.exists()) {
-                    if (dataDir.canWrite()) {
-                        if (!typeDir.mkdir()) {
-                            Log.e(TAG, "Could not create data folder named " + type);
-                            return null;
-                        }
-                    }
-                }
-                return typeDir;
+    @Nullable
+    private static File getTypeDir(@Nullable String baseDirPath, @Nullable String type) {
+        if (baseDirPath == null) {
+            return null;
+        }
+        File baseDir = new File(baseDirPath);
+        File typeDir = type == null ? baseDir : new File(baseDir, type);
+        if (!typeDir.exists()) {
+            if (!baseDir.canWrite()) {
+                Log.e(TAG, "Base dir is not writable " + baseDir.getAbsolutePath());
+                return null;
+            }
+            if (!typeDir.mkdirs()) {
+                Log.e(TAG, "Could not create type dir " + typeDir.getAbsolutePath());
+                return null;
             }
         }
+        return typeDir;
     }
 
     public static void setDataFolder(String dir) {

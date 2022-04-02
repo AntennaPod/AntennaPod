@@ -51,7 +51,6 @@ import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.model.download.DownloadError;
@@ -292,12 +291,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
-        String fileUrl = new File(getExternalCacheDir(),
-                FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
-        feed.setFile_url(fileUrl);
-        final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
-                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
-                true, null, true);
+        DownloadRequest request = DownloadRequestCreator.create(feed)
+                .withAuthentication(username, password)
+                .withInitiatedByUser(true)
+                .build();
+        feed.setFile_url(request.getDestination());
 
         download = Observable.fromCallable(() -> {
             feeds = DBReader.getFeedList();

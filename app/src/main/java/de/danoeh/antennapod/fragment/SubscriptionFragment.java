@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -256,7 +257,13 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
+            }
+        };
         subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
@@ -361,7 +368,7 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.rename_item) {
             new RenameItemDialog(getActivity(), feed).show();
             return true;
-        } else if (itemId == R.id.remove_item) {
+        } else if (itemId == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.multi_select) {

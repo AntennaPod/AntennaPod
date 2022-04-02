@@ -103,7 +103,10 @@ public final class DBReader {
         try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
             List<String> result = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                result.add(cursor.getString(1));
+                String url = cursor.getString(1);
+                if (url != null && !url.startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
+                    result.add(url);
+                }
             }
             return result;
         } finally {

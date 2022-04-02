@@ -30,7 +30,7 @@
   <string name="app_action_not_found">\"%1$s\" nicht gefunden</string>
   <!--SwipeActions-->
   <string name="swipeactions_label">Wisch-Aktionen</string>
-  <string name="swipeactions_summary">Legen Sie fest, was passiert, wenn Sie in einer Liste über eine Episode swipen</string>
+  <string name="swipeactions_summary">Lege fest, was passiert, wenn Du in einer Liste über eine Episode wischst</string>
   <string name="swipe_right">Nach rechts wischen</string>
   <string name="swipe_left">Nach Links wischen</string>
   <string name="enable_swipeactions">Swipe-Aktionen für diesen Bildschirm aktivieren</string>
@@ -172,6 +172,8 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">%d Abonnement aktualisiert.</item>
     <item quantity="other">%d Abonnemnts aktualisiert.</item>
   </plurals>
+  <string name="edit_tags">Tags bearbeiten</string>
+  <string name="rename_tag_label">Tag umbenennen</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <plurals name="downloading_batch_label">
@@ -364,7 +366,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="network_pref">Netzwerk</string>
   <string name="network_pref_sum">Aktualisierungsintervall, Download-Steuerung, Mobile Daten</string>
   <string name="feed_refresh_title">Podcasts aktualisieren</string>
-  <string name="feed_refresh_sum">Lege ein Intervall oder eine Tageszeit zur automatischen Aktualisierung der Podcasts fest</string>
+  <string name="feed_refresh_sum">Lege ein Intervall oder eine Tageszeit fest, zu welcher automatisch nach neuen Episoden gesucht werden soll</string>
   <string name="feed_refresh_interval">Intervall</string>
   <string name="feed_refresh_time">Zeit</string>
   <string name="feed_refresh_never">Niemals</string>
@@ -631,6 +633,8 @@ Tippen, um Details anzuzeigen.</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
+  <string name="feed_tags_label">Tags</string>
+  <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
   <string name="feed_folders_include_root">In Hauptliste anzeigen</string>
   <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
   <string name="episode_filters_label">Episoden-Filter</string>

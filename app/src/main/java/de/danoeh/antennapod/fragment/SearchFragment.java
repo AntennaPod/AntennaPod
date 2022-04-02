@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.FeedSearchResultAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -129,7 +131,13 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
+        adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SearchFragment.this::onContextItemSelected);
+            }
+        };
         recyclerView.setAdapter(adapter);
 
         RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
