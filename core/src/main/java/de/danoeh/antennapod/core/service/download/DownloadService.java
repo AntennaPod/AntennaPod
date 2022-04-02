@@ -339,6 +339,9 @@ public class DownloadService extends Service {
                     // Was stored in the database before and not initiated manually
                     newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
                 }
+                if (downloader.permanentRedirectUrl != null) {
+                    DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
+                }
             } else {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
                 saveDownloadStatus(task.getDownloadStatus());
