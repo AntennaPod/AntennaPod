@@ -92,7 +92,6 @@
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="do_not_ask_again">Do not ask again</string>
     <string name="reset">Reset</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>

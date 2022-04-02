@@ -21,17 +21,9 @@
         android:gravity="end">
 
         <Button
-            android:id="@+id/balloon_button_never"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:textColor="?attr/colorOnSecondary"
-            android:text="@string/do_not_ask_again"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-        <Button
             android:id="@+id/balloon_button_negative"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:textColor="?attr/colorOnSecondary"
             android:text="@string/no"
             style="@style/Widget.MaterialComponents.Button.TextButton" />
@@ -39,7 +31,7 @@
         <Button
             android:id="@+id/balloon_button_positive"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:textColor="?attr/colorOnSecondary"
             android:text="@string/yes"
             style="@style/Widget.MaterialComponents.Button.TextButton" />

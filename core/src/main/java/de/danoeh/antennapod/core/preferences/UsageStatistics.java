@@ -50,11 +50,15 @@ public class UsageStatistics {
     }
 
     public static boolean hasSignificantBiasTo(StatsAction action) {
-        final float movingAverage = prefs.getFloat(action.type, 0.5f);
-        final long askAfter = prefs.getLong(action.type + SUFFIX_HIDDEN_UNTIL, 0);
         final boolean dontAsk = prefs.getBoolean(action.type + SUFFIX_HIDDEN_FOREVER, false);
-        return !dontAsk && Math.abs(action.value - movingAverage) < MOVING_AVERAGE_BIAS_THRESHOLD
-                && Calendar.getInstance().getTimeInMillis() > askAfter;
+        if (dontAsk) {
+            return false;
+        } else {
+            final float movingAverage = prefs.getFloat(action.type, 0.5f);
+            final long askAfter = prefs.getLong(action.type + SUFFIX_HIDDEN_UNTIL, 0);
+            return Math.abs(action.value - movingAverage) < MOVING_AVERAGE_BIAS_THRESHOLD
+                    && Calendar.getInstance().getTimeInMillis() > askAfter;
+        }
     }
 
     public static void askAgainLater(StatsAction action) {
