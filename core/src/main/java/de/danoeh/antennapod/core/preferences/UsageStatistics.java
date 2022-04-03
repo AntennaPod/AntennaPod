@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
-import java.util.Calendar;
-
 /**
  * Collects statistics about the app usage. The statistics are used to allow on-demand configuration:
  * "Looks like you stream a lot. Do you want to toggle the 'Prefer streaming' setting?".
