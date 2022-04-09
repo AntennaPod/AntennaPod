@@ -188,9 +188,9 @@ public class ItemFragment extends Fragment {
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
-        boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
+        final boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
                 == View.LAYOUT_DIRECTION_RTL;
-        Balloon balloon = new Balloon.Builder(getContext())
+        final Balloon balloon = new Balloon.Builder(getContext())
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
                 .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
@@ -203,9 +203,9 @@ public class ItemFragment extends Fragment {
                 .setDismissWhenTouchOutside(true)
                 .setLifecycleOwner(this)
                 .build();
-        Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
-        Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
-        TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
+        final Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
+        final Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
+        final TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
         message.setText(offerStreaming
                 ? R.string.on_demand_config_stream_text : R.string.on_demand_config_download_text);
         positiveButton.setOnClickListener(v1 -> {
@@ -217,7 +217,7 @@ public class ItemFragment extends Fragment {
             balloon.dismiss();
         });
         negativeButton.setOnClickListener(v1 -> {
-            UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
+            UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
             balloon.dismiss();
         });
         balloon.showAlignBottom(butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));
