@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -19,8 +21,8 @@ public class PlaybackSpeedDialogActivity extends AppCompatActivity {
 
     public static class InnerVariableSpeedDialog extends VariableSpeedDialog {
         @Override
-        public void onDestroy() {
-            super.onDestroy();
+        public void onDismiss(@NonNull DialogInterface dialog) {
+            super.onDismiss(dialog);
             getActivity().finish();
         }
     }
