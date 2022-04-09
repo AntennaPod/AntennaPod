@@ -48,6 +48,10 @@ public class ShareUtils {
         return FeedItemUtil.getLinkWithFallback(item) != null;
     }
 
+    public static void shareMediaDownloadLink(Context context, FeedMedia media) {
+        shareLink(context, media.getDownload_url());
+    }
+
     public static void shareFeedItemLinkWithDownloadLink(Context context, FeedItem item, boolean withPosition) {
         String text = getItemShareText(item);
         int pos = 0;

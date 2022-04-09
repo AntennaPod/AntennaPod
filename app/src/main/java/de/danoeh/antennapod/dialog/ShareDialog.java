@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.ShareEpisodeDialogBinding;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
@@ -26,9 +24,7 @@ public class ShareDialog extends DialogFragment {
     private FeedItem item;
     private SharedPreferences prefs;
 
-    private RadioButton radioMediaFile;
-    private RadioButton radioLinkToEpisode;
-    private CheckBox checkBoxStartAt;
+    ShareEpisodeDialogBinding viewBinding;
 
     public ShareDialog() {
         // Empty constructor required for DialogFragment
@@ -51,27 +47,23 @@ public class ShareDialog extends DialogFragment {
             prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
 
-        View content = View.inflate(ctx, R.layout.share_episode_dialog, null);
+        viewBinding = ShareEpisodeDialogBinding.inflate(getLayoutInflater());
+        viewBinding.shareDialogRadioGroup.setOnCheckedChangeListener((group, checkedId) ->
+                viewBinding.sharePositionCheckbox.setEnabled(checkedId == viewBinding.shareSocialRadio.getId()));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setTitle(R.string.share_label);
-        builder.setView(content);
-
-        RadioGroup radioGroup = content.findViewById(R.id.share_dialog_radio_group);
-        radioGroup.setOnCheckedChangeListener((group, checkedId) ->
-                checkBoxStartAt.setEnabled(checkedId != R.id.share_media_file_radio));
-
-        radioLinkToEpisode = content.findViewById(R.id.share_link_to_episode_radio);
-        radioMediaFile = content.findViewById(R.id.share_media_file_radio);
-        checkBoxStartAt = content.findViewById(R.id.share_start_at_timer_dialog);
-
+        builder.setView(viewBinding.getRoot());
         setupOptions();
 
         builder.setPositiveButton(R.string.share_label, (dialog, id) -> {
-            boolean includePlaybackPosition = checkBoxStartAt.isChecked();
-            if (radioLinkToEpisode.isChecked()) {
+            boolean includePlaybackPosition = viewBinding.sharePositionCheckbox.isChecked();
+            if (viewBinding.shareSocialRadio.isChecked()) {
                 ShareUtils.shareFeedItemLinkWithDownloadLink(ctx, item, includePlaybackPosition);
-            } else if (radioMediaFile.isChecked()) {
+            } else if (viewBinding.shareMediaFileRadio.isChecked()) {
                 ShareUtils.shareFeedItemFile(ctx, item.getMedia());
+            } else if (viewBinding.shareMediaReceiverRadio.isChecked()) {
+                ShareUtils.shareMediaDownloadLink(ctx, item.getMedia());
             } else {
                 throw new IllegalStateException("Unknown share method");
             }
@@ -85,16 +77,19 @@ public class ShareDialog extends DialogFragment {
         final boolean hasMedia = item.getMedia() != null;
 
         boolean downloaded = hasMedia && item.getMedia().isDownloaded();
-        radioMediaFile.setVisibility(downloaded ? View.VISIBLE : View.GONE);
+        viewBinding.shareMediaFileRadio.setVisibility(downloaded ? View.VISIBLE : View.GONE);
 
         boolean hasDownloadUrl = hasMedia && item.getMedia().getDownload_url() != null;
         if (!ShareUtils.hasLinkToShare(item) && !hasDownloadUrl) {
-            radioLinkToEpisode.setVisibility(View.GONE);
+            viewBinding.shareSocialRadio.setVisibility(View.GONE);
+        }
+        if (!hasDownloadUrl) {
+            viewBinding.shareMediaReceiverRadio.setVisibility(View.GONE);
         }
 
-        radioMediaFile.setChecked(false);
+        viewBinding.shareMediaFileRadio.setChecked(false);
 
         boolean switchIsChecked = prefs.getBoolean(PREF_SHARE_EPISODE_START_AT, false);
-        checkBoxStartAt.setChecked(switchIsChecked);
+        viewBinding.sharePositionCheckbox.setChecked(switchIsChecked);
     }
 }

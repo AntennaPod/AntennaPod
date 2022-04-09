@@ -777,10 +777,10 @@
     <string name="rating_now_label" tools:ignore="UnusedResources">Sure, let\'s do this!</string>
 
     <!-- Share episode dialog -->
-    <string name="share_dialog_include_label">Include:</string>
-    <string name="share_playback_position_dialog_label">Playback position</string>
+    <string name="share_playback_position_dialog_label">Include playback position</string>
     <string name="share_dialog_episode_website_label">Episode webpage</string>
-    <string name="share_dialog_link_to_episode">Link to episode</string>
+    <string name="share_dialog_for_social">For social</string>
+    <string name="share_dialog_for_media_receiver">For media receiver</string>
     <string name="share_dialog_media_file_label">Media file</string>
     <string name="share_starting_position_label">Starting from</string>
 
