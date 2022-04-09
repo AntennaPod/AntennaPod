@@ -512,6 +512,9 @@ public class DownloadService extends Service {
         if (isDownloadingFile(request.getSource())) {
             Log.d(TAG, "Skipped enqueueing request. Already running.");
             return;
+        } else if (downloadHandleExecutor.isShutdown()) {
+            Log.d(TAG, "Skipped enqueueing request. Service is already shutting down.");
+            return;
         }
         Log.d(TAG, "Add new request: " + request.getSource());
         if (request.getSource().startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
