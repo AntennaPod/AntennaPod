@@ -279,7 +279,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed == null) {
             return;
         }
-        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
         isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),

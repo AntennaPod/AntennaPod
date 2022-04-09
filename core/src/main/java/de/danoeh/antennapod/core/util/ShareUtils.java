@@ -32,16 +32,14 @@ public class ShareUtils {
         context.startActivity(intent);
     }
 
-    public static void shareFeedlink(Context context, Feed feed) {
-        shareLink(context, feed.getTitle() + ": " + feed.getLink());
-    }
-
-    public static void shareFeedDownloadLink(Context context, Feed feed) {
-        shareLink(context, feed.getTitle() + ": " + feed.getDownload_url());
-    }
-
-    private static String getItemShareText(FeedItem item) {
-        return item.getFeed().getTitle() + ": " + item.getTitle();
+    public static void shareFeedLink(Context context, Feed feed) {
+        String text = feed.getTitle();
+        if (feed.getLink() != null) {
+            text += "\n" + feed.getLink();
+        }
+        text += "\n\n" + context.getResources().getString(R.string.share_rss_address_label)
+                + " " + feed.getDownload_url();
+        shareLink(context, text);
     }
 
     public static boolean hasLinkToShare(FeedItem item) {
@@ -53,7 +51,7 @@ public class ShareUtils {
     }
 
     public static void shareFeedItemLinkWithDownloadLink(Context context, FeedItem item, boolean withPosition) {
-        String text = getItemShareText(item);
+        String text = item.getFeed().getTitle() + ": " + item.getTitle();
         int pos = 0;
         if (item.getMedia() != null && withPosition) {
             text += "\n" + context.getResources().getString(R.string.share_starting_position_label) + ": ";
