@@ -13,7 +13,7 @@ public class PlaybackSpeedDialogActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTranslucentDialogTheme());
+        setTheme(UserPreferences.getTranslucentTheme());
         super.onCreate(savedInstanceState);
         VariableSpeedDialog speedDialog = new InnerVariableSpeedDialog();
         speedDialog.show(getSupportFragmentManager(), null);
