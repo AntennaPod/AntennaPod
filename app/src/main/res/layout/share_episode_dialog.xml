@@ -24,7 +24,7 @@
             android:id="@+id/share_media_receiver_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_dialog_for_media_receiver" />
+            android:text="@string/share_dialog_media_address" />
 
         <RadioButton
             android:id="@+id/share_media_file_radio"
