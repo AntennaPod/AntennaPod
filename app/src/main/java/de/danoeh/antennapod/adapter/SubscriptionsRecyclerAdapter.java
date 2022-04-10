@@ -118,7 +118,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 if (isFeed) {
                     longPressedPosition = holder.getBindingAdapterPosition();
                 }
-                selectedItem = (NavDrawerData.DrawerItem) getItem(holder.getBindingAdapterPosition());
+                selectedItem = drawerItem;
             }
             return false;
         });
@@ -131,7 +131,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         if (isFeed) {
                             longPressedPosition = holder.getBindingAdapterPosition();
                         }
-                        selectedItem = (NavDrawerData.DrawerItem) getItem(holder.getBindingAdapterPosition());
+                        selectedItem = drawerItem;
                     }
                 }
             }

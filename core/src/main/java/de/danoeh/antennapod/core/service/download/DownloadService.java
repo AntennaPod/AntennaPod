@@ -18,6 +18,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ServiceCompat;
 
 import androidx.core.content.ContextCompat;
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import org.apache.commons.io.FileUtils;
@@ -139,9 +140,6 @@ public class DownloadService extends Service {
     }
 
     public static void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
-        if (requests.length > 100) {
-            throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
-        }
         ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
         for (DownloadRequest request : requests) {
             if (!isDownloadingFile(request.getSource())) {
@@ -150,7 +148,15 @@ public class DownloadService extends Service {
         }
         if (requestsToSend.isEmpty()) {
             return;
+        } else if (requestsToSend.size() > 100) {
+            if (BuildConfig.DEBUG) {
+                throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
+            } else {
+                Log.d(TAG, "Too many download requests. Dropping some to avoid Android dropping all.");
+                requestsToSend = new ArrayList<>(requestsToSend.subList(0, 100));
+            }
         }
+
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
         if (cleanupMedia) {
@@ -511,6 +517,9 @@ public class DownloadService extends Service {
     private void addNewRequest(@NonNull DownloadRequest request) {
         if (isDownloadingFile(request.getSource())) {
             Log.d(TAG, "Skipped enqueueing request. Already running.");
+            return;
+        } else if (downloadHandleExecutor.isShutdown()) {
+            Log.d(TAG, "Skipped enqueueing request. Service is already shutting down.");
             return;
         }
         Log.d(TAG, "Add new request: " + request.getSource());
