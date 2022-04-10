@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;

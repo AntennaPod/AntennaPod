@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.event.SyncServiceEvent;
+import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationProviderViewData;

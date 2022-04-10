@@ -135,58 +135,6 @@
         <item>-2</item>
     </string-array>
 
-    <string-array name="playback_speed_values">
-        <item>0.50</item>
-        <item>0.60</item>
-        <item>0.70</item>
-        <item>0.75</item>
-        <item>0.80</item>
-        <item>0.85</item>
-        <item>0.90</item>
-        <item>0.95</item>
-        <item>1.00</item>
-        <item>1.05</item>
-        <item>1.10</item>
-        <item>1.15</item>
-        <item>1.20</item>
-        <item>1.25</item>
-        <item>1.30</item>
-        <item>1.35</item>
-        <item>1.40</item>
-        <item>1.45</item>
-        <item>1.50</item>
-        <item>1.55</item>
-        <item>1.60</item>
-        <item>1.65</item>
-        <item>1.70</item>
-        <item>1.75</item>
-        <item>1.80</item>
-        <item>1.85</item>
-        <item>1.90</item>
-        <item>1.95</item>
-        <item>2.00</item>
-        <item>2.10</item>
-        <item>2.20</item>
-        <item>2.30</item>
-        <item>2.40</item>
-        <item>2.50</item>
-        <item>2.60</item>
-        <item>2.70</item>
-        <item>2.80</item>
-        <item>2.90</item>
-        <item>3.00</item>
-        <item>3.10</item>
-        <item>3.20</item>
-        <item>3.30</item>
-        <item>3.40</item>
-        <item>3.50</item>
-        <item>3.60</item>
-        <item>3.70</item>
-        <item>3.80</item>
-        <item>3.90</item>
-        <item>4.00</item>
-    </string-array>
-
     <string-array name="theme_options">
         <item>@string/pref_theme_title_use_system</item>
         <item>@string/pref_theme_title_light</item>
@@ -262,6 +210,18 @@
         <item>@string/sort_duration_long_short</item>
     </string-array>
 
+    <!-- sort for local feed screen -->
+    <string-array name="local_feed_episodes_sort_options">
+        <item>@string/sort_date_new_old</item>
+        <item>@string/sort_date_old_new</item>
+        <item>@string/sort_title_a_z</item>
+        <item>@string/sort_title_z_a</item>
+        <item>@string/sort_duration_short_long</item>
+        <item>@string/sort_duration_long_short</item>
+        <item>@string/sort_filename_a_z</item>
+        <item>@string/sort_filename_z_a</item>
+    </string-array>
+
     <string-array name="feed_episodes_sort_values">
         <item>DATE_NEW_OLD</item>
         <item>DATE_OLD_NEW</item>
@@ -271,32 +231,21 @@
         <item>DURATION_LONG_SHORT</item>
     </string-array>
 
+    <string-array name="local_feed_episodes_sort_values">
+        <item>DATE_NEW_OLD</item>
+        <item>DATE_OLD_NEW</item>
+        <item>EPISODE_TITLE_A_Z</item>
+        <item>EPISODE_TITLE_Z_A</item>
+        <item>DURATION_SHORT_LONG</item>
+        <item>DURATION_LONG_SHORT</item>
+        <item>EPISODE_FILENAME_A_Z</item>
+        <item>EPISODE_FILENAME_Z_A</item>
+    </string-array>
+
     <string-array name="compact_notification_buttons_options">
         <item>@string/rewind_label</item>
         <item>@string/fast_forward_label</item>
         <item>@string/skip_episode_label</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_options">
-        <item>@string/stop_playback</item>
-        <item>@string/player_go_to_picture_in_picture</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values">
-        <item>stop</item>
-        <item>pip</item>
-        <item>continue</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_options_without_pip">
-        <item>@string/stop_playback</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values_without_pip">
-        <item>stop</item>
-        <item>continue</item>
     </string-array>
 
     <string-array name="back_button_behavior_options">

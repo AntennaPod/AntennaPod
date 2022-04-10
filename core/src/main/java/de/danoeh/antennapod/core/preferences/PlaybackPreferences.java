@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.greenrobot.eventbus.EventBus;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -43,11 +43,6 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      */
     private static final String PREF_CURRENTLY_PLAYING_MEDIA_TYPE
             = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
-
-    /**
-     * True if last played media was streamed.
-     */
-    private static final String PREF_CURRENT_EPISODE_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
 
     /**
      * True if last played media was a video.
@@ -113,10 +108,6 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
     }
 
-    public static boolean getCurrentEpisodeIsStream() {
-        return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
-    }
-
     public static boolean getCurrentEpisodeIsVideo() {
         return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
     }
@@ -138,7 +129,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         editor.apply();
     }
 
-    public static void writeMediaPlaying(Playable playable, PlayerStatus playerStatus, boolean stream) {
+    public static void writeMediaPlaying(Playable playable, PlayerStatus playerStatus) {
         Log.d(TAG, "Writing playback preferences");
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -146,7 +137,6 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
             writeNoMediaPlaying();
         } else {
             editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, playable.getPlayableType());
-            editor.putBoolean(PREF_CURRENT_EPISODE_IS_STREAM, stream);
             editor.putBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, playable.getMediaType() == MediaType.VIDEO);
             if (playable instanceof FeedMedia) {
                 FeedMedia feedMedia = (FeedMedia) playable;

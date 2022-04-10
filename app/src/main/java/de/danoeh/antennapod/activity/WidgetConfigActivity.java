@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.widget.WidgetUpdaterJobService;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 public class WidgetConfigActivity extends AppCompatActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -47,7 +47,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
-        findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
+        findViewById(R.id.butConfirm).setOnClickListener(v -> confirmCreateWidget());
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -94,7 +94,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
     }
 
-    private void confirmCreateWidget(View v) {
+    private void confirmCreateWidget() {
         int backgroundColor = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
 
         SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
@@ -109,7 +109,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
-        WidgetUpdaterJobService.performBackgroundUpdate(this);
+        WidgetUpdaterWorker.enqueueWork(this);
     }
 
     private int getColorWithAlpha(int color, int opacity) {

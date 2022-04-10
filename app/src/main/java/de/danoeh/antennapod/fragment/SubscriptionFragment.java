@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,11 +29,13 @@ import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -42,19 +45,18 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -167,6 +169,7 @@ public class SubscriptionFragment extends Fragment
         });
 
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.nav_feed_action_speeddial);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
@@ -228,6 +231,9 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        } else if (itemId == R.id.action_statistics) {
+            ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
+            return true;
         }
         return false;
     }
@@ -251,7 +257,13 @@ public class SubscriptionFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity());
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
+            }
+        };
         subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
@@ -303,6 +315,10 @@ public class SubscriptionFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        if (listItems != null && listItems.size() > result.size()) {
+                            // We have fewer items. This can result in items being selected that are no longer visible.
+                            subscriptionAdapter.endSelectMode();
+                        }
                         listItems = result;
                         subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();
@@ -328,11 +344,17 @@ public class SubscriptionFragment extends Fragment
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Feed feed = subscriptionAdapter.getSelectedFeed();
-        if (feed == null) {
+        NavDrawerData.DrawerItem drawerItem = subscriptionAdapter.getSelectedItem();
+        if (drawerItem == null) {
             return false;
         }
         int itemId = item.getItemId();
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.TAG && itemId == R.id.rename_folder_item) {
+            new RenameItemDialog(getActivity(), drawerItem).show();
+            return true;
+        }
+
+        Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
         if (itemId == R.id.remove_all_inbox_item) {
             displayConfirmationDialog(
                     R.string.remove_all_inbox_label,
@@ -340,13 +362,14 @@ public class SubscriptionFragment extends Fragment
                     () -> DBWriter.removeFeedNewFlag(feed.getId()));
             return true;
         } else if (itemId == R.id.edit_tags) {
-            TagSettingsDialog.newInstance(feed.getPreferences()).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+            TagSettingsDialog.newInstance(Collections.singletonList(feed.getPreferences()))
+                    .show(getChildFragmentManager(), TagSettingsDialog.TAG);
             return true;
         } else if (itemId == R.id.rename_item) {
-            new RenameFeedDialog(getActivity(), feed).show();
+            new RenameItemDialog(getActivity(), feed).show();
             return true;
-        } else if (itemId == R.id.remove_item) {
-            RemoveFeedDialog.show(getContext(), feed, null);
+        } else if (itemId == R.id.remove_feed) {
+            RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
@@ -390,7 +413,7 @@ public class SubscriptionFragment extends Fragment
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     @Override
     public void onEndSelectMode() {

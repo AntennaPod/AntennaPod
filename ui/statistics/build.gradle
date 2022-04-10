@@ -1,0 +1,33 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    lintOptions {
+        disable "InvalidPeriodicWorkRequestInterval", "MissingPermission", "GradleCompatible",
+                "QueryPermissionsNeeded", "Overdraw", "SetTextI18n", "RtlHardcoded"
+    }
+}
+
+dependencies {
+    implementation project(":core")
+    implementation project(':event')
+    implementation project(":model")
+    implementation project(":ui:common")
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.core:core:$coreVersion"
+    implementation "androidx.fragment:fragment:$fragmentVersion"
+    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
+
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+}

@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,11 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
@@ -40,11 +43,10 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -112,7 +114,7 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -168,10 +170,9 @@ public abstract class EpisodesListFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
-        if (!getUserVisibleHint()) {
-            return false;
-        }
-        if (!isVisible()) {
+        if (!getUserVisibleHint() || !isVisible() || !isMenuVisible()) {
+            // The method is called on all fragments in a ViewPager, so this needs to be ignored in invisible ones.
+            // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
         }
         if (item.getItemId() == R.id.share_item) {
@@ -286,7 +287,13 @@ public abstract class EpisodesListFragment extends Fragment {
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new EpisodeItemListAdapter(mainActivity);
+        listAdapter = new EpisodeItemListAdapter(mainActivity) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+        };
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
@@ -319,6 +326,23 @@ public abstract class EpisodesListFragment extends Fragment {
                     break;
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onKeyUp(KeyEvent event) {
+        if (!isAdded() || !isVisible() || !isMenuVisible()) {
+            return;
+        }
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_T:
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            case KeyEvent.KEYCODE_B:
+                recyclerView.smoothScrollToPosition(listAdapter.getItemCount() - 1);
+                break;
+            default:
+                break;
         }
     }
 

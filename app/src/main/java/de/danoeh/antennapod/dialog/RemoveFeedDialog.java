@@ -19,18 +19,18 @@ import io.reactivex.schedulers.Schedulers;
 public class RemoveFeedDialog {
     private static final String TAG = "RemoveFeedDialog";
 
-    public static void show(Context context, Feed feed, Runnable onSuccess) {
+    public static void show(Context context, Feed feed) {
         List<Feed> feeds = Collections.singletonList(feed);
         String message = getMessageId(context, feeds);
-        showDialog(context, feeds, message, onSuccess);
+        showDialog(context, feeds, message);
     }
 
-    public static void show(Context context, List<Feed> feeds, Runnable onSuccess) {
+    public static void show(Context context, List<Feed> feeds) {
         String message = getMessageId(context, feeds);
-        showDialog(context, feeds, message, onSuccess);
+        showDialog(context, feeds, message);
     }
 
-    private static void showDialog(Context context, List<Feed> feeds, String message, Runnable onSuccess) {
+    private static void showDialog(Context context, List<Feed> feeds, String message) {
         ConfirmationDialog dialog = new ConfirmationDialog(context, R.string.remove_feed_label, message) {
             @Override
             public void onConfirmButtonPressed(DialogInterface clickedDialog) {
@@ -42,20 +42,16 @@ public class RemoveFeedDialog {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                Completable.fromCallable(() -> {
+                Completable.fromAction(() -> {
                     for (Feed feed : feeds) {
                         DBWriter.deleteFeed(context, feed.getId()).get();
                     }
-                    return null;
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                             () -> {
                                 Log.d(TAG, "Feed(s) deleted");
-                                if (onSuccess != null) {
-                                    onSuccess.run();
-                                }
                                 progressDialog.dismiss();
                             }, error -> {
                                 Log.e(TAG, Log.getStackTraceString(error));
@@ -69,7 +65,7 @@ public class RemoveFeedDialog {
     private static String getMessageId(Context context, List<Feed> feeds) {
         if (feeds.size() == 1) {
             if (feeds.get(0).isLocalFeed()) {
-                return context.getString(R.string.feed_delete_confirmation_local_msg);
+                return context.getString(R.string.feed_delete_confirmation_local_msg, feeds.get(0).getTitle());
             } else {
                 return context.getString(R.string.feed_delete_confirmation_msg, feeds.get(0).getTitle());
             }

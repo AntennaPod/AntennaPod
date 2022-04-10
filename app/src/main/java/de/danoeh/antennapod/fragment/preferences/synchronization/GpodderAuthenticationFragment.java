@@ -250,18 +250,6 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         return false;
     }
 
-    private GpodnetDevice findDevice(String id) {
-        if (devices == null) {
-            return null;
-        }
-        for (GpodnetDevice device : devices) {
-            if (device.getId().equals(id)) {
-                return device;
-            }
-        }
-        return null;
-    }
-
     private void setupFinishView(View view) {
         final Button sync = view.findViewById(R.id.butSyncNow);
 

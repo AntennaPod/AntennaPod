@@ -37,7 +37,7 @@ public class ChapterMerger {
 
                 if (Math.abs(chapterTarget.getStart() - chapterOther.getStart()) > 1000) {
                     Log.e(TAG, "Chapter lists are too different. Cancelling merge.");
-                    return chapters1;
+                    return score(chapters1) > score(chapters2) ? chapters1 : chapters2;
                 }
 
                 if (TextUtils.isEmpty(chapterTarget.getImageUrl())) {
@@ -52,5 +52,19 @@ public class ChapterMerger {
             }
             return chapters2;
         }
+    }
+
+    /**
+     * Tries to give a score that can determine which list of chapters a user might want to see.
+     */
+    private static int score(List<Chapter> chapters) {
+        int score = 0;
+        for (Chapter chapter : chapters) {
+            score = score
+                    + (TextUtils.isEmpty(chapter.getTitle()) ? 0 : 1)
+                    + (TextUtils.isEmpty(chapter.getLink()) ? 0 : 1)
+                    + (TextUtils.isEmpty(chapter.getImageUrl()) ? 0 : 1);
+        }
+        return score;
     }
 }

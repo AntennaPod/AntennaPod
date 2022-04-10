@@ -109,7 +109,6 @@
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
@@ -120,7 +119,6 @@
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
@@ -131,7 +129,6 @@
     <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>

@@ -16,9 +16,6 @@ import java.io.InputStream;
 
 // see https://github.com/bumptech/glide/issues/699
 class AudioCoverFetcher implements DataFetcher<InputStream> {
-
-    private static final String TAG = "AudioCoverFetcher";
-
     private final String path;
     private final Context context;
 

@@ -4,6 +4,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 
 class PlaybackVolumeUpdater {
 

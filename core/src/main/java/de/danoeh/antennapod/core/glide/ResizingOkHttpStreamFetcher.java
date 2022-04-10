@@ -3,12 +3,13 @@ package de.danoeh.antennapod.core.glide;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.google.android.exoplayer2.util.Log;
 import okhttp3.Call;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -17,12 +18,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
-    private static final String TAG = "ResizingOkHttpStreamFetcher";
-    private static final int MAX_DIMENSIONS = 2000;
+    private static final String TAG = "ResizingOkHttpStreamFet";
+    private static final int MAX_DIMENSIONS = 1500;
     private static final int MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 
     private FileInputStream stream;
@@ -66,7 +68,9 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     BitmapFactory.decodeStream(in, null, options);
                     IOUtils.closeQuietly(in);
 
-                    if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
+                    if (options.outWidth == -1 || options.outHeight == -1) {
+                        throw new IOException("Not a valid image");
+                    } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
                         double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
                         options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
                     }
@@ -97,12 +101,13 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                             break;
                         }
                     }
+                    bitmap.recycle();
 
                     stream = new FileInputStream(tempOut);
                     callback.onDataReady(stream);
                     Log.d(TAG, "Compressed image from " + tempIn.length() / 1024
                             + " to " + tempOut.length() / 1024 + " kB (quality: " + quality + "%)");
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
 
                     try {

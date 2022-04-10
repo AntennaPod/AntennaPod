@@ -18,20 +18,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-
-import java.util.concurrent.TimeUnit;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
-    private Disposable timeUpdater;
-
     private EditText etxtTime;
     private Spinner spTimeUnit;
     private LinearLayout timeSetup;
@@ -47,19 +44,11 @@ public class SleepTimerDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void onSleepTimerUpdate() {
-                updateTime();
-            }
-
-            @Override
             public void loadMediaInfo() {
-                updateTime();
             }
         };
         controller.init();
-        timeUpdater = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tick -> updateTime());
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -68,9 +57,7 @@ public class SleepTimerDialog extends DialogFragment {
         if (controller != null) {
             controller.release();
         }
-        if (timeUpdater != null) {
-            timeUpdater.dispose();
-        }
+        EventBus.getDefault().unregister(this);
     }
 
     @NonNull
@@ -86,6 +73,7 @@ public class SleepTimerDialog extends DialogFragment {
         spTimeUnit = content.findViewById(R.id.spTimeUnit);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
+        timeDisplay.setVisibility(View.GONE);
         time = content.findViewById(R.id.time);
         Button extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
         extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));
@@ -170,13 +158,12 @@ public class SleepTimerDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void updateTime() {
-        if (controller == null) {
-            return;
-        }
-        timeSetup.setVisibility(controller.sleepTimerActive() ? View.GONE : View.VISIBLE);
-        timeDisplay.setVisibility(controller.sleepTimerActive() ? View.VISIBLE : View.GONE);
-        time.setText(Converter.getDurationStringLong((int) controller.getSleepTimerTimeLeft()));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void timerUpdated(SleepTimerUpdatedEvent event) {
+        timeDisplay.setVisibility(event.isOver() || event.isCancelled() ? View.GONE : View.VISIBLE);
+        timeSetup.setVisibility(event.isOver() || event.isCancelled() ? View.VISIBLE : View.GONE);
+        time.setText(Converter.getDurationStringLong((int) event.getTimeLeft()));
     }
 
     private void closeKeyboard(View content) {

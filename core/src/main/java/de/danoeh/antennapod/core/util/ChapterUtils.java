@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -11,11 +12,13 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
+import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentChapterReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
@@ -57,6 +60,7 @@ public class ChapterUtils {
         }
 
         List<Chapter> chaptersFromDatabase = null;
+        List<Chapter> chaptersFromPodcastIndex = null;
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
             if (feedMedia.getItem() == null) {
@@ -65,10 +69,17 @@ public class ChapterUtils {
             if (feedMedia.getItem().hasChapters()) {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
             }
+
+            if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
+                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
+                        feedMedia.getItem().getPodcastIndexChapterUrl());
+            }
+
         }
 
         List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
-        List<Chapter> chapters = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
         if (chapters == null) {
             // Do not try loading again. There are no chapters.
             playable.setChapters(Collections.emptyList());
@@ -123,6 +134,27 @@ public class ChapterUtils {
         }
     }
 
+    public static List<Chapter> loadChaptersFromUrl(String url) {
+        try {
+            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
+            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                List<Chapter> chapters = PodcastIndexChapterParser.parse(response.body().string());
+                if (chapters != null && !chapters.isEmpty()) {
+                    return chapters;
+                }
+            }
+            request = new Request.Builder().url(url).build();
+            response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return PodcastIndexChapterParser.parse(response.body().string());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @NonNull
     private static List<Chapter> readId3ChaptersFrom(CountingInputStream in) throws IOException, ID3ReaderException {
         ChapterReader reader = new ChapterReader(in);
@@ -139,8 +171,8 @@ public class ChapterUtils {
 
     @NonNull
     private static List<Chapter> readOggChaptersFromInputStream(InputStream input) throws VorbisCommentReaderException {
-        VorbisCommentChapterReader reader = new VorbisCommentChapterReader();
-        reader.readInputStream(input);
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(input);
+        reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {
             return Collections.emptyList();

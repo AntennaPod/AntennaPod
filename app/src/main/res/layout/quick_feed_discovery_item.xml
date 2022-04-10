@@ -2,6 +2,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp"
@@ -14,7 +15,8 @@
             android:elevation="4dp"
             android:outlineProvider="bounds"
             android:foreground="?android:attr/selectableItemBackground"
-            squareImageView:direction="width" />
+            squareImageView:direction="width"
+            tools:src="@android:drawable/sym_def_app_icon"/>
 
 </LinearLayout>
 

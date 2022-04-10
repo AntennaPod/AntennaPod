@@ -22,7 +22,7 @@ public class PlaybackSpeedIndicatorView extends View {
     private final RectF arcBounds = new RectF();
     private float angle = VALUE_UNSET;
     private float targetAngle = VALUE_UNSET;
-    private float degreePerFrame = 2;
+    private float degreePerFrame = 1.6f;
     private float paddingArc = 20;
     private float paddingIndicator = 10;
 

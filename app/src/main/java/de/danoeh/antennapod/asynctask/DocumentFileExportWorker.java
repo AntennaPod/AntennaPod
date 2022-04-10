@@ -36,7 +36,7 @@ public class DocumentFileExportWorker {
             OutputStreamWriter writer = null;
             try {
                 Uri uri = output.getUri();
-                outputStream = context.getContentResolver().openOutputStream(uri);
+                outputStream = context.getContentResolver().openOutputStream(uri, "wt");
                 if (outputStream == null) {
                     throw new IOException();
                 }

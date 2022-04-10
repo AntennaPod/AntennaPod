@@ -1,15 +1,17 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,25 +25,33 @@ import java.util.Set;
 import java.util.UUID;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
+import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
+import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
+    private static final String TAG = "LocalFeedUpdater";
 
     static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
 
-    public static void updateFeed(Feed feed, Context context) {
+    public static void updateFeed(Feed feed, Context context,
+                                  @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
-            tryUpdateFeed(feed, context);
+            tryUpdateFeed(feed, context, updaterProgressListener);
 
             if (mustReportDownloadSuccessful(feed)) {
                 reportSuccess(feed);
@@ -52,7 +62,8 @@ public class LocalFeedUpdater {
         }
     }
 
-    private static void tryUpdateFeed(Feed feed, Context context) throws IOException {
+    private static void tryUpdateFeed(Feed feed, Context context, UpdaterProgressListener updaterProgressListener)
+            throws IOException {
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
@@ -74,21 +85,8 @@ public class LocalFeedUpdater {
         List<DocumentFile> mediaFiles = new ArrayList<>();
         Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
-            String mime = file.getType();
-            if (mime == null) {
-                continue;
-            }
-
-            MediaType mediaType = MediaType.fromMimeType(mime);
-            if (mediaType == MediaType.UNKNOWN) {
-                String path = file.getUri().toString();
-                int fileExtensionPosition = path.lastIndexOf('.');
-                if (fileExtensionPosition >= 0) {
-                    String extensionWithoutDot = path.substring(fileExtensionPosition + 1);
-                    mediaType = MediaType.fromFileExtension(extensionWithoutDot);
-                }
-            }
-
+            String mimeType = MimeTypeUtils.getMimeType(file.getType(), file.getUri().toString());
+            MediaType mediaType = MediaType.fromMimeType(mimeType);
             if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
                 mediaFiles.add(file);
                 mediaFileNames.add(file.getName());
@@ -97,13 +95,16 @@ public class LocalFeedUpdater {
 
         // add new files to feed and update item data
         List<FeedItem> newItems = feed.getItems();
-        for (DocumentFile f : mediaFiles) {
-            FeedItem oldItem = feedContainsFile(feed, f.getName());
-            FeedItem newItem = createFeedItem(feed, f, context);
+        for (int i = 0; i < mediaFiles.size(); i++) {
+            FeedItem oldItem = feedContainsFile(feed, mediaFiles.get(i).getName());
+            FeedItem newItem = createFeedItem(feed, mediaFiles.get(i), context);
             if (oldItem == null) {
                 newItems.add(newItem);
             } else {
                 oldItem.updateFromOther(newItem);
+            }
+            if (updaterProgressListener != null) {
+                updaterProgressListener.onLocalFileScanned(i, mediaFiles.size());
             }
         }
 
@@ -116,7 +117,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        feed.setImageUrl(getImageUrl(context, documentFolder));
+        feed.setImageUrl(getImageUrl(documentFolder));
 
         feed.getPreferences().setAutoDownload(false);
         feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
@@ -134,7 +135,7 @@ public class LocalFeedUpdater {
      * Returns the image URL for the local feed.
      */
     @NonNull
-    static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
+    static String getImageUrl(@NonNull DocumentFile documentFolder) {
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
             DocumentFile image = documentFolder.findFile(iconLocation);
@@ -152,17 +153,7 @@ public class LocalFeedUpdater {
         }
 
         // use default icon as fallback
-        return getDefaultIconUrl(context);
-    }
-
-    /**
-     * Returns the URL of the default icon for a local feed. The URL refers to an app resource file.
-     */
-    public static String getDefaultIconUrl(Context context) {
-        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + context.getPackageName() + "/raw/"
-                + resourceEntryName;
+        return Feed.PREFIX_GENERATIVE_COVER + documentFolder.getUri();
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {
@@ -178,7 +169,7 @@ public class LocalFeedUpdater {
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
         FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
                 file.getName(), new Date(file.lastModified()), FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
+        item.disableAutoDownload();
 
         long size = file.length();
         FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),
@@ -220,6 +211,22 @@ public class LocalFeedUpdater {
         item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
         item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
+
+        try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+            Id3MetadataReader reader = new Id3MetadataReader(new CountingInputStream(inputStream));
+            reader.readInputStream();
+            item.setDescriptionIfLonger(reader.getComment());
+        } catch (IOException | ID3ReaderException e) {
+            Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+
+            try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+                VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                reader.readInputStream();
+                item.setDescriptionIfLonger(reader.getDescription());
+            } catch (IOException | VorbisCommentReaderException e2) {
+                Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+            }
+        }
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {
@@ -258,5 +265,10 @@ public class LocalFeedUpdater {
         // report success if the last update was not successful
         // (avoid logging success again if the last update was ok)
         return !lastDownloadStatus.isSuccessful();
+    }
+
+    @FunctionalInterface
+    public interface UpdaterProgressListener {
+        void onLocalFileScanned(int scanned, int totalFiles);
     }
 }

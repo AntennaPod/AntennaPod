@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,11 +35,11 @@ import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -47,7 +49,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -234,6 +235,23 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onKeyUp(KeyEvent event) {
+        if (!isAdded() || !isVisible() || !isMenuVisible()) {
+            return;
+        }
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_T:
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            case KeyEvent.KEYCODE_B:
+                recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount() - 1);
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -244,11 +262,12 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     private void refreshToolbarState() {
-        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
+        toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
+        toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
@@ -465,6 +484,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         progLoading.setVisibility(View.VISIBLE);
 
         speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
         speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
         speedDialView.removeActionItemById(R.id.mark_read_batch);
         speedDialView.removeActionItemById(R.id.mark_unread_batch);
@@ -503,7 +523,13 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         if (queue != null) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, swipeActions) {
+                    @Override
+                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                        super.onCreateContextMenu(menu, v, menuInfo);
+                        MenuItemUtils.setOnClickListeners(menu, QueueFragment.this::onContextItemSelected);
+                    }
+                };
                 recyclerAdapter.setOnSelectModeListener(this);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
@@ -631,11 +657,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         @Override
         public boolean isLongPressDragEnabled() {
             return false;
-        }
-
-        @Override
-        public boolean isItemViewSwipeEnabled() {
-            return !UserPreferences.isQueueLocked();
         }
 
         @Override

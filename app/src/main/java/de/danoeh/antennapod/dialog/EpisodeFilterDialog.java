@@ -2,6 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -14,7 +15,6 @@ import de.danoeh.antennapod.model.feed.FeedFilter;
  * Displays a dialog with a text box for filtering episodes and two radio buttons for exclusion/inclusion
  */
 public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
-
     private final FeedFilter initialFilter;
 
     public EpisodeFilterDialog(Context context, FeedFilter filter) {
@@ -26,8 +26,10 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
         setView(rootView);
 
         final EditText etxtEpisodeFilterText = rootView.findViewById(R.id.etxtEpisodeFilterText);
+        final EditText etxtEpisodeFilterDurationText = rootView.findViewById(R.id.etxtEpisodeFilterDurationText);
         final RadioButton radioInclude = rootView.findViewById(R.id.radio_filter_include);
         final RadioButton radioExclude = rootView.findViewById(R.id.radio_filter_exclude);
+        final CheckBox checkboxDuration = rootView.findViewById(R.id.checkbox_filter_duration);
 
         if (initialFilter.includeOnly()) {
             radioInclude.setChecked(true);
@@ -40,18 +42,31 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
             radioInclude.setChecked(false);
             etxtEpisodeFilterText.setText("");
         }
+        if (initialFilter.hasMinimalDurationFilter()) {
+            checkboxDuration.setChecked(true);
+            // Store minimal duration in seconds, show in minutes
+            etxtEpisodeFilterDurationText.setText(String.valueOf(initialFilter.getMinimalDurationFilter() / 60));
+        }
 
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                     String includeString = "";
                     String excludeString = "";
+                    int minimalDuration = -1;
                     if (radioInclude.isChecked()) {
                         includeString = etxtEpisodeFilterText.getText().toString();
                     } else {
                         excludeString = etxtEpisodeFilterText.getText().toString();
                     }
-
-                    onConfirmed(new FeedFilter(includeString, excludeString));
+                    if (checkboxDuration.isChecked()) {
+                        try {
+                            // Store minimal duration in seconds
+                            minimalDuration = Integer.parseInt(etxtEpisodeFilterDurationText.getText().toString()) * 60;
+                        } catch (NumberFormatException e) {
+                            // Do not change anything on error
+                        }
+                    }
+                    onConfirmed(new FeedFilter(includeString, excludeString, minimalDuration));
                 }
         );
     }

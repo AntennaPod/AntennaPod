@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.StatFs;
 import android.util.Log;
 
@@ -63,29 +62,15 @@ public class StorageUtils {
      */
     public static long getFreeSpaceAvailable(String path) {
         StatFs stat = new StatFs(path);
-        long availableBlocks;
-        long blockSize;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            availableBlocks = stat.getAvailableBlocksLong();
-            blockSize = stat.getBlockSizeLong();
-        } else {
-            availableBlocks = stat.getAvailableBlocks();
-            blockSize = stat.getBlockSize();
-        }
+        long availableBlocks = stat.getAvailableBlocksLong();
+        long blockSize = stat.getBlockSizeLong();
         return availableBlocks * blockSize;
     }
 
     public static long getTotalSpaceAvailable(String path) {
         StatFs stat = new StatFs(path);
-        long blockCount;
-        long blockSize;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            blockCount = stat.getBlockCountLong();
-            blockSize = stat.getBlockSizeLong();
-        } else {
-            blockCount = stat.getBlockCount();
-            blockSize = stat.getBlockSize();
-        }
+        long blockCount = stat.getBlockCountLong();
+        long blockSize = stat.getBlockSizeLong();
         return blockCount * blockSize;
     }
 }

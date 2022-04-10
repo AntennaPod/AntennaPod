@@ -23,13 +23,15 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.mapper.ChapterCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedItemCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedMediaCursorMapper;
-import de.danoeh.antennapod.core.storage.mapper.FeedPreferencesCursorMapper;
-import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.storage.database.mapper.DownloadStatusCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.ChapterCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedItemCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedMediaCursorMapper;
+import de.danoeh.antennapod.storage.database.mapper.FeedPreferencesCursorMapper;
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -101,7 +103,10 @@ public final class DBReader {
         try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
             List<String> result = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                result.add(cursor.getString(1));
+                String url = cursor.getString(1);
+                if (url != null && !url.startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
+                    result.add(url);
+                }
             }
             return result;
         } finally {
@@ -451,7 +456,7 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatus.fromCursor(cursor));
+                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
@@ -475,7 +480,7 @@ public final class DBReader {
         try (Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                downloadLog.add(DownloadStatus.fromCursor(cursor));
+                downloadLog.add(DownloadStatusCursorMapper.convert(cursor));
             }
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
@@ -559,6 +564,34 @@ public final class DBReader {
         adapter.open();
         try {
             return getFeedItem(itemId, adapter);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
+     * Get next feed item in queue following a particular feeditem
+     *
+     * @param item The FeedItem
+     * @return The FeedItem next in queue or null if the FeedItem could not be found.
+     */
+    @Nullable
+    public static FeedItem getNextInQueue(FeedItem item) {
+        Log.d(TAG, "getNextInQueue() called with: " + "itemId = [" + item.getId() + "]");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            FeedItem nextItem = null;
+            try (Cursor cursor = adapter.getNextInQueue(item)) {
+                List<FeedItem> list = extractItemlistFromCursor(adapter, cursor);
+                if (!list.isEmpty()) {
+                    nextItem = list.get(0);
+                    loadAdditionalFeedItemListData(list);
+                }
+                return nextItem;
+            } catch (Exception e) {
+                return null;
+            }
         } finally {
             adapter.close();
         }
@@ -743,26 +776,56 @@ public final class DBReader {
         }
     }
 
+    public static class MonthlyStatisticsItem {
+        public int year = 0;
+        public int month = 0;
+        public long timePlayed = 0;
+    }
+
+    @NonNull
+    public static List<MonthlyStatisticsItem> getMonthlyTimeStatistics() {
+        List<MonthlyStatisticsItem> months = new ArrayList<>();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getMonthlyStatisticsCursor()) {
+            int indexMonth = cursor.getColumnIndexOrThrow("month");
+            int indexYear = cursor.getColumnIndexOrThrow("year");
+            int indexTotalDuration = cursor.getColumnIndexOrThrow("total_duration");
+            while (cursor.moveToNext()) {
+                MonthlyStatisticsItem item = new MonthlyStatisticsItem();
+                item.month = Integer.parseInt(cursor.getString(indexMonth));
+                item.year = Integer.parseInt(cursor.getString(indexYear));
+                item.timePlayed = cursor.getLong(indexTotalDuration);
+                months.add(item);
+            }
+        }
+        adapter.close();
+        return months;
+    }
+
+    public static class StatisticsResult {
+        public List<StatisticsItem> feedTime = new ArrayList<>();
+        public long oldestDate = System.currentTimeMillis();
+    }
+
     /**
      * Searches the DB for statistics.
      *
      * @return The list of statistics objects
      */
     @NonNull
-    public static List<StatisticsItem> getStatistics() {
+    public static StatisticsResult getStatistics(boolean includeMarkedAsPlayed,
+                                                 long timeFilterFrom, long timeFilterTo) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        List<StatisticsItem> feedTime = new ArrayList<>();
-
+        StatisticsResult result = new StatisticsResult();
         List<Feed> feeds = getFeedList();
         for (Feed feed : feeds) {
-            long feedPlayedTimeCountAll = 0;
             long feedPlayedTime = 0;
             long feedTotalTime = 0;
             long episodes = 0;
             long episodesStarted = 0;
-            long episodesStartedIncludingMarked = 0;
             long totalDownloadSize = 0;
             long episodesDownloadCount = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
@@ -772,20 +835,22 @@ public final class DBReader {
                     continue;
                 }
 
-                feedPlayedTime += media.getPlayedDuration() / 1000;
-
-                if (item.isPlayed()) {
-                    feedPlayedTimeCountAll += media.getDuration() / 1000;
-                } else {
-                    feedPlayedTimeCountAll += media.getPosition() / 1000;
+                if (media.getLastPlayedTime() > 0 && media.getPlayedDuration() != 0) {
+                    result.oldestDate = Math.min(result.oldestDate, media.getLastPlayedTime());
+                }
+                if (media.getLastPlayedTime() >= timeFilterFrom
+                        && media.getLastPlayedTime() <= timeFilterTo) {
+                    if (media.getPlayedDuration() != 0) {
+                        feedPlayedTime += media.getPlayedDuration() / 1000;
+                    } else if (includeMarkedAsPlayed && item.isPlayed()) {
+                        feedPlayedTime += media.getDuration() / 1000;
+                    }
                 }
 
-                if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
+                boolean markedAsStarted = item.isPlayed() || media.getPosition() != 0;
+                boolean hasStatistics = media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0;
+                if (hasStatistics || (includeMarkedAsPlayed && markedAsStarted)) {
                     episodesStarted++;
-                }
-
-                if (item.isPlayed() || media.getPosition() != 0) {
-                    episodesStartedIncludingMarked++;
                 }
 
                 feedTotalTime += media.getDuration() / 1000;
@@ -797,13 +862,12 @@ public final class DBReader {
 
                 episodes++;
             }
-            feedTime.add(new StatisticsItem(
-                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize, episodesDownloadCount));
+            result.feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
+                    episodesStarted, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
-        return feedTime;
+        return result;
     }
 
     /**
@@ -817,7 +881,7 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        final LongIntMap feedCounters = adapter.getFeedCounters();
+        final LongIntMap feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 

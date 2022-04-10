@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
@@ -128,12 +127,6 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
 
 
         return fragment;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        return true;
     }
 
     @Override

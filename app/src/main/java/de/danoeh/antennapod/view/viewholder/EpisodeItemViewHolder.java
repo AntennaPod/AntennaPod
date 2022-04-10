@@ -21,16 +21,16 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -104,7 +104,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         title.setText(item.getTitle());
         leftPadding.setContentDescription(item.getTitle());
         pubDate.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
-        pubDate.setContentDescription(DateFormatter.formatForAccessibility(activity, item.getPubDate()));
+        pubDate.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         isInbox.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
@@ -145,8 +145,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
-        if (DownloadRequester.getInstance().isDownloadingFile(media)) {
-            final DownloadRequest downloadRequest = DownloadRequester.getInstance().getRequestFor(media);
+        if (DownloadService.isDownloadingFile(media.getDownload_url())) {
+            final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
             float percent = 0.01f * downloadRequest.getProgressPercent();
             secondaryActionProgress.setPercentage(Math.max(percent, 0.01f), item);
         } else if (media.isDownloaded()) {

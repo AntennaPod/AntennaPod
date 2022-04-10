@@ -14,11 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.text.TextUtilsCompat;
-import androidx.core.util.ObjectsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -26,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import de.danoeh.antennapod.R;
@@ -42,9 +39,10 @@ import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
@@ -53,7 +51,6 @@ import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -72,6 +69,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -149,7 +147,7 @@ public class ItemFragment extends Fragment {
         webvDescription = layout.findViewById(R.id.webvDescription);
         webvDescription.setTimecodeSelectedListener(time -> {
             if (controller != null && item.getMedia() != null && controller.getMedia() != null
-                    && ObjectsCompat.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
+                    && Objects.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position,
@@ -190,13 +188,15 @@ public class ItemFragment extends Fragment {
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
-        boolean isLocaleRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
-                == ViewCompat.LAYOUT_DIRECTION_RTL;
+        boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
+                == View.LAYOUT_DIRECTION_RTL;
         Balloon balloon = new Balloon.Builder(getContext())
                 .setArrowOrientation(ArrowOrientation.TOP)
+                .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
                 .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
                 .setWidthRatio(1.0f)
-                .isRtlSupport(true)
+                .setMarginLeft(8)
+                .setMarginRight(8)
                 .setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSecondary))
                 .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                 .setLayout(R.layout.popup_bubble_view)
@@ -224,12 +224,6 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        load();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -240,6 +234,7 @@ public class ItemFragment extends Fragment {
             }
         };
         controller.init();
+        load();
     }
 
     @Override
@@ -288,7 +283,7 @@ public class ItemFragment extends Fragment {
         if (item.getPubDate() != null) {
             String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
-            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(getContext(), item.getPubDate()));
+            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
 
         RequestOptions options = new RequestOptions()
@@ -341,7 +336,7 @@ public class ItemFragment extends Fragment {
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+            if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item);
@@ -393,7 +388,7 @@ public class ItemFragment extends Fragment {
         long mediaId = item.getMedia().getId();
         if (ArrayUtils.contains(update.mediaIds, mediaId)) {
             if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
+                updateButtons();
             }
         }
     }

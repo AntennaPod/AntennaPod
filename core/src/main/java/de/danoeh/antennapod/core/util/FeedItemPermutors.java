@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -49,6 +50,12 @@ public class FeedItemPermutors {
             case DURATION_LONG_SHORT:
                 comparator = (f1, f2) -> Integer.compare(duration(f2), duration(f1));
                 break;
+            case EPISODE_FILENAME_A_Z:
+                comparator = (f1, f2) -> itemLink(f1).compareTo(itemLink(f2));
+                break;
+            case EPISODE_FILENAME_Z_A:
+                comparator = (f1, f2) -> itemLink(f2).compareTo(itemLink(f1));
+                break;
             case FEED_TITLE_A_Z:
                 comparator = (f1, f2) -> feedTitle(f1).compareTo(feedTitle(f2));
                 break;
@@ -77,25 +84,28 @@ public class FeedItemPermutors {
 
     @NonNull
     private static Date pubDate(@Nullable FeedItem item) {
-        return (item != null && item.getPubDate() != null) ?
-                item.getPubDate() : new Date(0);
+        return (item != null && item.getPubDate() != null) ? item.getPubDate() : new Date(0);
     }
 
     @NonNull
     private static String itemTitle(@Nullable FeedItem item) {
-        return (item != null && item.getTitle() != null) ?
-                item.getTitle() : "";
+        return (item != null && item.getTitle() != null) ? item.getTitle().toLowerCase(Locale.getDefault()) : "";
     }
 
     private static int duration(@Nullable FeedItem item) {
-        return (item != null && item.getMedia() != null) ?
-                item.getMedia().getDuration() : 0;
+        return (item != null && item.getMedia() != null) ? item.getMedia().getDuration() : 0;
+    }
+
+    @NonNull
+    private static String itemLink(@Nullable FeedItem item) {
+        return (item != null && item.getLink() != null)
+                ? item.getLink().toLowerCase(Locale.getDefault()) : "";
     }
 
     @NonNull
     private static String feedTitle(@Nullable FeedItem item) {
-        return (item != null && item.getFeed() != null && item.getFeed().getTitle() != null) ?
-                item.getFeed().getTitle() : "";
+        return (item != null && item.getFeed() != null && item.getFeed().getTitle() != null)
+                ? item.getFeed().getTitle().toLowerCase(Locale.getDefault()) : "";
     }
 
     /**

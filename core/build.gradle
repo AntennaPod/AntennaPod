@@ -1,13 +1,14 @@
-apply plugin: "com.android.library"
+plugins {
+    id("com.android.library")
+}
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
 android {
     lintOptions {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
-                "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity", "CheckResult",
-                "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates"
+                "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
+                "StaticFieldLeak", "IconDensities", "IconDuplicates"
     }
 
     defaultConfig {
@@ -20,14 +21,19 @@ android {
 }
 
 dependencies {
+    implementation project(':event')
     implementation project(':model')
     implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':parser:media')
+    implementation project(':playback:base')
+    implementation project(':playback:cast')
+    implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:i18n')
     implementation project(':ui:png-icons')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
@@ -36,6 +42,7 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
@@ -56,20 +63,18 @@ dependencies {
 
     implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
+    implementation "com.google.android.exoplayer:extension-okhttp:$exoPlayerVersion"
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Non-free dependencies:
-    playApi 'com.google.android.libraries.cast.companionlibrary:ccl:2.9.1'
-    playApi 'androidx.mediarouter:mediarouter:1.0.0'
-    playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
     playApi "com.google.android.support:wearable:$wearableSupportVersion"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    testImplementation 'junit:junit:4.13'
+    testImplementation "junit:junit:$junitVersion"
     testImplementation 'org.mockito:mockito-inline:3.5.13'
-    testImplementation 'org.robolectric:robolectric:4.5-alpha-1'
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"

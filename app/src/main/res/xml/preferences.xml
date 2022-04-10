@@ -44,11 +44,6 @@
             android:title="@string/notification_pref_fragment"
             android:icon="@drawable/ic_notifications"/>
 
-    <Preference
-            android:key="statistics"
-            android:title="@string/statistics_label"
-            android:icon="@drawable/ic_statistics" />
-
     <PreferenceCategory
             android:key="project"
             android:title="@string/project_pref">

@@ -120,7 +120,7 @@ public class FeedItemMenuHandler {
      * @return true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem, int... excludeIds) {
-        if (menu == null || selectedItem == null ) {
+        if (menu == null || selectedItem == null) {
             return false;
         }
         boolean rc = onPrepareMenu(menu, selectedItem);

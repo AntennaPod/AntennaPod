@@ -3,6 +3,9 @@ package de.danoeh.antennapod.adapter;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+import androidx.palette.graphics.Palette;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +22,9 @@ import com.bumptech.glide.request.transition.Transition;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.glide.PaletteBitmap;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class CoverLoader {
     private int resource = 0;
@@ -77,7 +83,7 @@ public class CoverLoader {
         if (resource != 0) {
             Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined);
+            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined, null);
             return;
         }
 
@@ -86,12 +92,14 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
-        RequestBuilder<Drawable> builder = Glide.with(activity)
+        RequestBuilder<PaletteBitmap> builder = Glide.with(activity)
+                .as(PaletteBitmap.class)
                 .load(uri)
                 .apply(options);
 
         if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
             builder = builder.error(Glide.with(activity)
+                    .as(PaletteBitmap.class)
                     .load(fallbackUri)
                     .apply(options));
         }
@@ -99,7 +107,7 @@ public class CoverLoader {
         builder.into(coverTarget);
     }
 
-    static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
+    static class CoverTarget extends CustomViewTarget<ImageView, PaletteBitmap> {
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
         private boolean textAndImageCombined;
@@ -120,23 +128,38 @@ public class CoverLoader {
         }
 
         @Override
-        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-            setPlaceholderVisibility(placeholder.get(), textAndImageCombined);
+        public void onResourceReady(@NonNull PaletteBitmap resource,
+                                    @Nullable Transition<? super PaletteBitmap> transition) {
             ImageView ivCover = cover.get();
-            ivCover.setImageDrawable(resource);
+            ivCover.setImageBitmap(resource.bitmap);
+            setPlaceholderVisibility(placeholder.get(), textAndImageCombined, resource.palette);
         }
 
         @Override
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
+            setPlaceholderVisibility(this.placeholder.get(), textAndImageCombined, null);
         }
 
-        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined) {
+        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined, Palette palette) {
+            boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (placeholder != null) {
-                if (textAndImageCombined) {
+                if (textAndImageCombined || showTitle) {
                     int bgColor = placeholder.getContext().getResources().getColor(R.color.feed_text_bg);
-                    placeholder.setBackgroundColor(bgColor);
+                    if (palette == null || !showTitle) {
+                        placeholder.setBackgroundColor(bgColor);
+                        placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
+                                android.R.attr.textColorPrimary));
+                        return;
+                    }
+                    int dominantColor = palette.getDominantColor(bgColor);
+                    int textColor = placeholder.getContext().getResources().getColor(R.color.white);
+                    if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
+                        textColor = placeholder.getContext().getResources().getColor(R.color.black);
+                    }
+                    placeholder.setTextColor(textColor);
+                    placeholder.setBackgroundColor(dominantColor);
                 } else {
                     placeholder.setVisibility(View.INVISIBLE);
                 }

@@ -16,35 +16,52 @@ public abstract class IntraFeedSortDialog {
     @NonNull
     protected Context context;
 
-    public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder) {
+    private final String[] sortItems;
+    private final SortOrder[] sortValues;
+
+    public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder, @NonNull boolean isLocalFeed) {
         this.context = context;
         this.currentSortOrder = sortOrder;
+
+        if (isLocalFeed) {
+            sortItems = context.getResources().getStringArray(R.array.local_feed_episodes_sort_options);
+            final String[] localSortStringValues =
+                    context.getResources().getStringArray(R.array.local_feed_episodes_sort_values);
+            sortValues = SortOrder.valuesOf(localSortStringValues);
+        } else {
+            sortItems = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
+            final String[] commonSortStringValues =
+                    context.getResources().getStringArray(R.array.feed_episodes_sort_values);
+            sortValues = SortOrder.valuesOf(commonSortStringValues);
+        }
     }
 
     public void openDialog() {
-        final String[] items = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
-        final String[] valueStrs = context.getResources().getStringArray(R.array.feed_episodes_sort_values);
-        final SortOrder[] values = new SortOrder[valueStrs.length];
-        for (int i = 0; i < valueStrs.length; i++) {
-            values[i] = SortOrder.valueOf(valueStrs[i]);
-        }
+        int idxCurrentSort = getCurrentSortOrderIndex();
 
-        int idxCurrentSort = 0;
-        for  (int i = 0; i < values.length; i++) {
-            if (currentSortOrder == values[i]) {
-                idxCurrentSort = i;
-                break;
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.sort)
+                        .setSingleChoiceItems(sortItems, idxCurrentSort, (dialog, idxNewSort) -> {
+                            updateSort(sortValues[idxNewSort]);
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
+
+    /**
+     * Retrieves index of currentSortOrder index in values array.
+     * @return if currentSortOrder is found in array - returns index of that element,
+     *         otherwise returns 0, the default sort option;
+     */
+    private int getCurrentSortOrderIndex() {
+        for (int i = 0; i < sortValues.length; i++) {
+            if (currentSortOrder == sortValues[i]) {
+                return i;
             }
         }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.sort);
-        builder.setSingleChoiceItems(items, idxCurrentSort, (dialog, idxNewSort) -> {
-            updateSort(values[idxNewSort]);
-            dialog.dismiss();
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        return 0;
     }
 
     protected abstract void updateSort(@NonNull SortOrder sortOrder);

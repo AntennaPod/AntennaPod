@@ -70,7 +70,7 @@
         custom:showAsAction="never" />
 
     <item
-        android:id="@+id/remove_item"
+        android:id="@+id/remove_feed"
         android:icon="@drawable/ic_delete"
         android:menuCategory="container"
         android:title="@string/remove_feed_label"

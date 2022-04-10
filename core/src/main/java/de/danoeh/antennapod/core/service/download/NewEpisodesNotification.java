@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -16,12 +17,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 public class NewEpisodesNotification {
     private static final String TAG = "NewEpisodesNotification";
@@ -35,7 +36,7 @@ public class NewEpisodesNotification {
     public void loadCountersBeforeRefresh() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        countersBefore = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW);
+        countersBefore = adapter.getFeedCounters(FeedCounter.SHOW_NEW);
         adapter.close();
     }
 
@@ -68,7 +69,8 @@ public class NewEpisodesNotification {
         intent.setComponent(new ComponentName(context, "de.danoeh.antennapod.activity.MainActivity"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("fragment_feed_id", feed.getId());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
 
         Notification notification = new NotificationCompat.Builder(
                 context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
@@ -79,6 +81,7 @@ public class NewEpisodesNotification {
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
+                .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .build();
 
@@ -92,7 +95,8 @@ public class NewEpisodesNotification {
         intent.setComponent(new ComponentName(context, "de.danoeh.antennapod.activity.MainActivity"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("fragment_tag", "EpisodesFragment");
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
 
         Notification notificationGroupSummary = new NotificationCompat.Builder(
                 context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
@@ -102,6 +106,7 @@ public class NewEpisodesNotification {
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
+                .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, 0, notificationGroupSummary);
@@ -125,7 +130,7 @@ public class NewEpisodesNotification {
     private static int getNewEpisodeCount(long feedId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        int episodeCount = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW, feedId).get(feedId);
+        int episodeCount = adapter.getFeedCounters(FeedCounter.SHOW_NEW, feedId).get(feedId);
         adapter.close();
         return episodeCount;
     }

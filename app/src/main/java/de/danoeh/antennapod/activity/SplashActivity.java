@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.error.CrashReportWriter;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

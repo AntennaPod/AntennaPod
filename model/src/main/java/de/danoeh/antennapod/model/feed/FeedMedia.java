@@ -226,10 +226,6 @@ public class FeedMedia extends FeedFile implements Playable {
         return mime_type;
     }
 
-    public void setMime_type(String mime_type) {
-        this.mime_type = mime_type;
-    }
-
     @Nullable
     public FeedItem getItem() {
         return item;

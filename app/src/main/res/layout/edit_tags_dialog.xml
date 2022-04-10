@@ -7,6 +7,16 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/commonTagsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="@dimen/text_size_micro"
+        android:paddingBottom="16dp"
+        android:text="@string/multi_feed_common_tags_info" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tagsRecycler"
         android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,14 +32,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.SyncServiceEvent;
+import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueStorage;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
@@ -55,8 +57,9 @@ import de.danoeh.antennapod.net.sync.nextcloud.NextcloudSyncService;
 
 public class SyncService extends Worker {
     public static final String TAG = "SyncService";
-
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
+
+    private static boolean isCurrentlyActive = false;
     private final SynchronizationQueueStorage synchronizationQueueStorage;
 
     public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -73,10 +76,11 @@ public class SyncService extends Worker {
         }
 
         SynchronizationSettings.updateLastSynchronizationAttempt();
+        setCurrentlyActive(true);
         try {
             activeSyncProvider.login();
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
             syncSubscriptions(activeSyncProvider);
+            waitForDownloadServiceCompleted();
             syncEpisodeActions(activeSyncProvider);
             activeSyncProvider.logout();
             clearErrorNotifications();
@@ -98,13 +102,18 @@ public class SyncService extends Worker {
                 updateErrorNotification(e);
                 return Result.failure();
             }
+        } finally {
+            setCurrentlyActive(false);
         }
+    }
+
+    private static void setCurrentlyActive(boolean active) {
+        isCurrentlyActive = active;
     }
 
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void syncImmediately(Context context) {
@@ -112,7 +121,6 @@ public class SyncService extends Worker {
                 .setInitialDelay(0L, TimeUnit.SECONDS)
                 .build();
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void fullSync(Context context) {
@@ -122,12 +130,12 @@ public class SyncService extends Worker {
                     .setInitialDelay(0L, TimeUnit.SECONDS)
                     .build();
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
         });
     }
 
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
         final long lastSync = SynchronizationSettings.getLastSubscriptionSynchronizationTimestamp();
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
@@ -137,13 +145,14 @@ public class SyncService extends Worker {
 
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
+            if (!downloadUrl.startsWith("http")) { // Also matches https
+                Log.d(TAG, "Skipping url: " + downloadUrl);
+                continue;
+            }
             if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
-                try {
-                    DownloadRequester.getInstance().downloadFeed(getApplicationContext(), feed);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                }
+                DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+                DownloadService.download(getApplicationContext(), false, builder.build());
             }
         }
 
@@ -176,6 +185,18 @@ public class SyncService extends Worker {
             }
         }
         SynchronizationSettings.setLastSubscriptionSynchronizationAttemptTimestamp(newTimeStamp);
+    }
+
+    private void waitForDownloadServiceCompleted() {
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
+        try {
+            while (DownloadService.isRunning) {
+                //noinspection BusyWait
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void syncEpisodeActions(ISyncService syncServiceImpl) throws SyncServiceException {
@@ -284,7 +305,8 @@ public class SyncService extends Worker {
         Intent intent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(
                 getApplicationContext().getPackageName());
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                R.id.pending_intent_sync_error, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                R.id.pending_intent_sync_error, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                        | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),
                 NotificationUtils.CHANNEL_ID_SYNC_ERROR)
                 .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
@@ -308,16 +330,28 @@ public class SyncService extends Worker {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);
         }
 
-        return new OneTimeWorkRequest.Builder(SyncService.class)
+        OneTimeWorkRequest.Builder builder = new OneTimeWorkRequest.Builder(SyncService.class)
                 .setConstraints(constraints.build())
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
-                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES);
+
+        if (isCurrentlyActive) {
+            // Debounce: don't start sync again immediately after it was finished.
+            builder.setInitialDelay(2L, TimeUnit.MINUTES);
+        } else {
+            // Give it some time, so other possible actions can be queued.
+            builder.setInitialDelay(20L, TimeUnit.SECONDS);
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+        }
+        return builder;
     }
 
     private ISyncService getActiveSyncProvider() {
         String selectedSyncProviderKey = SynchronizationSettings.getSelectedSyncProviderKey();
         SynchronizationProviderViewData selectedService = SynchronizationProviderViewData
-                .valueOf(selectedSyncProviderKey);
+                .fromIdentifier(selectedSyncProviderKey);
+        if (selectedService == null) {
+            return null;
+        }
         switch (selectedService) {
             case GPODDER_NET:
                 return new GpodnetService(AntennapodHttpClient.getHttpClient(),

@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -23,7 +25,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +70,7 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
+    public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -85,9 +87,8 @@ public class UserPreferences {
     private static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
-    private static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
+    public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
-    public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
@@ -126,12 +127,9 @@ public class UserPreferences {
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
-    private static final String PREF_LEFT_VOLUME = "prefLeftVolume";
-    private static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
-    public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
@@ -145,11 +143,6 @@ public class UserPreferences {
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
-    public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
-    public static final int FEED_COUNTER_SHOW_NEW = 1;
-    public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
-    public static final int FEED_COUNTER_SHOW_NONE = 3;
-    public static final int FEED_COUNTER_SHOW_DOWNLOADED = 4;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -207,7 +200,7 @@ public class UserPreferences {
     public static List<Integer> getCompactNotificationButtons() {
         String[] buttons = TextUtils.split(
                 prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
-                        String.valueOf(NOTIFICATION_BUTTON_SKIP)),
+                        NOTIFICATION_BUTTON_REWIND + "," + NOTIFICATION_BUTTON_FAST_FORWARD),
                 ",");
         List<Integer> notificationButtons = new ArrayList<>();
         for (String button : buttons) {
@@ -251,9 +244,9 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static int getFeedCounterSetting() {
-        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FEED_COUNTER_SHOW_NEW);
-        return Integer.parseInt(value);
+    public static FeedCounter getFeedCounterSetting() {
+        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FeedCounter.SHOW_NEW.id);
+        return FeedCounter.fromOrdinal(Integer.parseInt(value));
     }
 
     /**
@@ -467,7 +460,7 @@ public class UserPreferences {
     }
 
     public static boolean shouldPauseForFocusLoss() {
-        return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
+        return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, true);
     }
 
 
@@ -610,22 +603,22 @@ public class UserPreferences {
     public static void setProxyConfig(ProxyConfig config) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_PROXY_TYPE, config.type.name());
-        if(TextUtils.isEmpty(config.host)) {
+        if (TextUtils.isEmpty(config.host)) {
             editor.remove(PREF_PROXY_HOST);
         } else {
             editor.putString(PREF_PROXY_HOST, config.host);
         }
-        if(config.port <= 0 || config.port > 65535) {
+        if (config.port <= 0 || config.port > 65535) {
             editor.remove(PREF_PROXY_PORT);
         } else {
             editor.putInt(PREF_PROXY_PORT, config.port);
         }
-        if(TextUtils.isEmpty(config.username)) {
+        if (TextUtils.isEmpty(config.username)) {
             editor.remove(PREF_PROXY_USER);
         } else {
             editor.putString(PREF_PROXY_USER, config.username);
         }
-        if(TextUtils.isEmpty(config.password)) {
+        if (TextUtils.isEmpty(config.password)) {
             editor.remove(PREF_PROXY_PASSWORD);
         } else {
             editor.putString(PREF_PROXY_PASSWORD, config.password);
@@ -813,7 +806,7 @@ public class UserPreferences {
             }
         }
         // If this preference hasn't been set yet, return the default options
-        return Arrays.asList(0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f);
+        return Arrays.asList(1.0f, 1.25f, 1.5f);
     }
 
     public static String getMediaPlayer() {
@@ -828,10 +821,6 @@ public class UserPreferences {
         return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
-    public static void enableSonic() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
-    }
-
     public static void enableExoplayer() {
         prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
     }
@@ -844,15 +833,6 @@ public class UserPreferences {
         prefs.edit()
                 .putBoolean(PREF_STEREO_TO_MONO, enable)
                 .apply();
-    }
-
-    public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
-        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
-            case "stop": return VideoBackgroundBehavior.STOP;
-            case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
-            case "pip": //Deliberate fall-through
-            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
-        }
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
@@ -887,51 +867,39 @@ public class UserPreferences {
      *
      * @param type The name of the folder inside the data folder. May be null
      *             when accessing the root of the data folder.
-     * @return The data folder that has been requested or null if the folder
-     * could not be created.
+     * @return The data folder that has been requested or null if the folder could not be created.
      */
-    public static File getDataFolder(String type) {
-        String strDir = prefs.getString(PREF_DATA_FOLDER, null);
-        if (strDir == null) {
-            Log.d(TAG, "Using default data folder");
-            return context.getExternalFilesDir(type);
-        } else {
-            File dataDir = new File(strDir);
-            if (!dataDir.exists()) {
-                if (!dataDir.mkdir()) {
-                    Log.w(TAG, "Could not create data folder");
-                    return null;
-                }
-            }
+    public static File getDataFolder(@Nullable String type) {
+        File dataFolder = getTypeDir(prefs.getString(PREF_DATA_FOLDER, null), type);
+        if (dataFolder == null || !dataFolder.canWrite()) {
+            Log.d(TAG, "User data folder not writable or not set. Trying default.");
+            dataFolder = context.getExternalFilesDir(type);
+        }
+        if (dataFolder == null || !dataFolder.canWrite()) {
+            Log.d(TAG, "Default data folder not available or not writable. Falling back to internal memory.");
+            dataFolder = getTypeDir(context.getFilesDir().getAbsolutePath(), type);
+        }
+        return dataFolder;
+    }
 
-            if (type == null) {
-                return dataDir;
-            } else {
-                // handle path separators
-                String[] dirs = type.split("/");
-                for (int i = 0; i < dirs.length; i++) {
-                    if (dirs.length > 0) {
-                        if (i < dirs.length - 1) {
-                            dataDir = getDataFolder(dirs[i]);
-                            if (dataDir == null) {
-                                return null;
-                            }
-                        }
-                        type = dirs[i];
-                    }
-                }
-                File typeDir = new File(dataDir, type);
-                if (!typeDir.exists()) {
-                    if (dataDir.canWrite()) {
-                        if (!typeDir.mkdir()) {
-                            Log.e(TAG, "Could not create data folder named " + type);
-                            return null;
-                        }
-                    }
-                }
-                return typeDir;
+    @Nullable
+    private static File getTypeDir(@Nullable String baseDirPath, @Nullable String type) {
+        if (baseDirPath == null) {
+            return null;
+        }
+        File baseDir = new File(baseDirPath);
+        File typeDir = type == null ? baseDir : new File(baseDir, type);
+        if (!typeDir.exists()) {
+            if (!baseDir.canWrite()) {
+                Log.e(TAG, "Base dir is not writable " + baseDir.getAbsolutePath());
+                return null;
+            }
+            if (!typeDir.mkdirs()) {
+                Log.e(TAG, "Could not create type dir " + typeDir.getAbsolutePath());
+                return null;
             }
         }
+        return typeDir;
     }
 
     public static void setDataFolder(String dir) {
@@ -964,17 +932,6 @@ public class UserPreferences {
      */
     public static boolean isAutoUpdateTimeOfDay() {
         return getUpdateTimeOfDay().length == 2;
-    }
-
-    /**
-     * Evaluates whether Cast support (Chromecast, Audio Cast, etc) is enabled on the preferences.
-     */
-    public static boolean isCastEnabled() {
-        return prefs.getBoolean(PREF_CAST_ENABLED, false);
-    }
-
-    public enum VideoBackgroundBehavior {
-        STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
     }
 
     public enum BackButtonBehavior {
@@ -1070,19 +1027,7 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static long getUsageCountingDateMillis() {
-        return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
-    }
-
-    private static void setUsageCountingDateMillis(long value) {
-        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
-    }
-
-    public static void resetUsageCountingDate() {
-        setUsageCountingDateMillis(Calendar.getInstance().getTimeInMillis());
-    }
-
-    public static void unsetUsageCountingDate() {
-        setUsageCountingDateMillis(-1);
+    public static boolean shouldShowSubscriptionTitle() {
+        return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
     }
 }

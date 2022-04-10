@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -30,7 +32,6 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.databinding.AddfeedBinding;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -140,9 +141,12 @@ public class AddFeedFragment extends Fragment {
         alertViewBinding.urlEditText.setHint(R.string.add_podcast_by_url_hint);
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        String clipboardContent = clipboard.getText() != null ? clipboard.getText().toString() : "";
-        if (clipboardContent.trim().startsWith("http")) {
-            alertViewBinding.urlEditText.setText(clipboardContent.trim());
+        final ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData != null && clipData.getItemCount() > 0 && clipData.getItemAt(0).getText() != null) {
+            final String clipboardContent = clipData.getItemAt(0).getText().toString();
+            if (clipboardContent.trim().startsWith("http")) {
+                alertViewBinding.urlEditText.setText(clipboardContent.trim());
+            }
         }
         builder.setView(alertViewBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label,
@@ -158,6 +162,10 @@ public class AddFeedFragment extends Fragment {
     }
 
     private void performSearch() {
+        viewBinding.combinedFeedSearchEditText.clearFocus();
+        InputMethodManager in = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(viewBinding.combinedFeedSearchEditText.getWindowToken(), 0);
         String query = viewBinding.combinedFeedSearchEditText.getText().toString();
         if (query.matches("http[s]?://.*")) {
             addUrl(query);
@@ -199,7 +207,7 @@ public class AddFeedFragment extends Fragment {
                         });
     }
 
-    private Feed addLocalFolder(Uri uri) throws DownloadRequestException {
+    private Feed addLocalFolder(Uri uri) {
         if (Build.VERSION.SDK_INT < 21) {
             return null;
         }

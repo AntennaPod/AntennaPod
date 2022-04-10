@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,7 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -78,7 +77,7 @@ public class ItemPagerFragment extends Fragment implements Toolbar.OnMenuItemCli
         // > When using FragmentStatePagerAdapter the host ViewPager must have a valid ID set.
         // When opening multiple ItemPagerFragments by clicking "item" -> "visit podcast" -> "item" -> etc,
         // the ID is no longer unique and FragmentStatePagerAdapter does not display any pages.
-        int newId = ViewCompat.generateViewId();
+        int newId = View.generateViewId();
         if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
             // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
             newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);

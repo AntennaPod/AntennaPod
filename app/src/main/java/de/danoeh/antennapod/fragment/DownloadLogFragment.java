@@ -1,39 +1,28 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
+import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -106,51 +95,8 @@ public class DownloadLogFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         Object item = adapter.getItem(position);
-        if (item instanceof Downloader) {
-            DownloadRequest downloadRequest = ((Downloader) item).getDownloadRequest();
-            DownloadRequester.getInstance().cancelDownload(getActivity(), downloadRequest.getSource());
-
-            if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                FeedMedia media = DBReader.getFeedMedia(downloadRequest.getFeedfileId());
-                FeedItem feedItem = media.getItem();
-                feedItem.setAutoDownload(false);
-                DBWriter.setFeedItem(feedItem);
-            }
-        } else if (item instanceof DownloadStatus) {
-            DownloadStatus status = (DownloadStatus) item;
-            String url = "unknown";
-            String message = getString(R.string.download_successful);
-            if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-                if (media != null) {
-                    url = media.getDownload_url();
-                }
-            } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                Feed feed = DBReader.getFeed(status.getFeedfileId());
-                if (feed != null) {
-                    url = feed.getDownload_url();
-                }
-            }
-
-            if (!status.isSuccessful()) {
-                message = status.getReasonDetailed();
-            }
-
-            String messageFull = getString(R.string.download_error_details_message, message, url);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle(R.string.download_error_details);
-            builder.setMessage(messageFull);
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
-                ClipboardManager clipboard = (ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(getString(R.string.download_error_details), messageFull);
-                clipboard.setPrimaryClip(clip);
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                        R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
-            });
-            Dialog dialog = builder.show();
-            ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
+        if (item instanceof DownloadStatus) {
+            new DownloadLogDetailsDialog(getContext(), (DownloadStatus) item).show();
         }
     }
 
@@ -196,7 +142,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     private void loadDownloadLog() {
         if (disposable != null) {

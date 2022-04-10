@@ -5,12 +5,8 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
@@ -19,7 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,7 +31,6 @@ import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.favorites.FavoritesWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DatabaseExporter;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -42,10 +39,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
@@ -107,15 +102,13 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private void setupStorageScreen() {
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_OPML, dateStampFilename(DEFAULT_OPML_OUTPUT_NAME),
-                            chooseOpmlExportPathLauncher, new OpmlWriter());
+                    openExportPathPicker(Export.OPML, chooseOpmlExportPathLauncher, new OpmlWriter());
                     return true;
                 }
         );
         findPreference(PREF_HTML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_HTML, dateStampFilename(DEFAULT_HTML_OUTPUT_NAME),
-                            chooseHtmlExportPathLauncher, new HtmlWriter());
+                    openExportPathPicker(Export.HTML, chooseHtmlExportPathLauncher, new HtmlWriter());
                     return true;
                 });
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
@@ -139,13 +132,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_FAVORITE_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker(CONTENT_TYPE_HTML, dateStampFilename(DEFAULT_FAVORITES_OUTPUT_NAME),
-                            chooseFavoritesExportPathLauncher, new FavoritesWriter());
+                    openExportPathPicker(Export.FAVORITES, chooseFavoritesExportPathLauncher, new FavoritesWriter());
                     return true;
                 });
     }
 
-    private void exportWithWriter(ExportWriter exportWriter, final Uri uri) {
+    private void exportWithWriter(ExportWriter exportWriter, Uri uri, Export exportType) {
         Context context = getActivity();
         progressDialog.show();
         if (uri == null) {
@@ -155,7 +147,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
                                 context.getString(R.string.provider_authority), output);
-                        showExportSuccessDialog(output.toString(), fileUri);
+                        showExportSuccessDialog(output.toString(), fileUri, exportType);
                     }, this::showExportErrorDialog, progressDialog::dismiss);
         } else {
             DocumentFileExportWorker worker = new DocumentFileExportWorker(exportWriter, context, uri);
@@ -163,27 +155,13 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output ->
-                            showExportSuccessDialog(output.getUri().toString(), output.getUri()),
+                            showExportSuccessDialog(output.getUri().toString(), output.getUri(), exportType),
                             this::showExportErrorDialog, progressDialog::dismiss);
         }
     }
 
     private void exportDatabase() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
-        } else {
-            File sd = Environment.getExternalStorageDirectory();
-            File backupDB = new File(sd, dateStampFilename(DATABASE_EXPORT_FILENAME));
-            progressDialog.show();
-            disposable = Completable.fromAction(() ->
-                        DatabaseExporter.exportToStream(new FileOutputStream(backupDB), getContext()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
-                        progressDialog.dismiss();
-                    }, this::showExportErrorDialog);
-        }
+        backupDatabaseLauncher.launch(dateStampFilename(DATABASE_EXPORT_FILENAME));
     }
 
     private void importDatabase() {
@@ -195,18 +173,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         // add a button
         builder.setNegativeButton(R.string.no, null);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(intent);
-                    } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
-                        restoreDatabaseLauncher.launch(Intent.createChooser(intent,
-                                getString(R.string.import_select_file)));
-                    }
-                }
-        );
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            restoreDatabaseLauncher.launch(intent);
+        });
 
         // create and show the alert dialog
         builder.show();
@@ -221,26 +191,18 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.show();
     }
 
-    private void showExportSuccessDialog(final String path, final Uri streamUri) {
+    private void showExportSuccessDialog(String path, Uri streamUri, Export exportType) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_success_title);
         alert.setMessage(getContext().getString(R.string.export_success_sum, path));
         alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
-            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
-            sendIntent.setType("text/plain");
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-            }
-            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+            new ShareCompat.IntentBuilder(getContext())
+                    .setType(exportType.contentType)
+                    .setSubject(getString(exportType.labelResId))
+                    .addStream(streamUri)
+                    .setChooserTitle(R.string.send_label)
+                    .startChooser();
         });
         alert.create().show();
     }
@@ -259,7 +221,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new OpmlWriter(), uri);
+        exportWithWriter(new OpmlWriter(), uri, Export.OPML);
     }
 
     private void chooseHtmlExportPathResult(final ActivityResult result) {
@@ -267,7 +229,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new HtmlWriter(), uri);
+        exportWithWriter(new HtmlWriter(), uri, Export.HTML);
     }
 
     private void chooseFavoritesExportPathResult(final ActivityResult result) {
@@ -275,7 +237,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         final Uri uri = result.getData().getData();
-        exportWithWriter(new FavoritesWriter(), uri);
+        exportWithWriter(new FavoritesWriter(), uri, Export.FAVORITES);
     }
 
     private void restoreDatabaseResult(final ActivityResult result) {
@@ -289,7 +251,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
-                    UserPreferences.unsetUsageCountingDate();
                     progressDialog.dismiss();
                 }, this::showExportErrorDialog);
     }
@@ -317,27 +278,26 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         startActivity(intent);
     }
 
-    private void openExportPathPicker(String contentType, String title,
-                                      final ActivityResultLauncher<Intent> result, ExportWriter writer) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(contentType)
-                    .putExtra(Intent.EXTRA_TITLE, title);
+    private void openExportPathPicker(Export exportType, ActivityResultLauncher<Intent> result, ExportWriter writer) {
+        String title = dateStampFilename(exportType.outputNameTemplate);
 
-            // Creates an implicit intent to launch a file manager which lets
-            // the user choose a specific directory to export to.
-            try {
-                result.launch(intentPickAction);
-                return;
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
-            }
+        Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType(exportType.contentType)
+                .putExtra(Intent.EXTRA_TITLE, title);
+
+        // Creates an implicit intent to launch a file manager which lets
+        // the user choose a specific directory to export to.
+        try {
+            result.launch(intentPickAction);
+            return;
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "No activity found. Should never happen...");
         }
 
         // If we are using a SDK lower than API 21 or the implicit intent failed
         // fallback to the legacy export process
-        exportWithWriter(writer, null);
+        exportWithWriter(writer, null, exportType);
     }
 
     private static class BackupDatabase extends ActivityResultContracts.CreateDocument {
@@ -347,6 +307,23 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             return super.createIntent(context, input)
                     .addCategory(Intent.CATEGORY_OPENABLE)
                     .setType("application/x-sqlite3");
+        }
+    }
+
+    private enum Export {
+        OPML(CONTENT_TYPE_OPML, DEFAULT_OPML_OUTPUT_NAME, R.string.opml_export_label),
+        HTML(CONTENT_TYPE_HTML, DEFAULT_HTML_OUTPUT_NAME, R.string.html_export_label),
+        FAVORITES(CONTENT_TYPE_HTML, DEFAULT_FAVORITES_OUTPUT_NAME, R.string.favorites_export_label);
+
+        final String contentType;
+        final String outputNameTemplate;
+        @StringRes
+        final int labelResId;
+
+        Export(String contentType, String outputNameTemplate, int labelResId) {
+            this.contentType = contentType;
+            this.outputNameTemplate = outputNameTemplate;
+            this.labelResId = labelResId;
         }
     }
 }

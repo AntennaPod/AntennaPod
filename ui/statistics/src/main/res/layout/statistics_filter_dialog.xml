@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/includeMarkedCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics_include_marked"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:id="@+id/dateSelectionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_from"
+                android:padding="4dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_to"
+                android:padding="4dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/timeFromSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/timeToSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/past_year_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_filter_past_year"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <Button
+                android:id="@+id/allTimeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_filter_all_time"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics_speed_not_counted"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

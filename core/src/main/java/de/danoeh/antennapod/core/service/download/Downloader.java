@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import androidx.annotation.NonNull;
 
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 
 /**
  * Downloads files
@@ -16,8 +18,8 @@ public abstract class Downloader implements Callable<Downloader> {
     private static final String TAG = "Downloader";
 
     private volatile boolean finished;
-
     public volatile boolean cancelled;
+    public String permanentRedirectUrl = null;
 
     @NonNull
     final DownloadRequest request;
@@ -29,7 +31,8 @@ public abstract class Downloader implements Callable<Downloader> {
         this.request = request;
         this.request.setStatusMsg(R.string.download_pending);
         this.cancelled = false;
-        this.result = new DownloadStatus(request, null, false, false, null);
+        this.result = new DownloadStatus(0, request.getTitle(), request.getFeedfileId(), request.getFeedfileType(),
+                false, cancelled, false, null, new Date(), null, request.isInitiatedByUser());
     }
 
     protected abstract void download();
@@ -49,10 +52,6 @@ public abstract class Downloader implements Callable<Downloader> {
             wifiLock.release();
         }
 
-        if (result == null) {
-            throw new IllegalStateException(
-                    "Downloader hasn't created DownloadStatus object");
-        }
         finished = true;
         return this;
     }

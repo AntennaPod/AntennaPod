@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <de.danoeh.antennapod.ui.statistics.PieChartView
+        android:id="@+id/pie_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="8dp"
+        android:maxWidth="800dp"
+        android:minWidth="460dp"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/total_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
+        android:gravity="center_horizontal"
+        android:textSize="28sp"
+        android:layout_marginBottom="4dp"
+        android:layout_above="@id/total_description"
+        tools:text="10.0 hours" />
+
+    <TextView
+        android:id="@+id/total_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:maxLines="3"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignBottom="@id/pie_chart" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/dividerVertical"
+        android:layout_below="@+id/pie_chart" />
+
+</RelativeLayout>

@@ -11,6 +11,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -32,7 +33,6 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -221,10 +221,6 @@ public class PlaybackTest {
         activityTestRule.launchActivity(new Intent());
         DBWriter.clearQueue().get();
         startLocalPlayback();
-    }
-
-    protected MainActivity getActivity() {
-        return activityTestRule.getActivity();
     }
 
     protected void setContinuousPlaybackPreference(boolean value) {

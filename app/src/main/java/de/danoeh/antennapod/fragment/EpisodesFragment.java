@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 
 public class EpisodesFragment extends PagedToolbarFragment {
 

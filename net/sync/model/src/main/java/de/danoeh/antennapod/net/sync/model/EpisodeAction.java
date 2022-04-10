@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.util.ObjectsCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -159,10 +159,10 @@ public class EpisodeAction {
                 && position == that.position
                 && total == that.total
                 && action != that.action
-                && ObjectsCompat.equals(podcast, that.podcast)
-                && ObjectsCompat.equals(episode, that.episode)
-                && ObjectsCompat.equals(timestamp, that.timestamp)
-                && ObjectsCompat.equals(guid, that.guid);
+                && Objects.equals(podcast, that.podcast)
+                && Objects.equals(episode, that.episode)
+                && Objects.equals(timestamp, that.timestamp)
+                && Objects.equals(guid, that.guid);
     }
 
     @Override

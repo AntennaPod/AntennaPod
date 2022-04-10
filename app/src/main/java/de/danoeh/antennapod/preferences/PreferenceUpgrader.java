@@ -39,9 +39,6 @@ public class PreferenceUpgrader {
     private static void upgrade(int oldVersion, Context context) {
         if (oldVersion == -1) {
             //New installation
-            if (UserPreferences.getUsageCountingDateMillis() < 0) {
-                UserPreferences.resetUsageCountingDate();
-            }
             return;
         }
         if (oldVersion < 1070196) {
@@ -93,9 +90,6 @@ public class PreferenceUpgrader {
                 UserPreferences.setEnqueueLocation(enqueueLocation);
             }
         }
-        if (oldVersion < 1080100) {
-            prefs.edit().putString(UserPreferences.PREF_VIDEO_BEHAVIOR, "pip").apply();
-        }
         if (oldVersion < 2010300) {
             // Migrate hardware button preferences
             if (prefs.getBoolean("prefHardwareForwardButtonSkips", false)) {
@@ -108,9 +102,12 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 2040000) {
-            SharedPreferences prefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
-            prefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + QueueFragment.TAG,
+            SharedPreferences swipePrefs = context.getSharedPreferences(SwipeActions.PREF_NAME, Context.MODE_PRIVATE);
+            swipePrefs.edit().putString(SwipeActions.KEY_PREFIX_SWIPEACTIONS + QueueFragment.TAG,
                     SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE).apply();
+        }
+        if (oldVersion < 2050000) {
+            prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, true).apply();
         }
     }
 }

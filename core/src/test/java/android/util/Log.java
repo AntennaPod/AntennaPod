@@ -215,6 +215,7 @@ public final class Log {
      * Added for this custom Log implementation, not in android sources.
      */
     private static final int WTF = 8;
+
     static int wtf(int logId, String tag, String msg, Throwable tr, boolean localStack,
                    boolean system) {
         return printlns(LOG_ID_MAIN, WTF, tag, msg, tr);

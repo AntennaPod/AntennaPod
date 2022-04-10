@@ -3,19 +3,21 @@ package de.danoeh.antennapod.fragment.actions;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceListDialog;
 import de.danoeh.antennapod.fragment.preferences.dialog.PreferenceSwitchDialog;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -32,8 +34,8 @@ public class FeedMultiSelectActionHandler {
     }
 
     public void handleAction(int id) {
-        if (id == R.id.remove_item) {
-            RemoveFeedDialog.show(activity, selectedItems, null);
+        if (id == R.id.remove_feed) {
+            RemoveFeedDialog.show(activity, selectedItems);
         } else if (id == R.id.keep_updated) {
             keepUpdatedPrefHandler();
         } else if (id == R.id.autodownload) {
@@ -42,6 +44,8 @@ public class FeedMultiSelectActionHandler {
             autoDeleteEpisodesPrefHandler();
         } else if (id == R.id.playback_speed) {
             playbackSpeedPrefHandler();
+        } else if (id == R.id.edit_tags) {
+            editFeedPrefTags();
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }
@@ -60,29 +64,27 @@ public class FeedMultiSelectActionHandler {
         preferenceSwitchDialog.openDialog();
     }
 
-    private static final DecimalFormat SPEED_FORMAT =
-            new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
-
     private void playbackSpeedPrefHandler() {
-        final String[] speeds = activity.getResources().getStringArray(R.array.playback_speed_values);
-        String[] values = new String[speeds.length + 1];
-        values[0] = SPEED_FORMAT.format(FeedPreferences.SPEED_USE_GLOBAL);
-
-        String[] entries = new String[speeds.length + 1];
-        entries[0] = activity.getString(R.string.feed_auto_download_global);
-
-        System.arraycopy(speeds, 0, values, 1, speeds.length);
-        System.arraycopy(speeds, 0, entries, 1, speeds.length);
-
-        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.playback_speed));
-        preferenceListDialog.openDialog(entries);
-        preferenceListDialog.setOnPreferenceChangedListener(pos -> {
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) values[pos]));
-            });
-
+        PlaybackSpeedFeedSettingDialogBinding viewBinding =
+                PlaybackSpeedFeedSettingDialogBinding.inflate(activity.getLayoutInflater());
+        viewBinding.seekBar.setProgressChangedListener(speed ->
+                viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
+        viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewBinding.seekBar.setEnabled(!isChecked);
+            viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
+            viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
         });
+        viewBinding.seekBar.updateSpeed(1.0f);
+        new AlertDialog.Builder(activity)
+                .setTitle(R.string.playback_speed)
+                .setView(viewBinding.getRoot())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
+                            ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
+                    saveFeedPreferences(feedPreferences -> feedPreferences.setFeedPlaybackSpeed(newSpeed));
+                })
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
     }
 
     private void autoDeleteEpisodesPrefHandler() {
@@ -135,5 +137,14 @@ public class FeedMultiSelectActionHandler {
             DBWriter.setFeedPreferences(feed.getPreferences());
         }
         showMessage(R.plurals.updated_feeds_batch_label, selectedItems.size());
+    }
+
+    private void editFeedPrefTags() {
+        ArrayList<FeedPreferences> preferencesList = new ArrayList<>();
+        for (Feed feed : selectedItems) {
+            preferencesList.add(feed.getPreferences());
+        }
+        TagSettingsDialog.newInstance(preferencesList).show(activity.getSupportFragmentManager(),
+                TagSettingsDialog.TAG);
     }
 }

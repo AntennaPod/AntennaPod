@@ -10,13 +10,11 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.preferences.PreferenceControllerFlavorHelper;
 import java.util.Map;
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,7 +29,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences_playback);
 
         setupPlaybackScreen();
-        PreferenceControllerFlavorHelper.setupFlavoredUI(this);
         buildSmartMarkAsPlayedPreference();
     }
 
@@ -56,11 +53,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
             return true;
         });
-        if (!PictureInPictureUtil.supportsPictureInPicture(activity)) {
-            ListPreference behaviour = findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
-            behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
-            behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
-        }
         findPreference(PREF_PLAYBACK_PREFER_STREAMING).setOnPreferenceChangeListener((preference, newValue) -> {
             // Update all visible lists to reflect new streaming action button
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());

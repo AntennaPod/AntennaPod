@@ -16,7 +16,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -72,7 +71,7 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     private void updateToolbar() {
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),

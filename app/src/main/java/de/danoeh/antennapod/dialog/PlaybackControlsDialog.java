@@ -10,14 +10,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.view.PlaybackSpeedSeekBar;
-
 import java.util.List;
-import java.util.Locale;
 
 public class PlaybackControlsDialog extends DialogFragment {
     private PlaybackController controller;
@@ -66,13 +62,6 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        final TextView txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
-
-        PlaybackSpeedSeekBar speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
-        speedSeekBar.setController(controller);
-        speedSeekBar.setProgressChangedListener(speed
-                -> txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
-
         final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
         if (controller != null && !controller.canDownmix()) {

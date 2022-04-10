@@ -1,7 +1,7 @@
 plugins {
     id('com.android.application')
     id('com.getkeepsafe.dexcount')
-    id('com.github.triplet.play') version '3.6.0-agp4.2' apply false
+    id('com.github.triplet.play') version '3.7.0-agp4.2' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -11,8 +11,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2040001
-        versionName "2.4.0-beta1"
+        versionCode 2050195
+        versionName "2.5.1"
 
         def commit = ""
         try {
@@ -43,8 +43,8 @@ android {
 
     signingConfigs {
         releaseConfig {
-            v1SigningEnabled true
-            v2SigningEnabled true
+            enableV1Signing true
+            enableV2Signing true
 
             if (project.hasProperty("releaseStoreFile")) {
                 storeFile file(releaseStoreFile)
@@ -111,12 +111,18 @@ android {
 
 dependencies {
     implementation project(":core")
+    implementation project(":event")
     implementation project(':model')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
+    implementation project(':playback:base')
+    implementation project(':playback:cast')
+    implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:i18n')
+    implementation project(':ui:statistics')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -125,9 +131,11 @@ dependencies {
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
+    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
 
@@ -147,11 +155,11 @@ dependencies {
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation 'com.github.shts:TriangleLabelView:1.1.2'
-    implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:3.1.1'
+    implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-    implementation 'com.github.skydoves:balloon:1.1.5'
+    implementation 'com.github.skydoves:balloon:1.4.0'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
     implementation 'com.annimon:stream:1.2.2'
 

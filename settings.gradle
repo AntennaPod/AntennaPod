@@ -1,5 +1,6 @@
 include ':app'
 include ':core'
+include ':event'
 include ':model'
 
 include ':net:ssl'
@@ -9,6 +10,13 @@ include ':net:sync:model'
 include ':parser:feed'
 include ':parser:media'
 
+include ':playback:base'
+include ':playback:cast'
+
+include ':storage:database'
+
 include ':ui:app-start-intent'
 include ':ui:common'
+include ':ui:i18n'
 include ':ui:png-icons'
+include ':ui:statistics'

@@ -80,8 +80,6 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             }
 
             new PlaybackServiceStarter(getContext(), playable)
-                    .shouldStream(true)
-                    .startWhenPrepared(true)
                     .callEvenIfRunning(true)
                     .start();
 
@@ -95,7 +93,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                 holder.preview.setVisibility(View.GONE);
                 holder.description.setTag(Boolean.FALSE);
             } else {
-                holder.description.setMaxLines(2000);
+                holder.description.setMaxLines(30);
                 holder.description.setTag(Boolean.TRUE);
 
                 holder.preview.setVisibility(item.getMedia() != null ? View.VISIBLE : View.GONE);

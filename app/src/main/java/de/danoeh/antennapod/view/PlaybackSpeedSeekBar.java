@@ -9,11 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 public class PlaybackSpeedSeekBar extends FrameLayout {
     private SeekBar seekBar;
-    private PlaybackController controller;
     private Consumer<Float> progressChangedListener;
 
     public PlaybackSpeedSeekBar(@NonNull Context context) {
@@ -40,15 +38,9 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (controller != null) {
-                    float playbackSpeed = (progress + 10) / 20.0f;
-                    controller.setPlaybackSpeed(playbackSpeed);
-
-                    if (progressChangedListener != null) {
-                        progressChangedListener.accept(playbackSpeed);
-                    }
-                } else if (fromUser) {
-                    seekBar.post(() -> updateSpeed());
+                float playbackSpeed = (progress + 10) / 20.0f;
+                if (progressChangedListener != null) {
+                    progressChangedListener.accept(playbackSpeed);
                 }
             }
 
@@ -62,21 +54,23 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
         });
     }
 
-    public void updateSpeed() {
-        if (controller != null) {
-            seekBar.setProgress(Math.round((20 * controller.getCurrentPlaybackSpeedMultiplier()) - 10));
-        }
-    }
-
-    public void setController(PlaybackController controller) {
-        this.controller = controller;
-        updateSpeed();
-        if (progressChangedListener != null && controller != null) {
-            progressChangedListener.accept(controller.getCurrentPlaybackSpeedMultiplier());
-        }
+    public void updateSpeed(float speedMultiplier) {
+        seekBar.setProgress(Math.round((20 * speedMultiplier) - 10));
     }
 
     public void setProgressChangedListener(Consumer<Float> progressChangedListener) {
         this.progressChangedListener = progressChangedListener;
+    }
+
+    public float getCurrentSpeed() {
+        return (seekBar.getProgress() + 10) / 20.0f;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        seekBar.setEnabled(enabled);
+        findViewById(R.id.butDecSpeed).setEnabled(enabled);
+        findViewById(R.id.butIncSpeed).setEnabled(enabled);
     }
 }

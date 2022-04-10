@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +18,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -181,6 +184,23 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onKeyUp(KeyEvent event) {
+        if (!isAdded() || !isVisible() || !isMenuVisible()) {
+            return;
+        }
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_T:
+                recyclerView.smoothScrollToPosition(0);
+                break;
+            case KeyEvent.KEYCODE_B:
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryUpdated(PlaybackHistoryEvent event) {
         loadItems();
         refreshToolbarState();
@@ -227,7 +247,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         return history;
     }
 
-    private static class PlaybackHistoryListAdapter extends EpisodeItemListAdapter {
+    private class PlaybackHistoryListAdapter extends EpisodeItemListAdapter {
 
         public PlaybackHistoryListAdapter(MainActivity mainActivity) {
             super(mainActivity);
@@ -239,6 +259,12 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
             // in this fragment will, by definition, be played. So it serves no purpose and can make
             // it harder to read.
             holder.itemView.setAlpha(1.0f);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            MenuItemUtils.setOnClickListeners(menu, PlaybackHistoryFragment.this::onContextItemSelected);
         }
     }
 }

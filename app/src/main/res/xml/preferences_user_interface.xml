@@ -44,6 +44,11 @@
             android:title="@string/pref_filter_feed_title"
             android:key="prefSubscriptionsFilter"
             android:summary="@string/pref_filter_feed_sum" />
+        <SwitchPreferenceCompat
+            android:title="@string/pref_show_subscription_title"
+            android:key="prefSubscriptionTitle"
+            android:summary="@string/pref_show_subscription_title_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat

@@ -7,26 +7,17 @@ import android.os.Vibrator;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
-import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,7 +50,6 @@ public class PlaybackServiceTaskManager {
     private ScheduledFuture<?> positionSaverFuture;
     private ScheduledFuture<?> widgetUpdaterFuture;
     private ScheduledFuture<?> sleepTimerFuture;
-    private volatile Future<List<FeedItem>> queueFuture;
     private volatile Disposable chapterLoaderFuture;
 
     private SleepTimer sleepTimer;
@@ -82,88 +72,6 @@ public class PlaybackServiceTaskManager {
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
-        loadQueue();
-        EventBus.getDefault().register(this);
-    }
-
-    @Subscribe
-    public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent(QueueEvent " + event +")");
-        cancelQueueLoader();
-        loadQueue();
-    }
-
-    private synchronized boolean isQueueLoaderActive() {
-        return queueFuture != null && !queueFuture.isDone();
-    }
-
-    private synchronized void cancelQueueLoader() {
-        if (isQueueLoaderActive()) {
-            queueFuture.cancel(true);
-        }
-    }
-
-    private synchronized void loadQueue() {
-        if (!isQueueLoaderActive()) {
-            queueFuture = schedExecutor.submit(() -> DBReader.getQueue());
-        }
-    }
-
-    @Subscribe
-    public void onEvent(FeedItemEvent event) {
-        // Use case: when an item in the queue has been downloaded,
-        // listening to the event to ensure the downloaded item will be used.
-        Log.d(TAG, "onEvent(FeedItemEvent " + event + ")");
-
-        for (FeedItem item : event.items) {
-            if (isItemInQueue(item.getId())) {
-                Log.d(TAG, "onEvent(FeedItemEvent) - some item (" + item.getId() + ") in the queue has been updated (usually downloaded). Refresh the queue.");
-                cancelQueueLoader();
-                loadQueue();
-                return;
-            }
-        }
-    }
-
-    private boolean isItemInQueue(long itemId) {
-        List<FeedItem> queue = getQueueIfLoaded();
-        if (queue != null) {
-            for (FeedItem item : queue) {
-                if (item.getId() == itemId) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns the queue if it is already loaded or null if it hasn't been loaded yet.
-     * In order to wait until the queue has been loaded, use getQueue()
-     */
-    public synchronized List<FeedItem> getQueueIfLoaded() {
-        if (queueFuture.isDone()) {
-            try {
-                return queueFuture.get();
-            } catch (InterruptedException | ExecutionException | CancellationException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns the queue or waits until the PSTM has loaded the queue from the database.
-     */
-    public List<FeedItem> getQueue() throws InterruptedException {
-        if (queueFuture == null) {
-            loadQueue();
-        }
-        try {
-            return queueFuture.get();
-        } catch (ExecutionException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     /**
@@ -244,6 +152,7 @@ public class PlaybackServiceTaskManager {
         }
         sleepTimer = new SleepTimer(waitingTime);
         sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(waitingTime));
     }
 
     /**
@@ -287,7 +196,6 @@ public class PlaybackServiceTaskManager {
             return 0;
         }
     }
-
 
     /**
      * Returns true if the widget updater is currently running.
@@ -337,7 +245,6 @@ public class PlaybackServiceTaskManager {
         cancelPositionSaver();
         cancelWidgetUpdater();
         disableSleepTimer();
-        cancelQueueLoader();
 
         if (chapterLoaderFuture != null) {
             chapterLoaderFuture.dispose();
@@ -349,10 +256,9 @@ public class PlaybackServiceTaskManager {
      * Cancels all tasks and shuts down the internal executor service of the PSTM. The object should not be used after
      * execution of this method.
      */
-    public synchronized void shutdown() {
-        EventBus.getDefault().unregister(this);
+    public void shutdown() {
         cancelAllTasks();
-        schedExecutor.shutdown();
+        schedExecutor.shutdownNow();
     }
 
     private Runnable useMainThreadIfNecessary(Runnable runnable) {
@@ -377,27 +283,11 @@ public class PlaybackServiceTaskManager {
         private final long waitingTime;
         private long timeLeft;
         private ShakeListener shakeListener;
-        private final Handler handler;
 
         public SleepTimer(long waitingTime) {
             super();
             this.waitingTime = waitingTime;
             this.timeLeft = waitingTime;
-
-            if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
-                // Run callbacks in main thread so they can call ExoPlayer methods themselves
-                this.handler = new Handler(Looper.getMainLooper());
-            } else {
-                this.handler = null;
-            }
-        }
-
-        private void postCallback(Runnable r) {
-            if (handler == null) {
-                r.run();
-            } else {
-                handler.post(r);
-            }
         }
 
         @Override
@@ -417,6 +307,7 @@ public class PlaybackServiceTaskManager {
                 timeLeft -= now - lastTick;
                 lastTick = now;
 
+                EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(timeLeft));
                 if (timeLeft < NOTIFICATION_THRESHOLD) {
                     Log.d(TAG, "Sleep timer is about to expire");
                     if (SleepTimerPreferences.vibrate() && !hasVibrated) {
@@ -429,7 +320,6 @@ public class PlaybackServiceTaskManager {
                     if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
                         shakeListener = new ShakeListener(context, this);
                     }
-                    postCallback(() -> callback.onSleepTimerAlmostExpired(timeLeft));
                 }
                 if (timeLeft <= 0) {
                     Log.d(TAG, "Sleep timer expired");
@@ -438,11 +328,6 @@ public class PlaybackServiceTaskManager {
                         shakeListener = null;
                     }
                     hasVibrated = false;
-                    if (!Thread.currentThread().isInterrupted()) {
-                        postCallback(callback::onSleepTimerExpired);
-                    } else {
-                        Log.d(TAG, "Sleep timer interrupted");
-                    }
                 }
             }
         }
@@ -452,10 +337,8 @@ public class PlaybackServiceTaskManager {
         }
 
         public void restart() {
-            postCallback(() -> {
-                setSleepTimer(waitingTime);
-                callback.onSleepTimerReset();
-            });
+            EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
+            setSleepTimer(waitingTime);
             if (shakeListener != null) {
                 shakeListener.pause();
                 shakeListener = null;
@@ -467,18 +350,12 @@ public class PlaybackServiceTaskManager {
             if (shakeListener != null) {
                 shakeListener.pause();
             }
-            postCallback(callback::onSleepTimerReset);
+            EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         }
     }
 
     public interface PSTMCallback {
         void positionSaverTick();
-
-        void onSleepTimerAlmostExpired(long timeLeft);
-
-        void onSleepTimerExpired();
-
-        void onSleepTimerReset();
 
         WidgetUpdater.WidgetState requestWidgetState();
 

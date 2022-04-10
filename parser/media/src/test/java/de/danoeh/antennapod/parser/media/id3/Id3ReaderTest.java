@@ -4,6 +4,8 @@ import de.danoeh.antennapod.parser.media.id3.model.FrameHeader;
 import de.danoeh.antennapod.parser.media.id3.model.TagHeader;
 import org.apache.commons.io.input.CountingInputStream;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+@RunWith(RobolectricTestRunner.class)
 public class Id3ReaderTest {
     @Test
     public void testReadString() throws IOException {
