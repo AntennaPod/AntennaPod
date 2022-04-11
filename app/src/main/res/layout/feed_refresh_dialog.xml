@@ -10,7 +10,7 @@
         android:id="@+id/intervalRadioButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/feed_refresh_interval"/>
+        android:text="@string/feed_refresh_interval" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/feed_refresh_time" />
 
-    <TimePicker
+    <de.danoeh.antennapod.view.TimePicker
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,4 +36,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/feed_refresh_never" />
+
 </RadioGroup>
