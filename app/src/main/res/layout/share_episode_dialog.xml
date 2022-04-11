@@ -34,6 +34,12 @@
 
     </RadioGroup>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="?android:attr/listDivider" />
+
     <CheckBox
         android:id="@+id/share_position_checkbox"
         android:layout_width="match_parent"
