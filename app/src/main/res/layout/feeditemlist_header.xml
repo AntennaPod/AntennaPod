@@ -12,7 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="164dp"
+        android:layout_height="156dp"
         android:orientation="horizontal"
         android:gravity="bottom">
 
@@ -37,9 +37,19 @@
                 android:layout_marginLeft="-8dp"
                 android:layout_marginStart="-8dp"
                 android:scaleType="fitXY"
-                android:visibility="invisible"
                 android:padding="8dp"
                 app:srcCompat="@drawable/ic_info_white"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/butFilter"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/filter"
+                android:scaleType="fitXY"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_filter_white"
                 tools:visibility="visible" />
 
             <ImageButton
@@ -49,7 +59,6 @@
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/show_feed_settings_label"
                 android:scaleType="fitXY"
-                android:visibility="invisible"
                 android:padding="8dp"
                 app:srcCompat="@drawable/ic_settings_white"
                 tools:visibility="visible" />

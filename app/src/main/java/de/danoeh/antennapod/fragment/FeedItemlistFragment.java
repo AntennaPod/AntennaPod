@@ -145,10 +145,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
-                viewBinding.toolbar.getMenu().findItem(R.id.sort_items)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_sort));
-                viewBinding.toolbar.getMenu().findItem(R.id.filter_items)
-                        .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_filter));
                 viewBinding.toolbar.getMenu().findItem(R.id.refresh_item)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_refresh));
                 viewBinding.toolbar.getMenu().findItem(R.id.action_search)
@@ -499,16 +495,22 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // https://github.com/bumptech/glide/issues/529
         viewBinding.imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
-        viewBinding.header.butShowInfo.setVisibility(View.VISIBLE);
         viewBinding.header.butShowInfo.setOnClickListener(v -> showFeedInfo());
         viewBinding.header.imgvCover.setOnClickListener(v -> showFeedInfo());
-        viewBinding.header.butShowSettings.setVisibility(View.VISIBLE);
         viewBinding.header.butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
         });
+        viewBinding.header.butFilter.setOnClickListener(
+                v -> new FilterDialog(getContext(), feed.getItemFilter()) {
+                    @Override
+                    protected void updateFilter(Set<String> filterValues) {
+                        feed.setItemFilter(filterValues.toArray(new String[0]));
+                        DBWriter.setFeedItemsFilter(feed.getId(), filterValues);
+                    }
+                }.openDialog());
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
         headerCreated = true;
     }
