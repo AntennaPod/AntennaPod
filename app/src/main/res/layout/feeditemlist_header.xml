@@ -65,6 +65,22 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_rounded_corner_left" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_rounded_corner_right" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/coverHolder"
             android:layout_width="124dp"
