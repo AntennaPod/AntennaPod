@@ -49,7 +49,7 @@
         android:id="@+id/share_item"
         android:menuCategory="container"
         custom:showAsAction="never"
-        android:title="@string/share_label_with_ellipses" />
+        android:title="@string/share_label" />
 
     <item
         android:id="@+id/rename_item"
