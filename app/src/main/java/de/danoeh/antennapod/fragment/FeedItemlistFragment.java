@@ -350,7 +350,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (adapter != null) {
             for (int i = 0; i < adapter.getItemCount(); i++) {
-                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
+                        viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
                 if (holder != null && holder.isCurrentlyPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
@@ -454,7 +455,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             viewBinding.header.txtvFailure.setVisibility(View.GONE);
         }
         if (!feed.getPreferences().getKeepUpdated()) {
-            viewBinding.header.txtvUpdatesDisabled.setText("{md-pause-circle-outline} " + this.getString(R.string.updates_disabled_label));
+            viewBinding.header.txtvUpdatesDisabled.setText("{md-pause-circle-outline} "
+                    + this.getString(R.string.updates_disabled_label));
             Iconify.addIcons(viewBinding.header.txtvUpdatesDisabled);
             viewBinding.header.txtvUpdatesDisabled.setVisibility(View.VISIBLE);
         } else {
