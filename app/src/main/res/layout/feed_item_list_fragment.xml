@@ -29,6 +29,7 @@
                 app:layout_collapseParallaxMultiplier="0.6" />
 
             <include
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -73,6 +74,7 @@
         android:visibility="gone" />
 
     <include
+        android:id="@+id/more_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
