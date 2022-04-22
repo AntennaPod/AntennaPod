@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +18,8 @@ import java.util.ArrayList;
 public class RecursiveRadioGroup extends LinearLayout {
     private final ArrayList<RadioButton> radioButtons = new ArrayList<>();
     private RadioButton checkedButton = null;
+    @Nullable
+    private RadioGroup.OnCheckedChangeListener checkedChangeListener;
 
     public RecursiveRadioGroup(Context context) {
         super(context);
@@ -34,6 +39,10 @@ public class RecursiveRadioGroup extends LinearLayout {
         parseChild(child);
     }
 
+    public void setOnCheckedChangeListener(@Nullable RadioGroup.OnCheckedChangeListener listener) {
+        checkedChangeListener = listener;
+    }
+
     public void parseChild(final View child) {
         if (child instanceof RadioButton) {
             RadioButton button = (RadioButton) child;
@@ -43,6 +52,9 @@ public class RecursiveRadioGroup extends LinearLayout {
                     return;
                 }
                 checkedButton = (RadioButton) buttonView;
+                if (checkedChangeListener != null) {
+                    checkedChangeListener.onCheckedChanged(null, checkedButton.getId());
+                }
 
                 for (RadioButton view : radioButtons) {
                     if (view != buttonView) {

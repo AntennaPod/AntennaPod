@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.dialog.FilterDialog;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -43,15 +43,22 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
-            if (item.getItemId() == R.id.filter_items) {
-                showFilterDialog();
-                return true;
-            }
-            return false;
-        } else {
+        if (super.onOptionsItemSelected(item)) {
             return true;
         }
+        if (item.getItemId() == R.id.filter_items) {
+            AllEpisodesFilterDialog.newInstance(feedItemFilter).show(getChildFragmentManager(), null);
+            return true;
+        }
+        return false;
+    }
+
+    @Subscribe
+    public void onFilterChanged(AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent event) {
+        feedItemFilter = new FeedItemFilter(event.filterValues.toArray(new String[0]));
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putString(PREF_FILTER, StringUtils.join(event.filterValues, ",")).apply();
+        loadItems();
     }
 
     @Override
@@ -73,20 +80,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
-    }
-
-    private void showFilterDialog() {
-        FilterDialog filterDialog = new FilterDialog(getContext(), feedItemFilter) {
-            @Override
-            protected void updateFilter(Set<String> filterValues) {
-                feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[0]));
-                SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                prefs.edit().putString(PREF_FILTER, StringUtils.join(filterValues, ",")).apply();
-                loadItems();
-            }
-        };
-
-        filterDialog.openDialog();
     }
 
     @Override
