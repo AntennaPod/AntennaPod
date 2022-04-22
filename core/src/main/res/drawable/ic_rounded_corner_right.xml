@@ -3,5 +3,5 @@
     android:width="24dp"
     android:viewportWidth="8"
     android:viewportHeight="8">
-    <path android:fillColor="?attr/background_elevated" android:pathData="M8 8 0 8C4 8 8 4 8 0Z" />
+    <path android:fillColor="?attr/background_color" android:pathData="M8 8 0 8C4 8 8 4 8 0Z" />
 </vector>

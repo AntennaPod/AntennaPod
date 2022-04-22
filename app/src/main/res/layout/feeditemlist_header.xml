@@ -66,16 +66,16 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:scaleType="fitXY"
             android:src="@drawable/ic_rounded_corner_left" />
 
         <ImageView
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
@@ -109,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/coverHolder"
             android:layout_alignTop="@id/coverHolder"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical">
 
             <TextView
