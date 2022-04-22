@@ -5,23 +5,17 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Set;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
-import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -62,8 +56,6 @@ public class FeedMenuHandler {
             DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
         } else if (itemId == R.id.sort_items) {
             showSortDialog(context, selectedFeed);
-        } else if (itemId == R.id.filter_items) {
-            showFilterDialog(context, selectedFeed);
         } else if (itemId == R.id.mark_all_read_item) {
             ConfirmationDialog conDialog = new ConfirmationDialog(context,
                     R.string.mark_all_read_label,
@@ -86,19 +78,6 @@ public class FeedMenuHandler {
         }
         return true;
     }
-
-    private static void showFilterDialog(Context context, Feed selectedFeed) {
-        FilterDialog filterDialog = new FilterDialog(context, selectedFeed.getItemFilter()) {
-            @Override
-            protected void updateFilter(Set<String> filterValues) {
-                selectedFeed.setItemFilter(filterValues.toArray(new String[0]));
-                DBWriter.setFeedItemsFilter(selectedFeed.getId(), filterValues);
-            }
-        };
-
-        filterDialog.openDialog();
-    }
-
 
     private static void showSortDialog(Context context, Feed selectedFeed) {
         IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder(), selectedFeed.isLocalFeed()) {

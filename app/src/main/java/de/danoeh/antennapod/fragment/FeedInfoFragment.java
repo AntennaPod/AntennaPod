@@ -139,6 +139,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         infoContainer = root.findViewById(R.id.infoContainer);
         root.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         root.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        root.findViewById(R.id.butFilter).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 

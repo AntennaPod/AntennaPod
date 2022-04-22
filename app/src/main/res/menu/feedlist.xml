@@ -4,17 +4,9 @@
 
     <item
         android:id="@+id/sort_items"
-        android:icon="@drawable/ic_sort"
         android:menuCategory="container"
         android:title="@string/sort"
-        custom:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/filter_items"
-        android:icon="@drawable/ic_filter"
-        android:menuCategory="container"
-        android:title="@string/filter"
-        custom:showAsAction="always">
+        custom:showAsAction="never">
     </item>
     <item
         android:id="@+id/refresh_item"
