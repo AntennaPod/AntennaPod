@@ -73,6 +73,10 @@ public class HttpDownloader extends Downloader {
                 httpReq.cacheControl(new CacheControl.Builder().noCache().build()); // noStore breaks CDNs
             }
 
+            if (uri.getScheme().equals("http")) {
+                httpReq.addHeader("Upgrade-Insecure-Requests", "1");
+            }
+
             if (!TextUtils.isEmpty(request.getLastModified())) {
                 String lastModified = request.getLastModified();
                 Date lastModifiedDate = DateUtils.parse(lastModified);
@@ -284,14 +288,18 @@ public class HttpDownloader extends Downloader {
             responses.add(response);
             response = response.priorResponse();
         }
-        if (responses.isEmpty()) {
+        if (responses.size() < 2) {
             return;
         }
         Collections.reverse(responses);
         int firstCode = responses.get(0).code();
+        String firstUrl = responses.get(0).request().url().toString();
+        String secondUrl = responses.get(1).request().url().toString();
         if (firstCode == HttpURLConnection.HTTP_MOVED_PERM || firstCode == StatusLine.HTTP_PERM_REDIRECT) {
-            String secondUrl = responses.get(1).request().url().toString();
             Log.d(TAG, "Detected permanent redirect from " + request.getSource() + " to " + secondUrl);
+            permanentRedirectUrl = secondUrl;
+        } else if (secondUrl.equals(firstUrl.replace("http://", "https://"))) {
+            Log.d(TAG, "Treating http->https non-permanent redirect as permanent: " + firstUrl);
             permanentRedirectUrl = secondUrl;
         }
     }

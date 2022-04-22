@@ -11,15 +11,20 @@
         android:id="@+id/share_dialog_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/share_link_to_episode_radio"
+            android:id="@+id/share_social_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_dialog_link_to_episode"
+            android:text="@string/share_dialog_for_social"
             android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/share_media_receiver_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share_dialog_media_address" />
 
         <RadioButton
             android:id="@+id/share_media_file_radio"
@@ -29,13 +34,14 @@
 
     </RadioGroup>
 
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/share_dialog_include_label" />
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="?android:attr/listDivider" />
 
     <CheckBox
-        android:id="@+id/share_start_at_timer_dialog"
+        android:id="@+id/share_position_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/share_playback_position_dialog_label" />

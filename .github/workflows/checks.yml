@@ -10,6 +10,7 @@ jobs:
   code-style:
     name: "Code Style"
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v2
         with:
@@ -37,6 +38,7 @@ jobs:
     name: "Gradle Wrapper Validation"
     needs: code-style
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
@@ -45,6 +47,7 @@ jobs:
     name: "Static Code Analysis"
     needs: code-style
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v2
       - name: Cache Gradle
@@ -63,6 +66,7 @@ jobs:
     name: "Unit Test: ${{ matrix.variant }}"
     needs: code-style
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       matrix:
         include:
@@ -104,6 +108,7 @@ jobs:
     name: "Emulator Test"
     needs: code-style
     runs-on: macOS-latest
+    timeout-minutes: 45
     env:
       api-level: 27
     steps:

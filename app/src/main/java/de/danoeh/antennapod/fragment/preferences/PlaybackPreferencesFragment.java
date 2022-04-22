@@ -56,7 +56,8 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_PLAYBACK_PREFER_STREAMING).setOnPreferenceChangeListener((preference, newValue) -> {
             // Update all visible lists to reflect new streaming action button
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-            UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM);
+            // User consciously decided whether to prefer the streaming button, disable suggestion to change that
+            UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM);
             return true;
         });
 

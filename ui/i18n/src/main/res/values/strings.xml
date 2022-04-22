@@ -167,10 +167,8 @@
     <string name="rename_feed_label">Rename podcast</string>
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share</string>
-    <string name="share_label_with_ellipses">Share…</string>
     <string name="share_file_label">Share File</string>
-    <string name="share_website_url_label">Website address</string>
-    <string name="share_feed_url_label">Podcast feed URL</string>
+    <string name="share_rss_address_label">RSS address:</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
     <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts and ALL their episodes (including downloaded episodes).</string>
     <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
@@ -777,10 +775,10 @@
     <string name="rating_now_label" tools:ignore="UnusedResources">Sure, let\'s do this!</string>
 
     <!-- Share episode dialog -->
-    <string name="share_dialog_include_label">Include:</string>
-    <string name="share_playback_position_dialog_label">Playback position</string>
+    <string name="share_playback_position_dialog_label">Include playback position</string>
     <string name="share_dialog_episode_website_label">Episode webpage</string>
-    <string name="share_dialog_link_to_episode">Link to episode</string>
+    <string name="share_dialog_for_social">Social message</string>
+    <string name="share_dialog_media_address">Media address</string>
     <string name="share_dialog_media_file_label">Media file</string>
     <string name="share_starting_position_label">Starting from</string>
 

@@ -398,6 +398,7 @@ public abstract class EpisodesListFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
+                    loadingMoreView.setVisibility(View.GONE);
                     hasMoreItems = true;
                     episodes = data;
                     onFragmentLoaded(episodes);

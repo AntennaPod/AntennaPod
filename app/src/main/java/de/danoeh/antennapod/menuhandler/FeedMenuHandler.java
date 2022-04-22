@@ -36,7 +36,6 @@ public class FeedMenuHandler {
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
         if (StringUtils.isBlank(selectedFeed.getLink())) {
             menu.findItem(R.id.visit_website_item).setVisible(false);
-            menu.findItem(R.id.share_link_item).setVisible(false);
         }
         if (selectedFeed.isLocalFeed()) {
             // hide complete submenu "Share..." as both sub menu items are not visible
@@ -72,10 +71,8 @@ public class FeedMenuHandler {
             conDialog.createNewDialog().show();
         } else if (itemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedFeed.getLink());
-        } else if (itemId == R.id.share_link_item) {
-            ShareUtils.shareFeedlink(context, selectedFeed);
-        } else if (itemId == R.id.share_download_url_item) {
-            ShareUtils.shareFeedDownloadLink(context, selectedFeed);
+        } else if (itemId == R.id.share_item) {
+            ShareUtils.shareFeedLink(context, selectedFeed);
         } else {
             return false;
         }
