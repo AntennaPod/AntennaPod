@@ -39,14 +39,13 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
-import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.dialog.FeedItemFilterDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.event.FavoritesEvent;
@@ -77,7 +76,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Displays a list of FeedItems.
@@ -469,17 +467,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 viewBinding.header.txtvInformation.setText("{md-info-outline} "
                         + this.getString(R.string.filtered_label));
                 Iconify.addIcons(viewBinding.header.txtvInformation);
-                viewBinding.header.txtvInformation.setOnClickListener((l) -> {
-                    FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {
-                        @Override
-                        protected void updateFilter(Set<String> filterValues) {
-                            feed.setItemFilter(filterValues.toArray(new String[0]));
-                            DBWriter.setFeedItemsFilter(feed.getId(), filterValues);
-                        }
-                    };
-
-                    filterDialog.openDialog();
-                });
+                viewBinding.header.txtvInformation.setOnClickListener(l ->
+                        FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
                 viewBinding.header.txtvInformation.setVisibility(View.VISIBLE);
             } else {
                 viewBinding.header.txtvInformation.setVisibility(View.GONE);
@@ -504,14 +493,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
         });
-        viewBinding.header.butFilter.setOnClickListener(
-                v -> new FilterDialog(getContext(), feed.getItemFilter()) {
-                    @Override
-                    protected void updateFilter(Set<String> filterValues) {
-                        feed.setItemFilter(filterValues.toArray(new String[0]));
-                        DBWriter.setFeedItemsFilter(feed.getId(), filterValues);
-                    }
-                }.openDialog());
+        viewBinding.header.butFilter.setOnClickListener(v ->
+                FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
         headerCreated = true;
     }
