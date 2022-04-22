@@ -417,7 +417,7 @@
   <string name="pref_episode_cache_summary">Totalt antal af overførte afsnit gemt på din enhed. Automatisk overførsel stilles i bero, når dette nummer nåes.</string>
   <string name="pref_episode_cover_title">Brug afsnitbillede</string>
   <string name="pref_episode_cover_summary">Brug det afsnitspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcastens coverbillede.</string>
-  <string name="pref_show_remain_time_title">Hvis tilbageværende tid</string>
+  <string name="pref_show_remain_time_title">Vis resterende tid</string>
   <string name="pref_show_remain_time_summary">Vis resterende tid for afsnit når valgt. Hvis ikke valgt vises den samlede varighed af afsnit.</string>
   <string name="pref_theme_title_use_system">Brug systemtema</string>
   <string name="pref_theme_title_light">Lys</string>
