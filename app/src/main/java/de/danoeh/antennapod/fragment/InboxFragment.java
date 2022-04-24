@@ -88,6 +88,7 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
+        super.onEventMainThread(event);
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             updateToolbar();
         }
