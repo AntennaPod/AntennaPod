@@ -14,6 +14,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public static final String PREFS_NAME = "PlayerWidgetPrefs";
     private static final String KEY_ENABLED = "WidgetEnabled";
     public static final String KEY_WIDGET_COLOR = "widget_color";
+    public static final String KEY_WIDGET_PLAYBACK_SPEED = "widget_playback_speed";
     public static final String KEY_WIDGET_SKIP = "widget_skip";
     public static final String KEY_WIDGET_FAST_FORWARD = "widget_fast_forward";
     public static final String KEY_WIDGET_REWIND = "widget_rewind";
@@ -47,6 +48,7 @@ public class PlayerWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             prefs.edit().remove(KEY_WIDGET_COLOR + appWidgetId).apply();
+            prefs.edit().remove(KEY_WIDGET_PLAYBACK_SPEED + appWidgetId).apply();
             prefs.edit().remove(KEY_WIDGET_REWIND + appWidgetId).apply();
             prefs.edit().remove(KEY_WIDGET_FAST_FORWARD + appWidgetId).apply();
             prefs.edit().remove(KEY_WIDGET_SKIP + appWidgetId).apply();

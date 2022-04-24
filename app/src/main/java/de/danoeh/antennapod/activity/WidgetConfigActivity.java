@@ -20,6 +20,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private SeekBar opacitySeekBar;
     private TextView opacityTextView;
     private View widgetPreview;
+    private CheckBox ckPlaybackSpeed;
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
@@ -75,6 +76,8 @@ public class WidgetConfigActivity extends AppCompatActivity {
         progress.setVisibility(View.VISIBLE);
         progress.setText(R.string.position_default_label);
 
+        ckPlaybackSpeed = findViewById(R.id.ckPlaybackSpeed);
+        ckPlaybackSpeed.setOnClickListener(v -> displayPreviewPanel());
         ckRewind = findViewById(R.id.ckRewind);
         ckRewind.setOnClickListener(v -> displayPreviewPanel());
         ckFastForward = findViewById(R.id.ckFastForward);
@@ -84,10 +87,13 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private void displayPreviewPanel() {
-        boolean showExtendedPreview = ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
+        boolean showExtendedPreview =
+                ckPlaybackSpeed.isChecked() || ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.butPlaybackSpeed)
+                .setVisibility(ckPlaybackSpeed.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butFastForward)
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
@@ -100,6 +106,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, backgroundColor);
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, ckPlaybackSpeed.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());

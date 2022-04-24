@@ -110,32 +110,35 @@
     </style>
 
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack">
+    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 

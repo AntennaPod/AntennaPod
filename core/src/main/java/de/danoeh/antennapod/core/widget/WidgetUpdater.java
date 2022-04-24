@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 
 /**
@@ -73,6 +74,9 @@ public abstract class WidgetUpdater {
         } else {
             startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
         }
+
+        PendingIntent startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();
+
         RemoteViews views;
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
@@ -81,6 +85,7 @@ public abstract class WidgetUpdater {
             int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
 
             try {
                 icon = Glide.with(context)
@@ -165,13 +170,15 @@ public abstract class WidgetUpdater {
             } else {
                 views.setViewVisibility(R.id.layout_center, View.VISIBLE);
             }
+            boolean showPlaybackSpeed = prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + id, false);
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
 
-            if (showRewind || showSkip || showFastForward) {
+            if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
                 views.setInt(R.id.butPlay, "setVisibility", View.GONE);
+                views.setInt(R.id.butPlaybackSpeed, "setVisibility", showPlaybackSpeed ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);

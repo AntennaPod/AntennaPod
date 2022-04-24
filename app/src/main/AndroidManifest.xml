@@ -43,6 +43,17 @@
         android:allowAudioPlaybackCapture="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
+        <activity
+            android:name=".activity.PlaybackSpeedDialogActivity"
+            android:noHistory="true"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.AntennaPod.Light.Translucent">
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.PLAYBACK_SPEED" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true"/>
