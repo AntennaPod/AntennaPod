@@ -2,14 +2,12 @@ package de.danoeh.antennapod.core.widget;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -25,8 +23,8 @@ public class WidgetUpdaterWorker extends Worker {
     }
 
     public static void enqueueWork(final Context context) {
-        final WorkRequest workRequest = new OneTimeWorkRequest.Builder(WidgetUpdaterWorker.class).build();
-        WorkManager.getInstance(context).enqueue(workRequest);
+        final OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(WidgetUpdaterWorker.class).build();
+        WorkManager.getInstance(context).enqueueUniqueWork(TAG, ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     @NonNull

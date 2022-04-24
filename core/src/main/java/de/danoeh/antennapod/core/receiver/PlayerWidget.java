@@ -3,13 +3,11 @@ package de.danoeh.antennapod.core.receiver;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 import java.util.Arrays;
-
-import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
@@ -20,13 +18,6 @@ public class PlayerWidget extends AppWidgetProvider {
     public static final String KEY_WIDGET_FAST_FORWARD = "widget_fast_forward";
     public static final String KEY_WIDGET_REWIND = "widget_rewind";
     public static final int DEFAULT_COLOR = 0x00262C31;
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
-        super.onReceive(context, intent);
-        WidgetUpdaterWorker.enqueueWork(context);
-    }
 
     @Override
     public void onEnabled(Context context) {
