@@ -85,28 +85,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Playback Speed" />
+                    android:text="@string/playback_speed" />
 
                 <CheckBox
                     android:id="@+id/ckRewind"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Rewind" />
+                    android:text="@string/rewind_label" />
 
                 <CheckBox
                     android:id="@+id/ckFastForward"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Forward" />
+                    android:text="@string/fast_forward_label" />
 
                 <CheckBox
                     android:id="@+id/ckSkip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Skip" />
+                    android:text="@string/skip_episode_label" />
 
             </LinearLayout>
 
