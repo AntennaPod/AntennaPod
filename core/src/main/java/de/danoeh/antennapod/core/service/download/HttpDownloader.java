@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -35,7 +34,6 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okio.ByteString;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
@@ -336,17 +334,6 @@ public class HttpDownloader extends Downloader {
             } else {
                 Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
-        }
-    }
-
-    public static String encodeCredentials(String username, String password, String charset) {
-        try {
-            String credentials = username + ":" + password;
-            byte[] bytes = credentials.getBytes(charset);
-            String encoded = ByteString.of(bytes).base64();
-            return "Basic " + encoded;
-        } catch (UnsupportedEncodingException e) {
-            throw new AssertionError(e);
         }
     }
 }

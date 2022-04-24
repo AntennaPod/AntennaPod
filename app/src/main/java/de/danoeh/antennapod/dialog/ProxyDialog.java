@@ -165,7 +165,9 @@ public class ProxyDialog {
         if (!TextUtils.isEmpty(port)) {
             portValue = Integer.parseInt(port);
         }
-        UserPreferences.setProxyConfig(new ProxyConfig(typeEnum, host, portValue, username, password));
+        ProxyConfig config = new ProxyConfig(typeEnum, host, portValue, username, password);
+        UserPreferences.setProxyConfig(config);
+        AntennapodHttpClient.setProxyConfig(config);
     }
 
     private final TextWatcher requireTestOnChange = new TextWatcher() {

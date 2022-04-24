@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.URIUtil;
 import java.io.IOException;
@@ -67,8 +67,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         String password = userInfo.substring(userInfo.indexOf(':') + 1);
 
         Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
-        String credentials = HttpDownloader.encodeCredentials(username, password, "ISO-8859-1");
-        newRequest.header(HEADER_AUTHORIZATION, credentials);
+        newRequest.header(HEADER_AUTHORIZATION, HttpCredentialEncoder.encode(username, password, "ISO-8859-1"));
         response = chain.proceed(newRequest.build());
 
         if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -76,8 +75,7 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         }
 
         Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoded credentials");
-        credentials = HttpDownloader.encodeCredentials(username, password, "UTF-8");
-        newRequest.header(HEADER_AUTHORIZATION, credentials);
+        newRequest.header(HEADER_AUTHORIZATION, HttpCredentialEncoder.encode(username, password, "UTF-8"));
         return chain.proceed(newRequest.build());
     }
 }
