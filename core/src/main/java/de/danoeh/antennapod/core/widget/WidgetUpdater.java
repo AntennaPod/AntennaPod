@@ -75,12 +75,8 @@ public abstract class WidgetUpdater {
             startMediaPlayer = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
         }
 
-        PendingIntent startPlaybackSpeedDialog;
-        if (widgetState.media != null && widgetState.status == PlayerStatus.PLAYING) {
-            startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();
-        } else {
-            startPlaybackSpeedDialog = new MainActivityStarter(context).withOpenPlayer().getPendingIntent();
-        }
+        PendingIntent startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();
+
         RemoteViews views;
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
