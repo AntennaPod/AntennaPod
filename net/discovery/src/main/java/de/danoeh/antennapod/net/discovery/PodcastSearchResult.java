@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.discovery;
+package de.danoeh.antennapod.net.discovery;
 
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;

@@ -1,0 +1,37 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    defaultConfig {
+        if (project.hasProperty("podcastindexApiKey")) {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"' + podcastindexApiSecret + '"'
+        } else {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"XTMMQGA2YZ4WJUBYY4HK"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"XAaAhk4^2YBsTE33vdbwbZNj82ZRLABDDqFdKe7x"'
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPeriodicWorkRequestInterval', 'MissingPermission',
+                'GradleCompatible', 'AppCompatResource', 'QueryPermissionsNeeded'
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':model')
+    implementation project(':net:sync:gpoddernet')
+    implementation project(':net:sync:model')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+
+    implementation 'com.github.mfietz:fyydlin:v0.5.0'
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+}

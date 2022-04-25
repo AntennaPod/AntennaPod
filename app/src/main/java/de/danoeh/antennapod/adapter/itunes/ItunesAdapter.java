@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.adapter.itunes;
 
 import android.content.Context;
+import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,12 +14,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.discovery.PodcastSearchResult;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 
 public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
     /**

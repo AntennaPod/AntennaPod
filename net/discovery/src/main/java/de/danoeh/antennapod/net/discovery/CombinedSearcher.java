@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.discovery;
+package de.danoeh.antennapod.net.discovery;
 
 import android.text.TextUtils;
 import android.util.Log;

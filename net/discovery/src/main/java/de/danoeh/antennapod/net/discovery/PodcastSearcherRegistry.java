@@ -1,5 +1,4 @@
-package de.danoeh.antennapod.discovery;
-
+package de.danoeh.antennapod.net.discovery;
 
 import io.reactivex.Single;
 
