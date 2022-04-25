@@ -43,6 +43,7 @@ public class ClientConfig {
         SslProviderInstaller.install(context);
         NetworkUtils.init(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
+        AntennapodHttpClient.setProxyConfig(UserPreferences.getProxyConfig());
         SleepTimerPreferences.init(context);
         NotificationUtils.createChannels(context);
         initialized = true;
