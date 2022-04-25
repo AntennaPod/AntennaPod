@@ -20,6 +20,7 @@ import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -455,7 +456,7 @@ public class DownloadService extends Service {
         Log.d(TAG, "Received enqueue request. #requests=" + requests.size());
 
         if (intent.getBooleanExtra(EXTRA_CLEANUP_MEDIA, false)) {
-            UserPreferences.getEpisodeCleanupAlgorithm().makeRoomForEpisodes(getApplicationContext(), requests.size());
+            EpisodeCleanupAlgorithmFactory.build().makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
         for (DownloadRequest request : requests) {

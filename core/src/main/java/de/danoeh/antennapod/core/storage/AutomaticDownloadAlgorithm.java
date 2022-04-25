@@ -76,7 +76,7 @@ public class AutomaticDownloadAlgorithm {
 
                 int autoDownloadableEpisodes = candidates.size();
                 int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
-                int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
+                int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
                         UserPreferences.getEpisodeCacheSize() == UserPreferences.getEpisodeCacheSizeUnlimited();

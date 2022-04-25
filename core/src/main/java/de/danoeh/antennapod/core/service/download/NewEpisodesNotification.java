@@ -20,15 +20,16 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+
+import java.util.Map;
 
 public class NewEpisodesNotification {
     private static final String TAG = "NewEpisodesNotification";
     private static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private LongIntMap countersBefore;
+    private Map<Long, Integer> countersBefore;
 
     public NewEpisodesNotification() {
     }
@@ -46,7 +47,7 @@ public class NewEpisodesNotification {
             return;
         }
 
-        int newEpisodesBefore = countersBefore.get(feed.getId());
+        int newEpisodesBefore = countersBefore.containsKey(feed.getId()) ? countersBefore.get(feed.getId()) : 0;
         int newEpisodesAfter = getNewEpisodeCount(feed.getId());
 
         Log.d(TAG, "New episodes before: " + newEpisodesBefore + ", after: " + newEpisodesAfter);
@@ -130,7 +131,8 @@ public class NewEpisodesNotification {
     private static int getNewEpisodeCount(long feedId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        int episodeCount = adapter.getFeedCounters(FeedCounter.SHOW_NEW, feedId).get(feedId);
+        Map<Long, Integer> counters = adapter.getFeedCounters(FeedCounter.SHOW_NEW, feedId);
+        int episodeCount = counters.containsKey(feedId) ? counters.get(feedId) : 0;
         adapter.close();
         return episodeCount;
     }
