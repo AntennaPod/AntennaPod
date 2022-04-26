@@ -47,7 +47,9 @@ public class BasicAuthorizationInterceptor implements Interceptor {
         if (request.tag() instanceof DownloadRequest) {
             DownloadRequest downloadRequest = (DownloadRequest) request.tag();
             userInfo = URIUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
-            if (TextUtils.isEmpty(userInfo)) {
+            if (TextUtils.isEmpty(userInfo)
+                    && (!TextUtils.isEmpty(downloadRequest.getUsername())
+                        || !TextUtils.isEmpty(downloadRequest.getPassword()))) {
                 userInfo = downloadRequest.getUsername() + ":" + downloadRequest.getPassword();
             }
         } else {
