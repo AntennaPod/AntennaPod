@@ -1,9 +1,8 @@
-package de.danoeh.antennapod.discovery;
+package de.danoeh.antennapod.net.discovery;
 
 import android.content.Context;
 import android.util.Log;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;

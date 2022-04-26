@@ -3,6 +3,7 @@ include ':core'
 include ':event'
 include ':model'
 
+include ':net:discovery'
 include ':net:ssl'
 include ':net:sync:gpoddernet'
 include ':net:sync:model'

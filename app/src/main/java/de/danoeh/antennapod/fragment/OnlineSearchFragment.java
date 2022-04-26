@@ -23,9 +23,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.discovery.PodcastSearchResult;
-import de.danoeh.antennapod.discovery.PodcastSearcher;
-import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.net.discovery.PodcastSearcher;
+import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;

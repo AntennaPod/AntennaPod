@@ -19,8 +19,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.discovery.GpodnetPodcastSearcher;
 import de.danoeh.antennapod.fragment.OnlineSearchFragment;
+import de.danoeh.antennapod.net.discovery.GpodnetPodcastSearcher;
 
 /**
  * Main navigation hub for gpodder.net podcast directory

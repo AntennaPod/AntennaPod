@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.discovery.PodcastSearchResult;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

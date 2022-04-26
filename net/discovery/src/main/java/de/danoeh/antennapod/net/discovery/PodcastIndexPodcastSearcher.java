@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.discovery;
+package de.danoeh.antennapod.net.discovery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
