@@ -231,6 +231,7 @@ public class MainActivity extends CastEnabledActivity {
 
             // for backward compatibility, we only change defaults for fresh installs
             UserPreferences.setUpdateInterval(12);
+            AutoUpdateManager.restartUpdateAlarm(this);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);

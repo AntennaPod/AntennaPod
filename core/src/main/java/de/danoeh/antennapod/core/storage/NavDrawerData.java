@@ -1,24 +1,24 @@
 package de.danoeh.antennapod.core.storage;
 
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.storage.database.LongIntMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NavDrawerData {
     public final List<DrawerItem> items;
     public final int queueSize;
     public final int numNewItems;
     public final int numDownloadedItems;
-    public final LongIntMap feedCounters;
+    public final Map<Long, Integer> feedCounters;
     public final int reclaimableSpace;
 
     public NavDrawerData(List<DrawerItem> feeds,
                          int queueSize,
                          int numNewItems,
                          int numDownloadedItems,
-                         LongIntMap feedIndicatorValues,
+                         Map<Long, Integer> feedIndicatorValues,
                          int reclaimableSpace) {
         this.items = feeds;
         this.queueSize = queueSize;

@@ -14,7 +14,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.model.feed.FeedCounter;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -32,16 +31,11 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -692,33 +686,22 @@ public class UserPreferences {
              .apply();
     }
 
-    /**
-     * Sets the update interval value.
-     */
     public static void setUpdateInterval(long hours) {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
              .apply();
-        // when updating with an interval, we assume the user wants
-        // to update *now* and then every 'hours' interval thereafter.
-        AutoUpdateManager.restartUpdateAlarm(context);
     }
 
-    /**
-     * Sets the update interval value.
-     */
     public static void setUpdateTimeOfDay(int hourOfDay, int minute) {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        AutoUpdateManager.restartUpdateAlarm(context);
     }
 
-    public static void disableAutoUpdate(Context context) {
+    public static void disableAutoUpdate() {
         prefs.edit()
                 .putString(PREF_UPDATE_INTERVAL, "0")
                 .apply();
-        AutoUpdateManager.disableAutoUpdate(context);
     }
 
     public static boolean gpodnetNotificationsEnabled() {
@@ -833,22 +816,6 @@ public class UserPreferences {
         prefs.edit()
                 .putBoolean(PREF_STEREO_TO_MONO, enable)
                 .apply();
-    }
-
-    public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        if (!isEnableAutodownload()) {
-            return new APNullCleanupAlgorithm();
-        }
-        int cleanupValue = getEpisodeCleanupValue();
-        if (cleanupValue == EPISODE_CLEANUP_EXCEPT_FAVORITE) {
-            return new ExceptFavoriteCleanupAlgorithm();
-        } else if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
-            return new APQueueCleanupAlgorithm();
-        } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
-            return new APNullCleanupAlgorithm();
-        } else {
-            return new APCleanupAlgorithm(cleanupValue);
-        }
     }
 
     public static int getEpisodeCleanupValue() {

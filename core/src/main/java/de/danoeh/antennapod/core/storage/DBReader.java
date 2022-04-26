@@ -21,7 +21,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -31,7 +31,6 @@ import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedMediaCursorMapper;
 import de.danoeh.antennapod.storage.database.mapper.FeedPreferencesCursorMapper;
-import de.danoeh.antennapod.storage.database.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -881,7 +880,7 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        final LongIntMap feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
+        final Map<Long, Integer> feedCounters = adapter.getFeedCounters(UserPreferences.getFeedCounterSetting());
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
@@ -889,8 +888,8 @@ public final class DBReader {
         int feedOrder = UserPreferences.getFeedOrder();
         if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
             comparator = (lhs, rhs) -> {
-                long counterLhs = feedCounters.get(lhs.getId());
-                long counterRhs = feedCounters.get(rhs.getId());
+                long counterLhs = feedCounters.containsKey(lhs.getId()) ? feedCounters.get(lhs.getId()) : 0;
+                long counterRhs = feedCounters.containsKey(rhs.getId()) ? feedCounters.get(rhs.getId()) : 0;
                 if (counterLhs > counterRhs) {
                     // reverse natural order: podcast with most unplayed episodes first
                     return -1;
@@ -913,11 +912,11 @@ public final class DBReader {
                 }
             };
         } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
+            final Map<Long, Integer> playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
-                long counterLhs = playedCounters.get(lhs.getId());
-                long counterRhs = playedCounters.get(rhs.getId());
+                long counterLhs = playedCounters.containsKey(lhs.getId()) ? playedCounters.get(lhs.getId()) : 0;
+                long counterRhs = playedCounters.containsKey(rhs.getId()) ? playedCounters.get(rhs.getId()) : 0;
                 if (counterLhs > counterRhs) {
                     // podcast with most played episodes first
                     return -1;
@@ -945,8 +944,8 @@ public final class DBReader {
         Map<String, NavDrawerData.TagDrawerItem> folders = new HashMap<>();
         for (Feed feed : feeds) {
             for (String tag : feed.getPreferences().getTags()) {
-                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
-                        feedCounters.get(feed.getId()));
+                int counter = feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0;
+                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(), counter);
                 if (FeedPreferences.TAG_ROOT.equals(tag)) {
                     items.add(drawerItem);
                     continue;
@@ -967,7 +966,7 @@ public final class DBReader {
         items.addAll(foldersSorted);
 
         NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
-                feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
+                feedCounters, EpisodeCleanupAlgorithmFactory.build().getReclaimableItems());
         adapter.close();
         return result;
     }

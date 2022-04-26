@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
+import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.net.ssl.SslClientSetup;
 import okhttp3.Cache;
 import okhttp3.Credentials;

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import de.danoeh.antennapod.model.download.ProxyConfig;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

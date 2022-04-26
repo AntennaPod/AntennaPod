@@ -228,7 +228,7 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context);
+        EpisodeCleanupAlgorithmFactory.build().performCleanup(context);
     }
 
     private static Feed searchFeedByIdentifyingValueOrID(Feed feed) {

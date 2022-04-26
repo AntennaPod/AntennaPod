@@ -17,7 +17,7 @@ import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;

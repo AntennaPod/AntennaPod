@@ -1,13 +1,10 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.danoeh.antennapod.storage.database.LongIntMap;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
+import java.util.Map;
 
 public class SubscriptionsFilter {
     private static final String divider = ",";
@@ -69,7 +66,7 @@ public class SubscriptionsFilter {
     /**
      * Run a list of feed items through the filter.
      */
-    public List<Feed> filter(List<Feed> items, LongIntMap feedCounters) {
+    public List<Feed> filter(List<Feed> items, Map<Long, Integer> feedCounters) {
         if (properties.length == 0) {
             return items;
         }
@@ -104,7 +101,8 @@ public class SubscriptionsFilter {
 
         if (showIfCounterGreaterZero) {
             for (int i = result.size() - 1; i >= 0; i--) {
-                if (feedCounters.get(result.get(i).getId()) <= 0) {
+                if (!feedCounters.containsKey(result.get(i).getId())
+                        || feedCounters.get(result.get(i).getId()) <= 0) {
                     result.remove(i);
                 }
             }
