@@ -2,11 +2,16 @@
 <resources>
     <declare-styleable name="NestedScrollableHost">
         <attr name="scrollDirection" format="enum">
-            <enum name="both" value="0"/>
-            <enum name="vertical" value="1"/>
-            <enum name="horizontal" value="2"/>
+            <enum name="both" value="0" />
+            <enum name="vertical" value="1" />
+            <enum name="horizontal" value="2" />
         </attr>
-        <attr name="preferHorizontal" format="integer"/>
-        <attr name="preferVertical" format="integer"/>
+        <attr name="preferHorizontal" format="integer" />
+        <attr name="preferVertical" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr name="appWidgetPadding" format="dimension" />
+        <attr name="appWidgetInnerRadius" format="dimension" />
+        <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
 </resources>
