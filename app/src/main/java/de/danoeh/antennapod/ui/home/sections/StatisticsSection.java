@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
-import com.annimon.stream.Stream;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
@@ -19,7 +20,7 @@ import kotlin.Unit;
 import java.util.Collections;
 import java.util.List;
 
-public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
+public class StatisticsSection extends HomeSection<StatisticsItem> {
     public static final String TAG = "StatisticsSection";
 
     public StatisticsSection(HomeFragment context) {
@@ -32,7 +33,7 @@ public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
     }
 
     @Override
-    protected Unit onItemClick(View view, DBReader.StatisticsResult item) {
+    protected Unit onItemClick(View view, StatisticsItem item) {
         //Fragment fragment = FeedItemlistFragment.newInstance(item.feed.getId());
         //((MainActivity) context.requireActivity()).loadChildFragment(fragment);
         return null;
@@ -49,11 +50,11 @@ public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 cover.setElevation(2 * displayMetrics.density);
             }
-            /*new CoverLoader((MainActivity) context.requireActivity())
+            new CoverLoader((MainActivity) context.requireActivity())
                                 .withUri(item.feed.getImageUrl())
                                 .withFallbackUri(item.feed.getImageUrl())
                                 .withCoverView(cover)
-                                .load();*/
+                                .load();
         });
 
         super.addSectionTo(parent);
@@ -71,9 +72,8 @@ public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
 
     @NonNull
     @Override
-    protected List<DBReader.StatisticsResult> loadItems() {
-        List<DBReader.StatisticsResult> statisticsData = Stream.of(DBReader.getStatistics(true, 0, Long.MAX_VALUE))
-                .toList();
+    protected List<StatisticsItem> loadItems() {
+        List<StatisticsItem> statisticsData = DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime;
         Collections.reverse(statisticsData);
         return statisticsData;
     }

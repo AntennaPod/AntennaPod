@@ -48,7 +48,8 @@ public class InboxSection extends HomeSection<FeedItem> {
     public void addSectionTo(LinearLayout parent) {
         EpisodeItemListAdapter adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
         adapter.updateItems(loadItems());
-        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
+        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(
+                context.getContext(), RecyclerView.VERTICAL, false));
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
         viewBinding.recyclerView.setAdapter(adapter);
 
