@@ -24,7 +24,7 @@ public class InboxSection extends HomeSection {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
         viewBinding.recyclerView.setPadding(0, 0, 0, 0);
         viewBinding.recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -32,22 +32,13 @@ public class InboxSection extends HomeSection {
         adapter = new EpisodeItemListAdapter((MainActivity) requireActivity());
         viewBinding.recyclerView.setAdapter(adapter);
         loadItems();
-        return v;
+        return view;
     }
 
     @Override
     protected void handleMoreClick() {
         ((MainActivity) requireActivity()).loadChildFragment(new NewEpisodesFragment());
     }
-
-    /*@Override
-    protected Unit onItemClick(View view, FeedItem feedItem) {
-        //TODO PLAY
-        long[] ids = FeedItemUtil.getIds(loadItems());
-        int position = ArrayUtils.indexOf(ids, feedItem.getId());
-        ((MainActivity) context.requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
-        return null;
-    }*/
 
     @Override
     protected String getSectionTitle() {

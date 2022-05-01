@@ -23,13 +23,13 @@ public class QueueSection extends HomeSection {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
         listAdapter = new HorizontalItemListAdapter((MainActivity) getActivity());
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
         loadItems();
-        return v;
+        return view;
     }
 
     @Override

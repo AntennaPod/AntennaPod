@@ -29,13 +29,13 @@ public class SubscriptionsSection extends HomeSection {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
         viewBinding.recyclerView.setAdapter(listAdapter);
         loadItems();
-        return v;
+        return view;
     }
 
     @Override

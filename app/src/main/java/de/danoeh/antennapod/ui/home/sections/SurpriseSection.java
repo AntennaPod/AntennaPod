@@ -28,15 +28,15 @@ public class SurpriseSection extends HomeSection {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
         viewBinding.shuffleButton.setVisibility(View.VISIBLE);
-        viewBinding.shuffleButton.setOnClickListener(view -> loadItems());
+        viewBinding.shuffleButton.setOnClickListener(v -> loadItems());
         listAdapter = new HorizontalItemListAdapter((MainActivity) getActivity());
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
         loadItems();
-        return v;
+        return view;
     }
 
     @Override
