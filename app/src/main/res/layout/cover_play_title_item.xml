@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     android:layout_width="wrap_content"
@@ -45,6 +46,7 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:outlineProvider="bounds"
                     squareImageView:direction="width" />
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -62,14 +64,15 @@
 
         <TextView
             android:id="@+id/playDate"
-            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:paddingHorizontal="4dp"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
