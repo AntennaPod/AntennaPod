@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,11 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -23,6 +29,7 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
@@ -66,6 +73,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     LinearLayout homeContainer;
     FragmentContainerView fragmentContainer;
     View divider;
+    ArrayList<HomeSection> sections = new ArrayList<>();
+    private boolean isUpdatingFeeds = false;
 
     @NonNull
     @Override
@@ -80,19 +89,15 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         toolbar.setTitle(R.string.home_label);
         toolbar.inflateMenu(R.menu.home);
         toolbar.setOnMenuItemClickListener(this);
-
-        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+        refreshToolbarState();
 
         loadSections();
-
         return root;
     }
-
-    ArrayList<HomeSection> sections = new ArrayList<>();
 
     private void loadSections() {
         homeContainer.removeAllViews();
@@ -155,19 +160,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         });
     }
 
-    private View searchBar() {
-        //TODO
-        return new View(requireContext());
-    }
-
     public static List<SectionTitle> getSectionsPrefs(Fragment fragment) {
         SharedPreferences prefs = fragment.requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String[] strings = prefs.getString(PREF_SECTIONS,
                 HomeSectionsSettingsDialog.encodeSectionSettings(defaultSections))
                 .split(";");
         List<SectionTitle> sectionTitles = new ArrayList<>();
-        for (String s:
-             strings) {
+        for (String s : strings) {
             String[] tagBool = s.split(",");
             sectionTitles.add(new SectionTitle(tagBool[0], Boolean.parseBoolean(tagBool[1])));
         }
@@ -185,20 +184,36 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         loadSections();
     }
 
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
+
+    private void refreshToolbarState() {
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+                R.id.refresh_item, updateRefreshMenuItemChecker);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
+        DownloaderUpdate update = event.update;
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            refreshToolbarState();
+        }
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
-            if (item.getItemId() == R.id.homesettings_items) {
-                HomeSectionsSettingsDialog.open(this,
-                        (dialogInterface, i) -> {
-                            reloadSections();
-                        });
-            } else if (item.getItemId() == R.id.discovery) {
-                ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
-            }
+        if (item.getItemId() == R.id.homesettings_items) {
+            HomeSectionsSettingsDialog.open(this, (dialogInterface, i) -> reloadSections());
+            return true;
+        } else if (item.getItemId() == R.id.refresh_item) {
+            AutoUpdateManager.runImmediate(requireContext());
+            return true;
+        } else if (item.getItemId() == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            return true;
         }
-
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
