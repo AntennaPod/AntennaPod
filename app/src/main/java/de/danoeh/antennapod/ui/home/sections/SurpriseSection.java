@@ -20,6 +20,7 @@ import de.danoeh.antennapod.ui.home.HomeSection;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SurpriseSection extends HomeSection<FeedItem> {
@@ -86,6 +87,12 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
-        return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter("not_queued,unplayed"));
+        List<FeedItem> recentItems = DBReader.getRecentlyPublishedEpisodes(0, 50,
+                new FeedItemFilter(FeedItemFilter.NOT_QUEUED, FeedItemFilter.UNPLAYED));
+        Collections.shuffle(recentItems);
+        if (recentItems.size() > 8) {
+            recentItems = recentItems.subList(0, 8);
+        }
+        return recentItems;
     }
 }
