@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,9 +27,6 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -52,24 +50,13 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
-    public static final String PREF_SECTIONS = "PrefHomeSectionsString";
+    public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_FRAGMENT = "PrefHomeFragment";
 
     FeedItem selectedItem = null;
-
-    public static final List<SectionTitle> defaultSections = Arrays.asList(
-            new SectionTitle(QueueSection.TAG, false),
-            new SectionTitle(InboxSection.TAG, false),
-            new SectionTitle(StatisticsSection.TAG, false),
-            new SectionTitle(SubscriptionsSection.TAG, false),
-            new SectionTitle(SurpriseSection.TAG, false)
-    );
-
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
-
     Toolbar toolbar;
-
     LinearLayout homeContainer;
     FragmentContainerView fragmentContainer;
     View divider;
@@ -103,9 +90,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         homeContainer.removeAllViews();
         sections.clear();
 
-        for (SectionTitle s : getSectionsPrefs()) {
+        List<String> hiddenSections = getHiddenSections(getContext());
+        String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
+        for (String sectionTag : sectionTags) {
+            if (hiddenSections.contains(sectionTag)) {
+                continue;
+            }
             HomeSection section;
-            switch (s.tag) {
+            switch (sectionTag) {
                 case InboxSection.TAG:
                     section = new InboxSection(this);
                     break;
@@ -123,64 +115,20 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     section = new StatisticsSection(this);
                     break;
             }
-
-            if (!s.hidden) {
-                sections.add(section);
-                section.addSectionTo(homeContainer);
-            }
+            sections.add(section);
+            section.addSectionTo(homeContainer);
         }
-
-        fillFragmentIfRoom();
     }
 
-    private void fillFragmentIfRoom() {
-        //only if at least halve of the screen is empty
-        homeContainer.post(() -> {
-            if (homeContainer.getHeight() == homeContainer.getPaddingBottom()) {
-                //no subs
-                ((MainActivity) requireActivity()).loadFragment(AddFeedFragment.TAG, null);
-            } else if (homeContainer.getHeight() < getView().getHeight() / 2) {
-                Fragment fragment;
-                SharedPreferences prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                switch (prefs.getInt(PREF_FRAGMENT, 0)) {
-                    default:
-                    case 0: //Episodes
-                        fragment = new EpisodesFragment();
-                        break;
-                    case 2: //Queue
-                        fragment = new QueueFragment();
-                        break;
-                }
-                getChildFragmentManager()
-                        .beginTransaction().replace(R.id.homeFragmentContainer, fragment, PREF_FRAGMENT)
-                        .commit();
-                fragmentContainer.setVisibility(View.VISIBLE);
-                divider.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    public static List<SectionTitle> getSectionsPrefs(Fragment fragment) {
-        SharedPreferences prefs = fragment.requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String[] strings = prefs.getString(PREF_SECTIONS,
-                HomeSectionsSettingsDialog.encodeSectionSettings(defaultSections))
-                .split(";");
-        List<SectionTitle> sectionTitles = new ArrayList<>();
-        for (String s : strings) {
-            String[] tagBool = s.split(",");
-            sectionTitles.add(new SectionTitle(tagBool[0], Boolean.parseBoolean(tagBool[1])));
-        }
-        return sectionTitles;
-    }
-
-    private List<SectionTitle> getSectionsPrefs() {
-        return getSectionsPrefs(this);
+    public static List<String> getHiddenSections(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
+        String hiddenSectionsString = prefs.getString(HomeFragment.PREF_HIDDEN_SECTIONS, "");
+        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
     private void reloadSections() {
         fragmentContainer.setVisibility(View.GONE);
         divider.setVisibility(View.GONE);
-
         loadSections();
     }
 
@@ -204,7 +152,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
-            HomeSectionsSettingsDialog.open(this, (dialogInterface, i) -> reloadSections());
+            HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> reloadSections());
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
@@ -220,20 +168,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
-    }
-
-    public static class SectionTitle {
-        public String tag;
-        public boolean hidden;
-
-        public SectionTitle(String tag, boolean hidden) {
-            this.tag = tag;
-            this.hidden = hidden;
-        }
-
-        public void toggleHidden() {
-            hidden = !hidden;
-        }
     }
 
     @Override

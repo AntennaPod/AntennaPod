@@ -188,6 +188,22 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="home_section_titles">
+        <item>@string/continue_title</item>
+        <item>@string/new_title</item>
+        <item>@string/rediscover_title</item>
+        <item>@string/surprise_title</item>
+        <item>@string/classics_title</item>
+    </string-array>
+
+    <string-array name="home_section_tags">
+        <item>QueueSection</item>
+        <item>InboxSection</item>
+        <item>SubscriptionsSection</item>
+        <item>SurpriseSection</item>
+        <item>StatisticsSection</item>
+    </string-array>
+
     <string-array name="media_player_options">
         <item>@string/media_player_exoplayer_recommended</item>
         <item>@string/media_player_builtin</item>

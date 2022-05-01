@@ -27,8 +27,7 @@ import kotlin.Unit;
 
 
 public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> {
-
-    public static final String TAG = "SubsSection";
+    public static final String TAG = "SubscriptionsSection";
 
     public SubscriptionsSection(HomeFragment context) {
         super(context);
