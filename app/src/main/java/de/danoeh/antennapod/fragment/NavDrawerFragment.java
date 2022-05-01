@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.ui.home.HomeFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -65,6 +66,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     public static final String TAG = "NavDrawerFragment";
 
     public static final String[] NAV_DRAWER_TAGS = {
+            HomeFragment.TAG,
             QueueFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,

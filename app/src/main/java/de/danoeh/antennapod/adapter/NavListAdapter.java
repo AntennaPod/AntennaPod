@@ -36,6 +36,7 @@ import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.ui.home.HomeFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -112,6 +113,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
+            case HomeFragment.TAG:
+                return R.drawable.ic_home;
             case QueueFragment.TAG:
                 return R.drawable.ic_playlist;
             case EpisodesFragment.TAG:

@@ -38,6 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.ui.home.HomeFragment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -264,6 +265,9 @@ public class MainActivity extends CastEnabledActivity {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
+            case HomeFragment.TAG:
+                fragment = new HomeFragment();
+                break;
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
                 break;
@@ -283,9 +287,9 @@ public class MainActivity extends CastEnabledActivity {
                 fragment = new SubscriptionFragment();
                 break;
             default:
-                // default to the queue
-                fragment = new QueueFragment();
-                tag = QueueFragment.TAG;
+                // default to home screen
+                fragment = new HomeFragment();
+                tag = HomeFragment.TAG;
                 args = null;
                 break;
         }

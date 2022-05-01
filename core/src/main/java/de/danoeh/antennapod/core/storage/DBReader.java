@@ -596,6 +596,20 @@ public final class DBReader {
         }
     }
 
+    @NonNull
+    public static List<FeedItem> getPausedQueue(int limit) {
+        Log.d(TAG, "getQueue()");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getPausedQueueCursor(limit)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
     /**
      * Loads a specific FeedItem from the database.
      *
