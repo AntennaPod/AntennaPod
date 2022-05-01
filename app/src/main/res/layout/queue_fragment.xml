@@ -13,7 +13,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true"
-        app:title="@string/queue_label" />
+        app:title="@string/queue_label"
+        app:navigationIcon="?homeAsUpIndicator" />
 
     <TextView
         android:id="@+id/info_bar"

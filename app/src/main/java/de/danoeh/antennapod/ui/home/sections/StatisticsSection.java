@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import com.annimon.stream.Stream;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
@@ -26,12 +27,8 @@ public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
     }
 
     @Override
-    protected View.OnClickListener navigate() {
-        return view -> {
-            context.getParentFragmentManager().beginTransaction()
-                    .replace(R.id.main_view, new StatisticsFragment())
-                    .addToBackStack(context.getString(R.string.statistics_label)).commit();
-        };
+    protected void handleMoreClick() {
+        ((MainActivity) context.requireActivity()).loadChildFragment(new StatisticsFragment());
     }
 
     @Override

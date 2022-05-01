@@ -34,7 +34,7 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
         viewBinding = HomeSectionBinding.inflate(context.getLayoutInflater());
         viewBinding.titleLabel.setText(getSectionTitle());
         viewBinding.moreButton.setText(context.getString(R.string.navigate_arrows, getMoreLinkTitle()));
-        viewBinding.moreButton.setOnClickListener(navigate());
+        viewBinding.moreButton.setOnClickListener((view) -> handleMoreClick());
         if (TextUtils.isEmpty(getMoreLinkTitle())) {
             viewBinding.moreButton.setVisibility(View.INVISIBLE);
         }
@@ -73,7 +73,8 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     protected abstract String getSectionTitle();
 
     protected abstract String getMoreLinkTitle();
-    protected abstract View.OnClickListener navigate();
+
+    protected abstract void handleMoreClick();
 
     @NonNull
     protected abstract List<I> loadItems();

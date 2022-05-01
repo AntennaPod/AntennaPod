@@ -30,11 +30,9 @@ public class InboxSection extends HomeSection<FeedItem> {
         viewBinding.recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
     }
 
-    @NonNull
     @Override
-    protected View.OnClickListener navigate() {
-        return view ->
-                ((MainActivity) context.requireActivity()).loadFragment(NewEpisodesFragment.TAG, null);
+    protected void handleMoreClick() {
+        ((MainActivity) context.requireActivity()).loadChildFragment(new NewEpisodesFragment());
     }
 
     @Override

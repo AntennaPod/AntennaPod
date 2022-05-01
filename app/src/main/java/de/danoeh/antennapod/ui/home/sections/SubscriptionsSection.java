@@ -32,10 +32,9 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
         super(context);
     }
 
-    @NonNull
     @Override
-    protected View.OnClickListener navigate() {
-        return view -> ((MainActivity) context.requireActivity()).loadFragment(SubscriptionFragment.TAG, null);
+    protected void handleMoreClick() {
+        ((MainActivity) context.requireActivity()).loadChildFragment(new SubscriptionFragment());
     }
 
     protected Unit onItemClick(View view, NavDrawerData.DrawerItem item) {

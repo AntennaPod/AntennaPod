@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,8 +32,8 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     }
 
     @Override
-    protected View.OnClickListener navigate() {
-        return view -> ((MainActivity) context.requireActivity()).loadFragment(EpisodesFragment.TAG, null);
+    protected void handleMoreClick() {
+        ((MainActivity) context.requireActivity()).loadChildFragment(new EpisodesFragment());
     }
 
     @Override

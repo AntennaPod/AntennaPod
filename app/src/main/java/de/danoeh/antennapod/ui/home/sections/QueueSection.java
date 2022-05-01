@@ -31,10 +31,9 @@ public class QueueSection extends HomeSection<FeedItem> {
         super(context);
     }
 
-    @NonNull
     @Override
-    protected View.OnClickListener navigate() {
-        return view -> ((MainActivity) context.requireActivity()).loadFragment(QueueFragment.TAG, null);
+    protected void handleMoreClick() {
+        ((MainActivity) context.requireActivity()).loadChildFragment(new QueueFragment());
     }
 
     @Override
