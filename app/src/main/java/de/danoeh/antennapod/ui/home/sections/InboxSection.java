@@ -38,6 +38,7 @@ public class InboxSection extends HomeSection<FeedItem> {
         updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.UNREAD);
 
         recyclerView.setPadding(0, 0, 0, 0);
+        recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
 
         SwipeActions swipeActions = new SwipeActions(context, NewEpisodesFragment.TAG).attachTo(recyclerView);
         //swipeActions.setFilter(FeedItemFilter.NEW);

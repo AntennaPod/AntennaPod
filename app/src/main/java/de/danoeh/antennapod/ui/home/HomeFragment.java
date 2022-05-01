@@ -9,20 +9,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.transition.ChangeBounds;
-import androidx.transition.TransitionManager;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.databinding.HomeFragmentBinding;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -53,43 +49,30 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
     public static final String PREF_FRAGMENT = "PrefHomeFragment";
 
-    FeedItem selectedItem = null;
+    private FeedItem selectedItem = null;
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
-    Toolbar toolbar;
-    LinearLayout homeContainer;
-    FragmentContainerView fragmentContainer;
-    View divider;
-    ArrayList<HomeSection> sections = new ArrayList<>();
+    private HomeFragmentBinding viewBinding;
     private boolean isUpdatingFeeds = false;
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.home_fragment, container, false);
-        homeContainer = root.findViewById(R.id.homeContainer);
-        fragmentContainer = root.findViewById(R.id.homeFragmentContainer);
-        divider = root.findViewById(R.id.homeFragmentDivider);
-
-        toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.home_label);
-        toolbar.inflateMenu(R.menu.home);
-        toolbar.setOnMenuItemClickListener(this);
+        viewBinding = HomeFragmentBinding.inflate(inflater);
+        viewBinding.toolbar.inflateMenu(R.menu.home);
+        viewBinding.toolbar.setOnMenuItemClickListener(this);
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
-        ((MainActivity) requireActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+        ((MainActivity) requireActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
         refreshToolbarState();
-
-        loadSections();
-        return root;
+        populateSectionList();
+        return viewBinding.getRoot();
     }
 
-    private void loadSections() {
-        homeContainer.removeAllViews();
-        sections.clear();
-
+    private void populateSectionList() {
+        viewBinding.homeContainer.removeAllViews();
         List<String> hiddenSections = getHiddenSections(getContext());
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
         for (String sectionTag : sectionTags) {
@@ -115,8 +98,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
                     section = new StatisticsSection(this);
                     break;
             }
-            sections.add(section);
-            section.addSectionTo(homeContainer);
+            section.addSectionTo(viewBinding.homeContainer);
         }
     }
 
@@ -126,24 +108,17 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
-    private void reloadSections() {
-        fragmentContainer.setVisibility(View.GONE);
-        divider.setVisibility(View.GONE);
-        loadSections();
-    }
-
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     private void refreshToolbarState() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
                 R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with DownloadEvent");
-        DownloaderUpdate update = event.update;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             refreshToolbarState();
         }
@@ -152,7 +127,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.homesettings_items) {
-            HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> reloadSections());
+            HomeSectionsSettingsDialog.open(getContext(), (dialogInterface, i) -> populateSectionList());
             return true;
         } else if (item.getItemId() == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
@@ -200,44 +175,28 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
-        updateSections(HomeSection.UpdateEvents.FEED_ITEM);
+        //updateSections(HomeSection.UpdateEvents.FEED_ITEM);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        updateSections(HomeSection.UpdateEvents.UNREAD);
+        //updateSections(HomeSection.UpdateEvents.UNREAD);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        updateSections(HomeSection.UpdateEvents.QUEUE);
+        //updateSections(HomeSection.UpdateEvents.QUEUE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        updateSections(HomeSection.UpdateEvents.QUEUE);
-    }
-
-    private void updateSections(HomeSection.UpdateEvents event, Boolean all) {
-        TransitionManager.beginDelayedTransition(
-                homeContainer,
-                new ChangeBounds());
-
-        for (HomeSection section: sections) {
-            if (section.updateEvents.contains(event) || all) {
-                section.updateItems(event);
-            }
-        }
-    }
-
-    private void updateSections(HomeSection.UpdateEvents event) {
-        updateSections(event, false);
+        //updateSections(HomeSection.UpdateEvents.QUEUE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //update all sections, especially play/pauseStatus in QueueSection
-        updateSections(HomeSection.UpdateEvents.QUEUE, true);
+        //updateSections(HomeSection.UpdateEvents.QUEUE, true);
     }
 }

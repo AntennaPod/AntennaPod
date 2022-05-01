@@ -11,7 +11,6 @@ import java.util.List;
 
 public class HomeSectionsSettingsDialog {
     public static void open(Context context, DialogInterface.OnClickListener onSettingsChanged) {
-        SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         final List<String> hiddenSections = HomeFragment.getHiddenSections(context);
         String[] sectionLabels = context.getResources().getStringArray(R.array.home_section_titles);
         String[] sectionTags = context.getResources().getStringArray(R.array.home_section_tags);
@@ -33,6 +32,7 @@ public class HomeSectionsSettingsDialog {
             }
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            SharedPreferences prefs = context.getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
             prefs.edit().putString(HomeFragment.PREF_HIDDEN_SECTIONS, TextUtils.join(",", hiddenSections)).apply();
             onSettingsChanged.onClick(dialog, which);
         });
