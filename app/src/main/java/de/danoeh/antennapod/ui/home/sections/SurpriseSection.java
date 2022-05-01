@@ -23,24 +23,18 @@ import slush.AdapterAppliedResult;
 
 import java.util.List;
 
-
 public class SurpriseSection extends HomeSection<FeedItem> {
-
     public static final String TAG = "SurpriseSection";
 
     private AdapterAppliedResult<FeedItem> slush;
 
     public SurpriseSection(HomeFragment context) {
         super(context);
-        sectionTitle = context.getString(R.string.surprise_title);
-        sectionNavigateTitle = context.getString(R.string.episodes_label);
     }
 
     @Override
     protected View.OnClickListener navigate() {
-        return view -> {
-            ((MainActivity) context.requireActivity()).loadFragment(EpisodesFragment.TAG, null);
-        };
+        return view -> ((MainActivity) context.requireActivity()).loadFragment(EpisodesFragment.TAG, null);
     }
 
     @Override
@@ -75,11 +69,19 @@ public class SurpriseSection extends HomeSection<FeedItem> {
             view.setOnCreateContextMenuListener(SurpriseSection.this);
         });
 
-        ImageButton shuffle = section.findViewById(R.id.shuffleButton);
-        shuffle.setVisibility(View.VISIBLE);
-        shuffle.setOnClickListener(view -> slush.getItemListEditor().changeAll(loadItems()));
-
+        viewBinding.shuffleButton.setVisibility(View.VISIBLE);
+        viewBinding.shuffleButton.setOnClickListener(view -> slush.getItemListEditor().changeAll(loadItems()));
         super.addSectionTo(parent);
+    }
+
+    @Override
+    protected String getSectionTitle() {
+        return context.getString(R.string.surprise_title);
+    }
+
+    @Override
+    protected String getMoreLinkTitle() {
+        return context.getString(R.string.episodes_label);
     }
 
     @NonNull
@@ -87,5 +89,4 @@ public class SurpriseSection extends HomeSection<FeedItem> {
     protected List<FeedItem> loadItems() {
         return DBReader.getRecentlyPublishedEpisodes(0, 6, new FeedItemFilter("not_queued,unplayed"));
     }
-
 }

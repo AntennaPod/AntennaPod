@@ -19,33 +19,22 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import kotlin.Unit;
-import slush.AdapterAppliedResult;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
-
 public class QueueSection extends HomeSection<FeedItem> {
-
     public static final String TAG = "QueueSection";
-
-    private AdapterAppliedResult<FeedItem> slush;
 
     public QueueSection(HomeFragment context) {
         super(context);
-        sectionTitle = context.getString(R.string.continue_title);
-        sectionNavigateTitle = context.getString(R.string.queue_label);
-        updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.QUEUE);
     }
 
     @NonNull
     @Override
     protected View.OnClickListener navigate() {
-        return view -> {
-            ((MainActivity) context.requireActivity()).loadFragment(QueueFragment.TAG, null);
-        };
+        return view -> ((MainActivity) context.requireActivity()).loadFragment(QueueFragment.TAG, null);
     }
 
     @Override
@@ -64,7 +53,7 @@ public class QueueSection extends HomeSection<FeedItem> {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        slush = easySlush(R.layout.cover_play_title_item, (view, item) -> {
+        easySlush(R.layout.cover_play_title_item, (view, item) -> {
             final ImageView coverPlay = view.findViewById(R.id.cover_play);
             final TextView title = view.findViewById(R.id.playTitle);
             final TextView date = view.findViewById(R.id.playDate);
@@ -89,6 +78,16 @@ public class QueueSection extends HomeSection<FeedItem> {
         super.addSectionTo(parent);
     }
 
+    @Override
+    protected String getSectionTitle() {
+        return context.getString(R.string.continue_title);
+    }
+
+    @Override
+    protected String getMoreLinkTitle() {
+        return context.getString(R.string.queue_label);
+    }
+
     private void playPauseIcon(ImageView icon, boolean isPlaying) {
         icon.setImageResource(isPlaying ? R.drawable.ic_pause_circle : R.drawable.ic_play_circle);
     }
@@ -98,12 +97,4 @@ public class QueueSection extends HomeSection<FeedItem> {
     protected List<FeedItem> loadItems() {
         return DBReader.getPausedQueue(5);
     }
-
-    @Override
-    public void updateItems(UpdateEvents event) {
-        slush.getItemListEditor().changeAll(loadItems());
-        super.updateItems(event);
-    }
-
-
 }

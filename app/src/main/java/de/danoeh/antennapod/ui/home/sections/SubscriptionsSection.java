@@ -25,22 +25,17 @@ import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import kotlin.Unit;
 
-
 public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> {
     public static final String TAG = "SubscriptionsSection";
 
     public SubscriptionsSection(HomeFragment context) {
         super(context);
-        sectionTitle = context.getString(R.string.rediscover_title);
-        sectionNavigateTitle = context.getString(R.string.subscriptions_label);
     }
 
     @NonNull
     @Override
     protected View.OnClickListener navigate() {
-        return view -> {
-            ((MainActivity) context.requireActivity()).loadFragment(SubscriptionFragment.TAG, null);
-        };
+        return view -> ((MainActivity) context.requireActivity()).loadFragment(SubscriptionFragment.TAG, null);
     }
 
     protected Unit onItemClick(View view, NavDrawerData.DrawerItem item) {
@@ -80,6 +75,16 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
         super.addSectionTo(parent);
     }
 
+    @Override
+    protected String getSectionTitle() {
+        return context.getString(R.string.rediscover_title);
+    }
+
+    @Override
+    protected String getMoreLinkTitle() {
+        return context.getString(R.string.subscriptions_label);
+    }
+
     @NonNull
     @Override
     protected List<NavDrawerData.DrawerItem> loadItems() {
@@ -96,7 +101,4 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
         }
         return items;
     }
-
-    //don't update, to prevent reordering of topItems
-    //public void updateItems()
 }

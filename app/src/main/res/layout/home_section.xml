@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sectionRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
@@ -12,11 +11,11 @@
     android:paddingBottom="4dp">
 
     <TextView
-        android:id="@+id/sectionTitle"
+        android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/sectionNavigate"
-        android:layout_alignBottom="@id/sectionNavigate"
+        android:layout_alignTop="@id/moreButton"
+        android:layout_alignBottom="@id/moreButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="16dp"
@@ -30,29 +29,29 @@
         android:id="@+id/shuffleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/sectionTitle"
+        android:layout_alignBottom="@+id/titleLabel"
         android:layout_alignParentTop="true"
         android:layout_marginVertical="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_toEndOf="@+id/sectionTitle"
-        android:layout_toRightOf="@+id/sectionTitle"
+        android:layout_toEndOf="@+id/titleLabel"
+        android:layout_toRightOf="@+id/titleLabel"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:visibility="gone"
         tools:visibility="visible"
         app:srcCompat="@drawable/ic_shuffle" />
 
     <TextView
-        android:id="@+id/numNewItems"
+        android:id="@+id/numNewItemsLabel"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_alignBottom="@+id/sectionTitle"
+        android:layout_alignBottom="@+id/titleLabel"
         android:layout_alignParentTop="true"
         android:layout_marginVertical="12dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_toEndOf="@+id/sectionTitle"
-        android:layout_toRightOf="@+id/sectionTitle"
+        android:layout_toEndOf="@+id/titleLabel"
+        android:layout_toRightOf="@+id/titleLabel"
         android:background="@drawable/bg_pill"
         android:gravity="center"
         android:paddingHorizontal="8dp"
@@ -64,7 +63,7 @@
         tools:text="6" />
 
     <Button
-        android:id="@+id/sectionNavigate"
+        android:id="@+id/moreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="0dp"
@@ -77,10 +76,10 @@
         style="@style/Widget.MaterialComponents.Button.TextButton" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sectionRecyclerView"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sectionNavigate"
+        android:layout_below="@+id/moreButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

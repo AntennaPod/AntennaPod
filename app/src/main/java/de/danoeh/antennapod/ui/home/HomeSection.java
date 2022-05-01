@@ -4,25 +4,20 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.HomeSectionBinding;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import kotlin.Unit;
 import slush.AdapterAppliedResult;
 import slush.Slush;
 import slush.listeners.OnBindListener;
+
+import java.util.List;
 
 /**
  * Section on the HomeFragment
@@ -31,61 +26,31 @@ import slush.listeners.OnBindListener;
 public abstract class HomeSection<I> implements View.OnCreateContextMenuListener {
     protected HomeFragment context;
 
-    protected View section;
-    protected TextView tvTitle;
-    protected Button navigateButton;
-    protected RecyclerView recyclerView;
-
-    public enum UpdateEvents {
-        FEED_ITEM, UNREAD, FAVORITES, QUEUE
-    }
-
-    //must be set by descendant
-    protected String sectionTitle;
-    protected String sectionNavigateTitle;
-    public List<UpdateEvents> updateEvents = Collections.emptyList();
-
+    protected HomeSectionBinding viewBinding;
     protected FeedItem selectedItem;
 
     public HomeSection(HomeFragment context) {
         this.context = context;
-        section = View.inflate(context.requireActivity(), R.layout.home_section, null);
-        tvTitle = section.findViewById(R.id.sectionTitle);
-        navigateButton = section.findViewById(R.id.sectionNavigate);
-        recyclerView = section.findViewById(R.id.sectionRecyclerView);
+        viewBinding = HomeSectionBinding.inflate(context.getLayoutInflater());
+        viewBinding.titleLabel.setText(getSectionTitle());
+        viewBinding.moreButton.setText(context.getString(R.string.navigate_arrows, getMoreLinkTitle()));
+        viewBinding.moreButton.setOnClickListener(navigate());
+        if (TextUtils.isEmpty(getMoreLinkTitle())) {
+            viewBinding.moreButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void addSectionTo(LinearLayout parent) {
-        tvTitle.setText(sectionTitle);
-        if (!TextUtils.isEmpty(sectionNavigateTitle)) {
-            navigateButton.setText(
-                    context.getString(R.string.navigate_arrows, sectionNavigateTitle.toLowerCase(Locale.getDefault())));
-            navigateButton.setOnClickListener(navigate());
-        } else {
-            navigateButton.setVisibility(View.INVISIBLE);
-        }
-
-        parent.addView(section);
-        context.registerForContextMenu(recyclerView);
-
+        parent.addView(viewBinding.getRoot());
+        context.registerForContextMenu(viewBinding.recyclerView);
         hideIfEmpty();
     }
 
     private void hideIfEmpty() {
-        boolean isVisible = recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0;
-        section.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        boolean isVisible = viewBinding.recyclerView.getAdapter() != null
+                && viewBinding.recyclerView.getAdapter().getItemCount() > 0;
+        viewBinding.getRoot().setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
-
-    protected abstract View.OnClickListener navigate();
-
-    @NonNull
-    protected abstract List<I> loadItems();
-
-    public void updateItems(UpdateEvents event) {
-        hideIfEmpty();
-    }
-
-    protected abstract Unit onItemClick(View view, I item);
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
@@ -102,7 +67,16 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
                 .setItems(loadItems())
                 .onItemClickWithItem(this::onItemClick)
                 .onBind(onBindListener)
-                .into(recyclerView);
+                .into(viewBinding.recyclerView);
     }
 
+    protected abstract String getSectionTitle();
+
+    protected abstract String getMoreLinkTitle();
+    protected abstract View.OnClickListener navigate();
+
+    @NonNull
+    protected abstract List<I> loadItems();
+
+    protected abstract Unit onItemClick(View view, I item);
 }

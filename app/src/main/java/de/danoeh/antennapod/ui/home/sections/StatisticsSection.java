@@ -18,15 +18,11 @@ import kotlin.Unit;
 import java.util.Collections;
 import java.util.List;
 
-
 public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
-
     public static final String TAG = "StatisticsSection";
 
     public StatisticsSection(HomeFragment context) {
         super(context);
-        sectionTitle = context.getString(R.string.classics_title);
-        sectionNavigateTitle = context.getString(R.string.statistics_label);
     }
 
     @Override
@@ -64,6 +60,16 @@ public class StatisticsSection extends HomeSection<DBReader.StatisticsResult> {
         });
 
         super.addSectionTo(parent);
+    }
+
+    @Override
+    protected String getSectionTitle() {
+        return context.getString(R.string.classics_title);
+    }
+
+    @Override
+    protected String getMoreLinkTitle() {
+        return context.getString(R.string.statistics_label);
     }
 
     @NonNull

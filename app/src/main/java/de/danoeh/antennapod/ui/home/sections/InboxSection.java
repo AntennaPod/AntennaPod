@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.home.sections;
 
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
-import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeFragment;
@@ -21,27 +19,15 @@ import de.danoeh.antennapod.ui.home.HomeSection;
 import kotlin.Unit;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
-
 public class InboxSection extends HomeSection<FeedItem> {
-
     public static final String TAG = "InboxSection";
-
-    private EpisodeItemListAdapter adapter;
 
     public InboxSection(HomeFragment context) {
         super(context);
-        sectionTitle = context.getString(R.string.new_title);
-        sectionNavigateTitle = context.getString(R.string.new_label);
-        updateEvents = Arrays.asList(UpdateEvents.FEED_ITEM, UpdateEvents.UNREAD);
-
-        recyclerView.setPadding(0, 0, 0, 0);
-        recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
-        SwipeActions swipeActions = new SwipeActions(context, NewEpisodesFragment.TAG).attachTo(recyclerView);
-        //swipeActions.setFilter(FeedItemFilter.NEW);
+        viewBinding.recyclerView.setPadding(0, 0, 0, 0);
+        viewBinding.recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
     }
 
     @NonNull
@@ -62,31 +48,30 @@ public class InboxSection extends HomeSection<FeedItem> {
 
     @Override
     public void addSectionTo(LinearLayout parent) {
-        adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
+        EpisodeItemListAdapter adapter = new EpisodeItemListAdapter((MainActivity) context.requireActivity());
         adapter.updateItems(loadItems());
-        recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
-        recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
-        recyclerView.setAdapter(adapter);
+        viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.VERTICAL, false));
+        viewBinding.recyclerView.setRecycledViewPool(((MainActivity) context.requireActivity()).getRecycledViewPool());
+        viewBinding.recyclerView.setAdapter(adapter);
 
         super.addSectionTo(parent);
     }
 
-    private void updateNewCount() {
-        TextView newCount = section.findViewById(R.id.numNewItems);
-        newCount.setVisibility(View.VISIBLE);
-        newCount.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
+    @Override
+    protected String getSectionTitle() {
+        return context.getString(R.string.new_title);
+    }
+
+    @Override
+    protected String getMoreLinkTitle() {
+        return context.getString(R.string.new_label);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadItems() {
-        updateNewCount();
+        viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
+        viewBinding.numNewItemsLabel.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
         return DBReader.getNewItemsList(0, 2);
-    }
-
-    @Override
-    public void updateItems(UpdateEvents event) {
-        adapter.updateItems(loadItems());
-        super.updateItems(event);
     }
 }

@@ -64,7 +64,6 @@
     <string name="new_title">Review the new</string>
     <string name="navigate_arrows">%s »</string>
     <string name="configure_home">Configure Home Screen</string>
-    <string name="home_dialog_min_one_section">At least one section must be selected.</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
