@@ -1,52 +1,43 @@
 package de.danoeh.antennapod.ui.home;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.HomeSectionBinding;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import kotlin.Unit;
-import slush.AdapterAppliedResult;
-import slush.Slush;
-import slush.listeners.OnBindListener;
-
-import java.util.List;
 
 /**
  * Section on the HomeFragment
- * can have different I item types
  */
-public abstract class HomeSection<I> implements View.OnCreateContextMenuListener {
-    protected HomeFragment context;
-
+public abstract class HomeSection extends Fragment implements View.OnCreateContextMenuListener {
     protected HomeSectionBinding viewBinding;
     protected FeedItem selectedItem;
 
-    public HomeSection(HomeFragment context) {
-        this.context = context;
-        viewBinding = HomeSectionBinding.inflate(context.getLayoutInflater());
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        viewBinding = HomeSectionBinding.inflate(inflater);
         viewBinding.titleLabel.setText(getSectionTitle());
-        viewBinding.moreButton.setText(context.getString(R.string.navigate_arrows, getMoreLinkTitle()));
+        viewBinding.moreButton.setText(getString(R.string.navigate_arrows, getMoreLinkTitle()));
         viewBinding.moreButton.setOnClickListener((view) -> handleMoreClick());
         if (TextUtils.isEmpty(getMoreLinkTitle())) {
             viewBinding.moreButton.setVisibility(View.INVISIBLE);
         }
+        registerForContextMenu(viewBinding.recyclerView);
+        return viewBinding.getRoot();
     }
 
-    public void addSectionTo(LinearLayout parent) {
-        parent.addView(viewBinding.getRoot());
-        context.registerForContextMenu(viewBinding.recyclerView);
-        hideIfEmpty();
-    }
-
-    private void hideIfEmpty() {
+    protected void hideIfEmpty() {
         boolean isVisible = viewBinding.recyclerView.getAdapter() != null
                 && viewBinding.recyclerView.getAdapter().getItemCount() > 0;
         viewBinding.getRoot().setVisibility(isVisible ? View.VISIBLE : View.GONE);
@@ -54,20 +45,10 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        MenuInflater inflater = context.requireActivity().getMenuInflater();
+        MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.feeditemlist_context, contextMenu);
         contextMenu.setHeaderTitle(selectedItem.getTitle());
         FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
-    }
-
-    protected AdapterAppliedResult<I> easySlush(int layout, OnBindListener<I> onBindListener) {
-        return new Slush.SingleType<I>()
-                .setItemLayout(layout)
-                .setLayoutManager(new LinearLayoutManager(context.getContext(), RecyclerView.HORIZONTAL, false))
-                .setItems(loadItems())
-                .onItemClickWithItem(this::onItemClick)
-                .onBind(onBindListener)
-                .into(viewBinding.recyclerView);
     }
 
     protected abstract String getSectionTitle();
@@ -75,9 +56,4 @@ public abstract class HomeSection<I> implements View.OnCreateContextMenuListener
     protected abstract String getMoreLinkTitle();
 
     protected abstract void handleMoreClick();
-
-    @NonNull
-    protected abstract List<I> loadItems();
-
-    protected abstract Unit onItemClick(View view, I item);
 }

@@ -1,99 +1,67 @@
 package de.danoeh.antennapod.ui.home.sections;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.DateFormatter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
-import kotlin.Unit;
 
-import java.util.List;
-
-import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
-
-public class QueueSection extends HomeSection<FeedItem> {
+public class QueueSection extends HomeSection {
     public static final String TAG = "QueueSection";
+    private HorizontalItemListAdapter listAdapter;
 
-    public QueueSection(HomeFragment context) {
-        super(context);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        listAdapter = new HorizontalItemListAdapter((MainActivity) getActivity());
+        viewBinding.recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        viewBinding.recyclerView.setAdapter(listAdapter);
+        loadItems();
+        return v;
     }
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) context.requireActivity()).loadChildFragment(new QueueFragment());
+        ((MainActivity) requireActivity()).loadChildFragment(new QueueFragment());
     }
 
-    @Override
+    /*@Override
     protected Unit onItemClick(View view, FeedItem feedItem) {
         boolean isPlaying = FeedItemUtil.isCurrentlyPlaying(feedItem.getMedia());
         if (isPlaying) {
-            IntentUtils.sendLocalBroadcast(context.requireContext(), ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+            IntentUtils.sendLocalBroadcast(requireContext(), ACTION_PAUSE_PLAY_CURRENT_EPISODE);
         } else {
-            new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
+            new PlaybackServiceStarter(requireContext(), feedItem.getMedia())
                     .callEvenIfRunning(true)
                     .start();
         }
         playPauseIcon(view.findViewById(R.id.play_icon), !isPlaying);
         return null;
-    }
-
-    @Override
-    public void addSectionTo(LinearLayout parent) {
-        easySlush(R.layout.cover_play_title_item, (view, item) -> {
-            final ImageView coverPlay = view.findViewById(R.id.cover_play);
-            final TextView title = view.findViewById(R.id.playTitle);
-            final TextView date = view.findViewById(R.id.playDate);
-            playPauseIcon(view.findViewById(R.id.play_icon),
-                    FeedItemUtil.isCurrentlyPlaying(item.getMedia()));
-            new CoverLoader((MainActivity) context.requireActivity())
-                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                    .withFallbackUri(item.getFeed().getImageUrl())
-                    .withCoverView(coverPlay)
-                    .load();
-            title.setText(item.getTitle());
-            date.setText(DateFormatter.formatAbbrev(context.requireContext(), item.getPubDate()));
-
-            view.setOnLongClickListener(v -> {
-                selectedItem = item;
-                context.setSelectedItem(item);
-                return false;
-            });
-            view.setOnCreateContextMenuListener(QueueSection.this);
-        });
-
-        super.addSectionTo(parent);
-    }
+    }*/
 
     @Override
     protected String getSectionTitle() {
-        return context.getString(R.string.continue_title);
+        return getString(R.string.continue_title);
     }
 
     @Override
     protected String getMoreLinkTitle() {
-        return context.getString(R.string.queue_label);
+        return getString(R.string.queue_label);
     }
 
-    private void playPauseIcon(ImageView icon, boolean isPlaying) {
-        icon.setImageResource(isPlaying ? R.drawable.ic_pause_circle : R.drawable.ic_play_circle);
-    }
-
-    @NonNull
-    @Override
-    protected List<FeedItem> loadItems() {
-        return DBReader.getPausedQueue(5);
+    private void loadItems() {
+        listAdapter.updateData(DBReader.getPausedQueue(5));
     }
 }

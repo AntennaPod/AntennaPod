@@ -16,12 +16,12 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedSearchResultAdapter extends RecyclerView.Adapter<FeedSearchResultAdapter.Holder> {
+public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder> {
 
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<Feed> data = new ArrayList<>();
 
-    public FeedSearchResultAdapter(MainActivity mainActivity) {
+    public HorizontalFeedListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
     }
 
@@ -34,7 +34,7 @@ public class FeedSearchResultAdapter extends RecyclerView.Adapter<FeedSearchResu
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View convertView = View.inflate(mainActivityRef.get(), R.layout.searchlist_item_feed, null);
+        View convertView = View.inflate(mainActivityRef.get(), R.layout.horizontal_feed_item, null);
         return new Holder(convertView);
     }
 

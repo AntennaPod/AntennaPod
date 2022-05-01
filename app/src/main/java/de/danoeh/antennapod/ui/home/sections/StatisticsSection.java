@@ -1,80 +1,65 @@
 package de.danoeh.antennapod.ui.home.sections;
 
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.ui.home.HomeFragment;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
-import kotlin.Unit;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StatisticsSection extends HomeSection<StatisticsItem> {
+public class StatisticsSection extends HomeSection {
     public static final String TAG = "StatisticsSection";
+    private HorizontalFeedListAdapter listAdapter;
 
-    public StatisticsSection(HomeFragment context) {
-        super(context);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        viewBinding.recyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        viewBinding.recyclerView.setAdapter(listAdapter);
+        loadItems();
+        return v;
     }
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) context.requireActivity()).loadChildFragment(new StatisticsFragment());
-    }
-
-    @Override
-    protected Unit onItemClick(View view, StatisticsItem item) {
-        //Fragment fragment = FeedItemlistFragment.newInstance(item.feed.getId());
-        //((MainActivity) context.requireActivity()).loadChildFragment(fragment);
-        return null;
-    }
-
-    @Override
-    public void addSectionTo(LinearLayout parent) {
-        easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
-            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
-            view.getLayoutParams().height = side;
-            view.getLayoutParams().width = side;
-            ImageView cover = view.findViewById(R.id.discovery_cover);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cover.setElevation(2 * displayMetrics.density);
-            }
-            new CoverLoader((MainActivity) context.requireActivity())
-                                .withUri(item.feed.getImageUrl())
-                                .withFallbackUri(item.feed.getImageUrl())
-                                .withCoverView(cover)
-                                .load();
-        });
-
-        super.addSectionTo(parent);
+        ((MainActivity) requireActivity()).loadChildFragment(new StatisticsFragment());
     }
 
     @Override
     protected String getSectionTitle() {
-        return context.getString(R.string.classics_title);
+        return getString(R.string.classics_title);
     }
 
     @Override
     protected String getMoreLinkTitle() {
-        return context.getString(R.string.statistics_label);
+        return getString(R.string.statistics_label);
     }
 
-    @NonNull
-    @Override
-    protected List<StatisticsItem> loadItems() {
+    private void loadItems() {
         List<StatisticsItem> statisticsData = DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime;
         Collections.reverse(statisticsData);
-        return statisticsData;
+        List<Feed> feeds = new ArrayList<>();
+        for (StatisticsItem item : statisticsData) {
+            feeds.add(item.feed);
+        }
+        listAdapter.updateData(feeds);
     }
 }

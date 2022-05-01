@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -79,26 +80,29 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
-            HomeSection section;
+            Fragment sectionFragment;
             switch (sectionTag) {
                 case InboxSection.TAG:
-                    section = new InboxSection(this);
+                    sectionFragment = new InboxSection();
                     break;
                 default: // Fall-through
                 case QueueSection.TAG:
-                    section = new QueueSection(this);
+                    sectionFragment = new QueueSection();
                     break;
                 case SubscriptionsSection.TAG:
-                    section = new SubscriptionsSection(this);
+                    sectionFragment = new SubscriptionsSection();
                     break;
                 case SurpriseSection.TAG:
-                    section = new SurpriseSection(this);
+                    sectionFragment = new SurpriseSection();
                     break;
                 case StatisticsSection.TAG:
-                    section = new StatisticsSection(this);
+                    sectionFragment = new StatisticsSection();
                     break;
             }
-            section.addSectionTo(viewBinding.homeContainer);
+            FragmentContainerView containerView = new FragmentContainerView(getContext());
+            containerView.setId(View.generateViewId());
+            viewBinding.homeContainer.addView(containerView);
+            getChildFragmentManager().beginTransaction().add(containerView.getId(), sectionFragment).commit();
         }
     }
 

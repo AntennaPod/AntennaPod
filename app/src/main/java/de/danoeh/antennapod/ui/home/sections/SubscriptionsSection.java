@@ -1,92 +1,59 @@
 package de.danoeh.antennapod.ui.home.sections;
 
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.home.HomeSection;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.fragment.FeedItemlistFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.home.HomeFragment;
-import de.danoeh.antennapod.ui.home.HomeSection;
-import kotlin.Unit;
-
-public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> {
+public class SubscriptionsSection extends HomeSection {
     public static final String TAG = "SubscriptionsSection";
+    private HorizontalFeedListAdapter listAdapter;
 
-    public SubscriptionsSection(HomeFragment context) {
-        super(context);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        viewBinding.recyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        viewBinding.recyclerView.setAdapter(listAdapter);
+        loadItems();
+        return v;
     }
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) context.requireActivity()).loadChildFragment(new SubscriptionFragment());
-    }
-
-    protected Unit onItemClick(View view, NavDrawerData.DrawerItem item) {
-        if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-            Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
-            ((MainActivity) context.requireActivity()).loadChildFragment(fragment);
-        } else if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
-            Fragment fragment = SubscriptionFragment.newInstance(item.getTitle());
-            ((MainActivity) context.requireActivity()).loadChildFragment(fragment);
-        }
-        return null;
-    }
-
-    @Override
-    public void addSectionTo(LinearLayout parent) {
-        easySlush(R.layout.quick_feed_discovery_item, (view, item) -> {
-            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            int side = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, displayMetrics);
-            view.getLayoutParams().height = side;
-            view.getLayoutParams().width = side;
-            ImageView cover = view.findViewById(R.id.discovery_cover);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cover.setElevation(2 * displayMetrics.density);
-            }
-            CoverLoader coverLoader = new CoverLoader((MainActivity) context.requireActivity())
-                    .withCoverView(cover);
-            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-                coverLoader.withUri(feed.getImageUrl());
-            } else {
-                coverLoader.withResource(R.drawable.ic_folder);
-            }
-            coverLoader.load();
-        });
-
-        super.addSectionTo(parent);
+        ((MainActivity) requireActivity()).loadChildFragment(new SubscriptionFragment());
     }
 
     @Override
     protected String getSectionTitle() {
-        return context.getString(R.string.rediscover_title);
+        return getString(R.string.rediscover_title);
     }
 
     @Override
     protected String getMoreLinkTitle() {
-        return context.getString(R.string.subscriptions_label);
+        return getString(R.string.subscriptions_label);
     }
 
-    @NonNull
-    @Override
-    protected List<NavDrawerData.DrawerItem> loadItems() {
+    private void loadItems() {
         List<NavDrawerData.DrawerItem> items = DBReader.getNavDrawerData().items;
         //Least played on top
         Collections.reverse(items);
@@ -98,6 +65,12 @@ public class SubscriptionsSection extends HomeSection<NavDrawerData.DrawerItem> 
             topItems.addAll(items);
             items = topItems;
         }
-        return items;
+        List<Feed> feeds = new ArrayList<>();
+        for (NavDrawerData.DrawerItem item : items) {
+            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                feeds.add(((NavDrawerData.FeedDrawerItem) item).feed);
+            }
+        }
+        listAdapter.updateData(feeds);
     }
 }
