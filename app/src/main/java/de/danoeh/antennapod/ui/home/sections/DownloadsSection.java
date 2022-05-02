@@ -12,12 +12,14 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
-import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
 
-public class InboxSection extends HomeSection {
-    public static final String TAG = "InboxSection";
+import java.util.List;
+
+public class DownloadsSection extends HomeSection {
+    public static final String TAG = "DownloadsSection";
     private EpisodeItemListAdapter adapter;
 
     @Nullable
@@ -37,22 +39,24 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) requireActivity()).loadChildFragment(new NewEpisodesFragment());
+        ((MainActivity) requireActivity()).loadChildFragment(new DownloadsFragment());
     }
 
     @Override
     protected String getSectionTitle() {
-        return getString(R.string.home_new_title);
+        return getString(R.string.home_downloads_title);
     }
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.new_label);
+        return getString(R.string.downloads_label);
     }
 
     private void loadItems() {
-        viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
-        viewBinding.numNewItemsLabel.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
-        adapter.updateItems(DBReader.getNewItemsList(0, 2));
+        List<FeedItem> downloads = DBReader.getDownloadedItems();
+        if (downloads.size() > 2) {
+            downloads = downloads.subList(0, 2);
+        }
+        adapter.updateItems(downloads);
     }
 }

@@ -20,8 +20,8 @@ import de.danoeh.antennapod.ui.home.HomeSection;
 import java.util.Collections;
 import java.util.List;
 
-public class SurpriseSection extends HomeSection {
-    public static final String TAG = "SurpriseSection";
+public class EpisodesSurpriseSection extends HomeSection {
+    public static final String TAG = "EpisodesSurpriseSection";
     private HorizontalItemListAdapter listAdapter;
 
     @Nullable
@@ -56,7 +56,7 @@ public class SurpriseSection extends HomeSection {
 
     @Override
     protected String getSectionTitle() {
-        return getString(R.string.surprise_title);
+        return getString(R.string.home_surprise_title);
     }
 
     @Override

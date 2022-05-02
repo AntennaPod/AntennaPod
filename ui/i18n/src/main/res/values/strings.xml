@@ -57,11 +57,11 @@
     <string name="statistics_counting_total">Played in total</string>
 
     <!-- Home fragment -->
-    <string name="surprise_title">Get surprised</string>
-    <string name="classics_title">Check your classics</string>
-    <string name="continue_title">Continue listening</string>
-    <string name="rediscover_title">Rediscover podcasts</string>
-    <string name="new_title">Review the new</string>
+    <string name="home_surprise_title">Get surprised</string>
+    <string name="home_classics_title">Check your classics</string>
+    <string name="home_continue_title">Continue listening</string>
+    <string name="home_new_title">Review the new</string>
+    <string name="home_downloads_title">Play offline</string>
     <string name="navigate_arrows">%s »</string>
     <string name="configure_home">Configure Home Screen</string>
 

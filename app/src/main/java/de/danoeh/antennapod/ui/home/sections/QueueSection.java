@@ -53,7 +53,7 @@ public class QueueSection extends HomeSection {
 
     @Override
     protected String getSectionTitle() {
-        return getString(R.string.continue_title);
+        return getString(R.string.home_continue_title);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class QueueSection extends HomeSection {
     }
 
     private void loadItems() {
-        listAdapter.updateData(DBReader.getPausedQueue(5));
+        listAdapter.updateData(DBReader.getPausedQueue(8));
     }
 }

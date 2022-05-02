@@ -12,10 +12,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class SubscriptionsSection extends HomeSection {
 
     @Override
     protected String getSectionTitle() {
-        return getString(R.string.rediscover_title);
+        return getString(R.string.home_classics_title);
     }
 
     @Override
@@ -54,22 +55,12 @@ public class SubscriptionsSection extends HomeSection {
     }
 
     private void loadItems() {
-        List<NavDrawerData.DrawerItem> items = DBReader.getNavDrawerData().items;
-        //Least played on top
-        Collections.reverse(items);
-        //mix up the first few podcasts
-        if (items.size() > 4) {
-            List<NavDrawerData.DrawerItem> topItems = items.subList(0, 4);
-            items = items.subList(4, items.size());
-            Collections.shuffle(topItems);
-            topItems.addAll(items);
-            items = topItems;
-        }
+        List<StatisticsItem> statisticsData = DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime;
+        Collections.sort(statisticsData, (item1, item2) ->
+                Long.compare(item2.timePlayed, item1.timePlayed));
         List<Feed> feeds = new ArrayList<>();
-        for (NavDrawerData.DrawerItem item : items) {
-            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                feeds.add(((NavDrawerData.FeedDrawerItem) item).feed);
-            }
+        for (int i = 0; i < statisticsData.size() && i < 8; i++) {
+            feeds.add(statisticsData.get(i).feed);
         }
         listAdapter.updateData(feeds);
     }

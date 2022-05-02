@@ -27,11 +27,11 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
+import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
-import de.danoeh.antennapod.ui.home.sections.StatisticsSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
-import de.danoeh.antennapod.ui.home.sections.SurpriseSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -82,22 +82,23 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             }
             Fragment sectionFragment;
             switch (sectionTag) {
+                case QueueSection.TAG:
+                    sectionFragment = new QueueSection();
+                    break;
                 case InboxSection.TAG:
                     sectionFragment = new InboxSection();
                     break;
-                default: // Fall-through
-                case QueueSection.TAG:
-                    sectionFragment = new QueueSection();
+                case EpisodesSurpriseSection.TAG:
+                    sectionFragment = new EpisodesSurpriseSection();
                     break;
                 case SubscriptionsSection.TAG:
                     sectionFragment = new SubscriptionsSection();
                     break;
-                case SurpriseSection.TAG:
-                    sectionFragment = new SurpriseSection();
+                case DownloadsSection.TAG:
+                    sectionFragment = new DownloadsSection();
                     break;
-                case StatisticsSection.TAG:
-                    sectionFragment = new StatisticsSection();
-                    break;
+                default:
+                    continue;
             }
             FragmentContainerView containerView = new FragmentContainerView(getContext());
             containerView.setId(View.generateViewId());
