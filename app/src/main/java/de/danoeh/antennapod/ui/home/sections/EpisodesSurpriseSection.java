@@ -44,16 +44,6 @@ public class EpisodesSurpriseSection extends HomeSection {
         ((MainActivity) requireActivity()).loadChildFragment(new EpisodesFragment());
     }
 
-    /*@Override
-    protected Unit onItemClick(View view, FeedItem feedItem) {
-        new PlaybackServiceStarter(context.requireContext(), feedItem.getMedia())
-                .callEvenIfRunning(true)
-                .start();
-        slush.getItemListEditor().removeItem(feedItem);
-        slush.getItemListEditor().addItem(loadItems().get(0));
-        return null;
-    }*/
-
     @Override
     protected String getSectionTitle() {
         return getString(R.string.home_surprise_title);

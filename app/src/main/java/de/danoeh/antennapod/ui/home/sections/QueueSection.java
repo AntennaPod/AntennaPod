@@ -37,20 +37,6 @@ public class QueueSection extends HomeSection {
         ((MainActivity) requireActivity()).loadChildFragment(new QueueFragment());
     }
 
-    /*@Override
-    protected Unit onItemClick(View view, FeedItem feedItem) {
-        boolean isPlaying = FeedItemUtil.isCurrentlyPlaying(feedItem.getMedia());
-        if (isPlaying) {
-            IntentUtils.sendLocalBroadcast(requireContext(), ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-        } else {
-            new PlaybackServiceStarter(requireContext(), feedItem.getMedia())
-                    .callEvenIfRunning(true)
-                    .start();
-        }
-        playPauseIcon(view.findViewById(R.id.play_icon), !isPlaying);
-        return null;
-    }*/
-
     @Override
     protected String getSectionTitle() {
         return getString(R.string.home_continue_title);
