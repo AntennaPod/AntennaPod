@@ -1063,6 +1063,25 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public Cursor getRandomEpisodesCursor(int limit, int seed) {
+        final String allItemsRandomOrder = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + KEY_READ + " == 0"
+                    // Only from the last two years. Older episodes frequently contain broken covers and stuff like that
+                    + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
+                + " ORDER BY " + randomEpisodeNumber(seed);
+        final String query = "SELECT * FROM (" + allItemsRandomOrder + ")"
+                + " GROUP BY " + KEY_FEED
+                + " ORDER BY " + randomEpisodeNumber(seed * 3) + " DESC LIMIT " + limit;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * SQLite does not support random seeds. Create our own "random" number based on that seed and the item ID
+     */
+    private String randomEpisodeNumber(int seed) {
+        return "((" + SELECT_KEY_ITEM_ID + " * " + seed + ") % 46471)";
+    }
+
     public Cursor getDownloadedItemsCursor() {
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + "WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0";

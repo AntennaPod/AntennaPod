@@ -22,10 +22,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class EpisodesSurpriseSection extends HomeSection {
     public static final String TAG = "EpisodesSurpriseSection";
     private HorizontalItemListAdapter listAdapter;
+    private int seed = 0;
 
     @Nullable
     @Override
@@ -33,11 +35,15 @@ public class EpisodesSurpriseSection extends HomeSection {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
         viewBinding.shuffleButton.setVisibility(View.VISIBLE);
-        viewBinding.shuffleButton.setOnClickListener(v -> loadItems());
+        viewBinding.shuffleButton.setOnClickListener(v -> {
+            seed = new Random().nextInt();
+            loadItems();
+        });
         listAdapter = new HorizontalItemListAdapter((MainActivity) getActivity());
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
+        seed = new Random().nextInt();
         loadItems();
         return view;
     }
@@ -63,12 +69,7 @@ public class EpisodesSurpriseSection extends HomeSection {
     }
 
     private void loadItems() {
-        List<FeedItem> recentItems = DBReader.getRecentlyPublishedEpisodes(0, 50,
-                new FeedItemFilter(FeedItemFilter.NOT_QUEUED, FeedItemFilter.UNPLAYED));
-        Collections.shuffle(recentItems);
-        if (recentItems.size() > 8) {
-            recentItems = recentItems.subList(0, 8);
-        }
+        List<FeedItem> recentItems = DBReader.getRandomEpisodes(8, seed);
         listAdapter.updateData(recentItems);
     }
 }

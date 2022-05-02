@@ -402,6 +402,18 @@ public final class DBReader {
         }
     }
 
+    public static List<FeedItem> getRandomEpisodes(int limit, int seed) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getRandomEpisodesCursor(limit, seed)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
     /**
      * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
      * has been completed at least once.
