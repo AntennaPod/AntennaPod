@@ -37,12 +37,6 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         return viewBinding.getRoot();
     }
 
-    protected void hideIfEmpty() {
-        boolean isVisible = viewBinding.recyclerView.getAdapter() != null
-                && viewBinding.recyclerView.getAdapter().getItemCount() > 0;
-        viewBinding.getRoot().setVisibility(isVisible ? View.VISIBLE : View.GONE);
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();

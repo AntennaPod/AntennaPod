@@ -40,7 +40,7 @@
         android:layout_height="8dp"
         android:layout_alignBottom="@id/pager"
         android:importantForAccessibility="no"
-        app:srcCompat="@drawable/bg_gradient"
+        app:srcCompat="@drawable/bg_shadow"
         app:tint="?android:attr/windowBackground" />
 
     <androidx.cardview.widget.CardView

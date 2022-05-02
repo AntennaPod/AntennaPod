@@ -32,6 +32,7 @@ import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
+import de.danoeh.antennapod.ui.home.sections.WelcomeBannerSection;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -74,36 +75,39 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
+        addSection(new WelcomeBannerSection());
+
         List<String> hiddenSections = getHiddenSections(getContext());
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
         for (String sectionTag : sectionTags) {
             if (hiddenSections.contains(sectionTag)) {
                 continue;
             }
-            Fragment sectionFragment;
-            switch (sectionTag) {
-                case QueueSection.TAG:
-                    sectionFragment = new QueueSection();
-                    break;
-                case InboxSection.TAG:
-                    sectionFragment = new InboxSection();
-                    break;
-                case EpisodesSurpriseSection.TAG:
-                    sectionFragment = new EpisodesSurpriseSection();
-                    break;
-                case SubscriptionsSection.TAG:
-                    sectionFragment = new SubscriptionsSection();
-                    break;
-                case DownloadsSection.TAG:
-                    sectionFragment = new DownloadsSection();
-                    break;
-                default:
-                    continue;
-            }
-            FragmentContainerView containerView = new FragmentContainerView(getContext());
-            containerView.setId(View.generateViewId());
-            viewBinding.homeContainer.addView(containerView);
-            getChildFragmentManager().beginTransaction().add(containerView.getId(), sectionFragment).commit();
+            addSection(getSection(sectionTag));
+        }
+    }
+
+    private void addSection(Fragment section) {
+        FragmentContainerView containerView = new FragmentContainerView(getContext());
+        containerView.setId(View.generateViewId());
+        viewBinding.homeContainer.addView(containerView);
+        getChildFragmentManager().beginTransaction().add(containerView.getId(), section).commit();
+    }
+
+    private Fragment getSection(String tag) {
+        switch (tag) {
+            case QueueSection.TAG:
+                return new QueueSection();
+            case InboxSection.TAG:
+                return new InboxSection();
+            case EpisodesSurpriseSection.TAG:
+                return new EpisodesSurpriseSection();
+            case SubscriptionsSection.TAG:
+                return new SubscriptionsSection();
+            case DownloadsSection.TAG:
+                return new DownloadsSection();
+            default:
+                return null;
         }
     }
 
