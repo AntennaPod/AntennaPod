@@ -14,6 +14,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.HomeSectionBinding;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Section on the HomeFragment
@@ -43,6 +44,18 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         inflater.inflate(R.menu.feeditemlist_context, contextMenu);
         contextMenu.setHeaderTitle(selectedItem.getTitle());
         FeedItemMenuHandler.onPrepareMenu(contextMenu, selectedItem, R.id.skip_episode_item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     protected abstract String getSectionTitle();

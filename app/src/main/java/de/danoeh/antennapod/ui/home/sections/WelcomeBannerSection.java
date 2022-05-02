@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.databinding.HomeWelcomeBannerBinding;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class WelcomeBannerSection extends Fragment {
     public static final String TAG = "WelcomeBannerSection";
@@ -25,6 +28,11 @@ public class WelcomeBannerSection extends Fragment {
                 ((MainActivity) requireActivity()).loadChildFragment(new AddFeedFragment()));
         loadItems();
         return viewBinding.getRoot();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadItems();
     }
 
     private void loadItems() {

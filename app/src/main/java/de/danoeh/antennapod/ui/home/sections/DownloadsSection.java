@@ -12,15 +12,23 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
     private EpisodeItemListAdapter adapter;
+    private List<FeedItem> items;
 
     @Nullable
     @Override
@@ -42,6 +50,49 @@ public class DownloadsSection extends HomeSection {
         ((MainActivity) requireActivity()).loadChildFragment(new DownloadsFragment());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        if (items == null) {
+            return;
+        } else if (adapter == null) {
+            loadItems();
+            return;
+        }
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(items, item.getId());
+            if (pos >= 0) {
+                items.remove(pos);
+                if (item.getMedia().isDownloaded()) {
+                    items.add(pos, item);
+                    adapter.notifyItemChangedCompat(pos);
+                } else {
+                    adapter.notifyItemRemoved(pos);
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (adapter == null) {
+            return;
+        }
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
+                    viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
+            if (holder != null && holder.isCurrentlyPlayingItem()) {
+                holder.notifyPlaybackPositionUpdated(event);
+                break;
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
+    }
+
     @Override
     protected String getSectionTitle() {
         return getString(R.string.home_downloads_title);
@@ -57,6 +108,7 @@ public class DownloadsSection extends HomeSection {
         if (downloads.size() > 2) {
             downloads = downloads.subList(0, 2);
         }
-        adapter.updateItems(downloads);
+        items = downloads;
+        adapter.updateItems(items);
     }
 }

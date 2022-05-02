@@ -13,10 +13,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
-import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,11 @@ public class SubscriptionsSection extends HomeSection {
     @Override
     protected void handleMoreClick() {
         ((MainActivity) requireActivity()).loadChildFragment(new SubscriptionFragment());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadItems();
     }
 
     @Override

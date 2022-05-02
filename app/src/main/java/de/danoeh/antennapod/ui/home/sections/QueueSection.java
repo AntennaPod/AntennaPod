@@ -12,8 +12,12 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class QueueSection extends HomeSection {
     public static final String TAG = "QueueSection";
@@ -35,6 +39,16 @@ public class QueueSection extends HomeSection {
     @Override
     protected void handleMoreClick() {
         ((MainActivity) requireActivity()).loadChildFragment(new QueueFragment());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onQueueChanged(QueueEvent event) {
+        loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
     }
 
     @Override

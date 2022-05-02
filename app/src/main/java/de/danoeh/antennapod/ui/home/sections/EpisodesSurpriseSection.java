@@ -12,10 +12,13 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +45,11 @@ public class EpisodesSurpriseSection extends HomeSection {
     @Override
     protected void handleMoreClick() {
         ((MainActivity) requireActivity()).loadChildFragment(new EpisodesFragment());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
     }
 
     @Override

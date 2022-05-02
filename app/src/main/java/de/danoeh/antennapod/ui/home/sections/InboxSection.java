@@ -12,13 +12,22 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
     private EpisodeItemListAdapter adapter;
+    private List<FeedItem> items;
 
     @Nullable
     @Override
@@ -40,6 +49,34 @@ public class InboxSection extends HomeSection {
         ((MainActivity) requireActivity()).loadChildFragment(new NewEpisodesFragment());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        if (items == null) {
+            return;
+        } else if (adapter == null) {
+            loadItems();
+            return;
+        }
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(items, item.getId());
+            if (pos >= 0) {
+                items.remove(pos);
+                if (item.getMedia().isDownloaded()) {
+                    items.add(pos, item);
+                    adapter.notifyItemChangedCompat(pos);
+                } else {
+                    adapter.notifyItemRemoved(pos);
+                }
+            }
+        }
+    }
+
     @Override
     protected String getSectionTitle() {
         return getString(R.string.home_new_title);
@@ -53,6 +90,7 @@ public class InboxSection extends HomeSection {
     private void loadItems() {
         viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
         viewBinding.numNewItemsLabel.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
-        adapter.updateItems(DBReader.getNewItemsList(0, 2));
+        items = DBReader.getNewItemsList(0, 2);
+        adapter.updateItems(items);
     }
 }
