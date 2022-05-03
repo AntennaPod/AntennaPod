@@ -173,6 +173,8 @@ public class ItemFragment extends Fragment {
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_STREAM)) {
                 showOnDemandConfigBalloon(true);
                 return;
+            } else if (actionButton1 == null) {
+                return; // Not loaded yet
             }
             actionButton1.onClick(getContext());
         });
@@ -181,6 +183,8 @@ public class ItemFragment extends Fragment {
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_DOWNLOAD)) {
                 showOnDemandConfigBalloon(false);
                 return;
+            } else if (actionButton2 == null) {
+                return; // Not loaded yet
             }
             actionButton2.onClick(getContext());
         });

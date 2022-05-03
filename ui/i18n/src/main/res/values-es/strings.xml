@@ -173,6 +173,7 @@
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Renombrar etiqueta</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Descargar episodios usando una conexión de datos móviles está desactivado en las opciones.\n\n¿De veras quieres actualizar todos los podcasts usando una conexión de datos móviles?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
@@ -325,6 +326,7 @@
   <string name="storage_sum">Borrado automático, Importar, Exportar</string>
   <string name="project_pref">Proyecto</string>
   <string name="synchronization_pref">Sincronización</string>
+  <string name="synchronization_sum">Sincroniza con otros dispositivos</string>
   <string name="automation">Automatización</string>
   <string name="download_pref_details">Detalles</string>
   <string name="import_export_pref">Importar/Exportar</string>
@@ -415,8 +417,12 @@
   <string name="pref_theme_title_dark">Oscuro</string>
   <string name="pref_theme_title_trueblack">Negro (para AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ilimitado</string>
+  <string name="synchronization_logout">Desconecta</string>
+  <string name="pref_synchronization_logout_toast">Te has desconectado correctamente</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambiar información de inicio de sesión</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Sincroniza ahora</string>
+  <string name="synchronization_full_sync_title">Fuerza sincronización completa</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles en la reproducción a velocidad variable</string>
   <string name="pref_feed_playback_speed_sum">La velocidad a la que comenzarán los episodios de este podcast</string>
   <string name="pref_feed_skip">Saltar automático</string>

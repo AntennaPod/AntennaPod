@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">Actualitzar subscripcions</string>
+  <string name="feed_update_receiver_name">Actualitza subscripcions</string>
   <string name="feeds_label">Podcasts</string>
   <string name="statistics_label">Estadístiques</string>
   <string name="add_feed_label">Afegir podcast</string>
@@ -171,6 +171,9 @@
     <item quantity="one">%d subscripció actualizada.</item>
     <item quantity="other">%d subscripcions actualizades.</item>
   </plurals>
+  <string name="edit_tags">Edita etiquetes</string>
+  <string name="rename_tag_label">Canvia etiqueta</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">La baixada d\'episodis en connexió de dades està inhabilitada a les preferències.\n\nTot i això, voleu actualitzar tots els podcasts en connexió de dades?</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <plurals name="downloading_batch_label">
@@ -183,6 +186,10 @@
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
   <string name="delete_episode_label">Esborrar episodi</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 episodi descarregat, suprimit.</item>
+    <item quantity="other">%d episodis baixats, suprimits.</item>
+  </plurals>
   <string name="remove_new_flag_label">Retirar bandera de \"nou\"</string>
   <string name="removed_new_flag_label">Retirada bandera de \"nou\"</string>
   <string name="mark_read_label">Marca com a llegit</string>
@@ -240,6 +247,8 @@
   <string name="download_error_forbidden">El servidor de l\'amfitrió del podcast no respon.</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_error_wrong_size">La connexió del servidor s\'ha perdut abans de completar la descàrrega</string>
+  <string name="download_error_blocked">La baixada ha estat bloquejada per una altra aplicació al vostre dispositiu (com ara una VPN o un bloquejador d\'anuncis).</string>
+  <string name="download_error_certificate">No s\'ha pogut establir una connexió segura. Això pot indicar que una altra aplicació (com una VPN o un bloquejador d\'anuncis) ha bloquejat la baixada, o que hi ha algun problema amb els certificats del servidor.</string>
   <string name="download_report_title">Baixades completades amb error(s)</string>
   <string name="auto_download_report_title">Auto-baixades completades.</string>
   <string name="download_error_io_error">Error d\'E/S</string>
@@ -255,6 +264,7 @@
   <string name="download_type_feed">Canal</string>
   <string name="download_type_media">Fitxer</string>
   <string name="null_value_podcast_error">No s\'ha proporcionat cap podcast que puga mostrar-se.</string>
+  <string name="no_feed_url_podcast_found_by_search">El podcast suggerit no té cap enllaç RSS, AntennaPod ha trobat un podcast potser coincident</string>
   <string name="authentication_notification_title">Cal autenticar-se</string>
   <string name="authentication_notification_msg">Es necessita un usuari i una contrasenya per accedir al recurs</string>
   <string name="confirm_mobile_download_dialog_title">Confirma baixada mòvil</string>
@@ -323,6 +333,7 @@
   <string name="storage_sum">Auto-esborrat d\'episodis, Importar, Exportar</string>
   <string name="project_pref">Projecte</string>
   <string name="synchronization_pref">Sincronització</string>
+  <string name="synchronization_sum">Sincronitza amb altres dispositius</string>
   <string name="automation">Automatització</string>
   <string name="download_pref_details">Detalls</string>
   <string name="import_export_pref">Importa/Exporta</string>
@@ -413,8 +424,20 @@
   <string name="pref_theme_title_dark">Fosc</string>
   <string name="pref_theme_title_trueblack">Negra (per AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Sense límits</string>
+  <string name="synchronization_logout">Desconnecta</string>
+  <string name="pref_synchronization_logout_toast">Us heu desconnectat correctament.</string>
   <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Sincronitzar ara</string>
+  <string name="synchronization_full_sync_title">Forçar sincronització completa</string>
+  <string name="synchronization_login_status"><![CDATA[Connectat com <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podeu escollir de nou el vostre proveïdor de sincronització, un cop hagueu desconnectat]]></string>
+  <string name="synchronization_summary_unchoosen">Podeu escollir entre múltiples proveïdors per sincronitzar-hi les vostres subscripcions i l\'estat de reproducció dels episodis</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync és una aplicació de codi obert de Nextcloud que podeu instal·lar fàcilment al vostre servidor. L\'aplicació és independent del projecte AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Concediu accés des de la finestra del navegador oberta i torneu a AntennaPod.</string>
+  <string name="synchronization_choose_title">Escolleix el vostre proveïdor de sincronització</string>
+  <string name="synchronization_force_sync_summary">Re-sincronitza totes les subscripcions i estats dels episodis</string>
+  <string name="synchronization_sync_summary">Sincronitza subscripció i canvis en l\'estat de l\'episodi</string>
+  <string name="dialog_choose_sync_service_title">Escolleix proveïdor de sincronització</string>
   <string name="pref_playback_speed_sum">Personalitza les velocitats disponibles per a la reproducció a velocitat variable</string>
   <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>
   <string name="pref_feed_skip">Auto Ometre</string>
@@ -441,7 +464,7 @@
   <string name="pref_lockscreen_background_sum">Estableix el fons del bloqueig de pantalla a la imatge de l\'episodi actual. Com a efecte secundari, això també mostrarà la imatge en aplicacions de tercers.</string>
   <string name="pref_enqueue_location_title">Posició d\'entrada en cola</string>
   <string name="pref_enqueue_location_sum">Afegir episodis a: %1$s</string>
-  <string name="enqueue_location_back">Final</string>
+  <string name="enqueue_location_back">Enrere</string>
   <string name="enqueue_location_front">Principi</string>
   <string name="enqueue_location_after_current">Després de l\'episodi actual</string>
   <string name="pref_smart_mark_as_played_disabled">Desactivat</string>
@@ -494,6 +517,8 @@
   <string name="new_episode_notification_disabled">Notificació desactivada</string>
   <string name="pref_feed_settings_dialog_msg">Aquesta configuració és exclusiva de cada podcast. Podeu canviar-la obrint la pàgina del podcast.</string>
   <string name="pref_contribute">Contribueix</string>
+  <string name="pref_show_subscription_title">Mostra el títol de la subscripció</string>
+  <string name="pref_show_subscription_title_summary">Mostra el títol de la subscripció sota la imatge de portada.</string>
   <!--About screen-->
   <string name="about_pref">Quant a</string>
   <string name="antennapod_version">Versió d\'AntennaPod</string>
@@ -516,6 +541,7 @@
   <string name="sync_status_episodes_download">Descarregant canvis d\'episodi...</string>
   <string name="sync_status_upload_played">Pujant estat de reproducció...</string>
   <string name="sync_status_subscriptions">Sincronitzant subscripcions...</string>
+  <string name="sync_status_wait_for_downloads">Esperant la finalització de les baixades...</string>
   <string name="sync_status_success">Sincronització exitosa</string>
   <string name="sync_status_error">Sincronització fallida</string>
   <!--import and export-->
@@ -613,6 +639,7 @@
   <string name="preview_episode">Vista prelimiar</string>
   <string name="stop_preview">Atura vista preliminar</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Enrere</string>
   <string name="rewind_label">Rebobina</string>
   <string name="fast_forward_label">Avança ràpidament</string>
   <string name="increase_speed">Augmenta la velocitat</string>
@@ -630,18 +657,26 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
+  <string name="feed_tags_label">Etiquetes</string>
+  <string name="feed_tags_summary">Canvia les etiquetes d\'aquest podcast per ajudar-vos a organitzar les subscripcions</string>
   <string name="feed_folders_include_root">Mostra a la llista principal</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Només es mostren les etiquetes comunes a diverses subscripcions. No afecta a altres etiquetes.</string>
   <string name="auto_download_settings_label">Opcions d\'Auto Descàrrega</string>
   <string name="episode_filters_label">Filtre d\'episodis</string>
   <string name="episode_filters_description">Llistat de termes usats per decidir si un episodi s\'ha d\'incloure o excloure en descarregar automàticament</string>
   <string name="episode_filters_include">Inclou</string>
   <string name="episode_filters_exclude">Exclou</string>
+  <string name="episode_filters_duration">Durada mínima (en minuts)</string>
   <string name="episode_filters_hint">Una paraula \n\"Diverses paraules\"</string>
   <string name="keep_updated">Manté actualitzat</string>
   <string name="keep_updated_summary">Incloure aquest podcast quan (auto-)actualitzen tots els podcasts</string>
   <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>
+  <string name="statistics_time_played">Temps reproducció:</string>
+  <string name="statistics_total_duration">Durada total (estimada):</string>
+  <string name="statistics_duration_played_episodes">Durada dels episodis reproduïts:</string>
   <string name="statistics_episodes_on_device">Episodis al dispositiu:</string>
   <string name="statistics_space_used">Espai utilitzat:</string>
+  <string name="statistics_episodes_started_total">Episodis iniciats/total:</string>
   <string name="statistics_view_all">Veure per tots els podcasts »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
@@ -686,6 +721,8 @@
   <string name="sort_date_old_new">Data (Antic \u2192 Nou)</string>
   <string name="sort_duration_short_long">Duració (Curt \u2192 Llarg)</string>
   <string name="sort_duration_long_short">Duration (Llarg \u2192 Curt)</string>
+  <string name="sort_filename_a_z">Nom del fitxer (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Nom del fitxer (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Nou \u2192 Antic</string>
@@ -702,7 +739,9 @@
   <string name="share_dialog_include_label">Inclou:</string>
   <string name="share_playback_position_dialog_label">Posició de reproducció</string>
   <string name="share_dialog_episode_website_label">Pàgina web de l\'episodi</string>
+  <string name="share_dialog_link_to_episode">Enllaç a l\'episodi</string>
   <string name="share_dialog_media_file_label">Fitxer multimèdia</string>
+  <string name="share_starting_position_label">Començant des de</string>
   <!--Audio controls-->
   <string name="audio_controls">Controls d\'audio</string>
   <string name="playback_speed">Velocitat de reproducció</string>
@@ -749,4 +788,7 @@
   <string name="on_demand_config_setting_changed">Ajust actualitzar exitosament</string>
   <string name="on_demand_config_stream_text">Pareix que escoltes en línia molt a sovint. Vols que les llistes d\'episodis mostren botons per a escoltar en línia?</string>
   <string name="on_demand_config_download_text">Pareix que baixes molt a sovint. Vols que les llistes d\'episodis mostren botons per a baixar episodis?</string>
+  <string name="shortcut_subscription_label">Drecera a la subscripció</string>
+  <string name="shortcut_select_subscription">Selecciona subscripció</string>
+  <string name="add_shortcut">Afegeix drecera</string>
 </resources>

@@ -22,7 +22,7 @@
   <string name="playback_history_label">Soittohistoria</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
-  <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
+  <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa asetuksissa.</string>
   <string name="playback_statistics_label">Toisto</string>
   <string name="download_statistics_label">Lataukset</string>
   <string name="notification_pref_fragment">Ilmoitukset</string>
@@ -72,7 +72,7 @@
   <!--Playback history-->
   <string name="clear_history_label">Tyhjennä historia</string>
   <!--Other-->
-  <string name="confirm_label">Varmistus</string>
+  <string name="confirm_label">Vahvista</string>
   <string name="cancel_label">Peruuta</string>
   <string name="yes">Kyllä</string>
   <string name="no">Ei</string>
@@ -139,11 +139,11 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Merkkaa kaikki soitetuksi</string>
   <string name="mark_all_read_msg">Merkkaa kaikki episodit soitetuiksi</string>
-  <string name="mark_all_read_confirmation_msg">Varmista että haluat merkata kaikki jaksot soitetuiksi</string>
-  <string name="mark_all_read_feed_confirmation_msg">Varmista että haluat merkata tämän podcastin kaikki jaksot soitetuksi</string>
+  <string name="mark_all_read_confirmation_msg">Vavhvista, että haluat merkata kaikki jaksot soitetuiksi.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Vahvista, että haluat merkata tämän podcastin kaikki jaksot soitetuiksi.</string>
   <string name="remove_all_new_flags_label">Poista kaikki \"uusi\" liput</string>
   <string name="removed_all_new_flags_msg">Poistettiin kaikki \"uusi\" liput</string>
-  <string name="remove_all_new_flags_confirmation_msg">Varmista että haluat poistaa kaikki \"uusi\" liput kaikista jaksoista.</string>
+  <string name="remove_all_new_flags_confirmation_msg">Vahvista, että haluat poistaa \"uusi\"-liput kaikista jaksoista.</string>
   <string name="show_info_label">Näytä informaatio</string>
   <string name="show_feed_settings_label">Näytä podcastin asetukset</string>
   <string name="feed_settings_label">Podcastin asetukset</string>
@@ -267,7 +267,7 @@
   <string name="no_feed_url_podcast_found_by_search">Ehdotetulla podcastilla ei ollut RSS-linkkiä, AntennaPod löysi mahdollisesti vastaavan podcastin</string>
   <string name="authentication_notification_title">Todentaminen vaaditaan</string>
   <string name="authentication_notification_msg">Pyytämäsi resurssi vaatii käyttäjätunnuksen ja salasanan</string>
-  <string name="confirm_mobile_download_dialog_title">Varmista mobiililataus</string>
+  <string name="confirm_mobile_download_dialog_title">Vahvista mobiililataus</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Lataaminen mobiilidatayhteydellä on estettu asetuksissa.\n\nVoit lisätä yhden jakson jonoon tai sallia lataamisen väliaikaisesti.\n\n<small>Valinta muistetaan 10 minuutin ajan.</small></string>
   <string name="confirm_mobile_download_dialog_message">Lataaminen mobiilidatayhteydellä on estetty asetuksissa.\n\nHaluatko sallia lataamisen väliaikaisesti?\n\n<small>Valinta muistetaan 10 minuutin ajan.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Vahvista suoratoisto mobiilidatayhteydellä</string>
@@ -399,8 +399,8 @@
   <string name="user_interface_label">Käyttöliittymä</string>
   <string name="user_interface_sum">Ulkoasu, tilaukset, ruudun lukitus</string>
   <string name="pref_set_theme_title">Valitse teema</string>
-  <string name="pref_nav_drawer_items_title">Aseta navigointihyllyn asiat</string>
-  <string name="pref_nav_drawer_items_sum">Vaihda navigointihyllyssä esiintyviä asioita.</string>
+  <string name="pref_nav_drawer_items_title">Navigointivalikon kohteet</string>
+  <string name="pref_nav_drawer_items_sum">Valitse navigointivalikossa näytettävät toiminnot.</string>
   <string name="pref_nav_drawer_feed_order_title">Aseta tilausten järjestys</string>
   <string name="pref_nav_drawer_feed_order_sum">Vaihda tilauksiesi järjestystä</string>
   <string name="pref_nav_drawer_feed_counter_title">Aseta tilauslaskuri</string>
@@ -496,9 +496,9 @@
   <string name="pref_back_button_behavior_title">Takaisin-painikkeen toiminta</string>
   <string name="pref_back_button_behavior_sum">Mukauta takaisin-painikkeen toiminta.</string>
   <string name="back_button_default">Oletus</string>
-  <string name="back_button_open_drawer">Avaa navigaatiohylly</string>
+  <string name="back_button_open_drawer">Avaa navigointivalikko</string>
   <string name="back_button_double_tap">Tuplanaputa sulkemiseen</string>
-  <string name="back_button_show_prompt">Varmista poistuminen</string>
+  <string name="back_button_show_prompt">Vahvista poistuminen</string>
   <string name="close_prompt">Haluatko varmasti sulkea AntennaPodin?</string>
   <string name="double_tap_toast">Napauta takaisin-painiketta sulkeaksesi</string>
   <string name="back_button_go_to_page">Mene sivulle...</string>
@@ -506,7 +506,7 @@
   <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
   <string name="pref_delete_removes_from_queue_sum">Poista jakso automaattisesti jonosta kun se deletoidaan.</string>
   <string name="pref_filter_feed_title">Tilaussuodin</string>
-  <string name="pref_filter_feed_sum">Suodata navigointihyllyn ja tilausnäkymän tilauksiasi.</string>
+  <string name="pref_filter_feed_sum">Suodata navigointivalikossa ja tilausnäkymässä näytettäviä tilauksia.</string>
   <string name="subscriptions_are_filtered">Tilauksia on suodatettu.</string>
   <string name="subscriptions_counter_greater_zero">Laskurin arvo suurempi kuin nolla</string>
   <string name="auto_downloaded">Automaattisesti ladattu</string>

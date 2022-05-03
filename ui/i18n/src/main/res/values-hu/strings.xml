@@ -173,6 +173,7 @@
   </plurals>
   <string name="edit_tags">Címkék szerkesztése</string>
   <string name="rename_tag_label">Címke átnevezése</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Az epizódok mobilinternet-kapcsolaton történő letöltése ki van kapcsolva a beállításokban.\n\nBiztos, hogy mobilinterneten keresztül frissíti a podcastokat?</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
   <plurals name="downloading_batch_label">
@@ -430,6 +431,13 @@
   <string name="synchronization_sync_changes_title">Szinkronizálás most</string>
   <string name="synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
   <string name="synchronization_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, ekkor: <i>%2$s</i>. <br/><br/>Ha kijelentkezett, akkor újra kiválaszthatja a szinkronizációs szolgáltatóját]]></string>
+  <string name="synchronization_summary_unchoosen">Több szolgáltató közül választhat, melyekkel szinkronizálhatja a feliratkozásait és az epizódok lejátszási állapotait.</string>
+  <string name="synchronization_summary_nextcloud">A Gpoddersync egy nyílt forráskódú nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Adjon hozzáférés a megnyitott webböngészőben, és jöjjön vissza az AntennaPodhoz.</string>
+  <string name="synchronization_choose_title">Válasszon szinkronizálási szolgáltatót</string>
+  <string name="synchronization_force_sync_summary">Az összes feliratkozás és epizódállapot újraszinkronizálása</string>
+  <string name="synchronization_sync_summary">Feliratkozások és epizódállapot-változások szinkronizálása</string>
+  <string name="dialog_choose_sync_service_title">Válasszon szinkronizálási szolgáltatót</string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
   <string name="pref_feed_skip">Automatikus kihagyás</string>
@@ -509,6 +517,8 @@
   <string name="new_episode_notification_disabled">Értesítés letiltva</string>
   <string name="pref_feed_settings_dialog_msg">A beállítás minden podcastnál egyedi. A podcast lapját megnyitva módosíthatja.</string>
   <string name="pref_contribute">Közreműködés</string>
+  <string name="pref_show_subscription_title">Feliratkozás címének megjelenítése</string>
+  <string name="pref_show_subscription_title_summary">A feliratkozás címének megjelenítése a borítókép alatt.</string>
   <!--About screen-->
   <string name="about_pref">Névjegy</string>
   <string name="antennapod_version">AntennaPod verzió</string>
@@ -648,18 +658,25 @@
   <string name="authentication_label">Hitelesítés</string>
   <string name="authentication_descr">A felhasználónév és jelszó módosítása ennél a podcastnál és az epizódoknál.</string>
   <string name="feed_tags_label">Címkék</string>
+  <string name="feed_tags_summary">Módosítja a podcast címkéit, hogy segítsen a feliratkozásai rendszerezésében</string>
   <string name="feed_folders_include_root">Megjelenítés a fő listában</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Csak a kiválasztott feliratkozások közös címkéi jelennek meg. A többi címke változatlan marad.</string>
   <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
   <string name="episode_filters_label">Epizódszűrő</string>
   <string name="episode_filters_description">A kulcsszavak, mely alapján eldől, hogy az automatikus letöltés beleveszi-e az epizódot, vagy sem</string>
   <string name="episode_filters_include">Belevétel</string>
   <string name="episode_filters_exclude">Kihagyás</string>
+  <string name="episode_filters_duration">Legrövidebb hossz (perceben)</string>
   <string name="episode_filters_hint">Különálló szavak\n„Több szó”</string>
   <string name="keep_updated">Frissítse</string>
   <string name="keep_updated_summary">Vegye bele ezt a podcastot is az összes podcast (automatikus) frissítésébe</string>
   <string name="auto_download_disabled_globally">Az automatikus letöltés ki van kapcsolva a fő AntennaPod beállításokban</string>
+  <string name="statistics_time_played">Lejátszással töltött idő:</string>
+  <string name="statistics_total_duration">Teljes hossz (becslés):</string>
+  <string name="statistics_duration_played_episodes">Lejátszott epizódok hossza:</string>
   <string name="statistics_episodes_on_device">Epizódok az eszközön:</string>
   <string name="statistics_space_used">Használt tárhely: </string>
+  <string name="statistics_episodes_started_total">Epizódok elkezdve/összes:</string>
   <string name="statistics_view_all">Megtekintés az összes podcasthoz »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Feliratkozások importálása az egycélú alkalmazásokból…</string>
@@ -771,5 +788,7 @@
   <string name="on_demand_config_setting_changed">Beállítás sikeresen frissítve.</string>
   <string name="on_demand_config_stream_text">Úgy néz ki, hogy sokszor használja a közvetítést. Szeretné megjeleníteni a közvetítési gombokat az epizódlistákban?</string>
   <string name="on_demand_config_download_text">Úgy néz ki, hogy sokszor tölt le. Szeretné megjeleníteni a letöltési gombokat az epizódlistákban?</string>
+  <string name="shortcut_subscription_label">Feliratkozás indítója</string>
   <string name="shortcut_select_subscription">Feliratkozás kiválasztása</string>
+  <string name="add_shortcut">Indító hozzáadása</string>
 </resources>

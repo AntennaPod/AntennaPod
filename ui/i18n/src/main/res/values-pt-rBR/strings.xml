@@ -186,6 +186,10 @@
   <string name="delete_label">Excluir</string>
   <string name="delete_failed">Não foi possível excluir o arquivo. Experimente reiniciar o dispositivo.</string>
   <string name="delete_episode_label">Excluir o episódio</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 episódio baixado deletado.</item>
+    <item quantity="other">%d episódios baixados deletados.</item>
+  </plurals>
   <string name="remove_new_flag_label">Remover etiqueta de \"novo\"</string>
   <string name="removed_new_flag_label">Etiqueta de \"novo\" removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
@@ -426,9 +430,14 @@
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
   <string name="synchronization_sync_changes_title">Sincronizar agora</string>
   <string name="synchronization_full_sync_title">Forçar sincronização completa</string>
+  <string name="synchronization_login_status"><![CDATA[Logado como <i>%1$s</i> em <i>%2$s</i>. <br/><br/>Você pode escolher seu serviço de sincronização novamente assim que deslogar]]></string>
   <string name="synchronization_summary_unchoosen">Você pode escolher de vários serviços para sincronizar suas assinaturas e o estado de reprodução dos episódios com</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync é um aplicativo Nextcloud de código aberto que você pode facilmente instalar em seu próprio servidor. O aplicativo é independente do projeto AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Acesse usando seu navegador web aberto e retorne ao AntennaPod.</string>
   <string name="synchronization_choose_title">Escolher o serviço de sincronização</string>
+  <string name="synchronization_force_sync_summary">Sincronize novamente todas as inscrições e a situação dos episódios</string>
+  <string name="synchronization_sync_summary">Sincronize as mudanças de inscrições e a situação dos episódios</string>
+  <string name="dialog_choose_sync_service_title">Escolha o serviço de sincronização</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades disponíveis para reprodução de áudio.</string>
   <string name="pref_feed_playback_speed_sum">A velocidade a ser usada ao iniciar a reprodução de áudio para episódios neste podcast</string>
   <string name="pref_feed_skip">Salto automático</string>
@@ -508,6 +517,7 @@
   <string name="new_episode_notification_disabled">Notificação desabilitada</string>
   <string name="pref_feed_settings_dialog_msg">Essa configuração é única para cada podcast. Você pode alterá-la abrindo a página do podcast.</string>
   <string name="pref_contribute">Contribuir</string>
+  <string name="pref_show_subscription_title">Exibir o título da inscrição</string>
   <string name="pref_show_subscription_title_summary">Mostrar o título da assinatura abaixo da imagem da capa.</string>
   <!--About screen-->
   <string name="about_pref">Sobre</string>
@@ -648,18 +658,25 @@
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altera seu nome de usuário e sua senha para este podcast e seus episódios.</string>
   <string name="feed_tags_label">Etiquetas</string>
+  <string name="feed_tags_summary">Altere as etiquetas desse podcast para ajudar a organizar suas inscrições</string>
   <string name="feed_folders_include_root">Exibir na lista principal</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Serão mostradas apenas as etiquetas comuns às inscrições selecionadas. As outras etiquetas não são afetadas.</string>
   <string name="auto_download_settings_label">Configurações do download automático</string>
   <string name="episode_filters_label">Filtro de episódios</string>
   <string name="episode_filters_description">Lista de termos utilizados para decidir se um episódio deve ser incluído ou excluído no download automático</string>
   <string name="episode_filters_include">Incluir</string>
   <string name="episode_filters_exclude">Excluir</string>
+  <string name="episode_filters_duration">Duração mínima (em minutos)</string>
   <string name="episode_filters_hint">Palavras soltas \n\"Sequência de palavras\"</string>
   <string name="keep_updated">Manter atualizado</string>
   <string name="keep_updated_summary">Incluir este podcast ao atualizar (automaticamente) todos os podcasts</string>
   <string name="auto_download_disabled_globally">O download automático está desativado nas configurações principais do AntennaPod</string>
+  <string name="statistics_time_played">Tempo reproduzido:</string>
+  <string name="statistics_total_duration">Duração total (estimada):</string>
+  <string name="statistics_duration_played_episodes">Duração dos episódios reproduzidos:</string>
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
+  <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
   <string name="statistics_view_all">Visualização para todos os podcasts »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando assinaturas de aplicativos de finalidade única...</string>
@@ -704,6 +721,8 @@
   <string name="sort_date_old_new">Data (Velho \u2192 Novo)</string>
   <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
   <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
+  <string name="sort_filename_a_z">Nome do arquivo (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Nome do arquivo (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Novo \u2192 Antigo</string>
@@ -720,6 +739,7 @@
   <string name="share_dialog_include_label">Incluir:</string>
   <string name="share_playback_position_dialog_label">Posição do playback</string>
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>
+  <string name="share_dialog_link_to_episode">Link para o episódio</string>
   <string name="share_dialog_media_file_label">Arquivo de media</string>
   <string name="share_starting_position_label">Iniciando em</string>
   <!--Audio controls-->
@@ -768,4 +788,7 @@
   <string name="on_demand_config_setting_changed">Configuração atualizada com sucesso</string>
   <string name="on_demand_config_stream_text">Parece que você faz muito stream. Quer que as listas de episódios mostrem botões de stream?</string>
   <string name="on_demand_config_download_text">Parece que você faz muitos downloads. Quer que as listas de episódios mostrem botões de download?</string>
+  <string name="shortcut_subscription_label">Atalho da inscrição</string>
+  <string name="shortcut_select_subscription">Selecione a inscrição</string>
+  <string name="add_shortcut">Adicionar atalho</string>
 </resources>

@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Posodobi naročnine</string>
-  <string name="feeds_label">Poddaje</string>
+  <string name="feeds_label">Podkasti</string>
   <string name="statistics_label">Statistike</string>
   <string name="add_feed_label">Dodaj podkast</string>
   <string name="episodes_label">Epizode</string>
@@ -18,7 +18,7 @@
   <string name="downloads_log_label">Dnevnik</string>
   <string name="subscriptions_label">Naročnine</string>
   <string name="subscriptions_list_label">Seznam naročnin</string>
-  <string name="cancel_download_label">Prekliči\Prenose</string>
+  <string name="cancel_download_label">Prekliči Prenose </string>
   <string name="playback_history_label">Zgodovina predvajanja</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Prepomnilnik epizod poln</string>
@@ -185,6 +185,9 @@
     <item quantity="few">%dnaročnine so posodobljene.</item>
     <item quantity="other">%d naročnine so posodobljene.</item>
   </plurals>
+  <string name="edit_tags">Uredi označbo</string>
+  <string name="rename_tag_label">Preimenuj označbo</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Prenos epizod preko mobilnega podatkovnega omrežja je onemogočen v nastavitvah. \n\nAli klub temu želite osvežitev podkastov preko tega omrežja?</string>
   <!--actions on feeditems-->
   <string name="download_label">Prenos</string>
   <plurals name="downloading_batch_label">
@@ -264,6 +267,7 @@
   <string name="download_error_forbidden">Strežnik gostitelja podcasta se noče odzvati.</string>
   <string name="download_canceled_msg">Prenos je preklican</string>
   <string name="download_error_wrong_size">Povezava s strežnikom je bila izgubljena, preden se je prenos končal</string>
+  <string name="download_error_blocked">Prenosi so blokirani s strani drugih aplikacij na vaši napravi (kot na primer VPN ali aplikacija za blokiranje oglasov).</string>
   <string name="download_report_title">Prenosi so bili izvedeni z napako.</string>
   <string name="auto_download_report_title">Samodejni prenosi so končani</string>
   <string name="download_error_io_error">IO napaka</string>
@@ -281,6 +285,7 @@
   <string name="download_type_feed">Vir</string>
   <string name="download_type_media">Predstavnostna datoteka</string>
   <string name="null_value_podcast_error">Na voljo ni bil noben podcast, ki bi ga bilo mogoče prikazati.</string>
+  <string name="no_feed_url_podcast_found_by_search">Predlagani podkast nima RSS povezave. AntennaPod je našel podkast, ki modra ustreza.</string>
   <string name="authentication_notification_title">Potrebna je avtentikacija</string>
   <string name="authentication_notification_msg">Vir, ki ste ga zahtevali, zahteva uporabniško ime in geslo </string>
   <string name="confirm_mobile_download_dialog_title">Potrdite pretakanje preko mobilnih podatkov</string>
@@ -349,6 +354,7 @@
   <string name="storage_sum">Samodejno brisanje epizode, Uvoz, izvoz</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Sinhronizacija</string>
+  <string name="synchronization_sum">Sinhroniziraj z drugimi napravami</string>
   <string name="automation">Avtomatizacija</string>
   <string name="download_pref_details">Podrobnosti</string>
   <string name="import_export_pref">Uvozi/Izvozi</string>
@@ -441,8 +447,17 @@
   <string name="pref_theme_title_dark">Temno</string>
   <string name="pref_theme_title_trueblack">Črna (pripravljen za AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Neomejeno</string>
+  <string name="synchronization_logout">Odjava</string>
+  <string name="pref_synchronization_logout_toast">Odjava je bila uspešna</string>
   <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
   <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
+  <string name="synchronization_full_sync_title">Vsili polno sihnronizacijo</string>
+  <string name="synchronization_summary_unchoosen">Izbirate lahko med večimi ponudniki, da sinhronzirate vaše naročnine in epizode</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync je odportokodna Nextcloud aplikacija, katero lahko enostavno namestite na vaše lastni stsrežnik. Ta aplikacija je neodvisna od projekta AntennaPod.</string>
+  <string name="synchronization_choose_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
+  <string name="synchronization_force_sync_summary">Ponovno sinhronizirajte vse naročnine in epizode</string>
+  <string name="dialog_choose_sync_service_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
   <string name="pref_playback_speed_sum">Prilagodite hitrosti, ki so na voljo za predvajanje s spremenljivo hitrostjo</string>
   <string name="pref_feed_playback_speed_sum">Hitrost, ki se uporablja pri zagonu predvajanja zvoka za epizode v tem podcastu</string>
   <string name="pref_feed_skip">Samodejni preskok</string>
@@ -522,8 +537,9 @@
   <string name="new_episode_notification_disabled">Obvestila onemogočena</string>
   <string name="pref_feed_settings_dialog_msg">Ta nastavitev je unikatna za vsak podcast. Spremenite jo lahko tako, da odprete stran podcasta.</string>
   <string name="pref_contribute">Prispevajte</string>
+  <string name="pref_show_subscription_title">Pokaži naslov naročnine</string>
   <!--About screen-->
-  <string name="about_pref">About</string>
+  <string name="about_pref">O</string>
   <string name="antennapod_version">AntennaPod različica </string>
   <string name="contributors">Sodelujoči</string>
   <string name="contributors_summary">Vsakdo lahko pomaga izboljšati AntennaPod: s kodo, prevodi ali z nudenjem pomoči uporabnikom na našem forumu</string>
@@ -544,6 +560,7 @@
   <string name="sync_status_episodes_download">Prenašanje sprememb epizode …</string>
   <string name="sync_status_upload_played">Nalaganje stanja predvajanja …</string>
   <string name="sync_status_subscriptions">Sinhronizacija naročnin...</string>
+  <string name="sync_status_wait_for_downloads">Čakamo, da se prenosi končajo...</string>
   <string name="sync_status_success">Sinhronizacija uspela</string>
   <string name="sync_status_error">Sinhronizacija ni uspela</string>
   <!--import and export-->
@@ -561,7 +578,7 @@
   <string name="opml_reader_error">Pri branju dokumenta OPML je prišlo do napake:</string>
   <string name="opml_import_error_no_file">Izbrana ni nobena datoteka!</string>
   <string name="select_all_label">Izberi vse</string>
-  <string name="deselect_all_label">Počisti (Deselect) vse</string>
+  <string name="deselect_all_label">Počisti vse</string>
   <string name="opml_export_label">Izvozi OPML</string>
   <string name="html_export_label">Izvoz HTML</string>
   <string name="database_export_label">Izvoz podatkovne baze</string>
@@ -647,6 +664,7 @@
   <string name="preview_episode">Predogled</string>
   <string name="stop_preview">Ustavi predogled</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Nazaj</string>
   <string name="rewind_label">Previjanje nazaj</string>
   <string name="fast_forward_label">Hitro naprej</string>
   <string name="increase_speed">Povečaj hitrost</string>
@@ -664,18 +682,24 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Preverjanje pristnosti (Avtentikacija)</string>
   <string name="authentication_descr">Spremenite svoje uporabniško ime in geslo za ta podcast in njegove epizode.</string>
+  <string name="feed_tags_label">Oznake</string>
   <string name="feed_folders_include_root">Prikaži na glavnem seznamu</string>
   <string name="auto_download_settings_label">Nastavitve samodejnega prenosa</string>
   <string name="episode_filters_label">Filter epizod</string>
   <string name="episode_filters_description">Seznam izrazov, ki se uporabljajo za odločitev, ali je treba epizodo vključiti ali izključiti pri samodejnem prenosu</string>
   <string name="episode_filters_include">Vključi</string>
   <string name="episode_filters_exclude">Izključi</string>
+  <string name="episode_filters_duration">Minimalno trajanje (v minutah)</string>
   <string name="episode_filters_hint">Posamezne besede \n\"Več besed\"</string>
   <string name="keep_updated">Ostanite posodobljeni</string>
   <string name="keep_updated_summary">Vključite osveževanje tega podcasta pri (samodejnem) osveževanju vseh podcastov</string>
   <string name="auto_download_disabled_globally">Samodejni prenos je onemogočen v glavnih nastavitvah AntennaPod</string>
+  <string name="statistics_time_played">Predvajani čas:</string>
+  <string name="statistics_total_duration">Ocenjen čas predvajanja:</string>
+  <string name="statistics_duration_played_episodes">Trajanje predvajanih epizod:</string>
   <string name="statistics_episodes_on_device">Epizod na napravi:</string>
   <string name="statistics_space_used">Porabljen prostor:</string>
+  <string name="statistics_episodes_started_total">Epizode začete/vse:</string>
   <string name="statistics_view_all">Poglej za vse podcaste »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Uvažanje naročnin iz enonamenskih aplikacij …</string>
@@ -720,6 +744,8 @@
   <string name="sort_date_old_new">Datum (Old \u2192 New)</string>
   <string name="sort_duration_short_long">Trajanje (Short \u2192 Long)</string>
   <string name="sort_duration_long_short">Trajanje (Long \u2192 Short)</string>
+  <string name="sort_filename_a_z">Ime datoteke (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Ime datoteke (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Novi \u2192 Stari</string>
@@ -736,7 +762,9 @@
   <string name="share_dialog_include_label">Vključi:</string>
   <string name="share_playback_position_dialog_label">Položaj predvajanja</string>
   <string name="share_dialog_episode_website_label">Spletna stran epizode</string>
+  <string name="share_dialog_link_to_episode">Povezava do epizode</string>
   <string name="share_dialog_media_file_label">Predstavnostna datoteka</string>
+  <string name="share_starting_position_label">Začni od</string>
   <!--Audio controls-->
   <string name="audio_controls">Kontrole zvoka</string>
   <string name="playback_speed">Hitrost predvajanja</string>
@@ -783,4 +811,7 @@
   <string name="on_demand_config_setting_changed">Nastavitev je bila uspešno posodobljena.</string>
   <string name="on_demand_config_stream_text">Videti je, da veliko pretakate. Ali želite, da so na seznamih epizod prikazani gumbi za pretočno predvajanje?</string>
   <string name="on_demand_config_download_text">Videti je, da veliko prenašate. Ali želite, da so na seznamih epizod prikazani gumbi za prenos?</string>
+  <string name="shortcut_subscription_label">Bližnica do naročnine</string>
+  <string name="shortcut_select_subscription">Izberi naročnino</string>
+  <string name="add_shortcut">Dodaj bližnico</string>
 </resources>
