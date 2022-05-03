@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -29,18 +28,18 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -431,7 +430,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     public static String getLastNavFragment(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
+        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, HomeFragment.TAG);
         Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
         return lastFragment;
     }

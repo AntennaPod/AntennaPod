@@ -61,7 +61,7 @@
     <string name="home_classics_title">Check your classics</string>
     <string name="home_continue_title">Continue listening</string>
     <string name="home_new_title">Review the new</string>
-    <string name="home_downloads_title">Play offline</string>
+    <string name="home_downloads_title">Manage downloads</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet.</string>
     <string name="navigate_arrows">%s »</string>
