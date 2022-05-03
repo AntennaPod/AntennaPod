@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -27,6 +31,7 @@ import java.util.List;
 public class SubscriptionsSection extends HomeSection {
     public static final String TAG = "SubscriptionsSection";
     private HorizontalFeedListAdapter listAdapter;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -62,13 +67,20 @@ public class SubscriptionsSection extends HomeSection {
     }
 
     private void loadItems() {
-        List<StatisticsItem> statisticsData = DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime;
-        Collections.sort(statisticsData, (item1, item2) ->
-                Long.compare(item2.timePlayed, item1.timePlayed));
-        List<Feed> feeds = new ArrayList<>();
-        for (int i = 0; i < statisticsData.size() && i < 8; i++) {
-            feeds.add(statisticsData.get(i).feed);
+        if (disposable != null) {
+            disposable.dispose();
         }
-        listAdapter.updateData(feeds);
+        disposable = Observable.fromCallable(() -> DBReader.getStatistics(true, 0, Long.MAX_VALUE).feedTime)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(statisticsData -> {
+                    Collections.sort(statisticsData, (item1, item2) ->
+                            Long.compare(item2.timePlayed, item1.timePlayed));
+                    List<Feed> feeds = new ArrayList<>();
+                    for (int i = 0; i < statisticsData.size() && i < 8; i++) {
+                        feeds.add(statisticsData.get(i).feed);
+                    }
+                    listAdapter.updateData(feeds);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,17 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class QueueSection extends HomeSection {
     public static final String TAG = "QueueSection";
     private HorizontalItemListAdapter listAdapter;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -62,6 +68,14 @@ public class QueueSection extends HomeSection {
     }
 
     private void loadItems() {
-        listAdapter.updateData(DBReader.getPausedQueue(8));
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> DBReader.getPausedQueue(8))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queue -> listAdapter.updateData(queue),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+
     }
 }

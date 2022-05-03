@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -29,6 +34,7 @@ public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -104,11 +110,18 @@ public class DownloadsSection extends HomeSection {
     }
 
     private void loadItems() {
-        List<FeedItem> downloads = DBReader.getDownloadedItems();
-        if (downloads.size() > 2) {
-            downloads = downloads.subList(0, 2);
+        if (disposable != null) {
+            disposable.dispose();
         }
-        items = downloads;
-        adapter.updateItems(items);
+        disposable = Observable.fromCallable(DBReader::getDownloadedItems)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(downloads -> {
+                    if (downloads.size() > 2) {
+                        downloads = downloads.subList(0, 2);
+                    }
+                    items = downloads;
+                    adapter.updateItems(items);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

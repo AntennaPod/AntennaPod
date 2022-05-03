@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,21 @@ import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
 import java.util.Random;
 
 public class EpisodesSurpriseSection extends HomeSection {
     public static final String TAG = "EpisodesSurpriseSection";
+    static private int seed = 0;
     private HorizontalItemListAdapter listAdapter;
-    private int seed = 0;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -41,7 +45,9 @@ public class EpisodesSurpriseSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
-        seed = new Random().nextInt();
+        if (seed == 0) {
+            seed = new Random().nextInt();
+        }
         loadItems();
         return view;
     }
@@ -67,7 +73,14 @@ public class EpisodesSurpriseSection extends HomeSection {
     }
 
     private void loadItems() {
-        List<FeedItem> recentItems = DBReader.getRandomEpisodes(8, seed);
-        listAdapter.updateData(recentItems);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> DBReader.getRandomEpisodes(8, seed))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(episodes -> {
+                    listAdapter.updateData(episodes);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

@@ -68,7 +68,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         });
         holder.playButton.setOnClickListener(v -> {
             if (isPlaying) {
-               new PauseActionButton(item).onClick(mainActivityRef.get());
+                new PauseActionButton(item).onClick(mainActivityRef.get());
             } else if (item.getMedia().isDownloaded()) {
                 new PlayActionButton(item).onClick(mainActivityRef.get());
             } else {

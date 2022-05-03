@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,17 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.databinding.HomeWelcomeBannerBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class WelcomeBannerSection extends Fragment {
     public static final String TAG = "WelcomeBannerSection";
-    HomeWelcomeBannerBinding viewBinding;
+    private HomeWelcomeBannerBinding viewBinding;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -36,7 +42,14 @@ public class WelcomeBannerSection extends Fragment {
     }
 
     private void loadItems() {
-        int numSubscriptions = DBReader.getNavDrawerData().items.size();
-        viewBinding.getRoot().setVisibility(numSubscriptions == 0 ? View.VISIBLE : View.GONE);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> DBReader.getNavDrawerData().items.size())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(numSubscriptions ->
+                            viewBinding.getRoot().setVisibility(numSubscriptions == 0 ? View.VISIBLE : View.GONE),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

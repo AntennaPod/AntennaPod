@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.ui.home.sections;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
@@ -19,6 +21,10 @@ import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -28,6 +34,7 @@ public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -88,9 +95,18 @@ public class InboxSection extends HomeSection {
     }
 
     private void loadItems() {
-        viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
-        viewBinding.numNewItemsLabel.setText(String.valueOf(PodDBAdapter.getInstance().getNumberOfNewItems()));
-        items = DBReader.getNewItemsList(0, 2);
-        adapter.updateItems(items);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() ->
+                        new Pair<>(DBReader.getNewItemsList(0, 2), PodDBAdapter.getInstance().getNumberOfNewItems()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    items = data.first;
+                    adapter.updateItems(items);
+                    viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
+                    viewBinding.numNewItemsLabel.setText(String.valueOf(data.second));
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }
