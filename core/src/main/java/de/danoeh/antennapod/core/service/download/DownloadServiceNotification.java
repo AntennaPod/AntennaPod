@@ -136,7 +136,9 @@ public class DownloadServiceNotification {
                 continue;
             }
             sb.append("• ").append(statuses.get(i).getTitle());
-            sb.append(": ").append(context.getString(DownloadErrorLabel.from(statuses.get(i).getReason())));
+            if (statuses.get(i).getReason() != null) {
+                sb.append(": ").append(context.getString(DownloadErrorLabel.from(statuses.get(i).getReason())));
+            }
             if (i != statuses.size() - 1) {
                 sb.append("\n");
             }
@@ -153,16 +155,18 @@ public class DownloadServiceNotification {
     public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport) {
         // check if report should be created
         boolean createReport = false;
-        int successfulDownloads = 0;
         int failedDownloads = 0;
 
         // a download report is created if at least one download has failed
         // (excluding failed image downloads)
         for (DownloadStatus status : reportQueue) {
+            if (status == null || status.isCancelled()) {
+                continue;
+            }
             if (status.isSuccessful()) {
-                successfulDownloads++;
-                createReport |= showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
-            } else if (!status.isCancelled()) {
+                createReport |= showAutoDownloadReport && !status.isInitiatedByUser()
+                        && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
+            } else {
                 failedDownloads++;
                 createReport = true;
             }

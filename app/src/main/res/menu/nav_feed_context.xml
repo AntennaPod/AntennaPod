@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/remove_all_new_flags_item"
+        android:id="@+id/remove_all_inbox_item"
         android:menuCategory="container"
-        android:title="@string/remove_all_new_flags_label" />
+        android:title="@string/remove_all_inbox_label" />
 
     <item
         android:id="@+id/edit_tags"

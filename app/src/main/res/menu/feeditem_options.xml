@@ -9,9 +9,9 @@
     </item>
 
     <item
-        android:id="@+id/remove_new_flag_item"
+        android:id="@+id/remove_inbox_item"
         custom:showAsAction="collapseActionView"
-        android:title="@string/remove_new_flag_label" />
+        android:title="@string/remove_inbox_label" />
 
     <item
         android:id="@+id/mark_read_item"

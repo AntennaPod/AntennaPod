@@ -45,7 +45,6 @@
             android:id="@+id/newTagButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/new_label"
             app:srcCompat="@drawable/ic_add" />
 
     </LinearLayout>

@@ -145,17 +145,17 @@ public abstract class EpisodesListFragment extends Fragment {
             };
             markAllReadConfirmationDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.remove_all_new_flags_item) {
+        } else if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.remove_all_new_flags_label,
-                    R.string.remove_all_new_flags_confirmation_msg) {
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg) {
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
                     dialog.dismiss();
                     DBWriter.removeAllNewFlags();
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
+                            R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
                 }
             };
             removeAllNewFlagsConfirmationDialog.createNewDialog().show();
@@ -276,7 +276,8 @@ public abstract class EpisodesListFragment extends Fragment {
         if (restoreScrollPosition) {
             recyclerView.restoreScrollPosition(getPrefName());
         }
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()
+                && getParentFragment() instanceof PagedToolbarFragment) {
             ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
@@ -354,7 +355,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds) && getParentFragment() instanceof PagedToolbarFragment) {
             ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
         if (update.mediaIds.length > 0) {
@@ -369,7 +370,8 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private void updateUi() {
         loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()
+                && getParentFragment() instanceof PagedToolbarFragment) {
             ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
@@ -402,7 +404,9 @@ public abstract class EpisodesListFragment extends Fragment {
                     hasMoreItems = true;
                     episodes = data;
                     onFragmentLoaded(episodes);
-                    ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+                    if (getParentFragment() instanceof PagedToolbarFragment) {
+                        ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

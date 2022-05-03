@@ -84,7 +84,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.itemView.setOnLongClickListener(v -> {
-            longPressedItem = getItem(holder.getBindingAdapterPosition());
+            longPressedItem = item;
             longPressedPosition = holder.getBindingAdapterPosition();
             return false;
         });
@@ -92,7 +92,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (e.isFromSource(InputDevice.SOURCE_MOUSE)
                         && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                    longPressedItem = getItem(holder.getBindingAdapterPosition());
+                    longPressedItem = item;
                     longPressedPosition = holder.getBindingAdapterPosition();
                     return false;
                 }
@@ -127,6 +127,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         holder.itemView.setOnClickListener(null);
         holder.itemView.setOnCreateContextMenuListener(null);
         holder.itemView.setOnLongClickListener(null);
+        holder.itemView.setOnTouchListener(null);
         holder.secondaryActionButton.setOnClickListener(null);
         holder.dragHandle.setOnTouchListener(null);
         holder.coverHolder.setOnTouchListener(null);

@@ -2,10 +2,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="prefSwipeFeed"
-        android:title="@string/feeds_label"/>
-    <Preference
         android:key="prefSwipeQueue"
         android:title="@string/queue_label"/>
+
+    <Preference
+        android:key="prefSwipeInbox"
+        android:title="@string/inbox_label"/>
+
+    <Preference
+        android:key="prefSwipeFeed"
+        android:title="@string/feeds_label"/>
 
 </PreferenceScreen>

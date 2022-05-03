@@ -67,6 +67,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     public static final String[] NAV_DRAWER_TAGS = {
             HomeFragment.TAG,
             QueueFragment.TAG,
+            InboxFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
@@ -153,10 +154,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.remove_all_new_flags_item) {
+        if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
-                    R.string.remove_all_new_flags_label,
-                    R.string.remove_all_new_flags_confirmation_msg) {
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg) {
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
                     dialog.dismiss();
