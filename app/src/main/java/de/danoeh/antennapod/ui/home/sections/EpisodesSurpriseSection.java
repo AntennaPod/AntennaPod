@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class EpisodesSurpriseSection extends HomeSection {
     public static final String TAG = "EpisodesSurpriseSection";
-    static private int seed = 0;
+    private static int seed = 0;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
 

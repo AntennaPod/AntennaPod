@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -66,25 +66,7 @@ public class DownloadsSection extends HomeSection {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
-        if (items == null) {
-            return;
-        } else if (adapter == null) {
-            loadItems();
-            return;
-        }
-        for (int i = 0, size = event.items.size(); i < size; i++) {
-            FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(items, item.getId());
-            if (pos >= 0) {
-                items.remove(pos);
-                if (item.getMedia().isDownloaded()) {
-                    items.add(pos, item);
-                    adapter.notifyItemChangedCompat(pos);
-                } else {
-                    adapter.notifyItemRemoved(pos);
-                }
-            }
-        }
+        loadItems();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -100,6 +82,11 @@ public class DownloadsSection extends HomeSection {
                 break;
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDownloadLogChanged(DownloadLogEvent event) {
+        loadItems();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
