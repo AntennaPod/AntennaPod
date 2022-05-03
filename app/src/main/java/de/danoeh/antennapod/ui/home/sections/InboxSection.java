@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeSection;
@@ -60,7 +60,7 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) requireActivity()).loadChildFragment(new NewEpisodesFragment());
+        ((MainActivity) requireActivity()).loadChildFragment(new InboxFragment());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -80,7 +80,7 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.new_label);
+        return getString(R.string.inbox_label);
     }
 
     private void loadItems() {

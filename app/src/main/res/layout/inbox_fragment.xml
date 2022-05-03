@@ -12,7 +12,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true"
-        app:title="@string/inbox_label" />
+        app:title="@string/inbox_label"
+        app:navigationIcon="?homeAsUpIndicator" />
 
     <FrameLayout
         android:id="@+id/inboxContent"
