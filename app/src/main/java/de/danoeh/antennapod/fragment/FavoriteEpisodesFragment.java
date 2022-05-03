@@ -48,7 +48,6 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(false);
         menu.findItem(R.id.mark_all_read_item).setVisible(false);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
     }
 
     @NonNull

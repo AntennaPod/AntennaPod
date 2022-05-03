@@ -111,15 +111,15 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/statusUnread"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_label"
+                <ImageView
+                    android:id="@+id/statusInbox"
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
-                    style="@style/AntennaPod.TextView.UnreadIndicator"
-                    tools:text="@sample/episodes.json/data/status_label" />
+                    android:src="@drawable/ic_inbox"
+                    android:contentDescription="@string/is_inbox_label"
+                    app:tint="?attr/colorAccent" />
 
                 <ImageView
                     android:id="@+id/ivIsVideo"

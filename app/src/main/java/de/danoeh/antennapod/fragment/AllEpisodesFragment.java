@@ -67,7 +67,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.mark_all_read_item).setVisible(true);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
     }
 
     @Override
