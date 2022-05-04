@@ -13,29 +13,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -53,10 +50,10 @@ import java.util.List;
 /**
  * Displays all completed downloads and provides a button to delete them.
  */
-public class CompletedDownloadsFragment extends Fragment implements
-        EpisodeItemListAdapter.OnSelectModeListener {
-
-    private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
+public class CompletedDownloadsFragment extends Fragment
+        implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
+    public static final String TAG = "DownloadsFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
@@ -64,17 +61,25 @@ public class CompletedDownloadsFragment extends Fragment implements
     private ProgressBar progressBar;
     private Disposable disposable;
     private EmptyViewHandler emptyView;
-
+    private boolean displayUpArrow;
     private boolean isUpdatingFeeds = false;
-
     private SpeedDialView speedDialView;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.GONE);
+        toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.downloads_label);
+        toolbar.inflateMenu(R.menu.downloads_completed);
+        toolbar.setOnMenuItemClickListener(this);
+        refreshToolbarState();
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
@@ -118,6 +123,12 @@ public class CompletedDownloadsFragment extends Fragment implements
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         adapter.endSelectMode();
@@ -145,9 +156,15 @@ public class CompletedDownloadsFragment extends Fragment implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
+            return true;
+        } else if (item.getItemId() == R.id.action_download_logs) {
+            new DownloadLogFragment().show(getChildFragmentManager(), null);
+            return true;
+        } else if (item.getItemId() == R.id.action_search) {
+            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
         }
         return false;
@@ -157,7 +174,7 @@ public class CompletedDownloadsFragment extends Fragment implements
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+            refreshToolbarState();
         }
     }
 
@@ -223,6 +240,11 @@ public class CompletedDownloadsFragment extends Fragment implements
         }
     }
 
+    private void refreshToolbarState() {
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+                R.id.refresh_item, updateRefreshMenuItemChecker);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
@@ -250,7 +272,6 @@ public class CompletedDownloadsFragment extends Fragment implements
                 .subscribe(result -> {
                     items = result;
                     adapter.updateItems(result);
-                    ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

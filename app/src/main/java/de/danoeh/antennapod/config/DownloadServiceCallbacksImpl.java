@@ -4,14 +4,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.DownloadServiceCallbacks;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 
 
@@ -20,10 +19,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
-        Bundle args = new Bundle();
-        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
         return PendingIntent.getActivity(context,
                 R.id.pending_intent_download_service_notification, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
@@ -42,10 +38,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
-        Bundle args = new Bundle();
-        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }

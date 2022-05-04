@@ -25,13 +25,13 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
@@ -119,7 +119,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 return R.drawable.ic_inbox;
             case EpisodesFragment.TAG:
                 return R.drawable.ic_feed;
-            case DownloadsFragment.TAG:
+            case CompletedDownloadsFragment.TAG:
                 return R.drawable.ic_download;
             case PlaybackHistoryFragment.TAG:
                 return R.drawable.ic_history;
@@ -257,7 +257,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 holder.count.setText(NumberFormat.getInstance().format(sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if (tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+        } else if (tag.equals(CompletedDownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
             int spaceUsed = itemAccess.getNumberOfDownloadedItems()
