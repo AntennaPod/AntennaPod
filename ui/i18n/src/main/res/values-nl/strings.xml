@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Afleveringscache is vol</string>
   <string name="episode_cache_full_message">Het maximum aantal gecachete afleveringen is bereikt. Je kunt dit aantal verhogen in de instellingen.</string>
-  <string name="playback_statistics_label">Afspelen</string>
-  <string name="download_statistics_label">Downloads</string>
+  <string name="years_statistics_label">Jaren</string>
   <string name="notification_pref_fragment">Meldingen</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\'%1$s\' is niet aangetroffen</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Veegacties inschakelen op dit scherm</string>
   <string name="change_setting">Wijzigen</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Totaalduur van afgespeelde afleveringen:</string>
-  <string name="statistics_mode">Rekenmethode</string>
-  <string name="statistics_mode_normal">Bereken de daadwerkelijke speeltijd. Tweemaal afspelen wordt als twee keer gerekend. Markeren als afgespeeld telt niet mee.</string>
-  <string name="statistics_mode_count_all">Alle afgespeelde afleveringen opsommen</string>
+  <string name="statistics_include_marked">Duur van onlangs beluisterde afleveringen meetellen</string>
   <string name="statistics_speed_not_counted">Let op: er wordt geen rekening gehouden met de afspeelsnelheid.</string>
+  <string name="statistics_from">Van</string>
+  <string name="statistics_to">Naar</string>
+  <string name="statistics_today">Vandaag</string>
+  <string name="statistics_filter_all_time">Alles</string>
+  <string name="statistics_filter_past_year">Afgelopen jaar</string>
   <string name="statistics_reset_data">Statistieken op nul zetten</string>
   <string name="statistics_reset_data_msg">Dit wist alle luistertijden van alle afleveringen. Doorgaan?</string>
-  <string name="statistics_counting_since">Sinds %s\nheb je beluisterd:</string>
+  <string name="statistics_counting_range">Beluisterd tussen %1$s en %2$s</string>
+  <string name="statistics_counting_total">In totaal beluisterd</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Totaalgrootte van afleveringen op het toestel:</string>
+  <string name="total_size_downloaded_podcasts">Totaalgrootte van lokale afleveringen</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
   <string name="drawer_close">Menu sluiten</string>
@@ -150,10 +152,8 @@
   <string name="rename_feed_label">Podcastnaam wijzigen</string>
   <string name="remove_feed_label">Podcast verwijderen</string>
   <string name="share_label">Delen</string>
-  <string name="share_label_with_ellipses">Delen…</string>
   <string name="share_file_label">Bestand delen</string>
-  <string name="share_website_url_label">Website-adres</string>
-  <string name="share_feed_url_label">Podcast-feed URL</string>
+  <string name="share_rss_address_label">Rss-adres:</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \'%1$s\' en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
   <string name="feed_delete_confirmation_msg_batch">Bevestig dat je de geselecteerde podcasts en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
   <string name="feed_delete_confirmation_local_msg">Bevestig dat je de podcast \'%1$s\' wilt verwijderen. De bestanden in de lokale bronmap worden bewaard.</string>
@@ -173,7 +173,7 @@
   </plurals>
   <string name="edit_tags">Labels bewerken</string>
   <string name="rename_tag_label">Labelnaam wijzigen</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Afleveringen downloaden via mobiel internet is uitgeschakeld in de instellingen.\n\nWil je toch alle podcasts via mobiele data bijwerken?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Het vernieuwen van de podcasts via mobiel internet is uitgeschakeld in de instellingen.\n\nWeet je zeker dat je wilt vernieuwen?</string>
   <!--actions on feeditems-->
   <string name="download_label">Downloaden</string>
   <plurals name="downloading_batch_label">
@@ -260,6 +260,8 @@
   </plurals>
   <string name="completing">Bezig met voltooien…</string>
   <string name="download_notification_title">Bezig met downloaden van podcastgegevens</string>
+  <string name="download_notification_title_feeds">Bezig met vernieuwen…</string>
+  <string name="download_notification_title_episodes">Bezig met downloaden…</string>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediabestand</string>
@@ -283,7 +285,6 @@
   <string name="playback_error_source">Geen toegang tot mediabestand</string>
   <string name="playback_error_unknown">Onbekende fout</string>
   <string name="no_media_playing_label">Er wordt geen media afgespeeld</string>
-  <string name="player_go_to_picture_in_picture">Beeld-in-beeldmodus</string>
   <string name="unknown_media_key">AntennaPod - onbekende mediasleutel: %1$d</string>
   <string name="error_file_not_found">Bestand niet aangetroffen</string>
   <string name="no_media_label">Het item bevat geen mediabestand</string>
@@ -488,10 +489,6 @@
   <string name="media_player_switch_to_exoplayer">ExoPlayer gebruiken</string>
   <string name="media_player_switched_to_exoplayer">Overgeschakeld naar ExoPlayer.</string>
   <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
-  <string name="pref_videoBehavior_title">Bij verlaten van video</string>
-  <string name="pref_videoBehavior_sum">Wat te doen bij het verlaten van een spelende video</string>
-  <string name="stop_playback">Afspelen stoppen</string>
-  <string name="continue_playback">Audio af blijven spelen</string>
   <string name="behavior">Gedrag</string>
   <string name="pref_back_button_behavior_title">Gedrag van de terugknop</string>
   <string name="pref_back_button_behavior_sum">Wijzig het gedrag van de terugknop.</string>
@@ -673,7 +670,6 @@
   <string name="auto_download_disabled_globally">Automatisch downloaden is uitgeschakeld in de AntennaPod-instellingen</string>
   <string name="statistics_time_played">Afgespeeld:</string>
   <string name="statistics_total_duration">Totale duur (geschat):</string>
-  <string name="statistics_duration_played_episodes">Duur van beluisterde afleveringen:</string>
   <string name="statistics_episodes_on_device">Afleveringen op het toestel:</string>
   <string name="statistics_space_used">Gebruikte ruimte:</string>
   <string name="statistics_episodes_started_total">Aantal afleveringen gestart / totaal:</string>
@@ -736,10 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Herinner me later</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Ja, doen we!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Opnemen:</string>
-  <string name="share_playback_position_dialog_label">Afspeelpositie</string>
+  <string name="share_playback_position_dialog_label">Afspeelpositie herstellen</string>
   <string name="share_dialog_episode_website_label">Website van aflevering</string>
-  <string name="share_dialog_link_to_episode">Link naar aflevering</string>
+  <string name="share_dialog_for_social">Sociaal bericht</string>
+  <string name="share_dialog_media_address">Media-adres</string>
   <string name="share_dialog_media_file_label">Mediabestand</string>
   <string name="share_starting_position_label">Beginnen vanaf</string>
   <!--Audio controls-->
@@ -749,6 +745,7 @@
   <string name="stereo_to_mono">Stereo terugmixen tot monogeluid op beide kanalen</string>
   <string name="sonic_only">Sonic vereist</string>
   <string name="exoplayer_only">Alleen ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Overschakelen naar audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Host</string>

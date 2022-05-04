@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa asetuksissa.</string>
-  <string name="playback_statistics_label">Toisto</string>
-  <string name="download_statistics_label">Lataukset</string>
   <string name="notification_pref_fragment">Ilmoitukset</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Toimintoa \"%1$s\" ei löytynyt</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Ota pyyhkäisytoiminnot käyttöön tälle näkymälle</string>
   <string name="change_setting">Muuta</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Jaksojen toistoaika yhteensä:</string>
-  <string name="statistics_mode">Tilastointitila</string>
-  <string name="statistics_mode_normal">Laske oikeasti soitettu aikamäärä. Uudelleensoitto lasketaan kahdesti, mutta soitetuksi merkattua ei lasketa.</string>
-  <string name="statistics_mode_count_all">Laske yhteen kaikki soitetuksi merkityt jaksot</string>
   <string name="statistics_speed_not_counted">Huomio: Soittonopeutta ei lasketa mukaan.</string>
   <string name="statistics_reset_data">Nollaa tilastotiedot</string>
   <string name="statistics_reset_data_msg">Tämä poistaa kaikkien jaksojen soiton keston historian. Haluatko varmasti jatkaa?</string>
-  <string name="statistics_counting_since">%s jälkeen ,\nolet kuunnellut</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Laitteella olevien jaksojen koko yhteensä:</string>
   <!--Main activity-->
   <string name="drawer_open">Avaa menu</string>
   <string name="drawer_close">Sulje menu</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Uudelleennimeä podcast </string>
   <string name="remove_feed_label">Poista podcast</string>
   <string name="share_label">Jaa</string>
-  <string name="share_label_with_ellipses">Jaa...</string>
   <string name="share_file_label">Jaa tietodosto</string>
-  <string name="share_website_url_label">Web-sivujen osoite</string>
-  <string name="share_feed_url_label">Podcast-virran URL-osoite</string>
   <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\" ja KAIKKI sen jaksot (mukaan lukien ladatut jaksot).</string>
   <string name="feed_delete_confirmation_msg_batch">Vahvista, että haluat poistaa valitut podcastit ja KAIKKI niiden jaksot (mukaan lukien ladatut jaksot)</string>
   <string name="feed_delete_confirmation_local_msg">Vahvista, että haluat poistaa podcastin \"%1$s\". Paikallisia tiedostoja ei poisteta.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Muokkaa tunnisteita</string>
   <string name="rename_tag_label">Nimeä tunniste uudelleen</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Jaksojen lataaminen mobiilidatayhteydellä on poistettu käytöstä asetuksista.\n\nHaluatko silti päivittää kaikki podcastit mobiilidatan kautta?</string>
   <!--actions on feeditems-->
   <string name="download_label">Lataa</string>
   <plurals name="downloading_batch_label">
@@ -283,7 +271,6 @@
   <string name="playback_error_source">Mediatiedostoa ei voida käyttää</string>
   <string name="playback_error_unknown">Tuntematon virhe</string>
   <string name="no_media_playing_label">Mediaa ei toisteta</string>
-  <string name="player_go_to_picture_in_picture">Kuva-kuvassa-tila</string>
   <string name="unknown_media_key">AntennaPod - Tuntematon media-avain: %1$d</string>
   <string name="error_file_not_found">Tiedostoa ei löytynyt</string>
   <string name="no_media_label">Kohde ei sisällä mediatiedostoa</string>
@@ -488,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">Vaihda ExoPlayeriin</string>
   <string name="media_player_switched_to_exoplayer">Vaihdettu ExoPlayeriin.</string>
   <string name="pref_skip_silence_title">Skippaa tyhjät kohdat audiossa</string>
-  <string name="pref_videoBehavior_title">Video sulkiessa</string>
-  <string name="pref_videoBehavior_sum">Kun suljetaan videon soitto</string>
-  <string name="stop_playback">Lopeta soitto</string>
-  <string name="continue_playback">Jatka audion soittoa</string>
   <string name="behavior">Toiminta</string>
   <string name="pref_back_button_behavior_title">Takaisin-painikkeen toiminta</string>
   <string name="pref_back_button_behavior_sum">Mukauta takaisin-painikkeen toiminta.</string>
@@ -554,7 +537,6 @@
   <string name="opml_import_summary">Tuo tilauksesi toisesta podcast-sovelluksesta</string>
   <string name="database_export_summary">Siirrä tilaukset, kuunnellut jaksot ja jono toisella laitteella olevaan AntennaPodiin</string>
   <string name="database_import_summary">Tuo AntennaPod-tietokanta toiselta laitteelta</string>
-  <string name="opml_import_label">OPML tuonti</string>
   <string name="opml_add_podcast_label">Tuo podcastien lista (OPML)</string>
   <string name="opml_reader_error">Virhe lukiessa OPML dokumenttia:</string>
   <string name="opml_import_error_no_file">Ei tiedostoa valittuna!</string>
@@ -673,7 +655,6 @@
   <string name="auto_download_disabled_globally">Automaattinen lataaminen on pysäytetty AntennaPodin asetuksissa</string>
   <string name="statistics_time_played">Toistoaika:</string>
   <string name="statistics_total_duration">Koknaiskesto (arvio):</string>
-  <string name="statistics_duration_played_episodes">Toistettujen jaksojen kesto:</string>
   <string name="statistics_episodes_on_device">Jaksoja laitteella:</string>
   <string name="statistics_space_used">Tilaa käytetty:</string>
   <string name="statistics_episodes_started_total">Aloitettuja jaksoja/yhteensä:</string>
@@ -736,10 +717,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Muistuta minua myöhemmin</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Miksei, tehdään tämä!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Sisällytä:</string>
-  <string name="share_playback_position_dialog_label">Toiston kohta</string>
   <string name="share_dialog_episode_website_label">Jakson nettisivu</string>
-  <string name="share_dialog_link_to_episode">Linkki jaksoon</string>
   <string name="share_dialog_media_file_label">Mediatiedosto</string>
   <string name="share_starting_position_label">Aloituskohta</string>
   <!--Audio controls-->

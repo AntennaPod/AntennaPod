@@ -23,23 +23,15 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
   <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
-  <string name="playback_statistics_label">Playback</string>
-  <string name="download_statistics_label">İndirilenler</string>
   <string name="notification_pref_fragment">Bildirimler</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" bulunamadı</string>
   <!--SwipeActions-->
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Oynatılan bölümlerin toplam süresi:</string>
-  <string name="statistics_mode">İstatistik modu</string>
-  <string name="statistics_mode_normal">Gerçek oynatılan süreyi hesaplayın. Oynatıldı olarak işaretlemeler sayılmazken, iki kez oynatılan iki kez sayılır</string>
-  <string name="statistics_mode_count_all">Sum up all episodes marked as played</string>
   <string name="statistics_speed_not_counted">Uyarı: Oynatma hızı asla hesaba katılmaz.</string>
   <string name="statistics_reset_data">İstatistik verilerini sıfırla</string>
   <string name="statistics_reset_data_msg">Bu işlem, tüm bölümler için oynanan süre geçmişini siler. Devam etmek istediğinizden emin misiniz?</string>
-  <string name="statistics_counting_since">Since %s,\nyou played</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Cihazdaki bölümlerin toplam boyutu</string>
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -131,10 +123,7 @@
   <string name="rename_feed_label">Cepyayını yeniden adlandır</string>
   <string name="remove_feed_label">Cepyayını kaldır</string>
   <string name="share_label">Paylaş</string>
-  <string name="share_label_with_ellipses">Paylaş</string>
   <string name="share_file_label">Dosyayı paylaş</string>
-  <string name="share_website_url_label">Websitesini paylaş</string>
-  <string name="share_feed_url_label">Podcast feed URL</string>
   <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
   <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
   <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
@@ -246,7 +235,6 @@
   <string name="playback_error_source">Unable to access media file</string>
   <string name="playback_error_unknown">Bilinmeyen Hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
-  <string name="player_go_to_picture_in_picture">Resim içinde Resim modu</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <string name="error_file_not_found">File not found</string>
   <string name="no_media_label">Öğe, bir medya dosyası içermiyor</string>
@@ -415,10 +403,6 @@
   <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
   <string name="pref_skip_silence_title">Skip Silence in Audio</string>
-  <string name="pref_videoBehavior_title">Upon exiting video</string>
-  <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
-  <string name="stop_playback">Stop playback</string>
-  <string name="continue_playback">Continue audio playback</string>
   <string name="behavior">Behavior</string>
   <string name="pref_back_button_behavior_title">Back Button Behavior</string>
   <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
@@ -473,7 +457,6 @@
   <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
   <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
   <string name="database_import_summary">Import AntennaPod database from another device</string>
-  <string name="opml_import_label">OPML içe aktar</string>
   <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
   <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
   <string name="opml_import_error_no_file">No file selected!</string>
@@ -628,8 +611,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Daha sonra hatırlat</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Evet, şimdi yapalım!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Include:</string>
-  <string name="share_playback_position_dialog_label">Playback position</string>
   <string name="share_dialog_episode_website_label">Episode webpage</string>
   <string name="share_dialog_media_file_label">Media file</string>
   <!--Audio controls-->

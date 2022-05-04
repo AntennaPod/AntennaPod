@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Leun eo al lec\'h evit enrollañ rannoù</string>
   <string name="episode_cache_full_message">Tizhet eo bet bevenn pellgargadurioù ar rannoù. Gallout a rit kreskaat ment ar c\'hrubuilh en arventennoù.</string>
-  <string name="playback_statistics_label">Lenn</string>
-  <string name="download_statistics_label">Pellgargadurioù</string>
   <string name="notification_pref_fragment">Rebuzadurioù</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">N\'eo ket bet kavet \"%1$s\"</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Kas war-raok an ober dre al lamprañ evit ar skramm-mañ</string>
   <string name="change_setting">Cheñch</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Padelezh ar rannoù lennet:</string>
-  <string name="statistics_mode">Doareoù stadegoù</string>
-  <string name="statistics_mode_normal">Jediñ ar padelezh selaouet e gwirionez. Ar rannoù selaouet div wech a gont doubl hag ar re merket evel anlennet ne gontont ket</string>
-  <string name="statistics_mode_count_all">Sammañ an holl rannoù merket evel lennet</string>
   <string name="statistics_speed_not_counted">Evezhiadenn: tizh al lenn n\'eo morse kemeret e kont.</string>
   <string name="statistics_reset_data">Adderaouekaat ar roadennoù stadegoù</string>
   <string name="statistics_reset_data_msg">Dilemel a raio roll istor ar padelezh lennet evit an holl rannoù. Sur oc\'h e fell deoc\'h kenderc\'hel?</string>
-  <string name="statistics_counting_since">Abaoe %s\nho peus lennet</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Ment ar rannoù war ar benveg:</string>
   <!--Main activity-->
   <string name="drawer_open">Digeriñ al lañser</string>
   <string name="drawer_close">Serriñ al lañser</string>
@@ -168,10 +160,7 @@
   <string name="rename_feed_label">Adenvel ar podskignad</string>
   <string name="remove_feed_label">Dilemel ar podskignad</string>
   <string name="share_label">Rannañ</string>
-  <string name="share_label_with_ellipses">Rannañ…</string>
   <string name="share_file_label">Rannañ ar restr</string>
-  <string name="share_website_url_label">Ere al lec\'hienn</string>
-  <string name="share_feed_url_label">Ere ar podskignad</string>
   <string name="feed_delete_confirmation_msg">Kadarnait e fell deoc\'h dilemel ar podskignad \"%1$s\" hag e holl rannoù pellgarget.</string>
   <string name="feed_delete_confirmation_msg_batch">Mar-plij, kadarn ez peus c\'hoant lemel kuit ar podskign dibabed hag an hollad a degouezhioù (o kontañ ar re bellgarged)</string>
   <string name="feed_delete_confirmation_local_msg">Kadarnait e fell deoc\'h dilemel ar podskignad \"%1$s\". Ne vo ket dilamet ar restroù e-barzh an teuliad lec\'hel.</string>
@@ -194,7 +183,6 @@
   </plurals>
   <string name="edit_tags">Kemmañ an tikedennoù</string>
   <string name="rename_tag_label">Adanviñ an dikedenn</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Ar fed pellgargañ an degouezhioù dre ar rouedad helusk a zo diaktivaet. \n\nC\'hoant o peus memes tra adluskañ an oll degouzh dre ar rouedad helusk ?</string>
   <!--actions on feeditems-->
   <string name="download_label">Pellgargañ</string>
   <plurals name="downloading_batch_label">
@@ -323,7 +311,6 @@
   <string name="playback_error_source">N\'haller ket haeziñ ar restr</string>
   <string name="playback_error_unknown">Fazi dianav</string>
   <string name="no_media_playing_label">N\'eus netra o vezañ lennet</string>
-  <string name="player_go_to_picture_in_picture">Mod skeudenn-ouzh-skeudenn</string>
   <string name="unknown_media_key">AntennaPod - stokell vedia dianav: %1$d</string>
   <string name="error_file_not_found">N\'eo ket bet kavet ar restr</string>
   <string name="no_media_label">N\'eus restr media ebet gant an elfenn</string>
@@ -528,10 +515,6 @@
   <string name="media_player_switch_to_exoplayer">Ober gant ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Kemmet eo bet al lenner evit ExoPlayer</string>
   <string name="pref_skip_silence_title">Tremen ar mareoù didrouz en aodio</string>
-  <string name="pref_videoBehavior_title">Pa vez kuitaet ur video</string>
-  <string name="pref_videoBehavior_sum">Despizañ ar pezh a c\'hoarvez pa vez kuitaet ar video p\'emañ o vezañ lennet</string>
-  <string name="stop_playback">Paouez al len</string>
-  <string name="continue_playback">Kenderc\'hel gant al len</string>
   <string name="behavior">Emzalc\'h</string>
   <string name="pref_back_button_behavior_title">Emzalc\'h an afell Distreiñ</string>
   <string name="pref_back_button_behavior_sum">Kemmañ a ra emzalc\'h an afell Distreiñ</string>
@@ -593,7 +576,6 @@
   <string name="opml_import_summary">Enporzhiañ ho koumanantoù adalek un arload podskignad all</string>
   <string name="database_export_summary">Treuzkas ar c\'houmanantoù, ar rannoù lennet hag el lost da AntennaPod war ur benveg all</string>
   <string name="database_import_summary">Enporzhiañ stlennvon AntennaPod adalek ur benveg all</string>
-  <string name="opml_import_label">Enporzhiañ ur restr OPML</string>
   <string name="opml_add_podcast_label">Enporzhiañ ul listenn podskignadoù (OPML)</string>
   <string name="opml_reader_error">Degouezhet ez eus bet ur fazi en ul lenn ar restr OPML</string>
   <string name="opml_import_error_no_file">Restr ebet diuzet!</string>
@@ -718,7 +700,6 @@
   <string name="auto_download_disabled_globally">N\'eo ket gweredekaet al lenn emgefreek e arventennoù pennañ AntennaPod</string>
   <string name="statistics_time_played">Padelezh lennet :</string>
   <string name="statistics_total_duration">Padelezh a-bezh (priziet) :</string>
-  <string name="statistics_duration_played_episodes">Padelezh ar rannoù lennet :</string>
   <string name="statistics_episodes_on_device">Rannoù war ar benveg:</string>
   <string name="statistics_space_used">Plas implijet:</string>
   <string name="statistics_view_all">Diskouez an holl bodskignadoù »</string>
@@ -778,8 +759,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Adlakaat da soñj diwezhatoc\'h</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Deomp dezhi!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Ebarzhiñ:</string>
-  <string name="share_playback_position_dialog_label">Lec\'hiadur lenn</string>
   <string name="share_dialog_episode_website_label">Lec\'hienn ar rann</string>
   <string name="share_dialog_media_file_label">Restr media</string>
   <!--Audio controls-->

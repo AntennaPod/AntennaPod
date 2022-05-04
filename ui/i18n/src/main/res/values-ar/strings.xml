@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. المرجو الرفع من قيمة التخزين في قائمة الإعدادات.</string>
-  <string name="playback_statistics_label">تشغيل</string>
-  <string name="download_statistics_label">تنزيلات</string>
   <string name="notification_pref_fragment">إشعارات</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">لم يتم العثور على %1$s</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">تفعيل السحب في هذه الواجهة</string>
   <string name="change_setting">تغيير </string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">الوقت الكلي للحلقات المشغلة:</string>
-  <string name="statistics_mode">نمط الإحصاءات</string>
-  <string name="statistics_mode_normal">أحسب وقت التشغيل الفعلي. التشغيل مرتين يحسب مرتين, بينما التحديد بـ مشغلة لا يحتسب</string>
-  <string name="statistics_mode_count_all">أحسب كل الحلقات المحددة بـ مشغلة</string>
   <string name="statistics_speed_not_counted">ملاحظة: سرعة التشغيل لن تأخذ بالاعتبار.</string>
   <string name="statistics_reset_data">صفر الاحصاءات</string>
   <string name="statistics_reset_data_msg">هذا سيمسح سجل وقت التشغيل لكل الحلقات. هل أنت متأكد؟</string>
-  <string name="statistics_counting_since">منذ %s,\nقمت بتشغيلها</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">الحجم الكلي للحلقات على الجهاز:</string>
   <!--Main activity-->
   <string name="drawer_open">قائمة الفتح</string>
   <string name="drawer_close">قائمة الاغلاف</string>
@@ -174,10 +166,7 @@
   <string name="rename_feed_label">تغيير اسم البودكاست</string>
   <string name="remove_feed_label">ازل البودكاست</string>
   <string name="share_label">مشاركة</string>
-  <string name="share_label_with_ellipses">مشاركة...</string>
   <string name="share_file_label">مشاركة ملف</string>
-  <string name="share_website_url_label">عنوان موقع</string>
-  <string name="share_feed_url_label">عنوان URL قناة البودكاست</string>
   <string name="feed_delete_confirmation_msg">نرجو تأكيد رغبتك مسح بودكاست \"%1$s\" وكل حلقاته (بما فيها المنزلة).</string>
   <string name="feed_delete_confirmation_msg_batch">الرجاء تأكيد أنك تريد إزالة البرامج الإذاعية المحددة وجميع حلقاتها (متضمنة الحلقات المحمّلة) </string>
   <string name="feed_delete_confirmation_local_msg">نرجو تأكيد رغبتك إزالة بودكاست \"%1$s\". الملفات المنزلة لن يتم مسحها.</string>
@@ -325,7 +314,6 @@
   <string name="playback_error_source">لا يمكن الوصول لملف الوسائط</string>
   <string name="playback_error_unknown">خطاء غير معروف</string>
   <string name="no_media_playing_label">لا وسائط تشغل</string>
-  <string name="player_go_to_picture_in_picture">نمط صورة-في-صورة</string>
   <string name="unknown_media_key">AntennaPod - مفتاح وسائط غير معروف: %1$d</string>
   <string name="error_file_not_found">ملف غير موجود</string>
   <string name="no_media_label">لا يوجد ملف وسائط بالعنصر</string>
@@ -524,10 +512,6 @@
   <string name="media_player_switch_to_exoplayer">قم بالتبديل إلى ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">تم بالتبديل إلى ExoPlayer</string>
   <string name="pref_skip_silence_title">تخطي الصمت في الصوت</string>
-  <string name="pref_videoBehavior_title">عند الخروج من الفيديو</string>
-  <string name="pref_videoBehavior_sum">التصرف عند ترك تشغيل فيديو</string>
-  <string name="stop_playback">اوقف التشغيل</string>
-  <string name="continue_playback">استمر في تشغيل الصوت</string>
   <string name="behavior">سلوك</string>
   <string name="pref_back_button_behavior_title">سلوك زر الرجوع</string>
   <string name="pref_back_button_behavior_sum">تغيير سلوك زر الرجوع</string>
@@ -587,7 +571,6 @@
   <string name="opml_import_summary">إستيراد اشتراكاتك من برنامج آخر</string>
   <string name="database_export_summary">نقل الاشتراكات والحلقات المسموعة ولائحة الإستماع لـ AntennaPod على جهاز آخر</string>
   <string name="database_import_summary">استوراد قاعدة بيانات AntennaPod من جهاز آخر</string>
-  <string name="opml_import_label">استيراد (OPML)</string>
   <string name="opml_add_podcast_label">استورد قائمة بودكاستات (OPML)</string>
   <string name="opml_reader_error">حدث خطأ أثناء قراءة مستند OPML:</string>
   <string name="opml_import_error_no_file">لم يتم اختيار أي ملف</string>
@@ -770,8 +753,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">ذكرني في وقت لاحق</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">أكيد، لنفعل ذلك!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">تضمين:</string>
-  <string name="share_playback_position_dialog_label">موضع التشغيل</string>
   <string name="share_dialog_episode_website_label">صفحة وب الحلقة</string>
   <string name="share_dialog_media_file_label">ملف الوسائط</string>
   <!--Audio controls-->

@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Cache de episódios cheio</string>
   <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
-  <string name="playback_statistics_label">Reprodução</string>
-  <string name="download_statistics_label">Downloads</string>
   <string name="notification_pref_fragment">Notificações</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" não foi encontrado</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Habilitar as ações de arrasto para essa tela</string>
   <string name="change_setting">Alterar</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Tempo total de reprodução de episódios:</string>
-  <string name="statistics_mode">Modo Estatística</string>
-  <string name="statistics_mode_normal">Calcular a duração que foi efetivamente reproduzido. Reproduzir duas vezes conta em dobro, enquanto marcar como reproduzido não é contado</string>
-  <string name="statistics_mode_count_all">Somar todos os episódios marcados como reproduzido</string>
   <string name="statistics_speed_not_counted">Nota: A velocidade de reprodução nunca é levada em conta.</string>
   <string name="statistics_reset_data">Limpar dados de estatísticas</string>
   <string name="statistics_reset_data_msg">Isso ira apagar o histórico de duração de reprodução de todos os episódios. Tem certeza que deseja continuar?</string>
-  <string name="statistics_counting_since">Desde %s,\nvocê reproduziu</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamanho total dos episódios baixados:</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Renomear podcast</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Compartilhar</string>
-  <string name="share_label_with_ellipses">Compartilhar...</string>
   <string name="share_file_label">Compartilhar arquivo</string>
-  <string name="share_website_url_label">Endereço do site</string>
-  <string name="share_feed_url_label">URL do feed do podcast</string>
   <string name="feed_delete_confirmation_msg">Por favor, confirme que você deseja excluir o podcast \"%1$s\" e TODOS os seus episódios (incluindo os baixados).</string>
   <string name="feed_delete_confirmation_msg_batch">Por favor, confirme que você deseja remover os podcasts selecionados e TODOS os seus episódios (inclusive os episódios baixados).</string>
   <string name="feed_delete_confirmation_local_msg">Por favor, confirme que você deseja excluir o podcast \"%1$s\". Os arquivos na pasta local não serão excluídos.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Renomear etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">O download de episódios pela conexão de dados móveis está desabilitado nas configurações.\n\nVocê ainda deseja atualizar todas as podcasts pelos dados móveis?</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
@@ -283,7 +271,6 @@
   <string name="playback_error_source">Não foi possível acessar o arquivo de mídia</string>
   <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nenhuma mídia em reprodução</string>
-  <string name="player_go_to_picture_in_picture">Modo PIP</string>
   <string name="unknown_media_key">AntennaPod - Chave de mídia desconhecida: %1$d</string>
   <string name="error_file_not_found">Arquivo não encontrado</string>
   <string name="no_media_label">O item não contém um arquivo de mídia</string>
@@ -488,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">Alterar para ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Alterado para ExoPlayer</string>
   <string name="pref_skip_silence_title">Pular silêncio no áudio</string>
-  <string name="pref_videoBehavior_title">Após fechar vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportamento ao sair da reprodução de vídeo</string>
-  <string name="stop_playback">Parar a reprodução</string>
-  <string name="continue_playback">Continuar a reprodução de áudio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_back_button_behavior_title">Comportamento do botão voltar</string>
   <string name="pref_back_button_behavior_sum">Altera o comportamento do botão voltar</string>
@@ -554,7 +537,6 @@
   <string name="opml_import_summary">Importa suas assinaturas de outro aplicativo de podcast</string>
   <string name="database_export_summary">Transfere as assinaturas, os episódios ouvidos e a fila para o AntennaPod em outro dispositivo</string>
   <string name="database_import_summary">Importa o banco de dados AntennaPod de outro dispositivo</string>
-  <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcasts (OPML)</string>
   <string name="opml_reader_error">Ocorreu um erro ao ler o documento OPML:</string>
   <string name="opml_import_error_no_file">Nenhum arquivo selecionado!</string>
@@ -673,7 +655,6 @@
   <string name="auto_download_disabled_globally">O download automático está desativado nas configurações principais do AntennaPod</string>
   <string name="statistics_time_played">Tempo reproduzido:</string>
   <string name="statistics_total_duration">Duração total (estimada):</string>
-  <string name="statistics_duration_played_episodes">Duração dos episódios reproduzidos:</string>
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
   <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
@@ -736,10 +717,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Lembre-me mais tarde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Claro, vamos fazer isso!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluir:</string>
-  <string name="share_playback_position_dialog_label">Posição do playback</string>
   <string name="share_dialog_episode_website_label">Webpage do episódio</string>
-  <string name="share_dialog_link_to_episode">Link para o episódio</string>
   <string name="share_dialog_media_file_label">Arquivo de media</string>
   <string name="share_starting_position_label">Iniciando em</string>
   <!--Audio controls-->

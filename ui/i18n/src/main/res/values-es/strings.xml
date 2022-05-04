@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Antememoria de episodios llena</string>
   <string name="episode_cache_full_message">Se alcanzó el límite de la antememoria de episodios. Puede aumentar el tamaño en Configuración.</string>
-  <string name="playback_statistics_label">Reproducción</string>
-  <string name="download_statistics_label">Descargas</string>
   <string name="notification_pref_fragment">Notificaciones</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">No se encontró «%1$s»</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Activar gestos de deslizado en esta pantalla</string>
   <string name="change_setting">Cambiar</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de episodios:</string>
-  <string name="statistics_mode">Modo de estadísticas</string>
-  <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble y marcar como leído no cuenta como reproducido</string>
-  <string name="statistics_mode_count_all">Suma de todos los episodios marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: la velocidad de reproducción nunca se tiene en cuenta.</string>
   <string name="statistics_reset_data">Restablecer estadísticas</string>
   <string name="statistics_reset_data_msg">Esto borrará el historial de duración reproducida de todos los episodios. ¿Confirma que quiere hacerlo?</string>
-  <string name="statistics_counting_since">Desde %s,\nhas reproducido</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamaño total de episodios en dispositivo:</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Renombrar el pódcast</string>
   <string name="remove_feed_label">Eliminar el pódcast</string>
   <string name="share_label">Compartir</string>
-  <string name="share_label_with_ellipses">Compartir…</string>
   <string name="share_file_label">Compartir el archivo</string>
-  <string name="share_website_url_label">Dirección web</string>
-  <string name="share_feed_url_label">URL del canal del podcast</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere borrar el pódcast \"%1$s\" y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirme que quiere borrar los pódcasts seleccionados y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_delete_confirmation_local_msg">Confirme que quiere borrar el podcast \"%1$s\". Los archivos en la carpeta origen local no serán borrados.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Renombrar etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Descargar episodios usando una conexión de datos móviles está desactivado en las opciones.\n\n¿De veras quieres actualizar todos los podcasts usando una conexión de datos móviles?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
@@ -276,7 +264,6 @@
   <string name="playback_error_source">No se puede acceder al archivo de medios</string>
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
-  <string name="player_go_to_picture_in_picture">Modo picture-in-picture</string>
   <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
   <string name="error_file_not_found">Archivo no encontrado</string>
   <string name="no_media_label">El elemento no contiene un archivo multimedia</string>
@@ -473,10 +460,6 @@
   <string name="media_player_switch_to_exoplayer">Cambiar a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Cambiado a ExoPlayer</string>
   <string name="pref_skip_silence_title">Saltar silencio en audio</string>
-  <string name="pref_videoBehavior_title">Al salir del vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportamiento al salir de la reproducción de video</string>
-  <string name="stop_playback">Parar reproducción</string>
-  <string name="continue_playback">Continuar la reproducción de audio</string>
   <string name="behavior">Comportamiento</string>
   <string name="pref_back_button_behavior_title">Comportamiento del botón de retroceso</string>
   <string name="pref_back_button_behavior_sum">Cambiar el comportamiento del botón de retroceso.</string>
@@ -536,7 +519,6 @@
   <string name="opml_import_summary">Importar tus suscripciones desde otra aplicación de podcast</string>
   <string name="database_export_summary">Transferir suscripciones, episodios escuchados y la cola a AntennaPod en otro dispositivo</string>
   <string name="database_import_summary">Importar base de datos de AntennaPod desde otro dispositivo</string>
-  <string name="opml_import_label">Importar de OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
   <string name="opml_reader_error">Error al leer el documento OPML:</string>
   <string name="opml_import_error_no_file">¡Debe seleccionar un archivo!</string>
@@ -707,8 +689,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Recuérdamelo más tarde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">¡Venga, hagámoslo!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluir:</string>
-  <string name="share_playback_position_dialog_label">Posición de reproducción</string>
   <string name="share_dialog_episode_website_label">Página del episodio</string>
   <string name="share_dialog_media_file_label">Archivo de medios</string>
   <!--Audio controls-->

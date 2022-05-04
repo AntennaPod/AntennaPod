@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">曲目缓存已满</string>
   <string name="episode_cache_full_message">已达到曲目缓存限制，可以在设置中提高缓存大小。</string>
-  <string name="playback_statistics_label">回放</string>
-  <string name="download_statistics_label">下载</string>
+  <string name="years_statistics_label">年</string>
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" 未找到</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">启用此屏幕的滑动操作 </string>
   <string name="change_setting">更改</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">节目总播放时间:</string>
-  <string name="statistics_mode">统计模式</string>
-  <string name="statistics_mode_normal">计算实际上的播放次数与时长。播放过两次则将被识别为两次，但是被手动标记为已播放状态的不算。</string>
-  <string name="statistics_mode_count_all">计算所有标记为已播放的节目</string>
+  <string name="statistics_include_marked">包括刚被标记为已播放节目的时长</string>
   <string name="statistics_speed_not_counted">注意：播放速度不在考虑范围之内。</string>
+  <string name="statistics_from">从</string>
+  <string name="statistics_to">到</string>
+  <string name="statistics_today">今日</string>
+  <string name="statistics_filter_all_time">所有时间</string>
+  <string name="statistics_filter_past_year">去年</string>
   <string name="statistics_reset_data">重置统计数据</string>
   <string name="statistics_reset_data_msg">这将抹去总播放时间的历史。您确定要进行该操作吗？</string>
-  <string name="statistics_counting_since">自 %s起，\n您播放了</string>
+  <string name="statistics_counting_range">%1$s 到 %2$s 期间播放的</string>
+  <string name="statistics_counting_total">总播放</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">设备上音频节目的总大小:</string>
+  <string name="total_size_downloaded_podcasts">设备上音频节目的总大小</string>
   <!--Main activity-->
   <string name="drawer_open">打开菜单</string>
   <string name="drawer_close">关闭菜单</string>
@@ -144,10 +146,8 @@
   <string name="rename_feed_label">重命名播客</string>
   <string name="remove_feed_label">移除播客</string>
   <string name="share_label">分享</string>
-  <string name="share_label_with_ellipses">分享…</string>
   <string name="share_file_label">分享文件</string>
-  <string name="share_website_url_label">网站地址</string>
-  <string name="share_feed_url_label">播客订阅源 URL</string>
+  <string name="share_rss_address_label">RSS 地址：</string>
   <string name="feed_delete_confirmation_msg">请确认您想删除播客“%1$s” 及其所有节目(包括已经下载的）</string>
   <string name="feed_delete_confirmation_msg_batch">请确认您想要删除所选的播客及其所有节目(包括下载的节目)。</string>
   <string name="feed_delete_confirmation_local_msg">请确认你想要移除播客\"%1$s\"。本地源文件夹中的文件不会被删除。</string>
@@ -166,7 +166,7 @@
   </plurals>
   <string name="edit_tags">编辑标签</string>
   <string name="rename_tag_label">重命名标签</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">设置中禁止通过移动数据连接下载剧集。\n\n您仍想使用移动数据刷新所有的播客吗?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">通过移动数据连接刷新播客在设置中被禁用。\n\n你一定要刷新播客吗？</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
@@ -246,6 +246,8 @@
   </plurals>
   <string name="completing">完成中…</string>
   <string name="download_notification_title">下载播客数据</string>
+  <string name="download_notification_title_feeds">正在刷新播客</string>
+  <string name="download_notification_title_episodes">正在下载播客</string>
   <string name="download_log_title_unknown">未知标题</string>
   <string name="download_type_feed">订阅</string>
   <string name="download_type_media">媒体文件</string>
@@ -269,7 +271,6 @@
   <string name="playback_error_source">无法访问媒体文件</string>
   <string name="playback_error_unknown">未知错误</string>
   <string name="no_media_playing_label">没有可播放的媒体</string>
-  <string name="player_go_to_picture_in_picture">画中画模式</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
   <string name="error_file_not_found">文件未找到</string>
   <string name="no_media_label">条目不包含一个媒体文件</string>
@@ -474,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">转到ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">已转至ExoPlayer</string>
   <string name="pref_skip_silence_title">跳过没有声音的音频</string>
-  <string name="pref_videoBehavior_title">退出视频后</string>
-  <string name="pref_videoBehavior_sum">离开视频播放后的行为</string>
-  <string name="stop_playback">停止播放</string>
-  <string name="continue_playback">继续播放音频</string>
   <string name="behavior">行为</string>
   <string name="pref_back_button_behavior_title">返回键行为</string>
   <string name="pref_back_button_behavior_sum">改变返回键的行为</string>
@@ -656,7 +653,6 @@
   <string name="auto_download_disabled_globally">AntennaPod主设置中已禁用自动下载</string>
   <string name="statistics_time_played">已播放时长：</string>
   <string name="statistics_total_duration">总持续时间（预估）：</string>
-  <string name="statistics_duration_played_episodes">已播放节目的持续时间：</string>
   <string name="statistics_episodes_on_device">设备上的节目:</string>
   <string name="statistics_space_used">占用的空间: </string>
   <string name="statistics_episodes_started_total">已启动节目/总数：</string>
@@ -719,10 +715,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">稍后提醒</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">好的, 就这样！</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">包含:</string>
-  <string name="share_playback_position_dialog_label">播放位置</string>
+  <string name="share_playback_position_dialog_label">包括播放位置</string>
   <string name="share_dialog_episode_website_label">节目网页</string>
-  <string name="share_dialog_link_to_episode">节目链接</string>
+  <string name="share_dialog_for_social">社交信息</string>
+  <string name="share_dialog_media_address">媒体地址</string>
   <string name="share_dialog_media_file_label">媒体文件</string>
   <string name="share_starting_position_label">开始位置</string>
   <!--Audio controls-->
@@ -732,6 +728,7 @@
   <string name="stereo_to_mono">下降混合：由立体声到单声道</string>
   <string name="sonic_only">仅声音</string>
   <string name="exoplayer_only">仅ExoPlayer</string>
+  <string name="player_switch_to_audio_only">切换到仅音频</string>
   <!--proxy settings-->
   <string name="proxy_type_label">类型</string>
   <string name="host_label">主机地址</string>

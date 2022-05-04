@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Epizód tárhely megtelt</string>
   <string name="episode_cache_full_message">Az epizódok tárolására megadott maximális tárhely megtelt. A mérete a beállításokban növelhető meg.</string>
-  <string name="playback_statistics_label">Lejátszás</string>
-  <string name="download_statistics_label">Letöltések</string>
   <string name="notification_pref_fragment">Értesítések</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">A(z) „%1$s” nem található</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Húzási műveletek engedélyezése ezen a képernyőn</string>
   <string name="change_setting">Módosítás</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">A lejátszott epizódok összideje:</string>
-  <string name="statistics_mode">Statisztikai mód</string>
-  <string name="statistics_mode_normal">A tényleges lejátszási idő számítása. A kétszeri lejátszás kétszer lesz számolva, míg a lejátszottként megjelölés nem számít bele</string>
-  <string name="statistics_mode_count_all">Az összes lejátszottnak jelölt epizód összeszámolása</string>
   <string name="statistics_speed_not_counted">Megjegyzés: a lejátszási sebesség nem lesz beleszámítva.</string>
   <string name="statistics_reset_data">Statisztikai adatok alaphelyzetbe állítása</string>
   <string name="statistics_reset_data_msg">Ez törli az összes epizód lejátszási hosszát. Biztos, hogy folytatja?</string>
-  <string name="statistics_counting_since">%s óta \lejátszott</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Az eszközön lévő epizódok összmérete:</string>
   <!--Main activity-->
   <string name="drawer_open">Menü megnyitása</string>
   <string name="drawer_close">Menü bezárása</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Podcast átnevezése</string>
   <string name="remove_feed_label">Podcast eltávolítása</string>
   <string name="share_label">Megosztás</string>
-  <string name="share_label_with_ellipses">Megosztás…</string>
   <string name="share_file_label">Fájl megosztása</string>
-  <string name="share_website_url_label">Webcím</string>
-  <string name="share_feed_url_label">Podcast csatorna URL</string>
   <string name="feed_delete_confirmation_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot, és az ÖSSZES epizódját (a letöltött epizódokat is beleértve).</string>
   <string name="feed_delete_confirmation_msg_batch">Erősítse meg, hogy eltávolítja a kivalasztott podcastokat, és az ÖSSZES epizódjukat (a letöltött epizódokat is beleértve).</string>
   <string name="feed_delete_confirmation_local_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot. A helyi forrásmappában lévő fájlok nem törlődnek.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Címkék szerkesztése</string>
   <string name="rename_tag_label">Címke átnevezése</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Az epizódok mobilinternet-kapcsolaton történő letöltése ki van kapcsolva a beállításokban.\n\nBiztos, hogy mobilinterneten keresztül frissíti a podcastokat?</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
   <plurals name="downloading_batch_label">
@@ -283,7 +271,6 @@
   <string name="playback_error_source">A médiafájl nem érhető el</string>
   <string name="playback_error_unknown">Ismeretlen hiba</string>
   <string name="no_media_playing_label">Nincs médialejátszás</string>
-  <string name="player_go_to_picture_in_picture">Kép a képben mód</string>
   <string name="unknown_media_key">AntennaPod – Ismeretlen médiabillentyű: %1$d</string>
   <string name="error_file_not_found">A fájl nem található</string>
   <string name="no_media_label">Az elem nem tartalmaz médiafájlt</string>
@@ -488,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">Váltás az ExoPlayerre</string>
   <string name="media_player_switched_to_exoplayer">Átváltva az ExoPlayerre.</string>
   <string name="pref_skip_silence_title">Csend kihagyása a hangokban</string>
-  <string name="pref_videoBehavior_title">A videóból kilépéskor</string>
-  <string name="pref_videoBehavior_sum">Viselkedés a videolejátszás elhagyásakor</string>
-  <string name="stop_playback">Lejátszás befejezése</string>
-  <string name="continue_playback">Hanglejátszás folytatása</string>
   <string name="behavior">Viselkedés</string>
   <string name="pref_back_button_behavior_title">Vissza gomb viselkedése</string>
   <string name="pref_back_button_behavior_sum">A vissza gomb viselkedésének módosítása</string>
@@ -554,7 +537,6 @@
   <string name="opml_import_summary">Feliratkozások importálása egy másik podcast alkalmazásból</string>
   <string name="database_export_summary">Feliratkozások, meghallgatott epizódok és a lejátszási sor átküldése egy másik eszközök lévő AntennaPodnak</string>
   <string name="database_import_summary">AntennaPod adatbázis importálása egy másik eszközről</string>
-  <string name="opml_import_label">OPML importálása</string>
   <string name="opml_add_podcast_label">Postcastlista (OPML) importálása</string>
   <string name="opml_reader_error">Hiba történt az OPML-dokumentum olvasásakor:</string>
   <string name="opml_import_error_no_file">Nincs fájl kiválasztva!</string>
@@ -673,7 +655,6 @@
   <string name="auto_download_disabled_globally">Az automatikus letöltés ki van kapcsolva a fő AntennaPod beállításokban</string>
   <string name="statistics_time_played">Lejátszással töltött idő:</string>
   <string name="statistics_total_duration">Teljes hossz (becslés):</string>
-  <string name="statistics_duration_played_episodes">Lejátszott epizódok hossza:</string>
   <string name="statistics_episodes_on_device">Epizódok az eszközön:</string>
   <string name="statistics_space_used">Használt tárhely: </string>
   <string name="statistics_episodes_started_total">Epizódok elkezdve/összes:</string>
@@ -736,10 +717,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Emlékeztessen később</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Rendben, csináljuk!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Belevétel:</string>
-  <string name="share_playback_position_dialog_label">Lejátszási pozíció</string>
   <string name="share_dialog_episode_website_label">Epizód weboldala</string>
-  <string name="share_dialog_link_to_episode">Hivatkozás az epizódhoz</string>
   <string name="share_dialog_media_file_label">Médiafájl</string>
   <string name="share_starting_position_label">Ettől kezdve:</string>
   <!--Audio controls-->

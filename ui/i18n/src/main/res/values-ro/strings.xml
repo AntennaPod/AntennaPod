@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Memorie cache plină</string>
   <string name="episode_cache_full_message">Memoria cache pentru episoade este plină. Puteți mări mărimea memoriei in Setări.</string>
-  <string name="playback_statistics_label">Redare</string>
-  <string name="download_statistics_label">Descărcări</string>
   <string name="notification_pref_fragment">Notificări</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$snu a fost găsit</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Activați gesturile pentru acest ecran</string>
   <string name="change_setting">Schimbă</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Timp total de episoade redate:</string>
-  <string name="statistics_mode">Mod de statistici</string>
-  <string name="statistics_mode_normal">Calculează durata care a fost redată în realitate. Redarea de două ori este numărată de două ori, pe când marcarea ca redate nu este numărată</string>
-  <string name="statistics_mode_count_all">Adună toate episoadele marcate ca redate</string>
   <string name="statistics_speed_not_counted">Notă: Viteza de redare nu este luată în considerare,</string>
   <string name="statistics_reset_data">Resetează datele statistice</string>
   <string name="statistics_reset_data_msg">Această setare va șterge istoricul duratei de redare pentru toate episoadele. Sunteți sigur că doriți să continuați ?</string>
-  <string name="statistics_counting_since">Din %s,\nați redat</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Mărimea totală a episoadelor de pe dispozitiv:</string>
   <!--Main activity-->
   <string name="drawer_open">Deschide meniul</string>
   <string name="drawer_close">Închide meniul</string>
@@ -156,10 +148,7 @@
   <string name="rename_feed_label">Redenumire podcast</string>
   <string name="remove_feed_label">Sterge podcast</string>
   <string name="share_label">Trimiteți</string>
-  <string name="share_label_with_ellipses">Trimiteți...</string>
   <string name="share_file_label">Trimiteți fișier</string>
-  <string name="share_website_url_label">Adresă website</string>
-  <string name="share_feed_url_label">URL-ul fluxului de date a podcastului</string>
   <string name="feed_delete_confirmation_msg">Vă rugăm confirmați că doriți să ștergeți podcastul \"%1$s\" și toate episoadele aferente (inclusiv cele descărcate).</string>
   <string name="feed_delete_confirmation_msg_batch">Vă rugăm să confirmați că doriți să eliminați toate podcasturile selectate și TOATE episoadele aferente (inclusiv episoadele descărcate).</string>
   <string name="feed_delete_confirmation_local_msg">Vă rugăm confirmați că doriți să ștergeți podcastul \"%1$s\". Fișierele din folderul local nu vor fi șterse.</string>
@@ -180,7 +169,6 @@
   </plurals>
   <string name="edit_tags">Editează etichetele</string>
   <string name="rename_tag_label">Redenumește etichetele</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Descărcarea episoadelor folosint datele mobile este oprită din setări.\n\nDoriți să reîmprospătați toate podcasturile folosint datele mobile ?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
   <plurals name="downloading_batch_label">
@@ -297,7 +285,6 @@
   <string name="playback_error_source">Nu se pot accesa fișierele media</string>
   <string name="playback_error_unknown">Eroare necuonscută</string>
   <string name="no_media_playing_label">Nu se ascultă nimic</string>
-  <string name="player_go_to_picture_in_picture">Mod imagine în imagine</string>
   <string name="unknown_media_key">AntennaPod - tastă media necunoscută: %1$d</string>
   <string name="error_file_not_found">Fișierul nu a fost găsit</string>
   <string name="no_media_label">Obiectul nu conține un fișier media</string>
@@ -503,10 +490,6 @@
   <string name="media_player_switch_to_exoplayer">Schimbă către ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Sa trecut la ExoPlayer</string>
   <string name="pref_skip_silence_title">Sari peste liniște în fișierul audio</string>
-  <string name="pref_videoBehavior_title">La ieșirea din video</string>
-  <string name="pref_videoBehavior_sum">Comportamentul la ieșirea din redare a unui fișier video</string>
-  <string name="stop_playback">Oprește redarea</string>
-  <string name="continue_playback">Continuă redarea audio</string>
   <string name="behavior">Comportament</string>
   <string name="pref_back_button_behavior_title">Comportamentul butonului \"înapoi\"</string>
   <string name="pref_back_button_behavior_sum">Schimbă comportamentul butonului \"înapoi\"</string>
@@ -569,7 +552,6 @@
   <string name="opml_import_summary">Importă abonamentele tale din altă aplicație de podcasturi</string>
   <string name="database_export_summary">Transferă abonamentele, episoadele redate și coada de redare către AntennaPod de pe alt dispozitiv</string>
   <string name="database_import_summary">Importă baza de date AntennaPod din alt dispozitiv</string>
-  <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Importă lista de podcasturi (OPML)</string>
   <string name="opml_reader_error">A apărut o eroare în timpul citirii fișierului OPML:</string>
   <string name="opml_import_error_no_file">Niciun fișier selectat!</string>
@@ -691,7 +673,6 @@
   <string name="auto_download_disabled_globally">Descărcarea automată este oprită în setările generale ale AntennaPod</string>
   <string name="statistics_time_played">Timpul redat:</string>
   <string name="statistics_total_duration">Durata totală (estimată):</string>
-  <string name="statistics_duration_played_episodes">Durata episoadelor redate:</string>
   <string name="statistics_episodes_on_device">Episoade pe acest dispozitiv:</string>
   <string name="statistics_space_used">Spațiu folosit:</string>
   <string name="statistics_episodes_started_total">Episoade pornite/total:</string>
@@ -754,10 +735,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Aminteștemi mai târziu</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Sigur, hai să facem asta !</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Include:</string>
-  <string name="share_playback_position_dialog_label">Poziția de redare</string>
   <string name="share_dialog_episode_website_label">Pagina web a episodului</string>
-  <string name="share_dialog_link_to_episode">Linkul episodului</string>
   <string name="share_dialog_media_file_label">Fișier media</string>
   <string name="share_starting_position_label">Pornind de la </string>
   <!--Audio controls-->

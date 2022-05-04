@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Episodenspeicher voll</string>
   <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
-  <string name="playback_statistics_label">Wiedergabe</string>
-  <string name="download_statistics_label">Downloads</string>
+  <string name="years_statistics_label">Jahre</string>
   <string name="notification_pref_fragment">Benachrichtigungen</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nicht gefunden</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Swipe-Aktionen für diesen Bildschirm aktivieren</string>
   <string name="change_setting">Ändern</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Gesamtzeit aller gespielten Episoden</string>
-  <string name="statistics_mode">Statistik-Modus</string>
-  <string name="statistics_mode_normal">Berechne die tatsächlich gespielte Dauer. Zweimaliges Abspielen wird auch zwei Mal gezählt, als gespielt markierte Episoden jedoch gar nicht</string>
-  <string name="statistics_mode_count_all">Alle als gespielt markierten Episoden summieren</string>
+  <string name="statistics_include_marked">Abspieldauer von nur als abgespielt markierten Episoden einbeziehen</string>
   <string name="statistics_speed_not_counted">Hinweis: Die Abspielgeschwindigkeit wird nicht berücksichtigt.</string>
+  <string name="statistics_from">Von</string>
+  <string name="statistics_to">Bis</string>
+  <string name="statistics_today">Heute</string>
+  <string name="statistics_filter_all_time">Gesamter Zeitraum</string>
+  <string name="statistics_filter_past_year">Letztes Jahr</string>
   <string name="statistics_reset_data">Statistiken zurücksetzen</string>
   <string name="statistics_reset_data_msg">Die Abspieldauer wird für alle Episoden gelöscht. Möchtest du wirklich fortfahren?</string>
-  <string name="statistics_counting_since">Seit %s,\nhast du abgespielt</string>
+  <string name="statistics_counting_range">Abgespielt zwischen %1$s und %2$s</string>
+  <string name="statistics_counting_total">Insgesamt abgespielt</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Gesamtgröße der Episoden auf dem Gerät:</string>
+  <string name="total_size_downloaded_podcasts">Gesamtgröße der Episoden auf dem Gerät</string>
   <!--Main activity-->
   <string name="drawer_open">Menü öffnen</string>
   <string name="drawer_close">Menü schließen</string>
@@ -150,10 +152,8 @@
   <string name="rename_feed_label">Podcast umbenennen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_label">Teilen</string>
-  <string name="share_label_with_ellipses">Teilen...</string>
   <string name="share_file_label">Teile Datei</string>
-  <string name="share_website_url_label">Adresse der Website</string>
-  <string name="share_feed_url_label">Podcast feed URL</string>
+  <string name="share_rss_address_label">RSS-Adresse:</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALL dessen Episoden entfernen möchtest (auch heruntergeladene).</string>
   <string name="feed_delete_confirmation_msg_batch">Bitte bestätigen, dass die ausgewählten Podcasts und ALLE ihre Episoden (einschließlich heruntergeladener Episoden) entfernt werden sollen.</string>
   <string name="feed_delete_confirmation_local_msg">Bitte bestätigen, dass der Podcast \"%1$s\" entfernt werden soll. Die Dateien im lokalen Quellordner werden nicht gelöscht.</string>
@@ -174,7 +174,7 @@ Tippen, um Details anzuzeigen.</string>
   </plurals>
   <string name="edit_tags">Tags bearbeiten</string>
   <string name="rename_tag_label">Tag umbenennen</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Das Herunterladen von Episoden über eine mobile Datenverbindung ist in den Einstellungen deaktiviert.\n\nMöchtest du trotzdem alle Podcasts darüber aktualisieren?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Das Herunterladen von Episoden über eine mobile Datenverbindung ist in den Einstellungen deaktiviert.\n\nMöchtest du sie trotzdem aktualisieren?</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <plurals name="downloading_batch_label">
@@ -260,7 +260,9 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="other">%d Downloads übrig</item>
   </plurals>
   <string name="completing">Fertigstellen...</string>
-  <string name="download_notification_title">Lade Podcast-Daten</string>
+  <string name="download_notification_title">Lade Podcast-Daten herunter</string>
+  <string name="download_notification_title_feeds">Aktualisiere Podcasts</string>
+  <string name="download_notification_title_episodes">Lade Episoden herunter</string>
   <string name="download_log_title_unknown">Unbekannter Titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediendatei</string>
@@ -284,7 +286,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="playback_error_source">Auf Mediendatei kann nicht zugegriffen werden</string>
   <string name="playback_error_unknown">Unbekannter Fehler</string>
   <string name="no_media_playing_label">Keine Medienwiedergabe</string>
-  <string name="player_go_to_picture_in_picture">Bild-in-Bild-Modus</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <string name="error_file_not_found">Datei nicht gefunden</string>
   <string name="no_media_label">Element enthält keine Mediendatei</string>
@@ -489,10 +490,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="media_player_switch_to_exoplayer">Zu ExoPlayer wechseln</string>
   <string name="media_player_switched_to_exoplayer">Zu ExoPlayer gewechselt.</string>
   <string name="pref_skip_silence_title">Stille im Ton überspringen</string>
-  <string name="pref_videoBehavior_title">Beim Beenden von Videos</string>
-  <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
-  <string name="stop_playback">Wiedergabe anhalten</string>
-  <string name="continue_playback">Audiowiedergabe fortsetzen</string>
   <string name="behavior">Verhalten</string>
   <string name="pref_back_button_behavior_title">Verhalten des Zurück-Buttons</string>
   <string name="pref_back_button_behavior_sum">Verändere das Verhalten vom Zurück-Button.</string>
@@ -555,7 +552,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="opml_import_summary">Deine Abonnements von einer anderen Podcast-App importieren</string>
   <string name="database_export_summary">Deine Abonnements, gehörte Episoden und die Warteschlange auf AntennaPod auf einem anderen Gerät übertragen</string>
   <string name="database_import_summary">AntennaPod-Datenbank von einem anderen Gerät importieren</string>
-  <string name="opml_import_label">OPML Import</string>
+  <string name="opml_import_label">OPML-Import</string>
   <string name="opml_add_podcast_label">Podcast-Liste importieren (OPML)</string>
   <string name="opml_reader_error">Beim Einlesen der OPML-Datei ist ein Fehler aufgetreten:</string>
   <string name="opml_import_error_no_file">Keine Datei ausgewählt!</string>
@@ -674,7 +671,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="auto_download_disabled_globally">Automatisches Herunterladen ist in den Einstellungen deaktiviert</string>
   <string name="statistics_time_played">Abspielzeit:</string>
   <string name="statistics_total_duration">Gesamtdauer (geschätzt):</string>
-  <string name="statistics_duration_played_episodes">Dauer der gespielten Episoden:</string>
   <string name="statistics_episodes_on_device">Episoden auf dem Gerät:</string>
   <string name="statistics_space_used">Verwendeter Speicherplatz:</string>
   <string name="statistics_episodes_started_total">Episoden gestartet/gesamt:</string>
@@ -737,10 +733,10 @@ Tippen, um Details anzuzeigen.</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">Erinnere mich später</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Sicher, los geht\'s!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Einschließen:</string>
-  <string name="share_playback_position_dialog_label">Abspielposition</string>
+  <string name="share_playback_position_dialog_label">Wiedergabeposition einbeziehen</string>
   <string name="share_dialog_episode_website_label">Webseite der Episode</string>
-  <string name="share_dialog_link_to_episode">Link zur Episode</string>
+  <string name="share_dialog_for_social">Soziale Nachricht</string>
+  <string name="share_dialog_media_address">Medien-Adresse</string>
   <string name="share_dialog_media_file_label">Mediendatei</string>
   <string name="share_starting_position_label">Starten bei</string>
   <!--Audio controls-->
@@ -750,6 +746,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="stereo_to_mono">Heruntermischen: Stereo zu Mono</string>
   <string name="sonic_only">nur Sonic</string>
   <string name="exoplayer_only">nur ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Auf nur Audio umschalten</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Host</string>
@@ -770,7 +767,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="notification_channel_user_action">Handlung notwendig</string>
   <string name="notification_channel_user_action_description">Wird gezeigt, wenn deine Handlung notwendig ist, zum Beispiel wenn du ein Passwort eingeben musst.</string>
   <string name="notification_channel_downloading">Herunterladen</string>
-  <string name="notification_channel_downloading_description">Wird gezeigt beim Herunterladen.</string>
+  <string name="notification_channel_downloading_description">Wird beim Herunterladen angezeigt.</string>
   <string name="notification_channel_playing">Jetzt spielt</string>
   <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
   <string name="notification_channel_download_error">Download fehlgeschlagen</string>

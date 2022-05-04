@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Caché de episodios chea</string>
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes do tamaño da caché.</string>
-  <string name="playback_statistics_label">Reprodución</string>
-  <string name="download_statistics_label">Descargas</string>
+  <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificacións</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Non se atopa \"%1$s\"</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Activar as Acción de desprazamento para esta Pantalla</string>
   <string name="change_setting">Cambiar</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Duración total dos episodios reproducidos:</string>
-  <string name="statistics_mode">Modo de estatísticas</string>
-  <string name="statistics_mode_normal">Calcular a duración que foi realmente reproducida. Reproducir dúas veces conta dobre, mentres que marcar como lido non conta</string>
-  <string name="statistics_mode_count_all">Suma todos os episodios marcados como reproducidos</string>
+  <string name="statistics_include_marked">Incluír a duración dos episodios que foron marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: A velocidade de reprodución non se ten en conta en ningún caso.</string>
+  <string name="statistics_from">Desde</string>
+  <string name="statistics_to">Ata</string>
+  <string name="statistics_today">Hoxe</string>
+  <string name="statistics_filter_all_time">De sempre</string>
+  <string name="statistics_filter_past_year">O ano pasado</string>
   <string name="statistics_reset_data">Restablecer estatísticas</string>
   <string name="statistics_reset_data_msg">Esto borrará o histórico de escoita de todos os episodios. Seguro que queres borralo?</string>
-  <string name="statistics_counting_since">Desde %s,\nescoitaches</string>
+  <string name="statistics_counting_range">Reproducido entre %1$s e %2$s</string>
+  <string name="statistics_counting_total">Total reproducido</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamaño total dos episodios no dispositivo:</string>
+  <string name="total_size_downloaded_podcasts">Tamaño total dos episodios no dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Pechar menú</string>
@@ -150,10 +152,8 @@
   <string name="rename_feed_label">Mudar nome do podcast</string>
   <string name="remove_feed_label">Eliminar o podcast</string>
   <string name="share_label">Compartir</string>
-  <string name="share_label_with_ellipses">Compartir...</string>
   <string name="share_file_label">Compartir ficheiro</string>
-  <string name="share_website_url_label">Enderezo sitio web</string>
-  <string name="share_feed_url_label">URL da fonte do podcast</string>
+  <string name="share_rss_address_label">Enderezo RSS:</string>
   <string name="feed_delete_confirmation_msg">Por favor, confirma que queres eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirma que desexas eliminar os podcast seleccionados e TODOS os seus episodios (incluńdo os descargados).</string>
   <string name="feed_delete_confirmation_local_msg">Confirma que queres eliminar o podcast \"%1$s\". Os ficheiros no cartafol local non serán eliminados.</string>
@@ -173,7 +173,7 @@
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Cambiar nome etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Está desactivada nos axustes a descarga de episodios usando datos do móbil.\n\nQueres actualizar os podcast usando a conexión de datos do móbil?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">A actualización utilizando datos do móbil está desactiva nos axustes.\n\nQueres actualizar igualmente?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
@@ -260,6 +260,8 @@
   </plurals>
   <string name="completing">Rematando...</string>
   <string name="download_notification_title">Descargando datos do podcast</string>
+  <string name="download_notification_title_feeds">Actualizando podcasts</string>
+  <string name="download_notification_title_episodes">Descargando episodios</string>
   <string name="download_log_title_unknown">Título descoñecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro de medios</string>
@@ -283,7 +285,6 @@
   <string name="playback_error_source">O ficheiro de medios non está accesible</string>
   <string name="playback_error_unknown">Fallo descoñecido</string>
   <string name="no_media_playing_label">Non reproducindo</string>
-  <string name="player_go_to_picture_in_picture">Modo imaxe-en-imaxe</string>
   <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
   <string name="error_file_not_found">Non se atopa o ficheiro</string>
   <string name="no_media_label">O elemento non conten un ficheiro multimedia</string>
@@ -488,10 +489,6 @@
   <string name="media_player_switch_to_exoplayer">Cambiar a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Cambiaches a ExoPlayer.</string>
   <string name="pref_skip_silence_title">Omitir silencio no Audio</string>
-  <string name="pref_videoBehavior_title">Ó saír do vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportamento cando saia do vídeo</string>
-  <string name="stop_playback">Para a reprodución</string>
-  <string name="continue_playback">Continuar a reprodución de audio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_back_button_behavior_title">Comportamento do botón Atrás</string>
   <string name="pref_back_button_behavior_sum">Cambiar o comportamento do botón atrás.</string>
@@ -673,7 +670,6 @@
   <string name="auto_download_disabled_globally">A descarga automática está desactivada nos axustes principais de AntennaPod</string>
   <string name="statistics_time_played">Tempo de reprodución:</string>
   <string name="statistics_total_duration">Duración total (estimada):</string>
-  <string name="statistics_duration_played_episodes">Duración dos episodios reproducidos:</string>
   <string name="statistics_episodes_on_device">Episodios no dispositivo:</string>
   <string name="statistics_space_used">Espazo utilizado:</string>
   <string name="statistics_episodes_started_total">Episodios iniciados/total:</string>
@@ -736,10 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Lembrar máis tarde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Trato, fagámolo!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluír:</string>
-  <string name="share_playback_position_dialog_label">Posición da reprodución</string>
+  <string name="share_playback_position_dialog_label">Incluír posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Sitio web do episodio</string>
-  <string name="share_dialog_link_to_episode">Ligazón ao episodio</string>
+  <string name="share_dialog_for_social">Mensaxe Social</string>
+  <string name="share_dialog_media_address">Enderezo multimedia</string>
   <string name="share_dialog_media_file_label">Ficheiro multimedia</string>
   <string name="share_starting_position_label">Inciado o</string>
   <!--Audio controls-->
@@ -749,6 +745,7 @@
   <string name="stereo_to_mono">Comprimir: stereo a mono</string>
   <string name="sonic_only">Só Sonic</string>
   <string name="exoplayer_only">Só ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Cambiar a só audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Servidor</string>

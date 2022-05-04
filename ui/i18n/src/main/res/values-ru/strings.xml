@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
   <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объем кэша можно увеличить в настройках.</string>
-  <string name="playback_statistics_label">Воспроизведение</string>
-  <string name="download_statistics_label">Загрузки</string>
+  <string name="years_statistics_label">Годы</string>
   <string name="notification_pref_fragment">Уведомления</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" не найдено</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Включить смахивания на этом экране</string>
   <string name="change_setting">Изменить</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Общее время воспроизведения выпусков:</string>
-  <string name="statistics_mode">Режим подсчета статистики</string>
-  <string name="statistics_mode_normal">Рассчитывать длительность действительного воспроизведения. Повторное воспроизведение засчитывается, а отметка о прослушивании — нет</string>
-  <string name="statistics_mode_count_all">Прибавлять также все выпуски, отмеченные как прослушанные</string>
+  <string name="statistics_include_marked">Включая продолжительность выпусков, которые только были отмечены как прослушанные</string>
   <string name="statistics_speed_not_counted">Замечание: Скорость воспроизведения не учитывается никогда.</string>
+  <string name="statistics_from">С</string>
+  <string name="statistics_to">По</string>
+  <string name="statistics_today">Сегодня</string>
+  <string name="statistics_filter_all_time">Всё время</string>
+  <string name="statistics_filter_past_year">Прошедший год</string>
   <string name="statistics_reset_data">Сбросить статистику</string>
   <string name="statistics_reset_data_msg">Вы уверены, что хотите стереть все записи о продолжительности воспроизведения выпусков?</string>
-  <string name="statistics_counting_since">С%s,\n воспроизведено</string>
+  <string name="statistics_counting_range">Прослушанные с %1$s по %2$s</string>
+  <string name="statistics_counting_total">Прослушано за всё время</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Общий размер выпусков на устройстве:</string>
+  <string name="total_size_downloaded_podcasts">Общий размер выпусков на устройстве</string>
   <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
   <string name="drawer_close">Закрыть меню</string>
@@ -162,10 +164,8 @@
   <string name="rename_feed_label">Переименовать подкаст</string>
   <string name="remove_feed_label">Удалить подкаст</string>
   <string name="share_label">Поделиться</string>
-  <string name="share_label_with_ellipses">Поделиться…</string>
   <string name="share_file_label">Поделиться файлом</string>
-  <string name="share_website_url_label">Адрес вебсайта</string>
-  <string name="share_feed_url_label">Rss-фид подкаста</string>
+  <string name="share_rss_address_label">RSS-адрес:</string>
   <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его выпуски (включая загруженные).</string>
   <string name="feed_delete_confirmation_msg_batch">Подтвердите, что хотите удалить выбранные подкасты и все их выпуски (включая загруженные).</string>
   <string name="feed_delete_confirmation_local_msg">Подтвердите, что хотите удалить подкаст «%1$s». Файлы в локальной исходной папке не будут удалены.</string>
@@ -187,7 +187,7 @@
   </plurals>
   <string name="edit_tags">Редактировать метки</string>
   <string name="rename_tag_label">Переименовать метку</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Загрузка выпусков через мобильное соединение отключена в настройках.\n\nВы действительно хотите обновить подкасты через мобильное соединение?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <plurals name="downloading_batch_label">
@@ -288,6 +288,8 @@
   </plurals>
   <string name="completing">Завершение...</string>
   <string name="download_notification_title">Получение данных подкаста</string>
+  <string name="download_notification_title_feeds">Обновление подкастов</string>
+  <string name="download_notification_title_episodes">Загрузка выпусков</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
@@ -311,7 +313,6 @@
   <string name="playback_error_source">Не удалось получить доступ к медиафайлу</string>
   <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
-  <string name="player_go_to_picture_in_picture">Картинка в картинке</string>
   <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
   <string name="error_file_not_found">Файл не найден</string>
   <string name="no_media_label">Элемент не содержит медиафайла</string>
@@ -518,10 +519,6 @@
   <string name="media_player_switch_to_exoplayer">Переключить на ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Переключено на ExoPlayer.</string>
   <string name="pref_skip_silence_title">Пропускать участки тишины</string>
-  <string name="pref_videoBehavior_title">При завершении видео</string>
-  <string name="pref_videoBehavior_sum">При сворачивании проигрывателя видео</string>
-  <string name="stop_playback">Остановить воспроизведение</string>
-  <string name="continue_playback">Продолжить воспроизведение звука</string>
   <string name="behavior">Поведение</string>
   <string name="pref_back_button_behavior_title">Поведение кнопки «Назад»</string>
   <string name="pref_back_button_behavior_sum">Изменить поведение кнопки «Назад»</string>
@@ -709,7 +706,6 @@
   <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
   <string name="statistics_time_played">Времени прослушано:</string>
   <string name="statistics_total_duration">Общая продолжительность (примерно):</string>
-  <string name="statistics_duration_played_episodes">Длительность прослушанных выпусков:</string>
   <string name="statistics_episodes_on_device">Выпуски на устройстве:</string>
   <string name="statistics_space_used">Используемое пространство:</string>
   <string name="statistics_episodes_started_total">Выпусков начато/всего:</string>
@@ -772,10 +768,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Позже, не сейчас</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Конечно, давай!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Включая:</string>
-  <string name="share_playback_position_dialog_label">Позиция воспроизведения</string>
+  <string name="share_playback_position_dialog_label">Включая позицию воспроизведения</string>
   <string name="share_dialog_episode_website_label">Вебстраница выпуска</string>
-  <string name="share_dialog_link_to_episode">Ссылка на выпуск</string>
+  <string name="share_dialog_for_social">Сообщение</string>
+  <string name="share_dialog_media_address">Адрес медиафайла</string>
   <string name="share_dialog_media_file_label">Медиафайл</string>
   <string name="share_starting_position_label">начиная с</string>
   <!--Audio controls-->
@@ -785,6 +781,7 @@
   <string name="stereo_to_mono">Низвести стерео до моно</string>
   <string name="sonic_only">Только для Sonic</string>
   <string name="exoplayer_only">Только ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Переключиться на аудио</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Тип</string>
   <string name="host_label">Узел</string>

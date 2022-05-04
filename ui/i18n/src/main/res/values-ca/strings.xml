@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
-  <string name="playback_statistics_label">Reproducció</string>
-  <string name="download_statistics_label">Baixades</string>
   <string name="notification_pref_fragment">Notificacions</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" no trobat</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Activa les accions de lliscament per a aquesta pantalla</string>
   <string name="change_setting">Canvia</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Temps total d\'episodis reproduïts:</string>
-  <string name="statistics_mode">Mode d\'estadístiques</string>
-  <string name="statistics_mode_normal">Calcula el temps que realment s\'ha reproduït. La reproducció repetida es comptarà repetides vegades, mentre que no es tindrà en compte si s\'ha marcat com a reproduït.  </string>
-  <string name="statistics_mode_count_all">Suma tots els episodis marcats com a reproduïts</string>
   <string name="statistics_speed_not_counted">Avís: la velocitat de reproducció mai no es té en compte.</string>
   <string name="statistics_reset_data">Resetejar dades estadístiques</string>
   <string name="statistics_reset_data_msg">Açò esborrarà l\'històric de la duració reproduïda per a tots els episodis. ¿Segur que vols continuar?</string>
-  <string name="statistics_counting_since">Des de %s,\nhas reproduït</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Mida total d\'episodis al dispositiu:</string>
   <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
   <string name="drawer_close">Tanca menú</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Canvia el nom al podcast</string>
   <string name="remove_feed_label">Suprimeix podcast</string>
   <string name="share_label">Comparteix</string>
-  <string name="share_label_with_ellipses">Comparteix...</string>
   <string name="share_file_label">Comparteix el fitxer</string>
-  <string name="share_website_url_label">Adreça de la pàgina web</string>
-  <string name="share_feed_url_label">URL del feed de podcasts</string>
   <string name="feed_delete_confirmation_msg">Si us plau, confirmeu que voleu eliminar el podcast \"%1$s\" i tots els seus episodis (fins i tot els ja baixats).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirmeu que voleu eliminar els podcasts seleccionats i TOTS els seus episodis (inclosos els episodis descarregats).</string>
   <string name="feed_delete_confirmation_local_msg">Si us plau, confirmeu que voleu eliminar el podcast \"%1$s\". Els fitxers de la carpeta local no s\'eliminaran.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Edita etiquetes</string>
   <string name="rename_tag_label">Canvia etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">La baixada d\'episodis en connexió de dades està inhabilitada a les preferències.\n\nTot i això, voleu actualitzar tots els podcasts en connexió de dades?</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <plurals name="downloading_batch_label">
@@ -283,7 +271,6 @@
   <string name="playback_error_source">No s\'ha pogut accedir al arxiu de media.</string>
   <string name="playback_error_unknown">Error desconegut</string>
   <string name="no_media_playing_label">No s\'està reproduint res</string>
-  <string name="player_go_to_picture_in_picture">Mode Picture-in-picture</string>
   <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
   <string name="error_file_not_found">Arxiu no trobat</string>
   <string name="no_media_label">L\'element no conté cap fitxer multimèdia</string>
@@ -488,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">Canvia a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Canviat a ExoPlayer</string>
   <string name="pref_skip_silence_title">Omet Silenci en Audio</string>
-  <string name="pref_videoBehavior_title">En sortir d\'un vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportament a l\'abandonar la reproducció d\'un vídeo</string>
-  <string name="stop_playback">Atura reproducció</string>
-  <string name="continue_playback">Continuar reproducció d\'audio</string>
   <string name="behavior">Comportament</string>
   <string name="pref_back_button_behavior_title">Comportament del botó \"endarrere\"</string>
   <string name="pref_back_button_behavior_sum">Canvia el comportament del botó \"endarrere\"</string>
@@ -554,7 +537,6 @@
   <string name="opml_import_summary">Importa les teues subscripcions des d\'un altra aplicació de podcast</string>
   <string name="database_export_summary">Transfereix subscripcions i cola a AntennaPod en un altre dispositiu</string>
   <string name="database_import_summary">Importa base de dades d\'AntennaPod des d\'un altre dispositiu</string>
-  <string name="opml_import_label">Importació d\'OPML</string>
   <string name="opml_add_podcast_label">Importa llista de podcasts (OPML)</string>
   <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML: </string>
   <string name="opml_import_error_no_file">Cap fitxer seleccionat!</string>
@@ -673,7 +655,6 @@
   <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>
   <string name="statistics_time_played">Temps reproducció:</string>
   <string name="statistics_total_duration">Durada total (estimada):</string>
-  <string name="statistics_duration_played_episodes">Durada dels episodis reproduïts:</string>
   <string name="statistics_episodes_on_device">Episodis al dispositiu:</string>
   <string name="statistics_space_used">Espai utilitzat:</string>
   <string name="statistics_episodes_started_total">Episodis iniciats/total:</string>
@@ -736,10 +717,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Pregunta\'m més tard</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">I tant, fem-ho!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Inclou:</string>
-  <string name="share_playback_position_dialog_label">Posició de reproducció</string>
   <string name="share_dialog_episode_website_label">Pàgina web de l\'episodi</string>
-  <string name="share_dialog_link_to_episode">Enllaç a l\'episodi</string>
   <string name="share_dialog_media_file_label">Fitxer multimèdia</string>
   <string name="share_starting_position_label">Començant des de</string>
   <!--Audio controls-->

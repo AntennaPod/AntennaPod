@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
   <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zmeniť v Nastaveniach.</string>
-  <string name="playback_statistics_label">Prehrávanie</string>
-  <string name="download_statistics_label">Sťahovania</string>
   <string name="notification_pref_fragment">Oznámenia</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">„%1$s“ nebol nájdený</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Povoliť potiahnutia pre túto obrazovku</string>
   <string name="change_setting">Zmeniť</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Celkový čas prehrávaných podcastov:</string>
-  <string name="statistics_mode">Režim štatistík</string>
-  <string name="statistics_mode_normal">Spočítať skutočný čas prehrávania. Opätovné prehrávanie sa započíta znovu, zatiaľ čo označenie ako prehrané sa nepočíta vôbec</string>
-  <string name="statistics_mode_count_all">Súčet všetkých epizód, ktoré boli označené ako prehrané.</string>
   <string name="statistics_speed_not_counted">Poznámka: Rýchlosť prehrávania sa nikdy neberie do úvahy.</string>
   <string name="statistics_reset_data">Vynulovať štatistiky</string>
   <string name="statistics_reset_data_msg">Táto operácia vymaže časovú históriu prehrávania všetkých epizód. Ste si istý že chcete vykonať túto akciu?</string>
-  <string name="statistics_counting_since">Od %s,\nste prehrali</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Celková veľkosť epizód v zariadení:</string>
   <!--Main activity-->
   <string name="drawer_open">Otvoriť menu</string>
   <string name="drawer_close">Zatvoriť menu</string>
@@ -162,10 +154,7 @@
   <string name="rename_feed_label">Premenovať podcast</string>
   <string name="remove_feed_label">Odstrániť podcast</string>
   <string name="share_label">Zdieľanie</string>
-  <string name="share_label_with_ellipses">Zdieľať...</string>
   <string name="share_file_label">Zdielať súbor</string>
-  <string name="share_website_url_label">Adresa webovej stránky</string>
-  <string name="share_feed_url_label">URL adresa podcastu</string>
   <string name="feed_delete_confirmation_msg">Potvrďte prosím, že chcete zmazať podcast „%1$s“ a VŠETKY jeho epizódy (vrátane stiahnutých epizód).</string>
   <string name="feed_delete_confirmation_msg_batch">Potvrďte prosím, že chcete zmazať vybrané podcasty a VŠETKY ich epizódy (vrátane stiahonutých epizód).</string>
   <string name="feed_delete_confirmation_local_msg">Potvrďte, prosím, že chcete odstrániť podcast „%1$s“. Súbory v miestnom priečinku zdroja sa neodstránia.</string>
@@ -187,7 +176,6 @@
   </plurals>
   <string name="edit_tags">Upraviť štítky</string>
   <string name="rename_tag_label">Premenovať štítok</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Sťahovanie epizód cez mobilné dátové pripojenie je v nastaveniach vypnuté.\n\nChcete napriek tomu obnoviť všetky podcasty cez mobilné dáta?</string>
   <!--actions on feeditems-->
   <string name="download_label">Stiahnuť</string>
   <plurals name="downloading_batch_label">
@@ -311,7 +299,6 @@
   <string name="playback_error_source">Nie je prístup k mediálnemu súboru</string>
   <string name="playback_error_unknown">Neznáma chyba</string>
   <string name="no_media_playing_label">Neprebieha žiadne prehrávanie</string>
-  <string name="player_go_to_picture_in_picture">Režim obraz v obraze</string>
   <string name="unknown_media_key">AntennaPod - Neznámy kľúč médií: %1$d</string>
   <string name="error_file_not_found">Súbor nenájdený</string>
   <string name="no_media_label">Položka neobsahuje mediálny súbor</string>
@@ -518,10 +505,6 @@
   <string name="media_player_switch_to_exoplayer">Prepnúť na ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Prepnuté na ExoPlayer.</string>
   <string name="pref_skip_silence_title">Preskočiť ticho vo zvuku</string>
-  <string name="pref_videoBehavior_title">Pri opustení videa</string>
-  <string name="pref_videoBehavior_sum">Chovanie pri opustení videa</string>
-  <string name="stop_playback">Zastaviť prehrávanie</string>
-  <string name="continue_playback">Pokračovať v prehrávaní zvuku</string>
   <string name="behavior">Chovanie</string>
   <string name="pref_back_button_behavior_title">Chovanie tlačidla späť</string>
   <string name="pref_back_button_behavior_sum">Zmeniť chovanie tlačidla späť.</string>
@@ -584,7 +567,6 @@
   <string name="opml_import_summary">Importovať svoje odbery z inej podcastovej aplikácie</string>
   <string name="database_export_summary">Preniesť odbery, počúvané epizódy a poradie do AntennaPodu v inom zariadení</string>
   <string name="database_import_summary">Importovať databázu AntennaPod z iného zariadenia</string>
-  <string name="opml_import_label">Importovať súbor OPML</string>
   <string name="opml_add_podcast_label">Importovať zoznam podcastov (OPML)</string>
   <string name="opml_reader_error">Pri načítaní súboru OPML sa vyskytla chyba:</string>
   <string name="opml_import_error_no_file">Nie je zvolený žiadny súbor!</string>
@@ -709,7 +691,6 @@
   <string name="auto_download_disabled_globally">Automatické sťahovanie je zakázané v hlavných nastaveniach AntennaPodu</string>
   <string name="statistics_time_played">Doba prehrávania:</string>
   <string name="statistics_total_duration">Celková dĺžka trvania (odhad):</string>
-  <string name="statistics_duration_played_episodes">Dĺžka trvania prehrávaných epizód:</string>
   <string name="statistics_episodes_on_device">Epizód v zariadení:</string>
   <string name="statistics_space_used">Použitý priestor:</string>
   <string name="statistics_episodes_started_total">Epizódy začaté/celkovo:</string>
@@ -772,10 +753,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Pripomenúť neskôr</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Jasné, ideme na to!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Zahrnúť:</string>
-  <string name="share_playback_position_dialog_label">Poloha prehrávania</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizódy</string>
-  <string name="share_dialog_link_to_episode">Link na epizódu</string>
   <string name="share_dialog_media_file_label">Mediálny súbor</string>
   <string name="share_starting_position_label">Začínať od</string>
   <!--Audio controls-->
