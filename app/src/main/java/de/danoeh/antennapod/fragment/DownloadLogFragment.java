@@ -23,7 +23,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.dialog.DownloadLogDetailsDialog;
 import de.danoeh.antennapod.model.download.DownloadStatus;
-import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -138,7 +137,6 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
                     if (result != null) {
                         downloadLog = result;
                         adapter.setDownloadLog(downloadLog);
-                        ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
