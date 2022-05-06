@@ -54,6 +54,7 @@ import java.util.List;
 public class CompletedDownloadsFragment extends Fragment
         implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "DownloadsFragment";
+    public static final String ARG_SHOW_LOGS = "show_logs";
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private long[] runningDownloads = new long[0];
@@ -119,6 +120,9 @@ public class CompletedDownloadsFragment extends Fragment
             adapter.endSelectMode();
             return true;
         });
+        if (getArguments() != null && getArguments().getBoolean(ARG_SHOW_LOGS, false)) {
+            new DownloadLogFragment().show(getChildFragmentManager(), null);
+        }
 
         addEmptyView();
         EventBus.getDefault().register(this);

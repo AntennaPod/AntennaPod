@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import android.os.Bundle;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -39,6 +40,9 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     public PendingIntent getReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
+        Bundle args = new Bundle();
+        args.putBoolean(CompletedDownloadsFragment.ARG_SHOW_LOGS, true);
+        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
