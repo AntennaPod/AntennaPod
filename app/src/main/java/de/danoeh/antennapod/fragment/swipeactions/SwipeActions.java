@@ -21,6 +21,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -38,7 +39,8 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
-                    new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
+                    new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction(),
+                    new DeleteSwipeAction())
     );
 
     private final Fragment fragment;
@@ -99,6 +101,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                 break;
             case QueueFragment.TAG:
                 defaultActions = SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE;
+                break;
+            case CompletedDownloadsFragment.TAG:
+                defaultActions = SwipeAction.DELETE + "," + SwipeAction.DELETE;
                 break;
             default:
             case EpisodesFragment.TAG:
