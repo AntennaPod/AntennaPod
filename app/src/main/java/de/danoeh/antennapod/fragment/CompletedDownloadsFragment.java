@@ -19,11 +19,11 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -34,7 +34,6 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -57,7 +56,7 @@ public class CompletedDownloadsFragment extends Fragment
     public static final String TAG = "DownloadsFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
-    private List<Downloader> runningDownloads = new ArrayList<>();
+    private long[] runningDownloads = new long[0];
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
     private EpisodeItemListRecyclerView recyclerView;
@@ -180,8 +179,8 @@ public class CompletedDownloadsFragment extends Fragment
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             refreshToolbarState();
         }
-        if (!ObjectsCompat.equals(event.update.downloaders, runningDownloads)) {
-            runningDownloads = event.update.downloaders;
+        if (!ObjectsCompat.equals(event.update.mediaIds, runningDownloads)) {
+            runningDownloads = event.update.mediaIds;
             loadItems();
             return; // Refreshed anyway
         }
@@ -288,12 +287,8 @@ public class CompletedDownloadsFragment extends Fragment
                     if (runningDownloads == null) {
                         return downloadedItems;
                     }
-                    for (Downloader downloader : runningDownloads) {
-                        if (downloader.getDownloadRequest().getFeedfileType() != FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                            continue;
-                        }
-                        long id = downloader.getDownloadRequest().getFeedfileId();
-                        if (FeedItemUtil.indexOfItemWithMediaId(items, id) != -1) {
+                    for (long id : runningDownloads) {
+                        if (FeedItemUtil.indexOfItemWithMediaId(downloadedItems, id) != -1) {
                             continue; // Already in list
                         }
                         mediaIds.add(id);
@@ -331,8 +326,10 @@ public class CompletedDownloadsFragment extends Fragment
         @Override
         public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             if (!inActionMode()) {
-                //DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
-                //actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+                if (holder.getFeedItem().isDownloaded()) {
+                    DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+                    actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+                }
             }
         }
 
