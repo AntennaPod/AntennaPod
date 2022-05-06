@@ -286,28 +286,28 @@ public class CompletedDownloadsFragment extends Fragment
         }
         emptyView.hide();
         disposable = Observable.fromCallable(() -> {
-                    List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
-                    List<Long> mediaIds = new ArrayList<>();
-                    if (runningDownloads == null) {
-                        return downloadedItems;
-                    }
-                    for (long id : runningDownloads) {
-                        if (FeedItemUtil.indexOfItemWithMediaId(downloadedItems, id) != -1) {
-                            continue; // Already in list
-                        }
-                        mediaIds.add(id);
-                    }
-                    List<FeedItem> currentDownloads = DBReader.getFeedItemsWithMedia(mediaIds.toArray(new Long[0]));
-                    currentDownloads.addAll(downloadedItems);
-                    return currentDownloads;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    items = result;
-                    adapter.updateItems(result);
-                    progressBar.setVisibility(View.GONE);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+            List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+            List<Long> mediaIds = new ArrayList<>();
+            if (runningDownloads == null) {
+                return downloadedItems;
+            }
+            for (long id : runningDownloads) {
+                if (FeedItemUtil.indexOfItemWithMediaId(downloadedItems, id) != -1) {
+                    continue; // Already in list
+                }
+                mediaIds.add(id);
+            }
+            List<FeedItem> currentDownloads = DBReader.getFeedItemsWithMedia(mediaIds.toArray(new Long[0]));
+            currentDownloads.addAll(downloadedItems);
+            return currentDownloads;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(result -> {
+            items = result;
+            adapter.updateItems(result);
+            progressBar.setVisibility(View.GONE);
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
