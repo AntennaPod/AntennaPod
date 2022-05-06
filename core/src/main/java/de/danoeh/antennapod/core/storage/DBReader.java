@@ -775,6 +775,19 @@ public final class DBReader {
         }
     }
 
+    public static List<FeedItem> getFeedItemsWithMedia(Long[] mediaIds) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor itemCursor = adapter.getFeedItemCursorByMediaIds(mediaIds)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
+            loadAdditionalFeedItemListData(items);
+            Collections.sort(items, new PlaybackCompletionDateComparator());
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
     public static class MonthlyStatisticsItem {
         public int year = 0;
         public int month = 0;

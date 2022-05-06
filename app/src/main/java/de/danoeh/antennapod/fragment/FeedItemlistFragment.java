@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -514,12 +513,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
                     error -> error.printStackTrace(),
                     () -> {
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
-                        Bundle args = new Bundle();
-                        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
-                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
-                        startActivity(intent);
+                        ((MainActivity) getActivity()).loadChildFragment(new DownloadLogFragment());
                     });
     }
 

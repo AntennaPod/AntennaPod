@@ -1106,6 +1106,15 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getFeedItemCursorByMediaIds(final Long[] ids) {
+        if (ids.length > IN_OPERATOR_MAXIMUM) {
+            throw new IllegalArgumentException("number of IDs must not be larger than " + IN_OPERATOR_MAXIMUM);
+        }
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + SELECT_KEY_MEDIA_ID + " IN (" + TextUtils.join(",", ids) + ")";
+        return db.rawQuery(query, null);
+    }
+
     public final Cursor getFeedItemCursor(final String guid, final String episodeUrl) {
         String escapedEpisodeUrl = DatabaseUtils.sqlEscapeString(episodeUrl);
         String whereClauseCondition = TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl;
