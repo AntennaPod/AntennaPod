@@ -207,6 +207,7 @@
     <string name="remove_inbox_label">Remove from inbox</string>
     <string name="removed_inbox_label">Removed from inbox</string>
     <string name="mark_read_label">Mark as played</string>
+    <string name="toggle_played_label">Toggle played state</string>
     <string name="marked_as_played_label">Marked as played</string>
     <string name="marked_as_unplayed_label">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
