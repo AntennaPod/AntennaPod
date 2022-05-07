@@ -175,10 +175,6 @@ public abstract class EpisodesListFragment extends Fragment {
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
         }
-        if (item.getItemId() == R.id.share_item) {
-            return true; // avoids that the position is reset when we need it in the submenu
-        }
-
         if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
