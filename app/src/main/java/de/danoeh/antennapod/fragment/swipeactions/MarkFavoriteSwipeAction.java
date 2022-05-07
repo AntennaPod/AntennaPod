@@ -37,7 +37,7 @@ public class MarkFavoriteSwipeAction implements SwipeAction {
     }
 
     @Override
-    public boolean willRemove(FeedItemFilter filter) {
+    public boolean willRemove(FeedItemFilter filter, FeedItem item) {
         return filter.showIsFavorite || filter.showNotFavorite;
     }
 }
