@@ -60,6 +60,7 @@ public class SwipeActionsDialog {
         switch (tag) {
             case InboxFragment.TAG:
                 forFragment = context.getString(R.string.inbox_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.TOGGLE_PLAYED)).toList();
                 break;
             case EpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
