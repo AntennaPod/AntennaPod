@@ -22,12 +22,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -59,7 +62,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Shows unread or recently published episodes
  */
-public abstract class EpisodesListFragment extends Fragment {
+public abstract class EpisodesListFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener {
 
     public static final String TAG = "EpisodesListFragment";
     protected static final int EPISODES_PER_PAGE = 150;
@@ -72,6 +75,7 @@ public abstract class EpisodesListFragment extends Fragment {
     ProgressBar progLoading;
     View loadingMoreView;
     EmptyViewHandler emptyView;
+    SpeedDialView speedDialView;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -174,17 +178,13 @@ public abstract class EpisodesListFragment extends Fragment {
             // The method is called on all fragments in a ViewPager, so this needs to be ignored in invisible ones.
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
-        }
-        if (item.getItemId() == R.id.share_item) {
-            return true; // avoids that the position is reset when we need it in the submenu
-        }
-
-        if (listAdapter.getLongPressedItem() == null) {
+        } else if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
+        } else if (listAdapter.onContextItemSelected(item)) {
+            return true;
         }
         FeedItem selectedItem = listAdapter.getLongPressedItem();
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
@@ -224,6 +224,31 @@ public abstract class EpisodesListFragment extends Fragment {
 
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
+
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && listAdapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), listAdapter.getSelectedItems())
+                    .handleAction(actionItem.getId());
+            listAdapter.endSelectMode();
+            return true;
+        });
 
         return root;
     }
@@ -292,12 +317,36 @@ public abstract class EpisodesListFragment extends Fragment {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
                 MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
             }
         };
+        listAdapter.setOnSelectModeListener(this);
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (listAdapter != null) {
+            listAdapter.endSelectMode();
+        }
+        listAdapter = null;
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        speedDialView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

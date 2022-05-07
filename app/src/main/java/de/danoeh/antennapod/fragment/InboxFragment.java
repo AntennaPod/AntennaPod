@@ -67,6 +67,9 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
         SwipeActions swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.delete_batch);
         return inboxContainer;
     }
 
