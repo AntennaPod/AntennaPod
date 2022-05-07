@@ -32,8 +32,10 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -68,6 +70,7 @@ public class CompletedDownloadsFragment extends Fragment
     private boolean isUpdatingFeeds = false;
     private SpeedDialView speedDialView;
     private Toolbar toolbar;
+    private SwipeActions swipeActions;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -89,6 +92,8 @@ public class CompletedDownloadsFragment extends Fragment
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(adapter);
+        swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
         progressBar = root.findViewById(R.id.progLoading);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -312,6 +317,7 @@ public class CompletedDownloadsFragment extends Fragment
 
     @Override
     public void onStartSelectMode() {
+        swipeActions.detach();
         speedDialView.setVisibility(View.VISIBLE);
     }
 
@@ -319,6 +325,7 @@ public class CompletedDownloadsFragment extends Fragment
     public void onEndSelectMode() {
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
+        swipeActions.attachTo(recyclerView);
     }
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
