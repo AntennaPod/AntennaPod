@@ -15,7 +15,7 @@ public interface SwipeAction {
     String REMOVE_FROM_INBOX = "REMOVE_FROM_INBOX";
     String START_DOWNLOAD = "START_DOWNLOAD";
     String MARK_FAV = "MARK_FAV";
-    String MARK_PLAYED = "MARK_PLAYED";
+    String TOGGLE_PLAYED = "MARK_PLAYED";
     String REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE";
 
     String getId();
