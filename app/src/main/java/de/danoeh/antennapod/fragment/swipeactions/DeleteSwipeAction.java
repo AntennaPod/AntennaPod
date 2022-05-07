@@ -31,11 +31,14 @@ public class DeleteSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+        if (!item.isDownloaded()) {
+            return;
+        }
         DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), item.getMedia().getId());
     }
 
     @Override
-    public boolean willRemove(FeedItemFilter filter) {
-        return filter.showDownloaded;
+    public boolean willRemove(FeedItemFilter filter, FeedItem item) {
+        return filter.showDownloaded && item.isDownloaded();
     }
 }

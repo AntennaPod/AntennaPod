@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.util.ObjectsCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -48,6 +47,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -188,7 +188,7 @@ public class CompletedDownloadsFragment extends Fragment
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             refreshToolbarState();
         }
-        if (!ObjectsCompat.equals(event.update.mediaIds, runningDownloads)) {
+        if (!Arrays.equals(event.update.mediaIds, runningDownloads)) {
             runningDownloads = event.update.mediaIds;
             loadItems();
             return; // Refreshed anyway

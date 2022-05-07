@@ -31,5 +31,5 @@ public interface SwipeAction {
 
     void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter);
 
-    boolean willRemove(FeedItemFilter filter);
+    boolean willRemove(FeedItemFilter filter, FeedItem item);
 }

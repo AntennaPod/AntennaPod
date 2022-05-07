@@ -158,8 +158,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         }
 
         //check if it will be removed
-        boolean rightWillRemove = right.willRemove(filter);
-        boolean leftWillRemove = left.willRemove(filter);
+        FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
+        boolean rightWillRemove = right.willRemove(filter, item);
+        boolean leftWillRemove = left.willRemove(filter, item);
         boolean wontLeave = (dx > 0 && !rightWillRemove) || (dx < 0 && !leftWillRemove);
 
         //Limit swipe if it's not removed
@@ -251,7 +252,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
             String[] actions = prefs.split(",");
             if (actions.length == 2) {
                 this.right = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[0])).single();;
+                        .filter(a -> a.getId().equals(actions[0])).single();
                 this.left = Stream.of(swipeActions)
                         .filter(a -> a.getId().equals(actions[1])).single();
             }
