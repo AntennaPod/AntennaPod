@@ -7,6 +7,13 @@
     android:gravity="center"
     android:padding="16dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_label"
+        android:layout_marginBottom="8dp"
+        style="@style/AntennaPod.TextView.Heading" />
+
     <RadioGroup
         android:id="@+id/share_dialog_radio_group"
         android:layout_width="match_parent"
@@ -38,12 +45,20 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginVertical="8dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?attr/background_elevated" />
 
     <CheckBox
         android:id="@+id/share_position_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/share_playback_position_dialog_label" />
+
+    <Button
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/share_label"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
 
 </LinearLayout>

@@ -3,7 +3,14 @@ package de.test.antennapod.dialogs;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.ui.UITestUtils;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -11,19 +18,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.test.antennapod.EspressoTestUtils;
-import de.test.antennapod.ui.UITestUtils;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -45,7 +41,6 @@ public class ShareDialogTest {
     @Rule
     public IntentsTestRule<MainActivity> activityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
-    private UITestUtils uiTestUtils;
     protected Context context;
 
     @Before
@@ -54,7 +49,7 @@ public class ShareDialogTest {
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.setLastNavFragment(EpisodesFragment.TAG);
-        uiTestUtils = new UITestUtils(context);
+        UITestUtils uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
         uiTestUtils.addLocalFeedData(true);
 
@@ -73,15 +68,9 @@ public class ShareDialogTest {
     }
 
     @Test
-    public void testShareDialogDisplayed() throws InterruptedException {
+    public void testShareDialogDisplayed() {
         onView(withText(R.string.share_label)).perform(click());
         onView(allOf(isDisplayed(), withText(R.string.share_label)));
-    }
-
-    @Test
-    public void testShareDialogCancelButton() {
-        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
-        onView(withText(R.string.cancel_label)).check(matches(isDisplayed())).perform(scrollTo()).perform(click());
     }
 
 }
