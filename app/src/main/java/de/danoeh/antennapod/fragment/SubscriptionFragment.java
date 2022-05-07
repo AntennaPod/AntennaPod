@@ -146,13 +146,8 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
-                prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()),
-                RecyclerView.VERTICAL,
-                false);
-        subscriptionRecycler.setLayoutManager(gridLayoutManager);
+        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
-        gridLayoutManager.setSpanCount(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         registerForContextMenu(subscriptionRecycler);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
@@ -239,9 +234,9 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void setColumnNumber(int columns) {
-        GridLayoutManager gridLayoutManager = (GridLayoutManager) subscriptionRecycler.getLayoutManager();
-        gridLayoutManager.setSpanCount(columns);
-        subscriptionAdapter.notifyDataSetChanged();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
+                columns, RecyclerView.VERTICAL, false);
+        subscriptionRecycler.setLayoutManager(gridLayoutManager);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }
