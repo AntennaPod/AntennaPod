@@ -103,12 +103,15 @@ public class EpisodeMultiSelectActionHandler {
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
         totalNumItems += numItems;
-        String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
-        if (snackbar != null) {
-            snackbar.setText(text);
-        } else {
-            snackbar = activity.showSnackbarAbovePlayer(text, Snackbar.LENGTH_LONG);
-        }
+        activity.runOnUiThread(() -> {
+            String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
+            if (snackbar != null) {
+                snackbar.setText(text);
+                snackbar.show(); // Resets the timeout
+            } else {
+                snackbar = activity.showSnackbarAbovePlayer(text, Snackbar.LENGTH_LONG);
+            }
+        });
     }
 
     private long[] getSelectedIds(List<FeedItem> items) {

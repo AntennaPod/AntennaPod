@@ -36,6 +36,7 @@ import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import io.reactivex.Completable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -246,9 +247,25 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
-                    .handleAction(listAdapter.getSelectedItems());
-            listAdapter.endSelectMode();
+            EpisodeMultiSelectActionHandler handler =
+                    new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId());
+            Completable.fromAction(
+                    () -> {
+                        handler.handleAction(listAdapter.getSelectedItems());
+                        if (listAdapter.shouldSelectLazyLoadedItems()) {
+                            int applyPage = page + 1;
+                            List<FeedItem> nextPage;
+                            do {
+                                nextPage = loadMoreData(applyPage);
+                                handler.handleAction(nextPage);
+                                applyPage++;
+                            } while (nextPage.size() == EPISODES_PER_PAGE);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> listAdapter.endSelectMode(),
+                            error -> Log.e(TAG, Log.getStackTraceString(error)));
             return true;
         });
 
@@ -276,7 +293,7 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         }
         isLoadingMore = true;
         loadingMoreView.setVisibility(View.VISIBLE);
-        disposable = Observable.fromCallable(this::loadMoreData)
+        disposable = Observable.fromCallable(() -> loadMoreData(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
@@ -477,7 +494,7 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
      * @return The items from the next page of data
      */
     @NonNull
-    protected abstract List<FeedItem> loadMoreData();
+    protected abstract List<FeedItem> loadMoreData(int page);
 
     /**
      * Returns the total number of items that would be returned if {@link #loadMoreData} was called often enough.
