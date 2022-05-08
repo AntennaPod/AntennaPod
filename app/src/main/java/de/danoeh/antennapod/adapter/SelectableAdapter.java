@@ -20,6 +20,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
     private final HashSet<Long> selectedIds = new HashSet<>();
     private final Activity activity;
     private OnSelectModeListener onSelectModeListener;
+    boolean shouldSelectLazyLoadedItems = false;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -34,6 +35,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             onSelectModeListener.onStartSelectMode();
         }
 
+        shouldSelectLazyLoadedItems = false;
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
         notifyDataSetChanged();
@@ -56,9 +58,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 if (item.getItemId() == R.id.select_toggle) {
-                    boolean allSelected = selectedIds.size() == getItemCount();
-                    setSelected(0, getItemCount(), !allSelected);
-                    toggleSelectAllIcon(item, !allSelected);
+                    boolean selectAll = selectedIds.size() != getItemCount();
+                    shouldSelectLazyLoadedItems = selectAll;
+                    setSelected(0, getItemCount(), selectAll);
+                    toggleSelectAllIcon(item, selectAll);
                     updateTitle();
                     return true;
                 }
@@ -69,6 +72,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             public void onDestroyActionMode(ActionMode mode) {
                 callOnEndSelectMode();
                 actionMode = null;
+                shouldSelectLazyLoadedItems = false;
                 selectedIds.clear();
                 notifyDataSetChanged();
             }
@@ -147,7 +151,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
     }
 
-    private void updateTitle() {
+    void updateTitle() {
         if (actionMode == null) {
             return;
         }
@@ -164,6 +168,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         if (onSelectModeListener != null) {
             onSelectModeListener.onEndSelectMode();
         }
+    }
+
+    public boolean shouldSelectLazyLoadedItems() {
+        return shouldSelectLazyLoadedItems;
     }
 
     public interface OnSelectModeListener {

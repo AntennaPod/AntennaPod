@@ -48,6 +48,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void updateItems(List<FeedItem> items) {
         episodes = items;
         notifyDataSetChanged();
+        updateTitle();
     }
 
     @Override
@@ -195,6 +196,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             return true;
         } else if (item.getItemId() == R.id.select_all_below) {
             setSelected(longPressedPosition + 1, getItemCount(), true);
+            shouldSelectLazyLoadedItems = true;
             return true;
         }
         return false;

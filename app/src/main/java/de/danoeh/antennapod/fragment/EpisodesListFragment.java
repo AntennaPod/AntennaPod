@@ -283,6 +283,9 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
                     }
                     episodes.addAll(data);
                     onFragmentLoaded(episodes);
+                    if (listAdapter.shouldSelectLazyLoadedItems()) {
+                        listAdapter.setSelected(episodes.size() - data.size(), episodes.size(), true);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)),
                     () -> {
                         recyclerView.post(() -> isLoadingMore = false); // Make sure to not always load 2 pages at once
