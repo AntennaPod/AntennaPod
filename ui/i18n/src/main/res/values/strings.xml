@@ -152,10 +152,6 @@
     <string name="new_episode_notification_group_text">Your subscriptions have new episodes.</string>
 
     <!-- Actions on feeds -->
-    <string name="mark_all_read_label">Mark all as played</string>
-    <string name="mark_all_read_msg">Marked all Episodes as played</string>
-    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this podcast as being played.</string>
     <string name="remove_all_inbox_label">Remove all from inbox</string>
     <string name="removed_all_inbox_msg">Removed all from inbox</string>
     <string name="remove_all_inbox_confirmation_msg">Please confirm that you want to remove all from the inbox.</string>

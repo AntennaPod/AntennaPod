@@ -137,21 +137,6 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         if (itemId == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
             return true;
-        } else if (itemId == R.id.mark_all_read_item) {
-            ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.mark_all_read_label,
-                    R.string.mark_all_read_confirmation_msg) {
-
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.markAllItemsRead();
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
-                }
-            };
-            markAllReadConfirmationDialog.createNewDialog().show();
-            return true;
         } else if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
                     R.string.remove_all_inbox_label,

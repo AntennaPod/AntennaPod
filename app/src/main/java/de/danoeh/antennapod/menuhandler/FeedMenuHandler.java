@@ -1,13 +1,11 @@
 package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -56,19 +54,6 @@ public class FeedMenuHandler {
             DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
         } else if (itemId == R.id.sort_items) {
             showSortDialog(context, selectedFeed);
-        } else if (itemId == R.id.mark_all_read_item) {
-            ConfirmationDialog conDialog = new ConfirmationDialog(context,
-                    R.string.mark_all_read_label,
-                    R.string.mark_all_read_feed_confirmation_msg) {
-
-                @Override
-                public void onConfirmButtonPressed(
-                        DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.markFeedRead(selectedFeed.getId());
-                }
-            };
-            conDialog.createNewDialog().show();
         } else if (itemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedFeed.getLink());
         } else if (itemId == R.id.share_item) {
