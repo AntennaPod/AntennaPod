@@ -67,6 +67,9 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
         SwipeActions swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.delete_batch);
         return inboxContainer;
     }
 
@@ -113,7 +116,12 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
 
     @NonNull
     @Override
-    protected List<FeedItem> loadMoreData() {
+    protected List<FeedItem> loadMoreData(int page) {
         return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
     }
 }

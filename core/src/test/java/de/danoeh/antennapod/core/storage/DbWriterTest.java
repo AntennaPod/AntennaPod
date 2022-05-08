@@ -752,34 +752,6 @@ public class DbWriterTest {
     }
 
     @Test
-    public void testMarkFeedRead() throws Exception {
-        final int numItems = 10;
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
-        for (int i = 0; i < numItems; i++) {
-            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
-                    new Date(), FeedItem.UNPLAYED, feed);
-            feed.getItems().add(item);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : feed.getItems()) {
-            assertTrue(item.getId() != 0);
-        }
-
-        DBWriter.markFeedRead(feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
-        List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
-        for (FeedItem item : loadedItems) {
-            assertTrue(item.isPlayed());
-        }
-    }
-
-    @Test
     public void testRemoveAllNewFlags() throws Exception {
         final int numItems = 10;
         Feed feed = new Feed("url", null, "title");
@@ -804,34 +776,6 @@ public class DbWriterTest {
         List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
         for (FeedItem item : loadedItems) {
             assertFalse(item.isNew());
-        }
-    }
-
-    @Test
-    public void testMarkAllItemsReadSameFeed() throws Exception {
-        final int numItems = 10;
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
-        for (int i = 0; i < numItems; i++) {
-            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i,
-                    new Date(), FeedItem.UNPLAYED, feed);
-            feed.getItems().add(item);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : feed.getItems()) {
-            assertTrue(item.getId() != 0);
-        }
-
-        DBWriter.markAllItemsRead().get(TIMEOUT, TimeUnit.SECONDS);
-        List<FeedItem> loadedItems = DBReader.getFeedItemList(feed);
-        for (FeedItem item : loadedItems) {
-            assertTrue(item.isPlayed());
         }
     }
 

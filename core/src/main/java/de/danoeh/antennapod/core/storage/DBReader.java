@@ -402,6 +402,19 @@ public final class DBReader {
         }
     }
 
+    public static int getTotalEpisodeCount(FeedItemFilter filter) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getTotalEpisodeCountCursor(filter)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return -1;
+        } finally {
+            adapter.close();
+        }
+    }
+
     /**
      * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
      * has been completed at least once.

@@ -197,8 +197,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         });
         speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+                    .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
         });

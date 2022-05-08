@@ -15,11 +15,14 @@ import java.util.HashSet;
 /**
  * Used by Recyclerviews that need to provide ability to select items.
  */
-abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
+public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
+    public static final int COUNT_AUTOMATICALLY = -1;
     private ActionMode actionMode;
     private final HashSet<Long> selectedIds = new HashSet<>();
     private final Activity activity;
     private OnSelectModeListener onSelectModeListener;
+    boolean shouldSelectLazyLoadedItems = false;
+    private int totalNumberOfItems = COUNT_AUTOMATICALLY;
 
     public SelectableAdapter(Activity activity) {
         this.activity = activity;
@@ -34,6 +37,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             onSelectModeListener.onStartSelectMode();
         }
 
+        shouldSelectLazyLoadedItems = false;
         selectedIds.clear();
         selectedIds.add(getItemId(pos));
         notifyDataSetChanged();
@@ -56,9 +60,10 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 if (item.getItemId() == R.id.select_toggle) {
-                    boolean allSelected = selectedIds.size() == getItemCount();
-                    setSelected(0, getItemCount(), !allSelected);
-                    toggleSelectAllIcon(item, !allSelected);
+                    boolean selectAll = selectedIds.size() != getItemCount();
+                    shouldSelectLazyLoadedItems = selectAll;
+                    setSelected(0, getItemCount(), selectAll);
+                    toggleSelectAllIcon(item, selectAll);
                     updateTitle();
                     return true;
                 }
@@ -69,6 +74,7 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
             public void onDestroyActionMode(ActionMode mode) {
                 callOnEndSelectMode();
                 actionMode = null;
+                shouldSelectLazyLoadedItems = false;
                 selectedIds.clear();
                 notifyDataSetChanged();
             }
@@ -147,13 +153,21 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         }
     }
 
-    private void updateTitle() {
+    void updateTitle() {
         if (actionMode == null) {
             return;
         }
+        int totalCount = getItemCount();
+        int selectedCount = selectedIds.size();
+        if (totalNumberOfItems != COUNT_AUTOMATICALLY) {
+            totalCount = totalNumberOfItems;
+            if (shouldSelectLazyLoadedItems) {
+                selectedCount += (totalNumberOfItems - getItemCount());
+            }
+        }
         actionMode.setTitle(activity.getResources()
                 .getQuantityString(R.plurals.num_selected_label, selectedIds.size(),
-                selectedIds.size(), getItemCount()));
+                selectedCount, totalCount));
     }
 
     public void setOnSelectModeListener(OnSelectModeListener onSelectModeListener) {
@@ -164,6 +178,18 @@ abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> extends Recy
         if (onSelectModeListener != null) {
             onSelectModeListener.onEndSelectMode();
         }
+    }
+
+    public boolean shouldSelectLazyLoadedItems() {
+        return shouldSelectLazyLoadedItems;
+    }
+
+    /**
+     * Sets the total number of items that could be lazy-loaded.
+     * Can also be set to {@link #COUNT_AUTOMATICALLY} to simply use {@link #getItemCount}
+     */
+    public void setTotalNumberOfItems(int totalNumberOfItems) {
+        this.totalNumberOfItems = totalNumberOfItems;
     }
 
     public interface OnSelectModeListener {
