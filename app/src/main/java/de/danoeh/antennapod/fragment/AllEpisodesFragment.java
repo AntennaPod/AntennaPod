@@ -105,4 +105,9 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     protected List<FeedItem> loadMoreData() {
         return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
     }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(feedItemFilter);
+    }
 }

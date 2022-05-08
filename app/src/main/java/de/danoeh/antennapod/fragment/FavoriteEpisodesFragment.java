@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -100,5 +101,10 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
     @Override
     protected List<FeedItem> loadMoreData() {
         return DBReader.getFavoriteItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.IS_FAVORITE));
     }
 }

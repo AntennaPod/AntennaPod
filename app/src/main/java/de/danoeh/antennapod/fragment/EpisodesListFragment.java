@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.SelectableAdapter;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -447,14 +449,15 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(this::loadData)
+        disposable = Observable.fromCallable(() -> new Pair<>(loadData(), loadTotalItemCount()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
                     loadingMoreView.setVisibility(View.GONE);
                     hasMoreItems = true;
-                    episodes = data;
+                    episodes = data.first;
+                    listAdapter.setTotalNumberOfItems(data.second);
                     onFragmentLoaded(episodes);
                     if (getParentFragment() instanceof PagedToolbarFragment) {
                         ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
@@ -475,4 +478,11 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
      */
     @NonNull
     protected abstract List<FeedItem> loadMoreData();
+
+    /**
+     * Returns the total number of items that would be returned if {@link #loadMoreData} was called often enough.
+     */
+    protected int loadTotalItemCount() {
+        return SelectableAdapter.COUNT_AUTOMATICALLY;
+    }
 }

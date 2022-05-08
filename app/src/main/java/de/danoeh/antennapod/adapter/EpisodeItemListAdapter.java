@@ -195,8 +195,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             setSelected(0, longPressedPosition, true);
             return true;
         } else if (item.getItemId() == R.id.select_all_below) {
-            setSelected(longPressedPosition + 1, getItemCount(), true);
             shouldSelectLazyLoadedItems = true;
+            setSelected(longPressedPosition + 1, getItemCount(), true);
             return true;
         }
         return false;

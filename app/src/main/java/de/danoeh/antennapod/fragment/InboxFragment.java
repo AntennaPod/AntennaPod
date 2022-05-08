@@ -119,4 +119,9 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
     protected List<FeedItem> loadMoreData() {
         return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
     }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
+    }
 }
