@@ -505,8 +505,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+                    .handleAction(recyclerAdapter.getSelectedItems());
             recyclerAdapter.endSelectMode();
             return true;
         });

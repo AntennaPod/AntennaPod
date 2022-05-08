@@ -246,8 +246,8 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), listAdapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+                    .handleAction(listAdapter.getSelectedItems());
             listAdapter.endSelectMode();
             return true;
         });
