@@ -1,6 +1,5 @@
 plugins {
     id('com.android.application')
-    id('com.getkeepsafe.dexcount')
     id('com.github.triplet.play') version '3.7.0-agp4.2' apply false
 }
 apply from: "../common.gradle"
@@ -37,27 +36,10 @@ android {
         releaseConfig {
             enableV1Signing true
             enableV2Signing true
-
-            if (project.hasProperty("releaseStoreFile")) {
-                storeFile file(releaseStoreFile)
-            } else {
-                storeFile file("keystore")
-            }
-            if (project.hasProperty("releaseStorePassword")) {
-                storePassword releaseStorePassword
-            } else {
-                storePassword "password"
-            }
-            if (project.hasProperty("releaseKeyAlias")) {
-                keyAlias releaseKeyAlias
-            } else {
-                keyAlias "alias"
-            }
-            if (project.hasProperty("releaseKeyPassword")) {
-                keyPassword releaseKeyPassword
-            } else {
-                keyPassword "password"
-            }
+            storeFile file(project.getProperties().getOrDefault("releaseStoreFile", "keystore"))
+            storePassword project.getProperties().getOrDefault("releaseStorePassword", "password")
+            keyAlias project.getProperties().getOrDefault("releaseKeyAlias", "alias")
+            keyPassword project.getProperties().getOrDefault("releaseKeyPassword", "password")
         }
     }
 
@@ -65,17 +47,11 @@ android {
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
-
-            dexcount {
-                if (project.hasProperty("enableDexcountInDebug")) {
-                    runOnEachPackage = enableDexcountInDebug.toBoolean()
-                } else { // default to not running dexcount
-                    runOnEachPackage = false
-                }
-            }
+            resValue "string", "application_id", "de.danoeh.antennapod.debug"
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
+            resValue "string", "application_id", "de.danoeh.antennapod"
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.releaseConfig
@@ -187,8 +163,3 @@ task copyLicense(type: Copy) {
 }
 
 preBuild.dependsOn copyLicense
-
-apply plugin: 'de.timfreiheit.resourceplaceholders.plugin'
-resourcePlaceholders {
-    files = ['xml/shortcuts.xml']
-}
