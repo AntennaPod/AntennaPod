@@ -155,6 +155,8 @@
     <string name="remove_all_inbox_label">Remove all from inbox</string>
     <string name="removed_all_inbox_msg">Removed all from inbox</string>
     <string name="remove_all_inbox_confirmation_msg">Please confirm that you want to remove all from the inbox.</string>
+    <string name="multi_select_mark_played_confirmation">Please confirm that you want to mark all selected items as played.</string>
+    <string name="multi_select_mark_unplayed_confirmation">Please confirm that you want to mark all selected items as unplayed.</string>
     <string name="show_info_label">Show information</string>
     <string name="show_feed_settings_label">Show podcast settings</string>
     <string name="feed_settings_label">Podcast settings</string>

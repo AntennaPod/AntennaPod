@@ -232,29 +232,51 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            EpisodeMultiSelectActionHandler handler =
-                    new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId());
-            Completable.fromAction(
-                    () -> {
-                        handler.handleAction(listAdapter.getSelectedItems());
-                        if (listAdapter.shouldSelectLazyLoadedItems()) {
-                            int applyPage = page + 1;
-                            List<FeedItem> nextPage;
-                            do {
-                                nextPage = loadMoreData(applyPage);
-                                handler.handleAction(nextPage);
-                                applyPage++;
-                            } while (nextPage.size() == EPISODES_PER_PAGE);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> listAdapter.endSelectMode(),
-                            error -> Log.e(TAG, Log.getStackTraceString(error)));
+            int confirmationString = 0;
+            if (listAdapter.getSelectedItems().size() >= 25 || listAdapter.shouldSelectLazyLoadedItems()) {
+                // Should ask for confirmation
+                if (actionItem.getId() == R.id.mark_read_batch) {
+                    confirmationString = R.string.multi_select_mark_played_confirmation;
+                } else if (actionItem.getId() == R.id.mark_unread_batch) {
+                    confirmationString = R.string.multi_select_mark_unplayed_confirmation;
+                }
+            }
+            if (confirmationString == 0) {
+                performMultiSelectAction(actionItem.getId());
+            } else {
+                new ConfirmationDialog(getActivity(), R.string.multi_select, confirmationString) {
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        performMultiSelectAction(actionItem.getId());
+                    }
+                }.createNewDialog().show();
+            }
             return true;
         });
 
         return root;
+    }
+
+    private void performMultiSelectAction(int actionItemId) {
+        EpisodeMultiSelectActionHandler handler =
+                new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItemId);
+        Completable.fromAction(
+                () -> {
+                    handler.handleAction(listAdapter.getSelectedItems());
+                    if (listAdapter.shouldSelectLazyLoadedItems()) {
+                        int applyPage = page + 1;
+                        List<FeedItem> nextPage;
+                        do {
+                            nextPage = loadMoreData(applyPage);
+                            handler.handleAction(nextPage);
+                            applyPage++;
+                        } while (nextPage.size() == EPISODES_PER_PAGE);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> listAdapter.endSelectMode(),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void setupLoadMoreScrollListener() {
