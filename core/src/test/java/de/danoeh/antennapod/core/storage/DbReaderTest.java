@@ -326,27 +326,27 @@ public class DbReaderTest {
         }
     }
 
-        Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
-        long[] ids = new long[playedItems];
+    @Test
+    public void testGetPlaybackHistoryLength() {
+        final int totalItems = 100;
+
+        Feed feed = DbTestUtils.saveFeedlist(1, totalItems, true).get(0);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        for (int i = 0; i < playedItems; i++) {
-            FeedMedia m = feed.getItems().get(i).getMedia();
-            m.setPlaybackCompletionDate(new Date(i + 1));
-            adapter.setFeedMediaPlaybackCompletionDate(m);
-            ids[ids.length - 1 - i] = m.getItem().getId();
-        }
-        adapter.close();
+        for (int playedItems : Arrays.asList(0, 1, 20, 100)) {
+            adapter.open();
+            for (int i = 0; i < playedItems; ++i) {
+                FeedMedia m = feed.getItems().get(i).getMedia();
+                m.setPlaybackCompletionDate(new Date(i + 1));
 
-        List<FeedItem> saved = DBReader.getPlaybackHistory(limit);
-        assertNotNull(saved);
-        assertEquals("Wrong size: ", numReturnedItems, saved.size());
-        for (int i = 0; i < numReturnedItems; i++) {
-            FeedItem item = saved.get(i);
-            assertNotNull(item.getMedia().getPlaybackCompletionDate());
-            assertEquals("Wrong sort order: ", item.getId(), ids[i]);
+                adapter.setFeedMediaPlaybackCompletionDate(m);
+            }
+            adapter.close();
+
+            long len = DBReader.getPlaybackHistoryLength();
+            assertEquals("Wrong size: ", (int) len, playedItems);
         }
+
     }
 
     @Test
