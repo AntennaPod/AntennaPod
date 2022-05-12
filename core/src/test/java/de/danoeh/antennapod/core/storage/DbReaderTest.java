@@ -290,9 +290,10 @@ public class DbReaderTest {
 
     @Test
     public void testGetPlaybackHistory() {
-        final int numItems = (DBReader.PLAYBACK_HISTORY_SIZE + 1) * 2;
-        final int playedItems = DBReader.PLAYBACK_HISTORY_SIZE + 1;
-        final int numReturnedItems = Math.min(playedItems, DBReader.PLAYBACK_HISTORY_SIZE);
+        int limit = 40;
+        final int numItems = (limit + 1) * 2;
+        final int playedItems = limit + 1;
+        final int numReturnedItems = Math.min(playedItems, limit);
         final int numFeeds = 1;
 
         Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
@@ -308,7 +309,7 @@ public class DbReaderTest {
         }
         adapter.close();
 
-        List<FeedItem> saved = DBReader.getPlaybackHistory();
+        List<FeedItem> saved = DBReader.getPlaybackHistory(limit);
         assertNotNull(saved);
         assertEquals("Wrong size: ", numReturnedItems, saved.size());
         for (int i = 0; i < numReturnedItems; i++) {

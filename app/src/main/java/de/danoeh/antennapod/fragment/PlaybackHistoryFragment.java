@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -52,8 +54,14 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
     private EpisodeItemListRecyclerView recyclerView;
     private EmptyViewHandler emptyView;
     private ProgressBar progressBar;
+    private View loadingMoreView;
     private Toolbar toolbar;
     private boolean displayUpArrow;
+
+    protected int page = 1;
+    protected boolean isLoadingMore = false;
+    protected boolean hasMoreItems = true;
+    protected static int EPISODES_PER_PAGE = 40;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,10 +86,16 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+
         adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         progressBar = root.findViewById(R.id.progLoading);
+        page = 1;
+        hasMoreItems = true;
+        isLoadingMore = false;
+        setupLoadMoreScrollListener();
 
+        loadingMoreView = root.findViewById(R.id.loadingMore);
         emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
@@ -200,6 +214,21 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         }
     }
 
+    private void setupLoadMoreScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
+                super.onScrolled(view, deltaX, deltaY);
+                if (!isLoadingMore && hasMoreItems && recyclerView.isScrolledToBottom()) {
+                    /* The end of the list has been reached. Load more data. */
+                    page++;
+                    isLoadingMore = true;
+                    loadItems();
+                }
+            }
+        });
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryUpdated(PlaybackHistoryEvent event) {
         loadItems();
@@ -234,17 +263,21 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     progressBar.setVisibility(View.GONE);
-                    playbackHistory = result;
+                    playbackHistory = result.feedData;
+                    hasMoreItems = result.hasMoreData;
                     adapter.updateItems(playbackHistory);
                     onFragmentLoaded();
+                    isLoadingMore = false;
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
-    private List<FeedItem> loadData() {
-        List<FeedItem> history = DBReader.getPlaybackHistory();
+    private LazyFeedList loadData() {
+        int limit = page * EPISODES_PER_PAGE;
+        List<FeedItem> history = DBReader.getPlaybackHistory(limit);
+        int feedLength = (int) DBReader.getPlaybackHistoryLength();
         DBReader.loadAdditionalFeedItemListData(history);
-        return history;
+        return new LazyFeedList(history, limit < feedLength);
     }
 
     private class PlaybackHistoryListAdapter extends EpisodeItemListAdapter {
@@ -265,6 +298,17 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
             MenuItemUtils.setOnClickListeners(menu, PlaybackHistoryFragment.this::onContextItemSelected);
+        }
+    }
+
+    private static class LazyFeedList {
+        // Holder class for lazy-loaded feed items that knows whether more data is available.
+        public List<FeedItem> feedData;
+        public boolean hasMoreData;
+
+        public LazyFeedList(List<FeedItem> feedData, boolean hasMoreData) {
+            this.feedData = feedData;
+            this.hasMoreData = hasMoreData;
         }
     }
 }

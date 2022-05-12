@@ -1090,6 +1090,10 @@ public class PodDBAdapter {
                 null, String.format(Locale.US, "%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
     }
 
+    public final long getCompletedMediaLength() {
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + "> 0");
+    }
+
     public final Cursor getSingleFeedMediaCursor(long id) {
         final String query = "SELECT " + KEYS_FEED_MEDIA + " FROM " + TABLE_NAME_FEED_MEDIA
                 + " WHERE " + KEY_ID + "=" + id;
