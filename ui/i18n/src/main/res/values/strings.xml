@@ -23,7 +23,6 @@
     <string name="subscriptions_list_label">Subscriptions List</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback History</string>
-    <string name="gpodnet_main_label">gpodder.net</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
@@ -624,9 +623,6 @@
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- gpodder.net -->
-    <string name="gpodnet_taglist_header">CATEGORIES</string>
-    <string name="gpodnet_toplist_header">TOP PODCASTS</string>
-    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="create_account">Create account</string>
@@ -715,10 +711,10 @@
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_podcastindex_label">Search Podcastindex.org</string>
     <string name="search_fyyd_label">Search fyyd</string>
+    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add Podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
-    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
