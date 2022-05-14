@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.palette.graphics.Palette;
 
@@ -146,7 +148,8 @@ public class CoverLoader {
             boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (placeholder != null) {
                 if (textAndImageCombined || showTitle) {
-                    int bgColor = placeholder.getContext().getResources().getColor(R.color.feed_text_bg);
+                    final Context context = placeholder.getContext();
+                    int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
                     if (palette == null || !showTitle) {
                         placeholder.setBackgroundColor(bgColor);
                         placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
@@ -154,9 +157,9 @@ public class CoverLoader {
                         return;
                     }
                     int dominantColor = palette.getDominantColor(bgColor);
-                    int textColor = placeholder.getContext().getResources().getColor(R.color.white);
+                    int textColor = ContextCompat.getColor(context, R.color.white);
                     if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
-                        textColor = placeholder.getContext().getResources().getColor(R.color.black);
+                        textColor = ContextCompat.getColor(context, R.color.black);
                     }
                     placeholder.setTextColor(textColor);
                     placeholder.setBackgroundColor(dominantColor);
