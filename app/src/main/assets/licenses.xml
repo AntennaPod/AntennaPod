@@ -25,6 +25,18 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
+        name="Balloon"
+        author="Jaewoong Eum"
+        website="https://github.com/skydoves/Balloon"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Conscrypt"
+        author="Google"
+        website="https://github.com/google/conscrypt"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
         name="EventBus"
         author="greenrobot"
         website="https://github.com/greenrobot/EventBus"
@@ -40,6 +52,12 @@
         name="Floating Action Button Speed Dial"
         author="Roberto Leinardi"
         website="https://github.com/leinardi/FloatingActionButtonSpeedDial"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="fyydlin"
+        author="Martin Fietz"
+        website="https://github.com/mfietz/fyydlin"
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
@@ -61,6 +79,18 @@
         license="MIT"
         licenseText="LICENSE_JSOUP.txt" />
     <library
+        name="Lightweight-Stream-API"
+        author="Victor Melnik"
+        website="https://github.com/aNNiMON/Lightweight-Stream-API"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Material Components for Android"
+        author="Google"
+        website="https://github.com/material-components/material-components-android"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
         name="Material Design Icons"
         author="Google"
         website="https://github.com/google/material-design-icons"
@@ -72,12 +102,6 @@
         website="https://github.com/Templarian/MaterialDesign"
         license="Pictogrammers Free License"
         licenseText="LICENSE_PICTOGRAMMERS.txt" />
-    <library
-        name="Material Components for Android"
-        author="Google"
-        website="https://github.com/material-components/material-components-android"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
     <library
         name="OkHttp"
         author="Square"
@@ -91,11 +115,29 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
+        name="RecyclerViewSwipeDecorator"
+        author="Paolo Montalto"
+        website="https://github.com/xabaras/RecyclerViewSwipeDecorator"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
         name="RxAndroid"
         author="ReactiveX"
         website="https://github.com/ReactiveX/RxAndroid"
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="RxJava"
+        author="ReactiveX"
+        website="https://github.com/ReactiveX/RxJava"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="SearchPreference"
+        author="ByteHamster"
+        website="https://github.com/ByteHamster/SearchPreference"
+        license="MIT"
+        licenseText="LICENSE_SEARCHPREFERENCE.txt" />
     <library
         name="StackBlur"
         author="Enrique López Mañas"
