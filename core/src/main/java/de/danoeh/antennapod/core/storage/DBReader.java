@@ -419,7 +419,7 @@ public final class DBReader {
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
      */
     @NonNull
-    public static List<FeedItem> getPlaybackHistory(int limit) {
+    public static List<FeedItem> getPlaybackHistory(int offset, int limit) {
         Log.d(TAG, "getPlaybackHistory() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -428,7 +428,7 @@ public final class DBReader {
         Cursor mediaCursor = null;
         Cursor itemCursor = null;
         try {
-            mediaCursor = adapter.getCompletedMediaCursor(limit);
+            mediaCursor = adapter.getCompletedMediaCursor(offset, limit);
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);

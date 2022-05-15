@@ -294,35 +294,41 @@ public class DbReaderTest {
         // This for loop that manually calls setUp() and tearDown() is a hack
         // because it seems that supporting a single parameterized test in a
         // Robolectric test suite like this is difficult or impossible.
-        for (int limit : Arrays.asList(1, 20, 100)) {
-            setUp();
-            final int numItems = (limit + 1) * 2;
-            final int playedItems = limit + 1;
-            final int numReturnedItems = Math.min(playedItems, limit);
-            final int numFeeds = 1;
+        for (int offset : Arrays.asList(0, 10, 20)) {
+            for (int limit : Arrays.asList(1, 20, 100)) {
+                setUp();
+                final int numItems = (limit + 1) * 2;
+                final int playedItems = limit + 1;
+                final int numReturnedItems = Math.min(Math.max(playedItems - offset, 0), limit);
+                final int numFeeds = 1;
 
-            Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
-            long[] ids = new long[playedItems];
+                Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
+                long[] ids = new long[playedItems];
 
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            for (int i = 0; i < playedItems; i++) {
-                FeedMedia m = feed.getItems().get(i).getMedia();
-                m.setPlaybackCompletionDate(new Date(i + 1));
-                adapter.setFeedMediaPlaybackCompletionDate(m);
-                ids[ids.length - 1 - i] = m.getItem().getId();
+                PodDBAdapter adapter = PodDBAdapter.getInstance();
+                adapter.open();
+                for (int i = 0; i < playedItems; i++) {
+                    FeedMedia m = feed.getItems().get(i).getMedia();
+                    m.setPlaybackCompletionDate(new Date(i + 1));
+                    adapter.setFeedMediaPlaybackCompletionDate(m);
+                    ids[ids.length - 1 - i] = m.getItem().getId();
+                }
+                adapter.close();
+
+                List<FeedItem> saved = DBReader.getPlaybackHistory(offset, limit);
+                assertNotNull(saved);
+                assertEquals(String.format("Wrong size with offset %d and limit %d: ",
+                                           offset, limit),
+                             numReturnedItems, saved.size());
+                for (int i = 0; i < numReturnedItems; i++) {
+                    FeedItem item = saved.get(i);
+                    assertNotNull(item.getMedia().getPlaybackCompletionDate());
+                    assertEquals(String.format("Wrong sort order with offset %d and limit %d: ",
+                                               offset, limit),
+                                 item.getId(), ids[offset + i]);
+                }
+                tearDown();
             }
-            adapter.close();
-
-            List<FeedItem> saved = DBReader.getPlaybackHistory(limit);
-            assertNotNull(saved);
-            assertEquals(String.format("Wrong size with limit %d: ", limit), numReturnedItems, saved.size());
-            for (int i = 0; i < numReturnedItems; i++) {
-                FeedItem item = saved.get(i);
-                assertNotNull(item.getMedia().getPlaybackCompletionDate());
-                assertEquals(String.format("Wrong sort order with limit %d: ", limit), item.getId(), ids[i]);
-            }
-            tearDown();
         }
     }
 

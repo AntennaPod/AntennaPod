@@ -1,67 +1,39 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class PlaybackHistoryFragment extends EpisodesListFragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "PlaybackHistoryFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
 
-    private List<FeedItem> playbackHistory;
-    private PlaybackHistoryListAdapter adapter;
-    private Disposable disposable;
-    private EpisodeItemListRecyclerView recyclerView;
-    private EmptyViewHandler emptyView;
-    private ProgressBar progressBar;
-    private View loadingMoreView;
     private Toolbar toolbar;
     private boolean displayUpArrow;
-
-    protected int page = 1;
-    protected boolean isLoadingMore = false;
-    protected boolean hasMoreItems = true;
-    protected static int EPISODES_PER_PAGE = 40;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,8 +44,12 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        toolbar = root.findViewById(R.id.toolbar);
+        View historyContainer = View.inflate(getContext(), R.layout.list_container_fragment, null);
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+
+        ((FrameLayout) historyContainer.findViewById(R.id.listContent)).addView(root);
+
+        toolbar = historyContainer.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.playback_history_label);
         toolbar.setOnMenuItemClickListener(this);
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
@@ -84,40 +60,14 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         toolbar.inflateMenu(R.menu.playback_history);
         refreshToolbarState();
 
-        recyclerView = root.findViewById(R.id.recyclerView);
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+        listAdapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
+        recyclerView.setAdapter(listAdapter);
 
-        adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
-        recyclerView.setAdapter(adapter);
-        progressBar = root.findViewById(R.id.progLoading);
-        page = 1;
-        hasMoreItems = true;
-        isLoadingMore = false;
-        setupLoadMoreScrollListener();
-
-        loadingMoreView = root.findViewById(R.id.loadingMore);
-        emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
-        emptyView.attachToRecyclerView(recyclerView);
-        return root;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-        loadItems();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-        if (disposable != null) {
-            disposable.dispose();
-        }
+        return historyContainer;
     }
 
     @Override
@@ -126,55 +76,8 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         super.onSaveInstanceState(outState);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FeedItemEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (playbackHistory == null) {
-            return;
-        } else if (adapter == null) {
-            loadItems();
-            return;
-        }
-        for (int i = 0, size = event.items.size(); i < size; i++) {
-            FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(playbackHistory, item.getId());
-            if (pos >= 0) {
-                playbackHistory.remove(pos);
-                playbackHistory.add(pos, item);
-                adapter.notifyItemChangedCompat(pos);
-            }
-        }
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        if (adapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(playbackHistory, mediaId);
-                if (pos >= 0) {
-                    adapter.notifyItemChangedCompat(pos);
-                }
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) {
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
-                    holder.notifyPlaybackPositionUpdated(event);
-                    break;
-                }
-            }
-        }
-    }
-
     public void refreshToolbarState() {
-        boolean hasHistory = playbackHistory != null && !playbackHistory.isEmpty();
+        boolean hasHistory = episodes != null && !episodes.isEmpty();
         toolbar.getMenu().findItem(R.id.clear_history_item).setVisible(hasHistory);
     }
 
@@ -185,48 +88,6 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getLongPressedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at current position was null, ignoring selection");
-            return super.onContextItemSelected(item);
-        }
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onKeyUp(KeyEvent event) {
-        if (!isAdded() || !isVisible() || !isMenuVisible()) {
-            return;
-        }
-        switch (event.getKeyCode()) {
-            case KeyEvent.KEYCODE_T:
-                recyclerView.smoothScrollToPosition(0);
-                break;
-            case KeyEvent.KEYCODE_B:
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void setupLoadMoreScrollListener() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
-                super.onScrolled(view, deltaX, deltaY);
-                if (!isLoadingMore && hasMoreItems && recyclerView.isScrolledToBottom()) {
-                    /* The end of the list has been reached. Load more data. */
-                    page++;
-                    isLoadingMore = true;
-                    loadItems();
-                }
-            }
-        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -241,43 +102,18 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         refreshToolbarState();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadItems();
         refreshToolbarState();
     }
 
-    private void onFragmentLoaded() {
-        adapter.notifyDataSetChanged();
+    @Override
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
+        super.onFragmentLoaded(episodes);
+        listAdapter.notifyDataSetChanged();
         refreshToolbarState();
-    }
-
-    private void loadItems() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        progressBar.setVisibility(View.VISIBLE);
-        emptyView.hide();
-        disposable = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    progressBar.setVisibility(View.GONE);
-                    playbackHistory = result.feedData;
-                    hasMoreItems = result.hasMoreData;
-                    adapter.updateItems(playbackHistory);
-                    onFragmentLoaded();
-                    isLoadingMore = false;
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    @NonNull
-    private LazyFeedList loadData() {
-        int limit = page * EPISODES_PER_PAGE;
-        List<FeedItem> history = DBReader.getPlaybackHistory(limit);
-        int feedLength = (int) DBReader.getPlaybackHistoryLength();
-        DBReader.loadAdditionalFeedItemListData(history);
-        return new LazyFeedList(history, limit < feedLength);
     }
 
     private class PlaybackHistoryListAdapter extends EpisodeItemListAdapter {
@@ -291,7 +127,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
             // played items shouldn't be transparent for this fragment since, *all* items
             // in this fragment will, by definition, be played. So it serves no purpose and can make
             // it harder to read.
-            holder.itemView.setAlpha(1.0f);
+            holder.itemView.findViewById(R.id.container).setAlpha(1.0f);
         }
 
         @Override
@@ -301,14 +137,20 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         }
     }
 
-    private static class LazyFeedList {
-        // Holder class for lazy-loaded feed items that knows whether more data is available.
-        public List<FeedItem> feedData;
-        public boolean hasMoreData;
+    @Override
+    protected List<FeedItem> loadData() {
+        return loadMoreData(0);
+    }
 
-        public LazyFeedList(List<FeedItem> feedData, boolean hasMoreData) {
-            this.feedData = feedData;
-            this.hasMoreData = hasMoreData;
-        }
+    @Override
+    protected List<FeedItem> loadMoreData(int page) {
+        List<FeedItem> history = DBReader.getPlaybackHistory((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+
+        return history;
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return (int) DBReader.getPlaybackHistoryLength();
     }
 }
