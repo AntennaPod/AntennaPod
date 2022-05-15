@@ -36,6 +36,7 @@ import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -591,6 +592,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
         menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
+        menu.findItem(R.id.playback_speed).setVisible(true);
         return true;
     }
 
@@ -640,6 +642,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         } else if (item.getItemId() == R.id.share_item && feedItem != null) {
             ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
             shareDialog.show(getSupportFragmentManager(), "ShareEpisodeDialog");
+        } else if (item.getItemId() == R.id.playback_speed) {
+            new VariableSpeedDialog().show(getSupportFragmentManager(), null);
         } else {
             return false;
         }
