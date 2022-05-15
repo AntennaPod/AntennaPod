@@ -36,6 +36,13 @@
     </item>
 
     <item
+        android:id="@+id/playback_speed"
+        android:title="@string/playback_speed"
+        android:visible="false"
+        custom:showAsAction="never">
+    </item>
+
+    <item
         android:id="@+id/open_feed_item"
         android:icon="@drawable/ic_feed"
         custom:showAsAction="collapseActionView"
