@@ -234,6 +234,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         // reset for re-use
         holder.count.setVisibility(View.GONE);
         holder.count.setOnClickListener(null);
+        holder.count.setClickable(false);
 
         String tag = fragmentTags.get(position);
         if (tag.equals(QueueFragment.TAG)) {
