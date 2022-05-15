@@ -80,7 +80,7 @@ public class StatisticsFilterDialog {
             dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 1);
         });
         dialogBinding.pastYearButton.setOnClickListener(v -> {
-            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDatesFrom.first.length - 13));
+            dialogBinding.timeFromSpinner.setSelection(Math.max(0, filterDatesFrom.first.length - 12));
             dialogBinding.timeToSpinner.setSelection(filterDatesTo.first.length - 2);
         });
 
