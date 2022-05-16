@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,7 +80,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         if (viewType == COVER_WITH_TITLE) {
             topAndBottomItemId = 0;
             belowItemId = R.id.imgvCover;
-            feedTitle.setBackgroundColor(feedTitle.getContext().getResources().getColor(R.color.feed_text_bg));
+            feedTitle.setBackgroundColor(
+                    ContextCompat.getColor(feedTitle.getContext(), R.color.feed_text_bg));
             int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
             feedTitle.setPadding(padding, padding, padding, padding);
         }

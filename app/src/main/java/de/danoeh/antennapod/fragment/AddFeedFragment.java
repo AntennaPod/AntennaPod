@@ -35,9 +35,9 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.databinding.AddfeedBinding;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
-import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.net.discovery.FyydPodcastSearcher;
+import de.danoeh.antennapod.net.discovery.GpodnetPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastIndexPodcastSearcher;
 import io.reactivex.Observable;
@@ -84,7 +84,7 @@ public class AddFeedFragment extends Fragment {
         viewBinding.searchFyydButton.setOnClickListener(v
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(FyydPodcastSearcher.class)));
         viewBinding.searchGPodderButton.setOnClickListener(v
-                -> activity.loadChildFragment(new GpodnetMainFragment()));
+                -> activity.loadChildFragment(OnlineSearchFragment.newInstance(GpodnetPodcastSearcher.class)));
         viewBinding.searchPodcastIndexButton.setOnClickListener(v
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
