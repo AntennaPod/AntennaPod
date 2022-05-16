@@ -13,7 +13,7 @@ public class MainActivityStarter {
     public static final String INTENT = "de.danoeh.antennapod.intents.MAIN_ACTIVITY";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
-    public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
+    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
 
     private final Intent intent;
     private final Context context;
@@ -44,7 +44,7 @@ public class MainActivityStarter {
 
     public MainActivityStarter withOpenFeed(long feedId) {
         intent.putExtra(EXTRA_FEED_ID, feedId);
-        intent.putExtra(EXTRA_STARTED_FROM_SEARCH, true);
+        intent.putExtra(EXTRA_ADD_TO_BACK_STACK, true);
         return this;
     }
 }

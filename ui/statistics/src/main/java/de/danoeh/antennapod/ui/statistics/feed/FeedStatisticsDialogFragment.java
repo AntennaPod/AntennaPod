@@ -29,7 +29,7 @@ public class FeedStatisticsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setPositiveButton(android.R.string.ok, null);
-        dialog.setNegativeButton(R.string.open_podcast, (dialogInterface, i) -> {
+        dialog.setNeutralButton(R.string.open_podcast, (dialogInterface, i) -> {
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
             new MainActivityStarter(getContext()).withOpenFeed(feedId).start();
         });

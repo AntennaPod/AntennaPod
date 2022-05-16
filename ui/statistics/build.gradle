@@ -13,10 +13,10 @@ android {
 
 dependencies {
     implementation project(":core")
-    implementation project(':event')
+    implementation project(":event")
     implementation project(":model")
+    implementation project(":ui:app-start-intent")
     implementation project(":ui:common")
-    implementation project(path: ':ui:app-start-intent')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
