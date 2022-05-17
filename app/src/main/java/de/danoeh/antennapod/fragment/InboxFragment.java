@@ -49,9 +49,9 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inboxContainer = View.inflate(getContext(), R.layout.inbox_fragment, null);
+        View inboxContainer = View.inflate(getContext(), R.layout.list_container_fragment, null);
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ((FrameLayout) inboxContainer.findViewById(R.id.inboxContent)).addView(root);
+        ((FrameLayout) inboxContainer.findViewById(R.id.listContent)).addView(root);
         emptyView.setTitle(R.string.no_inbox_head_label);
         emptyView.setMessage(R.string.no_inbox_label);
 
