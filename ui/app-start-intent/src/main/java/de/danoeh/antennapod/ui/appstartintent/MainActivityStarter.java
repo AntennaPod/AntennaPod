@@ -44,6 +44,10 @@ public class MainActivityStarter {
 
     public MainActivityStarter withOpenFeed(long feedId) {
         intent.putExtra(EXTRA_FEED_ID, feedId);
+        return this;
+    }
+
+    public MainActivityStarter withAddToBackStack() {
         intent.putExtra(EXTRA_ADD_TO_BACK_STACK, true);
         return this;
     }

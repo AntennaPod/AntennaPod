@@ -31,7 +31,7 @@ public class FeedStatisticsDialogFragment extends DialogFragment {
         dialog.setPositiveButton(android.R.string.ok, null);
         dialog.setNeutralButton(R.string.open_podcast, (dialogInterface, i) -> {
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
-            new MainActivityStarter(getContext()).withOpenFeed(feedId).start();
+            new MainActivityStarter(getContext()).withOpenFeed(feedId).withAddToBackStack().start();
         });
         dialog.setTitle(getArguments().getString(EXTRA_FEED_TITLE));
         dialog.setView(R.layout.feed_statistics_dialog);
