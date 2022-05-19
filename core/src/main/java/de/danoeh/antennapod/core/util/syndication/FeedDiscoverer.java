@@ -32,7 +32,7 @@ public class FeedDiscoverer {
      * a title cannot be found).
      */
     public Map<String, String> findLinks(File in, String baseUrl) throws IOException {
-        return findLinks(Jsoup.parse(in, null), baseUrl);
+        return findLinks(Jsoup.parse(in), baseUrl);
     }
 
     /**
