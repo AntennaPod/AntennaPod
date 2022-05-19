@@ -24,6 +24,9 @@ android {
     packagingOptions {
         exclude "META-INF/LICENSE.txt"
         exclude "META-INF/NOTICE.txt"
+        // Extraneous jsoup files
+        exclude "META-INF/CHANGES"
+        exclude "META-INF/README.md"
     }
 
     compileOptions {
