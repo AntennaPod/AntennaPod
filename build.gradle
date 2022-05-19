@@ -51,7 +51,7 @@ project.ext {
     // Third-party
     commonslangVersion = "3.6"
     commonsioVersion = "2.5"
-    jsoupVersion = "1.12.2"
+    jsoupVersion = "1.13.1"
     glideVersion = "4.8.0"
     okhttpVersion = "3.12.10"
     okioVersion = "1.17.5"
