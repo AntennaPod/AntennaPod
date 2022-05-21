@@ -10,7 +10,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
-    playImplementation 'com.google.android.gms:play-services-base:8.4.0'
+    playImplementation 'com.google.android.gms:play-services-base:17.5.0'
     // This version should be updated regularly.
     freeImplementation 'org.conscrypt:conscrypt-android:2.5.2'
 }
