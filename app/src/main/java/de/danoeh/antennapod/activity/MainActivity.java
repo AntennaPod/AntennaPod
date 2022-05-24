@@ -85,6 +85,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
+    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
@@ -524,7 +525,9 @@ public class MainActivity extends CastEnabledActivity {
             if (tag != null) {
                 loadFragment(tag, args);
             } else if (feedId > 0) {
-                if (intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false)) {
+                boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
+                boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
+                if (startedFromSearch || addToBackStack) {
                     loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 } else {
                     loadFeedFragmentById(feedId, args);
