@@ -23,6 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
+  <string name="years_statistics_label">Anys</string>
   <string name="notification_pref_fragment">Notificacions</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" no trobat</string>
@@ -34,10 +35,19 @@
   <string name="enable_swipeactions">Activa les accions de lliscament per a aquesta pantalla</string>
   <string name="change_setting">Canvia</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Inclou la duració dels episodis que estan simplement marcats com a reproduïts</string>
   <string name="statistics_speed_not_counted">Avís: la velocitat de reproducció mai no es té en compte.</string>
+  <string name="statistics_from">De</string>
+  <string name="statistics_to">Per a</string>
+  <string name="statistics_today">Hui</string>
+  <string name="statistics_filter_all_time">Tot el temps</string>
+  <string name="statistics_filter_past_year">Any passat</string>
   <string name="statistics_reset_data">Resetejar dades estadístiques</string>
   <string name="statistics_reset_data_msg">Açò esborrarà l\'històric de la duració reproduïda per a tots els episodis. ¿Segur que vols continuar?</string>
+  <string name="statistics_counting_range">Reproduït entre entre %1$s i %2$s</string>
+  <string name="statistics_counting_total">Reproduït en total</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Mida total d\'episodis al dispositiu</string>
   <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
   <string name="drawer_close">Tanca menú</string>
@@ -143,6 +153,7 @@
   <string name="remove_feed_label">Suprimeix podcast</string>
   <string name="share_label">Comparteix</string>
   <string name="share_file_label">Comparteix el fitxer</string>
+  <string name="share_rss_address_label">Adreça RSS:</string>
   <string name="feed_delete_confirmation_msg">Si us plau, confirmeu que voleu eliminar el podcast \"%1$s\" i tots els seus episodis (fins i tot els ja baixats).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirmeu que voleu eliminar els podcasts seleccionats i TOTS els seus episodis (inclosos els episodis descarregats).</string>
   <string name="feed_delete_confirmation_local_msg">Si us plau, confirmeu que voleu eliminar el podcast \"%1$s\". Els fitxers de la carpeta local no s\'eliminaran.</string>
@@ -162,6 +173,7 @@
   </plurals>
   <string name="edit_tags">Edita etiquetes</string>
   <string name="rename_tag_label">Canvia etiqueta</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">L\'actualització d\'episodis en connexió de dades està inhabilitada a les preferències.\n\nTot i això, voleu actualitzar els podcasts en connexió de dades?</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <plurals name="downloading_batch_label">
@@ -248,6 +260,8 @@
   </plurals>
   <string name="completing">Completant...</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
+  <string name="download_notification_title_feeds">Actualitzant els podcasts</string>
+  <string name="download_notification_title_episodes">Descarregant episodis</string>
   <string name="download_log_title_unknown">Títol desconegut</string>
   <string name="download_type_feed">Canal</string>
   <string name="download_type_media">Fitxer</string>
@@ -537,6 +551,7 @@
   <string name="opml_import_summary">Importa les teues subscripcions des d\'un altra aplicació de podcast</string>
   <string name="database_export_summary">Transfereix subscripcions i cola a AntennaPod en un altre dispositiu</string>
   <string name="database_import_summary">Importa base de dades d\'AntennaPod des d\'un altre dispositiu</string>
+  <string name="opml_import_label">Importació d\'OPML</string>
   <string name="opml_add_podcast_label">Importa llista de podcasts (OPML)</string>
   <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML: </string>
   <string name="opml_import_error_no_file">Cap fitxer seleccionat!</string>
@@ -717,7 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Pregunta\'m més tard</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">I tant, fem-ho!</string>
   <!--Share episode dialog-->
+  <string name="share_playback_position_dialog_label">Incloure la posició de reproducció</string>
   <string name="share_dialog_episode_website_label">Pàgina web de l\'episodi</string>
+  <string name="share_dialog_for_social">Missatge social</string>
+  <string name="share_dialog_media_address">Adreça del mitjà</string>
   <string name="share_dialog_media_file_label">Fitxer multimèdia</string>
   <string name="share_starting_position_label">Començant des de</string>
   <!--Audio controls-->
@@ -727,6 +745,7 @@
   <string name="stereo_to_mono">Downmix: D\'estereo a mono</string>
   <string name="sonic_only">Només Sonic</string>
   <string name="exoplayer_only">ExoPlayer solament</string>
+  <string name="player_switch_to_audio_only">Canvia a només àudio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipus</string>
   <string name="host_label">Host</string>

@@ -89,7 +89,7 @@
   <string name="chapters_label">Главы</string>
   <string name="chapter_duration">Длительность: %1$s</string>
   <string name="description_label">Описание</string>
-  <string name="shownotes_label">Примечания к выпуску</string>
+  <string name="shownotes_label">Примечания</string>
   <string name="shownotes_contentdescription">чтобы прочесть примечания проведите вверх</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
   <string name="close_label">Закрыть</string>
@@ -178,7 +178,7 @@
   <string name="refresh_failed_msg">{fa-exclamation-circle} Последнее обновление не удалось. Подробнее...</string>
   <string name="open_podcast">Открыть подкаст</string>
   <string name="please_wait_for_data">Подождите, пока загружаются данные</string>
-  <string name="updates_disabled_label">Обновления запрещены</string>
+  <string name="updates_disabled_label">Обновления отключены</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d подписка обновлена.</item>
     <item quantity="few">%d подписки обновлено.</item>
@@ -211,7 +211,7 @@
   <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
   <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
-  <string name="marked_as_played_label">Отметить как прослушанное</string>
+  <string name="marked_as_played_label">Отмечено как прослушанное</string>
   <string name="marked_as_unplayed_label">Отметить как непрослушанное</string>
   <string name="mark_read_no_media_label">Отметить как прочитанное</string>
   <string name="play_this_to_seek_position">Для переходов в выпуске нужно слушать выпуск</string>
@@ -288,8 +288,8 @@
   </plurals>
   <string name="completing">Завершение...</string>
   <string name="download_notification_title">Получение данных подкаста</string>
-  <string name="download_notification_title_feeds">Обновление подкастов</string>
-  <string name="download_notification_title_episodes">Загрузка выпусков</string>
+  <string name="download_notification_title_feeds">Подкасты обновляются</string>
+  <string name="download_notification_title_episodes">Выпуски загружаются</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
@@ -381,11 +381,11 @@
   <string name="pref_pauseOnDisconnect_sum">Поставить на паузу, когда наушники или Bluetooth отключены</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Возобновить, когда восстановится Bluetooth-соединение</string>
-  <string name="pref_hardware_forward_button_title">Кнопка Вперед</string>
+  <string name="pref_hardware_forward_button_title">Кнопка «Вперёд»</string>
   <string name="pref_hardware_forward_button_summary">Настройка поведения кнопки Вперед</string>
-  <string name="pref_hardware_previous_button_title">Кнопка Назад</string>
+  <string name="pref_hardware_previous_button_title">Кнопка «Назад»</string>
   <string name="pref_hardware_previous_button_summary">Настройка поведения кнопки Назад</string>
-  <string name="button_action_fast_forward">Перемотка вперед</string>
+  <string name="button_action_fast_forward">Перемотка вперёд</string>
   <string name="button_action_rewind">Перемотка назад</string>
   <string name="button_action_skip_episode">Пропустить выпуск</string>
   <string name="button_action_restart_episode">Повторить выпуск</string>

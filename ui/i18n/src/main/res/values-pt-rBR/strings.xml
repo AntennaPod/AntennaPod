@@ -102,18 +102,22 @@
   <string name="episode_cleanup_after_listening">Depois de concluído</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 hora após finalizar</item>
+    <item quantity="many">%d horas após finalizar</item>
     <item quantity="other">%d horas após finalizar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dia depois de concluído</item>
+    <item quantity="many">%d dias depois de concluído</item>
     <item quantity="other">%d dias depois de concluído</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d selecionado</item>
+    <item quantity="many">%1$d/%2$d selecionados</item>
     <item quantity="other">%1$d/%2$d selecionados</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episódio</item>
+    <item quantity="many">%d episódios</item>
     <item quantity="other">%d episódios</item>
   </plurals>
   <string name="loading_more">Carregando...</string>
@@ -121,10 +125,12 @@
   <string name="episode_notification_summary">Exibe uma notificação quando um novo episódio for lançado.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s tem um novo episódio</item>
+    <item quantity="many">%2$s tem %1$d novos episódios</item>
     <item quantity="other">%2$s tem %1$d novos episódios</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Novo episódio</item>
+    <item quantity="many">Novos episódios</item>
     <item quantity="other">Novos episódios</item>
   </plurals>
   <string name="new_episode_notification_group_text">Suas assinaturas têm novos episódios.</string>
@@ -158,6 +164,7 @@
   <string name="updates_disabled_label">Atualizações desabilitadas</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d assinatura atualizada.</item>
+    <item quantity="many">%d assinaturas atualizadas.</item>
     <item quantity="other">%d assinaturas atualizadas.</item>
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
@@ -166,6 +173,7 @@
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
     <item quantity="one">Baixando %d episódio.</item>
+    <item quantity="many">Baixando %d episódios.</item>
     <item quantity="other">Baixando %d episódios.</item>
   </plurals>
   <string name="play_label">Reproduzir</string>
@@ -176,6 +184,7 @@
   <string name="delete_episode_label">Excluir o episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episódio baixado deletado.</item>
+    <item quantity="many">%d episódios baixados deletados.</item>
     <item quantity="other">%d episódios baixados deletados.</item>
   </plurals>
   <string name="remove_new_flag_label">Remover etiqueta de \"novo\"</string>
@@ -187,23 +196,27 @@
   <string name="play_this_to_seek_position">Para pular para as posições, você precisa reproduzir o episódio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episódio marcado como reproduzido.</item>
+    <item quantity="many">%d episódios marcados como reproduzidos.</item>
     <item quantity="other">%d episódios marcados como reproduzidos.</item>
   </plurals>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
   <string name="mark_unread_label_no_media">Marcar como não reproduzido</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d episódio marcado como não reproduzido.</item>
+    <item quantity="many">%d episódios marcados como não reproduzidos.</item>
     <item quantity="other">%d episódios marcados como não reproduzidos.</item>
   </plurals>
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="added_to_queue_label">Adicionado à fila</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d episódio adicionado à fila.</item>
+    <item quantity="many">%d episódios adicionados à fila.</item>
     <item quantity="other">%d episódios adicionados à fila.</item>
   </plurals>
   <string name="remove_from_queue_label">Remover da fila</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d episódio removido da fila.</item>
+    <item quantity="many">%d episódios removidos da fila.</item>
     <item quantity="other">%d episódios removidos da fila.</item>
   </plurals>
   <string name="add_to_favorite_label">Adicionar aos favoritos</string>
@@ -244,6 +257,7 @@
   <string name="download_error_db_access">Erro no acesso ao Banco de dados</string>
   <plurals name="downloads_left">
     <item quantity="one">%d download restante</item>
+    <item quantity="many">%d downloads restantes</item>
     <item quantity="other">%d downloads restantes</item>
   </plurals>
   <string name="completing">Completando...</string>
@@ -368,6 +382,7 @@
   <string name="feed_refresh_interval_at">às %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">A cada hora</item>
+    <item quantity="many">A cada %d horas</item>
     <item quantity="other">A cada %d horas</item>
   </plurals>
   <string name="pref_followQueue_title">Reprodução contínua</string>
@@ -570,14 +585,17 @@
   <string name="time_hours">horas</string>
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 segundo</item>
+    <item quantity="many">%d segundos</item>
     <item quantity="other">%d segundos</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuto</item>
+    <item quantity="many">%d minutos</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 hora</item>
+    <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Habilitar automaticamente</string>

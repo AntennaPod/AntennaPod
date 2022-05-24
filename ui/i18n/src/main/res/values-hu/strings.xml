@@ -23,6 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Epizód tárhely megtelt</string>
   <string name="episode_cache_full_message">Az epizódok tárolására megadott maximális tárhely megtelt. A mérete a beállításokban növelhető meg.</string>
+  <string name="years_statistics_label">Évek</string>
   <string name="notification_pref_fragment">Értesítések</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">A(z) „%1$s” nem található</string>
@@ -34,10 +35,19 @@
   <string name="enable_swipeactions">Húzási műveletek engedélyezése ezen a képernyőn</string>
   <string name="change_setting">Módosítás</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">A csak lejátszottnak jelölt epizódok hosszának figyelembe vétele</string>
   <string name="statistics_speed_not_counted">Megjegyzés: a lejátszási sebesség nem lesz beleszámítva.</string>
+  <string name="statistics_from">Ettől</string>
+  <string name="statistics_to">Eddig</string>
+  <string name="statistics_today">Ma</string>
+  <string name="statistics_filter_all_time">Valaha</string>
+  <string name="statistics_filter_past_year">Tavaly</string>
   <string name="statistics_reset_data">Statisztikai adatok alaphelyzetbe állítása</string>
   <string name="statistics_reset_data_msg">Ez törli az összes epizód lejátszási hosszát. Biztos, hogy folytatja?</string>
+  <string name="statistics_counting_range">%1$s és %2$s között lejátszott</string>
+  <string name="statistics_counting_total">Lejátszva összesen</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Az eszközön lévő epizódok összmérete</string>
   <!--Main activity-->
   <string name="drawer_open">Menü megnyitása</string>
   <string name="drawer_close">Menü bezárása</string>
@@ -143,6 +153,7 @@
   <string name="remove_feed_label">Podcast eltávolítása</string>
   <string name="share_label">Megosztás</string>
   <string name="share_file_label">Fájl megosztása</string>
+  <string name="share_rss_address_label">RSS-cím:</string>
   <string name="feed_delete_confirmation_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot, és az ÖSSZES epizódját (a letöltött epizódokat is beleértve).</string>
   <string name="feed_delete_confirmation_msg_batch">Erősítse meg, hogy eltávolítja a kivalasztott podcastokat, és az ÖSSZES epizódjukat (a letöltött epizódokat is beleértve).</string>
   <string name="feed_delete_confirmation_local_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot. A helyi forrásmappában lévő fájlok nem törlődnek.</string>
@@ -162,6 +173,7 @@
   </plurals>
   <string name="edit_tags">Címkék szerkesztése</string>
   <string name="rename_tag_label">Címke átnevezése</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">A mobil adatkapcsolaton történő podcastfrissítés ki van kapcsolva a beállításokban.\n\nMindenképp frissít?</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
   <plurals name="downloading_batch_label">
@@ -248,6 +260,8 @@
   </plurals>
   <string name="completing">Befejezés…</string>
   <string name="download_notification_title">Podcast adatok letöltése</string>
+  <string name="download_notification_title_feeds">Podcastok frissítése</string>
+  <string name="download_notification_title_episodes">Epizódok letöltése</string>
   <string name="download_log_title_unknown">Ismeretlen cím</string>
   <string name="download_type_feed">Csatorna</string>
   <string name="download_type_media">Médiafájl</string>
@@ -537,6 +551,7 @@
   <string name="opml_import_summary">Feliratkozások importálása egy másik podcast alkalmazásból</string>
   <string name="database_export_summary">Feliratkozások, meghallgatott epizódok és a lejátszási sor átküldése egy másik eszközök lévő AntennaPodnak</string>
   <string name="database_import_summary">AntennaPod adatbázis importálása egy másik eszközről</string>
+  <string name="opml_import_label">OPML importálása</string>
   <string name="opml_add_podcast_label">Postcastlista (OPML) importálása</string>
   <string name="opml_reader_error">Hiba történt az OPML-dokumentum olvasásakor:</string>
   <string name="opml_import_error_no_file">Nincs fájl kiválasztva!</string>
@@ -717,7 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Emlékeztessen később</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Rendben, csináljuk!</string>
   <!--Share episode dialog-->
+  <string name="share_playback_position_dialog_label">Lejátszási pozíció belevétele</string>
   <string name="share_dialog_episode_website_label">Epizód weboldala</string>
+  <string name="share_dialog_for_social">Közösségi üzenet</string>
+  <string name="share_dialog_media_address">Médiacím</string>
   <string name="share_dialog_media_file_label">Médiafájl</string>
   <string name="share_starting_position_label">Ettől kezdve:</string>
   <!--Audio controls-->
@@ -727,6 +745,7 @@
   <string name="stereo_to_mono">Lekeverés: sztereó monóra</string>
   <string name="sonic_only">Csak Sonic esetén</string>
   <string name="exoplayer_only">Csak ExoPlayer esetén</string>
+  <string name="player_switch_to_audio_only">Váltás csak hangra</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Típus</string>
   <string name="host_label">Kiszolgáló</string>

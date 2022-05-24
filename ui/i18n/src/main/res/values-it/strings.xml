@@ -23,6 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Il limite della cache degli episodi è stato raggiunto. Puoi aumentare la dimensione della cache nelle Impostazioni.</string>
+  <string name="years_statistics_label">Anni</string>
   <string name="notification_pref_fragment">Notifiche</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" non trovato</string>
@@ -34,10 +35,19 @@
   <string name="enable_swipeactions">Abilita azioni di scorrimento su questa schermata</string>
   <string name="change_setting">Modifica</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Includi la durata degli episodi che sono segnati come riprodotti</string>
   <string name="statistics_speed_not_counted">Avviso: la velocità di riproduzione non viene considerata.</string>
+  <string name="statistics_from">Da</string>
+  <string name="statistics_to">A</string>
+  <string name="statistics_today">Oggi</string>
+  <string name="statistics_filter_all_time">Sempre</string>
+  <string name="statistics_filter_past_year">Ultimo anno</string>
   <string name="statistics_reset_data">Resetta statistiche</string>
   <string name="statistics_reset_data_msg">Verranno eliminate le statistiche sul tempo di riproduzione di tutti gli episodi. Procedo?</string>
+  <string name="statistics_counting_range">Riprodotto fra %1$s e %2$s</string>
+  <string name="statistics_counting_total">Riprodotto in totale</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Dimensione totale degli episodi sul dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
@@ -102,18 +112,22 @@
   <string name="episode_cleanup_after_listening">Dopo il completamento</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 ora dal completamento</item>
+    <item quantity="many">%d ore dal completamento</item>
     <item quantity="other">%d ore dal completamento</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 giorno dopo il completamento</item>
+    <item quantity="many">%d giorni dopo il completamento</item>
     <item quantity="other">%d giorni dopo il completamento</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d selezionato</item>
+    <item quantity="many">%1$d/%2$d selezionati</item>
     <item quantity="other">%1$d/%2$d selezionati</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodio</item>
+    <item quantity="many">%d episodi</item>
     <item quantity="other">%d episodi</item>
   </plurals>
   <string name="loading_more">Caricamento successivi...</string>
@@ -121,10 +135,12 @@
   <string name="episode_notification_summary">Mostra una notifica quando viene pubblicato un episodio.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s ha un nuovo episodio</item>
+    <item quantity="many">%2$s ha %1$d nuovi episodi</item>
     <item quantity="other">%2$s ha %1$d nuovi episodi</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Nuovo episodio</item>
+    <item quantity="many">Nuovi episodi</item>
     <item quantity="other">Nuovi episodi</item>
   </plurals>
   <string name="new_episode_notification_group_text">Le tue sottoscrizioni hanno nuovi episodi.</string>
@@ -143,6 +159,7 @@
   <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi</string>
   <string name="share_file_label">Condividi il file</string>
+  <string name="share_rss_address_label">Indirizzo RSS:</string>
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
   <string name="feed_delete_confirmation_msg_batch">Conferma che vuoi eliminare i podcast selezionati e TUTTI i loro episodi (inclusi quelli scaricati).</string>
   <string name="feed_delete_confirmation_local_msg">Conferma se desideri rimuovere il podcast \"%1$s\". I file nella cartella di origine locale non verranno cancellati.</string>
@@ -158,14 +175,17 @@
   <string name="updates_disabled_label">Aggiornamenti disabilitati</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d iscrizione aggiornata.</item>
+    <item quantity="many">%d iscrizioni aggiornate.</item>
     <item quantity="other">%d iscrizioni aggiornate.</item>
   </plurals>
   <string name="edit_tags">Modifica i tag</string>
   <string name="rename_tag_label">Rinomina tag</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">L\'aggiornamento dei podcast da connessione dati mobile è disabilitato nelle impostazioni.\n\nVuoi aggiornare comunque?</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
     <item quantity="one">Download di %d episodio.</item>
+    <item quantity="many">Download di %d episodi.</item>
     <item quantity="other">Download di %d episodi.</item>
   </plurals>
   <string name="play_label">Riproduci</string>
@@ -176,6 +196,7 @@
   <string name="delete_episode_label">Elimina episodio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episodio scaricato eliminato.</item>
+    <item quantity="many">%d episodi scaricati eliminati.</item>
     <item quantity="other">%d episodi scaricati eliminati.</item>
   </plurals>
   <string name="remove_new_flag_label">Rimuovi flag \"nuovo\"</string>
@@ -187,23 +208,27 @@
   <string name="play_this_to_seek_position">Per saltare alla posizione devi riprodurre l\'episodio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episodio segnato come riprodotto.</item>
+    <item quantity="many">%d episodi segnati come riprodotti.</item>
     <item quantity="other">%d episodi segnati come riprodotti.</item>
   </plurals>
   <string name="mark_unread_label">Segna come non riprodotto</string>
   <string name="mark_unread_label_no_media">Segna come non letto</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d episodio segnato come non riprodotto.</item>
+    <item quantity="many">%d episodi segnati come non riprodotti.</item>
     <item quantity="other">%d episodi segnati come non riprodotti.</item>
   </plurals>
   <string name="add_to_queue_label">Aggiungi alla coda</string>
   <string name="added_to_queue_label">Aggiunto alla coda</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d episodio aggiunto alla coda.</item>
+    <item quantity="many">%d episodi aggiunti alla coda.</item>
     <item quantity="other">%d episodi aggiunti alla coda.</item>
   </plurals>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d episodio rimosso dalla coda.</item>
+    <item quantity="many">%d episodi rimossi dalla coda.</item>
     <item quantity="other">%d episodi rimossi dalla coda.</item>
   </plurals>
   <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
@@ -244,10 +269,13 @@
   <string name="download_error_db_access">Errore di accesso al database</string>
   <plurals name="downloads_left">
     <item quantity="one">%d download rimanente</item>
+    <item quantity="many">%d download rimanenti</item>
     <item quantity="other">%d download rimanenti</item>
   </plurals>
   <string name="completing">Completamento...</string>
   <string name="download_notification_title">Scaricamento podcast in corso</string>
+  <string name="download_notification_title_feeds">Aggiorna i podcast</string>
+  <string name="download_notification_title_episodes">Scarica gli episodi</string>
   <string name="download_log_title_unknown">Titolo sconosciuto</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">File multimediali</string>
@@ -368,6 +396,7 @@
   <string name="feed_refresh_interval_at">alle %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">Ogni ora</item>
+    <item quantity="many">Ogni %d ore </item>
     <item quantity="other">Ogni %d ore </item>
   </plurals>
   <string name="pref_followQueue_title">Riproduzione continua</string>
@@ -537,6 +566,7 @@
   <string name="opml_import_summary">Importa le tue iscrizioni da un\'altra app per i podcast</string>
   <string name="database_export_summary">Sposta le iscrizioni, gli episodi ascoltati e la coda su AntennaPod di un altro dispositivo</string>
   <string name="database_import_summary">Importa il database di AntennaPod da un altro dispositivo</string>
+  <string name="opml_import_label">Importa OPML</string>
   <string name="opml_add_podcast_label">Importa lista podcast (OPML)</string>
   <string name="opml_reader_error">Errore in fase di lettura del documento OPML:</string>
   <string name="opml_import_error_no_file">Nessun file selezionato!</string>
@@ -570,14 +600,17 @@
   <string name="time_hours">ore</string>
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 secondo</item>
+    <item quantity="many">%d secondi</item>
     <item quantity="other">%d secondi</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuto</item>
+    <item quantity="many">%d minuti</item>
     <item quantity="other">%d minuti</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 ora</item>
+    <item quantity="many">%d ore</item>
     <item quantity="other">%d ore</item>
   </plurals>
   <string name="auto_enable_label">Abilita automaticamente</string>
@@ -717,7 +750,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Ricordamelo più tardi</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Certo, facciamolo!</string>
   <!--Share episode dialog-->
+  <string name="share_playback_position_dialog_label">Includi la posizione di riproduzione</string>
   <string name="share_dialog_episode_website_label">Pagina web episodio</string>
+  <string name="share_dialog_for_social">Messaggio sociale</string>
+  <string name="share_dialog_media_address">Indirizzo dei dati</string>
   <string name="share_dialog_media_file_label">File multimediale</string>
   <string name="share_starting_position_label">Inizia da</string>
   <!--Audio controls-->
@@ -727,6 +763,7 @@
   <string name="stereo_to_mono">Downmix: da Stereo a Mono</string>
   <string name="sonic_only">Solo Sonic</string>
   <string name="exoplayer_only">Solo ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Passa a solo audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Host</string>

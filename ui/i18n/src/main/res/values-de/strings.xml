@@ -223,7 +223,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="skip_episode_label">Episode überspringen</string>
-  <string name="reset_position">Wiedergabe-Position zurücksetzen</string>
+  <string name="reset_position">Wiedergabeposition zurücksetzen</string>
   <string name="removed_item">Element entfernt</string>
   <string name="no_items_selected">Keine Einträge ausgewählt</string>
   <!--Download messages and labels-->
@@ -365,8 +365,8 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode in der Warteschlange, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
-  <string name="pref_smart_mark_as_played_sum">Episoden werden bereits als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
-  <string name="pref_smart_mark_as_played_title">Schlaues \"als gespielt markieren\"</string>
+  <string name="pref_smart_mark_as_played_sum">Episoden als abgespielt markieren, auch wenn weniger als eine bestimmte Anzahl von Sekunden an Restspielzeit übrig ist</string>
+  <string name="pref_smart_mark_as_played_title">Intelligentes \"als abgespielt markieren\"</string>
   <string name="pref_skip_keeps_episodes_sum">Behalte Episoden beim Überspringen</string>
   <string name="pref_skip_keeps_episodes_title">Behalte übersprungene Episoden</string>
   <string name="pref_favorite_keeps_episodes_sum">Lösche Episoden nicht, wenn sie als Favorit markiert wurden.</string>
@@ -385,7 +385,7 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">Jede Stunde</item>
     <item quantity="other">Alle %d Stunden</item>
   </plurals>
-  <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
+  <string name="pref_followQueue_title">Kontinuierliche Wiedergabe</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer oder Bluetooth getrennt</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth wieder verbunden</string>
@@ -449,7 +449,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_feed_skip_ending_toast">Letzte %d Sekunden übersprungen</string>
   <string name="pref_feed_skip_intro_toast">Erste %d Sekunden übersprungen</string>
   <string name="pref_playback_time_respects_speed_title">Medieninfo an Abspielgeschwindigkeit anpassen</string>
-  <string name="pref_playback_time_respects_speed_sum">Abspielposition und Dauer werden auf Abspielgeschwindigkeit angepasst</string>
+  <string name="pref_playback_time_respects_speed_sum">Position und Dauer der Wiedergabe werden an die Abspielgeschwindigkeit angepasst</string>
   <string name="pref_fast_forward">Vorspulzeit</string>
   <string name="pref_fast_forward_sum">Passe an, wie viele Sekunden vorgespult wird, wenn die entsprechende Hardware-Taste gedrückt wird</string>
   <string name="pref_rewind">Rückspulzeit</string>
