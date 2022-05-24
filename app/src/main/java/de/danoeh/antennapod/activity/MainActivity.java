@@ -408,11 +408,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
-
-        if (lastTheme != UserPreferences.getNoTitleTheme()) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
     }
 
     @Override
@@ -421,6 +416,17 @@ public class MainActivity extends CastEnabledActivity {
         StorageUtils.checkStorageAvailability(this);
         handleNavIntent();
         RatingDialog.check();
+
+        if (lastTheme != UserPreferences.getNoTitleTheme()) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        lastTheme = UserPreferences.getNoTitleTheme(); // Don't recreate activity when a result is pending
     }
 
     @Override
