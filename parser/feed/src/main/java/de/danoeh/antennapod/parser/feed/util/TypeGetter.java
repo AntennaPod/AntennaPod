@@ -86,9 +86,8 @@ public class TypeGetter {
                 // XML document might actually be a HTML document -> try to parse as HTML
                 String rootElement = null;
                 try {
-                    if (Jsoup.parse(new File(feed.getFile_url()), null) != null) {
-                        rootElement = "html";
-                    }
+                    Jsoup.parse(new File(feed.getFile_url()));
+                    rootElement = "html";
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
