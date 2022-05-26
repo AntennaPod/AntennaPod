@@ -22,7 +22,6 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -120,14 +119,6 @@ public class PlaybackHistoryFragment extends EpisodesListFragment implements Too
 
         public PlaybackHistoryListAdapter(MainActivity mainActivity) {
             super(mainActivity);
-        }
-
-        @Override
-        protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            // played items shouldn't be transparent for this fragment since, *all* items
-            // in this fragment will, by definition, be played. So it serves no purpose and can make
-            // it harder to read.
-            holder.itemView.findViewById(R.id.container).setAlpha(1.0f);
         }
 
         @Override
