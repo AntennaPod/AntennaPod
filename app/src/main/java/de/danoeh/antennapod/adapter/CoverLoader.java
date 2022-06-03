@@ -126,7 +126,7 @@ public class CoverLoader {
 
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
-
+            setPlaceholderVisibility(this.placeholder.get(), true, null);
         }
 
         @Override
@@ -149,6 +149,7 @@ public class CoverLoader {
             if (placeholder != null) {
                 if (textAndImageCombined || showTitle) {
                     final Context context = placeholder.getContext();
+                    placeholder.setVisibility(View.VISIBLE);
                     int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
                     if (palette == null || !showTitle) {
                         placeholder.setBackgroundColor(bgColor);
