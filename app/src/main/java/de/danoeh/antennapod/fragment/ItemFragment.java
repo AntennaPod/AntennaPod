@@ -270,7 +270,7 @@ public class ItemFragment extends Fragment {
     }
 
     private void onFragmentLoaded() {
-        if (webviewData != null) {
+        if (webviewData != null && !itemsLoaded) {
             webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
@@ -420,8 +420,8 @@ public class ItemFragment extends Fragment {
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
                 item = result;
-                itemsLoaded = true;
                 onFragmentLoaded();
+                itemsLoaded = true;
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
