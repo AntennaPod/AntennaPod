@@ -55,7 +55,7 @@ project.ext {
     glideVersion = "4.8.0"
     okhttpVersion = "3.12.10"
     okioVersion = "1.17.5"
-    eventbusVersion = "3.2.0"
+    eventbusVersion = "3.3.1"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
