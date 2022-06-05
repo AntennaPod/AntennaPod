@@ -293,7 +293,7 @@ public class ItemFragment extends Fragment {
         RequestOptions options = new RequestOptions()
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transforms(new FitCenter(),
+                .transform(new FitCenter(),
                         new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 

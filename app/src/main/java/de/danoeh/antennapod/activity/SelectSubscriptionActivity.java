@@ -118,7 +118,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         Glide.with(this)
                 .asBitmap()
                 .load(feed.getImageUrl())
-                .apply(new RequestOptions().override(iconSize, iconSize))
+                .apply(RequestOptions.overrideOf(iconSize, iconSize))
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
