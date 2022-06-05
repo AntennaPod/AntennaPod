@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import jp.shts.android.library.TriangleLabelView;
+import de.danoeh.antennapod.ui.common.TriangleLabelView;
 
 /**
  * Adapter for subscriptions
