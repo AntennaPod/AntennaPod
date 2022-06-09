@@ -1076,18 +1076,23 @@ public class PodDBAdapter {
      * Returns a cursor which contains feed media objects with a playback
      * completion date in ascending order.
      *
+     * @param offset The row to start at.
      * @param limit The maximum row count of the returned cursor. Must be an
      *              integer >= 0.
      * @throws IllegalArgumentException if limit < 0
      */
-    public final Cursor getCompletedMediaCursor(int limit) {
+    public final Cursor getCompletedMediaCursor(int offset, int limit) {
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be >= 0");
         }
 
         return db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format(Locale.US, "%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
+                null, String.format(Locale.US, "%s DESC LIMIT %d, %d", KEY_PLAYBACK_COMPLETION_DATE, offset, limit));
+    }
+
+    public final long getCompletedMediaLength() {
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + "> 0");
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {
