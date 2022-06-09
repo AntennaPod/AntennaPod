@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowMetrics;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -390,9 +391,14 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private int getScreenWidth() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.widthPixels;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            final WindowMetrics windowMetrics = getWindowManager().getCurrentWindowMetrics();
+            return windowMetrics.getBounds().width();
+        } else {
+            final DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            return displayMetrics.widthPixels;
+        }
     }
 
     @Override
