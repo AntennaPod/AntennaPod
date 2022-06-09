@@ -128,16 +128,16 @@ public class PlaybackHistoryFragment extends EpisodesListFragment implements Too
         }
     }
 
+    @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return loadMoreData(0);
+        return DBReader.getPlaybackHistory(0, page * EPISODES_PER_PAGE);
     }
 
+    @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        List<FeedItem> history = DBReader.getPlaybackHistory((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
-
-        return history;
+        return DBReader.getPlaybackHistory((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
     }
 
     @Override
