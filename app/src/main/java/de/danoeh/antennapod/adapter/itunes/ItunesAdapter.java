@@ -85,7 +85,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .transforms(new FitCenter(),
+                    .transform(new FitCenter(),
                             new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(viewHolder.coverView);

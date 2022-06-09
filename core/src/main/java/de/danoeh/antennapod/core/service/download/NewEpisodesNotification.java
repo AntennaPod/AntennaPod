@@ -119,8 +119,9 @@ public class NewEpisodesNotification {
             return Glide.with(context)
                     .asBitmap()
                     .load(feed.getImageUrl())
-                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                    .apply(new RequestOptions().centerCrop())
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
         } catch (Throwable tr) {
