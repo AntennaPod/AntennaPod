@@ -117,8 +117,8 @@
                     android:layout_height="14sp"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_inbox"
                     android:contentDescription="@string/is_inbox_label"
+                    app:srcCompat="@drawable/ic_inbox"
                     app:tint="?attr/colorAccent" />
 
                 <ImageView
