@@ -463,9 +463,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 openFeed();
             } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                f.setPreferences(feed.getPreferences());
-                this.feed = f;
-                DownloadService.download(this, false, DownloadRequestCreator.create(f).build());
+                DownloadService.download(this, false, DownloadRequestCreator.create(f)
+                        .withAuthentication(username, password)
+                        .build());
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus(feed);
             }
