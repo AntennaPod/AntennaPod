@@ -114,7 +114,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
             case QueueFragment.TAG:
-                return R.drawable.ic_playlist;
+                return R.drawable.ic_playlist_play;
             case InboxFragment.TAG:
                 return R.drawable.ic_inbox;
             case EpisodesFragment.TAG:
