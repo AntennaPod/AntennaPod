@@ -46,7 +46,7 @@ import okhttp3.ResponseBody;
  */
 public class GpodnetService implements ISyncService {
     public static final String TAG = "GpodnetService";
-    public static final String DEFAULT_BASE_HOST = "gpodder.net";
+    private static final String DEFAULT_BASE_HOST = "gpodder.net";
     private static final int UPLOAD_BULK_SIZE = 30;
     private static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
