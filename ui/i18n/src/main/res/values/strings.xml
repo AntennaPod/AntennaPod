@@ -625,12 +625,9 @@
     <!-- gpodder.net -->
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
-    <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that is independent of the AntennaPod project.</string>
-    <string name="gpodnetauth_server_official">Official gpodder.net server</string>
-    <string name="gpodnetauth_server_custom">Custom server</string>
+    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
     <string name="gpodnetauth_host">Hostname</string>
     <string name="gpodnetauth_select_server">Select server</string>
     <string name="gpodnetauth_device_name">Device name</string>
