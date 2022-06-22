@@ -132,7 +132,7 @@ public class DownloadServiceNotification {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < statuses.size(); i++) {
-            if (statuses.get(i).isSuccessful()) {
+            if (statuses.get(i) == null || statuses.get(i).isSuccessful()) {
                 continue;
             }
             sb.append("• ").append(statuses.get(i).getTitle());
