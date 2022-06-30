@@ -101,7 +101,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
 
     private volatile List<Feed> feeds;
-    private Feed feed;
     private String selectedDownloadUrl;
     private Downloader downloader;
     private String username = null;
@@ -289,13 +288,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void startFeedDownload(String url) {
         Log.d(TAG, "Starting feed download");
-        url = URLChecker.prepareURL(url);
-        feed = new Feed(url, null);
-        DownloadRequest request = DownloadRequestCreator.create(feed)
+        selectedDownloadUrl = URLChecker.prepareURL(url);
+        DownloadRequest request = DownloadRequestCreator.create(new Feed(selectedDownloadUrl, null))
                 .withAuthentication(username, password)
                 .withInitiatedByUser(true)
                 .build();
-        feed.setFile_url(request.getDestination());
 
         download = Observable.fromCallable(() -> {
             feeds = DBReader.getFeedList();
@@ -305,16 +302,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(this::checkDownloadResult,
+        .subscribe(status -> checkDownloadResult(status, request.getDestination()),
                 error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void checkDownloadResult(@NonNull DownloadStatus status) {
+    private void checkDownloadResult(@NonNull DownloadStatus status, String destination) {
         if (status.isCancelled()) {
             return;
         }
         if (status.isSuccessful()) {
-            parseFeed();
+            parseFeed(destination);
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
             if (!isFinishing() && !isPaused) {
                 if (username != null && password != null) {
@@ -338,7 +335,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .subscribe(
                         feeds -> {
                             OnlineFeedViewActivity.this.feeds = feeds;
-                            handleUpdatedFeedStatus(feed);
+                            handleUpdatedFeedStatus();
                         }, error -> Log.e(TAG, Log.getStackTraceString(error))
                 );
     }
@@ -346,16 +343,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        handleUpdatedFeedStatus(feed);
+        handleUpdatedFeedStatus();
     }
 
-    private void parseFeed() {
-        if (feed == null || (feed.getFile_url() == null && feed.isDownloaded())) {
-            throw new IllegalStateException("feed must be non-null and downloaded when parseFeed is called");
-        }
+    private void parseFeed(String destination) {
         Log.d(TAG, "Parsing feed");
-
-        parser = Maybe.fromCallable(this::doParseFeed)
+        parser = Maybe.fromCallable(() -> doParseFeed(destination))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableMaybeObserver<FeedHandlerResult>() {
@@ -384,14 +377,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * @throws Exception If unsuccessful but we do not know a resolution.
      */
     @Nullable
-    private FeedHandlerResult doParseFeed() throws Exception {
+    private FeedHandlerResult doParseFeed(String destination) throws Exception {
         FeedHandler handler = new FeedHandler();
+        Feed feed = new Feed(selectedDownloadUrl, null);
+        feed.setFile_url(destination);
+        File destinationFile = new File(destination);
         try {
             return handler.parseFeed(feed);
         } catch (UnsupportedFeedtypeException e) {
             Log.d(TAG, "Unsupported feed type detected");
             if ("html".equalsIgnoreCase(e.getRootElement())) {
-                boolean dialogShown = showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
+                boolean dialogShown = showFeedDiscoveryDialog(destinationFile, selectedDownloadUrl);
                 if (dialogShown) {
                     return null; // Should not display an error message
                 } else {
@@ -404,7 +400,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
         } finally {
-            boolean rc = new File(feed.getFile_url()).delete();
+            boolean rc = destinationFile.delete();
             Log.d(TAG, "Deleted feed source file. Result: " + rc);
         }
     }
@@ -420,8 +416,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             int resId = R.string.no_feed_url_podcast_found_by_search;
             Snackbar.make(findViewById(android.R.id.content), resId, Snackbar.LENGTH_LONG).show();
         }
-        this.feed = feed;
-        this.selectedDownloadUrl = feed.getDownload_url();
 
         viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
@@ -459,15 +453,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         description.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
 
         viewBinding.subscribeButton.setOnClickListener(v -> {
-            if (feedInFeedlist(feed)) {
+            if (feedInFeedlist()) {
                 openFeed();
             } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                f.setPreferences(feed.getPreferences());
-                this.feed = f;
-                DownloadService.download(this, false, DownloadRequestCreator.create(f).build());
+                DownloadService.download(this, false, DownloadRequestCreator.create(f)
+                        .withAuthentication(username, password)
+                        .build());
                 didPressSubscribe = true;
-                handleUpdatedFeedStatus(feed);
+                handleUpdatedFeedStatus();
             }
         });
 
@@ -531,72 +525,62 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 }
             });
         }
-        handleUpdatedFeedStatus(feed);
+        handleUpdatedFeedStatus();
     }
 
     private void openFeed() {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from
         // the database
-        Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId(feed));
+        Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId());
         intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH,
                 getIntent().getBooleanExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, false));
         finish();
         startActivity(intent);
     }
 
-    private void handleUpdatedFeedStatus(Feed feed) {
-        if (feed != null) {
-            if (DownloadService.isDownloadingFile(feed.getDownload_url())) {
-                viewBinding.subscribeButton.setEnabled(false);
-                viewBinding.subscribeButton.setText(R.string.subscribing_label);
-            } else if (feedInFeedlist(feed)) {
-                viewBinding.subscribeButton.setEnabled(true);
-                viewBinding.subscribeButton.setText(R.string.open_podcast);
-                if (didPressSubscribe) {
-                    didPressSubscribe = false;
-                    if (UserPreferences.isEnableAutodownload()) {
-                        boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
-
-                        Feed feed1 = DBReader.getFeed(getFeedId(feed));
-                        FeedPreferences feedPreferences = feed1.getPreferences();
-                        feedPreferences.setAutoDownload(autoDownload);
-                        DBWriter.setFeedPreferences(feedPreferences);
-
-                        SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
-                        editor.apply();
-                    }
-                    openFeed();
-                }
-            } else {
-                viewBinding.subscribeButton.setEnabled(true);
-                viewBinding.subscribeButton.setText(R.string.subscribe_label);
+    private void handleUpdatedFeedStatus() {
+        if (DownloadService.isDownloadingFile(selectedDownloadUrl)) {
+            viewBinding.subscribeButton.setEnabled(false);
+            viewBinding.subscribeButton.setText(R.string.subscribing_label);
+        } else if (feedInFeedlist()) {
+            viewBinding.subscribeButton.setEnabled(true);
+            viewBinding.subscribeButton.setText(R.string.open_podcast);
+            if (didPressSubscribe) {
+                didPressSubscribe = false;
                 if (UserPreferences.isEnableAutodownload()) {
-                    viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                    boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
+
+                    Feed feed1 = DBReader.getFeed(getFeedId());
+                    FeedPreferences feedPreferences = feed1.getPreferences();
+                    feedPreferences.setAutoDownload(autoDownload);
+                    DBWriter.setFeedPreferences(feedPreferences);
+
+                    SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
+                    editor.apply();
                 }
+                openFeed();
+            }
+        } else {
+            viewBinding.subscribeButton.setEnabled(true);
+            viewBinding.subscribeButton.setText(R.string.subscribe_label);
+            if (UserPreferences.isEnableAutodownload()) {
+                viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    private boolean feedInFeedlist(Feed feed) {
-        if (feeds == null || feed == null) {
-            return false;
-        }
-        for (Feed f : feeds) {
-            if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
-                return true;
-            }
-        }
-        return false;
+    private boolean feedInFeedlist() {
+        return getFeedId() != 0;
     }
 
-    private long getFeedId(Feed feed) {
-        if (feeds == null || feed == null) {
+    private long getFeedId() {
+        if (feeds == null) {
             return 0;
         }
         for (Feed f : feeds) {
-            if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
+            if (f.getDownload_url().equals(selectedDownloadUrl)) {
                 return f.getId();
             }
         }
