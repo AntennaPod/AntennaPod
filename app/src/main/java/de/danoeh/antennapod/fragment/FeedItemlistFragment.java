@@ -162,8 +162,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
                 super.onScrolled(view, deltaX, deltaY);
                 boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
-                nextPageLoader.getRoot().setVisibility(
-                        (viewBinding.recyclerView.isScrolledToBottom() && hasMorePages) ? View.VISIBLE : View.GONE);
+                boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
+                nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
+                viewBinding.recyclerView.setPadding(
+                        viewBinding.recyclerView.getPaddingLeft(), 0, viewBinding.recyclerView.getPaddingRight(),
+                        pageLoaderVisible ? nextPageLoader.getRoot().getMeasuredHeight() : 0);
             }
         });
 

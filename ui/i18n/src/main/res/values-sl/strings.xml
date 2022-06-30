@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Prepomnilnik epizod poln</string>
   <string name="episode_cache_full_message">Predpomnilnik epizod je poln. Predpomnilnik lahko povečate v nastavitvah.</string>
-  <string name="playback_statistics_label">Predvajanje</string>
-  <string name="download_statistics_label">Prenosi</string>
   <string name="notification_pref_fragment">Obvestila</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ni bilo najdeno</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Omogočite dejanje vlečenja za ta zaslon</string>
   <string name="change_setting">Spremeni</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Skupen čas predvajanih epizod</string>
-  <string name="statistics_mode">Način statistike</string>
-  <string name="statistics_mode_normal">Izračunaj čas predvajanja ki je dejansko potekel. Dvakratno predvajanje se šteje dvakratno, medtem ko se označeno kot predvajano ne šteje.</string>
-  <string name="statistics_mode_count_all">Povzemi vse epizode, označene kot predvajane</string>
   <string name="statistics_speed_not_counted">Pozor: hitrost predvajanja se ne upošteva</string>
   <string name="statistics_reset_data">Ponastavi statistične podatke</string>
   <string name="statistics_reset_data_msg">To bo pobrisalo vso zgodovino pretečenega časa predvajanja  vseh epizod. Ali ste prepričani da želite nadaljevati?</string>
-  <string name="statistics_counting_since">Od %s,\n ti predvajaš</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Skupna velikost epizod v napravi:</string>
   <!--Main activity-->
   <string name="drawer_open">Odpri meni</string>
   <string name="drawer_close">Zapri meni</string>
@@ -162,10 +154,7 @@
   <string name="rename_feed_label">Preimenuj podkast</string>
   <string name="remove_feed_label">Odstrani podkast</string>
   <string name="share_label">Deli</string>
-  <string name="share_label_with_ellipses">Deli ...</string>
   <string name="share_file_label">Deli datoteko</string>
-  <string name="share_website_url_label">Spletni naslov.</string>
-  <string name="share_feed_url_label">URL podcast vira</string>
   <string name="feed_delete_confirmation_msg">Prosimo potrdite, da želite izbrisati podcast \"%1$s\" in vse njegove epizode (vključno s prenesenimi epizodami).</string>
   <string name="feed_delete_confirmation_msg_batch">Prosimo potrdite, da želite izbrisati izbrani podcast in vse njegove epizode (vključno s prenesenimi epizodami).</string>
   <string name="feed_delete_confirmation_local_msg">Prosimo potrdite, da želite izbrisati podcast \"%1$s\". Datoteke v lokalni izvorni mapi ne bodo izbrisane.</string>
@@ -187,7 +176,6 @@
   </plurals>
   <string name="edit_tags">Uredi označbo</string>
   <string name="rename_tag_label">Preimenuj označbo</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Prenos epizod preko mobilnega podatkovnega omrežja je onemogočen v nastavitvah. \n\nAli klub temu želite osvežitev podkastov preko tega omrežja?</string>
   <!--actions on feeditems-->
   <string name="download_label">Prenos</string>
   <plurals name="downloading_batch_label">
@@ -304,7 +292,6 @@
   <string name="playback_error_source">Dostop do predstavnostne datoteke ni mogoč</string>
   <string name="playback_error_unknown">Neznana napaka</string>
   <string name="no_media_playing_label">Ni medijske vsebine za predvajati</string>
-  <string name="player_go_to_picture_in_picture">Način slike v sliki</string>
   <string name="unknown_media_key">AntennaPod - Neznan medijski ključ: %1$d</string>
   <string name="error_file_not_found">Datoteka ni najdena</string>
   <string name="no_media_label">Element ne vsebuje predstavnostne datoteke</string>
@@ -508,10 +495,6 @@
   <string name="media_player_switch_to_exoplayer">Preklopite na ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Preklopljeno na ExoPlayer</string>
   <string name="pref_skip_silence_title">Preskoči tišino v zvoku</string>
-  <string name="pref_videoBehavior_title">Ob izstopu iz videa</string>
-  <string name="pref_videoBehavior_sum">Obnašanje, ko zapustite predvajanje videa</string>
-  <string name="stop_playback">Ustavi predvajanje</string>
-  <string name="continue_playback">Nadaljujte s predvajanjem zvoka</string>
   <string name="behavior">Obnašanje</string>
   <string name="pref_back_button_behavior_title">Obnašanje gumba za nazaj</string>
   <string name="pref_back_button_behavior_sum">Spremenite obnašanje gumba za nazaj.</string>
@@ -573,7 +556,6 @@
   <string name="opml_import_summary">Uvozite svoje naročnine iz druge aplikacije za podcaste</string>
   <string name="database_export_summary">Prenesite naročnine, poslušane epizode in čakalno vrsto na AntennaPod, na drugo napravo</string>
   <string name="database_import_summary">Uvozite bazo podatkov AntennaPod iz druge naprave</string>
-  <string name="opml_import_label">Uvoz OPML</string>
   <string name="opml_add_podcast_label">Uvozite podcast seznam (OPML)</string>
   <string name="opml_reader_error">Pri branju dokumenta OPML je prišlo do napake:</string>
   <string name="opml_import_error_no_file">Izbrana ni nobena datoteka!</string>
@@ -696,7 +678,6 @@
   <string name="auto_download_disabled_globally">Samodejni prenos je onemogočen v glavnih nastavitvah AntennaPod</string>
   <string name="statistics_time_played">Predvajani čas:</string>
   <string name="statistics_total_duration">Ocenjen čas predvajanja:</string>
-  <string name="statistics_duration_played_episodes">Trajanje predvajanih epizod:</string>
   <string name="statistics_episodes_on_device">Epizod na napravi:</string>
   <string name="statistics_space_used">Porabljen prostor:</string>
   <string name="statistics_episodes_started_total">Epizode začete/vse:</string>
@@ -759,10 +740,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Opomni me kasneje</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Seveda, naredimo to! </string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Vključi:</string>
-  <string name="share_playback_position_dialog_label">Položaj predvajanja</string>
   <string name="share_dialog_episode_website_label">Spletna stran epizode</string>
-  <string name="share_dialog_link_to_episode">Povezava do epizode</string>
   <string name="share_dialog_media_file_label">Predstavnostna datoteka</string>
   <string name="share_starting_position_label">Začni od</string>
   <!--Audio controls-->

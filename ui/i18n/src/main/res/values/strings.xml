@@ -699,6 +699,7 @@
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="wait_icon" translatable="false">{fa-spinner}</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>

@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز تکمیل شده است. شما می‌توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
-  <string name="playback_statistics_label">پخش</string>
-  <string name="download_statistics_label">بارگیری‌ها</string>
   <string name="notification_pref_fragment">آگاهی‌ها</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» یافت نشد</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">فعال کردن کشیدن برای این صفحه</string>
   <string name="change_setting">تغییر</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">مجموع زمان پادکست‌های پخش‌شده:</string>
-  <string name="statistics_mode">حالت آمار</string>
-  <string name="statistics_mode_normal">مدت زمان واقعی پخش را محاسبه کنید. دو بار پخش کردن دو بار شمارش می‌شود، در حالیکه علامت‌گذاری‌شده به‌عنوان پخش‌شده محاسبه نمی‌شود.</string>
-  <string name="statistics_mode_count_all">مجموع اپیزودها را به عنوان پخش شده علامت گذاری کن.</string>
   <string name="statistics_speed_not_counted">توجه: سرعت پخش هرگز به حساب نمی‌آید.</string>
   <string name="statistics_reset_data">بازنشانی داده‌های آماری</string>
   <string name="statistics_reset_data_msg">این همهٔ تاریخچهٔ طول پخش همهٔ قسمت‌های را پاک می‌کند. مطمئنید که می‌خواید ادامه دهید؟</string>
-  <string name="statistics_counting_since">از %s، شما اجرا نمودید</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">حجم کل پادکست‌های بارگیری شده:</string>
   <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
   <string name="drawer_close">بستن منو</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">تغییر نام پادکست</string>
   <string name="remove_feed_label">پاک کردن پادکست</string>
   <string name="share_label">هم‌رسانی</string>
-  <string name="share_label_with_ellipses">هم‌رسانی…</string>
   <string name="share_file_label">هم‌رسانی پرونده</string>
-  <string name="share_website_url_label">نشانی وب سایت</string>
-  <string name="share_feed_url_label">نشانی فید پادکست</string>
   <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و تمام قسمت‌های آن که بارگیری کرده‌اید را حذف کنید.</string>
   <string name="feed_delete_confirmation_msg_batch">لطفا تایید کنید که می‌خواهید پادکست انتخاب شده و همه قسمت‌های آن (شامل قسمت‌های بارگیری شده) را پاک کنید.</string>
   <string name="feed_delete_confirmation_local_msg">لطفا تایید کنید که مایل به حذف پادکست می باشید. «%1$s »  . فایلها در فولدر داخلی حذف نخواهد شد.</string>
@@ -273,7 +262,6 @@
   <string name="playback_error_source">ناتوانی در دسترسی به پرونده رسانه‌ای</string>
   <string name="playback_error_unknown">خطای ناشناخته</string>
   <string name="no_media_playing_label">رسانه‌ای در حال پخش نیست</string>
-  <string name="player_go_to_picture_in_picture">حالت تصویر در تصویر</string>
   <string name="unknown_media_key">آنتناپاد - کلید رسانه‌ای ناشناخته: %1$d</string>
   <string name="error_file_not_found">پرونده یافت نشد</string>
   <string name="no_media_label">ایتم موردنظر حاوی فایل رسانه ای نیست</string>
@@ -465,10 +453,6 @@
   <string name="media_player_switch_to_exoplayer">به ExoPlayer بروید</string>
   <string name="media_player_switched_to_exoplayer">به ExoPlayer تغییر وضعیت داده شد.</string>
   <string name="pref_skip_silence_title">رد کردن سکوت در صدا</string>
-  <string name="pref_videoBehavior_title">هنگام خروج از ویدئو</string>
-  <string name="pref_videoBehavior_sum">رفتار هنگام ترک پخش فیلم</string>
-  <string name="stop_playback">توقف پخش</string>
-  <string name="continue_playback">ادامه پخش صدا</string>
   <string name="behavior">رفتار</string>
   <string name="pref_back_button_behavior_title">رفتار دکمه برگشت</string>
   <string name="pref_back_button_behavior_sum">تغییر رفتار دکمه بازگشت</string>
@@ -528,7 +512,6 @@
   <string name="opml_import_summary">اشتراک های خود را از برنامه پادکست دیگری وارد کنید</string>
   <string name="database_export_summary">اشتراک ها ، قسمت های گوش داده شده و صف را به آنتن پاد در یک دستگاه دیگر منتقل کنید</string>
   <string name="database_import_summary">پایگاه داده آنتن پاد را از دستگاه دیگری وارد کنید</string>
-  <string name="opml_import_label">وارد کردن OPML</string>
   <string name="opml_add_podcast_label">وارد کردن لیست پادکست (OPML)</string>
   <string name="opml_reader_error">هنگام خواندن سند OPML خطایی رخ داده است:</string>
   <string name="opml_import_error_no_file">هیچ فایلی انتخاب نشده است!</string>
@@ -699,8 +682,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">بعدا به من یادآوری کن</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">مطمئنا ، بریم این کار را انجام بدیم!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">عبارتند از:</string>
-  <string name="share_playback_position_dialog_label">موقعیت پخش</string>
   <string name="share_dialog_episode_website_label">صفحه وب این قسمت</string>
   <string name="share_dialog_media_file_label">فایل رسانه</string>
   <!--Audio controls-->

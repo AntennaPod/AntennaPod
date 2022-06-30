@@ -1,7 +1,6 @@
-- Synchronization with Nextcloud ("GPodder Sync" app) (@thrillfall)
-- 'Duration' filter in podcast-specific auto-download settings (@thomasdomingos)
-- 'Downloaded episodes' screen in Android Auto (@ByteHamster)
-- Tags (previously folders): add to multiple podcasts via multi-select, rename tags (@vbh)
-- Accessibility: more TalkBack (@johnjohndoe @TacoTheDank)
-- Improvements for local feeds, mobile connections, physical keyboard/mouse support
-- Many minor & bigger bug fixes and other improvements
+∙ Support for podcasting 2.0 chapters (@tonytamsf)
+∙ Statistics: filter based on month/year (@ByteHamster), access via button on Subscriptions toolbar instead of Settings (@IordanisKokk)
+∙ Local feed bug fixes & improvements (@ByteHamster)
+∙ Design improvements (design: George, code: @ByteHamster)
+∙ Update feeds to https if possible, better handle captive portal redirects (@ByteHamster)
+∙ As always, even though we never list it: new & updated translations (thanks to all our lovely translators)

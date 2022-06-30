@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Episod-cachen är full</string>
   <string name="episode_cache_full_message">Episodcachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
-  <string name="playback_statistics_label">Uppspelning</string>
-  <string name="download_statistics_label">Nedladdningar</string>
+  <string name="years_statistics_label">År</string>
   <string name="notification_pref_fragment">Aviseringar</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" hittades inte</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Aktivera svepåtgärder för denna skärm</string>
   <string name="change_setting">Ändra</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Total spelad tid:</string>
-  <string name="statistics_mode">Statistikläge</string>
-  <string name="statistics_mode_normal">Beräkna faktisk speltid. Att spela två gånger räknas två gånger, men att markera som spelad räknas inte</string>
-  <string name="statistics_mode_count_all">Summera alla episoder som är markerade som spelade</string>
+  <string name="statistics_include_marked">Inkludera länden av episoder som bara är markerade som spelade</string>
   <string name="statistics_speed_not_counted">Notera: Uppspelningshastighet tas inte med i beräkningarna. </string>
+  <string name="statistics_from">Från</string>
+  <string name="statistics_to">Till</string>
+  <string name="statistics_today">Idag</string>
+  <string name="statistics_filter_all_time">All tid</string>
+  <string name="statistics_filter_past_year">Förra året</string>
   <string name="statistics_reset_data">Återställ statistikdata</string>
   <string name="statistics_reset_data_msg">Detta kommer att radera historiken av spelad tid för alla episoder. Är du säker på att du vill fortsätta?</string>
-  <string name="statistics_counting_since">Sedan %s, har du spelat</string>
+  <string name="statistics_counting_range">Spelat mellan %1$s och %2$s</string>
+  <string name="statistics_counting_total">Spelat totalt</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Totala storleken för alla episoder på enheten:</string>
+  <string name="total_size_downloaded_podcasts">Totala storleken för alla episoder på enheten</string>
   <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
   <string name="drawer_close">Stäng meny</string>
@@ -150,10 +152,8 @@
   <string name="rename_feed_label">Byt namn på podcast</string>
   <string name="remove_feed_label">Ta bort podcast</string>
   <string name="share_label">Dela</string>
-  <string name="share_label_with_ellipses">Dela...</string>
   <string name="share_file_label">Dela fil</string>
-  <string name="share_website_url_label">Webbsideadress</string>
-  <string name="share_feed_url_label">Podcastflödes URL</string>
+  <string name="share_rss_address_label">RSS adress:</string>
   <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort podcast \"%1$s\" och ALLA dess episoder (inklusive nedladdade episoder).</string>
   <string name="feed_delete_confirmation_msg_batch">Bekräfta att du vill ta bort valda podcasts och ALLA deras episoder (inklusive nedladdade episoder).</string>
   <string name="feed_delete_confirmation_local_msg">Bekräfta att du vill ta bort alla podcasts \"%1$s\". Filerna i den lokala källkatalogen kommer inte att raderas.</string>
@@ -173,7 +173,7 @@
   </plurals>
   <string name="edit_tags">Redigera etiketter</string>
   <string name="rename_tag_label">Byt namn på etikett</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Nedladdning av episoder över mobil dataanslutning är avstängt i inställningarna.\n\nVill du fortfarande uppdatera alla podcasts över mobildata?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Uppdatering av episoder över mobil dataanslutning är avstängt i inställningarna.\n\nVill du fortfarande uppdatera alla podcasts över mobildata?</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <plurals name="downloading_batch_label">
@@ -260,6 +260,8 @@
   </plurals>
   <string name="completing">Färdigställer...</string>
   <string name="download_notification_title">Laddar ner podcastdata</string>
+  <string name="download_notification_title_feeds">Uppdatera podcasts</string>
+  <string name="download_notification_title_episodes">Laddar ner episoder</string>
   <string name="download_log_title_unknown">Okänd titel</string>
   <string name="download_type_feed">Flöde</string>
   <string name="download_type_media">Mediafil</string>
@@ -283,7 +285,6 @@
   <string name="playback_error_source">Kan inte komma åt mediafilen</string>
   <string name="playback_error_unknown">Okänt fel</string>
   <string name="no_media_playing_label">Inget media spelar</string>
-  <string name="player_go_to_picture_in_picture">Bild-i-bild läge</string>
   <string name="unknown_media_key">AntannaPod - Okänd mediaknapp: %1$d</string>
   <string name="error_file_not_found">Filen hittades inte</string>
   <string name="no_media_label">Artikeln innehåller ingen mediafil</string>
@@ -488,10 +489,6 @@
   <string name="media_player_switch_to_exoplayer">Byt till ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Bytte till ExpPlayer.</string>
   <string name="pref_skip_silence_title">Hoppa över tystnad i ljud</string>
-  <string name="pref_videoBehavior_title">Vid avslutande av video</string>
-  <string name="pref_videoBehavior_sum">Beteende när videouppspelning avslutas</string>
-  <string name="stop_playback">Stoppa uppspelning</string>
-  <string name="continue_playback">Fortsätt ljuduppspelning</string>
   <string name="behavior">Beteende</string>
   <string name="pref_back_button_behavior_title">Tillbakaknappens beteende</string>
   <string name="pref_back_button_behavior_sum">Byt tillbakaknappens beteende.</string>
@@ -554,7 +551,7 @@
   <string name="opml_import_summary">Importera dina prenumerationer från en annan podcastapp</string>
   <string name="database_export_summary">Överför prenumerationer, spelade episoder och kön till AntennaPod på en annan enhet</string>
   <string name="database_import_summary">Importera AntennaPods databas från en annan enhet</string>
-  <string name="opml_import_label">OPML importering</string>
+  <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Importera podcastlista (OPML)</string>
   <string name="opml_reader_error">Ett fel uppstod vid läsning av OPML dokumentet:</string>
   <string name="opml_import_error_no_file">Ingen fil vald!</string>
@@ -673,7 +670,6 @@
   <string name="auto_download_disabled_globally">Automatisk nedladdning är avstängt i AntennaPods huvudinställningar</string>
   <string name="statistics_time_played">Tid spelad:</string>
   <string name="statistics_total_duration">Total längd (uppskattning):</string>
-  <string name="statistics_duration_played_episodes">Längd på spelade episoder:</string>
   <string name="statistics_episodes_on_device">Episoder på enheten:</string>
   <string name="statistics_space_used">Använt utrymme:</string>
   <string name="statistics_episodes_started_total">Episoder startade/totalt:</string>
@@ -736,10 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Påminn mig senare</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Okej, gör det nu!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Inkludera:</string>
-  <string name="share_playback_position_dialog_label">Uppspelningsposition</string>
+  <string name="share_playback_position_dialog_label">Inkludera uppspelningsposition</string>
   <string name="share_dialog_episode_website_label">Episodes webbplats</string>
-  <string name="share_dialog_link_to_episode">Länk till episod</string>
+  <string name="share_dialog_for_social">Socialt meddelande</string>
+  <string name="share_dialog_media_address">Mediaadress</string>
   <string name="share_dialog_media_file_label">Mediafil</string>
   <string name="share_starting_position_label">Startar från</string>
   <!--Audio controls-->
@@ -749,6 +745,7 @@
   <string name="stereo_to_mono">Nedmixning: stereo till mono</string>
   <string name="sonic_only">Bara Sonic</string>
   <string name="exoplayer_only">Endast ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Växla till endast ljud</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Värd</string>

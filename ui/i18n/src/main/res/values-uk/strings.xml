@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Його можна збільшити в налаштуваннях.</string>
-  <string name="playback_statistics_label">Відтворення</string>
-  <string name="download_statistics_label">Завантаження</string>
   <string name="notification_pref_fragment">Сповіщення</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» не знайдено</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Дозволити дії ковзанням для цього екрана</string>
   <string name="change_setting">Змінити</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Загальний час прослуханих епізодів:</string>
-  <string name="statistics_mode">Режим статистики</string>
-  <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується </string>
-  <string name="statistics_mode_count_all">Підсумок усіх епізодів, позначених як відтворені</string>
   <string name="statistics_speed_not_counted">Зауваження: Швидкість відтворення не береться до уваги.</string>
   <string name="statistics_reset_data">Cкинути статистику</string>
   <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
-  <string name="statistics_counting_since">З %s,\nВи відтворили</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Загальний розмір епізодів на пристрої:</string>
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -162,10 +154,7 @@
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися</string>
-  <string name="share_label_with_ellipses">Поділитися…</string>
   <string name="share_file_label">Поділитися файлом</string>
-  <string name="share_website_url_label">Адреса вебсайту</string>
-  <string name="share_feed_url_label">URL канал подкасту</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
   <string name="feed_delete_confirmation_msg_batch">Підтвердьте, що хочете видалити вибрані подкасти та ВСІ їх епізоди (включаючи завантажені).</string>
   <string name="feed_delete_confirmation_local_msg">Підтвердьте, що хочете видалити подкаст \"%1$s\". Файли в локальній папці - джерелі не будуть видалені.</string>
@@ -187,7 +176,6 @@
   </plurals>
   <string name="edit_tags">Змінити мітки</string>
   <string name="rename_tag_label">Вилучити мітку</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Завантаження епізодів через зʼєднання мобільних даних вимкнено в налаштуваннях.\n\nУсе ще бажаєте оновити всі подкасти через мобільні дані?</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <plurals name="downloading_batch_label">
@@ -309,7 +297,6 @@
   <string name="playback_error_source">Не вдається отримати доступ до медіафайлу</string>
   <string name="playback_error_unknown">Невідома помилка</string>
   <string name="no_media_playing_label">Немає що грати</string>
-  <string name="player_go_to_picture_in_picture">Режим зображення в зображенні</string>
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
   <string name="error_file_not_found">Файл не знайдено</string>
   <string name="no_media_label">Елемент не містить медіафайлу</string>
@@ -508,10 +495,6 @@
   <string name="media_player_switch_to_exoplayer">Перейти в ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Переключено на ExoPlayer.</string>
   <string name="pref_skip_silence_title">Пропуск тиші</string>
-  <string name="pref_videoBehavior_title">При виході з відеорежиму</string>
-  <string name="pref_videoBehavior_sum">Поведінка при виході з відео</string>
-  <string name="stop_playback">Зупинити програвання</string>
-  <string name="continue_playback">Продовжити відтворення аудіо</string>
   <string name="behavior">Поведінка</string>
   <string name="pref_back_button_behavior_title">Поведінка кнопки \"Назад\"</string>
   <string name="pref_back_button_behavior_sum">Зміна поведінки кнопки \"Назад\".</string>
@@ -573,7 +556,6 @@
   <string name="opml_import_summary">Імпортуйте свої підписки з іншого додатка для подкастів</string>
   <string name="database_export_summary">Перенесіть підписки, прослухані епізоди та чергу на AntennaPod в іншому пристрої</string>
   <string name="database_import_summary">Імпортуйте базу даних AntennaPod з іншого пристрою</string>
-  <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_add_podcast_label">Імпортувати список подкастів (OPML)</string>
   <string name="opml_reader_error">Помилка при читанні документа OPML:</string>
   <string name="opml_import_error_no_file">Жодного файлу не обрано!</string>
@@ -694,7 +676,6 @@
   <string name="keep_updated">Підтримувати оновленим</string>
   <string name="keep_updated_summary">Включати цей подкаст під час (автоматичного) оновлення всіх подкастів</string>
   <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>
-  <string name="statistics_duration_played_episodes">Тривалість відтворюваних епізодів:</string>
   <string name="statistics_episodes_on_device">Епізоди на пристрої:</string>
   <string name="statistics_space_used">Використано простору:</string>
   <string name="statistics_view_all">Переглянути всі подкасти »</string>
@@ -756,10 +737,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Нагадати згодом</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Звичайно, з задоволенням!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Включити:</string>
-  <string name="share_playback_position_dialog_label">Положення відтворення</string>
   <string name="share_dialog_episode_website_label">Веб-сторінка епізоду</string>
-  <string name="share_dialog_link_to_episode">Посилання на епізод</string>
   <string name="share_dialog_media_file_label">Медіафайл</string>
   <string name="share_starting_position_label">Розпочати з</string>
   <!--Audio controls-->

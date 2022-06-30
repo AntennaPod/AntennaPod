@@ -22,8 +22,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">La caché d\'episodios ta enllena</string>
   <string name="episode_cache_full_message">Algamóse la llende de la caché d\'episodios. Pues aumentar el so tamañu nos axustes de l\'aplicación.</string>
-  <string name="playback_statistics_label">Reproducción</string>
-  <string name="download_statistics_label">Descargues</string>
   <string name="notification_pref_fragment">Avisos</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">Nun s\'atopó «%1$s»</string>
@@ -31,12 +29,9 @@
   <string name="swipeactions_label">Aiciones al eslizar</string>
   <string name="swipeactions_summary">Escueyi qué asocede al eslizar un episodiu que tea nuna llista</string>
   <!--Statistics fragment-->
-  <string name="statistics_mode">Mou de les estadístiques</string>
   <string name="statistics_speed_not_counted">Avisu: la velocidá de reproducción enxamás se tien en cuenta.</string>
   <string name="statistics_reset_data">Reafitar les estadístiques</string>
-  <string name="statistics_counting_since">Dende\'l %s,\nreproduxesti</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">El tamañu total d\'episodios nel preséu:</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir el menú</string>
   <string name="drawer_close">Zarrar el menú</string>
@@ -132,9 +127,6 @@
   <string name="rename_feed_label">Renomar el podcast</string>
   <string name="remove_feed_label">Quitar el podcast</string>
   <string name="share_label">Compartir</string>
-  <string name="share_label_with_ellipses">Compartir…</string>
-  <string name="share_website_url_label">Direición del sitiu web</string>
-  <string name="share_feed_url_label">URL del feed del podcast</string>
   <string name="feed_delete_confirmation_msg">Confirma que quies quitar desaniciar el podcast «%1$s» y TOLOS sos episodios (incluyíos los episodios baxaos).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirma que quies quitar los podcasts esbillaos y TOLOS sos episodios (incluyíos los episodios baxaos).</string>
   <string name="feed_delete_confirmation_local_msg">Confirma que quies quitar quitar el podcast «%1$s». Nun van desaniciase los ficheros del almacenamientu llocal.</string>
@@ -207,7 +199,6 @@
   <!--Mediaplayer messages-->
   <string name="playback_error_server_died">El sirvidor morrió</string>
   <string name="playback_error_source">Nun ye posible acceder al ficheru multimedia</string>
-  <string name="player_go_to_picture_in_picture">Mou d\'Imaxe sobre Imaxe</string>
   <string name="error_file_not_found">Nun s\'atopó\'l ficheru</string>
   <string name="no_media_label">L\'elementu nun contién nengún ficheru multimedia</string>
   <!--Queue operations-->
@@ -362,10 +353,6 @@
   <string name="pref_no_browser_found">Nun s\'atopó nengún restolador web.</string>
   <string name="pref_enqueue_downloaded_title">Amestar lo baxao a la cola</string>
   <string name="pref_enqueue_downloaded_summary">Amiesta los episodios baxaos a la cola</string>
-  <string name="pref_videoBehavior_title">Dempués de colar de los vídeos</string>
-  <string name="pref_videoBehavior_sum">El comportamientu al colar de la reproducción de los vídeos</string>
-  <string name="stop_playback">Parar la reproducción</string>
-  <string name="continue_playback">Siguir cola reproducción del audiu</string>
   <string name="behavior">Comportamientu</string>
   <string name="pref_back_button_behavior_title">Comportamientu del botón Atrás</string>
   <string name="pref_back_button_behavior_sum">Camuda\'l comportamientu del botón Atrás.</string>
@@ -557,8 +544,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Recordámelo dempués</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Sí, ho</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluyir:</string>
-  <string name="share_playback_position_dialog_label">Puntu de reproducción</string>
   <string name="share_dialog_episode_website_label">Páxina web del episodiu</string>
   <string name="share_dialog_media_file_label">Ficheru multimedia</string>
   <!--Audio controls-->

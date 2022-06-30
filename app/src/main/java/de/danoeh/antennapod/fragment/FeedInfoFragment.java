@@ -185,6 +185,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (header == null || infoContainer == null) {
+            return;
+        }
         int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
         header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
         infoContainer.setPadding(horizontalSpacing, infoContainer.getPaddingTop(),
