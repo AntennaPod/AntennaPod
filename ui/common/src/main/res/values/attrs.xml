@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TriangleLabelView">
+        <attr name="backgroundColor" format="color" />
+        <attr name="primaryTextColor" format="color" />
+        <attr name="primaryText" format="string" />
+        <attr name="primaryTextSize" format="dimension" />
+
+        <attr name="labelTopPadding" format="dimension" />
+        <attr name="labelCenterPadding" format="dimension" />
+        <attr name="labelBottomPadding" format="dimension" />
+
+        <attr name="corner">
+            <enum name="leftTop" value="1" />
+            <enum name="rightTop" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
