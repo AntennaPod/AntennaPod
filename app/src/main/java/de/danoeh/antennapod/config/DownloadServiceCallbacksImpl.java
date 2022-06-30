@@ -32,7 +32,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
         activityIntent.setAction("request" + request.getFeedfileId());
         activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, request);
         return PendingIntent.getActivity(context.getApplicationContext(),
-                R.id.pending_intent_download_service_auth, activityIntent,
+                request.getSource().hashCode(), activityIntent,
                 PendingIntent.FLAG_ONE_SHOT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
