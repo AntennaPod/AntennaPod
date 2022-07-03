@@ -34,7 +34,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("about_privacy_policy").setOnPreferenceClickListener((preference) -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/privacy/");
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/privacy");
             return true;
         });
         findPreference("about_licenses").setOnPreferenceClickListener((preference) -> {
