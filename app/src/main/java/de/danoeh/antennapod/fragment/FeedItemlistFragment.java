@@ -129,6 +129,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         speedDialBinding = MultiSelectSpeedDialBinding.bind(viewBinding.getRoot());
         viewBinding.toolbar.inflateMenu(R.menu.feedlist);
         viewBinding.toolbar.setOnMenuItemClickListener(this);
+        viewBinding.toolbar.setOnLongClickListener(v -> {
+            viewBinding.recyclerView.scrollToPosition(5);
+            viewBinding.recyclerView.post(() -> viewBinding.recyclerView.smoothScrollToPosition(0));
+            viewBinding.appBar.setExpanded(true);
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);

@@ -125,6 +125,11 @@ public class SubscriptionFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnLongClickListener(v -> {
+            subscriptionRecycler.scrollToPosition(5);
+            subscriptionRecycler.post(() -> subscriptionRecycler.smoothScrollToPosition(0));
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
