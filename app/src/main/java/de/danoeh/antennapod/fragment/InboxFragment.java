@@ -58,6 +58,11 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
         toolbar = inboxContainer.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
         toolbar.inflateMenu(R.menu.inbox);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);

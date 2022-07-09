@@ -80,6 +80,11 @@ public class CompletedDownloadsFragment extends Fragment
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
         refreshToolbarState();
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {

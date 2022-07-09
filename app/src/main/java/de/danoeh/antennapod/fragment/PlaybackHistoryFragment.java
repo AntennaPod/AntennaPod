@@ -51,6 +51,11 @@ public class PlaybackHistoryFragment extends EpisodesListFragment implements Too
         toolbar = historyContainer.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.playback_history_label);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
