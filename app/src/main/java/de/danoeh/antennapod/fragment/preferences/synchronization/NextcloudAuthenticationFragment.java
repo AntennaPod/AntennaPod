@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment.preferences.synchronization;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationCredentials;
@@ -80,6 +82,10 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         } else {
             shouldDismiss = true;
         }
+        Intent intent = new Intent(getContext(), PreferenceActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(PreferenceActivity.OPEN_SYNC_SETTINGS, true);
+        startActivity(intent);
     }
 
     @Override

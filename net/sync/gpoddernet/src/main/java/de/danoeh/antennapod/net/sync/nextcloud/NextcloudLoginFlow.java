@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.net.sync.nextcloud;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
+import androidx.browser.customtabs.CustomTabsIntent;
 import de.danoeh.antennapod.net.sync.HostnameParser;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -57,8 +57,7 @@ public class NextcloudLoginFlow {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
-                        context.startActivity(browserIntent);
+                        new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(result));
                         poll();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));

@@ -8,6 +8,7 @@ dependencies {
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation 'androidx.browser:browser:1.3.0'
 
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
