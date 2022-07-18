@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - name: Checkstyle
         run: |
-          curl -s -L https://github.com/checkstyle/checkstyle/releases/download/checkstyle-9.2.1/checkstyle-9.2.1-all.jar > checkstyle.jar
+          curl -s -L https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.3.1/checkstyle-10.3.1-all.jar > checkstyle.jar
           find . -name "*\.java" | xargs java -Dconfig_loc=config/checkstyle -jar checkstyle.jar -c config/checkstyle/checkstyle.xml
       - name: Find PR Base Commit
         id: vars
@@ -26,7 +26,7 @@ jobs:
           echo "::set-output name=branchBaseCommit::$(git merge-base origin/develop HEAD)"
       - name: Diff-Checkstyle
         run: |
-          curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
+          curl -s -L https://github.com/yangziwen/diff-check/releases/download/0.0.7/diff-checkstyle.jar > diff-checkstyle.jar
           java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev ${{ steps.vars.outputs.branchBaseCommit }}
       - name: XML of changed files
         run: |
