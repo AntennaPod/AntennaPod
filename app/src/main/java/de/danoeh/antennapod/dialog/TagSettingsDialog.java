@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
+import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
@@ -81,6 +82,9 @@ public class TagSettingsDialog extends DialogFragment {
             }
         });
 
+        viewBinding.commonTagsInfo.setText(
+                "{fa-info-circle} " + getString(R.string.multi_feed_common_tags_info));
+        Iconify.addIcons(viewBinding.commonTagsInfo);
         if (feedPreferencesList.size() > 1) {
             viewBinding.commonTagsInfo.setVisibility(View.VISIBLE);
         }

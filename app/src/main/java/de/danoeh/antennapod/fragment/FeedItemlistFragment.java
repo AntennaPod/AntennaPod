@@ -503,6 +503,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         viewBinding.header.butFilter.setOnClickListener(v ->
                 FeedItemFilterDialog.newInstance(feed).show(getChildFragmentManager(), null));
+        viewBinding.header.txtvFailure.setText(
+                "{fa-exclamation-circle} " + getString(R.string.refresh_failed_msg));
+        Iconify.addIcons(viewBinding.header.txtvFailure);
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
         headerCreated = true;
     }

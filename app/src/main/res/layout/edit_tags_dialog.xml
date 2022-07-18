@@ -14,8 +14,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:textSize="@dimen/text_size_micro"
-        android:paddingBottom="16dp"
-        android:text="@string/multi_feed_common_tags_info" />
+        android:paddingBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tagsRecycler"

@@ -149,7 +149,6 @@
         android:gravity="center"
         android:textColor="@color/white"
         android:visibility="gone"
-        android:text="@string/refresh_failed_msg"
         tools:visibility="visible"
         tools:text="(!) Last refresh failed" />
 
