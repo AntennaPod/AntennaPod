@@ -77,7 +77,7 @@ project.ext {
 
 apply plugin: "checkstyle"
 checkstyle {
-    toolVersion '8.24'
+    toolVersion '10.3.1'
 }
 
 task checkstyle(type: Checkstyle) {
