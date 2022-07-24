@@ -18,6 +18,7 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -72,6 +73,23 @@ public class QueueSection extends HomeSection {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (queue == null) {
+            return;
+        }
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
+            if (pos >= 0) {
+                queue.remove(pos);
+                queue.add(pos, item);
+                listAdapter.notifyItemChangedCompat(pos);
+            }
+        }
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
