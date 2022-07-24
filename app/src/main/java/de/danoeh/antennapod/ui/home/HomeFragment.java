@@ -20,13 +20,7 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
@@ -49,9 +43,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public static final String TAG = "HomeFragment";
     public static final String PREF_NAME = "PrefHomeFragment";
     public static final String PREF_HIDDEN_SECTIONS = "PrefHomeSectionsString";
-    public static final String PREF_FRAGMENT = "PrefHomeFragment";
 
-    private FeedItem selectedItem = null;
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
     private HomeFragmentBinding viewBinding;
@@ -155,22 +147,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     @Override
-    public boolean onContextItemSelected(@NonNull MenuItem menuItem) {
-        if (selectedItem == null) {
-            //can only happen if it comes from the fragment
-            return getChildFragmentManager().findFragmentByTag(PREF_FRAGMENT).onContextItemSelected(menuItem);
-        }
-        final FeedItem item = selectedItem;
-        //reset selectedItem so we know whether it came from the fragment next time
-        selectedItem = null;
-        return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
-    }
-
-    public void setSelectedItem(FeedItem feedItem) {
-        selectedItem = feedItem;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -180,32 +156,5 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(FeedItemEvent event) {
-        //updateSections(HomeSection.UpdateEvents.FEED_ITEM);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        //updateSections(HomeSection.UpdateEvents.UNREAD);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(PlaybackPositionEvent event) {
-        //updateSections(HomeSection.UpdateEvents.QUEUE);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        //updateSections(HomeSection.UpdateEvents.QUEUE);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //update all sections, especially play/pauseStatus in QueueSection
-        //updateSections(HomeSection.UpdateEvents.QUEUE, true);
     }
 }
