@@ -50,16 +50,26 @@
                             squareImageView:direction="width" />
 
                         <ImageView
-                            android:id="@+id/playButton"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
+                            android:id="@+id/secondaryActionButton"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_gravity="bottom|end"
                             android:clickable="true"
                             android:paddingStart="16dp"
                             android:paddingEnd="0dp"
                             android:paddingTop="16dp"
-                            android:background="?attr/selectableItemBackground"
-                            app:srcCompat="@drawable/ic_play_circle" />
+                            android:foreground="?attr/selectableItemBackground"
+                            app:srcCompat="@drawable/ic_droplet" />
+
+                        <ImageView
+                            android:id="@+id/secondaryActionIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="8dp"
+                            app:tintMode="src_atop"
+                            app:tint="?attr/colorOnPrimary"
+                            app:srcCompat="@drawable/ic_play_24dp" />
 
                     </FrameLayout>
 
@@ -69,7 +79,6 @@
                         android:layout_height="4dp"
                         android:max="100"
                         android:layout_gravity="bottom"
-                        android:progress="42"
                         style="?attr/progressBarTheme"
                         tools:background="@android:color/holo_blue_light" />
 

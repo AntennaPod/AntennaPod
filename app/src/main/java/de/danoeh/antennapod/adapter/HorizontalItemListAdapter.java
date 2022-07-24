@@ -3,19 +3,21 @@ package de.danoeh.antennapod.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.actionbutton.PauseActionButton;
-import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
-import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -41,7 +43,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View convertView = View.inflate(mainActivityRef.get(), R.layout.cover_play_title_item, null);
+        View convertView = View.inflate(mainActivityRef.get(), R.layout.horizontal_itemlist_item, null);
         return new Holder(convertView);
     }
 
@@ -56,8 +58,18 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
                 .load();
         holder.title.setText(item.getTitle());
         holder.date.setText(DateFormatter.formatAbbrev(mainActivityRef.get(), item.getPubDate()));
-        boolean isPlaying = item.getMedia() != null && FeedItemUtil.isCurrentlyPlaying(item.getMedia());
-        holder.playButton.setImageResource(isPlaying ? R.drawable.ic_pause_circle : R.drawable.ic_play_circle);
+        ItemActionButton actionButton = ItemActionButton.forItem(item);
+        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, mainActivityRef.get());
+        holder.secondaryActionButton.setFocusable(false);
+
+        FeedMedia media = item.getMedia();
+        if (DownloadService.isDownloadingFile(media.getDownload_url())) {
+            final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
+            holder.progressBar.setProgress(Math.max(downloadRequest.getProgressPercent(), 2));
+        } else {
+            int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+            holder.progressBar.setProgress(progress);
+        }
 
         holder.card.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
@@ -65,15 +77,6 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
                 long[] ids = FeedItemUtil.getIds(data);
                 int clickPosition = ArrayUtils.indexOf(ids, item.getId());
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, clickPosition));
-            }
-        });
-        holder.playButton.setOnClickListener(v -> {
-            if (isPlaying) {
-                new PauseActionButton(item).onClick(mainActivityRef.get());
-            } else if (item.getMedia().isDownloaded()) {
-                new PlayActionButton(item).onClick(mainActivityRef.get());
-            } else {
-                new StreamActionButton(item).onClick(mainActivityRef.get());
             }
         });
     }
@@ -92,8 +95,10 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         SquareImageView cover;
         TextView title;
         TextView date;
-        ImageView playButton;
+        ImageView secondaryActionButton;
+        ImageView secondaryActionIcon;
         View card;
+        ProgressBar progressBar;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -101,7 +106,9 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
             cover = itemView.findViewById(R.id.cover);
             title = itemView.findViewById(R.id.titleLabel);
             date = itemView.findViewById(R.id.dateLabel);
-            playButton = itemView.findViewById(R.id.playButton);
+            secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
+            secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }
