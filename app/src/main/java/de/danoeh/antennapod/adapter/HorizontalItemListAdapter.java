@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PauseActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
@@ -75,6 +76,10 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
                 new StreamActionButton(item).onClick(mainActivityRef.get());
             }
         });
+
+        ItemActionButton actionButton = ItemActionButton.forItem(item);
+        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, mainActivityRef.get());
+        holder.secondaryActionButton.setFocusable(false);
     }
 
     @Override
@@ -93,6 +98,8 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         TextView date;
         ImageView playButton;
         View card;
+        View secondaryActionButton;
+        ImageView secondaryActionIcon;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +108,8 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
             title = itemView.findViewById(R.id.titleLabel);
             date = itemView.findViewById(R.id.dateLabel);
             playButton = itemView.findViewById(R.id.playButton);
+            secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
+            secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         }
     }
 }
