@@ -4,7 +4,6 @@
     tools:ignore="MissingTranslation">
 
     <!-- Activity and fragment titles -->
-    <string name="app_name" translatable="false">AntennaPod</string>
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update Subscriptions</string>
     <string name="feeds_label">Podcasts</string>
@@ -19,13 +18,11 @@
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
     <string name="open_autodownload_settings">Open Settings</string>
-    <string name="downloads_completed_label">Completed</string>
-    <string name="downloads_log_label">Log</string>
+    <string name="downloads_log_label">Download Log</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions List</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback History</string>
-    <string name="gpodnet_main_label">gpodder.net</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
@@ -165,13 +162,11 @@
     <string name="new_episode_notification_group_text">Your subscriptions have new episodes.</string>
 
     <!-- Actions on feeds -->
-    <string name="mark_all_read_label">Mark all as played</string>
-    <string name="mark_all_read_msg">Marked all Episodes as played</string>
-    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this podcast as being played.</string>
     <string name="remove_all_inbox_label">Remove all from inbox</string>
     <string name="removed_all_inbox_msg">Removed all from inbox</string>
     <string name="remove_all_inbox_confirmation_msg">Please confirm that you want to remove all from the inbox.</string>
+    <string name="multi_select_mark_played_confirmation">Please confirm that you want to mark all selected items as played.</string>
+    <string name="multi_select_mark_unplayed_confirmation">Please confirm that you want to mark all selected items as unplayed.</string>
     <string name="show_info_label">Show information</string>
     <string name="show_feed_settings_label">Show podcast settings</string>
     <string name="feed_settings_label">Podcast settings</string>
@@ -220,6 +215,7 @@
     <string name="remove_inbox_label">Remove from inbox</string>
     <string name="removed_inbox_label">Removed from inbox</string>
     <string name="mark_read_label">Mark as played</string>
+    <string name="toggle_played_label">Toggle played state</string>
     <string name="marked_as_played_label">Marked as played</string>
     <string name="marked_as_unplayed_label">Marked as unplayed</string>
     <string name="mark_read_no_media_label">Mark as read</string>
@@ -638,17 +634,11 @@
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- gpodder.net -->
-    <string name="gpodnet_taglist_header">CATEGORIES</string>
-    <string name="gpodnet_toplist_header">TOP PODCASTS</string>
-    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
-    <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that is independent of the AntennaPod project.</string>
-    <string name="gpodnetauth_server_official">Official gpodder.net server</string>
-    <string name="gpodnetauth_server_custom">Custom server</string>
+    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
     <string name="gpodnetauth_host">Hostname</string>
     <string name="gpodnetauth_select_server">Select server</string>
     <string name="gpodnetauth_device_name">Device name</string>
@@ -720,6 +710,7 @@
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="wait_icon" translatable="false">{fa-spinner}</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
@@ -729,10 +720,10 @@
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_podcastindex_label">Search Podcastindex.org</string>
     <string name="search_fyyd_label">Search fyyd</string>
+    <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add Podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
-    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>

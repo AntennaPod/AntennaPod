@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -61,7 +61,7 @@ public class DownloadsSection extends HomeSection {
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) requireActivity()).loadChildFragment(new DownloadsFragment());
+        ((MainActivity) requireActivity()).loadChildFragment(new CompletedDownloadsFragment());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

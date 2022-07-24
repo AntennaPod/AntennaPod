@@ -3,26 +3,24 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.text.format.DateUtils;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.util.Log;
 import android.widget.BaseAdapter;
-
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.ListFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -39,14 +37,12 @@ public class DownloadLogAdapter extends BaseAdapter {
     private static final String TAG = "DownloadLogAdapter";
 
     private final Activity context;
-    private final ListFragment listFragment;
     private List<DownloadStatus> downloadLog = new ArrayList<>();
     private List<Downloader> runningDownloads = new ArrayList<>();
 
-    public DownloadLogAdapter(Activity context, ListFragment listFragment) {
+    public DownloadLogAdapter(Activity context) {
         super();
         this.context = context;
-        this.listFragment = listFragment;
     }
 
     public void setDownloadLog(List<DownloadStatus> downloadLog) {

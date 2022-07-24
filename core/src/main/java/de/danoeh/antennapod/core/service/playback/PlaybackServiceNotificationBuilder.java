@@ -72,12 +72,14 @@ public class PlaybackServiceNotificationBuilder {
 
     public void loadIcon() {
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+        final RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .centerCrop();
         try {
             icon = Glide.with(context)
                     .asBitmap()
                     .load(playable.getImageLocation())
-                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                    .apply(new RequestOptions().centerCrop())
+                    .apply(options)
                     .submit(iconSize, iconSize)
                     .get();
         } catch (ExecutionException e) {
@@ -85,8 +87,7 @@ public class PlaybackServiceNotificationBuilder {
                 icon = Glide.with(context)
                         .asBitmap()
                         .load(ImageResourceUtils.getFallbackImageLocation(playable))
-                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                        .apply(new RequestOptions().centerCrop())
+                        .apply(options)
                         .submit(iconSize, iconSize)
                         .get();
             } catch (InterruptedException ignore) {

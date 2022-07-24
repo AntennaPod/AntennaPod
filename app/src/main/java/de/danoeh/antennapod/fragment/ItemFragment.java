@@ -270,7 +270,7 @@ public class ItemFragment extends Fragment {
     }
 
     private void onFragmentLoaded() {
-        if (webviewData != null) {
+        if (webviewData != null && !itemsLoaded) {
             webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
@@ -293,7 +293,7 @@ public class ItemFragment extends Fragment {
         RequestOptions options = new RequestOptions()
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transforms(new FitCenter(),
+                .transform(new FitCenter(),
                         new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
@@ -420,8 +420,8 @@ public class ItemFragment extends Fragment {
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
                 item = result;
-                itemsLoaded = true;
                 onFragmentLoaded();
+                itemsLoaded = true;
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

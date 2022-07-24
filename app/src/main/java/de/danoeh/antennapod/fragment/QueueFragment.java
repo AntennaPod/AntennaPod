@@ -445,6 +445,11 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -505,8 +510,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             }
         });
         speedDialView.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), recyclerAdapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+                    .handleAction(recyclerAdapter.getSelectedItems());
             recyclerAdapter.endSelectMode();
             return true;
         });

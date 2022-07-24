@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
   <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i innstillingene.</string>
-  <string name="playback_statistics_label">Avspilling</string>
-  <string name="download_statistics_label">Nedlastinger</string>
   <string name="notification_pref_fragment">Varslinger</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke funnet</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Slå på dra handlinger for dette skjermet</string>
   <string name="change_setting">Endre</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Total tid, avspilte episoder</string>
-  <string name="statistics_mode">Statistikkmodus</string>
-  <string name="statistics_mode_normal">Beregn faktisk avspilt varighet. Dobbel avspilling telles to ganger, mens markering som avspilt telles ikke</string>
-  <string name="statistics_mode_count_all">Oppsummer alle podkaster merket som avspilt</string>
   <string name="statistics_speed_not_counted">Merk: Avspillingshastighet tas aldri med i betraktningen.</string>
   <string name="statistics_reset_data">Tilbakestill statistikkdata</string>
   <string name="statistics_reset_data_msg">Dette vil slette historikk om varighet som er spilt for alle episoder. Er du sikker på at du vil fortsette?</string>
-  <string name="statistics_counting_since">Siden %s,\nhar du spilt</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Total størrelse på nedlastede podkaster:</string>
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
   <string name="drawer_close">Lukk menyen</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Gi nytt navn til podkast</string>
   <string name="remove_feed_label">Fjern podkast</string>
   <string name="share_label">Del</string>
-  <string name="share_label_with_ellipses">Del…</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_website_url_label">Nettsidens adresse</string>
-  <string name="share_feed_url_label">Podcaststrøm-URL</string>
   <string name="feed_delete_confirmation_msg">Bekreft at du ønsker å slette podkasten \"%1$s\" og ALLE episodene dens (inkludert nedlastede episoder).</string>
   <string name="feed_delete_confirmation_msg_batch">Bekreft at du ønsker å slette utvalgte podkaster og ALLE de episoder (inkludert nedlastet episoder.)</string>
   <string name="feed_delete_confirmation_local_msg">Bekreft at du vil slette podkasten \"%1$s\". Filene i lokale mappen vil ikke bli slettet.</string>
@@ -173,7 +162,6 @@
   </plurals>
   <string name="edit_tags">Endre tagger</string>
   <string name="rename_tag_label">Endre tagnavn</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Nedlasting av episoder over mobildata er slått av i instillingene.\n\nVil du likevel oppdatere alle podcaster over mobildata?</string>
   <!--actions on feeditems-->
   <string name="download_label">Last ned</string>
   <plurals name="downloading_batch_label">
@@ -283,7 +271,6 @@
   <string name="playback_error_source">Kunne ikke hente media-fil</string>
   <string name="playback_error_unknown">Ukjent feil</string>
   <string name="no_media_playing_label">Ingen media spillende for øyeblikket.</string>
-  <string name="player_go_to_picture_in_picture">Bilde-i-bilde-modus</string>
   <string name="unknown_media_key">AntennaPod - Ukjent medienøkkel: %1$d</string>
   <string name="error_file_not_found">Fil ikke funnet</string>
   <string name="no_media_label">Element inneholder ingen media fil</string>
@@ -488,10 +475,6 @@
   <string name="media_player_switch_to_exoplayer">Bytt til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Byttet til ExoPlayer</string>
   <string name="pref_skip_silence_title">Hopp over stillhet</string>
-  <string name="pref_videoBehavior_title">Når video lukkes</string>
-  <string name="pref_videoBehavior_sum">Oppførsel når video-avspilling lukkes</string>
-  <string name="stop_playback">Stopp avspilling</string>
-  <string name="continue_playback">Fortsett lydavspilling</string>
   <string name="behavior">Oppførsel</string>
   <string name="pref_back_button_behavior_title">Tilbake-knappens oppførsel</string>
   <string name="pref_back_button_behavior_sum">Endrer hva tilbake-knappen gjør</string>
@@ -554,7 +537,6 @@
   <string name="opml_import_summary">Importer abonnementene dine fra en annen podkast-app</string>
   <string name="database_export_summary">Overfør abonnementer, avspilte episoder og kø til AntennaPod på en annen enhet</string>
   <string name="database_import_summary">Importer AntennaPod-database fra en annen enhet</string>
-  <string name="opml_import_label">OPML-import</string>
   <string name="opml_add_podcast_label">Importere podkast listen (OPML)</string>
   <string name="opml_reader_error">En feil oppstod ved lesing av OPML dokument: </string>
   <string name="opml_import_error_no_file">Ingen fil er valgt.</string>
@@ -673,7 +655,6 @@
   <string name="auto_download_disabled_globally">Automatisk nedlasting er deaktivert i AntennaPod-innstillingene</string>
   <string name="statistics_time_played">Avspillingstid:</string>
   <string name="statistics_total_duration">Total lengde (estimert):</string>
-  <string name="statistics_duration_played_episodes">Lengde av avspilte episoder:</string>
   <string name="statistics_episodes_on_device">Episoder på enhenten:</string>
   <string name="statistics_space_used">Minne brukt:</string>
   <string name="statistics_episodes_started_total">Episoder startet/total: </string>
@@ -736,10 +717,7 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Minn meg på dette senere</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Naturligvis, kom igjen!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Inkluder:</string>
-  <string name="share_playback_position_dialog_label">Avspillingsposisjon</string>
   <string name="share_dialog_episode_website_label">Episodens webside</string>
-  <string name="share_dialog_link_to_episode">Link til episoden</string>
   <string name="share_dialog_media_file_label">Media fil</string>
   <string name="share_starting_position_label">Starter fra</string>
   <!--Audio controls-->

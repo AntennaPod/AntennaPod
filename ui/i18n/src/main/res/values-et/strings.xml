@@ -23,8 +23,6 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
-  <string name="playback_statistics_label">Esitamine</string>
-  <string name="download_statistics_label">Allalaadimised</string>
   <string name="notification_pref_fragment">Teavitused</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ei leitud</string>
@@ -36,16 +34,10 @@
   <string name="enable_swipeactions">Luba sellel ekraanil pühkimise tegevused</string>
   <string name="change_setting">Muuda</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Saadete kogupikkus:</string>
-  <string name="statistics_mode">Statistika režiim</string>
-  <string name="statistics_mode_normal">Arvuta kuulamise pikkus tegelikult kuulatud aja järgi. Kaks korda kuulatud koht arvestatakse topelt, aga kuulatuks märkimist ei arvestata</string>
-  <string name="statistics_mode_count_all">Kokkuvõte kõigist esitatud saadetest</string>
   <string name="statistics_speed_not_counted">Märkus: taasesituse kiirust ei arvestata kunagi.</string>
   <string name="statistics_reset_data">Lähtesta statistika andmed</string>
   <string name="statistics_reset_data_msg">See lähtestab kõigi esitatud saadete kuulamise pikkuse ajaloo. Kas oled kindel, et tahad jätkata?</string>
-  <string name="statistics_counting_since">Alates %s,\nmängisid</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Saadete kogusuurus seadmes:</string>
   <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
   <string name="drawer_close">Sulge menüü</string>
@@ -150,10 +142,7 @@
   <string name="rename_feed_label">Muuda taskuhäälingu nime</string>
   <string name="remove_feed_label">Eemalda taskuhääling</string>
   <string name="share_label">Jaga</string>
-  <string name="share_label_with_ellipses">Jaga...</string>
   <string name="share_file_label">Jaga faili</string>
-  <string name="share_website_url_label">Veebisaidi aadress</string>
-  <string name="share_feed_url_label">Taskuhäälingu voo URL</string>
   <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\" ja KÕIK selle saated (ka allalaaditud saated).</string>
   <string name="feed_delete_confirmation_local_msg">Palun kinnita, et tahad eemaldada taskuhäälingu \"%1$s\". Kohalikus kaustas olevaid saateid ei kustutata.</string>
   <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
@@ -268,7 +257,6 @@
   <string name="playback_error_source">Puudub ligipääs meediafailile</string>
   <string name="playback_error_unknown">Tundmatu tõrge</string>
   <string name="no_media_playing_label">Mingit faili ei esitata</string>
-  <string name="player_go_to_picture_in_picture">Pilt-pildis režiim</string>
   <string name="unknown_media_key">AntennaPod - Tundmatu meedia võti: %1$d</string>
   <string name="error_file_not_found">Faili ei leitud</string>
   <string name="no_media_label">Element ei sisalda meediafaili</string>
@@ -455,10 +443,6 @@
   <string name="media_player_switch_to_exoplayer">Vaheta ExoPlayerile</string>
   <string name="media_player_switched_to_exoplayer">Vahetati ExoPlayerile.</string>
   <string name="pref_skip_silence_title">Audios vaikuse vahele jätmine</string>
-  <string name="pref_videoBehavior_title">Videost väljumisel</string>
-  <string name="pref_videoBehavior_sum">Mida tehakse video esitamisest lahkumisel</string>
-  <string name="stop_playback">Lõpetatakse esitus</string>
-  <string name="continue_playback">Jätkatakse heli esitamist</string>
   <string name="behavior">Käitumine</string>
   <string name="pref_back_button_behavior_title">Tagasi nupu käitumine</string>
   <string name="pref_back_button_behavior_sum">Tagasi nupu käitumine muutmine.</string>
@@ -515,7 +499,6 @@
   <string name="opml_import_summary">Tellimuste importimine teisest taskuhäälingu äpist</string>
   <string name="database_export_summary">Tellimuste, kuulatud saadete ja ooterjärjekorra liigutamine AntennaPodi mõnes teises seadmes</string>
   <string name="database_import_summary">AntennaPodi andmebaasi import teisest seadmest</string>
-  <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Impordi taskuhäälingute nimekiri (OPML)</string>
   <string name="opml_reader_error">OPML dokumendi lugemisel tekkis tõrge:</string>
   <string name="opml_import_error_no_file">Ühtegi faili pole valitud!</string>
@@ -685,8 +668,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Tuleta hiljem meelde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Jah, otseloomulikult!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Kaasa:</string>
-  <string name="share_playback_position_dialog_label">Esitamise asukoht</string>
   <string name="share_dialog_episode_website_label">Saate veebisait</string>
   <string name="share_dialog_media_file_label">Meediafail</string>
   <!--Audio controls-->

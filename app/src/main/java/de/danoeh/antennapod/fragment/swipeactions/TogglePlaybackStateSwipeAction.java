@@ -9,11 +9,11 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
-public class MarkPlayedSwipeAction implements SwipeAction {
+public class TogglePlaybackStateSwipeAction implements SwipeAction {
 
     @Override
     public String getId() {
-        return MARK_PLAYED;
+        return TOGGLE_PLAYED;
     }
 
     @Override
@@ -28,19 +28,17 @@ public class MarkPlayedSwipeAction implements SwipeAction {
 
     @Override
     public String getTitle(Context context) {
-        return context.getString(R.string.mark_read_label);
+        return context.getString(R.string.toggle_played_label);
     }
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        int togglePlayState =
-                item.getPlayState() != FeedItem.PLAYED  ? FeedItem.PLAYED : FeedItem.UNPLAYED;
-        FeedItemMenuHandler.markReadWithUndo(fragment,
-                item, togglePlayState, willRemove(filter));
+        int newState = item.getPlayState() == FeedItem.UNPLAYED ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+        FeedItemMenuHandler.markReadWithUndo(fragment, item, newState, willRemove(filter, item));
     }
 
     @Override
-    public boolean willRemove(FeedItemFilter filter) {
-        return filter.showUnplayed || filter.showPlayed;
+    public boolean willRemove(FeedItemFilter filter, FeedItem item) {
+        return filter.showUnplayed || filter.showPlayed || filter.showNew;
     }
 }

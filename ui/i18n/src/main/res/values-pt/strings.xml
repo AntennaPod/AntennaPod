@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Cache de episódios cheia</string>
   <string name="episode_cache_full_message">Atingido o limite máximo de itens em cache. Pode aumentar o tamanho de cache nas definições.</string>
-  <string name="playback_statistics_label">Reprodução</string>
-  <string name="download_statistics_label">Descargas</string>
+  <string name="years_statistics_label">Anos</string>
   <string name="notification_pref_fragment">Notificações</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" não encontrada</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Ativar ações de deslize para este ecrã</string>
   <string name="change_setting">Alterar</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Tempo total dos episódios reproduzidos:</string>
-  <string name="statistics_mode">Modo estatístico</string>
-  <string name="statistics_mode_normal">Calcula a duração dos podcasts reproduzidos. Se os reproduzir duas vezes, serão contados duas vezes mas se os marcar como reproduzidos não serão contados.</string>
-  <string name="statistics_mode_count_all">Soma todos os episódios que tenham sido marcados como reproduzidos</string>
+  <string name="statistics_include_marked">Incluir duração dos episódios que tenham sido marcados como reproduzidos</string>
   <string name="statistics_speed_not_counted">Aviso: a velocidade de reprodução nunca será considerada.</string>
+  <string name="statistics_from">Desde</string>
+  <string name="statistics_to">Até</string>
+  <string name="statistics_today">Hoje</string>
+  <string name="statistics_filter_all_time">De sempre</string>
+  <string name="statistics_filter_past_year">Último ano</string>
   <string name="statistics_reset_data">Reiniciar estatísticas dos dados</string>
   <string name="statistics_reset_data_msg">Isto irá apagar o histórico do tempo de reprodução para todos os episódios. Tem a certeza de que deseja continuar?</string>
-  <string name="statistics_counting_since">Desde %s,\n você reproduziu</string>
+  <string name="statistics_counting_range">Reproduzidos entre %1$s e %2$s</string>
+  <string name="statistics_counting_total">Total</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamanho total dos episódios no dispositivo:</string>
+  <string name="total_size_downloaded_podcasts">Tamanho total dos episódios no dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -110,18 +112,22 @@
   <string name="episode_cleanup_after_listening">Ao terminar</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">%d hora depois de terminar</item>
+    <item quantity="many">%d horas depois de terminar</item>
     <item quantity="other">%d horas depois de terminar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dia depois de terminar</item>
+    <item quantity="many">%d dias depois de terminar</item>
     <item quantity="other">%d dias depois de terminar</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d selecionado</item>
+    <item quantity="many">%1$d/%2$d selecionados</item>
     <item quantity="other">%1$d/%2$d selecionados</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episódio</item>
+    <item quantity="many">%d episódios</item>
     <item quantity="other">%d episódios</item>
   </plurals>
   <string name="loading_more">Carregar mais...</string>
@@ -129,10 +135,12 @@
   <string name="episode_notification_summary">Mostrar notificação sempre que for disponibilizado um novo episódio.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s tem um novo episódio</item>
+    <item quantity="many">%2$s tem%1$d novos episódios</item>
     <item quantity="other">%2$s tem%1$d novos episódios</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Novo episódio</item>
+    <item quantity="many">Novos episódios</item>
     <item quantity="other">Novos episódios</item>
   </plurals>
   <string name="new_episode_notification_group_text">Existem novos episódios nas suas subscrições.</string>
@@ -150,10 +158,8 @@
   <string name="rename_feed_label">Renomear podcast</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar</string>
-  <string name="share_label_with_ellipses">Partilhar...</string>
   <string name="share_file_label">Partilhar ficheiro</string>
-  <string name="share_website_url_label">Endereço web</string>
-  <string name="share_feed_url_label">URL da fonte do podcast</string>
+  <string name="share_rss_address_label">Endereço RSS:</string>
   <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja eliminar o podcast  \"%1$s\" e TODOS os seus episódios (inclusive descarregados)?</string>
   <string name="feed_delete_confirmation_msg_batch">Tem a certeza de que deseja remover todos os podcasts selecionados e TODOS os seus episódios (incluindo descarregados)?</string>
   <string name="feed_delete_confirmation_local_msg">Por favor confirme de que deseja remover o podcast \"%1$s\". Os ficheiros existentes na pasta local não serão eliminados.</string>
@@ -169,15 +175,17 @@
   <string name="updates_disabled_label">Atualizações desativadas</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d subscrição atualizada.</item>
+    <item quantity="many">%d subscrições atualizadas.</item>
     <item quantity="other">%d subscrições atualizadas.</item>
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Renomear etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">A possibilidade de descarregar episódios através de dados móveis está desativada nas definições.\n\nAinda assim deseja recarregar todos os podcasts?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">A atualização de podcasts através de dados móveis está desativada nas definições.\n\nPretende, ainda assim, atualizar?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarregar</string>
   <plurals name="downloading_batch_label">
     <item quantity="one">A descarregar %d episódio.</item>
+    <item quantity="many">A descarregar %d episódios.</item>
     <item quantity="other">A descarregar %d episódios.</item>
   </plurals>
   <string name="play_label">Reproduzir</string>
@@ -188,6 +196,7 @@
   <string name="delete_episode_label">Eliminar episódio</string>
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="one">1 episódio eliminado.</item>
+    <item quantity="many">%d episódios eliminados.</item>
     <item quantity="other">%d episódios eliminados.</item>
   </plurals>
   <string name="remove_new_flag_label">Remover a marca \"novo\"</string>
@@ -199,23 +208,27 @@
   <string name="play_this_to_seek_position">Se quiser ir para uma posição, tem que reproduzir o episódio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episódio marcado como reproduzido.</item>
+    <item quantity="many">%depisódios marcados como reproduzidos. </item>
     <item quantity="other">%depisódios marcados como reproduzidos. </item>
   </plurals>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
   <string name="mark_unread_label_no_media">Marcar como não lida</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%depisódio marcado como não reproduzido. </item>
+    <item quantity="many">%d episódios marcados como não reproduzidos.</item>
     <item quantity="other">%d episódios marcados como não reproduzidos.</item>
   </plurals>
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="added_to_queue_label">Adicionado à fila</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d episódio adicionado à fila. </item>
+    <item quantity="many">%d episódios adicionados à fila.</item>
     <item quantity="other">%d episódios adicionados à fila.</item>
   </plurals>
   <string name="remove_from_queue_label">Remover da fila</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d episódio removido da fila. </item>
+    <item quantity="many">%d  episódios removidos da fila.</item>
     <item quantity="other">%d  episódios removidos da fila.</item>
   </plurals>
   <string name="add_to_favorite_label">Adicionar aos favoritos</string>
@@ -256,10 +269,13 @@
   <string name="download_error_db_access">Erro de acesso à base de dados</string>
   <plurals name="downloads_left">
     <item quantity="one">%d descarga em curso</item>
+    <item quantity="many">%d descargas em curso</item>
     <item quantity="other">%d descargas em curso</item>
   </plurals>
   <string name="completing">A completar...</string>
   <string name="download_notification_title">A descarregar dados do podcast</string>
+  <string name="download_notification_title_feeds">Recarregar podcasts</string>
+  <string name="download_notification_title_episodes">Descarregar episódios</string>
   <string name="download_log_title_unknown">Título desconhecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro multimédia</string>
@@ -283,7 +299,6 @@
   <string name="playback_error_source">Não foi possível aceder ao ficheiro</string>
   <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nada em reprodução</string>
-  <string name="player_go_to_picture_in_picture">Modo \'picture-in-picture\'</string>
   <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
   <string name="error_file_not_found">Ficheiro não encontrado</string>
   <string name="no_media_label">O item não contém um ficheiro multimédia</string>
@@ -381,6 +396,7 @@
   <string name="feed_refresh_interval_at">às %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">A cada %d hora</item>
+    <item quantity="many">A cada %d horas</item>
     <item quantity="other">A cada %d horas</item>
   </plurals>
   <string name="pref_followQueue_title">Reprodução contínua</string>
@@ -488,10 +504,6 @@
   <string name="media_player_switch_to_exoplayer">Trocar para ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Trocou para ExoPlayer.</string>
   <string name="pref_skip_silence_title">Ignorar silêncio no áudio</string>
-  <string name="pref_videoBehavior_title">Ao sair do vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportamento ao sair da reprodução do vídeo.</string>
-  <string name="stop_playback">Parar reprodução</string>
-  <string name="continue_playback">Continuar reprodução de áudio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_back_button_behavior_title">Comportamento do botão Recuar</string>
   <string name="pref_back_button_behavior_sum">Alterar comportamento do botão Recuar.</string>
@@ -588,14 +600,17 @@
   <string name="time_hours">horas</string>
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 segundo</item>
+    <item quantity="many">%d segundos</item>
     <item quantity="other">%d segundos</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuto</item>
+    <item quantity="many">%d minutos</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 hora</item>
+    <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Ativar automaticamente</string>
@@ -673,7 +688,6 @@
   <string name="auto_download_disabled_globally">A descarga automática está desativada nas definições do AntennaPod</string>
   <string name="statistics_time_played">Tempo de reprodução:</string>
   <string name="statistics_total_duration">Duração total (estimada):</string>
-  <string name="statistics_duration_played_episodes">Duração dos episódios reproduzidos:</string>
   <string name="statistics_episodes_on_device">Episódios no dispositivo:</string>
   <string name="statistics_space_used">Espaço utilizado:</string>
   <string name="statistics_episodes_started_total">Episódios iniciados/total:</string>
@@ -736,10 +750,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Lembrar mais tarde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Claro, vamos a isso!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluir:</string>
-  <string name="share_playback_position_dialog_label">Posição de reprodução</string>
+  <string name="share_playback_position_dialog_label">Incluir posição de reprodução</string>
   <string name="share_dialog_episode_website_label">Página web do episódio</string>
-  <string name="share_dialog_link_to_episode">Ligação para o episódio</string>
+  <string name="share_dialog_for_social">Mensagem social</string>
+  <string name="share_dialog_media_address">Endereço multimédia</string>
   <string name="share_dialog_media_file_label">Ficheiro multimédia</string>
   <string name="share_starting_position_label">Iniciando em</string>
   <!--Audio controls-->
@@ -749,6 +763,7 @@
   <string name="stereo_to_mono">Mistura: estéreo para mono</string>
   <string name="sonic_only">Apenas Sonic</string>
   <string name="exoplayer_only">Apenas ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Trocar para apenas áudio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Servidor</string>

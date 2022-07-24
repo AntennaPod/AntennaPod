@@ -271,7 +271,7 @@ public class DownloadRequest implements Parcelable {
         private boolean deleteOnFailure = false;
         private final long feedfileId;
         private final int feedfileType;
-        private Bundle arguments = new Bundle();
+        private final Bundle arguments = new Bundle();
         private boolean initiatedByUser = true;
 
         public Builder(@NonNull String destination, @NonNull FeedMedia media) {
@@ -288,6 +288,7 @@ public class DownloadRequest implements Parcelable {
             this.title = feed.getHumanReadableIdentifier();
             this.feedfileId = feed.getId();
             this.feedfileType = feed.getTypeAsInt();
+            arguments.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
         }
 
         public Builder withInitiatedByUser(boolean initiatedByUser) {

@@ -49,15 +49,20 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inboxContainer = View.inflate(getContext(), R.layout.inbox_fragment, null);
+        View inboxContainer = View.inflate(getContext(), R.layout.list_container_fragment, null);
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        ((FrameLayout) inboxContainer.findViewById(R.id.inboxContent)).addView(root);
+        ((FrameLayout) inboxContainer.findViewById(R.id.listContent)).addView(root);
         emptyView.setTitle(R.string.no_inbox_head_label);
         emptyView.setMessage(R.string.no_inbox_label);
 
         toolbar = inboxContainer.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
         toolbar.inflateMenu(R.menu.inbox);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -67,6 +72,9 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
         SwipeActions swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
 
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.delete_batch);
         return inboxContainer;
     }
 
@@ -113,7 +121,12 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
 
     @NonNull
     @Override
-    protected List<FeedItem> loadMoreData() {
+    protected List<FeedItem> loadMoreData(int page) {
         return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
     }
 }

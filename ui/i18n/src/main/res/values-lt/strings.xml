@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Epizodų podėlis pilnas</string>
   <string name="episode_cache_full_message">Pasiektas epizodų podėlio dydžio limitas. Nustatymuose galite padidinti podėlio dydį.</string>
-  <string name="playback_statistics_label">Atkūrimas</string>
-  <string name="download_statistics_label">Atsiuntimai</string>
+  <string name="years_statistics_label">Metai</string>
   <string name="notification_pref_fragment">Pranešimai</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">„%1$s“ nerasta</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Įjungti perbraukimo veiksmus šiam ekranui</string>
   <string name="change_setting">Keisti</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Bendra perklausytų epizodų trukmė:</string>
-  <string name="statistics_mode">Statistikos režimas</string>
-  <string name="statistics_mode_normal">Apskaičiuoti tikrąją atkūrimo trukmę. Perklausa dukart skaičiuojama dvigubai, o pažymėjimas perklausytu neskaičiuojamas</string>
-  <string name="statistics_mode_count_all">Sumuoti visus epizodus, pažymėtus kaip perklausytus</string>
+  <string name="statistics_include_marked">Įtraukti epizodų, kurie yra tik pažymėti kaip perklausyti, trukmę </string>
   <string name="statistics_speed_not_counted">Atkreipkite dėmesį: į atkūrimo spartą neatsižvelgiama.</string>
+  <string name="statistics_from">Nuo</string>
+  <string name="statistics_to">Iki</string>
+  <string name="statistics_today">Šiandien</string>
+  <string name="statistics_filter_all_time">Visų laikų</string>
+  <string name="statistics_filter_past_year">Pernai</string>
   <string name="statistics_reset_data">Nustatyti statistikos duomenis iš naujo</string>
   <string name="statistics_reset_data_msg">Bus išvalyta visų epizodų perklausytos trukmės istorija. Ar tikrai norite tęsti?</string>
-  <string name="statistics_counting_since">Nuo %s\nperklausėte</string>
+  <string name="statistics_counting_range">Atkurta tarp %1$s ir %2$s</string>
+  <string name="statistics_counting_total">Iš viso atkurta</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Bendras epizodų šiame įrenginyje dydis:</string>
+  <string name="total_size_downloaded_podcasts">Bendras epizodų šiame įrenginyje dydis</string>
   <!--Main activity-->
   <string name="drawer_open">Atverti meniu</string>
   <string name="drawer_close">Užverti meniu</string>
@@ -162,10 +164,8 @@
   <string name="rename_feed_label">Pervadinti tinklalaidę</string>
   <string name="remove_feed_label">Pašalinti tinklalaidę</string>
   <string name="share_label">Dalintis</string>
-  <string name="share_label_with_ellipses">Dalintis...</string>
   <string name="share_file_label">Dalintis failu</string>
-  <string name="share_website_url_label">Svetainės adresu</string>
-  <string name="share_feed_url_label">Tinklalaidės sklaidos kanalo URL</string>
+  <string name="share_rss_address_label">RSS adresas:</string>
   <string name="feed_delete_confirmation_msg">Patvirtinkite, jog norite ištrinti tinklalaidę „%1$s“ ir VISUS jos epizodus (įskaitant atsiųstus epizodus).</string>
   <string name="feed_delete_confirmation_msg_batch">Patvirtinkite, jog norite ištrinti pažymėtas tinklalaides ir VISUS jų epizodus (įskaitant atsiųstus epizodus).</string>
   <string name="feed_delete_confirmation_local_msg">Prašome patvirtinti, jog norite pašalinti „%1$s“ tinklalaidę. Failai vietiniame aplanke nebus ištrinti.</string>
@@ -187,7 +187,7 @@
   </plurals>
   <string name="edit_tags">Redaguoti žymes</string>
   <string name="rename_tag_label">Pervadinti žymę</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Epizodų atsiuntimas mobiliuoju internetu išjungtas nustatymuose.\n\nAr vis tiek norite atnaujinti visas tinklalaides mobiliuoju internetu?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Tinklalaidžių atnaujinimas mobiliuoju internetu išjungtas nustatymuose.\n\nAr vis tiek norite atnaujinti?</string>
   <!--actions on feeditems-->
   <string name="download_label">Atsisiųsti</string>
   <plurals name="downloading_batch_label">
@@ -288,6 +288,8 @@
   </plurals>
   <string name="completing">Užbaigiama...</string>
   <string name="download_notification_title">Atsiunčiami tinklalaidės duomenys</string>
+  <string name="download_notification_title_feeds">Atnaujinamos tinklalaidės</string>
+  <string name="download_notification_title_episodes">Atsiunčiami epizodai</string>
   <string name="download_log_title_unknown">Nežinomas pavadinimas</string>
   <string name="download_type_feed">Sklaidos kanalas</string>
   <string name="download_type_media">Medijos failas</string>
@@ -311,7 +313,6 @@
   <string name="playback_error_source">Prieiga prie medijos failo negalima</string>
   <string name="playback_error_unknown">Nežinoma klaida</string>
   <string name="no_media_playing_label">Atkūrimas nevyksta</string>
-  <string name="player_go_to_picture_in_picture">„Picture-in-picture“ režimas</string>
   <string name="unknown_media_key">„AntennaPod“ – nežinomas medijos klavišas: %1$d</string>
   <string name="error_file_not_found">Failas nerastas</string>
   <string name="no_media_label">Elementas neturi medijos failo</string>
@@ -518,10 +519,6 @@
   <string name="media_player_switch_to_exoplayer">Perjungti į „ExoPlayer“</string>
   <string name="media_player_switched_to_exoplayer">Perjungta į „ExoPlayer“.</string>
   <string name="pref_skip_silence_title">Praleisti tylą</string>
-  <string name="pref_videoBehavior_title">Uždarant vaizdo atkūrimą</string>
-  <string name="pref_videoBehavior_sum">Elgsena paliekant vaizdo atkūrimą</string>
-  <string name="stop_playback">Stabdyti atkūrimą</string>
-  <string name="continue_playback">Tęsti garso atkūrimą</string>
   <string name="behavior">Elgsena</string>
   <string name="pref_back_button_behavior_title">Grįžimo mygtuko elgsena</string>
   <string name="pref_back_button_behavior_sum">Keisti grįžimo mygtuko elgseną.</string>
@@ -709,7 +706,6 @@
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>
   <string name="statistics_time_played">Atkūrimo trukmė:</string>
   <string name="statistics_total_duration">Bendra trukmė (apytikslė):</string>
-  <string name="statistics_duration_played_episodes">Atkurtų epizodų trukmė:</string>
   <string name="statistics_episodes_on_device">Epizodai įrenginyje:</string>
   <string name="statistics_space_used">Naudojama disko vieta:</string>
   <string name="statistics_episodes_started_total">Pradėti epizodai/iš viso:</string>
@@ -772,10 +768,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Priminti vėliau</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Žinoma, padarykime tai!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Įtraukti:</string>
-  <string name="share_playback_position_dialog_label">Atkūrimo poziciją</string>
+  <string name="share_playback_position_dialog_label">Įtraukti atkūrimo poziciją</string>
   <string name="share_dialog_episode_website_label">Epizodo tinklalapiu</string>
-  <string name="share_dialog_link_to_episode">Epizodo nuoroda</string>
+  <string name="share_dialog_for_social">Socialinė žinutė</string>
+  <string name="share_dialog_media_address">Medijos adresas</string>
   <string name="share_dialog_media_file_label">Medijos failu</string>
   <string name="share_starting_position_label">Pradedant nuo</string>
   <!--Audio controls-->
@@ -785,6 +781,7 @@
   <string name="stereo_to_mono">Kanalų mažinimas: iš stereo į mono</string>
   <string name="sonic_only">Tik „Sonic“</string>
   <string name="exoplayer_only">Tik „ExoPlayer“</string>
+  <string name="player_switch_to_audio_only">Perjungti tik į garso režimą</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipas</string>
   <string name="host_label">Serveris</string>

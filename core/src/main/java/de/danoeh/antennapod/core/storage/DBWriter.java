@@ -732,36 +732,6 @@ public class DBWriter {
     }
 
     /**
-     * Sets the 'read'-attribute of all FeedItems of a specific Feed to PLAYED.
-     *
-     * @param feedId ID of the Feed.
-     */
-    public static Future<?> markFeedRead(final long feedId) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItems(FeedItem.PLAYED, feedId);
-            adapter.close();
-
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
-    /**
-     * Sets the 'read'-attribute of all FeedItems to PLAYED.
-     */
-    public static Future<?> markAllItemsRead() {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItems(FeedItem.PLAYED);
-            adapter.close();
-
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        });
-    }
-
-    /**
      * Sets the 'read'-attribute of all NEW FeedItems to UNPLAYED.
      */
     public static Future<?> removeAllNewFlags() {

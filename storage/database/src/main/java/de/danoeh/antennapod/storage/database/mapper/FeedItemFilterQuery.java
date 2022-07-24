@@ -34,6 +34,8 @@ public class FeedItemFilterQuery {
             statements.add(keyRead + " = 1 ");
         } else if (filter.showUnplayed) {
             statements.add(" NOT " + keyRead + " = 1 "); // Match "New" items (read = -1) as well
+        } else if (filter.showNew) {
+            statements.add(keyRead + " = -1 ");
         }
         if (filter.showPaused) {
             statements.add(" (" + keyPosition + " NOT NULL AND " + keyPosition + " > 0 " + ") ");

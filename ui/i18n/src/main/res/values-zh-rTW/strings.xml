@@ -22,22 +22,14 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">暫存集數已達上限</string>
   <string name="episode_cache_full_message">暫存集數已達上限，您可以在設定中調整限制。</string>
-  <string name="playback_statistics_label">播放</string>
-  <string name="download_statistics_label">下載</string>
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
   <!--SwipeActions-->
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">總播放時長：</string>
-  <string name="statistics_mode">統計模式</string>
-  <string name="statistics_mode_normal">計算真實的播放時長。如果播放同一劇集兩遍，則會記錄兩遍的時間；如果只是標記為已播放，則不會被計入播放時長</string>
-  <string name="statistics_mode_count_all">累加所有標記為已播放的單集</string>
   <string name="statistics_speed_not_counted">注意：此統計不考慮播放速度影響</string>
   <string name="statistics_reset_data">重設統計數據</string>
   <string name="statistics_reset_data_msg">這會清除過去的播放紀錄，您確定要進行嗎？</string>
-  <string name="statistics_counting_since">自 %s 起，\n您播放了</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">裝置上所有單集佔用的容量：</string>
   <!--Main activity-->
   <string name="drawer_open">打開選單</string>
   <string name="drawer_close">關閉選單</string>
@@ -125,10 +117,7 @@
   <string name="rename_feed_label">重新命名 Podcast</string>
   <string name="remove_feed_label">移除 Podcast</string>
   <string name="share_label">分享</string>
-  <string name="share_label_with_ellipses">分享…</string>
   <string name="share_file_label">分享文件</string>
-  <string name="share_website_url_label">網站網址</string>
-  <string name="share_feed_url_label">Podcast 來源網址</string>
   <string name="feed_delete_confirmation_msg">請確認您是否要刪除「%1$s」這個 Podcast 及當中下載的每一集。</string>
   <string name="feed_delete_confirmation_local_msg">您確定要刪除「%1$s」嗎？目前下載過的檔案將不會刪除。</string>
   <string name="feed_remover_msg">移除 Podcast</string>
@@ -228,7 +217,6 @@
   <string name="playback_error_source">無法取得該媒體檔案</string>
   <string name="playback_error_unknown">不明錯誤</string>
   <string name="no_media_playing_label">播放完畢</string>
-  <string name="player_go_to_picture_in_picture">子母畫面模式</string>
   <string name="unknown_media_key">AntennaPod - 媒體按鍵無法辨識：%1$d</string>
   <string name="error_file_not_found">找不到檔案</string>
   <!--Queue operations-->
@@ -408,10 +396,6 @@
   <string name="media_player_switch_to_exoplayer">切換至 ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">已切換至 ExoPlayer</string>
   <string name="pref_skip_silence_title">跳過沒有聲音的部分</string>
-  <string name="pref_videoBehavior_title">離開影片時</string>
-  <string name="pref_videoBehavior_sum">離開影片播放時的行為</string>
-  <string name="stop_playback">停止播放</string>
-  <string name="continue_playback">繼續播放聲音</string>
   <string name="behavior">操作行為</string>
   <string name="pref_back_button_behavior_title">返回鍵行為</string>
   <string name="pref_back_button_behavior_sum">調整按下返回鍵時的行為</string>
@@ -466,7 +450,6 @@
   <string name="opml_import_summary">從其他 Podcast 軟體匯入訂閱清單</string>
   <string name="database_export_summary">將訂閱、聆聽紀錄、待播清單等資訊傳送到其他設備上的 AntennaPod</string>
   <string name="database_import_summary">自其他設備匯入 AntennaPod 資料庫</string>
-  <string name="opml_import_label">OPML 匯入</string>
   <string name="opml_add_podcast_label">自 OPML 匯入 Podcast 清單</string>
   <string name="opml_reader_error">讀取 OPML 時發生錯誤：</string>
   <string name="opml_import_error_no_file">未選擇任何檔案！</string>
@@ -630,8 +613,6 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">以後再說</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">好啊，這就去！</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">包括：</string>
-  <string name="share_playback_position_dialog_label">播放進度</string>
   <string name="share_dialog_episode_website_label">此單集的網頁</string>
   <string name="share_dialog_media_file_label">媒體檔案</string>
   <!--Audio controls-->

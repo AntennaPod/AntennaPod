@@ -8,23 +8,24 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * SSLSocketFactory that does not use TLS 1.0
  * This fixes issues with old Android versions that abort if the server does not know TLS 1.0
  */
-public class NoV1SslSocketFactory extends SSLSocketFactory {
+public class AntennaPodSslSocketFactory extends SSLSocketFactory {
     private SSLSocketFactory factory;
 
-    public NoV1SslSocketFactory(TrustManager trustManager) {
+    public AntennaPodSslSocketFactory(TrustManager trustManager) {
         try {
             SSLContext sslContext;
 
-            if (BuildConfig.FLAVOR.equals("free")) {
-                // Free flavor (bundles modern conscrypt): support for TLSv1.3 is guaranteed.
+            try {
                 sslContext = SSLContext.getInstance("TLSv1.3");
-            } else {
-                // Play flavor (security provider can vary): only TLSv1.2 is guaranteed.
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                // In the play flavor (security provider can vary), some devices only support TLSv1.2.
                 sslContext = SSLContext.getInstance("TLSv1.2");
             }
 
@@ -82,16 +83,13 @@ public class NoV1SslSocketFactory extends SSLSocketFactory {
     }
 
     private void configureSocket(SSLSocket s) {
-        if (BuildConfig.FLAVOR.equals("free")) {
-            // Free flavor (bundles modern conscrypt): TLSv1.3 and modern cipher suites are
-            // guaranteed. Protocols older than TLSv1.2 are now deprecated and can be disabled.
-            s.setEnabledProtocols(new String[] { "TLSv1.3", "TLSv1.2" });
-        } else {
-            // Play flavor (security provider can vary): only TLSv1.2 is guaranteed, supported
-            // cipher suites may vary. Old protocols might be necessary to keep things working.
-
-            // TLS 1.0 is enabled by default on some old systems, which causes connection errors.
-            // This disables that.
+        // TLS 1.0 is enabled by default on some old systems, which causes connection errors. This disables that.
+        try {
+            s.setEnabledProtocols(new String[]{"TLSv1.3", "TLSv1.2"});
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            // In play flavor, supported cipher suites may vary.
+            // Old protocols might be necessary to keep things working.
             s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" });
         }
     }

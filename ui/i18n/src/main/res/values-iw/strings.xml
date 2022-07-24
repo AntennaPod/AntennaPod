@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">מטמון הפרקים מלא</string>
   <string name="episode_cache_full_message">מטמון הפרקים התמלא. ניתן להגדיל את גודל המטמון בהגדרות.</string>
-  <string name="playback_statistics_label">נגינה</string>
-  <string name="download_statistics_label">הורדות</string>
+  <string name="years_statistics_label">שנים</string>
   <string name="notification_pref_fragment">התראות</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">„%1$s” לא נמצא</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">הפעלת פעולות החלקה למסך זה</string>
   <string name="change_setting">שינוי</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">זמן הנגינה הכולל של הפרקים:</string>
-  <string name="statistics_mode">מצב סטטיסטיקה</string>
-  <string name="statistics_mode_normal">חישוב זמן שנוגן בפועל. נגינה כפולה נספרת פעמיים, בעוד שסימון כנוגן לא נחשב.</string>
-  <string name="statistics_mode_count_all">סכימת כל הפרקים שסומנו שהושמעו</string>
+  <string name="statistics_include_marked">לכלול את משך הפרקים שרק סומנו שנוגנו</string>
   <string name="statistics_speed_not_counted">לתשומת לבך: אין התייחסות למהירות הנגינה.</string>
+  <string name="statistics_from">התחלה</string>
+  <string name="statistics_to">סיום</string>
+  <string name="statistics_today">היום</string>
+  <string name="statistics_filter_all_time">כל הזמן</string>
+  <string name="statistics_filter_past_year">בשנה החולפת</string>
   <string name="statistics_reset_data">איפוס נתונים סטטיסטיים</string>
   <string name="statistics_reset_data_msg">פעולה זו תמחק את משך הנגינה של כל הפרקים. להמשיך?</string>
-  <string name="statistics_counting_since">מאז %s,\nניגנת</string>
+  <string name="statistics_counting_range">התנגן בין %1$s לבין %2$s</string>
+  <string name="statistics_counting_total">התנגן בסך הכול</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">סך גודל כל הפרקים שבמכשיר:</string>
+  <string name="total_size_downloaded_podcasts">גודל הפרקים הכולל במכשיר</string>
   <!--Main activity-->
   <string name="drawer_open">פתיחת תפריט</string>
   <string name="drawer_close">סגירת תפריט</string>
@@ -162,10 +164,8 @@
   <string name="rename_feed_label">שינוי שם פודקאסט</string>
   <string name="remove_feed_label">הסרת פודקאסט</string>
   <string name="share_label">שיתוף</string>
-  <string name="share_label_with_ellipses">שיתוף…</string>
   <string name="share_file_label">שיתוף כתובת</string>
-  <string name="share_website_url_label">כתובת אתר</string>
-  <string name="share_feed_url_label">כתובת הזנת פודקאסט</string>
+  <string name="share_rss_address_label">כתובת RSS:</string>
   <string name="feed_delete_confirmation_msg">נא לאשר שרצונך הוא למחוק את הפודקאסט „%1$s” על כל פרקיו (לרבות הפרקים שכבר הורדת).</string>
   <string name="feed_delete_confirmation_msg_batch">נא לאשר את הסרת הפודקאסטים הנבחרים על כל פרקיהם (לרבות פרקים שהתקבלו).</string>
   <string name="feed_delete_confirmation_local_msg">נא לאשר כדי להסיר את הפודקאסט „%1$s”. הקבצים בתיקייה המקור המקומית לא יימחקו.</string>
@@ -187,7 +187,7 @@
   </plurals>
   <string name="edit_tags">עריכת תגיות</string>
   <string name="rename_tag_label">שינוי שם תגית</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">הורדת פרקים דרך חיבור סלולרי ושבתת בהגדרות.\n\nהאם עדיין לרענן את כל הפודקאסטים דרך חיבור סלולרי?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">רענון פודקאסטים דרך חיבור סלולרי מושבת בהגדרות.\n\nלרענן בכל זאת?</string>
   <!--actions on feeditems-->
   <string name="download_label">הורדה</string>
   <plurals name="downloading_batch_label">
@@ -288,6 +288,8 @@
   </plurals>
   <string name="completing">התהליך מושלם…</string>
   <string name="download_notification_title">נתוני הפודקאסט מתקבלים</string>
+  <string name="download_notification_title_feeds">הפודקאסטים מתרעננים</string>
+  <string name="download_notification_title_episodes">הפרקים מתקבלים</string>
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
   <string name="download_type_feed">הזנה</string>
   <string name="download_type_media">קובץ מדיה</string>
@@ -311,7 +313,6 @@
   <string name="playback_error_source">לא ניתן לגשת לקובץ המדיה</string>
   <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">אין מדיה מתנגנת</string>
-  <string name="player_go_to_picture_in_picture">מצב תמונה בתוך תמונה</string>
   <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
   <string name="error_file_not_found">הקובץ לא נמצא</string>
   <string name="no_media_label">הפריט אינו מכיל קובץ מדיה</string>
@@ -518,10 +519,6 @@
   <string name="media_player_switch_to_exoplayer">מעבר ל־ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">הועבר ל־ExoPlayer.</string>
   <string name="pref_skip_silence_title">דילוג על שקט בקטעי ההאזנה</string>
-  <string name="pref_videoBehavior_title">בעת יציאה מסרטון</string>
-  <string name="pref_videoBehavior_sum">התנהגות בעת יציאה מנגינת סרטון</string>
-  <string name="stop_playback">עצירת נגינה</string>
-  <string name="continue_playback">להמשיך נגינת שמע</string>
   <string name="behavior">התנהגות</string>
   <string name="pref_back_button_behavior_title">התנהגות כפתור חזרה</string>
   <string name="pref_back_button_behavior_sum">שינוי התנהגות כפתור החזרה.</string>
@@ -709,7 +706,6 @@
   <string name="auto_download_disabled_globally">הורדה אוטומטית מושבתת בהגדרות הראשיות של אנטנה־פּוֹד</string>
   <string name="statistics_time_played">זמן הנגינה:</string>
   <string name="statistics_total_duration">משך זמן כולל (הערכה):</string>
-  <string name="statistics_duration_played_episodes">משך הפרקים שנוגנו:</string>
   <string name="statistics_episodes_on_device">פרקים על המכשיר הזה:</string>
   <string name="statistics_space_used">מקום תפוס:</string>
   <string name="statistics_episodes_started_total">פרקים שהותחלו/סך הכול:</string>
@@ -772,10 +768,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">בפעם אחרת</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">בטח, נלך על זה!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">כולל:</string>
-  <string name="share_playback_position_dialog_label">מיקום הנגינה</string>
+  <string name="share_playback_position_dialog_label">לכלול את נקודת הנגינה</string>
   <string name="share_dialog_episode_website_label">עמוד הפרק</string>
-  <string name="share_dialog_link_to_episode">קישור לפרק</string>
+  <string name="share_dialog_for_social">הודעה חברתית</string>
+  <string name="share_dialog_media_address">כתובת מדיה</string>
   <string name="share_dialog_media_file_label">קובץ מדיה</string>
   <string name="share_starting_position_label">החל מ־</string>
   <!--Audio controls-->
@@ -785,6 +781,7 @@
   <string name="stereo_to_mono">איחוד: סטריאו למונו</string>
   <string name="sonic_only">Sonic בלבד</string>
   <string name="exoplayer_only">ExoPlayer בלבד</string>
+  <string name="player_switch_to_audio_only">מעבר לשמע בלבד</string>
   <!--proxy settings-->
   <string name="proxy_type_label">סוג</string>
   <string name="host_label">מארח</string>

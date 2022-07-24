@@ -66,7 +66,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.mark_all_read_item).setVisible(true);
     }
 
     @Override
@@ -102,7 +101,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     @NonNull
     @Override
-    protected List<FeedItem> loadMoreData() {
+    protected List<FeedItem> loadMoreData(int page) {
         return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(feedItemFilter);
     }
 }

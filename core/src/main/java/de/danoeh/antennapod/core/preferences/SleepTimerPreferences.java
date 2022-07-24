@@ -57,7 +57,7 @@ public class SleepTimerPreferences {
     }
 
     public static boolean vibrate() {
-        return prefs.getBoolean(PREF_VIBRATE, true);
+        return prefs.getBoolean(PREF_VIBRATE, false);
     }
 
     public static void setShakeToReset(boolean shakeToReset) {

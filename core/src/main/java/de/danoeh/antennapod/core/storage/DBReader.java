@@ -46,11 +46,6 @@ public final class DBReader {
     private static final String TAG = "DBReader";
 
     /**
-     * Maximum size of the list returned by {@link #getPlaybackHistory()}.
-     */
-    public static final int PLAYBACK_HISTORY_SIZE = 50;
-
-    /**
      * Maximum size of the list returned by {@link #getDownloadLog()}.
      */
     private static final int DOWNLOAD_LOG_SIZE = 200;
@@ -414,15 +409,29 @@ public final class DBReader {
         }
     }
 
+    public static int getTotalEpisodeCount(FeedItemFilter filter) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getTotalEpisodeCountCursor(filter)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return -1;
+        } finally {
+            adapter.close();
+        }
+    }
+
     /**
      * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
      * has been completed at least once.
      *
+     * @param limit The maximum number of items to return.
+     *
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
-     * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
      */
     @NonNull
-    public static List<FeedItem> getPlaybackHistory() {
+    public static List<FeedItem> getPlaybackHistory(int offset, int limit) {
         Log.d(TAG, "getPlaybackHistory() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -431,7 +440,7 @@ public final class DBReader {
         Cursor mediaCursor = null;
         Cursor itemCursor = null;
         try {
-            mediaCursor = adapter.getCompletedMediaCursor(PLAYBACK_HISTORY_SIZE);
+            mediaCursor = adapter.getCompletedMediaCursor(offset, limit);
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
@@ -449,6 +458,17 @@ public final class DBReader {
             if (itemCursor != null) {
                 itemCursor.close();
             }
+            adapter.close();
+        }
+    }
+
+    public static long getPlaybackHistoryLength() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        try {
+            return adapter.getCompletedMediaLength();
+        } finally {
             adapter.close();
         }
     }
@@ -796,6 +816,19 @@ public final class DBReader {
                 item.setMedia(media);
             }
             return media;
+        } finally {
+            adapter.close();
+        }
+    }
+
+    public static List<FeedItem> getFeedItemsWithMedia(Long[] mediaIds) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor itemCursor = adapter.getFeedItemCursorByMediaIds(mediaIds)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
+            loadAdditionalFeedItemListData(items);
+            Collections.sort(items, new PlaybackCompletionDateComparator());
+            return items;
         } finally {
             adapter.close();
         }

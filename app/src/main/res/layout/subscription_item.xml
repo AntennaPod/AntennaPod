@@ -33,7 +33,7 @@
         android:textColor="?android:attr/textColorPrimary"
         tools:text="@string/app_name" />
 
-    <jp.shts.android.library.TriangleLabelView
+    <de.danoeh.antennapod.ui.common.TriangleLabelView
         android:id="@+id/triangleCountView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

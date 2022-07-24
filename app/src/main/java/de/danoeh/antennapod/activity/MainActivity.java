@@ -42,7 +42,7 @@ import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
@@ -80,6 +80,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
+    public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
@@ -265,8 +266,8 @@ public class MainActivity extends CastEnabledActivity {
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();
                 break;
-            case DownloadsFragment.TAG:
-                fragment = new DownloadsFragment();
+            case CompletedDownloadsFragment.TAG:
+                fragment = new CompletedDownloadsFragment();
                 break;
             case PlaybackHistoryFragment.TAG:
                 fragment = new PlaybackHistoryFragment();
@@ -399,11 +400,6 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
-
-        if (lastTheme != UserPreferences.getNoTitleTheme()) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
     }
 
     @Override
@@ -412,6 +408,17 @@ public class MainActivity extends CastEnabledActivity {
         StorageUtils.checkStorageAvailability(this);
         handleNavIntent();
         RatingDialog.check();
+
+        if (lastTheme != UserPreferences.getNoTitleTheme()) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        lastTheme = UserPreferences.getNoTitleTheme(); // Don't recreate activity when a result is pending
     }
 
     @Override
@@ -515,7 +522,9 @@ public class MainActivity extends CastEnabledActivity {
             if (tag != null) {
                 loadFragment(tag, args);
             } else if (feedId > 0) {
-                if (intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false)) {
+                boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
+                boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
+                if (startedFromSearch || addToBackStack) {
                     loadChildFragment(FeedItemlistFragment.newInstance(feedId));
                 } else {
                     loadFeedFragmentById(feedId, args);
@@ -585,7 +594,7 @@ public class MainActivity extends CastEnabledActivity {
                 }
                 switch (feature) {
                     case "DOWNLOADS":
-                        loadFragment(DownloadsFragment.TAG, null);
+                        loadFragment(CompletedDownloadsFragment.TAG, null);
                         break;
                     case "HISTORY":
                         loadFragment(PlaybackHistoryFragment.TAG, null);

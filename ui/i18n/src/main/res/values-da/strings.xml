@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Mellemlageret for afsnit er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for afsnit. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
-  <string name="playback_statistics_label">Afspilning</string>
-  <string name="download_statistics_label">Overførsler</string>
+  <string name="years_statistics_label">År</string>
   <string name="notification_pref_fragment">Notifikationer </string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ikke fundet</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Aktiver strygehandlinger for denne skærm</string>
   <string name="change_setting">Ændr</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Samlet tid for afspillede afsnit:</string>
-  <string name="statistics_mode">Statistiktilstand</string>
-  <string name="statistics_mode_normal">Beregn den varighed som faktisk blev afspillet. Afspilning af et afsnit to gange tæller dobbelt, mens en markering som værende afspillet ikke tælles med.</string>
-  <string name="statistics_mode_count_all">Summér alle afsnit markeret som afspillet</string>
+  <string name="statistics_include_marked">Medtag varigheden af afsnit, der blot er markeret som afspillet</string>
   <string name="statistics_speed_not_counted">Bemærk: Der tages aldrig hensyn til afspilningshastigheden.</string>
+  <string name="statistics_from">Fra</string>
+  <string name="statistics_to">Til</string>
+  <string name="statistics_today">I dag</string>
+  <string name="statistics_filter_all_time">Al tid</string>
+  <string name="statistics_filter_past_year">Det seneste år</string>
   <string name="statistics_reset_data">Nulstil statistik</string>
   <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet for alle afsnit. Er du sikker på, at du vil fortsætte?</string>
-  <string name="statistics_counting_since">Siden %s\nhar du afspillet</string>
+  <string name="statistics_counting_range">Afspillet mellem %1$s og %2$s</string>
+  <string name="statistics_counting_total">Afspillet i alt</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Samlet størrelse af afsnit på enheden:</string>
+  <string name="total_size_downloaded_podcasts">Samlet størrelse af afsnit på enheden</string>
   <!--Main activity-->
   <string name="drawer_open">Åbn menu</string>
   <string name="drawer_close">Luk menu</string>
@@ -137,8 +139,8 @@
   </plurals>
   <string name="new_episode_notification_group_text">Dine abonnementer har nye afsnit</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marker alle som afspillet</string>
-  <string name="mark_all_read_msg">Marker alle afsnit som afspillet</string>
+  <string name="mark_all_read_label">Markér alle som afspillet</string>
+  <string name="mark_all_read_msg">Markér alle afsnit som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle afsnit som værende afspillet.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bekræft venligst at du ønsker at markere alle afsnit i denne podcast som værende afspillet.</string>
   <string name="remove_all_new_flags_label">Fjern alle \"ny\"-markeringer</string>
@@ -150,10 +152,8 @@
   <string name="rename_feed_label">Omdøb podcast</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del</string>
-  <string name="share_label_with_ellipses">Del...</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_website_url_label">Adresse på netsted</string>
-  <string name="share_feed_url_label">Podcast-adresse</string>
+  <string name="share_rss_address_label">RSS-adresse:</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens afsnit (inklusive overførte afsnit)</string>
   <string name="feed_delete_confirmation_msg_batch">Bekræft venligt at du ønsker at fjerne de valgte podcasts og ALLE deres afsnit (inklusiv downloadede afsnit).</string>
   <string name="feed_delete_confirmation_local_msg">Bekræft venligst at du vil fjerne podcasten \"%1$s\". Filerne i den lokale kildemappe vil ikke blive slettet.</string>
@@ -173,7 +173,7 @@
   </plurals>
   <string name="edit_tags">Rediger etiketter</string>
   <string name="rename_tag_label">Omdøb etikette</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Overførsel af afsnit via mobildataforbindelse er deaktiveret i indstillingerne.\n\nØnsker du stadig at opdatere alle podcasts via mobildata?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Opdatering af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nØnsker du alligevel at opdatere?</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <plurals name="downloading_batch_label">
@@ -192,16 +192,16 @@
   </plurals>
   <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
-  <string name="mark_read_label">Marker som afspillet</string>
-  <string name="marked_as_played_label">Marker som afspillet</string>
-  <string name="marked_as_unplayed_label">Marker som uafspillet</string>
+  <string name="mark_read_label">Markér som afspillet</string>
+  <string name="marked_as_played_label">Markér som afspillet</string>
+  <string name="marked_as_unplayed_label">Markér som uafspillet</string>
   <string name="mark_read_no_media_label">Marker som læst</string>
   <string name="play_this_to_seek_position">For at springe til positioner, er du nødt til at afspille afsnittet</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d afsnit markeret som afspillet.</item>
     <item quantity="other">%d afsnit markeret som afspillet.</item>
   </plurals>
-  <string name="mark_unread_label">Marker som uafspillet</string>
+  <string name="mark_unread_label">Markér som uafspillet</string>
   <string name="mark_unread_label_no_media">Marker som ulæst</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d afsnit markeret som uafspillet.</item>
@@ -260,6 +260,8 @@
   </plurals>
   <string name="completing">Fuldfører...</string>
   <string name="download_notification_title">Henter podcast-data</string>
+  <string name="download_notification_title_feeds">Opdaterer podcasts</string>
+  <string name="download_notification_title_episodes">Overfører afsnit</string>
   <string name="download_log_title_unknown">Ukendt titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediefil</string>
@@ -283,7 +285,6 @@
   <string name="playback_error_source">Kunne ikke tilgå mediefil</string>
   <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
-  <string name="player_go_to_picture_in_picture">Billed-i-billed-tilstand</string>
   <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
   <string name="error_file_not_found">Fil ikke fundet</string>
   <string name="no_media_label">Element indeholder ikke en mediefil.</string>
@@ -363,7 +364,7 @@
   <string name="pref_followQueue_sum">Gå til næste element i køen når afspilningen er færdig</string>
   <string name="pref_auto_delete_sum">Slet afsnit når afspilningen er færdig</string>
   <string name="pref_auto_delete_title">Slet automatisk</string>
-  <string name="pref_smart_mark_as_played_sum">Marker afsnit som værende afspillet, selv om op til et angivet antal sekunders spilletid stadig mangler</string>
+  <string name="pref_smart_mark_as_played_sum">Markér afsnit som værende afspillet, selv om op til et angivet antal sekunders spilletid stadig mangler</string>
   <string name="pref_smart_mark_as_played_title">Smart markering af afspillet</string>
   <string name="pref_skip_keeps_episodes_sum">Behold afsnit når de bliver sprunget over</string>
   <string name="pref_skip_keeps_episodes_title">Behold oversprungne afsnit</string>
@@ -488,10 +489,6 @@
   <string name="media_player_switch_to_exoplayer">Skift til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Skiftet til ExoPlayer.</string>
   <string name="pref_skip_silence_title">Overspring stilhed i lyd</string>
-  <string name="pref_videoBehavior_title">Når videoen forlades</string>
-  <string name="pref_videoBehavior_sum">Opførsel når videoafspilning forlades</string>
-  <string name="stop_playback">Stop afspilning</string>
-  <string name="continue_playback">Fortsæt afspilning af lyd</string>
   <string name="behavior">Funktion</string>
   <string name="pref_back_button_behavior_title">Funktion for tilbageknappen</string>
   <string name="pref_back_button_behavior_sum">Ændr tilbageknappens funktion.</string>
@@ -673,7 +670,6 @@
   <string name="auto_download_disabled_globally">Automatisk download slået fra i de generelle AntennaPod indstilinger</string>
   <string name="statistics_time_played">Afspillet tid:</string>
   <string name="statistics_total_duration">Samlet varighed (skøn):</string>
-  <string name="statistics_duration_played_episodes">Varighed af afspillede afsnit:</string>
   <string name="statistics_episodes_on_device">Afsnit på enheden:</string>
   <string name="statistics_space_used">Plads brugt:</string>
   <string name="statistics_episodes_started_total">Påbegyndte afsnit/total:</string>
@@ -736,10 +732,10 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Påmind mig senere</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Klart, lad os gøre det!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Medtag:</string>
-  <string name="share_playback_position_dialog_label">Afspilningsposition</string>
+  <string name="share_playback_position_dialog_label">Inkluder afspilningsposition</string>
   <string name="share_dialog_episode_website_label">Adresse på afsnit</string>
-  <string name="share_dialog_link_to_episode">Link til afsnit</string>
+  <string name="share_dialog_for_social">Social besked</string>
+  <string name="share_dialog_media_address">Medieadresse</string>
   <string name="share_dialog_media_file_label">Mediefil</string>
   <string name="share_starting_position_label">Starter fra</string>
   <!--Audio controls-->
@@ -749,6 +745,7 @@
   <string name="stereo_to_mono">Gør stereo til mono</string>
   <string name="sonic_only">Kun Sonic</string>
   <string name="exoplayer_only">Kun ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Skift til ren lyd</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Vært</string>

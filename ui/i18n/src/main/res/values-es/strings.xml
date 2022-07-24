@@ -23,8 +23,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Antememoria de episodios llena</string>
   <string name="episode_cache_full_message">Se alcanzó el límite de la antememoria de episodios. Puede aumentar el tamaño en Configuración.</string>
-  <string name="playback_statistics_label">Reproducción</string>
-  <string name="download_statistics_label">Descargas</string>
+  <string name="years_statistics_label">Años</string>
   <string name="notification_pref_fragment">Notificaciones</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">No se encontró «%1$s»</string>
@@ -36,16 +35,19 @@
   <string name="enable_swipeactions">Activar gestos de deslizado en esta pantalla</string>
   <string name="change_setting">Cambiar</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de episodios:</string>
-  <string name="statistics_mode">Modo de estadísticas</string>
-  <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble y marcar como leído no cuenta como reproducido</string>
-  <string name="statistics_mode_count_all">Suma de todos los episodios marcados como reproducidos</string>
+  <string name="statistics_include_marked">Incluye la duración de los episodios que simplemente están marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: la velocidad de reproducción nunca se tiene en cuenta.</string>
+  <string name="statistics_from">De</string>
+  <string name="statistics_to">Para</string>
+  <string name="statistics_today">Hoy</string>
+  <string name="statistics_filter_all_time">Todo el tiempo</string>
+  <string name="statistics_filter_past_year">Año pasado</string>
   <string name="statistics_reset_data">Restablecer estadísticas</string>
   <string name="statistics_reset_data_msg">Esto borrará el historial de duración reproducida de todos los episodios. ¿Confirma que quiere hacerlo?</string>
-  <string name="statistics_counting_since">Desde %s,\nhas reproducido</string>
+  <string name="statistics_counting_range">Reproducido entre%1$s y %2$s</string>
+  <string name="statistics_counting_total">Reproducido en total</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamaño total de episodios en dispositivo:</string>
+  <string name="total_size_downloaded_podcasts">Tamaño total de episodios en el dispositivo</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -110,18 +112,22 @@
   <string name="episode_cleanup_after_listening">Después de acabar</string>
   <plurals name="episode_cleanup_hours_after_listening">
     <item quantity="one">1 hora después de acabar</item>
+    <item quantity="many">%d horas después de acabar</item>
     <item quantity="other">%d horas después de acabar</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 día después de acabar</item>
+    <item quantity="many">%d días después de acabar</item>
     <item quantity="other">%d días después de acabar</item>
   </plurals>
   <plurals name="num_selected_label">
     <item quantity="one">%1$d/%2$d seleccionado</item>
+    <item quantity="many">%1$d/%2$d seleccionados</item>
     <item quantity="other">%1$d/%2$d seleccionados</item>
   </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d episodio</item>
+    <item quantity="many">%d episodios</item>
     <item quantity="other">%d episodios</item>
   </plurals>
   <string name="loading_more">Cargando mas...</string>
@@ -129,10 +135,12 @@
   <string name="episode_notification_summary">Mostrar una notificación cuando se estrene un nuevo episodio.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s tiene un nuevo episodio</item>
+    <item quantity="many">%2$s tiene %1$d episodios nuevos</item>
     <item quantity="other">%2$s tiene %1$d episodios nuevos</item>
   </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Nuevo Episodio</item>
+    <item quantity="many">Nuevos Episodios</item>
     <item quantity="other">Nuevos Episodios</item>
   </plurals>
   <string name="new_episode_notification_group_text">Sus suscripciones tienen nuevos episodios.</string>
@@ -150,10 +158,8 @@
   <string name="rename_feed_label">Renombrar el pódcast</string>
   <string name="remove_feed_label">Eliminar el pódcast</string>
   <string name="share_label">Compartir</string>
-  <string name="share_label_with_ellipses">Compartir…</string>
   <string name="share_file_label">Compartir el archivo</string>
-  <string name="share_website_url_label">Dirección web</string>
-  <string name="share_feed_url_label">URL del canal del podcast</string>
+  <string name="share_rss_address_label">Dirección RSS:</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere borrar el pódcast \"%1$s\" y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_delete_confirmation_msg_batch">Confirme que quiere borrar los pódcasts seleccionados y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_delete_confirmation_local_msg">Confirme que quiere borrar el podcast \"%1$s\". Los archivos en la carpeta origen local no serán borrados.</string>
@@ -169,15 +175,17 @@
   <string name="updates_disabled_label">Actualizaciones deshabilitadas</string>
   <plurals name="updated_feeds_batch_label">
     <item quantity="one">%d suscripción actualizada.</item>
+    <item quantity="many">%d suscripciones actualizadas.</item>
     <item quantity="other">%d suscripciones actualizadas.</item>
   </plurals>
   <string name="edit_tags">Editar etiquetas</string>
   <string name="rename_tag_label">Renombrar etiqueta</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Descargar episodios usando una conexión de datos móviles está desactivado en las opciones.\n\n¿De veras quieres actualizar todos los podcasts usando una conexión de datos móviles?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Actualizar podcasts usando una conexión de datos móviles está desactivado en las opciones.\n\n¿De veras quieres actualizar los podcasts usando una conexión de datos móviles?</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <plurals name="downloading_batch_label">
     <item quantity="one">Descargando %d episodio.</item>
+    <item quantity="many">Descargando %d episodios.</item>
     <item quantity="other">Descargando %d episodios.</item>
   </plurals>
   <string name="play_label">Reproducir</string>
@@ -186,6 +194,11 @@
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">No se puede borrar el fichero. Reiniciar el dispositivo podría ayudar.</string>
   <string name="delete_episode_label">Borrar Episodio</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">Eliminado 1 episodio descargado.</item>
+    <item quantity="many">Eliminados %d episodios descargados.</item>
+    <item quantity="other">Eliminados %d episodios descargados.</item>
+  </plurals>
   <string name="remove_new_flag_label">Eliminar marca \"nuevo\"</string>
   <string name="removed_new_flag_label">Eliminada marca \"nuevo\"</string>
   <string name="mark_read_label">Marcar como reproducido</string>
@@ -195,23 +208,27 @@
   <string name="play_this_to_seek_position">Para saltar a posiciones, necesitas reproducir el episodio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%depisodio marcado como reproducido.</item>
+    <item quantity="many">%depisodios marcados como reproducidos.</item>
     <item quantity="other">%depisodios marcados como reproducidos.</item>
   </plurals>
   <string name="mark_unread_label">Marcar como no reproducido</string>
   <string name="mark_unread_label_no_media">Marcar como no leído</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d episodio marcado como no reproducido.</item>
+    <item quantity="many">%d episodios marcados como no reproducidos.</item>
     <item quantity="other">%d episodios marcados como no reproducidos.</item>
   </plurals>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="added_to_queue_label">Añadido a la cola</string>
   <plurals name="added_to_queue_batch_label">
     <item quantity="one">%d episodio añadido a la cola.</item>
+    <item quantity="many">%d episodios añadidos a la cola.</item>
     <item quantity="other">%d episodios añadidos a la cola.</item>
   </plurals>
   <string name="remove_from_queue_label">Eliminar de la cola</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d episodio eliminado de la cola.</item>
+    <item quantity="many">%d episodios eliminados de la cola.</item>
     <item quantity="other">%d episodios eliminados de la cola.</item>
   </plurals>
   <string name="add_to_favorite_label">Añadir a favoritos</string>
@@ -243,6 +260,8 @@
   <string name="download_error_forbidden">El servidor del host del podcast se niega a responder.</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_error_wrong_size">Descarga incompleta por perdida de conexión con el servidor.</string>
+  <string name="download_error_blocked">La descarga fue bloqueada por otra aplicación en tu dispositivo (como una VPN o bloqueador de anuncios).</string>
+  <string name="download_error_certificate">Incapaz de establecer una conexión segura. Esto puede significar que otra aplicación en tu dispositivo (como una VPN o un bloqueador de anuncios) bloqueó la descarga, o que algo está mal con los certificados del servidor.</string>
   <string name="download_report_title">Descargas completadas con error(es)</string>
   <string name="auto_download_report_title">Descargas automáticas completadas</string>
   <string name="download_error_io_error">Error de E/S</string>
@@ -250,14 +269,18 @@
   <string name="download_error_db_access">Error de acceso a la base de datos</string>
   <plurals name="downloads_left">
     <item quantity="one">Queda %d descarga</item>
+    <item quantity="many">Quedan %d descargas</item>
     <item quantity="other">Quedan %d descargas</item>
   </plurals>
   <string name="completing">Terminando...</string>
   <string name="download_notification_title">Descargando datos del pódcast</string>
+  <string name="download_notification_title_feeds">Refrescando pódcasts</string>
+  <string name="download_notification_title_episodes">Descargando episodios</string>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
   <string name="download_type_media">Archivo multimedia</string>
   <string name="null_value_podcast_error">No se proporcionó ningún pódcast que pudiera mostrarse.</string>
+  <string name="no_feed_url_podcast_found_by_search">El podcast sugerido no tenía un enlace RSS, Antennapod encontró un pódcast que podría coincidir</string>
   <string name="authentication_notification_title">Autenticación requerida</string>
   <string name="authentication_notification_msg">El recurso solicitado requiere un usuario y contraseña</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar descarga vía datos móviles</string>
@@ -276,7 +299,6 @@
   <string name="playback_error_source">No se puede acceder al archivo de medios</string>
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
-  <string name="player_go_to_picture_in_picture">Modo picture-in-picture</string>
   <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
   <string name="error_file_not_found">Archivo no encontrado</string>
   <string name="no_media_label">El elemento no contiene un archivo multimedia</string>
@@ -374,6 +396,7 @@
   <string name="feed_refresh_interval_at">cada %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">Cada hora</item>
+    <item quantity="many">Cada %d horas</item>
     <item quantity="other">Cada %d horas</item>
   </plurals>
   <string name="pref_followQueue_title">Reproducción continua</string>
@@ -423,6 +446,14 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
   <string name="synchronization_sync_changes_title">Sincroniza ahora</string>
   <string name="synchronization_full_sync_title">Fuerza sincronización completa</string>
+  <string name="synchronization_login_status"><![CDATA[Autenticado como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Puedes elegir tu proveedor de sincronización de nuevo si cierras sesión.]]></string>
+  <string name="synchronization_summary_unchoosen">Puedes escoger entre múltiples proveedores para sincronizar tus suscripciones y los estados de reproducción de los episodios</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync es una aplicación libre de Nextcloud que puede instalar fácilmente en tu servidor. La aplicación es independiente del proyecto de AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Permitir el acceso utilizando el navegador web abierto y volver a AntennaPod.</string>
+  <string name="synchronization_choose_title">Escoge un proveedor de sincronización</string>
+  <string name="synchronization_force_sync_summary">Resincronizar todas las suscripciones y estados de los episodios</string>
+  <string name="synchronization_sync_summary">Sincronizar los cambios de suscripciones y estados de episodios</string>
+  <string name="dialog_choose_sync_service_title">Escoge un proveedor de sincronización</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles en la reproducción a velocidad variable</string>
   <string name="pref_feed_playback_speed_sum">La velocidad a la que comenzarán los episodios de este podcast</string>
   <string name="pref_feed_skip">Saltar automático</string>
@@ -473,10 +504,6 @@
   <string name="media_player_switch_to_exoplayer">Cambiar a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Cambiado a ExoPlayer</string>
   <string name="pref_skip_silence_title">Saltar silencio en audio</string>
-  <string name="pref_videoBehavior_title">Al salir del vídeo</string>
-  <string name="pref_videoBehavior_sum">Comportamiento al salir de la reproducción de video</string>
-  <string name="stop_playback">Parar reproducción</string>
-  <string name="continue_playback">Continuar la reproducción de audio</string>
   <string name="behavior">Comportamiento</string>
   <string name="pref_back_button_behavior_title">Comportamiento del botón de retroceso</string>
   <string name="pref_back_button_behavior_sum">Cambiar el comportamiento del botón de retroceso.</string>
@@ -502,6 +529,8 @@
   <string name="new_episode_notification_disabled">Notificación deshabilitada</string>
   <string name="pref_feed_settings_dialog_msg">Esta preferencia es única para cada pódcast. Puede ajustarla abriendo la página del pódcast.</string>
   <string name="pref_contribute">Contribuir</string>
+  <string name="pref_show_subscription_title">Mostrar el título de la suscripción</string>
+  <string name="pref_show_subscription_title_summary">Mostrar el título de la suscripción debajo de la carátula</string>
   <!--About screen-->
   <string name="about_pref">Acerca de</string>
   <string name="antennapod_version">Versión de AntennaPod</string>
@@ -524,6 +553,7 @@
   <string name="sync_status_episodes_download">Descargando cambios de episodios...</string>
   <string name="sync_status_upload_played">Subiendo estado de reproducción...</string>
   <string name="sync_status_subscriptions">Sincronizando suscripciones...</string>
+  <string name="sync_status_wait_for_downloads">Esperando a que las descargas terminen...</string>
   <string name="sync_status_success">Sincronización exitosa</string>
   <string name="sync_status_error">Error en la sincronización</string>
   <!--import and export-->
@@ -536,7 +566,7 @@
   <string name="opml_import_summary">Importar tus suscripciones desde otra aplicación de podcast</string>
   <string name="database_export_summary">Transferir suscripciones, episodios escuchados y la cola a AntennaPod en otro dispositivo</string>
   <string name="database_import_summary">Importar base de datos de AntennaPod desde otro dispositivo</string>
-  <string name="opml_import_label">Importar de OPML</string>
+  <string name="opml_import_label">Importación OPML</string>
   <string name="opml_add_podcast_label">Importar lista de podcast (OPML)</string>
   <string name="opml_reader_error">Error al leer el documento OPML:</string>
   <string name="opml_import_error_no_file">¡Debe seleccionar un archivo!</string>
@@ -570,14 +600,17 @@
   <string name="time_hours">horas</string>
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 segundo</item>
+    <item quantity="many">%d segundos</item>
     <item quantity="other">%d segundos</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuto</item>
+    <item quantity="many">%d minutos</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 hora</item>
+    <item quantity="many">%d horas</item>
     <item quantity="other">%d horas</item>
   </plurals>
   <string name="auto_enable_label">Autohabilitar</string>
@@ -621,6 +654,7 @@
   <string name="preview_episode">Vista Previa</string>
   <string name="stop_preview">Detener la vista previa</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Atrás</string>
   <string name="rewind_label">Retroceso</string>
   <string name="fast_forward_label">Avance</string>
   <string name="increase_speed">Aumentar velocidad</string>
@@ -638,18 +672,25 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">Autenticación</string>
   <string name="authentication_descr">Cambiar nombre y contraseña de este pódcast y sus episodios</string>
+  <string name="feed_tags_label">Etiquetas</string>
+  <string name="feed_tags_summary">Cambia las etiquetas de este pódcast para ayudarte a organizar tus suscripciones</string>
   <string name="feed_folders_include_root">Mostrar en la lista principal</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Solo se muestran las etiquetas comunes a las suscripciones seleccionadas. El resto se mantiene.</string>
   <string name="auto_download_settings_label">Opciones de descarga automática</string>
   <string name="episode_filters_label">Filtro de episodios</string>
   <string name="episode_filters_description">Lista de términos usados para decidir si un episodio debe ser incluído o excluído de la descarga automática</string>
   <string name="episode_filters_include">Incluir</string>
   <string name="episode_filters_exclude">Excluir</string>
+  <string name="episode_filters_duration">Duración mínima (en minutos)</string>
   <string name="episode_filters_hint">Palabras sueltas \n\"múltiples palabras\"</string>
   <string name="keep_updated">Mantener actualizado</string>
   <string name="keep_updated_summary">Incluir este podcast cuando se (auto-)refresquen todas las fuentes</string>
   <string name="auto_download_disabled_globally">La descarga automática está deshabilitada en las preferencias generales de AntennaPod</string>
+  <string name="statistics_time_played">Tiempo reproducido:</string>
+  <string name="statistics_total_duration">Duración total (estimada):</string>
   <string name="statistics_episodes_on_device">Episodios en el dispositivo:</string>
   <string name="statistics_space_used">Espacio usado:</string>
+  <string name="statistics_episodes_started_total">e</string>
   <string name="statistics_view_all">Ver para todos los podcasts »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando suscripciones de aplicaciones de uso específico…</string>
@@ -694,6 +735,8 @@
   <string name="sort_date_old_new">Fecha (Antiguo \u2192 Nuevo)</string>
   <string name="sort_duration_short_long">Duración (Corto \u2192 Largo)</string>
   <string name="sort_duration_long_short">Duración (Largo \u2192 Corto)</string>
+  <string name="sort_filename_a_z">Nombre de archivo (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Nombre de archivo (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
   <string name="sort_new_old">Nuevo \u2192 Viejo</string>
@@ -707,10 +750,12 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Recuérdamelo más tarde</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">¡Venga, hagámoslo!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_include_label">Incluir:</string>
-  <string name="share_playback_position_dialog_label">Posición de reproducción</string>
+  <string name="share_playback_position_dialog_label">Incluir la posición de reprodución</string>
   <string name="share_dialog_episode_website_label">Página del episodio</string>
+  <string name="share_dialog_for_social">Mensaje social</string>
+  <string name="share_dialog_media_address">Dirección de los medios</string>
   <string name="share_dialog_media_file_label">Archivo de medios</string>
+  <string name="share_starting_position_label">Empezando en</string>
   <!--Audio controls-->
   <string name="audio_controls">Controles de audio</string>
   <string name="playback_speed">Velocidad de reproducción</string>
@@ -718,6 +763,7 @@
   <string name="stereo_to_mono">Mezclar: de estéreo a mono</string>
   <string name="sonic_only">Solo Sonic</string>
   <string name="exoplayer_only">Sólo ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Cambiar a solo audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Host</string>
@@ -757,4 +803,7 @@
   <string name="on_demand_config_setting_changed">Configuración actualizada satisfactoriamente.</string>
   <string name="on_demand_config_stream_text">Parece que usas mucho la reproducción en directo. ¿Quieres que las listas de episodios muestren los botones de escuchar en directo?</string>
   <string name="on_demand_config_download_text">Parece que usas mucho las descargas. ¿Quieres mostrar el botón de descargar en la lista de episodios?</string>
+  <string name="shortcut_subscription_label">Atajo de suscripción</string>
+  <string name="shortcut_select_subscription">Seleccionar suscripción</string>
+  <string name="add_shortcut">Añadir ataj</string>
 </resources>

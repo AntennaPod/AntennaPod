@@ -67,7 +67,6 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         getSettings().setUseWideViewPort(false);
-        getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         getSettings().setLoadWithOverviewMode(true);
         setOnLongClickListener(this);
 

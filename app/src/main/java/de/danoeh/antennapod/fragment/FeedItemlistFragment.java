@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
@@ -130,6 +129,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         speedDialBinding = MultiSelectSpeedDialBinding.bind(viewBinding.getRoot());
         viewBinding.toolbar.inflateMenu(R.menu.feedlist);
         viewBinding.toolbar.setOnMenuItemClickListener(this);
+        viewBinding.toolbar.setOnLongClickListener(v -> {
+            viewBinding.recyclerView.scrollToPosition(5);
+            viewBinding.recyclerView.post(() -> viewBinding.recyclerView.smoothScrollToPosition(0));
+            viewBinding.appBar.setExpanded(true);
+            return false;
+        });
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -163,8 +168,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
                 super.onScrolled(view, deltaX, deltaY);
                 boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
-                nextPageLoader.getRoot().setVisibility(
-                        (viewBinding.recyclerView.isScrolledToBottom() && hasMorePages) ? View.VISIBLE : View.GONE);
+                boolean pageLoaderVisible = viewBinding.recyclerView.isScrolledToBottom() && hasMorePages;
+                nextPageLoader.getRoot().setVisibility(pageLoaderVisible ? View.VISIBLE : View.GONE);
+                viewBinding.recyclerView.setPadding(
+                        viewBinding.recyclerView.getPaddingLeft(), 0, viewBinding.recyclerView.getPaddingRight(),
+                        pageLoaderVisible ? nextPageLoader.getRoot().getMeasuredHeight() : 0);
             }
         });
 
@@ -198,8 +206,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         });
         speedDialBinding.fabSD.setOnActionSelectedListener(actionItem -> {
-            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), adapter.getSelectedItems())
-                    .handleAction(actionItem.getId());
+            new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItem.getId())
+                    .handleAction(adapter.getSelectedItems());
             adapter.endSelectMode();
             return true;
         });
@@ -514,12 +522,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     downloadStatus -> new DownloadLogDetailsDialog(getContext(), downloadStatus).show(),
                     error -> error.printStackTrace(),
                     () -> {
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
-                        Bundle args = new Bundle();
-                        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
-                        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
-                        startActivity(intent);
+                        ((MainActivity) getActivity()).loadChildFragment(new DownloadLogFragment());
                     });
     }
 

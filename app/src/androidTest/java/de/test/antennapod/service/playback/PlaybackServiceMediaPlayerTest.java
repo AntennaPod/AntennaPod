@@ -85,7 +85,7 @@ public class PlaybackServiceMediaPlayerTest {
         assertTrue(cacheDir.canWrite());
         assertTrue(cacheDir.canRead());
         if (!dest.exists()) {
-            InputStream i = getInstrumentation().getTargetContext().getAssets().open("3sec.mp3");
+            InputStream i = getInstrumentation().getContext().getAssets().open("3sec.mp3");
             OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL));
             IOUtils.copy(i, o);
             o.flush();

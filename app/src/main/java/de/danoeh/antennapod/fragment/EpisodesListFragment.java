@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -22,15 +23,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.SelectableAdapter;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
+import io.reactivex.Completable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,7 +65,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Shows unread or recently published episodes
  */
-public abstract class EpisodesListFragment extends Fragment {
+public abstract class EpisodesListFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener {
 
     public static final String TAG = "EpisodesListFragment";
     protected static final int EPISODES_PER_PAGE = 150;
@@ -72,6 +78,7 @@ public abstract class EpisodesListFragment extends Fragment {
     ProgressBar progLoading;
     View loadingMoreView;
     EmptyViewHandler emptyView;
+    SpeedDialView speedDialView;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -130,21 +137,6 @@ public abstract class EpisodesListFragment extends Fragment {
         if (itemId == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
             return true;
-        } else if (itemId == R.id.mark_all_read_item) {
-            ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.mark_all_read_label,
-                    R.string.mark_all_read_confirmation_msg) {
-
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.markAllItemsRead();
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
-                }
-            };
-            markAllReadConfirmationDialog.createNewDialog().show();
-            return true;
         } else if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
                     R.string.remove_all_inbox_label,
@@ -174,17 +166,13 @@ public abstract class EpisodesListFragment extends Fragment {
             // The method is called on all fragments in a ViewPager, so this needs to be ignored in invisible ones.
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
-        }
-        if (item.getItemId() == R.id.share_item) {
-            return true; // avoids that the position is reset when we need it in the submenu
-        }
-
-        if (listAdapter.getLongPressedItem() == null) {
+        } else if (listAdapter.getLongPressedItem() == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
+        } else if (listAdapter.onContextItemSelected(item)) {
+            return true;
         }
         FeedItem selectedItem = listAdapter.getLongPressedItem();
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
@@ -225,7 +213,70 @@ public abstract class EpisodesListFragment extends Fragment {
         createRecycleAdapter(recyclerView, emptyView);
         emptyView.hide();
 
+        speedDialView = root.findViewById(R.id.fabSD);
+        speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
+        speedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && listAdapter.getSelectedCount() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    speedDialView.close();
+                }
+            }
+        });
+        speedDialView.setOnActionSelectedListener(actionItem -> {
+            int confirmationString = 0;
+            if (listAdapter.getSelectedItems().size() >= 25 || listAdapter.shouldSelectLazyLoadedItems()) {
+                // Should ask for confirmation
+                if (actionItem.getId() == R.id.mark_read_batch) {
+                    confirmationString = R.string.multi_select_mark_played_confirmation;
+                } else if (actionItem.getId() == R.id.mark_unread_batch) {
+                    confirmationString = R.string.multi_select_mark_unplayed_confirmation;
+                }
+            }
+            if (confirmationString == 0) {
+                performMultiSelectAction(actionItem.getId());
+            } else {
+                new ConfirmationDialog(getActivity(), R.string.multi_select, confirmationString) {
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        performMultiSelectAction(actionItem.getId());
+                    }
+                }.createNewDialog().show();
+            }
+            return true;
+        });
+
         return root;
+    }
+
+    private void performMultiSelectAction(int actionItemId) {
+        EpisodeMultiSelectActionHandler handler =
+                new EpisodeMultiSelectActionHandler(((MainActivity) getActivity()), actionItemId);
+        Completable.fromAction(
+                () -> {
+                    handler.handleAction(listAdapter.getSelectedItems());
+                    if (listAdapter.shouldSelectLazyLoadedItems()) {
+                        int applyPage = page + 1;
+                        List<FeedItem> nextPage;
+                        do {
+                            nextPage = loadMoreData(applyPage);
+                            handler.handleAction(nextPage);
+                            applyPage++;
+                        } while (nextPage.size() == EPISODES_PER_PAGE);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> listAdapter.endSelectMode(),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void setupLoadMoreScrollListener() {
@@ -249,7 +300,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
         isLoadingMore = true;
         loadingMoreView.setVisibility(View.VISIBLE);
-        disposable = Observable.fromCallable(this::loadMoreData)
+        disposable = Observable.fromCallable(() -> loadMoreData(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
@@ -258,6 +309,9 @@ public abstract class EpisodesListFragment extends Fragment {
                     }
                     episodes.addAll(data);
                     onFragmentLoaded(episodes);
+                    if (listAdapter.shouldSelectLazyLoadedItems()) {
+                        listAdapter.setSelected(episodes.size() - data.size(), episodes.size(), true);
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)),
                     () -> {
                         recyclerView.post(() -> isLoadingMore = false); // Make sure to not always load 2 pages at once
@@ -292,12 +346,36 @@ public abstract class EpisodesListFragment extends Fragment {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
                 MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
             }
         };
+        listAdapter.setOnSelectModeListener(this);
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (listAdapter != null) {
+            listAdapter.endSelectMode();
+        }
+        listAdapter = null;
+    }
+
+    @Override
+    public void onStartSelectMode() {
+        speedDialView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onEndSelectMode() {
+        speedDialView.close();
+        speedDialView.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -395,14 +473,15 @@ public abstract class EpisodesListFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(this::loadData)
+        disposable = Observable.fromCallable(() -> new Pair<>(loadData(), loadTotalItemCount()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
                     loadingMoreView.setVisibility(View.GONE);
                     hasMoreItems = true;
-                    episodes = data;
+                    episodes = data.first;
+                    listAdapter.setTotalNumberOfItems(data.second);
                     onFragmentLoaded(episodes);
                     if (getParentFragment() instanceof PagedToolbarFragment) {
                         ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
@@ -422,5 +501,12 @@ public abstract class EpisodesListFragment extends Fragment {
      * @return The items from the next page of data
      */
     @NonNull
-    protected abstract List<FeedItem> loadMoreData();
+    protected abstract List<FeedItem> loadMoreData(int page);
+
+    /**
+     * Returns the total number of items that would be returned if {@link #loadMoreData} was called often enough.
+     */
+    protected int loadTotalItemCount() {
+        return SelectableAdapter.COUNT_AUTOMATICALLY;
+    }
 }

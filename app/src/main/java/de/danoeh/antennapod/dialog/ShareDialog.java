@@ -1,21 +1,19 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-import de.danoeh.antennapod.R;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.databinding.ShareEpisodeDialogBinding;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.util.ShareUtils;
 
-public class ShareDialog extends DialogFragment {
+public class ShareDialog extends BottomSheetDialogFragment {
     private static final String ARGUMENT_FEED_ITEM = "feedItem";
     private static final String PREF_NAME = "ShareDialog";
     private static final String PREF_SHARE_EPISODE_START_AT = "prefShareEpisodeStartAt";
@@ -39,25 +37,23 @@ public class ShareDialog extends DialogFragment {
         return dialog;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             ctx = getActivity();
             item = (FeedItem) getArguments().getSerializable(ARGUMENT_FEED_ITEM);
             prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
 
-        viewBinding = ShareEpisodeDialogBinding.inflate(getLayoutInflater());
+        viewBinding = ShareEpisodeDialogBinding.inflate(inflater);
         viewBinding.shareDialogRadioGroup.setOnCheckedChangeListener((group, checkedId) ->
                 viewBinding.sharePositionCheckbox.setEnabled(checkedId == viewBinding.shareSocialRadio.getId()));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setTitle(R.string.share_label);
-        builder.setView(viewBinding.getRoot());
         setupOptions();
 
-        builder.setPositiveButton(R.string.share_label, (dialog, id) -> {
+        viewBinding.shareButton.setOnClickListener((v) -> {
             boolean includePlaybackPosition = viewBinding.sharePositionCheckbox.isChecked();
             int position;
             if (viewBinding.shareSocialRadio.isChecked()) {
@@ -76,9 +72,9 @@ public class ShareDialog extends DialogFragment {
                     .putBoolean(PREF_SHARE_EPISODE_START_AT, includePlaybackPosition)
                     .putInt(PREF_SHARE_EPISODE_TYPE, position)
                     .apply();
-        }).setNegativeButton(R.string.cancel_label, (dialog, id) -> dialog.dismiss());
-
-        return builder.create();
+            dismiss();
+        });
+        return viewBinding.getRoot();
     }
 
     private void setupOptions() {

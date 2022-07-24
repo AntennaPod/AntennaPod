@@ -13,8 +13,9 @@ android {
 
 dependencies {
     implementation project(":core")
-    implementation project(':event')
+    implementation project(":event")
     implementation project(":model")
+    implementation project(":ui:app-start-intent")
     implementation project(":ui:common")
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
@@ -30,4 +31,6 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
+    implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
 }

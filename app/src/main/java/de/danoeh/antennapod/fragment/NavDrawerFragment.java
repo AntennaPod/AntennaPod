@@ -70,7 +70,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             InboxFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
-            DownloadsFragment.TAG,
+            CompletedDownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
             NavListAdapter.SUBSCRIPTION_LIST_TAG

@@ -8,7 +8,7 @@
             android:title="@string/search_label"/>
     <item
             android:id="@+id/action_statistics"
-            android:icon="@drawable/chart_box_outline"
+            android:icon="@drawable/ic_chart_box"
             android:title="@string/statistics_label"
             custom:showAsAction="always" />
     <item

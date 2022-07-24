@@ -108,7 +108,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
                         .apply(new RequestOptions()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
-                                .transforms(new FitCenter(), new RoundedCorners((int)
+                                .transform(new FitCenter(), new RoundedCorners((int)
                                         (4 * context.getResources().getDisplayMetrics().density))))
                         .into(holder.image);
             }

@@ -23,23 +23,15 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
-  <string name="playback_statistics_label">再生</string>
-  <string name="download_statistics_label">ダウンロード</string>
   <string name="notification_pref_fragment">通知</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">%1$sが見つかりません</string>
   <!--SwipeActions-->
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">エピソード総再生時間:</string>
-  <string name="statistics_mode">統計情報モード</string>
-  <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
-  <string name="statistics_mode_count_all">再生済みとマークされたすべてのポッドキャストを集計する</string>
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <string name="statistics_reset_data">統計情報のデータをリセット</string>
   <string name="statistics_reset_data_msg">これにより、すべてのエピソードを再生した期間の履歴が消去されます。 続行しますか?</string>
-  <string name="statistics_counting_since">%sからの再生時間</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">ダウンロードされたエピソードのサイズ:</string>
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -129,7 +121,6 @@
   <string name="rename_feed_label">ポッドキャストの名前を変更</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_label">共有</string>
-  <string name="share_label_with_ellipses">共有…</string>
   <string name="share_file_label">ファイルを共有</string>
   <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">ポッドキャストを削除しています</string>
@@ -226,7 +217,6 @@
   <string name="playback_error_source">メディアファイルにアクセスできません</string>
   <string name="playback_error_unknown">不明なエラー</string>
   <string name="no_media_playing_label">再生するメディアがありません</string>
-  <string name="player_go_to_picture_in_picture">ピクチャ-イン-ピクチャ モード</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
   <string name="error_file_not_found">ファイルが見つかりません</string>
   <!--Queue operations-->
@@ -376,10 +366,6 @@
   <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <string name="pref_skip_silence_title">音声の無音をスキップ</string>
-  <string name="pref_videoBehavior_title">ビデオ終了時</string>
-  <string name="pref_videoBehavior_sum">ビデオ再生から遷移時の動作</string>
-  <string name="stop_playback">再生停止</string>
-  <string name="continue_playback">音声の再生を続ける</string>
   <string name="behavior">動作</string>
   <string name="pref_back_button_behavior_title">戻るボタンの動作</string>
   <string name="pref_back_button_behavior_sum">戻るボタンの動作を変更します。</string>
@@ -416,7 +402,6 @@
   <string name="opml_import_summary">別のポッドキャストアプリから購読をインポートする</string>
   <string name="database_export_summary">購読、再生したエピソード、キューを別のデバイスのAntennaPodに転送する</string>
   <string name="database_import_summary">AntennaPod データベースを別のデバイスからインポートする</string>
-  <string name="opml_import_label">OPMLインポート</string>
   <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました:</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません!</string>
   <string name="select_all_label">すべてを選択</string>

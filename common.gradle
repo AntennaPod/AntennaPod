@@ -16,14 +16,19 @@ android {
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
+            resValue "string", "app_name", "AntennaPod"
         }
         debug {
+            resValue "string", "app_name", "AntennaPod Debug"
         }
     }
 
     packagingOptions {
         exclude "META-INF/LICENSE.txt"
         exclude "META-INF/NOTICE.txt"
+        // Extraneous jsoup files
+        exclude "META-INF/CHANGES"
+        exclude "META-INF/README.md"
     }
 
     compileOptions {
