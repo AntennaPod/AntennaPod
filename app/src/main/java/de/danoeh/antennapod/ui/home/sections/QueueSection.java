@@ -12,11 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
+import de.danoeh.antennapod.view.viewholder.HorizontalItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -24,10 +30,13 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 public class QueueSection extends HomeSection {
     public static final String TAG = "QueueSection";
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
+    private List<FeedItem> queue;
 
     @Nullable
     @Override
@@ -57,6 +66,35 @@ public class QueueSection extends HomeSection {
         loadItems();
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
+        DownloaderUpdate update = event.update;
+        if (listAdapter != null && update.mediaIds.length > 0) {
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(queue, mediaId);
+                if (pos >= 0) {
+                    listAdapter.notifyItemChangedCompat(pos);
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (listAdapter == null) {
+            return;
+        }
+        for (int i = 0; i < listAdapter.getItemCount(); i++) {
+            HorizontalItemViewHolder holder = (HorizontalItemViewHolder)
+                    viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
+            if (holder != null && holder.isCurrentlyPlayingItem()) {
+                holder.notifyPlaybackPositionUpdated(event);
+                break;
+            }
+        }
+    }
+
     @Override
     protected String getSectionTitle() {
         return getString(R.string.home_continue_title);
@@ -74,8 +112,10 @@ public class QueueSection extends HomeSection {
         disposable = Observable.fromCallable(() -> DBReader.getPausedQueue(8))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(queue -> listAdapter.updateData(queue),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(queue -> {
+                    this.queue = queue;
+                    listAdapter.updateData(queue);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
     }
 }

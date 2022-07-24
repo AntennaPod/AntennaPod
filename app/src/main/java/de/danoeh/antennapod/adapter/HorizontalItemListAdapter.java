@@ -1,33 +1,29 @@
 package de.danoeh.antennapod.adapter;
 
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.ui.common.SquareImageView;
+import de.danoeh.antennapod.view.viewholder.HorizontalItemViewHolder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalItemListAdapter.Holder> {
+public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalItemViewHolder>
+        implements View.OnCreateContextMenuListener {
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<FeedItem> data = new ArrayList<>();
+    private FeedItem longPressedItem;
 
     public HorizontalItemListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
@@ -42,35 +38,25 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     @NonNull
     @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View convertView = View.inflate(mainActivityRef.get(), R.layout.horizontal_itemlist_item, null);
-        return new Holder(convertView);
+    public HorizontalItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new HorizontalItemViewHolder(mainActivityRef.get(), parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
+    public void onBindViewHolder(@NonNull HorizontalItemViewHolder holder, int position) {
         final FeedItem item = data.get(position);
+        holder.bind(item);
 
-        new CoverLoader(mainActivityRef.get())
-                .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                .withFallbackUri(item.getFeed().getImageUrl())
-                .withCoverView(holder.cover)
-                .load();
-        holder.title.setText(item.getTitle());
-        holder.date.setText(DateFormatter.formatAbbrev(mainActivityRef.get(), item.getPubDate()));
-        ItemActionButton actionButton = ItemActionButton.forItem(item);
-        actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, mainActivityRef.get());
-        holder.secondaryActionButton.setFocusable(false);
-
-        FeedMedia media = item.getMedia();
-        if (DownloadService.isDownloadingFile(media.getDownload_url())) {
-            final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
-            holder.progressBar.setProgress(Math.max(downloadRequest.getProgressPercent(), 2));
-        } else {
-            int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-            holder.progressBar.setProgress(progress);
-        }
-
+        holder.card.setOnCreateContextMenuListener(this);
+        holder.card.setOnLongClickListener(v -> {
+            longPressedItem = item;
+            return false;
+        });
+        holder.secondaryActionButton.setOnCreateContextMenuListener(this);
+        holder.secondaryActionButton.setOnLongClickListener(v -> {
+            longPressedItem = item;
+            return false;
+        });
         holder.card.setOnClickListener(v -> {
             MainActivity activity = mainActivityRef.get();
             if (activity != null) {
@@ -91,24 +77,44 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         return data.size();
     }
 
-    static class Holder extends RecyclerView.ViewHolder {
-        SquareImageView cover;
-        TextView title;
-        TextView date;
-        ImageView secondaryActionButton;
-        ImageView secondaryActionIcon;
-        View card;
-        ProgressBar progressBar;
-
-        public Holder(@NonNull View itemView) {
-            super(itemView);
-            card = itemView.findViewById(R.id.card);
-            cover = itemView.findViewById(R.id.cover);
-            title = itemView.findViewById(R.id.titleLabel);
-            date = itemView.findViewById(R.id.dateLabel);
-            secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
-            secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
-            progressBar = itemView.findViewById(R.id.progressBar);
-        }
+    @Override
+    public void onViewRecycled(@NonNull HorizontalItemViewHolder holder) {
+        super.onViewRecycled(holder);
+        // Set all listeners to null. This is required to prevent leaking fragments that have set a listener.
+        // Activity -> recycledViewPool -> ViewHolder -> Listener -> Fragment (can not be garbage collected)
+        holder.card.setOnClickListener(null);
+        holder.card.setOnCreateContextMenuListener(null);
+        holder.card.setOnLongClickListener(null);
+        holder.secondaryActionButton.setOnClickListener(null);
+        holder.secondaryActionButton.setOnCreateContextMenuListener(null);
+        holder.secondaryActionButton.setOnLongClickListener(null);
     }
+
+    /**
+     * {@link #notifyItemChanged(int)} is final, so we can not override.
+     * Calling {@link #notifyItemChanged(int)} may bind the item to a new ViewHolder and execute a transition.
+     * This causes flickering and breaks the download animation that stores the old progress in the View.
+     * Instead, we tell the adapter to use partial binding by calling {@link #notifyItemChanged(int, Object)}.
+     * We actually ignore the payload and always do a full bind but calling the partial bind method ensures
+     * that ViewHolders are always re-used.
+     *
+     * @param position Position of the item that has changed
+     */
+    public void notifyItemChangedCompat(int position) {
+        notifyItemChanged(position, "foo");
+    }
+
+    @Override
+    public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = mainActivityRef.get().getMenuInflater();
+        if (longPressedItem == null) {
+            return;
+        }
+        menu.clear();
+        inflater.inflate(R.menu.feeditemlist_context, menu);
+        menu.setHeaderTitle(longPressedItem.getTitle());
+        FeedItemMenuHandler.onPrepareMenu(menu, longPressedItem, R.id.skip_episode_item);
+    }
+
+
 }
