@@ -5,6 +5,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -102,6 +103,11 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
      */
     public void notifyItemChangedCompat(int position) {
         notifyItemChanged(position, "foo");
+    }
+
+    @Nullable
+    public FeedItem getLongPressedItem() {
+        return longPressedItem;
     }
 
     @Override

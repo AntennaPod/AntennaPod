@@ -12,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.databinding.HomeSectionBinding;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -44,19 +46,22 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
         }
-        if (item.getItemId() == R.id.share_item) {
-            return true; // avoids that the position is reset when we need it in the submenu
-        }
-        if (!(viewBinding.recyclerView.getAdapter() instanceof EpisodeItemListAdapter)) {
+        FeedItem longPressedItem;
+        if (viewBinding.recyclerView.getAdapter() instanceof EpisodeItemListAdapter) {
+            EpisodeItemListAdapter adapter = (EpisodeItemListAdapter) viewBinding.recyclerView.getAdapter();
+            longPressedItem = adapter.getLongPressedItem();
+        } else if (viewBinding.recyclerView.getAdapter() instanceof HorizontalItemListAdapter) {
+            HorizontalItemListAdapter adapter = (HorizontalItemListAdapter) viewBinding.recyclerView.getAdapter();
+            longPressedItem = adapter.getLongPressedItem();
+        } else {
             return false;
         }
-        EpisodeItemListAdapter adapter = (EpisodeItemListAdapter) viewBinding.recyclerView.getAdapter();
 
-        if (adapter.getLongPressedItem() == null) {
+        if (longPressedItem == null) {
             Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), adapter.getLongPressedItem());
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), longPressedItem);
     }
 
     @Override
