@@ -39,6 +39,7 @@ public class EpisodesSurpriseSection extends HomeSection {
         viewBinding.shuffleButton.setVisibility(View.VISIBLE);
         viewBinding.shuffleButton.setOnClickListener(v -> {
             seed = new Random().nextInt();
+            viewBinding.recyclerView.scrollToPosition(0);
             loadItems();
         });
         listAdapter = new HorizontalItemListAdapter((MainActivity) getActivity());

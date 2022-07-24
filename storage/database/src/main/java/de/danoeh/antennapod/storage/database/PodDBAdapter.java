@@ -1065,7 +1065,7 @@ public class PodDBAdapter {
 
     public Cursor getRandomEpisodesCursor(int limit, int seed) {
         final String allItemsRandomOrder = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + KEY_READ + " == 0"
+                + " WHERE " + KEY_READ + " != " + FeedItem.PLAYED
                     // Only from the last two years. Older episodes frequently contain broken covers and stuff like that
                     + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
                 + " ORDER BY " + randomEpisodeNumber(seed);
