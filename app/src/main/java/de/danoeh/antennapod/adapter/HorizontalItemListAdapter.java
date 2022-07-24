@@ -30,6 +30,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     public HorizontalItemListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
+        setHasStableIds(true);
     }
 
     public void updateData(List<FeedItem> newData) {
