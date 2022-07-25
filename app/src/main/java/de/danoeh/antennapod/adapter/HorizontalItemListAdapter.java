@@ -23,7 +23,7 @@ import java.util.List;
 public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalItemViewHolder>
         implements View.OnCreateContextMenuListener {
     private final WeakReference<MainActivity> mainActivityRef;
-    private final List<FeedItem> data = new ArrayList<>();
+    private List<FeedItem> data = new ArrayList<>();
     private FeedItem longPressedItem;
 
     public HorizontalItemListAdapter(MainActivity mainActivity) {
@@ -32,8 +32,7 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
     }
 
     public void updateData(List<FeedItem> newData) {
-        data.clear();
-        data.addAll(newData);
+        data = newData;
         notifyDataSetChanged();
     }
 
