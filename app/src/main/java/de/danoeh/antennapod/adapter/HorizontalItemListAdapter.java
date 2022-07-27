@@ -52,8 +52,8 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
             longPressedItem = item;
             return false;
         });
-        holder.secondaryActionButton.setOnCreateContextMenuListener(this);
-        holder.secondaryActionButton.setOnLongClickListener(v -> {
+        holder.secondaryActionIcon.setOnCreateContextMenuListener(this);
+        holder.secondaryActionIcon.setOnLongClickListener(v -> {
             longPressedItem = item;
             return false;
         });
@@ -85,9 +85,9 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
         holder.card.setOnClickListener(null);
         holder.card.setOnCreateContextMenuListener(null);
         holder.card.setOnLongClickListener(null);
-        holder.secondaryActionButton.setOnClickListener(null);
-        holder.secondaryActionButton.setOnCreateContextMenuListener(null);
-        holder.secondaryActionButton.setOnLongClickListener(null);
+        holder.secondaryActionIcon.setOnClickListener(null);
+        holder.secondaryActionIcon.setOnCreateContextMenuListener(null);
+        holder.secondaryActionIcon.setOnLongClickListener(null);
     }
 
     /**

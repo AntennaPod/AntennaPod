@@ -19,16 +19,17 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 
 public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
-    public ImageView secondaryActionButton;
-    public View card;
+    public final View card;
+    public final ImageView secondaryActionIcon;
     private final SquareImageView cover;
     private final TextView title;
     private final TextView date;
-    private final ImageView secondaryActionIcon;
     private final ProgressBar progressBar;
+    private final CircularProgressBar circularProgressBar;
 
     private final MainActivity activity;
     private FeedItem item;
@@ -41,8 +42,8 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         cover = itemView.findViewById(R.id.cover);
         title = itemView.findViewById(R.id.titleLabel);
         date = itemView.findViewById(R.id.dateLabel);
-        secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+        circularProgressBar = itemView.findViewById(R.id.circularProgressBar);
         progressBar = itemView.findViewById(R.id.progressBar);
         itemView.setTag(this);
     }
@@ -58,17 +59,21 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         title.setText(item.getTitle());
         date.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
         ItemActionButton actionButton = ItemActionButton.forItem(item);
-        actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
-        secondaryActionButton.setFocusable(false);
+        actionButton.configure(secondaryActionIcon, secondaryActionIcon, activity);
+        secondaryActionIcon.setFocusable(false);
 
         FeedMedia media = item.getMedia();
-        if (media != null) {
+        if (media == null) {
+            circularProgressBar.setPercentage(0, item);
+        } else {
             if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
-                progressBar.setProgress(Math.max(downloadRequest.getProgressPercent(), 2));
+                float percent = 0.01f * downloadRequest.getProgressPercent();
+                circularProgressBar.setPercentage(Math.max(percent, 0.01f), item);
+            } else if (media.isDownloaded()) {
+                circularProgressBar.setPercentage(1, item); // Do not animate 100% -> 0%
             } else {
-                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-                progressBar.setProgress(progress);
+                circularProgressBar.setPercentage(0, item); // Animate X% -> 0%
             }
         }
     }

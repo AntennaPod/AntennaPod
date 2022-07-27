@@ -26,7 +26,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="?attr/background_color"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp">
 
@@ -50,23 +49,30 @@
                             squareImageView:direction="width" />
 
                         <ImageView
-                            android:id="@+id/secondaryActionButton"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
-                            android:clickable="true"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="0dp"
-                            android:paddingTop="16dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:srcCompat="@drawable/ic_droplet" />
+                            android:layout_margin="8dp"
+                            android:padding="3dp"
+                            app:srcCompat="@drawable/bg_circle" />
+
+                        <de.danoeh.antennapod.ui.common.CircularProgressBar
+                            android:id="@+id/circularProgressBar"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="bottom|end"
+                            app:foregroundColor="?attr/colorOnPrimary" />
 
                         <ImageView
                             android:id="@+id/secondaryActionIcon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
                             android:layout_margin="8dp"
+                            android:padding="12dp"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             app:tintMode="src_atop"
                             app:tint="?attr/colorOnPrimary"
                             app:srcCompat="@drawable/ic_play_24dp" />
