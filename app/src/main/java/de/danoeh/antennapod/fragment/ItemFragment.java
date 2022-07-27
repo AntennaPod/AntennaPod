@@ -39,6 +39,7 @@ import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -54,6 +55,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
@@ -106,7 +108,7 @@ public class ItemFragment extends Fragment {
     private TextView txtvDuration;
     private TextView txtvPublished;
     private ImageView imgvCover;
-    private ProgressBar progbarDownload;
+    private CircularProgressBar progbarDownload;
     private ProgressBar progbarLoading;
     private TextView butAction1Text;
     private TextView butAction2Text;
@@ -158,7 +160,7 @@ public class ItemFragment extends Fragment {
 
         imgvCover = layout.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> openPodcast());
-        progbarDownload = layout.findViewById(R.id.progbarDownload);
+        progbarDownload = layout.findViewById(R.id.circularProgressBar);
         progbarLoading = layout.findViewById(R.id.progbarLoading);
         butAction1 = layout.findViewById(R.id.butAction1);
         butAction2 = layout.findViewById(R.id.butAction2);
@@ -311,10 +313,11 @@ public class ItemFragment extends Fragment {
         progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
-                if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                        && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                DownloadRequest request = downloader.getDownloadRequest();
+                if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                        && request.getFeedfileId() == item.getMedia().getId()) {
                     progbarDownload.setVisibility(View.VISIBLE);
-                    progbarDownload.setProgress(downloader.getDownloadRequest().getProgressPercent());
+                    progbarDownload.setPercentage(0.01f * Math.max(1, request.getProgressPercent()), request);
                 }
             }
         }
