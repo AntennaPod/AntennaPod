@@ -18,15 +18,20 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.databinding.HomeFragmentBinding;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.ui.home.sections.DownloadsSection;
 import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
-import de.danoeh.antennapod.ui.home.sections.WelcomeBannerSection;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -48,6 +53,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private boolean displayUpArrow;
     private HomeFragmentBinding viewBinding;
     private boolean isUpdatingFeeds = false;
+    private Disposable disposable;
 
     @NonNull
     @Override
@@ -62,12 +68,12 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         ((MainActivity) requireActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
         refreshToolbarState();
         populateSectionList();
+        updateWelcomeScreenVisibility();
         return viewBinding.getRoot();
     }
 
     private void populateSectionList() {
         viewBinding.homeContainer.removeAllViews();
-        addSection(new WelcomeBannerSection());
 
         List<String> hiddenSections = getHiddenSections(getContext());
         String[] sectionTags = getResources().getStringArray(R.array.home_section_tags);
@@ -157,4 +163,23 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updateWelcomeScreenVisibility();
+    }
+
+    private void updateWelcomeScreenVisibility() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> DBReader.getNavDrawerData().items.size())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(numSubscriptions -> {
+                    viewBinding.welcomeContainer.setVisibility(numSubscriptions == 0 ? View.VISIBLE : View.GONE);
+                    viewBinding.homeContainer.setVisibility(numSubscriptions == 0 ? View.GONE : View.VISIBLE);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
 }
