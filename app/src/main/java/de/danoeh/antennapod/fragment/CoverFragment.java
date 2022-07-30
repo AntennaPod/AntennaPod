@@ -310,7 +310,7 @@ public class CoverFragment extends Fragment {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .dontAnimate()
-                .transforms(new FitCenter(),
+                .transform(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
             RequestBuilder<Drawable> cover = Glide.with(this)

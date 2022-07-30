@@ -6,9 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.0'
-        classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.4'
         classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
+        classpath 'org.codehaus.groovy:groovy-xml:3.0.9'
     }
 }
 
@@ -47,28 +46,24 @@ project.ext {
     recyclerViewVersion = "1.2.1"
     viewPager2Version = "1.1.0-beta01"
     workManagerVersion = "2.3.4"
-    googleMaterialVersion = "1.1.0"
+    googleMaterialVersion = "1.4.0"
 
     // Third-party
     commonslangVersion = "3.6"
     commonsioVersion = "2.5"
-    jsoupVersion = "1.11.2"
-    glideVersion = "4.8.0"
+    jsoupVersion = "1.15.1"
+    glideVersion = "4.13.2"
     okhttpVersion = "3.12.10"
     okioVersion = "1.17.5"
-    eventbusVersion = "3.2.0"
+    eventbusVersion = "3.3.1"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
     exoPlayerVersion = "2.14.2"
     audioPlayerVersion = "v2.0.0"
 
-    // Only used for free builds. This version should be updated regularly.
-    conscryptVersion = "2.5.2"
-
     // Google Play build
     wearableSupportVersion = "2.6.0"
-    playServicesVersion = "8.4.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
@@ -82,7 +77,7 @@ project.ext {
 
 apply plugin: "checkstyle"
 checkstyle {
-    toolVersion '8.24'
+    toolVersion '10.3.1'
 }
 
 task checkstyle(type: Checkstyle) {

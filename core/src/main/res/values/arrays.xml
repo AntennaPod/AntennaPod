@@ -151,6 +151,7 @@
 
     <string-array name="nav_drawer_titles">
         <item>@string/queue_label</item>
+        <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>
         <item>@string/downloads_label</item>
@@ -173,8 +174,8 @@
     </string-array>
 
     <string-array name="nav_drawer_feed_counter_options">
-        <item>@string/drawer_feed_counter_new_unplayed</item>
-        <item>@string/drawer_feed_counter_new</item>
+        <item>@string/drawer_feed_counter_inbox_unplayed</item>
+        <item>@string/drawer_feed_counter_inbox</item>
         <item>@string/drawer_feed_counter_unplayed</item>
         <item>@string/drawer_feed_counter_downloaded</item>
         <item>@string/drawer_feed_counter_none</item>
@@ -209,6 +210,18 @@
         <item>@string/sort_duration_long_short</item>
     </string-array>
 
+    <!-- sort for local feed screen -->
+    <string-array name="local_feed_episodes_sort_options">
+        <item>@string/sort_date_new_old</item>
+        <item>@string/sort_date_old_new</item>
+        <item>@string/sort_title_a_z</item>
+        <item>@string/sort_title_z_a</item>
+        <item>@string/sort_duration_short_long</item>
+        <item>@string/sort_duration_long_short</item>
+        <item>@string/sort_filename_a_z</item>
+        <item>@string/sort_filename_z_a</item>
+    </string-array>
+
     <string-array name="feed_episodes_sort_values">
         <item>DATE_NEW_OLD</item>
         <item>DATE_OLD_NEW</item>
@@ -218,32 +231,21 @@
         <item>DURATION_LONG_SHORT</item>
     </string-array>
 
+    <string-array name="local_feed_episodes_sort_values">
+        <item>DATE_NEW_OLD</item>
+        <item>DATE_OLD_NEW</item>
+        <item>EPISODE_TITLE_A_Z</item>
+        <item>EPISODE_TITLE_Z_A</item>
+        <item>DURATION_SHORT_LONG</item>
+        <item>DURATION_LONG_SHORT</item>
+        <item>EPISODE_FILENAME_A_Z</item>
+        <item>EPISODE_FILENAME_Z_A</item>
+    </string-array>
+
     <string-array name="compact_notification_buttons_options">
         <item>@string/rewind_label</item>
         <item>@string/fast_forward_label</item>
         <item>@string/skip_episode_label</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_options">
-        <item>@string/stop_playback</item>
-        <item>@string/player_go_to_picture_in_picture</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values">
-        <item>stop</item>
-        <item>pip</item>
-        <item>continue</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_options_without_pip">
-        <item>@string/stop_playback</item>
-        <item>@string/continue_playback</item>
-    </string-array>
-
-    <string-array name="video_background_behavior_values_without_pip">
-        <item>stop</item>
-        <item>continue</item>
     </string-array>
 
     <string-array name="back_button_behavior_options">
@@ -264,12 +266,14 @@
 
     <string-array name="back_button_go_to_pages">
         <item>@string/queue_label</item>
+        <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>
     </string-array>
 
     <string-array name="back_button_go_to_pages_tags">
         <item>QueueFragment</item>
+        <item>InboxFragment</item>
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
     </string-array>

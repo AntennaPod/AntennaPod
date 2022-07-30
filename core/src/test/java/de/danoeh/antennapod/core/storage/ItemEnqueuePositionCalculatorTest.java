@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
 import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
@@ -29,9 +32,6 @@ import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ItemEnqueuePositionCalculatorTest {
 
@@ -84,7 +84,9 @@ public class ItemEnqueuePositionCalculatorTest {
                     idsExpected);
         }
 
-        Playable getCurrentlyPlaying() { return null; }
+        Playable getCurrentlyPlaying() {
+            return null;
+        }
     }
 
     @RunWith(Parameterized.class)
@@ -127,12 +129,11 @@ public class ItemEnqueuePositionCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
-    public static class ItemEnqueuePositionCalculatorPreserveDownloadOrderTest {
-
+    public static class PreserveDownloadOrderTest {
         /**
          * The test covers the use case that when user initiates multiple downloads in succession,
          * resulting in multiple addQueueItem() calls in succession.
-         * the items in the queue will be in the same order as the the order user taps to download
+         * the items in the queue will be in the same order as the order user taps to download
          */
         @Parameters(name = "{index}: case<{0}>")
         public static Iterable<Object[]> data() {
@@ -183,60 +184,38 @@ public class ItemEnqueuePositionCalculatorTest {
 
         @Test
         public void testQueueOrderWhenDownloading2Items() {
-
-            // Setup class under test
-            //
             ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
-            DownloadStateProvider stubDownloadStateProvider = mock(DownloadStateProvider.class);
-            when(stubDownloadStateProvider.isDownloadingFile(any(FeedMedia.class))).thenReturn(false);
-            calculator.downloadStateProvider = stubDownloadStateProvider;
+            try (MockedStatic<DownloadService> downloadServiceMock = Mockito.mockStatic(DownloadService.class)) {
+                List<FeedItem> queue = new ArrayList<>(queueInitial);
 
-            // Setup initial data
-            // A shallow copy, as the test code will manipulate the queue
-            List<FeedItem> queue = new ArrayList<>(queueInitial);
-
-            // Test body
-            Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
-            // User clicks download on feed item 101
-            FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider, true);
-            doAddToQueueAndAssertResult(message + " (1st download)",
-                    calculator, tFI101, queue, currentlyPlaying,
-                    idsExpectedAfter101);
-            // Then user clicks download on feed item 102
-            FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider, true);
-            doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
-                    calculator, tFI102, queue, currentlyPlaying,
-                    idsExpectedAfter102);
-            // simulate download failure case for 102
-            setAsDownloading(tFI102, stubDownloadStateProvider, false);
-            // Then user clicks download on feed item 103
-            FeedItem tFI103 = setAsDownloading(103, stubDownloadStateProvider, true);
-            doAddToQueueAndAssertResult(message
-                            + " (3rd download, with 2nd download failed; "
-                            + "it should be behind 1st download (unless enqueueLocation is BACK)",
-                    calculator, tFI103, queue, currentlyPlaying,
-                    idsExpectedAfter103);
-
+                // Test body
+                Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
+                // User clicks download on feed item 101
+                FeedItem feedItem101 = createFeedItem(101);
+                downloadServiceMock.when(() ->
+                        DownloadService.isDownloadingFile(feedItem101.getMedia().getDownload_url())).thenReturn(true);
+                doAddToQueueAndAssertResult(message + " (1st download)",
+                        calculator, feedItem101, queue, currentlyPlaying, idsExpectedAfter101);
+                // Then user clicks download on feed item 102
+                FeedItem feedItem102 = createFeedItem(102);
+                downloadServiceMock.when(() ->
+                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(true);
+                doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
+                        calculator, feedItem102, queue, currentlyPlaying, idsExpectedAfter102);
+                // simulate download failure case for 102
+                downloadServiceMock.when(() ->
+                        DownloadService.isDownloadingFile(feedItem102.getMedia().getDownload_url())).thenReturn(false);
+                // Then user clicks download on feed item 103
+                FeedItem feedItem103 = createFeedItem(103);
+                downloadServiceMock.when(() ->
+                        DownloadService.isDownloadingFile(feedItem103.getMedia().getDownload_url())).thenReturn(true);
+                doAddToQueueAndAssertResult(message
+                                + " (3rd download, with 2nd download failed; "
+                                + "it should be behind 1st download (unless enqueueLocation is BACK)",
+                        calculator, feedItem103, queue, currentlyPlaying, idsExpectedAfter103);
+            }
         }
-
-
-        private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider,
-                                                 boolean isDownloading) {
-            FeedItem item = createFeedItem(id);
-            FeedMedia media = new FeedMedia(item, "http://download.url.net/" + id, 100000 + id, "audio/mp3");
-            media.setId(item.getId());
-            item.setMedia(media);
-            return setAsDownloading(item, stubDownloadStateProvider, isDownloading);
-        }
-
-        private static FeedItem setAsDownloading(FeedItem item, DownloadStateProvider stubDownloadStateProvider,
-                                                 boolean isDownloading) {
-            when(stubDownloadStateProvider.isDownloadingFile(item.getMedia())).thenReturn(isDownloading);
-            return item;
-        }
-
     }
-
 
     static void doAddToQueueAndAssertResult(String message,
                                             ItemEnqueuePositionCalculator calculator,
@@ -279,7 +258,7 @@ public class ItemEnqueuePositionCalculatorTest {
     static FeedItem createFeedItem(long id) {
         FeedItem item = new FeedItem(id, "Item" + id, "ItemId" + id, "url",
                 new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
-        FeedMedia media = new FeedMedia(item, "download_url", 1234567, "audio/mpeg");
+        FeedMedia media = new FeedMedia(item, "http://download.url.net/" + id, 1234567, "audio/mpeg");
         media.setId(item.getId());
         item.setMedia(media);
         return item;

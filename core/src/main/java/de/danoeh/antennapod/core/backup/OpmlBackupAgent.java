@@ -8,6 +8,9 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -33,8 +36,6 @@ import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 public class OpmlBackupAgent extends BackupAgentHelper {
     private static final String OPML_BACKUP_KEY = "opml";
@@ -114,12 +115,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             } catch (IOException e) {
                 Log.e(TAG, "Error during backup", e);
             } finally {
-                if (writer != null) {
-                    try {
-                        writer.close();
-                    } catch (IOException e) {
-                    }
-                }
+                IOUtils.closeQuietly(writer);
             }
         }
 
@@ -146,16 +142,10 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             try {
                 ArrayList<OpmlElement> opmlElements = new OpmlReader().readDocument(reader);
                 mChecksum = digester == null ? null : digester.digest();
-                DownloadRequester downloader = DownloadRequester.getInstance();
-
                 for (OpmlElement opmlElem : opmlElements) {
                     Feed feed = new Feed(opmlElem.getXmlUrl(), null, opmlElem.getText());
-
-                    try {
-                        downloader.downloadFeed(mContext, feed);
-                    } catch (DownloadRequestException e) {
-                        Log.d(TAG, "Error while restoring/downloading feed", e);
-                    }
+                    DownloadRequest request = DownloadRequestCreator.create(feed).build();
+                    DownloadService.download(mContext, false, request);
                 }
             } catch (XmlPullParserException e) {
                 Log.e(TAG, "Error while parsing the OPML file", e);

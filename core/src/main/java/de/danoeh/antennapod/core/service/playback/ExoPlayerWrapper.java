@@ -38,7 +38,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -113,6 +113,11 @@ public class ExoPlayerWrapper implements IPlayer {
                     } else {
                         Throwable cause = error.getCause();
                         if (cause instanceof HttpDataSource.HttpDataSourceException) {
+                            if (cause.getCause() != null) {
+                                cause = cause.getCause();
+                            }
+                        }
+                        if (cause != null && "Source error".equals(cause.getMessage())) {
                             cause = cause.getCause();
                         }
                         audioErrorListener.accept(cause != null ? cause.getMessage() : error.getMessage());
@@ -217,7 +222,7 @@ public class ExoPlayerWrapper implements IPlayer {
             final HashMap<String, String> requestProperties = new HashMap<>();
             requestProperties.put(
                     "Authorization",
-                    HttpDownloader.encodeCredentials(user, password, "ISO-8859-1")
+                    HttpCredentialEncoder.encode(user, password, "ISO-8859-1")
             );
             httpDataSourceFactory.setDefaultRequestProperties(requestProperties);
         }

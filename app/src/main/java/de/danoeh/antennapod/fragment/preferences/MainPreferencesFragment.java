@@ -17,6 +17,13 @@ import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.fragment.preferences.about.AboutFragment;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {
 
@@ -29,7 +36,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String PREF_CATEGORY_PROJECT = "project";
-    private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
@@ -106,16 +112,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(STATISTICS).setOnPreferenceClickListener(
-                preference -> {
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.settingsContainer, new StatisticsFragment())
-                            .addToBackStack(getString(R.string.statistics_label)).commit();
-                    return true;
-                }
-        );
         findPreference(PREF_DOCUMENTATION).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/documentation/");
+            IntentUtils.openInBrowser(getContext(), getLocalizedWebsiteLink() + "/documentation/");
             return true;
         });
         findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {
@@ -123,13 +121,27 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_CONTRIBUTE).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/contribute/");
+            IntentUtils.openInBrowser(getContext(), getLocalizedWebsiteLink() + "/contribute/");
             return true;
         });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
+    }
+
+    private String getLocalizedWebsiteLink() {
+        try (InputStream is = getContext().getAssets().open("website-languages.txt")) {
+            String[] languages = IOUtils.toString(is, StandardCharsets.UTF_8.name()).split("\n");
+            String deviceLanguage = Locale.getDefault().getLanguage();
+            if (ArrayUtils.contains(languages, deviceLanguage) && !"en".equals(deviceLanguage)) {
+                return "https://antennapod.org/" + deviceLanguage;
+            } else {
+                return "https://antennapod.org";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setupSearch() {

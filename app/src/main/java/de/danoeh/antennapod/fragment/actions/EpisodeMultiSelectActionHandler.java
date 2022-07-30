@@ -11,45 +11,47 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 
 public class EpisodeMultiSelectActionHandler {
     private static final String TAG = "EpisodeSelectHandler";
     private final MainActivity activity;
-    private final List<FeedItem> selectedItems;
+    private final int actionId;
+    private int totalNumItems = 0;
+    private Snackbar snackbar = null;
 
-    public EpisodeMultiSelectActionHandler(MainActivity activity, List<FeedItem> selectedItems) {
+    public EpisodeMultiSelectActionHandler(MainActivity activity, int actionId) {
         this.activity = activity;
-        this.selectedItems = selectedItems;
+        this.actionId = actionId;
     }
 
-    public void handleAction(int id) {
-        if (id == R.id.add_to_queue_batch) {
-            queueChecked();
-        } else if (id == R.id.remove_from_queue_batch) {
-            removeFromQueueChecked();
-        } else if (id == R.id.mark_read_batch) {
-            markedCheckedPlayed();
-        } else if (id == R.id.mark_unread_batch) {
-            markedCheckedUnplayed();
-        } else if (id == R.id.download_batch) {
-            downloadChecked();
-        } else if (id == R.id.delete_batch) {
-            deleteChecked();
+    public void handleAction(List<FeedItem> items) {
+        if (actionId == R.id.add_to_queue_batch) {
+            queueChecked(items);
+        } else if (actionId == R.id.remove_from_queue_batch) {
+            removeFromQueueChecked(items);
+        } else if (actionId == R.id.mark_read_batch) {
+            markedCheckedPlayed(items);
+        } else if (actionId == R.id.mark_unread_batch) {
+            markedCheckedUnplayed(items);
+        } else if (actionId == R.id.download_batch) {
+            downloadChecked(items);
+        } else if (actionId == R.id.delete_batch) {
+            deleteChecked(items);
         } else {
-            Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
+            Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionId);
         }
     }
 
-    private void queueChecked() {
+    private void queueChecked(List<FeedItem> items) {
         // Check if an episode actually contains any media files before adding it to queue
-        LongList toQueue = new LongList(selectedItems.size());
-        for (FeedItem episode : selectedItems) {
+        LongList toQueue = new LongList(items.size());
+        for (FeedItem episode : items) {
             if (episode.hasMedia()) {
                 toQueue.add(episode.getId());
             }
@@ -58,44 +60,39 @@ public class EpisodeMultiSelectActionHandler {
         showMessage(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
-    private void removeFromQueueChecked() {
-        long[] checkedIds = getSelectedIds();
+    private void removeFromQueueChecked(List<FeedItem> items) {
+        long[] checkedIds = getSelectedIds(items);
         DBWriter.removeQueueItem(activity, true, checkedIds);
         showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
     }
 
-    private void markedCheckedPlayed() {
-        long[] checkedIds = getSelectedIds();
+    private void markedCheckedPlayed(List<FeedItem> items) {
+        long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
         showMessage(R.plurals.marked_read_batch_label, checkedIds.length);
     }
 
-    private void markedCheckedUnplayed() {
-        long[] checkedIds = getSelectedIds();
+    private void markedCheckedUnplayed(List<FeedItem> items) {
+        long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
         showMessage(R.plurals.marked_unread_batch_label, checkedIds.length);
     }
 
-    private void downloadChecked() {
+    private void downloadChecked(List<FeedItem> items) {
         // download the check episodes in the same order as they are currently displayed
-        List<FeedItem> toDownload = new ArrayList<>(selectedItems.size());
-        for (FeedItem episode : selectedItems) {
+        List<DownloadRequest> requests = new ArrayList<>();
+        for (FeedItem episode : items) {
             if (episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
-                toDownload.add(episode);
+                requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
             }
         }
-        try {
-            DownloadRequester.getInstance().downloadMedia(activity, true, toDownload.toArray(new FeedItem[0]));
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(activity, e.getMessage());
-        }
-        showMessage(R.plurals.downloading_batch_label, toDownload.size());
+        DownloadService.download(activity, true, requests.toArray(new DownloadRequest[0]));
+        showMessage(R.plurals.downloading_batch_label, requests.size());
     }
 
-    private void deleteChecked() {
+    private void deleteChecked(List<FeedItem> items) {
         int countHasMedia = 0;
-        for (FeedItem feedItem : selectedItems) {
+        for (FeedItem feedItem : items) {
             if (feedItem.hasMedia() && feedItem.getMedia().isDownloaded()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia().getId());
@@ -105,14 +102,22 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {
-        activity.showSnackbarAbovePlayer(activity.getResources()
-                .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
+        totalNumItems += numItems;
+        activity.runOnUiThread(() -> {
+            String text = activity.getResources().getQuantityString(msgId, totalNumItems, totalNumItems);
+            if (snackbar != null) {
+                snackbar.setText(text);
+                snackbar.show(); // Resets the timeout
+            } else {
+                snackbar = activity.showSnackbarAbovePlayer(text, Snackbar.LENGTH_LONG);
+            }
+        });
     }
 
-    private long[] getSelectedIds() {
-        long[] checkedIds = new long[selectedItems.size()];
-        for (int i = 0; i < selectedItems.size(); ++i) {
-            checkedIds[i] = selectedItems.get(i).getId();
+    private long[] getSelectedIds(List<FeedItem> items) {
+        long[] checkedIds = new long[items.size()];
+        for (int i = 0; i < items.size(); ++i) {
+            checkedIds[i] = items.get(i).getId();
         }
         return checkedIds;
     }

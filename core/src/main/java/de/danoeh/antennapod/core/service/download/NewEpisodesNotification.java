@@ -17,18 +17,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
+
+import java.util.Map;
 
 public class NewEpisodesNotification {
     private static final String TAG = "NewEpisodesNotification";
     private static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private LongIntMap countersBefore;
+    private Map<Long, Integer> countersBefore;
 
     public NewEpisodesNotification() {
     }
@@ -36,7 +37,7 @@ public class NewEpisodesNotification {
     public void loadCountersBeforeRefresh() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        countersBefore = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW);
+        countersBefore = adapter.getFeedCounters(FeedCounter.SHOW_NEW);
         adapter.close();
     }
 
@@ -46,7 +47,7 @@ public class NewEpisodesNotification {
             return;
         }
 
-        int newEpisodesBefore = countersBefore.get(feed.getId());
+        int newEpisodesBefore = countersBefore.containsKey(feed.getId()) ? countersBefore.get(feed.getId()) : 0;
         int newEpisodesAfter = getNewEpisodeCount(feed.getId());
 
         Log.d(TAG, "New episodes before: " + newEpisodesBefore + ", after: " + newEpisodesAfter);
@@ -118,8 +119,9 @@ public class NewEpisodesNotification {
             return Glide.with(context)
                     .asBitmap()
                     .load(feed.getImageUrl())
-                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                    .apply(new RequestOptions().centerCrop())
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
         } catch (Throwable tr) {
@@ -130,7 +132,8 @@ public class NewEpisodesNotification {
     private static int getNewEpisodeCount(long feedId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        int episodeCount = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW, feedId).get(feedId);
+        Map<Long, Integer> counters = adapter.getFeedCounters(FeedCounter.SHOW_NEW, feedId);
+        int episodeCount = counters.containsKey(feedId) ? counters.get(feedId) : 0;
         adapter.close();
         return episodeCount;
     }

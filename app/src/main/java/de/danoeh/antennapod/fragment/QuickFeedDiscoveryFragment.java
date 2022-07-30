@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -26,8 +28,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
-import de.danoeh.antennapod.discovery.ItunesTopListLoader;
-import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
@@ -119,13 +119,12 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
         if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
-            errorTextView.setText(String.format(getResources().getString(R.string.discover_is_hidden),
-                    getResources().getString(R.string.discover_hide)));
+            errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            discoverGridLayout.setVisibility(View.INVISIBLE);
-            errorRetry.setVisibility(View.INVISIBLE);
-            poweredByTextView.setVisibility(View.INVISIBLE);
+            discoverGridLayout.setVisibility(View.GONE);
+            errorRetry.setVisibility(View.GONE);
+            poweredByTextView.setVisibility(View.GONE);
             return;
         }
 

@@ -89,6 +89,16 @@
                     android:visibility="gone">
 
                     <ImageButton
+                        android:id="@+id/butPlaybackSpeed"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/playback_speed"
+                        android:layout_marginEnd="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_widget_playback_speed" />
+
+                    <ImageButton
                         android:id="@+id/butRew"
                         android:layout_width="36dp"
                         android:layout_height="36dp"

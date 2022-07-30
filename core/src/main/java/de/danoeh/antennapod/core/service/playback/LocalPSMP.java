@@ -713,7 +713,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         return stream;
     }
 
-
     /**
      * Releases internally used resources. This method should only be called when the object is not used anymore.
      */
@@ -725,24 +724,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();
                 }
-            } catch (Exception ignore) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mediaPlayer.release();
             mediaPlayer = null;
+            playerStatus = PlayerStatus.STOPPED;
         }
         isShutDown = true;
         executor.shutdown();
         abandonAudioFocus();
         releaseWifiLockIfNecessary();
-    }
-
-    /**
-     * Releases internally used resources. This method should only be called when the object is not used anymore.
-     * This method is executed on an internal executor service.
-     */
-    @Override
-    public void shutdownQuietly() {
-        executor.submit(this::shutdown);
-        executor.shutdown();
     }
 
     @Override
@@ -834,6 +826,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
         if (media == null) {
             mediaPlayer = null;
+            playerStatus = PlayerStatus.STOPPED;
             return;
         }
 
@@ -863,8 +856,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
                     pausedBecauseOfTransientAudiofocusLoss = false;
                     new PlaybackServiceStarter(context, getPlayable())
-                            .startWhenPrepared(true)
-                            .streamIfLastWasStream()
                             .callEvenIfRunning(false)
                             .start();
                 }

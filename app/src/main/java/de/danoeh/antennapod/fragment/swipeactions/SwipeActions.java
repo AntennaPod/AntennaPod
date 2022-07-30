@@ -21,7 +21,9 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -37,7 +39,8 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     public static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
-                    new MarkPlayedSwipeAction(), new RemoveFromQueueSwipeAction())
+                    new TogglePlaybackStateSwipeAction(), new RemoveFromQueueSwipeAction(),
+                    new DeleteSwipeAction())
     );
 
     private final Fragment fragment;
@@ -93,11 +96,14 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     public static Actions getPrefsWithDefaults(Context context, String tag) {
         String defaultActions;
         switch (tag) {
-            /*case InboxFragment.TAG:
-                defaultActions = new int[] {ADD_TO_QUEUE, MARK_UNPLAYED};
-                break;*/
+            case InboxFragment.TAG:
+                defaultActions = SwipeAction.ADD_TO_QUEUE + "," + SwipeAction.REMOVE_FROM_INBOX;
+                break;
             case QueueFragment.TAG:
                 defaultActions = SwipeAction.REMOVE_FROM_QUEUE + "," + SwipeAction.REMOVE_FROM_QUEUE;
+                break;
+            case CompletedDownloadsFragment.TAG:
+                defaultActions = SwipeAction.DELETE + "," + SwipeAction.DELETE;
                 break;
             default:
             case EpisodesFragment.TAG:
@@ -152,8 +158,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         }
 
         //check if it will be removed
-        boolean rightWillRemove = right.willRemove(filter);
-        boolean leftWillRemove = left.willRemove(filter);
+        FeedItem item = ((EpisodeItemViewHolder) viewHolder).getFeedItem();
+        boolean rightWillRemove = right.willRemove(filter, item);
+        boolean leftWillRemove = left.willRemove(filter, item);
         boolean wontLeave = (dx > 0 && !rightWillRemove) || (dx < 0 && !leftWillRemove);
 
         //Limit swipe if it's not removed
@@ -245,7 +252,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
             String[] actions = prefs.split(",");
             if (actions.length == 2) {
                 this.right = Stream.of(swipeActions)
-                        .filter(a -> a.getId().equals(actions[0])).single();;
+                        .filter(a -> a.getId().equals(actions[0])).single();
                 this.left = Stream.of(swipeActions)
                         .filter(a -> a.getId().equals(actions[1])).single();
             }

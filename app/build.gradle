@@ -1,7 +1,6 @@
 plugins {
     id('com.android.application')
-    id('com.getkeepsafe.dexcount')
-    id('com.github.triplet.play') version '3.6.0-agp4.2' apply false
+    id('com.github.triplet.play') version '3.7.0-agp4.2' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -11,8 +10,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2040195
-        versionName "2.4.1"
+        versionCode 2060195
+        versionName "2.6.1"
 
         def commit = ""
         try {
@@ -26,14 +25,6 @@ android {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
 
-        if (project.hasProperty("podcastindexApiKey")) {
-            buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
-            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"' + podcastindexApiSecret + '"'
-        } else {
-            buildConfigField "String", "PODCASTINDEX_API_KEY", '"XTMMQGA2YZ4WJUBYY4HK"'
-            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"XAaAhk4^2YBsTE33vdbwbZNj82ZRLABDDqFdKe7x"'
-        }
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
@@ -43,29 +34,12 @@ android {
 
     signingConfigs {
         releaseConfig {
-            v1SigningEnabled true
-            v2SigningEnabled true
-
-            if (project.hasProperty("releaseStoreFile")) {
-                storeFile file(releaseStoreFile)
-            } else {
-                storeFile file("keystore")
-            }
-            if (project.hasProperty("releaseStorePassword")) {
-                storePassword releaseStorePassword
-            } else {
-                storePassword "password"
-            }
-            if (project.hasProperty("releaseKeyAlias")) {
-                keyAlias releaseKeyAlias
-            } else {
-                keyAlias "alias"
-            }
-            if (project.hasProperty("releaseKeyPassword")) {
-                keyPassword releaseKeyPassword
-            } else {
-                keyPassword "password"
-            }
+            enableV1Signing true
+            enableV2Signing true
+            storeFile file(project.getProperties().getOrDefault("releaseStoreFile", "keystore"))
+            storePassword project.getProperties().getOrDefault("releaseStorePassword", "password")
+            keyAlias project.getProperties().getOrDefault("releaseKeyAlias", "alias")
+            keyPassword project.getProperties().getOrDefault("releaseKeyPassword", "password")
         }
     }
 
@@ -73,17 +47,11 @@ android {
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
-
-            dexcount {
-                if (project.hasProperty("enableDexcountInDebug")) {
-                    runOnEachPackage = enableDexcountInDebug.toBoolean()
-                } else { // default to not running dexcount
-                    runOnEachPackage = false
-                }
-            }
+            resValue "string", "application_id", "de.danoeh.antennapod.debug"
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
+            resValue "string", "application_id", "de.danoeh.antennapod"
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.releaseConfig
@@ -113,13 +81,17 @@ dependencies {
     implementation project(":core")
     implementation project(":event")
     implementation project(':model')
+    implementation project(':net:discovery')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':playback:base')
     implementation project(':playback:cast')
+    implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:i18n')
+    implementation project(':ui:statistics')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -128,6 +100,7 @@ dependencies {
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation "androidx.media:media:$mediaVersion"
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
@@ -150,12 +123,10 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation 'com.github.shts:TriangleLabelView:1.1.2'
-    implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:3.1.1'
+    implementation 'com.leinardi.android:speed-dial:3.2.0'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
-    implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-    implementation 'com.github.skydoves:balloon:1.1.5'
+    implementation 'com.github.skydoves:balloon:1.4.0'
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.3'
     implementation 'com.annimon:stream:1.2.2'
 
@@ -191,8 +162,3 @@ task copyLicense(type: Copy) {
 }
 
 preBuild.dependsOn copyLicense
-
-apply plugin: 'de.timfreiheit.resourceplaceholders.plugin'
-resourcePlaceholders {
-    files = ['xml/shortcuts.xml']
-}

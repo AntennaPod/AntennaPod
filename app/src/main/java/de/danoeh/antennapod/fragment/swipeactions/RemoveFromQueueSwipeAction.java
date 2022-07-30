@@ -41,7 +41,7 @@ public class RemoveFromQueueSwipeAction implements SwipeAction {
 
         DBWriter.removeQueueItem(fragment.requireActivity(), true, item);
 
-        if (willRemove(filter)) {
+        if (willRemove(filter, item)) {
             ((MainActivity) fragment.requireActivity()).showSnackbarAbovePlayer(
                     fragment.getResources().getQuantityString(R.plurals.removed_from_queue_batch_label, 1, 1),
                     Snackbar.LENGTH_LONG)
@@ -51,7 +51,7 @@ public class RemoveFromQueueSwipeAction implements SwipeAction {
     }
 
     @Override
-    public boolean willRemove(FeedItemFilter filter) {
+    public boolean willRemove(FeedItemFilter filter, FeedItem item) {
         return filter.showQueued || filter.showNotQueued;
     }
 }

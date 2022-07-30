@@ -127,15 +127,9 @@ public class Rss2Generator implements FeedGenerator {
             }
         }
 
-        writeAdditionalAttributes(xml);
-
         xml.endTag(null, "channel");
         xml.endTag(null, "rss");
 
         xml.endDocument();
-    }
-
-    protected void writeAdditionalAttributes(XmlSerializer xml) throws IOException {
-
     }
 }

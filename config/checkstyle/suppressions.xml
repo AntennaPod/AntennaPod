@@ -4,4 +4,10 @@
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
     <suppress checks="MethodName" files="core/src/test/java/android/util/Log.java" />
+    <suppress checks="LineLength" files="strings.xml"/>
+    
+    <suppress checks="." files="[\\/]generated-sources[\\/]"/>
+    <suppress checks="." files="[\\/]build[\\/]"/>
+    <suppress checks="." files="[\\/]gen[\\/]"/>
+    <suppress checks="." files="[\\/].idea[\\/]"/>
 </suppressions>

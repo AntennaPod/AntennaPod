@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        custom:showAsAction="always"
+        android:title="@string/search_label"/>
+
+    <item
+        android:id="@+id/refresh_item"
+        android:title="@string/refresh_label"
+        android:menuCategory="container"
+        custom:showAsAction="always"
+        android:icon="@drawable/ic_refresh"/>
+
+    <item
+        android:id="@+id/remove_all_inbox_item"
+        android:title="@string/remove_all_inbox_label"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:icon="@drawable/ic_check"/>
+
+</menu>

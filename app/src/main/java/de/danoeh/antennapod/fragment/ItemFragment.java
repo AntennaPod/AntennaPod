@@ -22,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import de.danoeh.antennapod.R;
@@ -38,6 +39,7 @@ import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -49,7 +51,6 @@ import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -172,6 +173,8 @@ public class ItemFragment extends Fragment {
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_STREAM)) {
                 showOnDemandConfigBalloon(true);
                 return;
+            } else if (actionButton1 == null) {
+                return; // Not loaded yet
             }
             actionButton1.onClick(getContext());
         });
@@ -180,6 +183,8 @@ public class ItemFragment extends Fragment {
                     && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_DOWNLOAD)) {
                 showOnDemandConfigBalloon(false);
                 return;
+            } else if (actionButton2 == null) {
+                return; // Not loaded yet
             }
             actionButton2.onClick(getContext());
         });
@@ -187,22 +192,24 @@ public class ItemFragment extends Fragment {
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
-        boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
+        final boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
                 == View.LAYOUT_DIRECTION_RTL;
-        Balloon balloon = new Balloon.Builder(getContext())
+        final Balloon balloon = new Balloon.Builder(getContext())
                 .setArrowOrientation(ArrowOrientation.TOP)
+                .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
                 .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
                 .setWidthRatio(1.0f)
-                .isRtlSupport(true)
+                .setMarginLeft(8)
+                .setMarginRight(8)
                 .setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSecondary))
                 .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                 .setLayout(R.layout.popup_bubble_view)
                 .setDismissWhenTouchOutside(true)
                 .setLifecycleOwner(this)
                 .build();
-        Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
-        Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
-        TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
+        final Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
+        final Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
+        final TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
         message.setText(offerStreaming
                 ? R.string.on_demand_config_stream_text : R.string.on_demand_config_download_text);
         positiveButton.setOnClickListener(v1 -> {
@@ -214,7 +221,7 @@ public class ItemFragment extends Fragment {
             balloon.dismiss();
         });
         negativeButton.setOnClickListener(v1 -> {
-            UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
+            UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
             balloon.dismiss();
         });
         balloon.showAlignBottom(butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));
@@ -263,7 +270,7 @@ public class ItemFragment extends Fragment {
     }
 
     private void onFragmentLoaded() {
-        if (webviewData != null) {
+        if (webviewData != null && !itemsLoaded) {
             webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
@@ -280,13 +287,13 @@ public class ItemFragment extends Fragment {
         if (item.getPubDate() != null) {
             String pubDateStr = DateFormatter.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
-            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(getContext(), item.getPubDate()));
+            txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
 
         RequestOptions options = new RequestOptions()
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transforms(new FitCenter(),
+                .transform(new FitCenter(),
                         new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
@@ -333,7 +340,7 @@ public class ItemFragment extends Fragment {
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+            if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 actionButton2 = new CancelDownloadActionButton(item);
             } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item);
@@ -413,8 +420,8 @@ public class ItemFragment extends Fragment {
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
                 item = result;
-                itemsLoaded = true;
                 onFragmentLoaded();
+                itemsLoaded = true;
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

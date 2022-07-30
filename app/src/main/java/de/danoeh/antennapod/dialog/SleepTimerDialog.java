@@ -73,6 +73,7 @@ public class SleepTimerDialog extends DialogFragment {
         spTimeUnit = content.findViewById(R.id.spTimeUnit);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
+        timeDisplay.setVisibility(View.GONE);
         time = content.findViewById(R.id.time);
         Button extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
         extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));

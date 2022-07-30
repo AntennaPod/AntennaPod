@@ -13,12 +13,12 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
@@ -29,20 +29,18 @@ import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 public class MediaDownloadedHandler implements Runnable {
     private static final String TAG = "MediaDownloadedHandler";
     private final DownloadRequest request;
-    private final DownloadStatus status;
     private final Context context;
     private DownloadStatus updatedStatus;
 
     public MediaDownloadedHandler(@NonNull Context context, @NonNull DownloadStatus status,
                                   @NonNull DownloadRequest request) {
-        this.status = status;
         this.request = request;
         this.context = context;
+        this.updatedStatus = status;
     }
 
     @Override
     public void run() {
-        updatedStatus = status;
         FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
         if (media == null) {
             Log.e(TAG, "Could not find downloaded media object in database");
@@ -60,6 +58,9 @@ public class MediaDownloadedHandler implements Runnable {
             media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
         }
 
+        if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
+            ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl());
+        }
         // Get duration
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         String durationStr = null;
@@ -108,6 +109,7 @@ public class MediaDownloadedHandler implements Runnable {
         }
     }
 
+    @NonNull
     public DownloadStatus getUpdatedStatus() {
         return updatedStatus;
     }

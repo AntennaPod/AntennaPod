@@ -2,12 +2,15 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.util.Log;
+
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.Rss2Generator;
 import org.apache.commons.io.FileUtils;
@@ -99,7 +102,8 @@ public class UITestUtils {
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open(testFileName);
+        InputStream in = InstrumentationRegistry.getInstrumentation().getContext()
+                .getAssets().open(testFileName);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);

@@ -36,6 +36,13 @@
     </item>
 
     <item
+        android:id="@+id/playback_speed"
+        android:title="@string/playback_speed"
+        android:visible="false"
+        custom:showAsAction="never">
+    </item>
+
+    <item
         android:id="@+id/open_feed_item"
         android:icon="@drawable/ic_feed"
         custom:showAsAction="collapseActionView"
@@ -52,16 +59,16 @@
     </item>
 
     <item
-            android:id="@+id/player_go_to_picture_in_picture"
-            custom:showAsAction="collapseActionView"
-            android:title="@string/player_go_to_picture_in_picture"
-            android:visible="false">
+        android:id="@+id/player_switch_to_audio_only"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/player_switch_to_audio_only"
+        android:visible="false">
     </item>
 
     <item
         android:id="@+id/share_item"
         android:menuCategory="container"
         custom:showAsAction="never"
-        android:title="@string/share_label_with_ellipses">
+        android:title="@string/share_label">
     </item>
 </menu>

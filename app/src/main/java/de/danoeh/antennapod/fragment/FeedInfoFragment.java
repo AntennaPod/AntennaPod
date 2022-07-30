@@ -36,18 +36,17 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
-import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -125,7 +124,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_web));
-                toolbar.getMenu().findItem(R.id.share_parent)
+                toolbar.getMenu().findItem(R.id.share_item)
                         .setIcon(AppCompatResources.getDrawable(themedContext, R.drawable.ic_share));
             }
         };
@@ -140,6 +139,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         infoContainer = root.findViewById(R.id.infoContainer);
         root.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         root.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        root.findViewById(R.id.butFilter).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
@@ -185,6 +185,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (header == null || infoContainer == null) {
+            return;
+        }
         int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
         header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
         infoContainer.setPadding(horizontalSpacing, infoContainer.getPaddingTop(),
@@ -262,13 +265,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     }
 
     private void refreshToolbarState() {
-        boolean shareLinkVisible = feed != null && feed.getLink() != null;
-        boolean downloadUrlVisible = feed != null && !feed.isLocalFeed();
-
         toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(downloadUrlVisible);
-        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(shareLinkVisible);
-        toolbar.getMenu().findItem(R.id.share_parent).setVisible(downloadUrlVisible || shareLinkVisible);
+        toolbar.getMenu().findItem(R.id.share_item).setVisible(feed != null && !feed.isLocalFeed());
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
     }
@@ -280,13 +278,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
             return false;
         }
-        boolean handled = false;
-        try {
-            handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getContext(), e.getMessage());
-        }
+        boolean handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
 
         if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clipChildren="true"
+        android:layout_gravity="center_vertical"
         app:cardCornerRadius="32dp"
         app:cardElevation="0dp">
 
@@ -28,34 +29,38 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:background="?attr/filter_dialog_button_background"
-                style="@style/NoButtonRadio"
+                android:minHeight="40dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:checked="false"
                 android:gravity="center"
-                android:textColor="@color/filter_dialog_button_text" />
+                android:textColor="@color/filter_dialog_button_text"
+                style="@style/NoButtonRadio" />
 
             <RadioButton
                 android:id="@+id/filter_dialog_radioButton2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:minHeight="40dp"
                 android:layout_weight="1"
                 android:background="?attr/filter_dialog_button_background"
-                style="@style/NoButtonRadio"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:checked="false"
                 android:gravity="center"
-                android:textColor="@color/filter_dialog_button_text" />
+                android:textColor="@color/filter_dialog_button_text"
+                style="@style/NoButtonRadio" />
+
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
     <RadioButton
         android:id="@+id/filter_dialog_clear"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/ic_filter_close"
-        style="@style/NoButtonRadio"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_gravity="center_vertical"
-        android:checked="true" />
+        android:checked="true"
+        style="@style/NoButtonRadio" />
 
 </de.danoeh.antennapod.ui.common.RecursiveRadioGroup>

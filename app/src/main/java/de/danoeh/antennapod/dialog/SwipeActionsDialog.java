@@ -22,8 +22,10 @@ import de.danoeh.antennapod.databinding.SwipeactionsDialogBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsPickerBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsPickerItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsRowBinding;
+import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -56,11 +58,15 @@ public class SwipeActionsDialog {
 
         String forFragment = "";
         switch (tag) {
-            /*case InboxFragment.TAG:
+            case InboxFragment.TAG:
                 forFragment = context.getString(R.string.inbox_label);
-                break;*/
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.TOGGLE_PLAYED)).toList();
+                break;
             case EpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
+                break;
+            case CompletedDownloadsFragment.TAG:
+                forFragment = context.getString(R.string.downloads_label);
                 break;
             case FeedItemlistFragment.TAG:
                 forFragment = context.getString(R.string.feeds_label);
@@ -168,7 +174,7 @@ public class SwipeActionsDialog {
         view.container.setAlpha(0.3f);
         view.secondaryActionButton.secondaryActionButton.setVisibility(View.GONE);
         view.dragHandle.setVisibility(View.GONE);
-        view.statusUnread.setText("███");
+        view.statusInbox.setVisibility(View.GONE);
         view.txtvTitle.setText("███████");
         view.txtvPosition.setText("█████");
     }

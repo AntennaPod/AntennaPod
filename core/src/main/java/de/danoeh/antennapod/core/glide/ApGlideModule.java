@@ -31,7 +31,7 @@ public class ApGlideModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888));
+        builder.setDefaultRequestOptions(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888));
         @SuppressLint("UsableSpace")
         long spaceAvailable = context.getCacheDir().getUsableSpace();
         long imageCacheSize = (spaceAvailable > 2 * GIGABYTES) ? (250 * MEGABYTES) : (50 * MEGABYTES);
@@ -42,6 +42,7 @@ public class ApGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
+        registry.append(String.class, InputStream.class, new GenerativePlaceholderImageModelLoader.Factory());
         registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
         registry.append(String.class, InputStream.class, new NoHttpStringLoader.StreamFactory());
 

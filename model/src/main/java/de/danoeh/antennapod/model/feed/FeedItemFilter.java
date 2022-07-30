@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
+
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class FeedItemFilter {
+public class FeedItemFilter implements Serializable {
 
     private final String[] properties;
 

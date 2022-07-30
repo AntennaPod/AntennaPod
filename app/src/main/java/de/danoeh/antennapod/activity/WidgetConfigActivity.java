@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
-import de.danoeh.antennapod.core.widget.WidgetUpdaterJobService;
+import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
 public class WidgetConfigActivity extends AppCompatActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -20,6 +20,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private SeekBar opacitySeekBar;
     private TextView opacityTextView;
     private View widgetPreview;
+    private CheckBox ckPlaybackSpeed;
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
@@ -47,7 +48,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
-        findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
+        findViewById(R.id.butConfirm).setOnClickListener(v -> confirmCreateWidget());
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -75,6 +76,8 @@ public class WidgetConfigActivity extends AppCompatActivity {
         progress.setVisibility(View.VISIBLE);
         progress.setText(R.string.position_default_label);
 
+        ckPlaybackSpeed = findViewById(R.id.ckPlaybackSpeed);
+        ckPlaybackSpeed.setOnClickListener(v -> displayPreviewPanel());
         ckRewind = findViewById(R.id.ckRewind);
         ckRewind.setOnClickListener(v -> displayPreviewPanel());
         ckFastForward = findViewById(R.id.ckFastForward);
@@ -84,22 +87,26 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private void displayPreviewPanel() {
-        boolean showExtendedPreview = ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
+        boolean showExtendedPreview =
+                ckPlaybackSpeed.isChecked() || ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.butPlaybackSpeed)
+                .setVisibility(ckPlaybackSpeed.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butFastForward)
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
     }
 
-    private void confirmCreateWidget(View v) {
+    private void confirmCreateWidget() {
         int backgroundColor = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
 
         SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, backgroundColor);
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + appWidgetId, ckPlaybackSpeed.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
@@ -109,7 +116,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
-        WidgetUpdaterJobService.performBackgroundUpdate(this);
+        WidgetUpdaterWorker.enqueueWork(this);
     }
 
     private int getColorWithAlpha(int color, int opacity) {

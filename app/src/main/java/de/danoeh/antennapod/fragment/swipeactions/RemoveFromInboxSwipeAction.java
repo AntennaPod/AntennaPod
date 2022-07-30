@@ -28,18 +28,18 @@ public class RemoveFromInboxSwipeAction implements SwipeAction {
 
     @Override
     public String getTitle(Context context) {
-        return context.getString(R.string.remove_new_flag_label);
+        return context.getString(R.string.remove_inbox_label);
     }
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (item.isNew()) {
-            FeedItemMenuHandler.markReadWithUndo(fragment, item, FeedItem.UNPLAYED, willRemove(filter));
+            FeedItemMenuHandler.markReadWithUndo(fragment, item, FeedItem.UNPLAYED, willRemove(filter, item));
         }
     }
 
     @Override
-    public boolean willRemove(FeedItemFilter filter) {
+    public boolean willRemove(FeedItemFilter filter, FeedItem item) {
         return filter.showNew;
     }
 }

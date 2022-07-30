@@ -8,8 +8,6 @@ import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +34,7 @@ public class FeedMultiSelectActionHandler {
     }
 
     public void handleAction(int id) {
-        if (id == R.id.remove_item) {
+        if (id == R.id.remove_feed) {
             RemoveFeedDialog.show(activity, selectedItems);
         } else if (id == R.id.keep_updated) {
             keepUpdatedPrefHandler();
@@ -65,9 +63,6 @@ public class FeedMultiSelectActionHandler {
         });
         preferenceSwitchDialog.openDialog();
     }
-
-    private static final DecimalFormat SPEED_FORMAT =
-            new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
     private void playbackSpeedPrefHandler() {
         PlaybackSpeedFeedSettingDialogBinding viewBinding =

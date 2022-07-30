@@ -20,6 +20,9 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,8 +38,6 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueStorage;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
@@ -144,13 +145,14 @@ public class SyncService extends Worker {
 
         Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
         for (String downloadUrl : subscriptionChanges.getAdded()) {
+            if (!downloadUrl.startsWith("http")) { // Also matches https
+                Log.d(TAG, "Skipping url: " + downloadUrl);
+                continue;
+            }
             if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
-                try {
-                    DownloadRequester.getInstance().downloadFeed(getApplicationContext(), feed);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                }
+                DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
+                DownloadService.download(getApplicationContext(), false, builder.build());
             }
         }
 
@@ -188,7 +190,7 @@ public class SyncService extends Worker {
     private void waitForDownloadServiceCompleted() {
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
         try {
-            while (DownloadRequester.getInstance().isDownloadingFeeds()) {
+            while (DownloadService.isRunning) {
                 //noinspection BusyWait
                 Thread.sleep(1000);
             }

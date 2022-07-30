@@ -8,7 +8,7 @@ How to report a bug
 - If possible, add instructions on how to reproduce the bug.
 - If possible, add a logfile to your post. This is especially useful if the bug makes the application crash. AntennaPod has an `export logs` feature for this.
 - Usually, you can take a screenshot of your smartphone by pressing *Power* + *Volume down* for a few seconds.
-- Please use the following **[template](.github/ISSUE_TEMPLATE/bug_report.md)**.
+- Please use the following **[template](https://github.com/AntennaPod/AntennaPod/issues/new?assignees=&labels=Type%3A+Possible+bug&template=bug_report.yml)**.
 
 
 How to submit a feature request
@@ -18,7 +18,7 @@ How to submit a feature request
 - To make it easier for us to keep track of requests, please only make one feature request per issue.
 - Give a brief explanation about the problem that may currently exist and how your requested feature solves this problem.
 - Try to be as specific as possible. Please not only explain what the feature does, but also how. If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.
-- Please use the following **[template](.github/ISSUE_TEMPLATE/feature_request.md)**. 
+- Please use the following **[template](https://github.com/AntennaPod/AntennaPod/issues/new?assignees=&labels=&template=feature_request.yml)**. 
 
 
 Translating AntennaPod

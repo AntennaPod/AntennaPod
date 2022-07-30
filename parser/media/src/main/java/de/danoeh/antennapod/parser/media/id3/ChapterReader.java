@@ -50,7 +50,10 @@ public class ChapterReader extends ID3Reader {
         String elementId = readIsoStringNullTerminated(100);
         long startTime = readInt();
         skipBytes(12); // Ignore end time, start offset, end offset
-        ID3Chapter chapter = new ID3Chapter(elementId, startTime);
+
+        Chapter chapter = new Chapter();
+        chapter.setStart(startTime);
+        chapter.setChapterId(elementId);
 
         // Read sub-frames
         while (getPosition() < chapterStartedPosition + frameHeader.getSize()) {
@@ -82,7 +85,7 @@ public class ChapterReader extends ID3Reader {
                 break;
             case FRAME_ID_PICTURE:
                 byte encoding = readByte();
-                String mime = readEncodedString(encoding, frameHeader.getSize());
+                String mime = readIsoStringNullTerminated(frameHeader.getSize());
                 byte type = readByte();
                 String description = readEncodedString(encoding, frameHeader.getSize());
                 Log.d(TAG, "Found apic: " + mime + "," + description);

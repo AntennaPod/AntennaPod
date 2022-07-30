@@ -7,13 +7,14 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.feed.Chapter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Interface for objects that can be played by the PlaybackService.
  */
-public interface Playable extends Parcelable {
+public interface Playable extends Parcelable, Serializable {
     int INVALID_TIME = -1;
 
     /**

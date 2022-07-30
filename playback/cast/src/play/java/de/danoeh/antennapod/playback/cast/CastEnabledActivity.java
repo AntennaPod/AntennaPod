@@ -13,7 +13,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
  * network.
  */
 public abstract class CastEnabledActivity extends AppCompatActivity {
-    private static final String TAG = "CastEnabledActivity";
     private boolean canCast = false;
 
     @Override

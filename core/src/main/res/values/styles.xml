@@ -13,6 +13,7 @@
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="colorPrimaryDark">@color/accent_light</item>
         <item name="android:windowBackground">@color/background_light</item>
+        <item name="background_color">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Light</item>
         <item name="background_elevated">@color/background_elevated_light</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
@@ -46,6 +47,7 @@
         <item name="colorPrimary">@color/accent_dark</item>
         <item name="colorPrimaryDark">@color/background_darktheme</item>
         <item name="android:windowBackground">@color/background_darktheme</item>
+        <item name="background_color">@color/background_darktheme</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Dark</item>
         <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
@@ -83,6 +85,7 @@
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="android:windowBackground">@color/black</item>
+        <item name="background_color">@color/black</item>
         <item name="android:actionBarStyle">@color/black</item>
         <item name="background_elevated">@color/black</item>
         <item name="android:textColorHint">@color/medium_gray</item>
@@ -107,35 +110,35 @@
     </style>
 
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack">
+    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationFade</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
@@ -178,12 +181,6 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">@dimen/text_size_micro</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="BigBlurryBackground">

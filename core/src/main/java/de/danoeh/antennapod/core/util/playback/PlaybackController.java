@@ -329,10 +329,7 @@ public abstract class PlaybackController {
 
     public void playPause() {
         if (playbackService == null) {
-            new PlaybackServiceStarter(activity, media)
-                    .startWhenPrepared(true)
-                    .streamIfLastWasStream()
-                    .start();
+            new PlaybackServiceStarter(activity, media).start();
             Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
             return;
         }
@@ -353,8 +350,6 @@ public abstract class PlaybackController {
                 break;
             default:
                 new PlaybackServiceStarter(activity, media)
-                        .startWhenPrepared(true)
-                        .streamIfLastWasStream()
                         .callEvenIfRunning(true)
                         .start();
                 Log.w(TAG, "Play/Pause button was pressed and PlaybackService state was unknown");

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.error.CrashReportWriter;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -33,7 +34,8 @@ public class SplashActivity extends AppCompatActivity {
             DrawableCompat.setTint(wrapDrawable, 0xffffffff);
             progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
         } else {
-            progressBar.getIndeterminateDrawable().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_IN);
+            progressBar.getIndeterminateDrawable().setColorFilter(
+                    new PorterDuffColorFilter(0xffffffff, PorterDuff.Mode.SRC_IN));
         }
 
         Completable.create(subscriber -> {

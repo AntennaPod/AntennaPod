@@ -6,7 +6,7 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I have used the search function to see if someone else has already submitted the same feature request.
+        - label: I have used the search function for [open](https://github.com/AntennaPod/AntennaPod/issues) **and** [closed](https://github.com/AntennaPod/AntennaPod/issues?q=is%3Aissue+is%3Aclosed) issues to see if someone else has already submitted the same feature request.
           required: true
         - label: I will describe the problem with as much detail as possible.
           required: true

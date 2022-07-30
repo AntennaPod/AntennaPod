@@ -15,8 +15,9 @@ public interface SwipeAction {
     String REMOVE_FROM_INBOX = "REMOVE_FROM_INBOX";
     String START_DOWNLOAD = "START_DOWNLOAD";
     String MARK_FAV = "MARK_FAV";
-    String MARK_PLAYED = "MARK_PLAYED";
+    String TOGGLE_PLAYED = "MARK_PLAYED";
     String REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE";
+    String DELETE = "DELETE";
 
     String getId();
 
@@ -30,5 +31,5 @@ public interface SwipeAction {
 
     void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter);
 
-    boolean willRemove(FeedItemFilter filter);
+    boolean willRemove(FeedItemFilter filter, FeedItem item);
 }

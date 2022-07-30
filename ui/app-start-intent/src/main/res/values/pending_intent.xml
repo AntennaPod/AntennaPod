@@ -6,6 +6,7 @@
     <item name="pending_intent_download_service_autodownload_report" type="id"/>
     <item name="pending_intent_allow_stream_always" type="id"/>
     <item name="pending_intent_allow_stream_this_time" type="id"/>
+    <item name="pending_intent_playback_speed" type="id"/>
     <item name="pending_intent_player_activity" type="id"/>
     <item name="pending_intent_video_player" type="id"/>
     <item name="pending_intent_sync_error" type="id"/>

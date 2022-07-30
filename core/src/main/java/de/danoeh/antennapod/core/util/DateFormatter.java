@@ -37,7 +37,7 @@ public class DateFormatter {
         return android.text.format.DateUtils.formatDateTime(context, date.getTime(), format);
     }
 
-    public static String formatForAccessibility(final Context context, final Date date) {
+    public static String formatForAccessibility(final Date date) {
         if (date == null) {
             return "";
         }

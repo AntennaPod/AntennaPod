@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +26,6 @@ import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetEpisodeActionPostResponse;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
@@ -48,7 +46,7 @@ import okhttp3.ResponseBody;
  */
 public class GpodnetService implements ISyncService {
     public static final String TAG = "GpodnetService";
-    public static final String DEFAULT_BASE_HOST = "gpodder.net";
+    private static final String DEFAULT_BASE_HOST = "gpodder.net";
     private static final int UPLOAD_BULK_SIZE = 30;
     private static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -77,86 +75,6 @@ public class GpodnetService implements ISyncService {
     private void requireLoggedIn() {
         if (!loggedIn) {
             throw new IllegalStateException("Not logged in");
-        }
-    }
-
-    /**
-     * Returns the [count] most used tags.
-     */
-    public List<GpodnetTag> getTopTags(int count) throws GpodnetServiceException {
-        URL url;
-        try {
-            url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format(Locale.US, "/api/2/tags/%d.json", count), null, null).toURL();
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-
-        Request.Builder request = new Request.Builder().url(url);
-        String response = executeRequest(request);
-        try {
-            JSONArray jsonTagList = new JSONArray(response);
-            List<GpodnetTag> tagList = new ArrayList<>(jsonTagList.length());
-            for (int i = 0; i < jsonTagList.length(); i++) {
-                JSONObject jsonObject = jsonTagList.getJSONObject(i);
-                String title = jsonObject.getString("title");
-                String tag = jsonObject.getString("tag");
-                int usage = jsonObject.getInt("usage");
-                tagList.add(new GpodnetTag(title, tag, usage));
-            }
-            return tagList;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Returns the [count] most subscribed podcasts for the given tag.
-     *
-     * @throws IllegalArgumentException if tag is null
-     */
-    public List<GpodnetPodcast> getPodcastsForTag(@NonNull GpodnetTag tag, int count)
-            throws GpodnetServiceException {
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format(Locale.US, "/api/2/tag/%s/%d.json", tag.getTag(), count), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-
-            JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJsonArray(jsonArray);
-
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Returns the toplist of podcast.
-     *
-     * @param count of elements that should be returned. Must be in range 1..100.
-     * @throws IllegalArgumentException if count is out of range.
-     */
-    public List<GpodnetPodcast> getPodcastToplist(int count) throws GpodnetServiceException {
-        if (count < 1 || count > 100) {
-            throw new IllegalArgumentException("Count must be in range 1..100");
-        }
-
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format(Locale.US, "/toplist/%d.json", count), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-
-            JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJsonArray(jsonArray);
-
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
         }
     }
 
@@ -213,45 +131,6 @@ public class GpodnetService implements ISyncService {
     }
 
     /**
-     * Returns synchronization status of devices.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public List<List<String>> getSynchronizedDevices() throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/sync-devices/%s.json", username), null, null).toURL();
-            Request.Builder request = new Request.Builder().url(url);
-            String response = executeRequest(request);
-            JSONObject syncStatus = new JSONObject(response);
-            List<List<String>> result = new ArrayList<>();
-
-            JSONArray synchronizedDevices = syncStatus.getJSONArray("synchronized");
-            for (int i = 0; i < synchronizedDevices.length(); i++) {
-                JSONArray groupDevices = synchronizedDevices.getJSONArray(i);
-                List<String> group = new ArrayList<>();
-                for (int j = 0; j < groupDevices.length(); j++) {
-                    group.add(groupDevices.getString(j));
-                }
-                result.add(group);
-            }
-
-            JSONArray notSynchronizedDevices = syncStatus.getJSONArray("not-synchronized");
-            for (int i = 0; i < notSynchronizedDevices.length(); i++) {
-                result.add(Collections.singletonList(notSynchronizedDevices.getString(i)));
-            }
-
-            return result;
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
      * Configures the device of a given user.
      * <p/>
      * This method requires authentication.
@@ -279,39 +158,6 @@ public class GpodnetService implements ISyncService {
                 content = "";
             }
             RequestBody body = RequestBody.create(JSON, content);
-            Request.Builder request = new Request.Builder().post(body).url(url);
-            executeRequest(request);
-        } catch (JSONException | MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        }
-    }
-
-    /**
-     * Links devices for synchronization.
-     * <p/>
-     * This method requires authentication.
-     *
-     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
-     */
-    public void linkDevices(@NonNull List<String> deviceIds) throws GpodnetServiceException {
-        requireLoggedIn();
-        try {
-            final URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/sync-devices/%s.json", username), null, null).toURL();
-            JSONObject jsonContent = new JSONObject();
-            JSONArray group = new JSONArray();
-            for (String deviceId : deviceIds) {
-                group.put(deviceId);
-            }
-
-            JSONArray synchronizedGroups = new JSONArray();
-            synchronizedGroups.put(group);
-            jsonContent.put("synchronize", synchronizedGroups);
-            jsonContent.put("stop-synchronize", new JSONArray());
-
-            Log.d("aaaa", jsonContent.toString());
-            RequestBody body = RequestBody.create(JSON, jsonContent.toString());
             Request.Builder request = new Request.Builder().post(body).url(url);
             executeRequest(request);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {

@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_label"
+        android:layout_marginBottom="8dp"
+        style="@style/AntennaPod.TextView.Heading" />
 
     <RadioGroup
         android:id="@+id/share_dialog_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/share_episode_website_radio"
+            android:id="@+id/share_social_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_dialog_episode_website_label"
+            android:text="@string/share_dialog_for_social"
             android:checked="true" />
+
         <RadioButton
-            android:id="@+id/share_media_file_url_radio"
+            android:id="@+id/share_media_receiver_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_dialog_media_file_url_label" />
+            android:text="@string/share_dialog_media_address" />
+
         <RadioButton
             android:id="@+id/share_media_file_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/share_dialog_media_file_label" />
+
     </RadioGroup>
 
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/share_dialog_include_label"/>
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="?attr/background_elevated" />
 
     <CheckBox
-        android:id="@+id/share_start_at_timer_dialog"
+        android:id="@+id/share_position_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/share_playback_position_dialog_label" />
+
+    <Button
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/share_label"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
 
 </LinearLayout>

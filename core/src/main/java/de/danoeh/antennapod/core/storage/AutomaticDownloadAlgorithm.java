@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -73,7 +76,7 @@ public class AutomaticDownloadAlgorithm {
 
                 int autoDownloadableEpisodes = candidates.size();
                 int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
-                int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
+                int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
                         UserPreferences.getEpisodeCacheSize() == UserPreferences.getEpisodeCacheSizeUnlimited();
@@ -86,17 +89,17 @@ public class AutomaticDownloadAlgorithm {
                     episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
                 }
 
-                FeedItem[] itemsToDownload = candidates.subList(0, episodeSpaceLeft)
-                        .toArray(new FeedItem[episodeSpaceLeft]);
+                List<FeedItem> itemsToDownload = candidates.subList(0, episodeSpaceLeft);
+                if (itemsToDownload.size() > 0) {
+                    Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
-                if (itemsToDownload.length > 0) {
-                    Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
-
-                    try {
-                        DownloadRequester.getInstance().downloadMedia(false, context, false, itemsToDownload);
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
+                    List<DownloadRequest> requests = new ArrayList<>();
+                    for (FeedItem episode : itemsToDownload) {
+                        DownloadRequest.Builder request = DownloadRequestCreator.create(episode.getMedia());
+                        request.withInitiatedByUser(false);
+                        requests.add(request.build());
                     }
+                    DownloadService.download(context, false, requests.toArray(new DownloadRequest[0]));
                 }
             }
         };

@@ -36,10 +36,6 @@ class PlaybackServiceStateManager {
         isInForeground = false;
     }
 
-    boolean isInForeground() {
-        return isInForeground;
-    }
-
     boolean hasReceivedValidStartCommand() {
         return hasReceivedValidStartCommand;
     }

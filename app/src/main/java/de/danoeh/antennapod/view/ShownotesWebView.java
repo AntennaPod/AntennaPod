@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -66,7 +67,6 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         getSettings().setUseWideViewPort(false);
-        getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         getSettings().setLoadWithOverviewMode(true);
         setOnLongClickListener(this);
 
@@ -170,6 +170,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE, R.string.share_url_label);
             menu.setHeaderTitle(selectedUrl);
         }
+        MenuItemUtils.setOnClickListeners(menu, this::onContextItemSelected);
     }
 
     public void setTimecodeSelectedListener(Consumer<Integer> timecodeSelectedListener) {

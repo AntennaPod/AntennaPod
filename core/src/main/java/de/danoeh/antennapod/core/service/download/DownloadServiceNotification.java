@@ -9,6 +9,8 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.util.DownloadErrorLabel;
+import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -45,21 +47,44 @@ public class DownloadServiceNotification {
      * Updates the contents of the service's notifications. Should be called
      * after setupNotificationBuilders.
      */
-    public Notification updateNotifications(int numDownloads, List<Downloader> downloads) {
+    public Notification updateNotifications(List<Downloader> downloads) {
         if (notificationCompatBuilder == null) {
             return null;
         }
 
-        String contentTitle = context.getString(R.string.download_notification_title);
-        String downloadsLeft = (numDownloads > 0)
-                ? context.getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads)
+        String contentTitle;
+        if (typeIsOnly(downloads, Feed.FEEDFILETYPE_FEED)) {
+            contentTitle = context.getString(R.string.download_notification_title_feeds);
+        } else if (typeIsOnly(downloads, FeedMedia.FEEDFILETYPE_FEEDMEDIA)) {
+            contentTitle = context.getString(R.string.download_notification_title_episodes);
+        } else {
+            contentTitle = context.getString(R.string.download_notification_title);
+        }
+        String contentText = (downloads.size() > 0)
+                ? context.getResources().getQuantityString(R.plurals.downloads_left, downloads.size(), downloads.size())
                 : context.getString(R.string.completing);
         String bigText = compileNotificationString(downloads);
+        if (!bigText.contains("\n")) {
+            contentText = bigText;
+        }
 
         notificationCompatBuilder.setContentTitle(contentTitle);
-        notificationCompatBuilder.setContentText(downloadsLeft);
+        notificationCompatBuilder.setContentText(contentText);
         notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
         return notificationCompatBuilder.build();
+    }
+
+    private boolean typeIsOnly(List<Downloader> downloads, int feedFileType) {
+        for (Downloader downloader : downloads) {
+            if (downloader.cancelled) {
+                continue;
+            }
+            DownloadRequest request = downloader.getDownloadRequest();
+            if (request.getFeedfileType() != feedFileType) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static String compileNotificationString(List<Downloader> downloads) {
@@ -71,24 +96,18 @@ public class DownloadServiceNotification {
             }
             stringBuilder.append("• ");
             DownloadRequest request = downloader.getDownloadRequest();
-            switch (request.getFeedfileType()) {
-                case Feed.FEEDFILETYPE_FEED:
-                    if (request.getTitle() != null) {
-                        stringBuilder.append(request.getTitle());
-                    }
-                    break;
-                case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
-                    if (request.getTitle() != null) {
-                        stringBuilder.append(request.getTitle())
-                                .append(" (")
-                                .append(request.getProgressPercent())
-                                .append("%)");
-                    }
-                    break;
-                default:
-                    stringBuilder.append("Unknown: ").append(request.getFeedfileType());
+            if (request.getTitle() != null) {
+                stringBuilder.append(request.getTitle());
+            } else {
+                stringBuilder.append(request.getSource());
             }
-            if (i != downloads.size()) {
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                stringBuilder.append(" (").append(request.getProgressPercent()).append("%)");
+            } else if (request.getSource().startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
+                stringBuilder.append(" (").append(request.getSoFar())
+                        .append("/").append(request.getSize()).append(")");
+            }
+            if (i != downloads.size() - 1) {
                 stringBuilder.append("\n");
             }
         }
@@ -113,11 +132,13 @@ public class DownloadServiceNotification {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < statuses.size(); i++) {
-            if (statuses.get(i).isSuccessful()) {
+            if (statuses.get(i) == null || statuses.get(i).isSuccessful()) {
                 continue;
             }
             sb.append("• ").append(statuses.get(i).getTitle());
-            sb.append(": ").append(statuses.get(i).getReason().getErrorString(context));
+            if (statuses.get(i).getReason() != null) {
+                sb.append(": ").append(context.getString(DownloadErrorLabel.from(statuses.get(i).getReason())));
+            }
             if (i != statuses.size() - 1) {
                 sb.append("\n");
             }
@@ -134,16 +155,18 @@ public class DownloadServiceNotification {
     public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport) {
         // check if report should be created
         boolean createReport = false;
-        int successfulDownloads = 0;
         int failedDownloads = 0;
 
         // a download report is created if at least one download has failed
         // (excluding failed image downloads)
         for (DownloadStatus status : reportQueue) {
+            if (status == null || status.isCancelled()) {
+                continue;
+            }
             if (status.isSuccessful()) {
-                successfulDownloads++;
-                createReport |= showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
-            } else if (!status.isCancelled()) {
+                createReport |= showAutoDownloadReport && !status.isInitiatedByUser()
+                        && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
+            } else {
                 failedDownloads++;
                 createReport = true;
             }

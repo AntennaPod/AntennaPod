@@ -28,6 +28,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -65,9 +66,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
+            InboxFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
-            DownloadsFragment.TAG,
+            CompletedDownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
             NavListAdapter.SUBSCRIPTION_LIST_TAG
@@ -132,6 +134,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         } else {
             inflater.inflate(R.menu.nav_folder_context, menu);
         }
+        MenuItemUtils.setOnClickListeners(menu, this::onContextItemSelected);
     }
 
     @Override
@@ -150,10 +153,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.remove_all_new_flags_item) {
+        if (itemId == R.id.remove_all_inbox_item) {
             ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
-                    R.string.remove_all_new_flags_label,
-                    R.string.remove_all_new_flags_confirmation_msg) {
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg) {
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
                     dialog.dismiss();
@@ -169,7 +172,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         } else if (itemId == R.id.rename_item) {
             new RenameItemDialog(getActivity(), feed).show();
             return true;
-        } else if (itemId == R.id.remove_item) {
+        } else if (itemId == R.id.remove_feed) {
             ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
             RemoveFeedDialog.show(getContext(), feed);
             return true;

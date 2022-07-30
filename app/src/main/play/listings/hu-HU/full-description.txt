@@ -12,7 +12,7 @@ Podcast-rajongók készítésében, az AntennaPod teljesen szabad, nyílt forrá
 
 <b>Kövesse, ossza meg és élvezze</b>
 • Kövesse a legjobbak legjobbját azáltal, hogy kedvencként jelöli meg az epizódokat
-• Találja meg azt a bizonyos epizódot a lejátszási előzményekkel vagy kereséssel (cím és adásjegyzetek alapján)
+• Találja meg azt a bizonyos epizódot a lejátszási előzményekkel vagy cím és adásjegyzetek alapján történő kereséssel
 • Osszon meg epizódokat és csatornákat továbbfejlesztett közösségi média és e-mail lehetőségekkel, a gPodder.net szolgáltatásokkal és OPML exportálás segítségével
 
 <b>Vezérelje a rendszert</b>

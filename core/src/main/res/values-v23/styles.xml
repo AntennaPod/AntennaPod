@@ -4,7 +4,7 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="android:statusBarColor">@color/background_light</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/background_light</item>
+        <item name="android:navigationBarColor">@color/grey600</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">

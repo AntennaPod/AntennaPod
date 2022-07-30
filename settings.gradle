@@ -3,6 +3,7 @@ include ':core'
 include ':event'
 include ':model'
 
+include ':net:discovery'
 include ':net:ssl'
 include ':net:sync:gpoddernet'
 include ':net:sync:model'
@@ -13,6 +14,10 @@ include ':parser:media'
 include ':playback:base'
 include ':playback:cast'
 
+include ':storage:database'
+
 include ':ui:app-start-intent'
 include ':ui:common'
+include ':ui:i18n'
 include ':ui:png-icons'
+include ':ui:statistics'

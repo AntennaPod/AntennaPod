@@ -11,9 +11,9 @@ import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /**
  * Receives intents from AntennaPod Single Purpose apps
@@ -44,12 +44,7 @@ public class SPAReceiver extends BroadcastReceiver{
         ClientConfig.initialize(context);
         for (String url : feedUrls) {
             Feed f = new Feed(url, null);
-            try {
-                DownloadRequester.getInstance().downloadFeed(context, f);
-            } catch (DownloadRequestException e) {
-                Log.e(TAG, "Error while trying to add feed " + url);
-                e.printStackTrace();
-            }
+            DownloadService.download(context, false, DownloadRequestCreator.create(f).build());
         }
         Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
     }

@@ -3,23 +3,17 @@ package de.danoeh.antennapod.core.service.download;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
-import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.net.ssl.SslClientSetup;
 import okhttp3.Cache;
 import okhttp3.Credentials;
-import okhttp3.HttpUrl;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.internal.http.StatusLine;
 import java.io.File;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
@@ -34,6 +28,7 @@ public class AntennapodHttpClient {
     private static final int READ_TIMEOUT = 30000;
     private static final int MAX_CONNECTIONS = 8;
     private static File cacheDirectory;
+    private static ProxyConfig proxyConfig;
 
     private static volatile OkHttpClient httpClient = null;
 
@@ -69,36 +64,6 @@ public class AntennapodHttpClient {
         System.setProperty("http.maxConnections", String.valueOf(MAX_CONNECTIONS));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-        // detect 301 Moved permanently and 308 Permanent Redirect
-        builder.networkInterceptors().add(chain -> {
-            Request request = chain.request();
-            Response response = chain.proceed(request);
-            if (response.code() == HttpURLConnection.HTTP_MOVED_PERM
-                    || response.code() == StatusLine.HTTP_PERM_REDIRECT) {
-                String location = response.header("Location");
-                if (location == null) {
-                    return response;
-                }
-                if (location.startsWith("/")) { // URL is not absolute, but relative
-                    HttpUrl url = request.url();
-                    location = url.scheme() + "://" + url.host() + location;
-                } else if (!location.toLowerCase().startsWith("http://")
-                        && !location.toLowerCase().startsWith("https://")) {
-                    // Reference is relative to current path
-                    HttpUrl url = request.url();
-                    String path = url.encodedPath();
-                    String newPath = path.substring(0, path.lastIndexOf("/") + 1) + location;
-                    location = url.scheme() + "://" + url.host() + newPath;
-                }
-                try {
-                    DBWriter.updateFeedDownloadURL(request.url().toString(), location).get();
-                } catch (Exception e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            }
-            return response;
-        });
         builder.interceptors().add(new BasicAuthorizationInterceptor());
         builder.networkInterceptors().add(new UserAgentInterceptor());
 
@@ -117,14 +82,13 @@ public class AntennapodHttpClient {
         builder.followRedirects(true);
         builder.followSslRedirects(true);
 
-        ProxyConfig config = UserPreferences.getProxyConfig();
-        if (config.type != Proxy.Type.DIRECT) {
-            int port = config.port > 0 ? config.port : ProxyConfig.DEFAULT_PORT;
-            SocketAddress address = InetSocketAddress.createUnresolved(config.host, port);
-            builder.proxy(new Proxy(config.type, address));
-            if (!TextUtils.isEmpty(config.username) && config.password != null) {
+        if (proxyConfig != null && proxyConfig.type != Proxy.Type.DIRECT && !TextUtils.isEmpty(proxyConfig.host)) {
+            int port = proxyConfig.port > 0 ? proxyConfig.port : ProxyConfig.DEFAULT_PORT;
+            SocketAddress address = InetSocketAddress.createUnresolved(proxyConfig.host, port);
+            builder.proxy(new Proxy(proxyConfig.type, address));
+            if (!TextUtils.isEmpty(proxyConfig.username) && proxyConfig.password != null) {
                 builder.proxyAuthenticator((route, response) -> {
-                    String credentials = Credentials.basic(config.username, config.password);
+                    String credentials = Credentials.basic(proxyConfig.username, proxyConfig.password);
                     return response.request().newBuilder()
                             .header("Proxy-Authorization", credentials)
                             .build();
@@ -138,5 +102,9 @@ public class AntennapodHttpClient {
 
     public static void setCacheDirectory(File cacheDirectory) {
         AntennapodHttpClient.cacheDirectory = cacheDirectory;
+    }
+
+    public static void setProxyConfig(ProxyConfig proxyConfig) {
+        AntennapodHttpClient.proxyConfig = proxyConfig;
     }
 }
