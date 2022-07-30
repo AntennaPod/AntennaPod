@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content_root"
@@ -32,20 +33,19 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_height="wrap_content">
+                android:layout_marginStart="16dp">
 
                 <TextView
                     android:id="@+id/txtvPodcast"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
                     android:importantForAccessibility="no"
-                    tools:text="Podcast title"
-                    tools:background="@android:color/holo_green_dark" />
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    tools:text="Podcast title" />
 
                 <TextView
                     android:id="@+id/txtvTitle"
@@ -55,8 +55,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="end"
                     android:maxLines="5"
-                    tools:text="@sample/episodes.json/data/title"
-                    tools:background="@android:color/holo_green_dark" />
+                    tools:text="@sample/episodes.json/data/title" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,15 +63,13 @@
 
                     <TextView
                         android:id="@+id/txtvDuration"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="@sample/episodes.json/data/duration"
-                        tools:background="@android:color/holo_green_dark" />
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        tools:text="@sample/episodes.json/data/duration" />
 
                     <TextView
                         android:id="@+id/separatorIcons"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
@@ -81,48 +78,41 @@
                         android:layout_marginEnd="4dp"
                         android:importantForAccessibility="no"
                         android:text="·"
-                        tools:background="@android:color/holo_blue_light" />
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
                     <TextView
                         android:id="@+id/txtvPublished"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Jan 23"
-                        tools:background="@android:color/holo_green_dark" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        tools:text="Jan 23" />
 
-        <ProgressBar
-            android:id="@+id/progbarDownload"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            tools:background="@android:color/holo_blue_bright"
             android:baselineAligned="false">
 
             <LinearLayout
+                android:id="@+id/butAction1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/butAction1"
                 android:orientation="horizontal"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/butAction1Icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:id="@+id/butAction1Icon"
                     android:layout_marginRight="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="12dp"
@@ -130,41 +120,58 @@
                     tools:src="@drawable/ic_settings" />
 
                 <TextView
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:id="@+id/butAction1Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:textColor="?android:attr/textColorPrimary"
                     tools:text="Button 1" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/butAction2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/butAction2"
                 android:orientation="horizontal"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:id="@+id/butAction2Icon"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    tools:src="@drawable/ic_settings" />
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="bottom|end">
+
+                    <de.danoeh.antennapod.ui.common.CircularProgressBar
+                        android:id="@+id/circularProgressBar"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        app:foregroundColor="?android:attr/textColorPrimary" />
+
+                    <ImageView
+                        android:id="@+id/butAction2Icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        tools:src="@drawable/ic_settings" />
+
+                </FrameLayout>
 
                 <TextView
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:id="@+id/butAction2Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:textColor="?android:attr/textColorPrimary"
                     tools:text="Button 2" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -174,19 +181,19 @@
             android:visibility="gone"
             android:textAlignment="center"
             android:background="?android:attr/dividerVertical"
-            android:text="@string/no_media_label"/>
+            android:text="@string/no_media_label" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/dividerVertical"/>
+            android:background="?android:attr/dividerVertical" />
 
     </LinearLayout>
 
     <de.danoeh.antennapod.view.NestedScrollableHost
-        android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/header"
         app:preferVertical="3">
 
         <de.danoeh.antennapod.view.ShownotesWebView
@@ -207,5 +214,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true" />
+
     </FrameLayout>
+
 </RelativeLayout>
