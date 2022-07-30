@@ -138,7 +138,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/in_queue_label"
-                    app:srcCompat="@drawable/ic_playlist" />
+                    app:srcCompat="@drawable/ic_playlist_play" />
 
                 <TextView
                     android:id="@+id/separatorIcons"
