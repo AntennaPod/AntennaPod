@@ -113,9 +113,6 @@ public class HttpDownloader extends Downloader {
             } else if (!response.isSuccessful() || response.body() == null) {
                 callOnFailByResponseCode(response);
                 return;
-            } else if (!StorageUtils.storageAvailable()) {
-                onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
-                return;
             } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
                     && isContentTypeTextAndSmallerThan100kb(response)) {
                 onFail(DownloadError.ERROR_FILE_TYPE, null);

@@ -29,15 +29,8 @@ public class ChooseDataFolderDialog {
         });
         ((RecyclerView) content.findViewById(R.id.recyclerView)).setAdapter(adapter);
 
-        if (adapter.getItemCount() > 0) {
+        if (adapter.getItemCount() != 0) {
             dialog.show();
-        } else {
-            new AlertDialog.Builder(context)
-                    .setTitle(R.string.error_label)
-                    .setMessage(R.string.external_storage_error_msg)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();
         }
     }
-
 }
