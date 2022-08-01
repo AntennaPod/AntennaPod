@@ -2,6 +2,7 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="@dimen/listitem_iconwithtext_height"
@@ -43,7 +44,7 @@
         android:layout_toEndOf="@id/imgvCover"
         tools:text="Navigation item title" />
 
-    <com.joanzapata.iconify.widget.IconTextView
+    <ImageView
         android:id="@+id/itxtvFailure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,12 +55,10 @@
         android:layout_marginRight="@dimen/list_vertical_padding"
         android:layout_marginEnd="@dimen/list_vertical_padding"
         android:layout_alignWithParentIfMissing="true"
-        android:lines="1"
-        android:text="{fa-exclamation-circle}"
-        android:textColor="@color/download_failed_red"
-        android:textSize="@dimen/text_size_navdrawer"
         android:layout_centerVertical="true"
         android:visibility="gone"
+        app:srcCompat="@drawable/ic_error"
+        app:tint="@color/download_failed_red"
         tools:text="!"
         tools:background="@android:color/holo_green_dark"/>
 
