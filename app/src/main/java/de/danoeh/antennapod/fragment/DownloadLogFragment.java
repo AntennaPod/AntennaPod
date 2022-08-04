@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,6 +80,9 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
         adapter = new DownloadLogAdapter(getActivity());
         viewBinding.list.setAdapter(adapter);
         viewBinding.list.setOnItemClickListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            viewBinding.list.setNestedScrollingEnabled(true);
+        }
         EventBus.getDefault().register(this);
         return viewBinding.getRoot();
     }
