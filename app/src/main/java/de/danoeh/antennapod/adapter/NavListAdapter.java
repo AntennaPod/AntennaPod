@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
@@ -388,7 +387,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     static class FeedHolder extends Holder {
         final ImageView image;
         final TextView title;
-        final IconTextView failure;
+        final ImageView failure;
         final TextView count;
 
         public FeedHolder(@NonNull View itemView) {
