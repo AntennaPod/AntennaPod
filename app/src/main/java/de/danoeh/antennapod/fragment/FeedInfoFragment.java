@@ -25,7 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
@@ -62,7 +62,7 @@ import java.util.Iterator;
 /**
  * Displays information about a feed.
  */
-public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener {
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
@@ -81,7 +81,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     private ImageView imgvBackground;
     private View infoContainer;
     private View header;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();

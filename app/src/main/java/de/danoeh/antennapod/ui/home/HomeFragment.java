@@ -28,6 +28,7 @@ import de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection;
 import de.danoeh.antennapod.ui.home.sections.InboxSection;
 import de.danoeh.antennapod.ui.home.sections.QueueSection;
 import de.danoeh.antennapod.ui.home.sections.SubscriptionsSection;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -64,6 +65,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
+        viewBinding.homeScrollView.setOnScrollChangeListener(new LiftOnScrollListener(viewBinding.appbar));
         ((MainActivity) requireActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
         refreshToolbarState();
         populateSectionList();

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -35,6 +35,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,7 +54,7 @@ import java.util.List;
  * Displays all completed downloads and provides a button to delete them.
  */
 public class CompletedDownloadsFragment extends Fragment
-        implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
+        implements EpisodeItemListAdapter.OnSelectModeListener, MaterialToolbar.OnMenuItemClickListener {
     public static final String TAG = "DownloadsFragment";
     public static final String ARG_SHOW_LOGS = "show_logs";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -73,7 +74,7 @@ public class CompletedDownloadsFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         toolbar.setOnMenuItemClickListener(this);
@@ -96,6 +97,7 @@ public class CompletedDownloadsFragment extends Fragment
                 .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
         adapter.setDummyViews(Math.max(1, previousEpisodesCount));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
         swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
 

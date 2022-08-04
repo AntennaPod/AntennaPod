@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -23,6 +23,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -73,7 +74,7 @@ import io.reactivex.schedulers.Schedulers;
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
+        ChapterSeekBar.OnSeekBarChangeListener, MaterialToolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     public static final int POS_COVER = 0;
     public static final int POS_DESCRIPTION = 1;
@@ -91,7 +92,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
     private TextView txtvSeek;
@@ -120,6 +121,7 @@ public class AudioPlayerFragment extends Fragment implements
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
+        root.findViewById(R.id.playerFragment).setBackgroundColor(SurfaceColors.getColorForElevation(getContext(), 8));
 
         butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);

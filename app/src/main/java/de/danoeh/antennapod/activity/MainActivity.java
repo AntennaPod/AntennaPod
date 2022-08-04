@@ -19,7 +19,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -198,7 +198,7 @@ public class MainActivity extends CastEnabledActivity {
         }
     };
 
-    public void setupToolbarToggle(@NonNull Toolbar toolbar, boolean displayUpArrow) {
+    public void setupToolbarToggle(@NonNull MaterialToolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             if (drawerToggle != null) {
                 drawerLayout.removeDrawerListener(drawerToggle);

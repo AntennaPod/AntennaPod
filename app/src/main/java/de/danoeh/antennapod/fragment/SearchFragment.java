@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -189,7 +189,7 @@ public class SearchFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    private void setupToolbar(Toolbar toolbar) {
+    private void setupToolbar(MaterialToolbar toolbar) {
         toolbar.setTitle(R.string.search_label);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         toolbar.inflateMenu(R.menu.search);

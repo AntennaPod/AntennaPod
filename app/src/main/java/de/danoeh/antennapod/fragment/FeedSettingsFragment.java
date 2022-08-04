@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -61,7 +61,7 @@ public class FeedSettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.feedsettings, container, false);
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
 
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         getParentFragmentManager().beginTransaction()

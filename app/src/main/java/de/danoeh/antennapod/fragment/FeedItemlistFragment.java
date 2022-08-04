@@ -18,7 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -81,7 +81,7 @@ import java.util.List;
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
+        MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
