@@ -86,8 +86,10 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
+            emptyView.setMessage(R.string.no_all_episodes_filtered_label);
         } else {
             txtvInformation.setVisibility(View.GONE);
+            emptyView.setMessage(R.string.no_all_episodes_label);
         }
     }
 }
