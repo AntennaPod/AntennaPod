@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.widget.SwitchCompat;
 
 import de.danoeh.antennapod.R;
@@ -33,7 +33,7 @@ public class PreferenceSwitchDialog {
 
     public void openDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(title);
 
         LayoutInflater inflater = LayoutInflater.from(this.context);

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +47,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
                 .setNegativeButton(getString(R.string.cancel_label), null) //dismisses

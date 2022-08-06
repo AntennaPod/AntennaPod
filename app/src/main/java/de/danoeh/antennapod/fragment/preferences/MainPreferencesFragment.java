@@ -5,7 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -132,7 +132,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_STATISTICS).setOnPreferenceClickListener(
                 preference -> {
-                    new AlertDialog.Builder(getContext())
+                    new MaterialAlertDialogBuilder(getContext())
                             .setMessage(R.string.statistics_moved)
                             .setPositiveButton(android.R.string.ok, null)
                             .show();

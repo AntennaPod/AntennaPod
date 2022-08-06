@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -131,7 +131,7 @@ public class AutoUpdateManager {
     }
 
     private static void confirmMobileAllFeedsRefresh(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.feed_refresh_title)
                 .setMessage(R.string.confirm_mobile_feed_refresh_dialog_message)
                 .setPositiveButton(R.string.confirm_mobile_streaming_button_once,

@@ -6,7 +6,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedFilter;
@@ -14,7 +14,7 @@ import de.danoeh.antennapod.model.feed.FeedFilter;
 /**
  * Displays a dialog with a text box for filtering episodes and two radio buttons for exclusion/inclusion
  */
-public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
+public abstract class EpisodeFilterDialog extends MaterialAlertDialogBuilder {
     private final FeedFilter initialFilter;
 
     public EpisodeFilterDialog(Context context, FeedFilter filter) {

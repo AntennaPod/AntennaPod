@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -399,7 +399,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void mediaPlayerError(PlayerErrorEvent event) {
-        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(getContext());
+        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(getContext());
         errorDialog.setTitle(R.string.error_label);
         errorDialog.setMessage(event.getMessage());
         errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->

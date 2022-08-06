@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,7 +26,7 @@ public class SubscriptionsFilterDialog {
     public static void showDialog(Context context) {
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         final Set<String> filterValues = new HashSet<>(Arrays.asList(subscriptionsFilter.getValues()));
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(context.getString(R.string.pref_filter_feed_title));
 
         LayoutInflater inflater = LayoutInflater.from(context);

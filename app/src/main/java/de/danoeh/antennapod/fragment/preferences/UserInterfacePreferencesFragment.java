@@ -5,9 +5,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.ListView;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceFragmentCompat;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -98,7 +99,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
             }
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(String.format(context.getResources().getString(
                 R.string.pref_compact_notification_buttons_dialog_title), 2));
         builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {

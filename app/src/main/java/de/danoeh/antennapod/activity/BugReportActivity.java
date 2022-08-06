@@ -9,7 +9,7 @@ import android.util.Log;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -79,7 +79,7 @@ public class BugReportActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.export_logcat) {
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertBuilder = new MaterialAlertDialogBuilder(this);
             alertBuilder.setMessage(R.string.confirm_export_log_dialog_message);
             alertBuilder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                 exportLog();

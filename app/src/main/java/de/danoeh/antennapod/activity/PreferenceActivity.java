@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -155,7 +155,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
     public void onSearchResultClicked(SearchPreferenceResult result) {
         int screen = result.getResourceFile();
         if (screen == R.xml.feed_settings) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.feed_settings_label);
             builder.setMessage(R.string.pref_feed_settings_dialog_msg);
             builder.setPositiveButton(android.R.string.ok, null);

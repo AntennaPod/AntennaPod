@@ -54,6 +54,7 @@
         android:id="@+id/previewContainer"
         android:layout_width="match_parent"
         android:layout_height="76dp"
+        android:background="?attr/background_color"
         android:gravity="center"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">

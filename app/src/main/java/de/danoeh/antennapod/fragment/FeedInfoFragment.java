@@ -23,7 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.documentfile.provider.DocumentFile;
@@ -292,7 +292,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         boolean handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
 
         if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {

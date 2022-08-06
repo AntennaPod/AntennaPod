@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -348,7 +348,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             if (!shouldShowLockWarning) {
                 setQueueLocked(true);
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                 builder.setTitle(R.string.lock_queue);
                 builder.setMessage(R.string.queue_lock_warning);
 

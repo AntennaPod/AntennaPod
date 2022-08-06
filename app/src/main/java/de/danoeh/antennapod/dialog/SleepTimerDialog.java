@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -64,7 +64,7 @@ public class SleepTimerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View content = View.inflate(getContext(), R.layout.time_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.sleep_timer_label);
         builder.setView(content);
         builder.setPositiveButton(R.string.close_label, null);

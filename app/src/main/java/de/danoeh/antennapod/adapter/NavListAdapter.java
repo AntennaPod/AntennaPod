@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -271,7 +271,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setOnClickListener(v ->
-                        new AlertDialog.Builder(context)
+                        new MaterialAlertDialogBuilder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
                             .setPositiveButton(android.R.string.ok, null)

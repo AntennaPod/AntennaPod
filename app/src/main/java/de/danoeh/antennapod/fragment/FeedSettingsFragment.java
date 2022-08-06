@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
@@ -216,7 +216,7 @@ public class FeedSettingsFragment extends Fragment {
                 });
                 viewBinding.useGlobalCheckbox.setChecked(speed == FeedPreferences.SPEED_USE_GLOBAL);
                 viewBinding.seekBar.updateSpeed(speed == FeedPreferences.SPEED_USE_GLOBAL ? 1 : speed);
-                new AlertDialog.Builder(getContext())
+                new MaterialAlertDialogBuilder(getContext())
                         .setTitle(R.string.playback_speed)
                         .setView(viewBinding.getRoot())
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {

@@ -20,7 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -132,7 +132,7 @@ public class AddFeedFragment extends Fragment {
     }
 
     private void showAddViaUrlDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.add_podcast_by_url);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         dialogBinding.urlEditText.setHint(R.string.add_podcast_by_url_hint);
