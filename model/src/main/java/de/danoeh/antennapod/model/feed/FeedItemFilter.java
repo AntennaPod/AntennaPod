@@ -72,10 +72,6 @@ public class FeedItemFilter implements Serializable {
         return properties.clone();
     }
 
-    public boolean isShowDownloaded() {
-        return showDownloaded;
-    }
-
     public boolean matches(FeedItem item) {
         if (showNew && !item.isNew()) {
             return false;

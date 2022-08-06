@@ -1,40 +1,56 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
-
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
-import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMenuItemClickListener {
+public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-    private static final String KEY_UP_ARROW = "up_arrow";
 
-    private Toolbar toolbar;
-    private boolean displayUpArrow;
-    private volatile boolean isUpdatingFeeds;
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View root = super.onCreateView(inflater, container, savedInstanceState);
+        toolbar.inflateMenu(R.menu.inbox);
+        toolbar.setTitle(R.string.inbox_label);
+        updateToolbar();
+        emptyView.setIcon(R.drawable.ic_inbox);
+        emptyView.setTitle(R.string.no_inbox_head_label);
+        emptyView.setMessage(R.string.no_inbox_label);
+        speedDialView.removeActionItemById(R.id.mark_unread_batch);
+        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.delete_batch);
+        return root;
+    }
+
+    @Override
+    protected FeedItemFilter getFilter() {
+        return new FeedItemFilter(FeedItemFilter.NEW);
+    }
+
+    @Override
+    protected String getFragmentTag() {
+        return TAG;
+    }
 
     @Override
     protected String getPrefName() {
@@ -42,75 +58,27 @@ public class InboxFragment extends EpisodesListFragment implements Toolbar.OnMen
     }
 
     @Override
-    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
-        return item.isNew();
-    }
-
-    @NonNull
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inboxContainer = View.inflate(getContext(), R.layout.list_container_fragment, null);
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-        ((FrameLayout) inboxContainer.findViewById(R.id.listContent)).addView(root);
-        emptyView.setTitle(R.string.no_inbox_head_label);
-        emptyView.setMessage(R.string.no_inbox_label);
-
-        toolbar = inboxContainer.findViewById(R.id.toolbar);
-        toolbar.setOnMenuItemClickListener(this);
-        toolbar.inflateMenu(R.menu.inbox);
-        toolbar.setOnLongClickListener(v -> {
-            recyclerView.scrollToPosition(5);
-            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
-            return false;
-        });
-        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
-        if (savedInstanceState != null) {
-            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
-        }
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
-
-        SwipeActions swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
-        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
-
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.delete_batch);
-        return inboxContainer;
-    }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
-
-    private void updateToolbar() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            updateToolbar();
-        }
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        super.onEventMainThread(event);
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            updateToolbar();
-        }
-    }
-
-    @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
+        if (super.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if (item.getItemId() == R.id.remove_all_inbox_item) {
+            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
+                    R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg) {
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
-        super.onSaveInstanceState(outState);
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    DBWriter.removeAllNewFlags();
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                            R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+                }
+            };
+            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            return true;
+        }
+        return false;
     }
 
     @NonNull

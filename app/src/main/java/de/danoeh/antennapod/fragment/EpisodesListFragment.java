@@ -2,18 +2,11 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import androidx.annotation.NonNull;
-import androidx.core.util.Pair;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,22 +14,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.adapter.SelectableAdapter;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.actions.EpisodeMultiSelectActionHandler;
-import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -44,34 +59,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * Shows unread or recently published episodes
  */
-public abstract class EpisodesListFragment extends Fragment implements EpisodeItemListAdapter.OnSelectModeListener {
-
+public abstract class EpisodesListFragment extends Fragment
+        implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "EpisodesListFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
     protected static final int EPISODES_PER_PAGE = 150;
     protected int page = 1;
     protected boolean isLoadingMore = false;
     protected boolean hasMoreItems = true;
+    private boolean displayUpArrow;
 
     EpisodeItemListRecyclerView recyclerView;
     EpisodeItemListAdapter listAdapter;
@@ -79,6 +78,8 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
     View loadingMoreView;
     EmptyViewHandler emptyView;
     SpeedDialView speedDialView;
+    Toolbar toolbar;
+    SwipeActions swipeActions;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -87,9 +88,6 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
     protected Disposable disposable;
     protected TextView txtvInformation;
 
-    String getPrefName() {
-        return TAG;
-    }
 
     @Override
     public void onStart() {
@@ -137,21 +135,6 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         if (itemId == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
             return true;
-        } else if (itemId == R.id.remove_all_inbox_item) {
-            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg) {
-
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.removeAllNewFlags();
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
-                }
-            };
-            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
-            return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
@@ -180,12 +163,27 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.all_episodes_fragment, container, false);
+        View root = inflater.inflate(R.layout.episodes_list_fragment, container, false);
         txtvInformation = root.findViewById(R.id.txtvInformation);
+        toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnLongClickListener(v -> {
+            recyclerView.scrollToPosition(5);
+            recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
+            return false;
+        });
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         recyclerView = root.findViewById(android.R.id.list);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
+
+        swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
+        swipeActions.setFilter(getFilter());
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
@@ -308,7 +306,7 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
                         hasMoreItems = false;
                     }
                     episodes.addAll(data);
-                    onFragmentLoaded(episodes);
+                    updateAdapterWithNewItems();
                     if (listAdapter.shouldSelectLazyLoadedItems()) {
                         listAdapter.setSelected(episodes.size() - data.size(), episodes.size(), true);
                     }
@@ -320,7 +318,7 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
                     });
     }
 
-    protected void onFragmentLoaded(List<FeedItem> episodes) {
+    protected void updateAdapterWithNewItems() {
         boolean restoreScrollPosition = listAdapter.getItemCount() == 0;
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
@@ -329,10 +327,6 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         }
         if (restoreScrollPosition) {
             recyclerView.restoreScrollPosition(getPrefName());
-        }
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()
-                && getParentFragment() instanceof PagedToolbarFragment) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
 
@@ -385,7 +379,7 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
             int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
                 episodes.remove(pos);
-                if (shouldUpdatedItemRemainInList(item)) {
+                if (getFilter().matches(item)) {
                     episodes.add(pos, item);
                     listAdapter.notifyItemChangedCompat(pos);
                 } else {
@@ -425,16 +419,12 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
         }
     }
 
-    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
-        return true;
-    }
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds) && getParentFragment() instanceof PagedToolbarFragment) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            updateToolbar();
         }
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
@@ -448,9 +438,8 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
 
     private void updateUi() {
         loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()
-                && getParentFragment() instanceof PagedToolbarFragment) {
-            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            updateToolbar();
         }
     }
 
@@ -481,32 +470,41 @@ public abstract class EpisodesListFragment extends Fragment implements EpisodeIt
                     loadingMoreView.setVisibility(View.GONE);
                     hasMoreItems = true;
                     episodes = data.first;
+                    listAdapter.notifyDataSetChanged();
                     listAdapter.setTotalNumberOfItems(data.second);
-                    onFragmentLoaded(episodes);
-                    if (getParentFragment() instanceof PagedToolbarFragment) {
-                        ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
-                    }
+                    updateAdapterWithNewItems();
+                    updateToolbar();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
-    protected abstract List<FeedItem> loadData();
+    protected List<FeedItem> loadData() {
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, getFilter());
+    }
 
-    /**
-     * Load a new page of data as defined by {@link #page} and {@link #EPISODES_PER_PAGE}.
-     * If the number of items returned is less than {@link #EPISODES_PER_PAGE},
-     * it will be assumed that the underlying data is exhausted
-     * and this method will not be called again.
-     *
-     * @return The items from the next page of data
-     */
     @NonNull
-    protected abstract List<FeedItem> loadMoreData(int page);
+    protected List<FeedItem> loadMoreData(int page) {
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter());
+    }
 
-    /**
-     * Returns the total number of items that would be returned if {@link #loadMoreData} was called often enough.
-     */
     protected int loadTotalItemCount() {
-        return SelectableAdapter.COUNT_AUTOMATICALLY;
+        return DBReader.getTotalEpisodeCount(getFilter());
+    }
+
+    protected abstract FeedItemFilter getFilter();
+
+    protected abstract String getFragmentTag();
+
+    protected abstract String getPrefName();
+
+    protected void updateToolbar() {
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+                R.id.refresh_item, updateRefreshMenuItemChecker);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 }

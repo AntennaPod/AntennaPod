@@ -21,7 +21,6 @@
         android:icon="@drawable/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
-        android:visible="false"
         custom:showAsAction="always"/>
 
     <item
