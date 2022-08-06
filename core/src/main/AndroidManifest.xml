@@ -1,8 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="de.danoeh.antennapod.core">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="de.danoeh.antennapod.core">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,23 +14,42 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true">
-
+        <service
+            android:name=".service.QSTileService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:icon="@drawable/exo_controls_play"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
         <service
             android:name=".service.download.DownloadService"
             android:enabled="true" />
-
-        <service android:name=".service.playback.PlaybackService"
-            android:label="@string/app_name"
+        <service
+            android:name=".service.playback.PlaybackService"
             android:enabled="true"
             android:exported="true"
+            android:label="@string/app_name"
             tools:ignore="ExportedService">
-
             <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
 
@@ -41,18 +63,11 @@
                 <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".receiver.FeedUpdateReceiver"
-            android:label="@string/feed_update_receiver_name"
+        <receiver
+            android:name=".receiver.FeedUpdateReceiver"
             android:exported="true"
-            tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
+            android:label="@string/feed_update_receiver_name"
+            tools:ignore="ExportedReceiver" />
     </application>
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
-        </intent>
-    </queries>
 
 </manifest>
