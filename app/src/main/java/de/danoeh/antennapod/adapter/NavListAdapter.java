@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,12 +207,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.itemView.setOnCreateContextMenuListener(itemAccess);
         }
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TypedValue typedValue = new TypedValue();
-
-            activity.get().getTheme().resolveAttribute(itemAccess.isSelected(position)
-                    ? R.attr.drawer_activated_color : android.R.attr.windowBackground, typedValue, true);
-            holder.itemView.setBackgroundResource(typedValue.resourceId);
-
+            holder.itemView.setSelected(itemAccess.isSelected(position));
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
             holder.itemView.setOnTouchListener((v, e) -> {
