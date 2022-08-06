@@ -5,13 +5,15 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.Light" parent="Theme.MaterialComponents.Light">
+    <style name="Theme.Base.AntennaPod.Light" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/accent_light</item>
         <item name="colorAccent">@color/accent_light</item>
         <item name="colorSecondary">@color/accent_light</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="colorPrimaryDark">@color/accent_light</item>
+        <item name="colorPrimaryContainer">@color/accent_light</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="android:windowBackground">@color/background_light</item>
         <item name="background_color">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Light</item>
@@ -40,12 +42,14 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.MaterialComponents">
+    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.Material3.Dark">
         <item name="colorAccent">@color/accent_dark</item>
         <item name="colorSecondary">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorPrimary">@color/accent_dark</item>
         <item name="colorPrimaryDark">@color/background_darktheme</item>
+        <item name="colorPrimaryContainer">@color/accent_dark</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
         <item name="android:windowBackground">@color/background_darktheme</item>
         <item name="background_color">@color/background_darktheme</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Dark</item>
@@ -147,7 +151,7 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Splash" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.AntennaPod.Splash" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimary">@color/icon_background_gradient_start</item>
         <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
@@ -210,15 +214,15 @@
         <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
     </style>
 
-    <style name="Widget.AntennaPod.ActionBar.Light" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+    <style name="Widget.AntennaPod.ActionBar.Light" parent="Widget.Material3.Light.ActionBar.Solid">
         <item name="background">@color/background_light</item>
     </style>
 
-    <style name="Widget.AntennaPod.ActionBar.Dark" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+    <style name="Widget.AntennaPod.ActionBar.Dark" parent="Widget.Material3.Light.ActionBar.Solid">
         <item name="background">@color/background_darktheme</item>
     </style>
 
-    <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+    <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.Material3.Light.ActionBar.Solid">
         <item name="background">@color/black</item>
     </style>
 
@@ -231,7 +235,7 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="NoButtonRadio" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+    <style name="NoButtonRadio" parent="Widget.Material3.CompoundButton.RadioButton">
         <item name="buttonCompat">@null</item> <!-- For Android 4.4 -->
         <item name="android:button">@null</item>
     </style>
