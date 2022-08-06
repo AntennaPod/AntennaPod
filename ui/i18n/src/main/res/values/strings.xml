@@ -11,7 +11,6 @@
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
     <string name="queue_label">Queue</string>
-    <string name="all_episodes_short_label">All</string>
     <string name="inbox_label">Inbox</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="settings_label">Settings</string>

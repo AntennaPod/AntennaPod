@@ -251,11 +251,9 @@ public class PlaybackTest {
     protected void startLocalPlayback() {
         openNavDrawer();
         onDrawerItem(withText(R.string.episodes_label)).perform(click());
-        onView(isRoot()).perform(waitForView(withText(R.string.all_episodes_short_label), 1000));
-        onView(withText(R.string.all_episodes_short_label)).perform(click());
 
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
-        Matcher<View> allEpisodesMatcher = allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
+        Matcher<View> allEpisodesMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.secondaryActionButton)));
 

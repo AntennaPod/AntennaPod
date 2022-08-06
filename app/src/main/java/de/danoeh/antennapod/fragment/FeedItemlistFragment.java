@@ -273,7 +273,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            ((MainActivity) getActivity()).loadFragment(AllEpisodesFragment.TAG, null);
             RemoveFeedDialog.show(getContext(), feed);
             return true;
         } else if (itemId == R.id.action_search) {

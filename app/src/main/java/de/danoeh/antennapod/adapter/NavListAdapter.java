@@ -25,6 +25,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -32,7 +33,6 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -117,7 +117,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 return R.drawable.ic_playlist_play;
             case InboxFragment.TAG:
                 return R.drawable.ic_inbox;
-            case EpisodesFragment.TAG:
+            case AllEpisodesFragment.TAG:
                 return R.drawable.ic_feed;
             case CompletedDownloadsFragment.TAG:
                 return R.drawable.ic_download;
