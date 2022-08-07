@@ -10,8 +10,6 @@
     <attr name="scrollbar_thumb" format="reference"/>
     <attr name="background_color" format="color"/>
     <attr name="background_elevated" format="color"/>
-    <attr name="filter_dialog_clear" format="color"/>
-    <attr name="filter_dialog_button_background" format="reference"/>
     <attr name="seek_background" format="color" />
     <attr name="icon_red" format="color" />
     <attr name="icon_yellow" format="color" />

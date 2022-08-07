@@ -29,8 +29,6 @@
         <item name="navigation_up">@drawable/navigation_up</item>
         <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
-        <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
-        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
         <item name="icon_red">#CF1800</item>
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
@@ -74,8 +72,6 @@
         <item name="navigation_up">@drawable/navigation_up_dark</item>
         <item name="dragview_background">@drawable/ic_drag_darktheme</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
-        <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
-        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
         <item name="icon_red">#CF1800</item>
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
@@ -248,11 +244,6 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:clickable">true</item>
-    </style>
-
-    <style name="NoButtonRadio" parent="Widget.Material3.CompoundButton.RadioButton">
-        <item name="buttonCompat">@null</item> <!-- For Android 4.4 -->
-        <item name="android:button">@null</item>
     </style>
 
 </resources>
