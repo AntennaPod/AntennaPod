@@ -21,8 +21,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -106,7 +106,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                 defaultActions = SwipeAction.DELETE + "," + SwipeAction.DELETE;
                 break;
             default:
-            case EpisodesFragment.TAG:
+            case AllEpisodesFragment.TAG:
                 defaultActions = SwipeAction.MARK_FAV + "," + SwipeAction.START_DOWNLOAD;
                 break;
         }

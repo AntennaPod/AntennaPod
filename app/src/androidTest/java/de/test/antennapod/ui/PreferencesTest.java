@@ -28,7 +28,7 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
@@ -521,7 +521,7 @@ public class PreferencesTest {
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(EpisodesFragment.TAG));
+                .until(() -> UserPreferences.getBackButtonGoToPage().equals(AllEpisodesFragment.TAG));
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_go_to_page)).perform(click());
         onView(withText(R.string.subscriptions_label)).perform(click());
