@@ -45,7 +45,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.core.service.QSTileService;
+import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -848,11 +848,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
             }
 
-            // Trigger an update to the Quick Settings tile (see QSTileService.java)
+            // Trigger an update to the Quick Settings tile (see QuickSettingsTileService.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 TileService.requestListeningState(
                         getApplicationContext(),
-                        new ComponentName(getApplicationContext(), QSTileService.class.getName())
+                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class.getName())
                 );
             }
 

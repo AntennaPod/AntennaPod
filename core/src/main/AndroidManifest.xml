@@ -48,7 +48,7 @@
             tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
 
         <service
-            android:name=".service.QSTileService"
+            android:name=".service.QuickSettingsTileService"
             android:enabled="true"
             android:exported="true"
             android:label="@string/app_name"
