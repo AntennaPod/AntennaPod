@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
