@@ -10,17 +10,21 @@ import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
 
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class QSTileService extends TileService {
 
+    // Initialize and update status when tile is added
     @Override
     public void onTileAdded() {
         super.onTileAdded();
         updateTile();
     }
 
+    // Play/pause playback by faking a Media Button press when clicking the tile
     @Override
     public void onClick() {
         super.onClick();
@@ -31,14 +35,15 @@ public class QSTileService extends TileService {
         sendBroadcast(intent);
     }
 
-    // TODO call TileService.requestListeningState() elsewhere whenever playback status changes
+    // Update the tile status when TileService.requestListeningState() is called elsewhere
     @Override
     public void onStartListening() {
         super.onStartListening();
         updateTile();
     }
 
-    // Update tile status at boot
+    // Update tile status on binding
+    // (Without this, the tile may not be in the correct state after boot)
     @Override
     public IBinder onBind(Intent intent) {
         TileService.requestListeningState(this,
@@ -47,9 +52,14 @@ public class QSTileService extends TileService {
     }
 
     public void updateTile() {
-        boolean isPlaying = true; // TODO replace with best way to retrieve playback status
+        // Get current playback status
+        boolean isPlaying = PlaybackService.isRunning &&
+                PlaybackPreferences.getCurrentPlayerStatus() ==
+                        PlaybackPreferences.PLAYER_STATUS_PLAYING;
         Tile qsTile = getQsTile();
+        // Change the active/inactive state of the tile to match playback status
         qsTile.setState(isPlaying ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
+        // Apply the above changes
         qsTile.updateTile();
     }
 }

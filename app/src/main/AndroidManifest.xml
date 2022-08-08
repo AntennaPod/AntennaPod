@@ -119,6 +119,7 @@
             <intent-filter>
                 <action android:name="de.danoeh.antennapod.intents.MAIN_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
             </intent-filter>
         </activity>
 

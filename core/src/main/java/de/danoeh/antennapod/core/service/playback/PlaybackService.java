@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -44,6 +45,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.service.QSTileService;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -844,6 +846,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 default:
                     break;
+            }
+
+            // Trigger an update to the Quick Settings tile (see QSTileService.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                TileService.requestListeningState(
+                        getApplicationContext(),
+                        new ComponentName(getApplicationContext(), QSTileService.class.getName())
+                );
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
