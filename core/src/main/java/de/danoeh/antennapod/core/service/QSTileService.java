@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
@@ -16,6 +17,10 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class QSTileService extends TileService {
+    /**
+     * Logging tag
+     */
+    private static final String TAG = "QSTileService";
 
     // Initialize and update status when tile is added
     @Override
@@ -51,15 +56,20 @@ public class QSTileService extends TileService {
         return super.onBind(intent);
     }
 
+    // Change the active/inactive state of the tile to match current playback status
     public void updateTile() {
-        // Get current playback status
-        boolean isPlaying = PlaybackService.isRunning &&
-                PlaybackPreferences.getCurrentPlayerStatus() ==
-                        PlaybackPreferences.PLAYER_STATUS_PLAYING;
         Tile qsTile = getQsTile();
-        // Change the active/inactive state of the tile to match playback status
-        qsTile.setState(isPlaying ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
-        // Apply the above changes
-        qsTile.updateTile();
+        if (qsTile == null) {
+            Log.d(TAG, "Ignored call to update QS tile: getQsTile() returned null.");
+        } else {
+            // Get current playback status
+            boolean isPlaying = PlaybackService.isRunning &&
+                    PlaybackPreferences.getCurrentPlayerStatus() ==
+                            PlaybackPreferences.PLAYER_STATUS_PLAYING;
+            // Change the active/inactive state of the tile
+            qsTile.setState(isPlaying ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
+            // Apply the above changes
+            qsTile.updateTile();
+        }
     }
 }
