@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
@@ -19,8 +20,9 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 public class QuickSettingsTileService extends TileService {
     /**
      * Logging tag
+     * Missing final 'e' because of max 23 characters for log tags
      */
-    private static final String TAG = "QuickSettingsTileService";
+    private static final String TAG = "QuickSettingsTileServic";
 
     // Initialize and update status when tile is added
     @Override
