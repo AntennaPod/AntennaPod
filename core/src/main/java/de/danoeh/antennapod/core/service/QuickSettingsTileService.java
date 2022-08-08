@@ -16,11 +16,11 @@ import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class QSTileService extends TileService {
+public class QuickSettingsTileService extends TileService {
     /**
      * Logging tag
      */
-    private static final String TAG = "QSTileService";
+    private static final String TAG = "QuickSettingsTileService";
 
     // Initialize and update status when tile is added
     @Override
@@ -52,7 +52,7 @@ public class QSTileService extends TileService {
     @Override
     public IBinder onBind(Intent intent) {
         TileService.requestListeningState(this,
-                new ComponentName(this, QSTileService.class));
+                new ComponentName(this, QuickSettingsTileService.class));
         return super.onBind(intent);
     }
 
@@ -63,9 +63,9 @@ public class QSTileService extends TileService {
             Log.d(TAG, "Ignored call to update QS tile: getQsTile() returned null.");
         } else {
             // Get current playback status
-            boolean isPlaying = PlaybackService.isRunning &&
-                    PlaybackPreferences.getCurrentPlayerStatus() ==
-                            PlaybackPreferences.PLAYER_STATUS_PLAYING;
+            boolean isPlaying = PlaybackService.isRunning
+                    && PlaybackPreferences.getCurrentPlayerStatus()
+                        == PlaybackPreferences.PLAYER_STATUS_PLAYING;
             // Change the active/inactive state of the tile
             qsTile.setState(isPlaying ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
             // Apply the above changes
