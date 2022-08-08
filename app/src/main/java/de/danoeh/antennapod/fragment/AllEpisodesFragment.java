@@ -15,7 +15,8 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Shows all episodes (possibly filtered by user).
@@ -33,9 +34,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
-        speedDialView.removeActionItemById(R.id.mark_unread_batch);
-        speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        speedDialView.removeActionItemById(R.id.delete_batch);
+        txtvInformation.setOnClickListener(
+                v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
     }
 
@@ -64,8 +64,13 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
             return true;
         } else if (item.getItemId() == R.id.action_favorites) {
-            onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(getFilter().showIsFavorite
-                            ? Collections.emptySet() : Collections.singleton(FeedItemFilter.IS_FAVORITE)));
+            ArrayList<String> filter = new ArrayList<>(getFilter().getValuesList());
+            if (filter.contains(FeedItemFilter.IS_FAVORITE)) {
+                filter.remove(FeedItemFilter.IS_FAVORITE);
+            } else {
+                filter.add(FeedItemFilter.IS_FAVORITE);
+            }
+            onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>(filter)));
             return true;
         }
         return false;
@@ -91,5 +96,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             txtvInformation.setVisibility(View.GONE);
             emptyView.setMessage(R.string.no_all_episodes_label);
         }
+        toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
+                getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
     }
 }
