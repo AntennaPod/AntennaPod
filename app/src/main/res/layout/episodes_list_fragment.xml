@@ -18,6 +18,7 @@
         android:id="@+id/txtvInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:gravity="center"
         android:layout_below="@id/toolbar"
         android:paddingTop="2dp"
