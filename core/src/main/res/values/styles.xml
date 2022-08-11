@@ -24,6 +24,7 @@
         <item name="android:textColorHint">@color/grey600</item>
         <item name="seek_background">@color/seek_background_light</item>
         <item name="navigation_up">@drawable/navigation_up</item>
+
         <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
@@ -34,7 +35,37 @@
         <item name="icon_purple">#5F1984</item>
         <item name="icon_gray">#25365A</item>
         <item name="android:splitMotionEvents">false</item>
+        <item name="ic_theme">@style/Theme.Base.AntennaPod.ic_theme</item>
     </style>
+
+<style name="Theme.Base.AntennaPod.ic_theme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <item name="android:textColorSecondary">@color/black</item>
+    <item name="android:windowBackground">@color/background_material_dark</item>
+    <item name="android:colorForeground">@color/foreground_material_dark</item>
+    <item name="android:colorForegroundInverse">@color/foreground_material_light</item>
+    <item name="android:colorBackground">@color/background_material_dark</item>
+    <item name="android:colorBackgroundCacheHint">@color/abc_background_cache_hint_selector_material_dark</item>
+    <item name="colorBackgroundFloating">@color/background_floating_material_dark</item>
+
+    <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
+    <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/abc_primary_text_disable_only_material_dark</item>
+    <item name="android:textColorSecondaryInverse">@color/abc_secondary_text_material_light</item>
+    <item name="android:textColorTertiary">@color/abc_secondary_text_material_dark</item>
+    <item name="android:textColorTertiaryInverse">@color/abc_secondary_text_material_light</item>
+    <item name="android:textColorHint">@color/abc_hint_foreground_material_dark</item>
+    <item name="android:textColorHintInverse">@color/abc_hint_foreground_material_light</item>
+    <item name="android:textColorHighlight">@color/highlighted_text_material_dark</item>
+
+    <item name="colorControlNormal">?android:attr/textColorSecondary</item>
+    <item name="colorControlHighlight">@color/ripple_material_dark</item>
+    <item name="colorButtonNormal">@color/button_material_dark</item>
+    <item name="colorSwitchThumbNormal">@color/switch_thumb_material_dark</item>
+
+</style>
+    
+
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
         <!-- Room for API dependent attributes -->
@@ -64,6 +95,7 @@
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
+
         <item name="icon_red">#CF1800</item>
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
