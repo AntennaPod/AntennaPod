@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="navigation_up" format="reference"/>
-    <attr name="ic_theme" format="reference"/>
     <attr name="dragview_background" format="reference"/>
     <attr name="progressBarTheme" format="reference"/>
     <attr name="master_switch_background" format="color"/>
