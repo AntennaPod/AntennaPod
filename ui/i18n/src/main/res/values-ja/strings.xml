@@ -7,20 +7,14 @@
   <string name="add_feed_label">フィードを追加</string>
   <string name="episodes_label">エピソード</string>
   <string name="queue_label">キュー</string>
-  <string name="all_episodes_short_label">すべて</string>
-  <string name="new_episodes_label">新規</string>
   <string name="favorite_episodes_label">お気に入り</string>
-  <string name="new_label">新規</string>
   <string name="settings_label">設定</string>
   <string name="downloads_label">ダウンロード</string>
   <string name="open_autodownload_settings">設定を開く</string>
-  <string name="downloads_completed_label">完了</string>
-  <string name="downloads_log_label">ログ</string>
   <string name="subscriptions_label">購読</string>
   <string name="subscriptions_list_label">購読リスト</string>
   <string name="cancel_download_label">ダウンロードをキャンセル</string>
   <string name="playback_history_label">再生履歴</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
   <string name="notification_pref_fragment">通知</string>
@@ -40,8 +34,6 @@
   <string name="drawer_feed_order_alphabetical">アルファベット順に並び替え</string>
   <string name="drawer_feed_order_last_update">公開日で並び替え</string>
   <string name="drawer_feed_order_most_played">再生されたエピソードの数で並べ替え</string>
-  <string name="drawer_feed_counter_new_unplayed">新しい未再生のエピソードの数</string>
-  <string name="drawer_feed_counter_new">新しいエピソードの数</string>
   <string name="drawer_feed_counter_unplayed">未再生のエピソードの数</string>
   <string name="drawer_feed_counter_downloaded">ダウンロード済のエピソードの数</string>
   <string name="drawer_feed_counter_none">なし</string>
@@ -67,7 +59,6 @@
   <string name="error_label">エラー</string>
   <string name="error_msg_prefix">エラーが発生しました。</string>
   <string name="refresh_label">更新</string>
-  <string name="external_storage_error_msg">外部ストレージが利用できません。アプリが正常に動作できるように、外部ストレージがマウントされていることを確認してください。</string>
   <string name="chapters_label">チャプター</string>
   <string name="chapter_duration">時間: %1$s</string>
   <string name="description_label">説明</string>
@@ -108,13 +99,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">新規エピソードがあります。</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">すべて再生済としてマーク</string>
-  <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
-  <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
-  <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのポッドキャストのすべてのエピソードを確認してください。</string>
-  <string name="remove_all_new_flags_label">すべての \"新規\" フラグを削除</string>
-  <string name="removed_all_new_flags_msg">すべての \"新規\" フラグを削除しました</string>
-  <string name="remove_all_new_flags_confirmation_msg">\"新規\" フラグを削除するすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="show_feed_settings_label">ポッドキャスト設定を表示</string>
   <string name="feed_settings_label">ポッドキャスト設定</string>
@@ -142,8 +126,6 @@
   <string name="delete_label">削除</string>
   <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
   <string name="delete_episode_label">エピソードを削除</string>
-  <string name="remove_new_flag_label">\"新規\" フラグを削除</string>
-  <string name="removed_new_flag_label">\"新規\" フラグを削除しました</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_played_label">再生済みとマーク済み</string>
   <string name="mark_read_no_media_label">既読にする</string>
@@ -170,7 +152,6 @@
   <string name="visit_website_label">Webサイトを訪問</string>
   <string name="skip_episode_label">エピソードをスキップ</string>
   <string name="reset_position">再生位置をリセット</string>
-  <string name="removed_item">アイテムを削除しました</string>
   <!--Download messages and labels-->
   <string name="download_successful">完成</string>
   <string name="download_pending">ダウンロード保留中</string>
@@ -252,10 +233,6 @@
   <string name="no_history_label">エピソードを視聴した後、ここに表示されます</string>
   <string name="no_all_episodes_head_label">エピソードはありません</string>
   <string name="no_all_episodes_label">ポッドキャストを追加すると、エピソードがここに表示されます。</string>
-  <string name="no_new_episodes_head_label">新しいエピソードはありません</string>
-  <string name="no_new_episodes_label">新しいエピソードが届くと、ここに表示されます。</string>
-  <string name="no_fav_episodes_head_label">お気に入りのエピソードはありません</string>
-  <string name="no_fav_episodes_label">長押ししてお気に入りにエピソードを追加できます。</string>
   <string name="no_subscriptions_head_label">購読していません</string>
   <string name="no_subscriptions_label">ポッドキャストを購読するには、下のプラスアイコンを押してください。</string>
   <!--Preferences-->
@@ -438,9 +415,6 @@
   <string name="auto_enable_label">自動有効化</string>
   <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">カテゴリー</string>
-  <string name="gpodnet_toplist_header">トップ ボッドキャスト</string>
-  <string name="gpodnet_search_hint">gpodder.netを検索</string>
   <string name="gpodnetauth_login_butLabel">ログイン</string>
   <string name="username_label">ユーザー名</string>
   <string name="password_label">パスワード</string>
@@ -488,8 +462,8 @@
   <string name="search_podcast_hint">ポッドキャストの検索…</string>
   <string name="search_itunes_label">iTunes を検索</string>
   <string name="search_fyyd_label">fyydを検索</string>
+  <string name="gpodnet_search_hint">gpodder.netを検索</string>
   <string name="advanced">詳細</string>
-  <string name="browse_gpoddernet_label">gpodder.netを参照</string>
   <string name="discover">発見</string>
   <string name="discover_more">さらに »</string>
   <!--Local feeds-->

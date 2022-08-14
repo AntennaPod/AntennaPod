@@ -7,20 +7,16 @@
   <string name="add_feed_label">添加播客</string>
   <string name="episodes_label">曲目</string>
   <string name="queue_label">播放列表</string>
-  <string name="all_episodes_short_label">全部</string>
-  <string name="new_episodes_label">最新</string>
+  <string name="inbox_label">收件箱</string>
   <string name="favorite_episodes_label">收藏</string>
-  <string name="new_label">最新</string>
   <string name="settings_label">设置</string>
   <string name="downloads_label">下载</string>
   <string name="open_autodownload_settings">打开设置</string>
-  <string name="downloads_completed_label">已完成</string>
-  <string name="downloads_log_label">日志</string>
+  <string name="downloads_log_label">下载日志</string>
   <string name="subscriptions_label">订阅</string>
   <string name="subscriptions_list_label">订阅列表</string>
   <string name="cancel_download_label">取消下载</string>
   <string name="playback_history_label">播放历史</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">曲目缓存已满</string>
   <string name="episode_cache_full_message">已达到曲目缓存限制，可以在设置中提高缓存大小。</string>
   <string name="years_statistics_label">年</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">按名称排序</string>
   <string name="drawer_feed_order_last_update">按出版日期排序</string>
   <string name="drawer_feed_order_most_played">根据已播放曲目的数量排序</string>
-  <string name="drawer_feed_counter_new_unplayed">新曲目和播放曲目数</string>
-  <string name="drawer_feed_counter_new">新曲目数</string>
+  <string name="drawer_feed_counter_inbox_unplayed">收件箱内未播放播客节目和播客节目的数量</string>
+  <string name="drawer_feed_counter_inbox">收件箱内播客节目的数量</string>
   <string name="drawer_feed_counter_unplayed">未播曲目数</string>
   <string name="drawer_feed_counter_downloaded">已下载曲目数量</string>
   <string name="drawer_feed_counter_none">无</string>
@@ -85,7 +81,6 @@
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="refresh_label">刷新</string>
-  <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
   <string name="chapters_label">章节</string>
   <string name="chapter_duration">时长：%1$s</string>
   <string name="description_label">描述</string>
@@ -97,7 +92,7 @@
   <string name="auto_download_label">包含到自动下载</string>
   <string name="auto_delete_label">自动删除剧集</string>
   <string name="feed_volume_reduction">音量下调</string>
-  <string name="feed_volume_reduction_summary">调低此博客节目的音量：%1$s</string>
+  <string name="feed_volume_reduction_summary">调低本档播客的音量：%1$s</string>
   <string name="feed_volume_reduction_off">关闭</string>
   <string name="feed_volume_reduction_light">轻微</string>
   <string name="feed_volume_reduction_heavy">显著</string>
@@ -133,13 +128,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">你的订阅有新节目</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">全部标识已读</string>
-  <string name="mark_all_read_msg">将所有曲目标记为已播放</string>
-  <string name="mark_all_read_confirmation_msg">请确认您要将所有曲目标为已播放</string>
-  <string name="mark_all_read_feed_confirmation_msg">请确认您想将该播客中的所有节目标记为播放</string>
-  <string name="remove_all_new_flags_label">移除所有“新”标签</string>
-  <string name="removed_all_new_flags_msg">移除了所有“新”标签</string>
-  <string name="remove_all_new_flags_confirmation_msg">请确认您想从所有节目中移除“新”标签</string>
+  <string name="remove_all_inbox_label">从收件箱删除所有内容</string>
+  <string name="removed_all_inbox_msg">从收件箱删除所有内容</string>
+  <string name="remove_all_inbox_confirmation_msg">请确认你想从收件箱删除所有内容</string>
+  <string name="multi_select_mark_played_confirmation">请确认你想将所有选定项目标记为“已播放”</string>
+  <string name="multi_select_mark_unplayed_confirmation">请确认你想将所有选定项目标记为“未播放”</string>
   <string name="show_info_label">查看信息</string>
   <string name="show_feed_settings_label">显示播客设置</string>
   <string name="feed_settings_label">播客设置</string>
@@ -181,9 +174,10 @@
   <plurals name="deleted_multi_episode_batch_label">
     <item quantity="other">删除了 %d 个已下载的节目。</item>
   </plurals>
-  <string name="remove_new_flag_label">移除“新的”标签</string>
-  <string name="removed_new_flag_label">已移除“新的”标签</string>
+  <string name="remove_inbox_label">从收件箱删除</string>
+  <string name="removed_inbox_label">已从收件箱删除</string>
   <string name="mark_read_label">标记已播放</string>
+  <string name="toggle_played_label">切换播放状态</string>
   <string name="marked_as_played_label">标记为已播放</string>
   <string name="marked_as_unplayed_label">标记为未播放</string>
   <string name="mark_read_no_media_label">标记为已读</string>
@@ -210,7 +204,6 @@
   <string name="visit_website_label">访问网站</string>
   <string name="skip_episode_label">跳过曲目</string>
   <string name="reset_position">重置播放进度</string>
-  <string name="removed_item">已删除项</string>
   <string name="no_items_selected">未选中项目</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
@@ -261,7 +254,7 @@
   <string name="confirm_mobile_streaming_notification_title">确认使用移动数据播放</string>
   <string name="confirm_mobile_streaming_notification_message">通过移动连接播放在设置中未启用。点击以确认您无论如何都要用移动数据来播放</string>
   <string name="confirm_mobile_streaming_button_always">始终</string>
-  <string name="confirm_mobile_streaming_button_once">一次</string>
+  <string name="confirm_mobile_streaming_button_once">仅此一次</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">队列</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">暂时允许</string>
   <!--Mediaplayer messages-->
@@ -309,15 +302,15 @@
   <string name="no_history_label">在您收听一项剧集之后，它会显示在这里。</string>
   <string name="no_all_episodes_head_label">无节目</string>
   <string name="no_all_episodes_label">当您添加一个播客时，节目会显示在此处</string>
-  <string name="no_new_episodes_head_label">没有新的曲目</string>
-  <string name="no_new_episodes_label">当新节目到来，它们会显示在此处</string>
-  <string name="no_fav_episodes_head_label">没有收藏的曲目</string>
-  <string name="no_fav_episodes_label">您可以通过长按曲目将其添加至收藏</string>
+  <string name="no_all_episodes_filtered_label">尝试清除过滤器查看更多播客节目</string>
+  <string name="no_inbox_head_label">收件箱内无播客节目</string>
+  <string name="no_inbox_label">新的播客节目到来时，它们将显示在这里。你可以决定你是否对它们感兴趣。</string>
   <string name="no_subscriptions_head_label">没有订阅</string>
   <string name="no_subscriptions_label">点按下方的+号按钮来订阅播客</string>
   <!--Preferences-->
   <string name="storage_pref">存储</string>
   <string name="storage_sum">播客剧集自动删除、导入和导出</string>
+  <string name="statistics_moved">统计数据屏幕移动到订阅屏幕。你可以从这里打开它。</string>
   <string name="project_pref">项目</string>
   <string name="synchronization_pref">同步</string>
   <string name="synchronization_sum">和其他设备同步</string>
@@ -581,17 +574,11 @@
   <string name="auto_enable_label">自动启用</string>
   <string name="sleep_timer_enabled_label">睡眠计时器已启用</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">目录</string>
-  <string name="gpodnet_toplist_header">头条播客</string>
-  <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
   <string name="gpodnetauth_encryption_warning">密码和数据没有加密！</string>
-  <string name="create_account">创建账户</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>
-  <string name="gpodnet_description">Gpodder.net 是一个独立于 Antennapd 项目的开源播客同步服务。</string>
-  <string name="gpodnetauth_server_official">官方 gpodder.net 服务器</string>
-  <string name="gpodnetauth_server_custom">自定义服务器</string>
+  <string name="gpodnet_description">Gpodder.net 是一个开源的播客同步服务，你可以将其安装在自己的服务器上。Gpodder.net 独立于 AntennaPod 项目。</string>
   <string name="gpodnetauth_host">主机名</string>
   <string name="gpodnetauth_select_server">选择服务器</string>
   <string name="gpodnetauth_device_name">设备名</string>
@@ -628,6 +615,7 @@
   <string name="status_downloading_label">曲目正在下载</string>
   <string name="in_queue_label">曲目已经在播放列表中</string>
   <string name="is_favorite_label">节目被标记为收藏</string>
+  <string name="is_inbox_label">收件箱内的播客节目</string>
   <string name="load_next_page_label">载入下一页</string>
   <string name="position">位置：%1$s</string>
   <string name="apply_action">应用动作</string>
@@ -664,9 +652,9 @@
   <string name="search_itunes_label">搜索 iTunes</string>
   <string name="search_podcastindex_label">搜索 Podcastindex.org</string>
   <string name="search_fyyd_label">搜索 fyyd</string>
+  <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="advanced">高级</string>
   <string name="add_podcast_by_url">通过 RSS 地址添加播客</string>
-  <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <string name="discover">发现</string>
   <string name="discover_hide">隐藏</string>
   <string name="discover_is_hidden">您选择了隐藏建议</string>
@@ -753,7 +741,7 @@
   <string name="notification_channel_playing">当前播放</string>
   <string name="notification_channel_playing_description">允许控制回放。这是播放播客时您所见的主通知。</string>
   <string name="notification_channel_download_error">下载失败</string>
-  <string name="notification_channel_download_error_description">当下载或源更新失败是显示</string>
+  <string name="notification_channel_download_error_description">当下载或源更新失败时显示</string>
   <string name="notification_channel_sync_error">同步失败了</string>
   <string name="notification_channel_sync_error_description">gpodder 同步出错时显示</string>
   <string name="notification_channel_auto_download">自动下载已完成</string>

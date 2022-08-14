@@ -7,20 +7,14 @@
   <string name="add_feed_label">Lisää Podcast</string>
   <string name="episodes_label">Jaksot</string>
   <string name="queue_label">Jono</string>
-  <string name="all_episodes_short_label">Kaikki</string>
-  <string name="new_episodes_label">Uusi</string>
   <string name="favorite_episodes_label">Suosikit</string>
-  <string name="new_label">Uusi</string>
   <string name="settings_label">Asetukset</string>
   <string name="downloads_label">Lataukset</string>
   <string name="open_autodownload_settings">Avaa asetukset</string>
-  <string name="downloads_completed_label">Valmis</string>
-  <string name="downloads_log_label">Loki</string>
   <string name="subscriptions_label">Tilaukset</string>
   <string name="subscriptions_list_label">Tilauslista</string>
   <string name="cancel_download_label">Peruuta lataus</string>
   <string name="playback_history_label">Soittohistoria</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa asetuksissa.</string>
   <string name="years_statistics_label">Vuosia</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Järjestä aakkosellisesti</string>
   <string name="drawer_feed_order_last_update">Järjestä julkaisupäivän mukaan</string>
   <string name="drawer_feed_order_most_played">Järjestä soitettujen jaksojen mukaan</string>
-  <string name="drawer_feed_counter_new_unplayed">Uusia ja soittamattomia jaksoja</string>
-  <string name="drawer_feed_counter_new">Uusia jaksoja</string>
   <string name="drawer_feed_counter_unplayed">Soittamattomia jaksoja</string>
   <string name="drawer_feed_counter_downloaded">Ladattuja jaksoja</string>
   <string name="drawer_feed_counter_none">Ei yhtään</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Virhe</string>
   <string name="error_msg_prefix">Tapahtui virhe:</string>
   <string name="refresh_label">Päivitä</string>
-  <string name="external_storage_error_msg">Ulkoista tallennustilaa ei ole saatavilla. Varmista että ulkoinen tallennustila on aktivoitu, jotta sovellus voi toimia oikeellisesti.</string>
   <string name="chapters_label">Kappaleet</string>
   <string name="chapter_duration">Kesto: %1$s</string>
   <string name="description_label">Kuvaus</string>
@@ -139,13 +130,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Tilauksissasi on uusia jaksoa.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Merkkaa kaikki soitetuksi</string>
-  <string name="mark_all_read_msg">Merkkaa kaikki episodit soitetuiksi</string>
-  <string name="mark_all_read_confirmation_msg">Vavhvista, että haluat merkata kaikki jaksot soitetuiksi.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Vahvista, että haluat merkata tämän podcastin kaikki jaksot soitetuiksi.</string>
-  <string name="remove_all_new_flags_label">Poista kaikki \"uusi\" liput</string>
-  <string name="removed_all_new_flags_msg">Poistettiin kaikki \"uusi\" liput</string>
-  <string name="remove_all_new_flags_confirmation_msg">Vahvista, että haluat poistaa \"uusi\"-liput kaikista jaksoista.</string>
   <string name="show_info_label">Näytä informaatio</string>
   <string name="show_feed_settings_label">Näytä podcastin asetukset</string>
   <string name="feed_settings_label">Podcastin asetukset</string>
@@ -190,8 +174,6 @@
     <item quantity="one">1 ladattu jakso poistettu.</item>
     <item quantity="other">%d ladattua jaksoa poistettu.</item>
   </plurals>
-  <string name="remove_new_flag_label">Poista \"uusi\"-lippu</string>
-  <string name="removed_new_flag_label">Poistettiin \"uusi\"-lippu</string>
   <string name="mark_read_label">Merkitse soitetuksi</string>
   <string name="marked_as_played_label">Merkattu toistetuksi</string>
   <string name="marked_as_unplayed_label">Merkattu toistamattomaksi</string>
@@ -223,7 +205,6 @@
   <string name="visit_website_label">Vieraile verkkosivustolla</string>
   <string name="skip_episode_label">Ohita jakso</string>
   <string name="reset_position">Nollaa toistosijainti</string>
-  <string name="removed_item">Nimike poistettu</string>
   <string name="no_items_selected">Ei valittuja nimikkeitä</string>
   <!--Download messages and labels-->
   <string name="download_successful">onnistui</string>
@@ -323,10 +304,6 @@
   <string name="no_history_label">Jakson kuuntelun jälkeen se ilmestyy tänne.</string>
   <string name="no_all_episodes_head_label">Ei jaksoja</string>
   <string name="no_all_episodes_label">Kun lisää podcastin, sen jaksot näkyvät täällä.</string>
-  <string name="no_new_episodes_head_label">Ei uusia jaksoja</string>
-  <string name="no_new_episodes_label">Kun uusia jaksoja ilmestyy, ne näkyvät täällä.</string>
-  <string name="no_fav_episodes_head_label">Ei suosikkijaksoja</string>
-  <string name="no_fav_episodes_label">Voit lisätä jaksoja suosikkeihin painamalla niitä pitkään.</string>
   <string name="no_subscriptions_head_label">Ei tilauksia</string>
   <string name="no_subscriptions_label">Tilataksesi podcastin, paina plus-kuvaketta alla</string>
   <!--Preferences-->
@@ -598,17 +575,10 @@
   <string name="auto_enable_label">Auto-asetus</string>
   <string name="sleep_timer_enabled_label">Uniajastin asetettu</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIAT</string>
-  <string name="gpodnet_toplist_header">TOP PODCASTIT</string>
-  <string name="gpodnet_search_hint">Etsi gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Sisäänkirjautuminen</string>
   <string name="gpodnetauth_encryption_warning">Salasanaa ja tietoja ei salata!</string>
-  <string name="create_account">Luo tili</string>
   <string name="username_label">Käyttäjätunnus</string>
   <string name="password_label">Salasana</string>
-  <string name="gpodnet_description">Gpodder.net on avoimen lähdekoodin podcast-synkronointipalvelu, joka on riippumaton AntennaPod-projektista.</string>
-  <string name="gpodnetauth_server_official">Virallinen gpodder.net-palvelin</string>
-  <string name="gpodnetauth_server_custom">Mukautettu palvelin</string>
   <string name="gpodnetauth_host">Isäntänimi</string>
   <string name="gpodnetauth_select_server">Valitse palvelin</string>
   <string name="gpodnetauth_device_name">Laitteen nimi</string>
@@ -681,9 +651,9 @@
   <string name="search_itunes_label">Etsi iTunes:sta</string>
   <string name="search_podcastindex_label">Etsi Podcastindex.org:sta</string>
   <string name="search_fyyd_label">Etsi fyyd:sta</string>
+  <string name="gpodnet_search_hint">Etsi gpodder.net</string>
   <string name="advanced">Edistyneet</string>
   <string name="add_podcast_by_url">Lisää Podcast RSS-osoitteesta</string>
-  <string name="browse_gpoddernet_label">Selaa gpodder.net</string>
   <string name="discover">Löydä</string>
   <string name="discover_hide">Piilota</string>
   <string name="discover_is_hidden">Valitsit piilottaa ehdotukset.</string>
@@ -745,6 +715,7 @@
   <string name="stereo_to_mono">Downmix: Stereosta mono</string>
   <string name="sonic_only">Vain Sonic</string>
   <string name="exoplayer_only">Vain ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Vain ääni</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tyyppi</string>
   <string name="host_label">Host</string>

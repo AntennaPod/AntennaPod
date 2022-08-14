@@ -7,20 +7,14 @@
   <string name="add_feed_label">Lisa taskuhääling</string>
   <string name="episodes_label">Saated</string>
   <string name="queue_label">Järjekord</string>
-  <string name="all_episodes_short_label">Kõik</string>
-  <string name="new_episodes_label">Uued</string>
   <string name="favorite_episodes_label">Lemmikud</string>
-  <string name="new_label">Uus</string>
   <string name="settings_label">Seaded</string>
   <string name="downloads_label">Allalaadimised</string>
   <string name="open_autodownload_settings">Ava seaded</string>
-  <string name="downloads_completed_label">Lõpetatud</string>
-  <string name="downloads_log_label">Logi</string>
   <string name="subscriptions_label">Tellimused</string>
   <string name="subscriptions_list_label">Tellimuste nimekiri</string>
   <string name="cancel_download_label">Katkesta allalaadimine</string>
   <string name="playback_history_label">Esitamise ajalugu</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
   <string name="notification_pref_fragment">Teavitused</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">Sorteeri tähestiku järgi</string>
   <string name="drawer_feed_order_last_update">Sorteeri avaldamise kuupäeva järgi</string>
   <string name="drawer_feed_order_most_played">Sorteeri kuulatud saadete järgi</string>
-  <string name="drawer_feed_counter_new_unplayed">Uute ja kuulamata saadete arv</string>
-  <string name="drawer_feed_counter_new">Uute saadete arv</string>
   <string name="drawer_feed_counter_unplayed">Kuulamata saadete arv</string>
   <string name="drawer_feed_counter_downloaded">Allalaaditud saadete arv</string>
   <string name="drawer_feed_counter_none">Pole</string>
@@ -75,7 +67,6 @@
   <string name="error_label">Viga</string>
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="refresh_label">Värskenda</string>
-  <string name="external_storage_error_msg">Välist salvestusruumi pole saadaval. Veendu, et väline seade oleks haagitud, et äpp töötaks õigesti.</string>
   <string name="chapters_label">Peatükid</string>
   <string name="chapter_duration">Pikkus: %1$s</string>
   <string name="description_label">Kirjeldus</string>
@@ -129,13 +120,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Sinu tellitud kanalitel on uusi saateid.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Märgi kuulatuks</string>
-  <string name="mark_all_read_msg">Märgi kõik saated kuulatuks</string>
-  <string name="mark_all_read_confirmation_msg">Palun kinnita, et tahad kõik saated märkida kuulatuks.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Palun kinnita, et tahad kõik saated selles taskuhäälingus märkida kuulatuks.</string>
-  <string name="remove_all_new_flags_label">Eemalda kõik \"uus\" sildid</string>
-  <string name="removed_all_new_flags_msg">Eemaldati kõik \"uus\" sildid</string>
-  <string name="remove_all_new_flags_confirmation_msg">Palun kinnita, et tahad eemaldada kõik \"uus\" sildid kõigilt saadetelt.</string>
   <string name="show_info_label">Näita infot</string>
   <string name="show_feed_settings_label">Näita taskuhäälingu seadeid</string>
   <string name="feed_settings_label">Taskuhäälingu seaded</string>
@@ -167,8 +151,6 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
-  <string name="remove_new_flag_label">Eemalda silt \"uus\"</string>
-  <string name="removed_new_flag_label">Eemaldati silt \"uus\"</string>
   <string name="mark_read_label">Märgi kuulatuks</string>
   <string name="marked_as_played_label">Märgitud kuulatuks</string>
   <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
@@ -200,7 +182,6 @@
   <string name="visit_website_label">Külasta veebilehte</string>
   <string name="skip_episode_label">Jäta saade vahele</string>
   <string name="reset_position">Nulli esitamise asukoht</string>
-  <string name="removed_item">Kirje on eemaldatud</string>
   <string name="no_items_selected">Ühtegi pole valitud</string>
   <!--Download messages and labels-->
   <string name="download_successful">korras</string>
@@ -295,10 +276,6 @@
   <string name="no_history_label">Pärast seda, kui sa kuulad mõnd saadet, näidatakse seda siin.</string>
   <string name="no_all_episodes_head_label">Saateid pole</string>
   <string name="no_all_episodes_label">Kui lisad taskuhäälingu, näeb siin selle saateid.</string>
-  <string name="no_new_episodes_head_label">Uusi saateid pole</string>
-  <string name="no_new_episodes_label">Kui avaldatakse uusi saateid, näeb neid siin.</string>
-  <string name="no_fav_episodes_head_label">Lemmiksaateid pole</string>
-  <string name="no_fav_episodes_label">Saateid saab märkida lemmikuks nendel pikalt vajutades.</string>
   <string name="no_subscriptions_head_label">Tellimusi pole</string>
   <string name="no_subscriptions_label">Taskuhäälingu tellimiseks vajuta all plussmärgil.</string>
   <!--Preferences-->
@@ -545,17 +522,10 @@
   <string name="auto_enable_label">Automaatne kustutamine</string>
   <string name="sleep_timer_enabled_label">Unetaimer on sisse lülitatud</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGOORIAD</string>
-  <string name="gpodnet_toplist_header">POPULAARSED</string>
-  <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="gpodnetauth_login_butLabel">Logi sisse</string>
   <string name="gpodnetauth_encryption_warning">Parool ja andmed ei ole krüpteeritud!</string>
-  <string name="create_account">Loo konto</string>
   <string name="username_label">Kasutajanimi</string>
   <string name="password_label">Parool</string>
-  <string name="gpodnet_description">Gpodder.net on avatud lähtekoodiga sünkroniseerimise teenus, mis on sõltumatu AntennaPod projektist.</string>
-  <string name="gpodnetauth_server_official">Ametlik gpodder.net server</string>
-  <string name="gpodnetauth_server_custom">Muu server</string>
   <string name="gpodnetauth_host">Hostinimi</string>
   <string name="gpodnetauth_select_server">Vali server</string>
   <string name="gpodnetauth_device_name">Seadme nimi</string>
@@ -619,9 +589,9 @@
   <string name="search_itunes_label">Otsi iTunest</string>
   <string name="search_podcastindex_label">Otsi saidilt Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd-ist</string>
+  <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
   <string name="advanced">Täpsem</string>
   <string name="add_podcast_by_url">Lisa taskuhääling RSS aadressiga</string>
-  <string name="browse_gpoddernet_label">Sirvi gpodder.net-i</string>
   <string name="discover">Avasta</string>
   <string name="discover_hide">Peida</string>
   <string name="discover_is_hidden">Valisid soovituste peitmise.</string>

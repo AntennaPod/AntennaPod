@@ -7,20 +7,16 @@
   <string name="add_feed_label">Engadir Podcast</string>
   <string name="episodes_label">Episodios</string>
   <string name="queue_label">Cola</string>
-  <string name="all_episodes_short_label">Todo</string>
-  <string name="new_episodes_label">Novo</string>
+  <string name="inbox_label">Entrada</string>
   <string name="favorite_episodes_label">Favoritos</string>
-  <string name="new_label">Novo</string>
   <string name="settings_label">Axustes</string>
   <string name="downloads_label">Descargas</string>
   <string name="open_autodownload_settings">Abrir Axustes</string>
-  <string name="downloads_completed_label">Completadas</string>
-  <string name="downloads_log_label">Rexistro</string>
+  <string name="downloads_log_label">Descargar Rexistro</string>
   <string name="subscriptions_label">Subscricións</string>
   <string name="subscriptions_list_label">Lista de subscricións</string>
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="playback_history_label">Historial de reprodución</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Caché de episodios chea</string>
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Podes incrementalo nos Axustes do tamaño da caché.</string>
   <string name="years_statistics_label">Anos</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por data de publicación</string>
   <string name="drawer_feed_order_most_played">Ordenar por número de episodios reproducidos</string>
-  <string name="drawer_feed_counter_new_unplayed">Número de episodios novos e non reproducidos</string>
-  <string name="drawer_feed_counter_new">Número de episodios novos</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Número de episodios non reproducidos e episodios na caixa de entrada</string>
+  <string name="drawer_feed_counter_inbox">Número de episodios na caixa de entrada</string>
   <string name="drawer_feed_counter_unplayed">Número de episodios non reproducidos</string>
   <string name="drawer_feed_counter_downloaded">Número de episodios descargados</string>
   <string name="drawer_feed_counter_none">Ningún</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Fallo</string>
   <string name="error_msg_prefix">Produciuse un fallo:</string>
   <string name="refresh_label">Actualizar</string>
-  <string name="external_storage_error_msg">Non se dispón de almacenamento externo. Por favor asegúrate de que o almacenamento externo está montado e así a aplicación poderá funcionar correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="chapter_duration">Duración: %1$s</string>
   <string name="description_label">Descrición</string>
@@ -139,13 +134,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">As túas subscricións teñen novos episodios.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar todo como reproducido</string>
-  <string name="mark_all_read_msg">Marcáronse todos como reproducidos</string>
-  <string name="mark_all_read_confirmation_msg">Por favor confirma que queres marcar todos os episodios como reproducidos.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor, confirma que queres marcar todos os episodios deste podcast como reproducidos.</string>
-  <string name="remove_all_new_flags_label">Quitarlle a marca de \"novidade\" a todo</string>
-  <string name="removed_all_new_flags_msg">Eliminaches o aviso de \"novos\" episodios</string>
-  <string name="remove_all_new_flags_confirmation_msg">Confirma que queres quitarlle marca de \"novidade\" a todos os episodios.</string>
+  <string name="remove_all_inbox_label">Quitar todo da caixa de entrada</string>
+  <string name="removed_all_inbox_msg">Baleirouse a caixa de entrada</string>
+  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar a caixa de entrada.</string>
+  <string name="multi_select_mark_played_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como reproducidos.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como non reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
   <string name="show_feed_settings_label">Mostrar axustes do podcast</string>
   <string name="feed_settings_label">Axustes do podcast</string>
@@ -190,9 +183,10 @@
     <item quantity="one">Eliminado 1 episodio descargado.</item>
     <item quantity="other">Eliminados %d episodios descargados.</item>
   </plurals>
-  <string name="remove_new_flag_label">Quitar marca \"novo\"</string>
-  <string name="removed_new_flag_label">Eliminouse marca \"novo\"</string>
+  <string name="remove_inbox_label">Retirar da caixa de entrada</string>
+  <string name="removed_inbox_label">Retirado da caixa de entrada</string>
   <string name="mark_read_label">Marcar como reproducido</string>
+  <string name="toggle_played_label">Cambiar estado de reprodución</string>
   <string name="marked_as_played_label">Marcado como reproducido</string>
   <string name="marked_as_unplayed_label">Marcado como non reproducido</string>
   <string name="mark_read_no_media_label">Marcar como lido</string>
@@ -223,7 +217,6 @@
   <string name="visit_website_label">Visitar sitio web</string>
   <string name="skip_episode_label">Omitir episodio</string>
   <string name="reset_position">Reiniciar a posición de reprodución</string>
-  <string name="removed_item">Elmento eleminado</string>
   <string name="no_items_selected">Sen selección</string>
   <!--Download messages and labels-->
   <string name="download_successful">exitoso</string>
@@ -323,15 +316,15 @@
   <string name="no_history_label">Tras a escoita de un episodio, aparecerá aquí.</string>
   <string name="no_all_episodes_head_label">Sen episodios</string>
   <string name="no_all_episodes_label">Cando engade un podcast, os episodios mostraranse aquí.</string>
-  <string name="no_new_episodes_head_label">Sen episodios novos</string>
-  <string name="no_new_episodes_label">Cando recibas novos episodios, mostraranse aquí.</string>
-  <string name="no_fav_episodes_head_label">Sen episodios favoritos</string>
-  <string name="no_fav_episodes_label">Podes engadir episodios aos favoritos manténdoos presos.</string>
+  <string name="no_all_episodes_filtered_label">Proba a eliminar o filtro para ver máis episodios.</string>
+  <string name="no_inbox_head_label">Sen episodios na caixa de entrada</string>
+  <string name="no_inbox_label">Cando haxa novos episodios, apareceraán aquí. Entón poderás decidir se son do teu interese ou non.</string>
   <string name="no_subscriptions_head_label">Sen subscricións</string>
   <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamento</string>
   <string name="storage_sum">Borrado automático do episodio, Importar, Exportar</string>
+  <string name="statistics_moved">Movemos a pantalla coas estatísticas á pantalla de subscricións. Podes abrila desde alí.</string>
   <string name="project_pref">Proxecto</string>
   <string name="synchronization_pref">Sincronización</string>
   <string name="synchronization_sum">Sincronizar con outros dispositivos</string>
@@ -598,17 +591,11 @@
   <string name="auto_enable_label">Habilitar automaticamente</string>
   <string name="sleep_timer_enabled_label">Apagado automático habilitado</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">CATEGORÍAS</string>
-  <string name="gpodnet_toplist_header">PODCASTS TOP</string>
-  <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Conexión</string>
   <string name="gpodnetauth_encryption_warning">O contrasinal e os datos non están cifrados!</string>
-  <string name="create_account">Crear conta</string>
   <string name="username_label">Nome de usuaria</string>
   <string name="password_label">Contrasinal</string>
-  <string name="gpodnet_description">Gpodder.net é un servizo de sincronización de podcast de código aberto que é independente do proxecto AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Servidor oficial gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Servidor personalizado</string>
+  <string name="gpodnet_description">Gpodder.net é un servizo de código aberto para a sincronización de podcasts que podes instalar no teu propio servidor. Gpodder.net é independente do proxecto AntennaPod.</string>
   <string name="gpodnetauth_host">Servidor</string>
   <string name="gpodnetauth_select_server">Elixe servidor</string>
   <string name="gpodnetauth_device_name">Nome do dispositivo</string>
@@ -645,6 +632,7 @@
   <string name="status_downloading_label">Estase a descargar o episodio</string>
   <string name="in_queue_label">O episodio está na cola</string>
   <string name="is_favorite_label">Episodio marcado como favorito</string>
+  <string name="is_inbox_label">O episodio está na caixa de entrada</string>
   <string name="load_next_page_label">Cargar a seguinte páxina</string>
   <string name="position">Posición: %1$s</string>
   <string name="apply_action">Aplicar acción</string>
@@ -681,9 +669,9 @@
   <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="search_podcastindex_label">Buscar en Podcastindex.org</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
+  <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="advanced">Avanzado</string>
   <string name="add_podcast_by_url">Engadir Podcast polo enderezo RSS</string>
-  <string name="browse_gpoddernet_label">Buscar en gpodder.net</string>
   <string name="discover">Descubrir</string>
   <string name="discover_hide">Agochar</string>
   <string name="discover_is_hidden">Elexiches agochar as suxestións.</string>

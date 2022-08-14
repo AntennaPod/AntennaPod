@@ -7,20 +7,14 @@
   <string name="add_feed_label">Gehitu podcasta</string>
   <string name="episodes_label">Saioak</string>
   <string name="queue_label">Ilara</string>
-  <string name="all_episodes_short_label">Denak</string>
-  <string name="new_episodes_label">Berria</string>
   <string name="favorite_episodes_label">Gogokoak</string>
-  <string name="new_label">Berria</string>
   <string name="settings_label">Ezarpenak</string>
   <string name="downloads_label">Deskargak</string>
   <string name="open_autodownload_settings">Ireki ezarpenak</string>
-  <string name="downloads_completed_label">Osatuta</string>
-  <string name="downloads_log_label">Jarduera</string>
   <string name="subscriptions_label">Harpidetzak</string>
   <string name="subscriptions_list_label">Harpidetza zerrenda</string>
   <string name="cancel_download_label">Deskarga ezeztatu</string>
   <string name="playback_history_label">Erreprodukzio historia</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Saioen katxea beteta</string>
   <string name="episode_cache_full_message">Saioen katxea mugara iritsi da. Ezarpenetan katxearen tamaina handitu dezakezu.</string>
   <string name="years_statistics_label">Urteak</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Antolatu alfabetikoki</string>
   <string name="drawer_feed_order_last_update">Antolatu argitaratze dataz</string>
   <string name="drawer_feed_order_most_played">Antolatu ikusitako saioen arabera</string>
-  <string name="drawer_feed_counter_new_unplayed">Entzun gabeko saio berrien zenbatekoa</string>
-  <string name="drawer_feed_counter_new">Saio berrien zenbatekoa</string>
   <string name="drawer_feed_counter_unplayed">Entzun gabeko saioen zenbatekoa</string>
   <string name="drawer_feed_counter_downloaded">Deskargatutako saioen zenbatekoa</string>
   <string name="drawer_feed_counter_none">Bat ere ez</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Errorea</string>
   <string name="error_msg_prefix">Errorea gertatu da:</string>
   <string name="refresh_label">Eguneratu</string>
-  <string name="external_storage_error_msg">Ez da kanpo biltegirik aurkitu. Ziurtatu zure kanpo biltegia muntatuta dagoela aplikazioa ondo ibil dadin.</string>
   <string name="chapters_label">Kapituluak</string>
   <string name="chapter_duration">Iraupena: %1$s</string>
   <string name="description_label">Deskribapena</string>
@@ -139,13 +130,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Zure harpidetzak saio berriak ditu.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Markatu denak ikusita bezala</string>
-  <string name="mark_all_read_msg">Markatu saio denak ikusita bezala</string>
-  <string name="mark_all_read_confirmation_msg">Ziurtatu saio denak ikusita bezala markatu nahi dituzula.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Ziurtatu podcast honen saio guztiak ikusita bezala markatu nahi dituzula.</string>
-  <string name="remove_all_new_flags_label">Kendu \"berria\" ikur denak</string>
-  <string name="removed_all_new_flags_msg">Kendu dira \"berria\" ikur denak</string>
-  <string name="remove_all_new_flags_confirmation_msg">Ziurtatu saio denen \"berria\" ikurra kendu nahi dituzula</string>
   <string name="show_info_label">Programaren informazioa</string>
   <string name="show_feed_settings_label">Erakutsi podcastaren ezarpenak</string>
   <string name="feed_settings_label">Podcastaren ezarpenak</string>
@@ -190,8 +174,6 @@
     <item quantity="one">deskargatutako kapitulu 1 ezabatu egin da</item>
     <item quantity="other">%d deskargatutako kapituluak ezabatu egin dira</item>
   </plurals>
-  <string name="remove_new_flag_label">Kendu \"berria\" ikurra</string>
-  <string name="removed_new_flag_label">\"Berria\" ikurra kendu da</string>
   <string name="mark_read_label">Markatu entzundakotzat</string>
   <string name="marked_as_played_label">Entzundakotzat markatua</string>
   <string name="marked_as_unplayed_label">Ez entzundakotzat markatua</string>
@@ -223,7 +205,6 @@
   <string name="visit_website_label">Bisitatu web gunea</string>
   <string name="skip_episode_label">Baztertu saioa</string>
   <string name="reset_position">Berrezarri erreprodukzioaren tokia</string>
-  <string name="removed_item">Ezabatutako elementua</string>
   <string name="no_items_selected">Ez da elementurik hautatu</string>
   <!--Download messages and labels-->
   <string name="download_successful">arrakastatsua</string>
@@ -323,10 +304,6 @@
   <string name="no_history_label">Saioa entzundakoan hemen azalduko da.</string>
   <string name="no_all_episodes_head_label">Saiorik ez</string>
   <string name="no_all_episodes_label">Podcast bat gehitzen duzunean saioak hemen azalduko dira.</string>
-  <string name="no_new_episodes_head_label">Saio berririk ez</string>
-  <string name="no_new_episodes_label">Saio berriak azaltzean hemen azalduko dira.</string>
-  <string name="no_fav_episodes_head_label">Gogoko saiorik ez</string>
-  <string name="no_fav_episodes_label">Gogokoetan saio berriak gehitu ditzakezu gainean luze sakatuz.</string>
   <string name="no_subscriptions_head_label">Ez dago harpidetzarik</string>
   <string name="no_subscriptions_label">Podcast batean harpidetzeko, sakatu beheko \"gehi\" ikonoa.</string>
   <!--Preferences-->
@@ -600,17 +577,10 @@
   <string name="auto_enable_label">Automatikoki gaitu</string>
   <string name="sleep_timer_enabled_label">Tenporizadorea gaiturik</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIAK</string>
-  <string name="gpodnet_toplist_header">PODCASTIK ONENAK</string>
-  <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="gpodnetauth_login_butLabel">Hasi saioa</string>
   <string name="gpodnetauth_encryption_warning">Pasahitza eta datuak ez daude enkriptaturik!</string>
-  <string name="create_account">Kontua sortu</string>
   <string name="username_label">Erabioltzailea</string>
   <string name="password_label">Pasahitza</string>
-  <string name="gpodnet_description">Gpodder.net AntennaPod proiektutik independentea den sinkronizazio zerbitzu bat da.</string>
-  <string name="gpodnetauth_server_official">gpodder.net zerbitzari ofiziala</string>
-  <string name="gpodnetauth_server_custom">Zerbitzari pertsonalizatua</string>
   <string name="gpodnetauth_host">Ostalari izena</string>
   <string name="gpodnetauth_select_server">Aukeratu zerbitzaria</string>
   <string name="gpodnetauth_device_name">Gailuaren izena</string>
@@ -683,9 +653,9 @@
   <string name="search_itunes_label">Bilatu itunes-en</string>
   <string name="search_podcastindex_label">Bilatu Podcastindex.org -en</string>
   <string name="search_fyyd_label">Bilatu fyyd-en</string>
+  <string name="gpodnet_search_hint">Bilatu gpodder.net-en</string>
   <string name="advanced">Aurreratua</string>
   <string name="add_podcast_by_url">Gehitu Podcasta RSS helbide bidez</string>
-  <string name="browse_gpoddernet_label">Bilatu gpodder.net-en</string>
   <string name="discover">Aurkitu</string>
   <string name="discover_hide">Ezkutatu</string>
   <string name="discover_is_hidden">Iradokizunak ezkutatzea erabaki duzu.</string>

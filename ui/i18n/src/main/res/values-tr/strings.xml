@@ -7,22 +7,17 @@
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
   <string name="queue_label">Kuyruk</string>
-  <string name="all_episodes_short_label">Tümü</string>
-  <string name="new_episodes_label">Yeni</string>
   <string name="favorite_episodes_label">Favoriler</string>
-  <string name="new_label">Yeni</string>
   <string name="settings_label">Ayarlar</string>
   <string name="downloads_label">İndirilenler</string>
   <string name="open_autodownload_settings">Ayarları Aç</string>
-  <string name="downloads_completed_label">Tamamlandı</string>
-  <string name="downloads_log_label">Günlük</string>
   <string name="subscriptions_label">Abonelikler</string>
   <string name="subscriptions_list_label">Abonelik Listesi</string>
   <string name="cancel_download_label">İndirmeyi iptal et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
   <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
+  <string name="years_statistics_label">Yıllar</string>
   <string name="notification_pref_fragment">Bildirimler</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" bulunamadı</string>
@@ -40,8 +35,6 @@
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
   <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
   <string name="drawer_feed_order_most_played">Oynatılan bölüm sayısına göre sırala</string>
-  <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
-  <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_downloaded">İndirilen bölümlerin sayısı</string>
   <string name="drawer_feed_counter_none">Hiçbiri</string>
@@ -69,7 +62,6 @@
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
   <string name="refresh_label">Yenile</string>
-  <string name="external_storage_error_msg">Harici depolama yok. Lütfen uygulamanın düzgün çalışabilmesi için harici depolama aygıtının bağlandığından emin olun.</string>
   <string name="chapters_label">Kısımlar</string>
   <string name="chapter_duration">Süre: %1$s</string>
   <string name="description_label">Tanım</string>
@@ -110,13 +102,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Aboneliklerinize ait yeni bölümler var.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
-  <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
-  <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu yayındaki bütün bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="remove_all_new_flags_label">Remove all \"new\" flags</string>
-  <string name="removed_all_new_flags_msg">Removed all \"new\" flags</string>
-  <string name="remove_all_new_flags_confirmation_msg">Please confirm that you want to remove the \"new\" flag from all episodes.</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
   <string name="feed_settings_label">Cepyayın ayarları</string>
@@ -148,8 +133,6 @@
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
   <string name="delete_episode_label">Delete Episode</string>
-  <string name="remove_new_flag_label">Remove \"new\" flag</string>
-  <string name="removed_new_flag_label">Removed \"new\" flag</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
   <string name="mark_read_no_media_label">Mark as read</string>
   <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
@@ -179,7 +162,6 @@
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="skip_episode_label">Bölümü atla</string>
   <string name="reset_position">Çalme konumunu sıfırla</string>
-  <string name="removed_item">Öge kaldırıldı</string>
   <string name="no_items_selected">No items selected</string>
   <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
@@ -273,10 +255,6 @@
   <string name="no_history_label">After you listen to an episode, it will appear here.</string>
   <string name="no_all_episodes_head_label">No Episodes</string>
   <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
-  <string name="no_new_episodes_head_label">No new episodes</string>
-  <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
-  <string name="no_fav_episodes_head_label">No favorite episodes</string>
-  <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
   <string name="no_subscriptions_head_label">No subscriptions</string>
   <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
   <!--Preferences-->
@@ -502,9 +480,6 @@
   <string name="auto_enable_label">Auto-enable</string>
   <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORİLER</string>
-  <string name="gpodnet_toplist_header">POPÜLER CEP YAYINLARI</string>
-  <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
@@ -562,9 +537,9 @@
   <string name="search_itunes_label">iTunes\'da Arama</string>
   <string name="search_podcastindex_label">Search Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd</string>
+  <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="advanced">Advanced</string>
   <string name="add_podcast_by_url">Add Podcast by RSS address</string>
-  <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <string name="discover">Discover</string>
   <string name="discover_hide">Hide</string>
   <string name="discover_is_hidden">You selected to hide suggestions.</string>

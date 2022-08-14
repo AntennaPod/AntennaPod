@@ -7,20 +7,14 @@
   <string name="add_feed_label">Afegir podcast</string>
   <string name="episodes_label">Episodis</string>
   <string name="queue_label">Cua</string>
-  <string name="all_episodes_short_label">Tot</string>
-  <string name="new_episodes_label">Nou</string>
   <string name="favorite_episodes_label">Preferits</string>
-  <string name="new_label">Nous</string>
   <string name="settings_label">Configuració</string>
   <string name="downloads_label">Baixades</string>
   <string name="open_autodownload_settings">Obrir configuració</string>
-  <string name="downloads_completed_label">Completat</string>
-  <string name="downloads_log_label">Registre</string>
   <string name="subscriptions_label">Subscripcions</string>
   <string name="subscriptions_list_label">Llista de subscripcions</string>
   <string name="cancel_download_label">Cancelar descàrrega</string>
   <string name="playback_history_label">Historial de reproducció</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
   <string name="years_statistics_label">Anys</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Ordre alfabètic</string>
   <string name="drawer_feed_order_last_update">Ordre per data de publicació</string>
   <string name="drawer_feed_order_most_played">Ordre per número d\'episodis reproduïts</string>
-  <string name="drawer_feed_counter_new_unplayed">Número d\'episodis nous i per reproduir</string>
-  <string name="drawer_feed_counter_new">Número d\'episodis nous</string>
   <string name="drawer_feed_counter_unplayed">Número d\'episodis per reproduir</string>
   <string name="drawer_feed_counter_downloaded">Número d\'episodis descarregats</string>
   <string name="drawer_feed_counter_none">Cap</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">S\'ha produït un error:</string>
   <string name="refresh_label">Actualitza</string>
-  <string name="external_storage_error_msg">L\'emmagatzemament extern no està disponible. Assegureu-vos que està muntat per què l\'aplicació funcioni correctament.</string>
   <string name="chapters_label">Capítols</string>
   <string name="chapter_duration">Durada: %1$s</string>
   <string name="description_label">Descripció</string>
@@ -139,13 +130,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Les teves subscripcions tenen episodis nous..</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
-  <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
-  <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduïts.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Si us plau, confirmeu que voleu marcar tots els episodis d\'aquest podcast com a reproduïts.</string>
-  <string name="remove_all_new_flags_label">Retirar totes les banderes de \"nou\"</string>
-  <string name="removed_all_new_flags_msg">Retirades totes les banderes de \"nou\"</string>
-  <string name="remove_all_new_flags_confirmation_msg">Si us plau, confirma que vols retirar la bandera \"nou\" de tots els episodis.</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="show_feed_settings_label">Mostrar configuració del podcast</string>
   <string name="feed_settings_label">Configuració del podcast</string>
@@ -190,8 +174,6 @@
     <item quantity="one">1 episodi descarregat, suprimit.</item>
     <item quantity="other">%d episodis baixats, suprimits.</item>
   </plurals>
-  <string name="remove_new_flag_label">Retirar bandera de \"nou\"</string>
-  <string name="removed_new_flag_label">Retirada bandera de \"nou\"</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="marked_as_played_label">Marca com a reproduït</string>
   <string name="marked_as_unplayed_label">Marca com a no reproduït</string>
@@ -223,7 +205,6 @@
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
   <string name="reset_position">Restablir posició de reproducció</string>
-  <string name="removed_item">S\'ha suprimit l\'element</string>
   <string name="no_items_selected">Cap item seleccionat.</string>
   <!--Download messages and labels-->
   <string name="download_successful">ha funcionat</string>
@@ -323,10 +304,6 @@
   <string name="no_history_label">Després d\'haver escoltat un episodi apareixerà ací.</string>
   <string name="no_all_episodes_head_label">No hi ha episodis</string>
   <string name="no_all_episodes_label">Al afegir un podcast els episodis apareixeran ací.</string>
-  <string name="no_new_episodes_head_label">No hi ha episodis nous.</string>
-  <string name="no_new_episodes_label">Quan arriben nous episodis apareixeran ací. </string>
-  <string name="no_fav_episodes_head_label">No hi ha episodis favorits. </string>
-  <string name="no_fav_episodes_label">Pots afegir episodis a favorits tocant-los i mantenint.</string>
   <string name="no_subscriptions_head_label">No hi ha subscripcions</string>
   <string name="no_subscriptions_label">Per a subscriure\'t a un podcast, toca la icona + més avall.</string>
   <!--Preferences-->
@@ -598,17 +575,10 @@
   <string name="auto_enable_label">Autohabilita</string>
   <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">CATEGORIES</string>
-  <string name="gpodnet_toplist_header">TOP PODCASTS</string>
-  <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
   <string name="gpodnetauth_encryption_warning">La contrasenya i les dades no estan encriptades!</string>
-  <string name="create_account">Crear un compte</string>
   <string name="username_label">Nom d\'usuari</string>
   <string name="password_label">Contrasenya</string>
-  <string name="gpodnet_description">Gpodder.net és un servei de sincronització de podcasts de codi obert que és independent del projecte AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Servidor oficial de gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Servidor personalitzat</string>
   <string name="gpodnetauth_host">Nom del servidor</string>
   <string name="gpodnetauth_select_server">Selecciona servidor</string>
   <string name="gpodnetauth_device_name">Nom del dispositiu</string>
@@ -681,9 +651,9 @@
   <string name="search_itunes_label">Cerca a iTunes</string>
   <string name="search_podcastindex_label">Buscar a Podcastindex.org</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
+  <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
   <string name="advanced">Avançat</string>
   <string name="add_podcast_by_url">Afegir Podcast per adreça RSS</string>
-  <string name="browse_gpoddernet_label">Navega gpodder.net</string>
   <string name="discover">Descobreix</string>
   <string name="discover_hide">Amaga</string>
   <string name="discover_is_hidden">Has seleccionat amagar els suggeriments.</string>

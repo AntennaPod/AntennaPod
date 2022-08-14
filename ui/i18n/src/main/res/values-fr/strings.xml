@@ -7,20 +7,16 @@
   <string name="add_feed_label">Ajouter un podcast</string>
   <string name="episodes_label">Episodes</string>
   <string name="queue_label">Liste de lecture</string>
-  <string name="all_episodes_short_label">Tous</string>
-  <string name="new_episodes_label">Nouveaux</string>
+  <string name="inbox_label">Boîte de réception</string>
   <string name="favorite_episodes_label">Favoris</string>
-  <string name="new_label">Nouveau</string>
   <string name="settings_label">Préférences</string>
   <string name="downloads_label">Téléchargements</string>
   <string name="open_autodownload_settings">Ouvrir les préférences</string>
-  <string name="downloads_completed_label">Terminé</string>
   <string name="downloads_log_label">Journal</string>
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Liste des abonnements</string>
   <string name="cancel_download_label">Annuler le téléchargement</string>
   <string name="playback_history_label">Journal de lecture</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
   <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
   <string name="years_statistics_label">Années</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Trier par ordre alphabétique</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
   <string name="drawer_feed_order_most_played">Trier par nombre lus</string>
-  <string name="drawer_feed_counter_new_unplayed">Nouveaux épisodes et non lus</string>
-  <string name="drawer_feed_counter_new">Nouveaux épisodes</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Episodes dans la boîte de réception et non lus</string>
+  <string name="drawer_feed_counter_inbox">Episodes dans la boîte de réception</string>
   <string name="drawer_feed_counter_unplayed">Episodes non-lus</string>
   <string name="drawer_feed_counter_downloaded">Episodes téléchargés</string>
   <string name="drawer_feed_counter_none">Aucun</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="refresh_label">Rafraîchir</string>
-  <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="chapter_duration">Durée : %1$s</string>
   <string name="description_label">Description</string>
@@ -145,13 +140,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Vos abonnements disposent de nouveaux épisodes.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Tout marquer comme lu</string>
-  <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
-  <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
-  <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisodes de ce podcast comme lus</string>
-  <string name="remove_all_new_flags_label">Ne plus rien considérer nouveau</string>
-  <string name="removed_all_new_flags_msg">Les statuts \"nouveau\" ont été supprimés</string>
-  <string name="remove_all_new_flags_confirmation_msg">Confirmer que vous ne voulez plus d\'épisodes apparaissant comme \"nouveau\".</string>
+  <string name="remove_all_inbox_label">Vider la boîte de réception</string>
+  <string name="removed_all_inbox_msg">Boîte de réception vidée </string>
+  <string name="remove_all_inbox_confirmation_msg">Merci de confirmer que vous voulez vider la boîte de réception.</string>
+  <string name="multi_select_mark_played_confirmation">Confirmer le marquage de tous les éléments sélectionnés comme lus.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Confirmer le marquage de tous les éléments sélectionnés comme non lus.</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="show_feed_settings_label">Paramètres du podcast...</string>
   <string name="feed_settings_label">Paramètres du podcast</string>
@@ -199,9 +192,10 @@
     <item quantity="many">%d épisodes téléchargés supprimés.</item>
     <item quantity="other">%d épisodes téléchargés supprimés.</item>
   </plurals>
-  <string name="remove_new_flag_label">Ne plus considérer nouveau</string>
-  <string name="removed_new_flag_label">Le statut \"nouveau\" a été supprimé</string>
+  <string name="remove_inbox_label">Supprimer de la boîte de réception</string>
+  <string name="removed_inbox_label">Supprimé de la boîte de réception</string>
   <string name="mark_read_label">Marquer comme lu</string>
+  <string name="toggle_played_label">Modifier l\'état de lecture</string>
   <string name="marked_as_played_label">Marqué comme lu</string>
   <string name="marked_as_unplayed_label">Marqué comme non lu</string>
   <string name="mark_read_no_media_label">Marquer comme lu</string>
@@ -236,7 +230,6 @@
   <string name="visit_website_label">Visiter le site</string>
   <string name="skip_episode_label">Passer cet épisode</string>
   <string name="reset_position">Réinitialiser la position de lecture</string>
-  <string name="removed_item">Élément retiré</string>
   <string name="no_items_selected">Rien n\'a été sélectionné</string>
   <!--Download messages and labels-->
   <string name="download_successful">terminé</string>
@@ -337,15 +330,15 @@
   <string name="no_history_label">Après avoir écouté un épisode il apparaîtra ici.</string>
   <string name="no_all_episodes_head_label">Aucun épisode</string>
   <string name="no_all_episodes_label">Quand vous ajouterez un podcast ses épisodes seront montrés ici.</string>
-  <string name="no_new_episodes_head_label">Aucun nouvel épisode</string>
-  <string name="no_new_episodes_label">Quand de nouveaux épisodes seront disponibles ils apparaîtront ici.</string>
-  <string name="no_fav_episodes_head_label">Aucun épisode favori</string>
-  <string name="no_fav_episodes_label">Vous pouvez marquer des épisodes comme favoris par une pression longue dessus.</string>
+  <string name="no_all_episodes_filtered_label">Pour voir plus d\'épisodes supprimer le filtre.</string>
+  <string name="no_inbox_head_label">Aucun épisode dans la boîte de réception</string>
+  <string name="no_inbox_label">Les nouveaux épisodes seront montrés ici. Vous pourrez décider si ils vous intéressent ou pas.</string>
   <string name="no_subscriptions_head_label">Aucun abonnement</string>
   <string name="no_subscriptions_label">Pour vous abonner à un podcast appuyer sur le bouton +.</string>
   <!--Preferences-->
   <string name="storage_pref">Stockage</string>
   <string name="storage_sum">Suppression automatique, importation, exportation</string>
+  <string name="statistics_moved">Les statistiques ont été déplacées. Pour les consulter rendez-vous sur l\'écran des abonnements.</string>
   <string name="project_pref">Projet</string>
   <string name="synchronization_pref">Synchronisation</string>
   <string name="synchronization_sum">Synchroniser avec d\'autres appareils</string>
@@ -616,17 +609,11 @@
   <string name="auto_enable_label">Activation automatique</string>
   <string name="sleep_timer_enabled_label">Arrêt automatique activé</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">CATEGORIES</string>
-  <string name="gpodnet_toplist_header">PODCASTS POPULAIRES</string>
-  <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
   <string name="gpodnetauth_encryption_warning">Le mot de passe et les données ne sont pas cryptés !</string>
-  <string name="create_account">Créer un compte</string>
   <string name="username_label">Identifiant</string>
   <string name="password_label">Mot de passe</string>
-  <string name="gpodnet_description">Gpodder.net est un service de synchronisation open-source indépendant du projet AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Serveur officiel de gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Serveur personnalisé</string>
+  <string name="gpodnet_description">Gpodder.net est un service open-source de synchronisation que vous pouvez installer facilement sur votre propre serveur. Gpodder.net est indépendant du projet AntennaPod.</string>
   <string name="gpodnetauth_host">Nom d\'hôte</string>
   <string name="gpodnetauth_select_server">Sélectionner le serveur</string>
   <string name="gpodnetauth_device_name">Nom de l\'appareil</string>
@@ -663,6 +650,7 @@
   <string name="status_downloading_label">L\'épisode est en train d\'être téléchargé</string>
   <string name="in_queue_label">L\'épisode est dans la liste de lecture</string>
   <string name="is_favorite_label">L\'épisode a été ajouté aux favoris</string>
+  <string name="is_inbox_label">L\'épisode est dans la boîte de réception</string>
   <string name="load_next_page_label">Charger la page suivante</string>
   <string name="position">Position : %1$s</string>
   <string name="apply_action">Appliquer l\'action</string>
@@ -699,9 +687,9 @@
   <string name="search_itunes_label">Chercher sur iTunes</string>
   <string name="search_podcastindex_label">Chercher sur Podcastindex.org</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
+  <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="advanced">Avancé</string>
   <string name="add_podcast_by_url">Ajouter un lien RSS</string>
-  <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <string name="discover">Découvrir</string>
   <string name="discover_hide">Ne pas montrer</string>
   <string name="discover_is_hidden">Vous avez choisi de cacher les suggestions.</string>
