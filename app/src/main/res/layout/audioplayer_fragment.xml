@@ -14,7 +14,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:navigationContentDescription="@string/toolbar_back_button_content_description"
-        app:navigationIcon="?homeAsUpIndicator" />
+        app:navigationIcon="@drawable/ic_arrow_down" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/playerFragment"
