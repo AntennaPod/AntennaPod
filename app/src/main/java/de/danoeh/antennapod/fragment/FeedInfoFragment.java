@@ -57,7 +57,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Displays information about a feed.
@@ -236,13 +236,24 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         } else {
             lblSupport.setVisibility(View.VISIBLE);
             ArrayList<FeedFunding> fundingList = feed.getPaymentLinks();
-            StringBuilder str = new StringBuilder();
-            HashSet<String> seen = new HashSet<String>();
-            for (FeedFunding funding : fundingList) {
-                if (seen.contains(funding.url)) {
-                    continue;
+
+            // Filter for duplicates, but keep items in the order that they have in the feed.
+            Iterator<FeedFunding> i = fundingList.iterator();
+            while (i.hasNext()) {
+                FeedFunding funding = i.next();
+                for (FeedFunding other : fundingList) {
+                    if (TextUtils.equals(other.url, funding.url)) {
+                        if (other.content != null && funding.content != null
+                                && other.content.length() > funding.content.length()) {
+                            i.remove();
+                            break;
+                        }
+                    }
                 }
-                seen.add(funding.url);
+            }
+
+            StringBuilder str = new StringBuilder();
+            for (FeedFunding funding : fundingList) {
                 str.append(funding.content.isEmpty()
                         ? getContext().getResources().getString(R.string.support_podcast)
                         : funding.content).append(" ").append(funding.url);
