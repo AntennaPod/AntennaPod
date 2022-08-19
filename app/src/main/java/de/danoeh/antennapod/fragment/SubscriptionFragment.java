@@ -93,7 +93,6 @@ public class SubscriptionFragment extends Fragment
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
     private String displayedFolder = null;
-    private boolean isUpdatingFeeds = false;
     private boolean displayUpArrow;
 
     private Disposable disposable;
@@ -200,8 +199,8 @@ public class SubscriptionFragment extends Fragment
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
 
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
+        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
+                DownloadService.isRunning && DownloadService.isDownloadingFeeds());
     }
 
     @Override
@@ -407,13 +406,8 @@ public class SubscriptionFragment extends Fragment
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            refreshToolbarState();
-        }
+        refreshToolbarState();
     }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     @Override
     public void onEndSelectMode() {

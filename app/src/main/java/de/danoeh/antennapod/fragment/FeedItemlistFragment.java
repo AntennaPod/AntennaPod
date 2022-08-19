@@ -92,7 +92,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private long feedID;
     private Feed feed;
     private boolean headerCreated = false;
-    private boolean isUpdatingFeed;
     private Disposable disposable;
     private FeedItemListFragmentBinding viewBinding;
     private MultiSelectSpeedDialBinding speedDialBinding;
@@ -140,7 +139,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
         }
         ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
-        refreshToolbarState();
+        updateToolbar();
 
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         viewBinding.progLoading.setVisibility(View.VISIBLE);
@@ -234,17 +233,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         super.onSaveInstanceState(outState);
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url());
-
-    private void refreshToolbarState() {
+    private void updateToolbar() {
         if (feed == null) {
             return;
         }
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
-        isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
+        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(), R.id.refresh_item,
+                DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url()));
         FeedMenuHandler.onPrepareOptionsMenu(viewBinding.toolbar.getMenu(), feed);
     }
 
@@ -338,9 +334,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
-            updateSyncProgressBarVisibility();
-        }
+        updateToolbar();
         if (adapter != null && update.mediaIds.length > 0 && feed != null) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
@@ -383,7 +377,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
         }
         speedDialBinding.fabSD.setVisibility(View.VISIBLE);
-        refreshToolbarState();
+        updateToolbar();
     }
 
     @Override
@@ -416,9 +410,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void updateSyncProgressBarVisibility() {
-        if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
-            refreshToolbarState();
-        }
+        updateToolbar();
         if (!DownloadService.isDownloadingFeeds()) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
@@ -443,7 +435,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             swipeActions.setFilter(feed.getItemFilter());
         }
 
-        refreshToolbarState();
+        updateToolbar();
         updateSyncProgressBarVisibility();
     }
 
