@@ -68,7 +68,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             HomeFragment.TAG,
             QueueFragment.TAG,
             InboxFragment.TAG,
-            EpisodesFragment.TAG,
+            AllEpisodesFragment.TAG,
             SubscriptionFragment.TAG,
             CompletedDownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
@@ -174,7 +174,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+            ((MainActivity) getActivity()).loadFragment(AllEpisodesFragment.TAG, null);
             RemoveFeedDialog.show(getContext(), feed);
             return true;
         }

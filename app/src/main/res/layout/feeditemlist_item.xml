@@ -115,8 +115,6 @@
                     android:id="@+id/statusInbox"
                     android:layout_width="14sp"
                     android:layout_height="14sp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
                     android:contentDescription="@string/is_inbox_label"
                     app:srcCompat="@drawable/ic_inbox"
                     app:tint="?attr/colorAccent" />
@@ -140,7 +138,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/in_queue_label"
-                    app:srcCompat="@drawable/ic_playlist" />
+                    app:srcCompat="@drawable/ic_playlist_play" />
 
                 <TextView
                     android:id="@+id/separatorIcons"

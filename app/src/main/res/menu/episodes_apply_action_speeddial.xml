@@ -28,7 +28,7 @@
         />
     <item
         android:id="@+id/add_to_queue_batch"
-        android:icon="@drawable/ic_playlist"
+        android:icon="@drawable/ic_playlist_play"
         android:title="@string/add_to_queue_label"
         />
 </menu>

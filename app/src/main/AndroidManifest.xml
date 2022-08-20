@@ -158,8 +158,6 @@
                     android:resource="@xml/player_widget_info"/>
         </receiver>
 
-        <activity android:name=".activity.StorageErrorActivity">
-        </activity>
         <activity
             android:name=".activity.OpmlImportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

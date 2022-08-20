@@ -50,7 +50,6 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
-import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -107,7 +106,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate()");
-        StorageUtils.checkStorageAvailability(this);
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         viewBinding = VideoplayerActivityBinding.inflate(LayoutInflater.from(this));
@@ -120,7 +118,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @Override
     protected void onResume() {
         super.onResume();
-        StorageUtils.checkStorageAvailability(this);
         switchToAudioOnly = false;
         if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
