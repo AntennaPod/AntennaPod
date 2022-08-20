@@ -19,39 +19,43 @@
         android:id="@+id/welcomeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="32dp"
+        android:orientation="vertical"
         android:visibility="gone"
-        android:padding="16dp">
+        android:paddingHorizontal="32dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_curved_arrow" />
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
             android:src="@mipmap/ic_launcher" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/home_welcome_title"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/home_welcome_title"
-                android:layout_marginBottom="4dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/home_welcome_text"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp" />
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_welcome_text"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
