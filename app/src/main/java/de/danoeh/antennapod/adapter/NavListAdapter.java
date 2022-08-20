@@ -123,7 +123,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             case PlaybackHistoryFragment.TAG:
                 return R.drawable.ic_history;
             case SubscriptionFragment.TAG:
-                return R.drawable.ic_folder;
+                return R.drawable.ic_subscriptions;
             case AddFeedFragment.TAG:
                 return R.drawable.ic_add;
             default:

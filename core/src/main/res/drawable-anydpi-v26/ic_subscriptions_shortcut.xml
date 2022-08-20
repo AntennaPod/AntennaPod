@@ -3,7 +3,7 @@
     <background android:drawable="@color/grey100" />
     <foreground>
         <inset
-            android:drawable="@drawable/ic_folder_black"
+            android:drawable="@drawable/ic_subscriptions_black"
             android:inset="33.3%" />
     </foreground>
 </adaptive-icon>

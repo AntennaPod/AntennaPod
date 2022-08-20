@@ -99,7 +99,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         if (bitmap != null) {
             icon = IconCompat.createWithAdaptiveBitmap(bitmap);
         } else {
-            icon = IconCompat.createWithResource(this, R.drawable.ic_folder_shortcut);
+            icon = IconCompat.createWithResource(this, R.drawable.ic_subscriptions_shortcut);
         }
 
         ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, id)
