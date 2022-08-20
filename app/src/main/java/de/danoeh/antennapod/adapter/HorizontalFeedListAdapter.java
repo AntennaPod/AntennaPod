@@ -17,12 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder> {
-
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<Feed> data = new ArrayList<>();
+    private int dummyViews = 0;
 
     public HorizontalFeedListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
+    }
+
+    public void setDummyViews(int dummyViews) {
+        this.dummyViews = dummyViews;
     }
 
     public void updateData(List<Feed> newData) {
@@ -40,6 +44,20 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
+        if (position < dummyViews) {
+            holder.itemView.setAlpha(0.1f);
+            Glide.with(mainActivityRef.get())
+                .load(R.color.image_readability_tint)
+                .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .fitCenter()
+                        .dontAnimate())
+                .into(holder.imageView);
+            return;
+        }
+        position -= dummyViews;
+
+        holder.itemView.setAlpha(1.0f);
         final Feed podcast = data.get(position);
         holder.imageView.setContentDescription(podcast.getTitle());
         holder.imageView.setOnClickListener(v ->
@@ -56,12 +74,15 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public long getItemId(int position) {
-        return data.get(position).getId();
+        if (position < dummyViews) {
+            return RecyclerView.NO_ID;
+        }
+        return data.get(position - dummyViews).getId();
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dummyViews + data.size();
     }
 
     static class Holder extends RecyclerView.ViewHolder {

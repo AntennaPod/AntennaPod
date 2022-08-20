@@ -36,6 +36,7 @@ import java.util.List;
 
 public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
+    private static final int NUM_EPISODES = 2;
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
     private Disposable disposable;
@@ -56,6 +57,7 @@ public class InboxSection extends HomeSection {
                 MenuItemUtils.setOnClickListeners(menu, InboxSection.this::onContextItemSelected);
             }
         };
+        adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
         loadItems();
         return view;
@@ -105,11 +107,13 @@ public class InboxSection extends HomeSection {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() ->
-                        new Pair<>(DBReader.getNewItemsList(0, 2), PodDBAdapter.getInstance().getNumberOfNewItems()))
+                        new Pair<>(DBReader.getNewItemsList(0, NUM_EPISODES),
+                                PodDBAdapter.getInstance().getNumberOfNewItems()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     items = data.first;
+                    adapter.setDummyViews(0);
                     adapter.updateItems(items);
                     viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
                     viewBinding.numNewItemsLabel.setText(String.valueOf(data.second));

@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.view.viewholder.HorizontalItemViewHolder;
@@ -37,6 +37,7 @@ import java.util.Random;
 
 public class EpisodesSurpriseSection extends HomeSection {
     public static final String TAG = "EpisodesSurpriseSection";
+    private static final int NUM_EPISODES = 8;
     private static int seed = 0;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
@@ -60,6 +61,7 @@ public class EpisodesSurpriseSection extends HomeSection {
                 MenuItemUtils.setOnClickListeners(menu, EpisodesSurpriseSection.this::onContextItemSelected);
             }
         };
+        listAdapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
@@ -72,7 +74,7 @@ public class EpisodesSurpriseSection extends HomeSection {
 
     @Override
     protected void handleMoreClick() {
-        ((MainActivity) requireActivity()).loadChildFragment(new EpisodesFragment());
+        ((MainActivity) requireActivity()).loadChildFragment(new AllEpisodesFragment());
     }
 
     @Override
@@ -141,11 +143,12 @@ public class EpisodesSurpriseSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(() -> DBReader.getRandomEpisodes(8, seed))
+        disposable = Observable.fromCallable(() -> DBReader.getRandomEpisodes(NUM_EPISODES, seed))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(episodes -> {
                     this.episodes = episodes;
+                    listAdapter.setDummyViews(0);
                     listAdapter.updateData(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

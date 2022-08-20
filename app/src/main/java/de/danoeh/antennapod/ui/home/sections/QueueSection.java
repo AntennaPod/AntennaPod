@@ -37,6 +37,7 @@ import java.util.List;
 
 public class QueueSection extends HomeSection {
     public static final String TAG = "QueueSection";
+    private static final int NUM_EPISODES = 8;
     private HorizontalItemListAdapter listAdapter;
     private Disposable disposable;
     private List<FeedItem> queue;
@@ -53,6 +54,7 @@ public class QueueSection extends HomeSection {
                 MenuItemUtils.setOnClickListeners(menu, QueueSection.this::onContextItemSelected);
             }
         };
+        listAdapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
@@ -135,11 +137,12 @@ public class QueueSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(() -> DBReader.getPausedQueue(8))
+        disposable = Observable.fromCallable(() -> DBReader.getPausedQueue(NUM_EPISODES))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queue -> {
                     this.queue = queue;
+                    listAdapter.setDummyViews(0);
                     listAdapter.updateData(queue);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 

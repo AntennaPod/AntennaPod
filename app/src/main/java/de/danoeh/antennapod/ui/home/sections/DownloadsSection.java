@@ -34,6 +34,7 @@ import java.util.List;
 
 public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
+    private static final int NUM_EPISODES = 2;
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
     private Disposable disposable;
@@ -54,6 +55,7 @@ public class DownloadsSection extends HomeSection {
                 MenuItemUtils.setOnClickListeners(menu, DownloadsSection.this::onContextItemSelected);
             }
         };
+        adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
         loadItems();
         return view;
@@ -112,10 +114,11 @@ public class DownloadsSection extends HomeSection {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(downloads -> {
-                    if (downloads.size() > 2) {
-                        downloads = downloads.subList(0, 2);
+                    if (downloads.size() > NUM_EPISODES) {
+                        downloads = downloads.subList(0, NUM_EPISODES);
                     }
                     items = downloads;
+                    adapter.setDummyViews(0);
                     adapter.updateItems(items);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

@@ -25,10 +25,15 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> data = new ArrayList<>();
     private FeedItem longPressedItem;
+    private int dummyViews = 0;
 
     public HorizontalItemListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
+    }
+
+    public void setDummyViews(int dummyViews) {
+        this.dummyViews = dummyViews;
     }
 
     public void updateData(List<FeedItem> newData) {
@@ -44,6 +49,12 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalItemViewHolder holder, int position) {
+        if (position < dummyViews) {
+            holder.bindDummy();
+            return;
+        }
+        position -= dummyViews;
+
         final FeedItem item = data.get(position);
         holder.bind(item);
 
@@ -69,12 +80,15 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     @Override
     public long getItemId(int position) {
-        return data.get(position).getId();
+        if (position < dummyViews) {
+            return RecyclerView.NO_ID;
+        }
+        return data.get(position - dummyViews).getId();
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dummyViews + data.size();
     }
 
     @Override

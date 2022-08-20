@@ -99,7 +99,7 @@
                 android:ellipsize="end"
                 android:paddingHorizontal="4dp"
                 android:layout_marginTop="4dp"
-                android:maxLines="2"
+                android:lines="2"
                 android:singleLine="false"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp"

@@ -51,6 +51,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     public void bind(FeedItem item) {
         this.item = item;
 
+        card.setAlpha(1.0f);
         new CoverLoader(activity)
                 .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageUrl())
@@ -66,6 +67,9 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         if (media == null) {
             circularProgressBar.setPercentage(0, item);
         } else {
+            if (item.getMedia().getDuration() > 0) {
+                progressBar.setProgress(100 * item.getMedia().getPosition() / item.getMedia().getDuration());
+            }
             if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
                 float percent = 0.01f * downloadRequest.getProgressPercent();
@@ -76,6 +80,19 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
                 circularProgressBar.setPercentage(0, item); // Animate X% -> 0%
             }
         }
+    }
+
+    public void bindDummy() {
+        card.setAlpha(0.1f);
+        new CoverLoader(activity)
+                .withResource(android.R.color.transparent)
+                .withCoverView(cover)
+                .load();
+        title.setText("████ █████");
+        date.setText("███");
+        secondaryActionIcon.setImageDrawable(null);
+        circularProgressBar.setPercentage(0, null);
+        progressBar.setProgress(50);
     }
 
     public boolean isCurrentlyPlayingItem() {

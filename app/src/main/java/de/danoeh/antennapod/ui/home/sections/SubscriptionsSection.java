@@ -30,6 +30,7 @@ import java.util.List;
 
 public class SubscriptionsSection extends HomeSection {
     public static final String TAG = "SubscriptionsSection";
+    private static final int NUM_FEEDS = 8;
     private HorizontalFeedListAdapter listAdapter;
     private Disposable disposable;
 
@@ -41,6 +42,7 @@ public class SubscriptionsSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        listAdapter.setDummyViews(NUM_FEEDS);
         viewBinding.recyclerView.setAdapter(listAdapter);
         loadItems();
         return view;
@@ -77,9 +79,10 @@ public class SubscriptionsSection extends HomeSection {
                     Collections.sort(statisticsData, (item1, item2) ->
                             Long.compare(item2.timePlayed, item1.timePlayed));
                     List<Feed> feeds = new ArrayList<>();
-                    for (int i = 0; i < statisticsData.size() && i < 8; i++) {
+                    for (int i = 0; i < statisticsData.size() && i < NUM_FEEDS; i++) {
                         feeds.add(statisticsData.get(i).feed);
                     }
+                    listAdapter.setDummyViews(0);
                     listAdapter.updateData(feeds);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
