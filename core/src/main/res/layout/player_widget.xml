@@ -98,6 +98,12 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_playback_speed" />
 
+                    <TextView
+                        android:id="@+id/spacerRew"
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1" />
+
                     <ImageButton
                         android:id="@+id/butRew"
                         android:layout_width="36dp"
@@ -107,6 +113,12 @@
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_fast_rewind" />
+
+                    <TextView
+                        android:id="@+id/spacerPlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/butPlayExtended"
@@ -118,6 +130,12 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_play" />
 
+                    <TextView
+                        android:id="@+id/spacerFastForward"
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1" />
+
                     <ImageButton
                         android:id="@+id/butFastForward"
                         android:layout_width="36dp"
@@ -127,6 +145,12 @@
                         android:layout_marginEnd="2dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_widget_fast_forward" />
+
+                    <TextView
+                        android:id="@+id/spacerSkip"
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1" />
 
                     <ImageButton
                         android:id="@+id/butSkip"
