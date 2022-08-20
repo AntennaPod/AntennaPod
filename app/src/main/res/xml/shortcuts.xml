@@ -32,7 +32,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_folder_shortcut"
+        android:icon="@drawable/ic_subscriptions_shortcut"
         android:shortcutId="subscriptions"
         android:shortcutShortLabel="@string/subscriptions_label">
         <intent
