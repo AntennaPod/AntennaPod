@@ -188,15 +188,23 @@ public abstract class WidgetUpdater {
                 // The spacer to the left of the rewind button should only be
                 // shown when the rewind button is enabled, and the only other
                 // button to the left (playback speed) is also enabled
-                views.setInt(R.id.spacerRew, "setVisibility", (showPlaybackSpeed && showRewind) ? View.VISIBLE : View.GONE);
+                views.setInt(
+                    R.id.spacerRew, "setVisibility",
+                    (showPlaybackSpeed && showRewind) ? View.VISIBLE : View.GONE);
                 // The spacer to the left of the play button should only be
                 // shown if either of the two buttons to the left are enabled
-                views.setInt(R.id.spacerPlay, "setVisibility", (showPlaybackSpeed || showRewind) ? View.VISIBLE : View.GONE);
+                views.setInt(
+                    R.id.spacerPlay, "setVisibility",
+                    (showPlaybackSpeed || showRewind) ? View.VISIBLE : View.GONE);
                 // The spacer to the left of the fast-forward and skip buttons
                 // should be enabled if those buttons are enabled, since they are
                 // to the right of the play button (which is always enabled)
-                views.setInt(R.id.spacerFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
-                views.setInt(R.id.spacerSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+                views.setInt(
+                    R.id.spacerFastForward, "setVisibility",
+                    showFastForward ? View.VISIBLE : View.GONE);
+                views.setInt(
+                    R.id.spacerSkip, "setVisibility",
+                    showSkip ? View.VISIBLE : View.GONE);
             }
 
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);

@@ -104,16 +104,19 @@ public class WidgetConfigActivity extends AppCompatActivity {
         // The spacer to the left of the rewind button should only be shown
         // when the rewind button is enabled, and the only other button to
         // the left (playback speed) is also enabled
-        widgetPreview.findViewById(R.id.spacerRew).setVisibility((ckPlaybackSpeed.isChecked() && ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.spacerRew)
+                .setVisibility((ckPlaybackSpeed.isChecked() && ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
         // The spacer to the left of the play button should only be shown
         // if either of the two buttons to the left are enabled
-        widgetPreview.findViewById(R.id.spacerPlay).setVisibility((ckPlaybackSpeed.isChecked() || ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.spacerPlay)
+                .setVisibility((ckPlaybackSpeed.isChecked() || ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
         // The spacer to the left of the fast-forward and skip buttons
         // should be enabled if those buttons are enabled, since they are
         // to the right of the play button (which is always enabled)
         widgetPreview.findViewById(R.id.spacerFastForward)
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
-        widgetPreview.findViewById(R.id.spacerSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.spacerSkip)
+                .setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
     }
 
     private void confirmCreateWidget() {
