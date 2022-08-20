@@ -91,32 +91,13 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 ckPlaybackSpeed.isChecked() || ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
-        // BUTTON VISIBILITY
         widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
         widgetPreview.findViewById(R.id.butPlaybackSpeed)
                 .setVisibility(ckPlaybackSpeed.isChecked() ? View.VISIBLE : View.GONE);
-        widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butFastForward)
                 .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
-        // SPACER VISIBILITY
-        //
-        // The spacer to the left of the rewind button should only be shown
-        // when the rewind button is enabled, and the only other button to
-        // the left (playback speed) is also enabled
-        widgetPreview.findViewById(R.id.spacerRew)
-                .setVisibility((ckPlaybackSpeed.isChecked() && ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
-        // The spacer to the left of the play button should only be shown
-        // if either of the two buttons to the left are enabled
-        widgetPreview.findViewById(R.id.spacerPlay)
-                .setVisibility((ckPlaybackSpeed.isChecked() || ckRewind.isChecked()) ? View.VISIBLE : View.GONE);
-        // The spacer to the left of the fast-forward and skip buttons
-        // should be enabled if those buttons are enabled, since they are
-        // to the right of the play button (which is always enabled)
-        widgetPreview.findViewById(R.id.spacerFastForward)
-                .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
-        widgetPreview.findViewById(R.id.spacerSkip)
-                .setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
     }
 
     private void confirmCreateWidget() {
