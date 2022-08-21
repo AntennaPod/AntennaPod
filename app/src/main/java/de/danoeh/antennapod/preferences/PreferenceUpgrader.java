@@ -109,5 +109,12 @@ public class PreferenceUpgrader {
         if (oldVersion < 2050000) {
             prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, true).apply();
         }
+        if (oldVersion < 2070000) {
+            // Migrate drawer feed counter setting to reflect removal of
+            // "unplayed and in inbox" (0), by changing it to "unplayed" (2)
+            if (UserPreferences.getFeedCounterSetting().id == 0) {
+                UserPreferences.setFeedCounterSetting("2");
+            }
+        }
     }
 }
