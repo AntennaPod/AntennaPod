@@ -87,8 +87,6 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
     private List<FeedItem> queue;
 
-    private boolean isUpdatingFeeds = false;
-
     private static final String PREFS = "QueueFragment";
     private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
@@ -191,9 +189,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with DownloadEvent");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            refreshToolbarState();
-        }
+        refreshToolbarState();
         if (recyclerAdapter != null && update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(queue, mediaId);
@@ -221,18 +217,14 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems(false);
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            refreshToolbarState();
-        }
+        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         // Sent when playback position is reset
         loadItems(false);
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            refreshToolbarState();
-        }
+        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -261,17 +253,14 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         recyclerAdapter = null;
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
-
     private void refreshToolbarState() {
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
         toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
+        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
+                R.id.refresh_item, DownloadService.isRunning && DownloadService.isDownloadingFeeds());
     }
 
     @Override

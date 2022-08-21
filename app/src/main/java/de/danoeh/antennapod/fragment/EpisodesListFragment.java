@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,10 +83,8 @@ public abstract class EpisodesListFragment extends Fragment
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
 
-    private volatile boolean isUpdatingFeeds;
     protected Disposable disposable;
     protected TextView txtvInformation;
-
 
     @Override
     public void onStart() {
@@ -116,14 +113,6 @@ public abstract class EpisodesListFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-    }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
@@ -423,9 +412,7 @@ public abstract class EpisodesListFragment extends Fragment
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            updateToolbar();
-        }
+        updateToolbar();
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
@@ -436,26 +423,19 @@ public abstract class EpisodesListFragment extends Fragment
         }
     }
 
-    private void updateUi() {
-        loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            updateToolbar();
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        updateUi();
+        loadItems();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        updateUi();
+        loadItems();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        updateUi();
+        loadItems();
     }
 
     void loadItems() {
@@ -498,8 +478,10 @@ public abstract class EpisodesListFragment extends Fragment
     protected abstract String getPrefName();
 
     protected void updateToolbar() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
+        if (toolbar.getMenu().findItem(R.id.refresh_item) != null) {
+            MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
+                    DownloadService.isRunning && DownloadService.isDownloadingFeeds());
+        }
     }
 
     @Override
