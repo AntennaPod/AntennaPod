@@ -1204,7 +1204,8 @@ public class PodDBAdapter {
                 whereRead = KEY_READ + "=" + FeedItem.NEW;
                 break;
             case SHOW_UNPLAYED:
-                whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW +
+                        " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
                 whereRead = KEY_DOWNLOADED + "=1";
