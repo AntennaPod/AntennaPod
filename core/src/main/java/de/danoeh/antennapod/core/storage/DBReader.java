@@ -7,7 +7,6 @@ import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -852,52 +851,34 @@ public final class DBReader {
         adapter.open();
 
         StatisticsResult result = new StatisticsResult();
-        List<Feed> feeds = getFeedList();
-        for (Feed feed : feeds) {
-            long feedPlayedTime = 0;
-            long feedTotalTime = 0;
-            long episodes = 0;
-            long episodesStarted = 0;
-            long totalDownloadSize = 0;
-            long episodesDownloadCount = 0;
-            List<FeedItem> items = getFeed(feed.getId()).getItems();
-            for (FeedItem item : items) {
-                FeedMedia media = item.getMedia();
-                if (media == null) {
-                    continue;
+        try (Cursor cursor = adapter.getFeedStatisticsCursor(includeMarkedAsPlayed, timeFilterFrom, timeFilterTo)) {
+            int indexOldestDate = cursor.getColumnIndexOrThrow("oldest_date");
+            int indexNumEpisodes = cursor.getColumnIndexOrThrow("num_episodes");
+            int indexEpisodesStarted = cursor.getColumnIndexOrThrow("episodes_started");
+            int indexTotalTime = cursor.getColumnIndexOrThrow("total_time");
+            int indexPlayedTime = cursor.getColumnIndexOrThrow("played_time");
+            int indexNumDownloaded = cursor.getColumnIndexOrThrow("num_downloaded");
+            int indexDownloadSize = cursor.getColumnIndexOrThrow("download_size");
+
+            while (cursor.moveToNext()) {
+                Feed feed = extractFeedFromCursorRow(cursor);
+
+                long feedPlayedTime = Long.parseLong(cursor.getString(indexPlayedTime)) / 1000;
+                long feedTotalTime = Long.parseLong(cursor.getString(indexTotalTime)) / 1000;
+                long episodes = Long.parseLong(cursor.getString(indexNumEpisodes));
+                long episodesStarted = Long.parseLong(cursor.getString(indexEpisodesStarted));
+                long totalDownloadSize = Long.parseLong(cursor.getString(indexDownloadSize));
+                long episodesDownloadCount = Long.parseLong(cursor.getString(indexNumDownloaded));
+                long oldestDate = Long.parseLong(cursor.getString(indexOldestDate));
+
+                if (episodes > 0 && oldestDate < Long.MAX_VALUE) {
+                    result.oldestDate = Math.min(result.oldestDate, oldestDate);
                 }
 
-                if (media.getLastPlayedTime() > 0 && media.getPlayedDuration() != 0) {
-                    result.oldestDate = Math.min(result.oldestDate, media.getLastPlayedTime());
-                }
-                if (media.getLastPlayedTime() >= timeFilterFrom
-                        && media.getLastPlayedTime() <= timeFilterTo) {
-                    if (media.getPlayedDuration() != 0) {
-                        feedPlayedTime += media.getPlayedDuration() / 1000;
-                    } else if (includeMarkedAsPlayed && item.isPlayed()) {
-                        feedPlayedTime += media.getDuration() / 1000;
-                    }
-                }
-
-                boolean markedAsStarted = item.isPlayed() || media.getPosition() != 0;
-                boolean hasStatistics = media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0;
-                if (hasStatistics || (includeMarkedAsPlayed && markedAsStarted)) {
-                    episodesStarted++;
-                }
-
-                feedTotalTime += media.getDuration() / 1000;
-
-                if (media.isDownloaded()) {
-                    totalDownloadSize += new File(media.getFile_url()).length();
-                    episodesDownloadCount++;
-                }
-
-                episodes++;
+                result.feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
+                        episodesStarted, totalDownloadSize, episodesDownloadCount));
             }
-            result.feedTime.add(new StatisticsItem(feed, feedTotalTime, feedPlayedTime, episodes,
-                    episodesStarted, totalDownloadSize, episodesDownloadCount));
         }
-
         adapter.close();
         return result;
     }

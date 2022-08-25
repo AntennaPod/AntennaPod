@@ -14,11 +14,11 @@ public abstract class ChapterCursorMapper {
      */
     @NonNull
     public static Chapter convert(@NonNull Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
-        int indexStart = cursor.getColumnIndex(PodDBAdapter.KEY_START);
-        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
-        int indexImage = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
+        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ID);
+        int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE);
+        int indexStart = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_START);
+        int indexLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LINK);
+        int indexImage = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
 
         long id = cursor.getLong(indexId);
         String title = cursor.getString(indexTitle);
