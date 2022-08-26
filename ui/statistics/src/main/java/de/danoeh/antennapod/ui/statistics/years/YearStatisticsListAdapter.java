@@ -85,9 +85,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
                 item.year = lastDataPoint / 12;
                 item.month = lastDataPoint % 12 + 1;
                 statisticsData.add(item); // Compensate for months without playback
-                System.out.println("aaaaa extra:" + item.month + "/" + item.year);
             }
-            System.out.println("aaaaa add:" + statistic.month + "/" + statistic.year);
             statisticsData.add(statistic);
             lastDataPoint = (statistic.month - 1) + statistic.year * 12;
         }

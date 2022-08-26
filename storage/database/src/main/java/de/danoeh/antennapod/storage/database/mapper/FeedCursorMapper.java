@@ -19,26 +19,26 @@ public abstract class FeedCursorMapper {
      */
     @NonNull
     public static Feed convert(@NonNull Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexLastUpdate = cursor.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE);
-        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
-        int indexCustomTitle = cursor.getColumnIndex(PodDBAdapter.KEY_CUSTOM_TITLE);
-        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
-        int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
-        int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
-        int indexAuthor = cursor.getColumnIndex(PodDBAdapter.KEY_AUTHOR);
-        int indexLanguage = cursor.getColumnIndex(PodDBAdapter.KEY_LANGUAGE);
-        int indexType = cursor.getColumnIndex(PodDBAdapter.KEY_TYPE);
-        int indexFeedIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_IDENTIFIER);
-        int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
-        int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
-        int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
-        int indexIsPaged = cursor.getColumnIndex(PodDBAdapter.KEY_IS_PAGED);
-        int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
-        int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
-        int indexSortOrder = cursor.getColumnIndex(PodDBAdapter.KEY_SORT_ORDER);
-        int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
-        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
+        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_FEED_ID);
+        int indexLastUpdate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LASTUPDATE);
+        int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE);
+        int indexCustomTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_CUSTOM_TITLE);
+        int indexLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LINK);
+        int indexDescription = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DESCRIPTION);
+        int indexPaymentLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PAYMENT_LINK);
+        int indexAuthor = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_AUTHOR);
+        int indexLanguage = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LANGUAGE);
+        int indexType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TYPE);
+        int indexFeedIdentifier = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_IDENTIFIER);
+        int indexFileUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FILE_URL);
+        int indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
+        int indexDownloaded = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADED);
+        int indexIsPaged = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IS_PAGED);
+        int indexNextPageLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_NEXT_PAGE_LINK);
+        int indexHide = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HIDE);
+        int indexSortOrder = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SORT_ORDER);
+        int indexLastUpdateFailed = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
+        int indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
 
         Feed feed = new Feed(
                 cursor.getLong(indexId),
