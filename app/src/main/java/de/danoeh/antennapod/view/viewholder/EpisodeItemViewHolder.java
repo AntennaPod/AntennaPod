@@ -216,7 +216,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         placeholder.setText("");
         new CoverLoader(activity)
-                .withResource(R.color.image_readability_tint)
+                .withResource(ThemeUtils.getDrawableFromAttr(activity, android.R.attr.textColorSecondary))
                 .withPlaceholderView(placeholder)
                 .withCoverView(cover)
                 .load();

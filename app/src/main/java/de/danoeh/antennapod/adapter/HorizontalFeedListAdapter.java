@@ -11,6 +11,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.common.SquareImageView;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         if (position >= data.size()) {
             holder.itemView.setAlpha(0.1f);
             Glide.with(mainActivityRef.get()).clear(holder.imageView);
+            holder.imageView.setImageResource(
+                    ThemeUtils.getDrawableFromAttr(mainActivityRef.get(), android.R.attr.textColorSecondary));
             return;
         }
 
