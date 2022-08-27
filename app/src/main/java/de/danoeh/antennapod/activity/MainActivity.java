@@ -16,11 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -88,7 +86,6 @@ public class MainActivity extends CastEnabledActivity {
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
-    private long lastBackButtonPressTime = 0;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
 
@@ -117,17 +114,21 @@ public class MainActivity extends CastEnabledActivity {
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
-            String lastFragment = NavDrawerFragment.getLastNavFragment(this);
-            if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
-                loadFragment(lastFragment, null);
+            if (!UserPreferences.DEFAULT_PAGE_REMEMBER.equals(UserPreferences.getDefaultPage())) {
+                loadFragment(UserPreferences.getDefaultPage(), null);
             } else {
-                try {
-                    loadFeedFragmentById(Integer.parseInt(lastFragment), null);
-                } catch (NumberFormatException e) {
-                    // it's not a number, this happens if we removed
-                    // a label from the NAV_DRAWER_TAGS
-                    // give them a nice default...
-                    loadFragment(QueueFragment.TAG, null);
+                String lastFragment = NavDrawerFragment.getLastNavFragment(this);
+                if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
+                    loadFragment(lastFragment, null);
+                } else {
+                    try {
+                        loadFeedFragmentById(Integer.parseInt(lastFragment), null);
+                    } catch (NumberFormatException e) {
+                        // it's not a number, this happens if we removed
+                        // a label from the NAV_DRAWER_TAGS
+                        // give them a nice default...
+                        loadFragment(HomeFragment.TAG, null);
+                    }
                 }
             }
         }
@@ -462,36 +463,12 @@ public class MainActivity extends CastEnabledActivity {
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {
-            switch (UserPreferences.getBackButtonBehavior()) {
-                case OPEN_DRAWER:
-                    if (drawerLayout != null) { // Tablet layout does not have drawer
-                        drawerLayout.openDrawer(navDrawer);
-                    }
-                    break;
-                case SHOW_PROMPT:
-                    new AlertDialog.Builder(this)
-                        .setMessage(R.string.close_prompt)
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
-                        .setNegativeButton(R.string.no, null)
-                        .setCancelable(false)
-                        .show();
-                    break;
-                case DOUBLE_TAP:
-                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
-                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
-                        lastBackButtonPressTime = System.currentTimeMillis();
-                    } else {
-                        super.onBackPressed();
-                    }
-                    break;
-                case GO_TO_PAGE:
-                    if (NavDrawerFragment.getLastNavFragment(this).equals(UserPreferences.getBackButtonGoToPage())) {
-                        super.onBackPressed();
-                    } else {
-                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
-                    }
-                    break;
-                default: super.onBackPressed();
+            String toPage = UserPreferences.getDefaultPage();
+            if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
+                    || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
+                super.onBackPressed();
+            } else {
+                loadFragment(toPage, null);
             }
         }
     }
