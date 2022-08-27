@@ -239,6 +239,11 @@ public class MainActivity extends CastEnabledActivity {
 
     public void setPlayerVisible(boolean visible) {
         getBottomSheet().setLocked(!visible);
+        if (visible) {
+            bottomSheetCallback.onStateChanged(null, getBottomSheet().getState()); // Update toolbar visibility
+        } else {
+            getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
         FragmentContainerView mainView = findViewById(R.id.main_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         params.setMargins(0, 0, 0, visible ? (int) getResources().getDimension(R.dimen.external_player_height) : 0);
