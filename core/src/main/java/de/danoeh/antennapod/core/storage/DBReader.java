@@ -396,6 +396,18 @@ public final class DBReader {
         }
     }
 
+    public static List<FeedItem> getRandomEpisodes(int limit, int seed) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getRandomEpisodesCursor(limit, seed)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
     public static int getTotalEpisodeCount(FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -610,6 +622,19 @@ public final class DBReader {
             } catch (Exception e) {
                 return null;
             }
+        } finally {
+            adapter.close();
+        }
+    }
+
+    @NonNull
+    public static List<FeedItem> getPausedQueue(int limit) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getPausedQueueCursor(limit)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
         } finally {
             adapter.close();
         }

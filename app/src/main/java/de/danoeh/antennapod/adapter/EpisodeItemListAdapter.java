@@ -38,11 +38,16 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     private List<FeedItem> episodes = new ArrayList<>();
     private FeedItem longPressedItem;
     int longPressedPosition = 0; // used to init actionMode
+    private int dummyViews = 0;
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         setHasStableIds(true);
+    }
+
+    public void setDummyViews(int dummyViews) {
+        this.dummyViews = dummyViews;
     }
 
     public void updateItems(List<FeedItem> items) {
@@ -64,6 +69,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+        if (pos >= episodes.size()) {
+            holder.bindDummy();
+            return;
+        }
+
         // Reset state of recycled views
         holder.coverHolder.setVisibility(View.VISIBLE);
         holder.dragHandle.setVisibility(View.GONE);
@@ -155,13 +165,16 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     @Override
     public long getItemId(int position) {
+        if (position >= episodes.size()) {
+            return RecyclerView.NO_ID; // Dummy views
+        }
         FeedItem item = episodes.get(position);
         return item != null ? item.getId() : RecyclerView.NO_POSITION;
     }
 
     @Override
     public int getItemCount() {
-        return episodes.size();
+        return dummyViews + episodes.size();
     }
 
     protected FeedItem getItem(int index) {

@@ -198,6 +198,30 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    public void bindDummy() {
+        container.setAlpha(0.1f);
+        secondaryActionIcon.setImageDrawable(null);
+        isInbox.setVisibility(View.VISIBLE);
+        isVideo.setVisibility(View.GONE);
+        isFavorite.setVisibility(View.GONE);
+        isInQueue.setVisibility(View.GONE);
+        title.setText("███████");
+        pubDate.setText("████");
+        duration.setText("████");
+        secondaryActionProgress.setPercentage(0, null);
+        progressBar.setVisibility(View.GONE);
+        position.setVisibility(View.GONE);
+        dragHandle.setVisibility(View.GONE);
+        size.setText("");
+        itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
+        placeholder.setText("");
+        new CoverLoader(activity)
+                .withResource(ThemeUtils.getDrawableFromAttr(activity, android.R.attr.textColorSecondary))
+                .withPlaceholderView(placeholder)
+                .withCoverView(cover)
+                .load();
+    }
+
     private void updateDuration(PlaybackPositionEvent event) {
         int currentPosition = event.getPosition();
         int timeDuration = event.getDuration();

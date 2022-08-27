@@ -150,6 +150,7 @@
     </string-array>
 
     <string-array name="nav_drawer_titles">
+        <item>@string/home_label</item>
         <item>@string/queue_label</item>
         <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
@@ -186,6 +187,22 @@
         <item>2</item>
         <item>4</item>
         <item>3</item>
+    </string-array>
+
+    <string-array name="home_section_titles">
+        <item>@string/home_continue_title</item>
+        <item>@string/home_new_title</item>
+        <item>@string/home_surprise_title</item>
+        <item>@string/home_classics_title</item>
+        <item>@string/home_downloads_title</item>
+    </string-array>
+
+    <string-array name="home_section_tags">
+        <item>QueueSection</item>
+        <item>InboxSection</item>
+        <item>EpisodesSurpriseSection</item>
+        <item>SubscriptionsSection</item>
+        <item>DownloadsSection</item>
     </string-array>
 
     <string-array name="media_player_options">
@@ -265,6 +282,7 @@
     </string-array>
 
     <string-array name="back_button_go_to_pages">
+        <item>@string/home_label</item>
         <item>@string/queue_label</item>
         <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
@@ -272,6 +290,7 @@
     </string-array>
 
     <string-array name="back_button_go_to_pages_tags">
+        <item>HomeFragment</item>
         <item>QueueFragment</item>
         <item>InboxFragment</item>
         <item>EpisodesFragment</item>

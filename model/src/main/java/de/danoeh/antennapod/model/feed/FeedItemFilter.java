@@ -45,7 +45,7 @@ public class FeedItemFilter implements Serializable {
         this(TextUtils.split(properties, ","));
     }
 
-    public FeedItemFilter(String[] properties) {
+    public FeedItemFilter(String... properties) {
         this.properties = properties;
 
         // see R.arrays.feed_filter_values
