@@ -44,18 +44,11 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        if (position < dummyViews) {
+        if (position >= data.size()) {
             holder.itemView.setAlpha(0.1f);
-            Glide.with(mainActivityRef.get())
-                .load(R.color.image_readability_tint)
-                .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .fitCenter()
-                        .dontAnimate())
-                .into(holder.imageView);
+            Glide.with(mainActivityRef.get()).clear(holder.imageView);
             return;
         }
-        position -= dummyViews;
 
         holder.itemView.setAlpha(1.0f);
         final Feed podcast = data.get(position);
@@ -74,10 +67,10 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
 
     @Override
     public long getItemId(int position) {
-        if (position < dummyViews) {
-            return RecyclerView.NO_ID;
+        if (position >= data.size()) {
+            return RecyclerView.NO_ID; // Dummy views
         }
-        return data.get(position - dummyViews).getId();
+        return data.get(position).getId();
     }
 
     @Override

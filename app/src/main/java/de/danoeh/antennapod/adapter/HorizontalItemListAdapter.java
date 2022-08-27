@@ -49,11 +49,10 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalItemViewHolder holder, int position) {
-        if (position < dummyViews) {
+        if (position >= data.size()) {
             holder.bindDummy();
             return;
         }
-        position -= dummyViews;
 
         final FeedItem item = data.get(position);
         holder.bind(item);
@@ -80,10 +79,10 @@ public class HorizontalItemListAdapter extends RecyclerView.Adapter<HorizontalIt
 
     @Override
     public long getItemId(int position) {
-        if (position < dummyViews) {
-            return RecyclerView.NO_ID;
+        if (position >= data.size()) {
+            return RecyclerView.NO_ID; // Dummy views
         }
-        return data.get(position - dummyViews).getId();
+        return data.get(position).getId();
     }
 
     @Override

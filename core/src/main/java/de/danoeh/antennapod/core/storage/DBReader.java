@@ -630,7 +630,6 @@ public final class DBReader {
 
     @NonNull
     public static List<FeedItem> getPausedQueue(int limit) {
-        Log.d(TAG, "getQueue()");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getPausedQueueCursor(limit)) {

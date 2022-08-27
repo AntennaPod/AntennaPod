@@ -69,11 +69,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-        if (pos < dummyViews) {
+        if (pos >= episodes.size()) {
             holder.bindDummy();
             return;
         }
-        pos -= dummyViews;
 
         // Reset state of recycled views
         holder.coverHolder.setVisibility(View.VISIBLE);
@@ -166,10 +165,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     @Override
     public long getItemId(int position) {
-        if (position < dummyViews) {
-            return RecyclerView.NO_ID;
+        if (position >= episodes.size()) {
+            return RecyclerView.NO_ID; // Dummy views
         }
-        FeedItem item = episodes.get(position - dummyViews);
+        FeedItem item = episodes.get(position);
         return item != null ? item.getId() : RecyclerView.NO_POSITION;
     }
 
