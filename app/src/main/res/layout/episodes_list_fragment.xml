@@ -32,8 +32,7 @@
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txtvInformation"
-        android:layout_above="@id/loadingMore">
+        android:layout_below="@+id/txtvInformation">
 
         <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
             android:id="@android:id/list"
@@ -48,45 +47,6 @@
             tools:listitem="@layout/feeditemlist_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <ProgressBar
-        android:id="@+id/progLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:indeterminateOnly="true"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        tools:background="@android:color/holo_red_light" />
-
-    <LinearLayout
-        android:id="@+id/loadingMore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:visibility="gone"
-        android:gravity="center">
-
-        <ProgressBar
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:gravity="center_horizontal"
-            android:indeterminateOnly="true"
-            tools:background="@android:color/holo_red_light" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:text="@string/loading_more" />
-
-    </LinearLayout>
 
     <include
         layout="@layout/multi_select_speed_dial" />

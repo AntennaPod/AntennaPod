@@ -61,14 +61,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
-        android:id="@+id/progLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminateOnly="true"
-        android:visibility="gone" />
-
     <include
         android:id="@+id/more_content"
         android:layout_width="match_parent"

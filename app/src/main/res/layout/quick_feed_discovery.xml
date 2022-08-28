@@ -1,98 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:text="@string/discover"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:textColor="?android:attr/textColorPrimary"/>
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:text="@string/discover"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:textColor="?android:attr/textColorPrimary" />
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:minWidth="0dp"
-                android:text="@string/discover_more"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:id="@+id/discover_more"/>
+            android:id="@+id/discover_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:minWidth="0dp"
+            android:text="@string/discover_more"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
     </LinearLayout>
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <de.danoeh.antennapod.ui.common.WrappingGridView
-                android:id="@+id/discover_grid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numColumns="4"
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:scrollbars="none"
-                android:layout_marginTop="8dp"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"/>
-
-        <ProgressBar
-                android:id="@+id/discover_progress_bar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="30dp"/>
+            android:id="@+id/discover_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:layout_marginTop="8dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1" />
 
         <LinearLayout
-                android:id="@+id/discover_error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical">
+            android:id="@+id/discover_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/discover_error_txtV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_margin="16dp"
-                    android:textSize="@dimen/text_size_small"
-                    tools:text="Error message"
-                    tools:background="@android:color/holo_red_light" />
+                android:id="@+id/discover_error_txtV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Error message"
+                tools:background="@android:color/holo_red_light" />
 
             <Button
-                    android:id="@+id/discover_error_retry_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/retry_label"
-                    tools:background="@android:color/holo_red_light" />
+                android:id="@+id/discover_error_retry_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/retry_label"
+                tools:background="@android:color/holo_red_light" />
+
         </LinearLayout>
 
     </RelativeLayout>
 
     <TextView
-            android:id="@+id/discover_powered_by_itunes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorTertiary"
-            android:text="@string/discover_powered_by_itunes"
-            android:textSize="12sp"
-            android:layout_gravity="right|end"
-            android:paddingHorizontal="4dp"
-            android:textAlignment="textEnd"/>
+        android:id="@+id/discover_powered_by_itunes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorTertiary"
+        android:text="@string/discover_powered_by_itunes"
+        android:textSize="12sp"
+        android:layout_gravity="right|end"
+        android:paddingHorizontal="4dp"
+        android:textAlignment="textEnd" />
 
 </LinearLayout>

@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,6 +74,7 @@ public class SubscriptionFragment extends Fragment
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
+    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
@@ -88,7 +88,6 @@ public class SubscriptionFragment extends Fragment
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
-    private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
     private Toolbar toolbar;
@@ -153,8 +152,24 @@ public class SubscriptionFragment extends Fragment
         setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
+            }
+        };
+        subscriptionAdapter.setOnSelectModeListener(this);
+        subscriptionAdapter.setDummyViews(Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5)));
+        subscriptionRecycler.setAdapter(subscriptionAdapter);
+        setupEmptyView();
+
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
-        progressBar = root.findViewById(R.id.progLoading);
+        subscriptionAddButton.setOnClickListener(view -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
+            }
+        });
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
@@ -254,26 +269,6 @@ public class SubscriptionFragment extends Fragment
     }
 
     @Override
-    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
-        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
-            }
-        };
-        subscriptionAdapter.setOnSelectModeListener(this);
-        subscriptionRecycler.setAdapter(subscriptionAdapter);
-        setupEmptyView();
-        subscriptionAddButton.setOnClickListener(view -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
-            }
-        });
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -287,6 +282,7 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
+        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, subscriptionAdapter.getItemCount()).apply();
 
         if (subscriptionAdapter != null) {
             subscriptionAdapter.endSelectMode();
@@ -319,13 +315,12 @@ public class SubscriptionFragment extends Fragment
                             subscriptionAdapter.endSelectMode();
                         }
                         listItems = result;
+                        subscriptionAdapter.setDummyViews(0);
                         subscriptionAdapter.setItems(result);
                         subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
-                        progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
                     });
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
