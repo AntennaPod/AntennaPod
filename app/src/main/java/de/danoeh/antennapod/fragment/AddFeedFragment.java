@@ -163,8 +163,7 @@ public class AddFeedFragment extends Fragment {
 
     private void performSearch() {
         viewBinding.combinedFeedSearchEditText.clearFocus();
-        InputMethodManager in = (InputMethodManager)
-                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(viewBinding.combinedFeedSearchEditText.getWindowToken(), 0);
         String query = viewBinding.combinedFeedSearchEditText.getText().toString();
         if (query.matches("http[s]?://.*")) {
@@ -172,6 +171,7 @@ public class AddFeedFragment extends Fragment {
             return;
         }
         activity.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
+        viewBinding.combinedFeedSearchEditText.post(() -> viewBinding.combinedFeedSearchEditText.setText(""));
     }
 
     @Override
