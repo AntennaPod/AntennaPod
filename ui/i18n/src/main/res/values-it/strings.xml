@@ -7,10 +7,12 @@
   <string name="add_feed_label">Aggiungi podcast</string>
   <string name="episodes_label">Episodi</string>
   <string name="queue_label">Coda</string>
+  <string name="inbox_label">Inbox</string>
   <string name="favorite_episodes_label">Preferiti</string>
   <string name="settings_label">Impostazioni</string>
   <string name="downloads_label">Download</string>
   <string name="open_autodownload_settings">Apri Impostazioni</string>
+  <string name="downloads_log_label">Log dei download</string>
   <string name="subscriptions_label">Iscrizioni</string>
   <string name="subscriptions_list_label">Elenco iscrizioni</string>
   <string name="cancel_download_label">Annulla download</string>
@@ -50,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
   <string name="drawer_feed_order_most_played">Ordina per numero di episodi riprodotti</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Numero di episodi non riprodotti e nella inbox</string>
+  <string name="drawer_feed_counter_inbox">Numero di episodi nella inbox</string>
   <string name="drawer_feed_counter_unplayed">Numero di episodi non riprodotti</string>
   <string name="drawer_feed_counter_downloaded">Numero di episodi scaricati</string>
   <string name="drawer_feed_counter_none">Nessuno</string>
@@ -136,6 +140,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Le tue sottoscrizioni hanno nuovi episodi.</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Svuota la inbox</string>
+  <string name="removed_all_inbox_msg">Inbox svuotata</string>
+  <string name="remove_all_inbox_confirmation_msg">Confermi di voler rimuovere tutti gli episodi dalla inbox?</string>
+  <string name="multi_select_mark_played_confirmation">Conferma di voler segnare tutti gli episodi selezionati come riprodotti</string>
+  <string name="multi_select_mark_unplayed_confirmation">Conferma di voler segnare tutti gli episodi selezionati come non riprodotti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
   <string name="feed_settings_label">Impostazioni podcast</string>
@@ -183,7 +192,10 @@
     <item quantity="many">%d episodi scaricati eliminati.</item>
     <item quantity="other">%d episodi scaricati eliminati.</item>
   </plurals>
+  <string name="remove_inbox_label">Rimuovi dalla inbox</string>
+  <string name="removed_inbox_label">Rimosso dalla inbox</string>
   <string name="mark_read_label">Segna come riprodotto</string>
+  <string name="toggle_played_label">Cambia stato di riproduzione</string>
   <string name="marked_as_played_label">Segna come riprodotto</string>
   <string name="marked_as_unplayed_label">Segna come non riprodotto</string>
   <string name="mark_read_no_media_label">Segna come letto</string>
@@ -318,11 +330,15 @@
   <string name="no_history_label">Ogni episodio ascoltato apparirà qui.</string>
   <string name="no_all_episodes_head_label">Nessun episodio</string>
   <string name="no_all_episodes_label">Quando aggiungi un podcast, gli episodi vengono mostrati qui.</string>
+  <string name="no_all_episodes_filtered_label">Prova a rimuovere i filtri per visualizzare più episodi</string>
+  <string name="no_inbox_head_label">Nessun episodio nella inbox</string>
+  <string name="no_inbox_label">Quando verranno pubblicati nuovi episodi, appariranno qui. Puoi decidere se ti interessano o meno.</string>
   <string name="no_subscriptions_head_label">Nessuna iscrizione</string>
   <string name="no_subscriptions_label">Per aggiungere un podcast, premi il tasto + in basso.</string>
   <!--Preferences-->
   <string name="storage_pref">Memoria</string>
   <string name="storage_sum">Eliminazione episodi, importazione, esportazione</string>
+  <string name="statistics_moved">La schermata delle statistiche è stata spostata nella pagina Iscrizioni. Puoi aprirla da lì.</string>
   <string name="project_pref">Progetto</string>
   <string name="synchronization_pref">Sincronizzazione</string>
   <string name="synchronization_sum">Sincronizza con altri dispositivi</string>
@@ -597,6 +613,7 @@
   <string name="gpodnetauth_encryption_warning">Dati e password non cifrati!</string>
   <string name="username_label">Username</string>
   <string name="password_label">Password</string>
+  <string name="gpodnet_description">Gpodder.net è un servizio di sincronizzazione podcast che puoi installare sul tuo server. Gpodder.net è indipendente dal progetto AntennaPod.</string>
   <string name="gpodnetauth_host">Hostname</string>
   <string name="gpodnetauth_select_server">Seleziona server</string>
   <string name="gpodnetauth_device_name">Nome dispositivo</string>
@@ -633,6 +650,7 @@
   <string name="status_downloading_label">L\'episodio sta venendo scaricato</string>
   <string name="in_queue_label">L\'episodio è in coda</string>
   <string name="is_favorite_label">Episodio contrassegnato come preferito</string>
+  <string name="is_inbox_label">L\'episodio è nella inbox</string>
   <string name="load_next_page_label">Carica la pagina successiva</string>
   <string name="position">Posizione: %1$s</string>
   <string name="apply_action">Applica la scelta</string>

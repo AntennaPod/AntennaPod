@@ -52,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Сортировать по алфавиту</string>
   <string name="drawer_feed_order_last_update">Сортировать по дате</string>
   <string name="drawer_feed_order_most_played">Сортировать по количеству прослушанных выпусков</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Количество непрослушанных выпусков и выпусков во входящих</string>
+  <string name="drawer_feed_counter_inbox">Количество непрослушанных выпусков во входящих</string>
   <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
   <string name="drawer_feed_counter_downloaded">Количество загруженных выпусков</string>
   <string name="drawer_feed_counter_none">Ничего</string>
@@ -144,6 +146,9 @@
   </plurals>
   <string name="new_episode_notification_group_text">В списке Ваших подписок появились новые выпуски</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Удалить все из входящих</string>
+  <string name="removed_all_inbox_msg">Удалены все из входящих</string>
+  <string name="remove_all_inbox_confirmation_msg">Подтвердите, что хотите удалить все выпуски из входящих.</string>
   <string name="multi_select_mark_played_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как прослушанные.</string>
   <string name="multi_select_mark_unplayed_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как непрослушанные.</string>
   <string name="show_info_label">Показать информацию</string>
@@ -196,6 +201,8 @@
     <item quantity="many">%d загруженных выпусков удалёно.</item>
     <item quantity="other">%d загруженных выпусков удалёно.</item>
   </plurals>
+  <string name="remove_inbox_label">Удалить из входящих</string>
+  <string name="removed_inbox_label">Удалено из входящих</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="toggle_played_label">Переключить состояние воспроизведения</string>
   <string name="marked_as_played_label">Отмечено как прослушанное</string>
@@ -338,6 +345,8 @@
   <string name="no_all_episodes_head_label">Нет выпусков</string>
   <string name="no_all_episodes_label">Когда вы добавите подкаст, выпуски будут показаны здесь.</string>
   <string name="no_all_episodes_filtered_label">Попробуйте очистить фильтр, чтобы увидеть больше выпусков.</string>
+  <string name="no_inbox_head_label">Во входящих нет выпусков</string>
+  <string name="no_inbox_label">Когда появятся новые выпуски, они будут показаны здесь. Вы сможете решить, интересны они вам или нет.</string>
   <string name="no_subscriptions_head_label">Подписки не оформлены</string>
   <string name="no_subscriptions_label">Чтобы подписаться на подкаст, нажмите значок «плюс» внизу.</string>
   <!--Preferences-->
@@ -659,6 +668,7 @@
   <string name="status_downloading_label">Выпуск загружается</string>
   <string name="in_queue_label">Выпуск в очереди</string>
   <string name="is_favorite_label">Эпизод отмечен как избранный</string>
+  <string name="is_inbox_label">Выпуск во входящих</string>
   <string name="load_next_page_label">Загрузить следующую страницу</string>
   <string name="position">Позиция: %1$s</string>
   <string name="apply_action">Применить действие</string>

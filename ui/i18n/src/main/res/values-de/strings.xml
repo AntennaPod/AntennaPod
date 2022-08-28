@@ -413,7 +413,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_episode_cover_title">Episoden-Bilder verwenden</string>
   <string name="pref_episode_cover_summary">Falls verfügbar episodenspezifische Titelbilder in Listen verwenden. Falls nicht ausgewählt wird immer das Titelbild des Podcasts verwendet.</string>
   <string name="pref_show_remain_time_title">Verbleibende Zeit anzeigen</string>
-  <string name="pref_show_remain_time_summary">Zeigt, falls ausgewählt, die verbleibende Zeit für die Episode, andernfalls die gesamte verbleibende Zeit aller Episoden.</string>
+  <string name="pref_show_remain_time_summary">Zeigt die verbleibende Zeit der Episode. Falls deaktiviert, die gesamte Dauer der Episode.</string>
   <string name="pref_theme_title_use_system">System-Design verwenden</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>

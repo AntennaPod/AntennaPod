@@ -52,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por fecha de publicación</string>
   <string name="drawer_feed_order_most_played">Ordenar por número de episodios reproducidos</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Número de episodios sin reproducir y episodios en la bandeja de entrada</string>
+  <string name="drawer_feed_counter_inbox">Número de episodios en la bandeja de entrada</string>
   <string name="drawer_feed_counter_unplayed">Número de episodios no reproducidos</string>
   <string name="drawer_feed_counter_downloaded">Número de episodios descargados</string>
   <string name="drawer_feed_counter_none">Ninguno</string>
@@ -138,6 +140,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Sus suscripciones tienen nuevos episodios.</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Borrar todo en la bandeja de entrada</string>
+  <string name="removed_all_inbox_msg">Borrado todo de la bandeja de entrada</string>
+  <string name="remove_all_inbox_confirmation_msg">Por favor confirma que quieres borrar todo de la bandeja de entrada</string>
+  <string name="multi_select_mark_played_confirmation">Por favor confirma que quieres marcar todos los elementos como reproducidos.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Por favor confirma que quieres marcar todos los elementos como no reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
   <string name="show_feed_settings_label">Mostrar ajustes del pódcast</string>
   <string name="feed_settings_label">Ajustes del pódcast</string>
@@ -185,7 +192,10 @@
     <item quantity="many">Eliminados %d episodios descargados.</item>
     <item quantity="other">Eliminados %d episodios descargados.</item>
   </plurals>
+  <string name="remove_inbox_label">Borrar de la bandeja de entrada</string>
+  <string name="removed_inbox_label">Borrado de la bandeja de entrada</string>
   <string name="mark_read_label">Marcar como reproducido</string>
+  <string name="toggle_played_label">Cambiar estado de reproducción</string>
   <string name="marked_as_played_label">Marcar como reproducido</string>
   <string name="marked_as_unplayed_label">Marcar como no reproducido</string>
   <string name="mark_read_no_media_label">Marcar como leído</string>
@@ -320,11 +330,15 @@
   <string name="no_history_label">Después de escuchar un episodio, aparecerá aquí.</string>
   <string name="no_all_episodes_head_label">Sin episodios</string>
   <string name="no_all_episodes_label">Cuando añada un pódcast, los episodios aparecerán aquí.</string>
+  <string name="no_all_episodes_filtered_label">Prueba a quitar el filtro para ver más episodios</string>
+  <string name="no_inbox_head_label">No hay episodios en la bandeja de entrada</string>
+  <string name="no_inbox_label">Cuando lleguen nuevos episodios, se mostrarán aquí. Entonces podrás decidir si te interesan o no.</string>
   <string name="no_subscriptions_head_label">No hay suscripciones</string>
   <string name="no_subscriptions_label">Para suscribirse a un podcast, pulsa el icono \"más\" de abajo.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamiento</string>
   <string name="storage_sum">Borrado automático, Importar, Exportar</string>
+  <string name="statistics_moved">La pantalla de estadísticas se ha movido a la pantalla de suscripciones. Puedes abrirla desde allí.</string>
   <string name="project_pref">Proyecto</string>
   <string name="synchronization_pref">Sincronización</string>
   <string name="synchronization_sum">Sincroniza con otros dispositivos</string>
@@ -599,6 +613,7 @@
   <string name="gpodnetauth_encryption_warning">Clave de acceso y data no encriptadas.</string>
   <string name="username_label">Usuario</string>
   <string name="password_label">Contraseña</string>
+  <string name="gpodnet_description">Gpodder.net es un servicio de código abierto de sincronización de podcasts que puedes instalar en tu propio servidor. Gpodder.net es independiente del proyecto AntennaPod.</string>
   <string name="gpodnetauth_host">Nombre del host</string>
   <string name="gpodnetauth_select_server">Seleccione el servidor</string>
   <string name="gpodnetauth_device_name">Nombre del dispositivo</string>
@@ -635,6 +650,7 @@
   <string name="status_downloading_label">El episodio se está descargando</string>
   <string name="in_queue_label">El episodio está en la cola</string>
   <string name="is_favorite_label">Episodio marcado como favorito</string>
+  <string name="is_inbox_label">El episodio está en la bandeja de entrada</string>
   <string name="load_next_page_label">Cargar la página siguiente</string>
   <string name="position">Posición: %1$s</string>
   <string name="apply_action">Aplicar acción</string>

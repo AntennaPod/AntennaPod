@@ -7,10 +7,12 @@
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="episodes_label">Odcinki</string>
   <string name="queue_label">Kolejka</string>
+  <string name="inbox_label">Skrzynka odbiorcza</string>
   <string name="favorite_episodes_label">Ulubione</string>
   <string name="settings_label">Ustawienia</string>
   <string name="downloads_label">Pobrane</string>
   <string name="open_autodownload_settings">Otwórz Ustawienia</string>
+  <string name="downloads_log_label">Dziennik pobierania</string>
   <string name="subscriptions_label">Subskrypcje</string>
   <string name="subscriptions_list_label">Lista subskrypcji</string>
   <string name="cancel_download_label">Anuluj pobieranie</string>
@@ -50,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Sortuj alfabetycznie</string>
   <string name="drawer_feed_order_last_update">Sortuj wg daty publikacji</string>
   <string name="drawer_feed_order_most_played">Sortuj wg liczby odtworzonych odcinków</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Liczba nieodtworzonych odcinków i odcinków w skrzynce odbiorczej</string>
+  <string name="drawer_feed_counter_inbox">Liczba odcinków w skrzynce odbiorczej</string>
   <string name="drawer_feed_counter_unplayed">Liczba nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_downloaded">Liczba pobranych odcinków</string>
   <string name="drawer_feed_counter_none">Brak</string>
@@ -142,6 +146,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Twoje subskrypcje mają nowe odcinki</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Usuń wszystkie ze skrzynki odbiorczej</string>
+  <string name="removed_all_inbox_msg">Usunięto wszystkie ze skrzynki odbiorczej</string>
+  <string name="remove_all_inbox_confirmation_msg">Potwierdź, że chcesz usunąć wszystkie ze skrzynki odbiorczej</string>
+  <string name="multi_select_mark_played_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako odtworzone</string>
+  <string name="multi_select_mark_unplayed_confirmation">Potwierdź, że chcesz oznaczyć wszystkie zaznaczone elementy jako nieodtworzone</string>
   <string name="show_info_label">Pokaż informacje</string>
   <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
   <string name="feed_settings_label">Ustawienia podcastu</string>
@@ -192,7 +201,10 @@
     <item quantity="many">Usunięto wiele pobranych odcinków.</item>
     <item quantity="other">Usunięto %d pobranych odcinków.</item>
   </plurals>
+  <string name="remove_inbox_label">Usuń ze skrzynki odbiorczej</string>
+  <string name="removed_inbox_label">Usunięto ze skrzynki odbiorczej</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
+  <string name="toggle_played_label">Pokaż status odtworzenia</string>
   <string name="marked_as_played_label">Oznaczone jako odtworzone</string>
   <string name="marked_as_unplayed_label">Oznaczone jako nieodtworzone</string>
   <string name="mark_read_no_media_label">Oznacz jako przeczytane</string>
@@ -333,11 +345,15 @@
   <string name="no_history_label">Tutaj pojawi się lista odcinków, po ich przesłuchaniu.</string>
   <string name="no_all_episodes_head_label">Brak odcinków</string>
   <string name="no_all_episodes_label">Tutaj pojawi się lista odcinków, gdy dodasz podcast.</string>
+  <string name="no_all_episodes_filtered_label">Spróbuj wyczyścić filtr, aby zobaczyć więcej odcinków</string>
+  <string name="no_inbox_head_label">Brak odcinków w skrzynce odbiorczej</string>
+  <string name="no_inbox_label">Gdy pojawią się nowe odcinki, zobaczysz je tutaj. Możesz wtedy zdecydować, czy są dla Ciebie interesujące czy nie.</string>
   <string name="no_subscriptions_head_label">Brak subskrypcji</string>
   <string name="no_subscriptions_label">Aby subskrybować podcast naciśnij znak plus poniżej</string>
   <!--Preferences-->
   <string name="storage_pref">Pamięć</string>
   <string name="storage_sum">Automatyczne kasowanie odcinków, Import, Eksport</string>
+  <string name="statistics_moved">Ekran statystyk został przeniesiony do ekranu subskrypcji. Możesz go otworzyć stamtąd.</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synchronizacja</string>
   <string name="synchronization_sum">Synchronizuj z innymi urządzeniami</string>
@@ -616,6 +632,7 @@
   <string name="gpodnetauth_encryption_warning">Hasło i dane nie są zaszyfrowane!</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
+  <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
   <string name="gpodnetauth_host">Nazwa hosta</string>
   <string name="gpodnetauth_select_server">Wybierz serwer</string>
   <string name="gpodnetauth_device_name">Nazwa urządzenia</string>
@@ -652,6 +669,7 @@
   <string name="status_downloading_label">Odcinek jest pobierany</string>
   <string name="in_queue_label">Odcinek jest w kolejce</string>
   <string name="is_favorite_label">Odcinek oznaczony jako ulubiony</string>
+  <string name="is_inbox_label">Odcinek znajduje się w skrzynce odbiorczej</string>
   <string name="load_next_page_label">Załaduj następną stronę</string>
   <string name="position">Pozycja: %1$s</string>
   <string name="apply_action">Zastosuj</string>
@@ -741,6 +759,8 @@
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Uwzględnianie pozycji odtwarzania</string>
   <string name="share_dialog_episode_website_label">Adres strony odcinka</string>
+  <string name="share_dialog_for_social">Wiadomość</string>
+  <string name="share_dialog_media_address">Adres mediów</string>
   <string name="share_dialog_media_file_label">Plik multimedialny</string>
   <string name="share_starting_position_label">Rozpoczęto z</string>
   <!--Audio controls-->

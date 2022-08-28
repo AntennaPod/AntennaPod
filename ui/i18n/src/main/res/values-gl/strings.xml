@@ -424,7 +424,7 @@
   <string name="pref_gpodnet_setlogin_information_sum">Cambiar a información de conexión da súa conta gpodder.net</string>
   <string name="synchronization_sync_changes_title">Sincronizar agora</string>
   <string name="synchronization_full_sync_title">Forzar sincronización completa</string>
-  <string name="synchronization_login_status"><![CDATA[Tes conexión como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podes cambiar de provedor de sincronización unha vez te desconectes do actua]]></string>
+  <string name="synchronization_login_status"><![CDATA[Accedeches como <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podes cambiar de provedor de sincronización unha vez te desconectes do actual]]></string>
   <string name="synchronization_summary_unchoosen">Podes elexir entre múltiples provedores para sincronizar as túas subscricións e estado de reprodución dos episodios</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync é unha app Nextcloud de código aberto que podes instalar fácilmente no teu servidor. A app é independente do proxecto AntennaPod.</string>
   <string name="synchronization_nextcloud_authenticate_browser">Conceder acceso usando o navegador web e volver a AntennaPod.</string>
