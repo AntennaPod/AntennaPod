@@ -112,9 +112,9 @@ public class PreferenceUpgrader {
         if (oldVersion < 2080000) {
             // Migrate drawer feed counter setting to reflect removal of
             // "unplayed and in inbox" (0), by changing it to "unplayed" (2)
-            String feedCounterSetting = prefs.getString("prefDrawerFeedIndicator", "1");
+            String feedCounterSetting = prefs.getString(UserPreferences.PREF_DRAWER_FEED_COUNTER, "1");
             if (feedCounterSetting.equals("0")) {
-                prefs.edit().putString("prefDrawerFeedIndicator", "2").apply();
+                prefs.edit().putString(UserPreferences.PREF_DRAWER_FEED_COUNTER, "2").apply();
             }
         }
     }
