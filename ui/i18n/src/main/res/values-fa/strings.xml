@@ -7,20 +7,14 @@
   <string name="add_feed_label">افزودن پادکست</string>
   <string name="episodes_label">قسمت‌ها</string>
   <string name="queue_label">صف</string>
-  <string name="all_episodes_short_label">همه</string>
-  <string name="new_episodes_label">جدید</string>
   <string name="favorite_episodes_label">محبوب‌ها</string>
-  <string name="new_label">جدید</string>
   <string name="settings_label">تنظیمات</string>
   <string name="downloads_label">بارگیری‌ها</string>
   <string name="open_autodownload_settings">باز کردن تنظیمات</string>
-  <string name="downloads_completed_label">تکمیل‌شده</string>
-  <string name="downloads_log_label">گزارش</string>
   <string name="subscriptions_label">اشتراک‌ها</string>
   <string name="subscriptions_list_label">فهرست اشتراک‌ها</string>
   <string name="cancel_download_label">لغو بارگیری</string>
   <string name="playback_history_label">تاریخچهٔ پخش</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز تکمیل شده است. شما می‌توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
   <string name="notification_pref_fragment">آگاهی‌ها</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">مرتب‌سازی بر اساس حروف الفبا</string>
   <string name="drawer_feed_order_last_update">مرتب‌سازی بر اساس تاریخ انتشار</string>
   <string name="drawer_feed_order_most_played">مرتب‌سازی بر اساس تعداد قسمت‌های پخش‌شده</string>
-  <string name="drawer_feed_counter_new_unplayed">تعداد قسمت‌های جدید و پخش‌نشده</string>
-  <string name="drawer_feed_counter_new">تعداد قسمت‌های جدید</string>
   <string name="drawer_feed_counter_unplayed">تعداد قسمت‌های پخش‌نشده</string>
   <string name="drawer_feed_counter_downloaded">تعداد قسمت‌های بارگیری‌شده</string>
   <string name="drawer_feed_counter_none">هیچ‌یک</string>
@@ -75,7 +67,6 @@
   <string name="error_label">خطا</string>
   <string name="error_msg_prefix">یک خطا رخ داد:</string>
   <string name="refresh_label">تازه کردن</string>
-  <string name="external_storage_error_msg">هیچ  فضای ذخیره سازی خارجی موجود نیست لطفاً مطمئن شوید که کارت حافظه به درستی نصب شده است تا برنامه بتواند به درستی کار کند.</string>
   <string name="chapters_label">فصل‌ها</string>
   <string name="chapter_duration">مدت زمان:%1$s</string>
   <string name="description_label">شرح</string>
@@ -129,13 +120,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">پیگیری‌های شما دارای قسمت‌های جدیدی هستند.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">علامت‌گذاری همه به‌عنوان پخش‌شده</string>
-  <string name="mark_all_read_msg">همه قسمت‌ها به عنوان پخش شده علامت‌گذاری شد</string>
-  <string name="mark_all_read_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان پخش‌شده علامت بزنید.</string>
-  <string name="mark_all_read_feed_confirmation_msg">لطفاً تأیید کنید که می‌خواهید تمام قسمت‌های این پادکست را به‌عنوان پخش‌شده علامت بزنید.</string>
-  <string name="remove_all_new_flags_label">حذف همهٔ برچسب‌های «جدید» </string>
-  <string name="removed_all_new_flags_msg">همه پرچسب‌های «جدید» حذف شد</string>
-  <string name="remove_all_new_flags_confirmation_msg">لطفاً تأیید کنید که می‌خواهید برچسب‌های «جدید» را از همهٔ قسمت‌ها حذف کنید.</string>
   <string name="show_info_label">نمایش اطلاعات</string>
   <string name="show_feed_settings_label">نمایش تنظیمات پادکست</string>
   <string name="feed_settings_label">تنظیمات پادکست</string>
@@ -172,8 +156,6 @@
   <string name="delete_label">حذف</string>
   <string name="delete_failed">پرونده حذف نشد. راه‌اندازی مجدد دستگاه می‌تواند کمک کند.</string>
   <string name="delete_episode_label">حذف قسمت</string>
-  <string name="remove_new_flag_label">حذف نشان «جدید»</string>
-  <string name="removed_new_flag_label">نشان «جدید» حذف شد</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>
   <string name="marked_as_played_label">علامت‌گذاری شد به‌عنوان پخش‌شده</string>
   <string name="marked_as_unplayed_label">علامت‌گذاری شد به‌عنوان پخش‌نشده</string>
@@ -205,7 +187,6 @@
   <string name="visit_website_label">مشاهده تارنما</string>
   <string name="skip_episode_label">رد شدن از قسمت</string>
   <string name="reset_position">تنظیم مجدد موقعیت پخش</string>
-  <string name="removed_item">مورد حذف شده است</string>
   <string name="no_items_selected">چیزی انتخاب نشده است</string>
   <!--Download messages and labels-->
   <string name="download_successful">موفقیت‌آمیز</string>
@@ -300,10 +281,6 @@
   <string name="no_history_label">پس از گوش دادن به یک قسمت، اینجا نمایش داده می‌شود.</string>
   <string name="no_all_episodes_head_label">بدون قسمت</string>
   <string name="no_all_episodes_label">هنگامی که پادکستی می‌افزایید، قسمت‌ها اینجا نمایش داده می‌شود.</string>
-  <string name="no_new_episodes_head_label">پادکست جدید وجود ندارد</string>
-  <string name="no_new_episodes_label">هنگامی که قسمت‌های جدید از راه برسند، اینجا نمایش داده می‌شود.</string>
-  <string name="no_fav_episodes_head_label">قسمت مورد علاقه‌ای موجود نیست</string>
-  <string name="no_fav_episodes_label">با کلیک طولانی می‌توانید قسمت‌ها را به مورد علاقه‌ها بیافزایید.</string>
   <string name="no_subscriptions_head_label">بدون اشتراک</string>
   <string name="no_subscriptions_label">برای اشتراک در یک پادکست، آیکون بعلاوه را زیر را فشار دهید.</string>
   <!--Preferences-->
@@ -558,17 +535,10 @@
   <string name="auto_enable_label">به کار اندازی خودکار</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">دسته‌ها</string>
-  <string name="gpodnet_toplist_header">پادکست‌های برتر</string>
-  <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
   <string name="gpodnetauth_encryption_warning">رمز عبور و داده ها رمزگذاری نمی شوند!</string>
-  <string name="create_account">ایجاد حساب کاربری</string>
   <string name="username_label">نام کاربری</string>
   <string name="password_label">گذرواژه</string>
-  <string name="gpodnet_description">Gpodder.net یک سرویس همگام سازی پادکست منبع باز است که مستقل از پروژه AntennaPod است. </string>
-  <string name="gpodnetauth_server_official">سرور رسمی gpodder.net</string>
-  <string name="gpodnetauth_server_custom">سرور دلخواه</string>
   <string name="gpodnetauth_host">نام میزبان</string>
   <string name="gpodnetauth_select_server">انتخاب سرور</string>
   <string name="gpodnetauth_device_name">نام دستگاه</string>
@@ -633,9 +603,9 @@
   <string name="search_itunes_label">در iTunes جستجو کن</string>
   <string name="search_podcastindex_label">در Podcastindex.org جستجو کن</string>
   <string name="search_fyyd_label">در fyyd جستجو کن</string>
+  <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
   <string name="advanced">پیشرفته</string>
   <string name="add_podcast_by_url">اضافه کردن پادکست توسط آدرس RSS</string>
-  <string name="browse_gpoddernet_label">مرور gpodder.net</string>
   <string name="discover">کشف کردن</string>
   <string name="discover_hide">پنهان کردن</string>
   <string name="discover_is_hidden">شما مخفی کردن پیشنهادات را انتخاب کرده اید.</string>

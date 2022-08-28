@@ -7,20 +7,14 @@
   <string name="add_feed_label">إضافة بودكاست</string>
   <string name="episodes_label">الحلقات</string>
   <string name="queue_label">لائحة الاستماع</string>
-  <string name="all_episodes_short_label">الكل</string>
-  <string name="new_episodes_label">جديد</string>
   <string name="favorite_episodes_label">المفضلات</string>
-  <string name="new_label">جديد</string>
   <string name="settings_label">إعدادات</string>
   <string name="downloads_label">تنزيلات</string>
   <string name="open_autodownload_settings">إفتح الإعدادات</string>
-  <string name="downloads_completed_label">منتهى</string>
-  <string name="downloads_log_label">سجل</string>
   <string name="subscriptions_label">إشتراكات</string>
   <string name="subscriptions_list_label">لائحة الإشتراكات</string>
   <string name="cancel_download_label">الغاء التنزيل</string>
   <string name="playback_history_label">سجل التشغيل</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
   <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. المرجو الرفع من قيمة التخزين في قائمة الإعدادات.</string>
   <string name="notification_pref_fragment">إشعارات</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">رتب أبجديا</string>
   <string name="drawer_feed_order_last_update">رتب بتاريخ النشر</string>
   <string name="drawer_feed_order_most_played">رتب بعدد الحلقات المشغلة</string>
-  <string name="drawer_feed_counter_new_unplayed">عدد الحلقات الجديدة وغير المشغلة</string>
-  <string name="drawer_feed_counter_new">عدد الحلقات الجديدة</string>
   <string name="drawer_feed_counter_unplayed">عدد الحلقات غير المشغلة</string>
   <string name="drawer_feed_counter_downloaded">عدد الحلقات المنزلة</string>
   <string name="drawer_feed_counter_none">بدون</string>
@@ -75,7 +67,6 @@
   <string name="error_label">خطأ</string>
   <string name="error_msg_prefix">حدث خطأ:</string>
   <string name="refresh_label">تحديث</string>
-  <string name="external_storage_error_msg">لا توجد ذاكرة خارجية متاحة. فضلا تأكد من إتاحة الذاكرة الخارجية للتطبيق حتى يعمل جيدا.</string>
   <string name="chapters_label">فصول</string>
   <string name="chapter_duration">مدة: %1$s</string>
   <string name="description_label">وصف</string>
@@ -153,13 +144,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">حلقات جديدة من اشتراكاتك</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">تعليم الكل بـ تم تشغيله</string>
-  <string name="mark_all_read_msg">علم كل الحلقات بـ تم تشغيلها</string>
-  <string name="mark_all_read_confirmation_msg">نرجو تأكيد تعليم كل الحلقات بـ تم تشغيلها.</string>
-  <string name="mark_all_read_feed_confirmation_msg">نرجو تأكيد تعليم كل الحلقات في هذه القناة بـ تم تشغيلها.</string>
-  <string name="remove_all_new_flags_label">ازل كل العلامات الجديدة</string>
-  <string name="removed_all_new_flags_msg">أزيلت كل العلامات الجديدة</string>
-  <string name="remove_all_new_flags_confirmation_msg">نرجو تأكيد إزالة كل العلامات الجديدة من كل الحلقات.</string>
   <string name="show_info_label">اظهر معلومات</string>
   <string name="show_feed_settings_label">أظهر اعدادات البودكاست</string>
   <string name="feed_settings_label">إعدادات البودكاست</string>
@@ -204,8 +188,6 @@
   <string name="delete_label">مسح</string>
   <string name="delete_failed">لم نتمكن من مسح الملف. إعادة تشغيل الجهاز قد تساعد.</string>
   <string name="delete_episode_label">مسح الحلقة</string>
-  <string name="remove_new_flag_label">أزل العلامات الجديدة</string>
-  <string name="removed_new_flag_label">أزيلت العلامات الجديدة</string>
   <string name="mark_read_label">علمها كـ مشغلة</string>
   <string name="marked_as_played_label">تم الاستماع</string>
   <string name="marked_as_unplayed_label">لم يتم الاستماع بعد</string>
@@ -253,7 +235,6 @@
   <string name="visit_website_label">زيارة الموقع</string>
   <string name="skip_episode_label">تخطى الحلقة</string>
   <string name="reset_position">صفر موضع التشغيل</string>
-  <string name="removed_item">تم حذف العنصر</string>
   <string name="no_items_selected">لم يتم اختيار أي عنصر</string>
   <!--Download messages and labels-->
   <string name="download_successful">نجحت العملية</string>
@@ -277,6 +258,7 @@
   <string name="download_error_forbidden">خادم البودكاست يرفض الرد</string>
   <string name="download_canceled_msg">ألغي التنزيل</string>
   <string name="download_error_wrong_size">الاتصال مع الخادم فقد قبل الانتهاء من التنزيل</string>
+  <string name="download_error_certificate">غير قادر على تأسيس اتصال آمن. قد يعني هذا أن تطبيقًا آخر على جهازك (مثل VPN أو أداة حظر الإعلانات) قد حظر التنزيل ، أو أن هناك خطأ ما في شهادات الخادم.</string>
   <string name="download_report_title">أنتهى التنزيل مع خطأ (او أكثر)</string>
   <string name="auto_download_report_title">التنزيل التلقائي أنتهى</string>
   <string name="download_error_io_error">خطأ إدخال/إخراج</string>
@@ -353,10 +335,6 @@
   <string name="no_history_label">ستظهر هنا الحلقة بعد الاستماع إليها.</string>
   <string name="no_all_episodes_head_label">لا توجد حلقات</string>
   <string name="no_all_episodes_label">ستظهر هنا الحلقة بعد إضافتها.</string>
-  <string name="no_new_episodes_head_label">لا توجد حلقات جديدة</string>
-  <string name="no_new_episodes_label">ستظهر هنا اللحلقات التى وصلت حديثا.</string>
-  <string name="no_fav_episodes_head_label">لا توجد حلقات مفضلة</string>
-  <string name="no_fav_episodes_label">يمكنك إضافة حلقات للمفضلات بالضغط عليها لمدة طويلة.</string>
   <string name="no_subscriptions_head_label">لا توجد إشتراكات</string>
   <string name="no_subscriptions_label">للاشتراك في بودكاست ، اضغط على أيقونة علامة الجمع أدناه.</string>
   <!--Preferences-->
@@ -460,6 +438,8 @@
   <string name="pref_theme_title_dark">داكن</string>
   <string name="pref_theme_title_trueblack">اسود (ِلأجهزة AMOLED)</string>
   <string name="pref_episode_cache_unlimited">غير محدود</string>
+  <string name="synchronization_logout">تسجيل الخروج</string>
+  <string name="pref_synchronization_logout_toast">تم تسجيل الخروج بنجاح</string>
   <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
   <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
   <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>
@@ -629,17 +609,10 @@
   <string name="auto_enable_label">مفعّل تلقائيًا</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">الفئات</string>
-  <string name="gpodnet_toplist_header">أقوى البودكاستات</string>
-  <string name="gpodnet_search_hint">أبحث gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
   <string name="gpodnetauth_encryption_warning">كلمة السر والبيانات غير مشفرة!</string>
-  <string name="create_account">إنشاء حساب</string>
   <string name="username_label">إسم المستخدم</string>
   <string name="password_label">كلمة المرور</string>
-  <string name="gpodnet_description">Gpodder.net هي خدمة مزامنة بودكاست مفتوحة المصدر مستقلة عن مشروع AntennaPod.</string>
-  <string name="gpodnetauth_server_official">خادوم gpodder.net الرسمي</string>
-  <string name="gpodnetauth_server_custom">خادوم مخصص</string>
   <string name="gpodnetauth_host">اسم المضيف</string>
   <string name="gpodnetauth_select_server">أختر خادوم</string>
   <string name="gpodnetauth_device_name">أسم الجهاز</string>
@@ -704,9 +677,9 @@
   <string name="search_itunes_label">أبحث iTunes</string>
   <string name="search_podcastindex_label">أبحث Podcastindex.org</string>
   <string name="search_fyyd_label">أبحث fyyd</string>
+  <string name="gpodnet_search_hint">أبحث gpodder.net</string>
   <string name="advanced">متقدم</string>
   <string name="add_podcast_by_url">أضف بودكاست برابط الـ RSS</string>
-  <string name="browse_gpoddernet_label">تصفح gpodder.net</string>
   <string name="discover">أكتشف</string>
   <string name="discover_hide">اخفاء</string>
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>

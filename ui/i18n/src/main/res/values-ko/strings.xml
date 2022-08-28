@@ -7,20 +7,14 @@
   <string name="add_feed_label">팟캐스트 추가</string>
   <string name="episodes_label">에피소드</string>
   <string name="queue_label">대기열</string>
-  <string name="all_episodes_short_label">전체</string>
-  <string name="new_episodes_label">신규</string>
   <string name="favorite_episodes_label">즐겨찾기</string>
-  <string name="new_label">최신</string>
   <string name="settings_label">설정</string>
   <string name="downloads_label">다운로드</string>
   <string name="open_autodownload_settings">설정 열기</string>
-  <string name="downloads_completed_label">완료</string>
-  <string name="downloads_log_label">기록</string>
   <string name="subscriptions_label">구독</string>
   <string name="subscriptions_list_label">구독 목록</string>
   <string name="cancel_download_label">다운로드 취소</string>
   <string name="playback_history_label">재생 기록</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
   <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
   <string name="notification_pref_fragment">알림</string>
@@ -40,8 +34,6 @@
   <string name="drawer_feed_order_alphabetical">사전 순서로 정렬</string>
   <string name="drawer_feed_order_last_update">공개 날짜 순서대로 정렬</string>
   <string name="drawer_feed_order_most_played">재생한 에피소드 개수에 따라 정렬</string>
-  <string name="drawer_feed_counter_new_unplayed">새로운 에피소드와 재생하지 않은 에피소드 수</string>
-  <string name="drawer_feed_counter_new">새로운 에피소드 수</string>
   <string name="drawer_feed_counter_unplayed">재생하지 않은 에피소드 수</string>
   <string name="drawer_feed_counter_downloaded">다운로드한 에피소드 수</string>
   <string name="drawer_feed_counter_none">없음</string>
@@ -67,7 +59,6 @@
   <string name="error_label">오류</string>
   <string name="error_msg_prefix">오류가 발생했습니다:</string>
   <string name="refresh_label">새로 고침</string>
-  <string name="external_storage_error_msg">외부 저장 장치가 없습니다. 앱이 제대로 동작하려면 외부 저장장치를 마운트하십시오.</string>
   <string name="chapters_label">챕터</string>
   <string name="chapter_duration">길이: %1$s</string>
   <string name="description_label">설명</string>
@@ -109,13 +100,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">구독에 새 에피소드가 있습니다.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">모두 재생했다고 표시</string>
-  <string name="mark_all_read_msg">모든 에피소드를 재생했다고 표시했습니다</string>
-  <string name="mark_all_read_confirmation_msg">모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
-  <string name="mark_all_read_feed_confirmation_msg">이 팟캐스트에 들어 있는 모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
-  <string name="remove_all_new_flags_label">모든 \"신규\" 플래그를 제거</string>
-  <string name="removed_all_new_flags_msg">모든 \"신규\" 플래그를 제거함</string>
-  <string name="remove_all_new_flags_confirmation_msg">모든 에피소드에서 \"신규\" 플래그를 제거하려면 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
   <string name="show_feed_settings_label">팟캐스트 설정 표시</string>
   <string name="feed_settings_label">팟캐스트 설정</string>
@@ -144,8 +128,6 @@
   <string name="delete_label">삭제</string>
   <string name="delete_failed">파일을 삭제할 수 없습니다. 장치를 재부팅하면 동작할 수도 있습니다.</string>
   <string name="delete_episode_label">에피소드 삭제</string>
-  <string name="remove_new_flag_label">\"신규\" 플래그 제거</string>
-  <string name="removed_new_flag_label">\"신규\" 플래그 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>
   <string name="mark_read_no_media_label">읽었다고 표시</string>
   <string name="play_this_to_seek_position">특정 재생 위치로 이동하려면, 에피소드를 재생해야 합니다</string>
@@ -171,7 +153,6 @@
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
   <string name="reset_position">재생 위치 초기화</string>
-  <string name="removed_item">항목 제거됨</string>
   <string name="no_items_selected">선택 없음</string>
   <!--Download messages and labels-->
   <string name="download_successful">성공</string>
@@ -256,10 +237,6 @@
   <string name="no_history_label">에피소드를 들으면, 그 에피소드가 여기 나타납니다.</string>
   <string name="no_all_episodes_head_label">에피소드 없음</string>
   <string name="no_all_episodes_label">팟캐스트를 추가하면, 그 팟캐스트의 에피소드가 여기 나타납니다.</string>
-  <string name="no_new_episodes_head_label">새 에피소드 없음</string>
-  <string name="no_new_episodes_label">새 에피소드가 나오면, 여기에 표시됩니다.</string>
-  <string name="no_fav_episodes_head_label">즐겨 찾기 에피소드 없음</string>
-  <string name="no_fav_episodes_label">에피소드를 길게 눌러 즐겨 찾기에 추가할 수 있습니다.</string>
   <string name="no_subscriptions_head_label">구독 없음</string>
   <string name="no_subscriptions_label">팟캐스트에 구독하려면, 아래 더하기 아이콘을 누르십시오.</string>
   <!--Preferences-->
@@ -496,16 +473,9 @@
   <string name="auto_enable_label">자동 사용</string>
   <string name="sleep_timer_enabled_label">취침 타이머 사용함</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">분류</string>
-  <string name="gpodnet_toplist_header">상위 팟캐스트</string>
-  <string name="gpodnet_search_hint">gpodder.net 검색</string>
   <string name="gpodnetauth_login_butLabel">로그인</string>
-  <string name="create_account">계정 만들기</string>
   <string name="username_label">사용자 이름</string>
   <string name="password_label">암호</string>
-  <string name="gpodnet_description">gpodder.net은 안테나팟 프로젝트와는 독립적인 오픈소스 팟캐스트 동기화 서비스입니다.</string>
-  <string name="gpodnetauth_server_official">공식 gpodder.net 서버</string>
-  <string name="gpodnetauth_server_custom">서버 사용자 지정</string>
   <string name="gpodnetauth_host">호스트 이름</string>
   <string name="gpodnetauth_select_server">서버 선택</string>
   <string name="gpodnetauth_device_name">장치 이름</string>
@@ -567,9 +537,9 @@
   <string name="search_itunes_label">iTunes 검색</string>
   <string name="search_podcastindex_label">podcastindex.org 검색</string>
   <string name="search_fyyd_label">fyyd 검색</string>
+  <string name="gpodnet_search_hint">gpodder.net 검색</string>
   <string name="advanced">고급</string>
   <string name="add_podcast_by_url">RSS 주소로 팟캐스트 추가</string>
-  <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <string name="discover">발견</string>
   <string name="discover_hide">숨기기</string>
   <string name="discover_is_hidden">제안 사항을 감추도록 선택했습니다.</string>

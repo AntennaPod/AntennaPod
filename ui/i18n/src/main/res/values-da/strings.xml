@@ -7,20 +7,16 @@
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="episodes_label">Afsnit</string>
   <string name="queue_label">Kø</string>
-  <string name="all_episodes_short_label">Alle</string>
-  <string name="new_episodes_label">Nye</string>
+  <string name="inbox_label">Indbakke</string>
   <string name="favorite_episodes_label">Favoritter</string>
-  <string name="new_label">Ny</string>
   <string name="settings_label">Indstillinger</string>
   <string name="downloads_label">Overførsler</string>
   <string name="open_autodownload_settings">Åbn indstillinger</string>
-  <string name="downloads_completed_label">Færdige</string>
-  <string name="downloads_log_label">Log</string>
+  <string name="downloads_log_label">Overførselslog</string>
   <string name="subscriptions_label">Abonnementer</string>
   <string name="subscriptions_list_label">Liste over abonnementer</string>
   <string name="cancel_download_label">Annuller overførsel</string>
   <string name="playback_history_label">Afspilningshistorik</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Mellemlageret for afsnit er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for afsnit. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
   <string name="years_statistics_label">År</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Sorter alfabetisk</string>
   <string name="drawer_feed_order_last_update">Sorter efter udgivelsesdato</string>
   <string name="drawer_feed_order_most_played">Sorter efter antal afspillede afsnit</string>
-  <string name="drawer_feed_counter_new_unplayed">Antal nye og uafspillede afsnit</string>
-  <string name="drawer_feed_counter_new">Antal nye afsnit</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Antal uafspillede afsnit og afsnit i indbakken</string>
+  <string name="drawer_feed_counter_inbox">Antal afsnit i indbakken</string>
   <string name="drawer_feed_counter_unplayed">Antal uafspillede afsnit</string>
   <string name="drawer_feed_counter_downloaded">Antal overførte afsnit</string>
   <string name="drawer_feed_counter_none">Ingen</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
   <string name="refresh_label">Opdater</string>
-  <string name="external_storage_error_msg">Ingen ekstern lagerenhed er tilgængelig. Sørg for at den eksterne lagerenhed er tilsluttet, så appen kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
   <string name="chapter_duration">Varighed: %1$s</string>
   <string name="description_label">Beskrivelse</string>
@@ -139,13 +134,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Dine abonnementer har nye afsnit</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Markér alle som afspillet</string>
-  <string name="mark_all_read_msg">Markér alle afsnit som afspillet</string>
-  <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle afsnit som værende afspillet.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bekræft venligst at du ønsker at markere alle afsnit i denne podcast som værende afspillet.</string>
-  <string name="remove_all_new_flags_label">Fjern alle \"ny\"-markeringer</string>
-  <string name="removed_all_new_flags_msg">Fjernede alle \"ny\"-markeringer</string>
-  <string name="remove_all_new_flags_confirmation_msg">Bekræft venligst at du ønsker at fjerne \"ny\"-flaget fra alle afsnit.</string>
+  <string name="remove_all_inbox_label">Fjern alle fra indbakken</string>
+  <string name="removed_all_inbox_msg">Fjernede alle fra indbakken</string>
+  <string name="remove_all_inbox_confirmation_msg">Bekræft, at du ønsker at fjerne alle fra indbakken.</string>
+  <string name="multi_select_mark_played_confirmation">Bekræft, at du ønsker at markere alle valgte emner som afspillet.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Bekræft, at du ønsker at markere alle valgte emner som uafspillet.</string>
   <string name="show_info_label">Vis information</string>
   <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
   <string name="feed_settings_label">Podcast-indstillinger</string>
@@ -158,7 +151,7 @@
   <string name="feed_delete_confirmation_msg_batch">Bekræft venligt at du ønsker at fjerne de valgte podcasts og ALLE deres afsnit (inklusiv downloadede afsnit).</string>
   <string name="feed_delete_confirmation_local_msg">Bekræft venligst at du vil fjerne podcasten \"%1$s\". Filerne i den lokale kildemappe vil ikke blive slettet.</string>
   <string name="feed_remover_msg">Fjerner podcast</string>
-  <string name="load_complete_feed">Opdater komplet podcast</string>
+  <string name="load_complete_feed">Opdater hele podcasten</string>
   <string name="multi_select">Vælg flere</string>
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
@@ -190,9 +183,10 @@
     <item quantity="one">1 overført afsnit slettet.</item>
     <item quantity="other">%d overførte afsnit slettet.</item>
   </plurals>
-  <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
-  <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
+  <string name="remove_inbox_label">Fjern fra indbakken</string>
+  <string name="removed_inbox_label">Fjernet fra indbakken</string>
   <string name="mark_read_label">Markér som afspillet</string>
+  <string name="toggle_played_label">Skift afspilningstilstand</string>
   <string name="marked_as_played_label">Markér som afspillet</string>
   <string name="marked_as_unplayed_label">Markér som uafspillet</string>
   <string name="mark_read_no_media_label">Marker som læst</string>
@@ -223,7 +217,6 @@
   <string name="visit_website_label">Besøg netsted</string>
   <string name="skip_episode_label">Spring afsnit over</string>
   <string name="reset_position">Nulstil afspilningsposition</string>
-  <string name="removed_item">Element fjernet</string>
   <string name="no_items_selected">Intet valgte</string>
   <!--Download messages and labels-->
   <string name="download_successful">lykkedes</string>
@@ -323,15 +316,15 @@
   <string name="no_history_label">Når du har hørt et afsnit, vil det blive vist her.</string>
   <string name="no_all_episodes_head_label">Ingen afsnit</string>
   <string name="no_all_episodes_label">Når du tilføjer en podcast, vil afsnittene blive vist her.</string>
-  <string name="no_new_episodes_head_label">Ingen nye afsnit</string>
-  <string name="no_new_episodes_label">Når nye afsnit ankommer, vil de blive vist her.</string>
-  <string name="no_fav_episodes_head_label">Ingen favoritafsnit</string>
-  <string name="no_fav_episodes_label">Du kan føje afsnit til favoritter ved at trykke længe på dem</string>
+  <string name="no_all_episodes_filtered_label">Prøv at rydde filteret for at se flere afsnit.</string>
+  <string name="no_inbox_head_label">Ingen afsnit i indbakken</string>
+  <string name="no_inbox_label">Når der kommer nye afsnit, vil de blive vist her. Du kan så beslutte, om du er interesseret i dem eller ej.</string>
   <string name="no_subscriptions_head_label">Ingen abonnementer</string>
   <string name="no_subscriptions_label">For at abonnere på en podcast, klik plus ikonet nedenfor</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="storage_sum">Automatisk sletning af afsnit, import, eksport</string>
+  <string name="statistics_moved">Statistiksiden er blevet flyttet til siden Abonnementer. Du kan åbne den derfra.</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synkronisering</string>
   <string name="synchronization_sum">Synkroniser med andre enheder</string>
@@ -542,12 +535,12 @@
   <string name="sync_status_success">Synkroniseret</string>
   <string name="sync_status_error">Synkronisering mislykkedes</string>
   <!--import and export-->
-  <string name="import_export_summary">Flyt abonnementer og kø til anden enhed</string>
+  <string name="import_export_summary">Flyt abonnementer og kø til en anden enhed</string>
   <string name="database">Database</string>
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
   <string name="html_export_summary">Vis abonnementer</string>
-  <string name="opml_export_summary">Flyt abonnementer til anden podcast program</string>
+  <string name="opml_export_summary">Flyt abonnementer til en anden podcast-app</string>
   <string name="opml_import_summary">Importér dine abonnementer fra et andet podcast-program</string>
   <string name="database_export_summary">Flyt abonnementer, aflyttede afsnit og kø til AntennaPod på en anden enhed</string>
   <string name="database_import_summary">Importér AntennaPod-database fra en anden enhed</string>
@@ -598,17 +591,11 @@
   <string name="auto_enable_label">Slå automatisk til</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIER</string>
-  <string name="gpodnet_toplist_header">TOP-PODCASTS</string>
-  <string name="gpodnet_search_hint">Søg på gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Log ind</string>
   <string name="gpodnetauth_encryption_warning">Adgangskode og date er ikke krypteret!</string>
-  <string name="create_account">Opret konto</string>
   <string name="username_label">Brugernavn</string>
   <string name="password_label">Adgangskode</string>
-  <string name="gpodnet_description">Gpodder.net er en open-source podcast-synkroniseringstjeneste, som er uafhængig af AntennaPod-projektet.</string>
-  <string name="gpodnetauth_server_official">Officiel gpodder.net server</string>
-  <string name="gpodnetauth_server_custom">Brugerdefineret server</string>
+  <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>
   <string name="gpodnetauth_host">Værtsnavn</string>
   <string name="gpodnetauth_select_server">Vælg server</string>
   <string name="gpodnetauth_device_name">Enhedsnavn</string>
@@ -645,6 +632,7 @@
   <string name="status_downloading_label">Afsnit overføres</string>
   <string name="in_queue_label">Afsnit er i køen</string>
   <string name="is_favorite_label">Afsnit er markeret som favorit</string>
+  <string name="is_inbox_label">Afsnit er i indbakken</string>
   <string name="load_next_page_label">Indlæs næste side</string>
   <string name="position">Position: %1$s</string>
   <string name="apply_action">Anvend handling</string>
@@ -681,9 +669,9 @@
   <string name="search_itunes_label">Søg i iTunes</string>
   <string name="search_podcastindex_label">Søg på Podcastindex.org</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
+  <string name="gpodnet_search_hint">Søg på gpodder.net</string>
   <string name="advanced">Avanceret</string>
   <string name="add_podcast_by_url">Tilføj podcast via RSS-adresse</string>
-  <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <string name="discover">Opdag</string>
   <string name="discover_hide">Skjul</string>
   <string name="discover_is_hidden">Du valgte at skjule forslag.</string>

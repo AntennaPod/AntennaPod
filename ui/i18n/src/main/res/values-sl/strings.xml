@@ -7,20 +7,14 @@
   <string name="add_feed_label">Dodaj podkast</string>
   <string name="episodes_label">Epizode</string>
   <string name="queue_label">Čakalna vrsta</string>
-  <string name="all_episodes_short_label">Vse</string>
-  <string name="new_episodes_label">Novo</string>
   <string name="favorite_episodes_label">Priljubljene</string>
-  <string name="new_label">Novo</string>
   <string name="settings_label">Nastavitve</string>
   <string name="downloads_label">Prenosi</string>
   <string name="open_autodownload_settings">Odpri nastavitve</string>
-  <string name="downloads_completed_label">Končano</string>
-  <string name="downloads_log_label">Dnevnik</string>
   <string name="subscriptions_label">Naročnine</string>
   <string name="subscriptions_list_label">Seznam naročnin</string>
   <string name="cancel_download_label">Prekliči Prenose </string>
   <string name="playback_history_label">Zgodovina predvajanja</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Prepomnilnik epizod poln</string>
   <string name="episode_cache_full_message">Predpomnilnik epizod je poln. Predpomnilnik lahko povečate v nastavitvah.</string>
   <string name="notification_pref_fragment">Obvestila</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">Razvrsti po abecedi</string>
   <string name="drawer_feed_order_last_update">Razvrsti po datumu objave</string>
   <string name="drawer_feed_order_most_played">Razvrsti po številu predvajanih epizod</string>
-  <string name="drawer_feed_counter_new_unplayed">Število novih in nepredvajanih epizod</string>
-  <string name="drawer_feed_counter_new">Število novih epizod</string>
   <string name="drawer_feed_counter_unplayed">Število nepredvajanih epizod</string>
   <string name="drawer_feed_counter_downloaded">Število prenesenih epizod</string>
   <string name="drawer_feed_counter_none">Nič</string>
@@ -75,7 +67,6 @@
   <string name="error_label">Napaka</string>
   <string name="error_msg_prefix">Pojavila se je napaka:</string>
   <string name="refresh_label">Osveži</string>
-  <string name="external_storage_error_msg">Na voljo ni nobene zunanje hrambe. Prosim zagotovite, da bo zunanja hramba priklopljena za pravilno delovanje programa. </string>
   <string name="chapters_label">Poglavja</string>
   <string name="chapter_duration">Potek %1$s</string>
   <string name="description_label">Opis</string>
@@ -141,13 +132,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Vaš kanal ima novo epizodo.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Označi vse kot predvajane</string>
-  <string name="mark_all_read_msg">Označi vse epizode kot predvajane</string>
-  <string name="mark_all_read_confirmation_msg">Prosim potrdi da želiš označiti vse epizode kot predvajane</string>
-  <string name="mark_all_read_feed_confirmation_msg">Prosim potrdi da želiš označiti vse epizode v tej poddaji kot predvajane.</string>
-  <string name="remove_all_new_flags_label">Odstrani vse oznake \'novo\'</string>
-  <string name="removed_all_new_flags_msg">Vse oznake \'novo\' odstranjene</string>
-  <string name="remove_all_new_flags_confirmation_msg">Prosim potrdite, da želite odstraniti vse oznake \'novo\' iz vseh epizod.</string>
   <string name="show_info_label">Prikaži informacije</string>
   <string name="show_feed_settings_label">Prikaži nastavitve podkasta</string>
   <string name="feed_settings_label">Nastavitve podkastov</string>
@@ -190,8 +174,6 @@
   <string name="delete_label">Briši</string>
   <string name="delete_failed">Ni bilo mogoče brisati datoteke. Ponovni zagon naprave bi lahko pomagal.</string>
   <string name="delete_episode_label">Briši epizodo.</string>
-  <string name="remove_new_flag_label">Odstrani oznako \"novo\"</string>
-  <string name="removed_new_flag_label">Oznaka \"novo\" odstranjena.</string>
   <string name="mark_read_label">Označi kot predvajan</string>
   <string name="marked_as_played_label">Označi kot predvajano.</string>
   <string name="marked_as_unplayed_label">Označi kot ne predvajano.</string>
@@ -231,7 +213,6 @@
   <string name="visit_website_label">Ogled spletne strani</string>
   <string name="skip_episode_label">Preskoči epizodo</string>
   <string name="reset_position">Ponastavi predvajanje</string>
-  <string name="removed_item">Element je odstranjen</string>
   <string name="no_items_selected">Noben element ni izbran</string>
   <!--Download messages and labels-->
   <string name="download_successful">Uspešno</string>
@@ -330,10 +311,6 @@
   <string name="no_history_label">Potem ko bo epizoda predvajana do konca, bo prikazana tukaj.</string>
   <string name="no_all_episodes_head_label">Ni epizod</string>
   <string name="no_all_episodes_label">Ko dodate podcaste, bodo epizode prikazane tukaj. </string>
-  <string name="no_new_episodes_head_label">Ni novih epizod</string>
-  <string name="no_new_episodes_label">Ko bodo prispele nove epizode, bodo prikazane tukaj.</string>
-  <string name="no_fav_episodes_head_label">Ni priljubljenih epizod.</string>
-  <string name="no_fav_episodes_label">Epizode lahko dodate med priljubljene tako, da jih dalj časa pritisnete.</string>
   <string name="no_subscriptions_head_label">Ni naročnin</string>
   <string name="no_subscriptions_label">Če se želite naročiti na podcast, pritisnite spodnjo plus ikono.</string>
   <!--Preferences-->
@@ -608,17 +585,10 @@
   <string name="auto_enable_label">Samodejno omogoči</string>
   <string name="sleep_timer_enabled_label">Časovnik za izklop je omogočen</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIJE</string>
-  <string name="gpodnet_toplist_header">TOP PODCASTI</string>
-  <string name="gpodnet_search_hint">Poišči na gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Prijava</string>
   <string name="gpodnetauth_encryption_warning">Geslo in podatki niso šifrirani!</string>
-  <string name="create_account">Ustvari račun</string>
   <string name="username_label">Uporabniško ime</string>
   <string name="password_label">Geslo</string>
-  <string name="gpodnet_description">Gpodder.net je odprtokodna storitev sinhronizacije podcastov, ki je neodvisna od projekta AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Uradni gpodder.net server</string>
-  <string name="gpodnetauth_server_custom">Server po meri</string>
   <string name="gpodnetauth_host">Ime gostitelja</string>
   <string name="gpodnetauth_select_server">Izberi server</string>
   <string name="gpodnetauth_device_name">Ime naprave</string>
@@ -689,9 +659,9 @@
   <string name="search_itunes_label">Poiščite po iTunes</string>
   <string name="search_podcastindex_label">Išči Podcastindex.org</string>
   <string name="search_fyyd_label">Išči fyyd</string>
+  <string name="gpodnet_search_hint">Poišči na gpodder.net</string>
   <string name="advanced">Napredno</string>
   <string name="add_podcast_by_url">Dodaj podcast s RRS naslovom</string>
-  <string name="browse_gpoddernet_label">Brskajte po gpodder.net</string>
   <string name="discover">Odkrij</string>
   <string name="discover_hide">Skrij</string>
   <string name="discover_is_hidden">Izbrali ste, da predloge skrijete.</string>

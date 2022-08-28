@@ -7,20 +7,14 @@
   <string name="add_feed_label">Pridėti tinklalaidę</string>
   <string name="episodes_label">Epizodai</string>
   <string name="queue_label">Eilė</string>
-  <string name="all_episodes_short_label">Visi</string>
-  <string name="new_episodes_label">Nauji</string>
   <string name="favorite_episodes_label">Mėgstami</string>
-  <string name="new_label">Naujas</string>
   <string name="settings_label">Nustatymai</string>
   <string name="downloads_label">Atsiuntimai</string>
   <string name="open_autodownload_settings">Atverti nustatymus</string>
-  <string name="downloads_completed_label">Užbaigti</string>
-  <string name="downloads_log_label">Žurnalas</string>
   <string name="subscriptions_label">Prenumeratos</string>
   <string name="subscriptions_list_label">Prenumeratų sąrašas</string>
   <string name="cancel_download_label">Atšaukti atsiuntimą</string>
   <string name="playback_history_label">Atkūrimo istorija</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Epizodų podėlis pilnas</string>
   <string name="episode_cache_full_message">Pasiektas epizodų podėlio dydžio limitas. Nustatymuose galite padidinti podėlio dydį.</string>
   <string name="years_statistics_label">Metai</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Rikiuoti pagal abėcėlę</string>
   <string name="drawer_feed_order_last_update">Rikiuoti pagal publikavimo datą</string>
   <string name="drawer_feed_order_most_played">Rikiuoti pagal perklausytų epizodų skaičių</string>
-  <string name="drawer_feed_counter_new_unplayed">Naujų, dar neperklausytų epizodų skaičius</string>
-  <string name="drawer_feed_counter_new">Naujų epizodų skaičius</string>
   <string name="drawer_feed_counter_unplayed">Neperklausytų epizodų skaičius</string>
   <string name="drawer_feed_counter_downloaded">Atsisiųstų epizodų skaičius</string>
   <string name="drawer_feed_counter_none">Nieko</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Klaida</string>
   <string name="error_msg_prefix">Įvyko klaida:</string>
   <string name="refresh_label">Atnaujinti</string>
-  <string name="external_storage_error_msg">Nėra prieinamų išorinių laikmenų. Patikrinkite, jog išorinės laikmenos yra prijungtos, kad programėlė tinkamai veiktų.</string>
   <string name="chapters_label">Skyriai</string>
   <string name="chapter_duration">Trukmė: %1$s</string>
   <string name="description_label">Aprašymas</string>
@@ -151,13 +142,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Jūsų prenumeruojamose tinklalaidėse yra naujų epizodų.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Pažymėti visus kaip perklausytus</string>
-  <string name="mark_all_read_msg">Visi epizodai pažymėti kaip perklausyti</string>
-  <string name="mark_all_read_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip perklausytus.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Patvirtinkite, jog norite pažymėti visus šios tinklalaidės epizodus kaip perklausytus.</string>
-  <string name="remove_all_new_flags_label">Pašalinti visas „naujas“ gaireles</string>
-  <string name="removed_all_new_flags_msg">Visos „naujas“ gairelės pašalintos</string>
-  <string name="remove_all_new_flags_confirmation_msg">Patvirtinkite, jog norite pašalinti „naujas“ gairelę visiems epizodams.</string>
   <string name="show_info_label">Rodyti informaciją</string>
   <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
   <string name="feed_settings_label">Tinklalaidės nustatymai</string>
@@ -208,8 +192,6 @@
     <item quantity="many">%d atsiųsti epizodai ištrinti.</item>
     <item quantity="other">%d atsiųsti epizodai ištrinti.</item>
   </plurals>
-  <string name="remove_new_flag_label">Pašalinti „naujas“ gairelę</string>
-  <string name="removed_new_flag_label">„naujas“ gairelė pašalinta</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
   <string name="marked_as_played_label">Pažymėtas kaip perklausytas</string>
   <string name="marked_as_unplayed_label">Pažymėtas kaip neperklausytas</string>
@@ -249,7 +231,6 @@
   <string name="visit_website_label">Aplankyti svetainę</string>
   <string name="skip_episode_label">Praleisti epizodą</string>
   <string name="reset_position">Nustatyti atkūrimo poziciją iš naujo</string>
-  <string name="removed_item">Elementas pašalintas</string>
   <string name="no_items_selected">Nėra pažymėtų elementų</string>
   <!--Download messages and labels-->
   <string name="download_successful">sėkmingi</string>
@@ -351,10 +332,6 @@
   <string name="no_history_label">Perklausius epizodą jis atsiras čia.</string>
   <string name="no_all_episodes_head_label">Epizodų nėra</string>
   <string name="no_all_episodes_label">Pridėjus tinklalaidę čia bus rodomi epizodai.</string>
-  <string name="no_new_episodes_head_label">Naujų epizodų nėra</string>
-  <string name="no_new_episodes_label">Čia bus rodomi naujai atkeliavę epizodai.</string>
-  <string name="no_fav_episodes_head_label">Mėgstamų epizodų nėra</string>
-  <string name="no_fav_episodes_label">Ilgai paspausdami ant epizodų pridėsite juos prie mėgstamų.</string>
   <string name="no_subscriptions_head_label">Prenumeratų nėra</string>
   <string name="no_subscriptions_label">Jei norite prenumeruoti tinklalaidę, paspauskite žemiau esančią pliuso piktogramą.</string>
   <!--Preferences-->
@@ -634,17 +611,10 @@
   <string name="auto_enable_label">Įjungti automatiškai</string>
   <string name="sleep_timer_enabled_label">Miego laikmatis įjungtas</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIJOS</string>
-  <string name="gpodnet_toplist_header">POPULIARIAUSIOS TINKLALAIDĖS</string>
-  <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
   <string name="gpodnetauth_login_butLabel">Prisijungti</string>
   <string name="gpodnetauth_encryption_warning">Slaptažodis ir duomenys nėra užšifruojami!</string>
-  <string name="create_account">Sukurti paskyrą</string>
   <string name="username_label">Vartotojo vardas</string>
   <string name="password_label">Slaptažodis</string>
-  <string name="gpodnet_description">„Gpodder.net“ ir atvirojo kodo tinklalaidžių sinchronizavimo paslauga, nepriklausoma nuo „AntennaPod“ projekto.</string>
-  <string name="gpodnetauth_server_official">Oficialus „gpodder.net“ serveris</string>
-  <string name="gpodnetauth_server_custom">Tinkintas serveris</string>
   <string name="gpodnetauth_host">Serverio adresas</string>
   <string name="gpodnetauth_select_server">Pasirinkti serverį</string>
   <string name="gpodnetauth_device_name">Įrenginio pavadinimas</string>
@@ -717,9 +687,9 @@
   <string name="search_itunes_label">Ieškoti „iTunes“</string>
   <string name="search_podcastindex_label">Ieškoti „Podcastindex.org“ svetainėje</string>
   <string name="search_fyyd_label">Ieškoti „fyyd“</string>
+  <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
   <string name="advanced">Išplėstinis</string>
   <string name="add_podcast_by_url">Pridėti tinklalaidės RSS srauto adresą</string>
-  <string name="browse_gpoddernet_label">Naršyti gpodder.net svetainėje</string>
   <string name="discover">Atraskite</string>
   <string name="discover_hide">Slėpti</string>
   <string name="discover_is_hidden">Pasirinkote slėpti pasiūlymus.</string>

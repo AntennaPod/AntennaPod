@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -67,16 +65,14 @@ public class CompletedDownloadsFragment extends Fragment
     private Disposable disposable;
     private EmptyViewHandler emptyView;
     private boolean displayUpArrow;
-    private boolean isUpdatingFeeds = false;
     private SpeedDialView speedDialView;
-    private Toolbar toolbar;
     private SwipeActions swipeActions;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        toolbar = root.findViewById(R.id.toolbar);
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         toolbar.setOnMenuItemClickListener(this);
@@ -85,7 +81,6 @@ public class CompletedDownloadsFragment extends Fragment
             recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
             return false;
         });
-        refreshToolbarState();
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -167,12 +162,6 @@ public class CompletedDownloadsFragment extends Fragment
     }
 
     @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        menu.findItem(R.id.clear_logs_item).setVisible(false);
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
-    }
-
-    @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.refresh_item) {
             AutoUpdateManager.runImmediate(requireContext());
@@ -190,9 +179,6 @@ public class CompletedDownloadsFragment extends Fragment
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            refreshToolbarState();
-        }
         if (!Arrays.equals(event.update.mediaIds, runningDownloads)) {
             runningDownloads = event.update.mediaIds;
             loadItems();
@@ -207,9 +193,6 @@ public class CompletedDownloadsFragment extends Fragment
             }
         }
     }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
@@ -268,11 +251,6 @@ public class CompletedDownloadsFragment extends Fragment
                 }
             }
         }
-    }
-
-    private void refreshToolbarState() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

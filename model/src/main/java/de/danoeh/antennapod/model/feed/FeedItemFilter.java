@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 public class FeedItemFilter implements Serializable {
 
@@ -70,6 +71,10 @@ public class FeedItemFilter implements Serializable {
 
     public String[] getValues() {
         return properties.clone();
+    }
+
+    public List<String> getValuesList() {
+        return Arrays.asList(properties);
     }
 
     public boolean matches(FeedItem item) {

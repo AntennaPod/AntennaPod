@@ -52,7 +52,6 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     private static final String KEY_UP_ARROW = "up_arrow";
     private boolean displayUpArrow;
     private HomeFragmentBinding viewBinding;
-    private boolean isUpdatingFeeds = false;
     private Disposable disposable;
 
     @NonNull
@@ -115,20 +114,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenSectionsString, ",")));
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
-
     private void refreshToolbarState() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
+        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
+                R.id.refresh_item, DownloadService.isRunning && DownloadService.isDownloadingFeeds());
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            refreshToolbarState();
-        }
+        refreshToolbarState();
     }
 
     @Override

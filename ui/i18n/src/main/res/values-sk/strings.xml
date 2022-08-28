@@ -7,20 +7,14 @@
   <string name="add_feed_label">Pridať podcast</string>
   <string name="episodes_label">Epizódy</string>
   <string name="queue_label">Poradie</string>
-  <string name="all_episodes_short_label">Všetko</string>
-  <string name="new_episodes_label">Nové</string>
   <string name="favorite_episodes_label">Obľúbené</string>
-  <string name="new_label">Nové</string>
   <string name="settings_label">Nastavenia</string>
   <string name="downloads_label">Sťahovanie</string>
   <string name="open_autodownload_settings">Otvoriť nastavenia</string>
-  <string name="downloads_completed_label">Dokončené</string>
-  <string name="downloads_log_label">Záznam</string>
   <string name="subscriptions_label">Odbery</string>
   <string name="subscriptions_list_label">Zoznam odberov</string>
   <string name="cancel_download_label">Zrušiť sťahovanie</string>
   <string name="playback_history_label">História prehrávania</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
   <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zmeniť v Nastaveniach.</string>
   <string name="notification_pref_fragment">Oznámenia</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">Usporiadať abecedne</string>
   <string name="drawer_feed_order_last_update">Usporiadať podľa dátumu zverejnenia</string>
   <string name="drawer_feed_order_most_played">Usporiadať podľa počtu prehraných epizód</string>
-  <string name="drawer_feed_counter_new_unplayed">Počet nových a neprehraných epizód</string>
-  <string name="drawer_feed_counter_new">Počet nových epizód</string>
   <string name="drawer_feed_counter_unplayed">Počet neprehraných epizód</string>
   <string name="drawer_feed_counter_downloaded">Počet stiahnutých epizód</string>
   <string name="drawer_feed_counter_none">Žiadne</string>
@@ -75,7 +67,6 @@
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Vyskytla sa chyba:</string>
   <string name="refresh_label">Obnoviť</string>
-  <string name="external_storage_error_msg">Nie je k dispozícii žiadne externé úložisko. Skontrolujte, či je externé úložisko pripojené tak, aby aplikácia mohla fungovať správne.</string>
   <string name="chapters_label">Kapitoly</string>
   <string name="chapter_duration">Trvanie: %1$s</string>
   <string name="description_label">Popis</string>
@@ -141,13 +132,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Vaše odbery majú nové epizódy</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Označiť všetko ako prehrané</string>
-  <string name="mark_all_read_msg">Označiť všetky epizódy ako prehrané</string>
-  <string name="mark_all_read_confirmation_msg">Potvrďte prosím, že chcete označit všetky vybrané epizódy ako prehrané.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Potvrďte prosím, že chcete označit všetky vybrané epizódy tohto podcastu ako prehrané.</string>
-  <string name="remove_all_new_flags_label">Odstrániť všetky značky „nové“</string>
-  <string name="removed_all_new_flags_msg">Všetky značky „nové“ boli odstránené</string>
-  <string name="remove_all_new_flags_confirmation_msg">Potvrďte, že chcete odstrániť značku „nové“ zo všetkých epizód.</string>
   <string name="show_info_label">Zobraziť informácie</string>
   <string name="show_feed_settings_label">Zobraziť nastavenia podcastu</string>
   <string name="feed_settings_label">Nastavenia podcastu</string>
@@ -196,8 +180,6 @@
     <item quantity="many">%dstiahnutých epizód zmazaných.</item>
     <item quantity="other">%dstiahnutých epizód zmazaných.</item>
   </plurals>
-  <string name="remove_new_flag_label">Odstrániť značku „nové“</string>
-  <string name="removed_new_flag_label">Značka „nové“ bola odstránená</string>
   <string name="mark_read_label">Označiť ako prehrané</string>
   <string name="marked_as_played_label">Označené ako prehrané</string>
   <string name="marked_as_unplayed_label">Označené ako neprehrané</string>
@@ -237,7 +219,6 @@
   <string name="visit_website_label">Navštíviť webovú stránku</string>
   <string name="skip_episode_label">Preskočiť epizódu</string>
   <string name="reset_position">Obnoviť pozíciu prehrávania</string>
-  <string name="removed_item">Položka bola odstránená</string>
   <string name="no_items_selected">Nie sú vybrané žiadne položky</string>
   <!--Download messages and labels-->
   <string name="download_successful">dokončené</string>
@@ -337,10 +318,6 @@
   <string name="no_history_label">Keď si vypočujete niektorú epizódu, tak sa objaví tu.</string>
   <string name="no_all_episodes_head_label">Žiadne epizódy</string>
   <string name="no_all_episodes_label">Keď si pridáte niektorý podcast, tak sa objaví tu.</string>
-  <string name="no_new_episodes_head_label">Žiadne nové epizódy</string>
-  <string name="no_new_episodes_label">Keď budú zverejnené nové epizódy, tak sa objavia tu.</string>
-  <string name="no_fav_episodes_head_label">Žiadne obľúbené epizódy</string>
-  <string name="no_fav_episodes_label">Epizódy si môžete pridať medzi oblúbené dlhým dotykom.</string>
   <string name="no_subscriptions_head_label">Žiadne odbery</string>
   <string name="no_subscriptions_label">Pre prihlásenie odberu podcastu stlačte ikonu plus nižšie.</string>
   <!--Preferences-->
@@ -619,17 +596,10 @@
   <string name="auto_enable_label">Automatické povolenie</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutia povolený</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGÓRIE</string>
-  <string name="gpodnet_toplist_header">NAJLEPŠIE PODCASTY</string>
-  <string name="gpodnet_search_hint">Prehľadať gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Prihlásiť sa</string>
   <string name="gpodnetauth_encryption_warning">Heslo a údaje nie sú šifrované!</string>
-  <string name="create_account">Vytvoriť účet</string>
   <string name="username_label">Používateľské meno</string>
   <string name="password_label">Heslo</string>
-  <string name="gpodnet_description">Gpodder.net je služba synchronizácie podcastov, s otvoreným zdrojovým kódom, ktorá je nezávislá na projekte AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Oficiálny server gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Vlastný server</string>
   <string name="gpodnetauth_host">Názov hostiteľa</string>
   <string name="gpodnetauth_select_server">Vybrať server</string>
   <string name="gpodnetauth_device_name">Názov zariadenia</string>
@@ -702,9 +672,9 @@
   <string name="search_itunes_label">Hľadať v iTunes</string>
   <string name="search_podcastindex_label">Hľadať na Podcastindex.org</string>
   <string name="search_fyyd_label">Hľadať na fyyd</string>
+  <string name="gpodnet_search_hint">Prehľadať gpodder.net</string>
   <string name="advanced">Pokročilé</string>
   <string name="add_podcast_by_url">Pridať podcast pomocou RSS adresy</string>
-  <string name="browse_gpoddernet_label">Prehľadávať gpodder.net</string>
   <string name="discover">Prehľadávať</string>
   <string name="discover_hide">Skryť</string>
   <string name="discover_is_hidden">Vybrali ste skryť návrhy.</string>

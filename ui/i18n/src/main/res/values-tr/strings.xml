@@ -2,36 +2,48 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
-  <string name="feeds_label">Podcast\'ler</string>
+  <string name="feeds_label">Cepyayınlar</string>
   <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
   <string name="queue_label">Kuyruk</string>
-  <string name="all_episodes_short_label">Tümü</string>
-  <string name="new_episodes_label">Yeni</string>
+  <string name="inbox_label">Gelen kutusu</string>
   <string name="favorite_episodes_label">Favoriler</string>
-  <string name="new_label">Yeni</string>
   <string name="settings_label">Ayarlar</string>
   <string name="downloads_label">İndirilenler</string>
   <string name="open_autodownload_settings">Ayarları Aç</string>
-  <string name="downloads_completed_label">Tamamlandı</string>
-  <string name="downloads_log_label">Günlük</string>
+  <string name="downloads_log_label">İndirme Günlüğü</string>
   <string name="subscriptions_label">Abonelikler</string>
   <string name="subscriptions_list_label">Abonelik Listesi</string>
   <string name="cancel_download_label">İndirmeyi iptal et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
   <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
+  <string name="years_statistics_label">Yıllar</string>
   <string name="notification_pref_fragment">Bildirimler</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" bulunamadı</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Kaydırma Hareketleri</string>
+  <string name="swipeactions_summary">Bir listede bir bölümü kaydırınca ne olacağını seçin</string>
+  <string name="swipe_right">Sağa Kaydır</string>
+  <string name="swipe_left">Sola Kaydır</string>
+  <string name="enable_swipeactions">Bu ekran için kaydırma hareketlerini etkinleştir</string>
+  <string name="change_setting">Değiştir</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Çalındı olarak işaretlenen bölümlerin sürelerini dahil et</string>
   <string name="statistics_speed_not_counted">Uyarı: Oynatma hızı asla hesaba katılmaz.</string>
+  <string name="statistics_from">Şu tarihten</string>
+  <string name="statistics_to">Şu tarihe</string>
+  <string name="statistics_today">Bugün</string>
+  <string name="statistics_filter_all_time">Tüm zamanlar</string>
+  <string name="statistics_filter_past_year">Geçen sene</string>
   <string name="statistics_reset_data">İstatistik verilerini sıfırla</string>
   <string name="statistics_reset_data_msg">Bu işlem, tüm bölümler için oynanan süre geçmişini siler. Devam etmek istediğinizden emin misiniz?</string>
+  <string name="statistics_counting_range">%1$s ile %2$s arasında çalınan</string>
+  <string name="statistics_counting_total">Toplamda çalınan</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Bu cihazdaki bölümlerin toplam büyüklüğü</string>
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -40,8 +52,7 @@
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
   <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
   <string name="drawer_feed_order_most_played">Oynatılan bölüm sayısına göre sırala</string>
-  <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
-  <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_inbox">Gelen kutusundaki bölüm sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_downloaded">İndirilen bölümlerin sayısı</string>
   <string name="drawer_feed_counter_none">Hiçbiri</string>
@@ -69,7 +80,6 @@
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
   <string name="refresh_label">Yenile</string>
-  <string name="external_storage_error_msg">Harici depolama yok. Lütfen uygulamanın düzgün çalışabilmesi için harici depolama aygıtının bağlandığından emin olun.</string>
   <string name="chapters_label">Kısımlar</string>
   <string name="chapter_duration">Süre: %1$s</string>
   <string name="description_label">Tanım</string>
@@ -80,10 +90,10 @@
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_delete_label">Bölümü Otomatik Sil</string>
-  <string name="feed_volume_reduction">Volume Reduction</string>
-  <string name="feed_volume_reduction_off">Off</string>
-  <string name="feed_volume_reduction_light">Light</string>
-  <string name="feed_volume_reduction_heavy">Heavy</string>
+  <string name="feed_volume_reduction">Ses azaltma</string>
+  <string name="feed_volume_reduction_off">Kapalı</string>
+  <string name="feed_volume_reduction_light">Az</string>
+  <string name="feed_volume_reduction_heavy">Çok</string>
   <string name="parallel_downloads">%1$d eşzamanlı indirmeler</string>
   <string name="feed_auto_download_global">Varsayılan ayarlar</string>
   <string name="feed_auto_download_always">Her zaman</string>
@@ -94,29 +104,39 @@
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
   <plurals name="episode_cleanup_hours_after_listening">
-    <item quantity="one">1 hour after finishing</item>
-    <item quantity="other">%d hours after finishing</item>
+    <item quantity="one">Bittikten 1 saat sonra</item>
+    <item quantity="other">Bittikten %d saat sonra</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">Bittikten 1 gün sonra</item>
     <item quantity="other">Bittikten %d gün sonra</item>
   </plurals>
-  <string name="loading_more">Loading more…</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%1$d/%2$d seçildi</item>
+    <item quantity="other">%1$d/%2$d seçildi</item>
+  </plurals>
+  <plurals name="num_episodes">
+    <item quantity="one">%d bölüm</item>
+    <item quantity="other">%d bölüm</item>
+  </plurals>
+  <string name="loading_more">Daha fazla yükleniyor...</string>
   <string name="episode_notification">Bölüm Bildirimleri</string>
   <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver.</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="one">%2$s\'de yeni bir bölüm var </item>
+    <item quantity="other">%2$s \'de yeni  %1$d bölüm var </item>
+  </plurals>
   <plurals name="new_episode_notification_title">
     <item quantity="one">Yeni Bölüm</item>
     <item quantity="other">Yeni Bölümler</item>
   </plurals>
   <string name="new_episode_notification_group_text">Aboneliklerinize ait yeni bölümler var.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
-  <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
-  <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu yayındaki bütün bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="remove_all_new_flags_label">Remove all \"new\" flags</string>
-  <string name="removed_all_new_flags_msg">Removed all \"new\" flags</string>
-  <string name="remove_all_new_flags_confirmation_msg">Please confirm that you want to remove the \"new\" flag from all episodes.</string>
+  <string name="remove_all_inbox_label">Gelen kutusunu temizle</string>
+  <string name="removed_all_inbox_msg">Gelen kutusu temizlendi</string>
+  <string name="remove_all_inbox_confirmation_msg">Lütfen gelen kutusunu temizlemek istediğinizi onaylayın.</string>
+  <string name="multi_select_mark_played_confirmation">Tüm seçili olanları \"Çalındı\" olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Tüm seçili olanları \"Çalınmadı\" olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
   <string name="feed_settings_label">Cepyayın ayarları</string>
@@ -124,7 +144,9 @@
   <string name="remove_feed_label">Cepyayını kaldır</string>
   <string name="share_label">Paylaş</string>
   <string name="share_file_label">Dosyayı paylaş</string>
+  <string name="share_rss_address_label">RSS adresi:</string>
   <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
+  <string name="feed_delete_confirmation_msg_batch">Lütfen seçmiş olduğunuz cepyayınlarını ve BÜTÜN bölümlerini (indirilmiş olanlar dahil) silmek istediğinizi onaylayın.</string>
   <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
   <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
   <string name="load_complete_feed">Tüm Cepyayınını yenile</string>
@@ -136,11 +158,18 @@
   <string name="open_podcast">Cep yayını aç</string>
   <string name="please_wait_for_data">Please wait until the data is loaded</string>
   <string name="updates_disabled_label">Güncellemeler devre dışı</string>
+  <plurals name="updated_feeds_batch_label">
+    <item quantity="one">%d abonelik güncellendi.</item>
+    <item quantity="other">%d abonelik güncellendi.</item>
+  </plurals>
+  <string name="edit_tags">Etiketleri düzenle</string>
+  <string name="rename_tag_label">Etiketleri yeniden adlandır</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Cepyayınlarını mobil veri üzerinden güncellemek ayarlarda varsayılan olarak kapalı.\n\nYine de güncellemek ister misiniz?</string>
   <!--actions on feeditems-->
   <string name="download_label">İndir</string>
   <plurals name="downloading_batch_label">
-    <item quantity="one">Downloading %d episode.</item>
-    <item quantity="other">Downloading %d episodes.</item>
+    <item quantity="one"> %d bölüm indiriliyor.</item>
+    <item quantity="other">%d bölüm indiriliyor.</item>
   </plurals>
   <string name="play_label">Oynat</string>
   <string name="pause_label">Duraklat</string>
@@ -148,17 +177,23 @@
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
   <string name="delete_episode_label">Delete Episode</string>
-  <string name="remove_new_flag_label">Remove \"new\" flag</string>
-  <string name="removed_new_flag_label">Removed \"new\" flag</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 indirilmiş bölüm silindi.</item>
+    <item quantity="other">%d indirilmiş bölüm silindi.</item>
+  </plurals>
+  <string name="remove_inbox_label">Gelen kutusundan sil</string>
+  <string name="removed_inbox_label">Gelen kutusundan silindi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
-  <string name="mark_read_no_media_label">Mark as read</string>
-  <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
+  <string name="marked_as_played_label">Çalındı olarak işaretlendi</string>
+  <string name="marked_as_unplayed_label">Çalınmadı olarak işaretlendi</string>
+  <string name="mark_read_no_media_label">Okundu olarak işaretle</string>
+  <string name="play_this_to_seek_position">Başka bir konuma atlamak için bölümü oynatmanız gerekir.</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episode marked as played.</item>
     <item quantity="other">%d episodes marked as played.</item>
   </plurals>
   <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
-  <string name="mark_unread_label_no_media">Mark as unread</string>
+  <string name="mark_unread_label_no_media">Okunmadı olarak işaretle</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d episode marked as unplayed.</item>
     <item quantity="other">%d episodes marked as unplayed.</item>
@@ -166,26 +201,25 @@
   <string name="add_to_queue_label">Kuyruğa Ekle</string>
   <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <plurals name="added_to_queue_batch_label">
-    <item quantity="one">%d episode added to queue.</item>
-    <item quantity="other">%d episodes added to queue.</item>
+    <item quantity="one">%d bölüm kuyruğa eklendi.</item>
+    <item quantity="other">%d bölüm kuyruğa eklendi.</item>
   </plurals>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
   <plurals name="removed_from_queue_batch_label">
-    <item quantity="one">%d episode removed from queue.</item>
-    <item quantity="other">%d episodes removed from queue.</item>
+    <item quantity="one">%d bölüm kuyruktan silindi.</item>
+    <item quantity="other">%d bölüm kuyruktan silindi.</item>
   </plurals>
   <string name="add_to_favorite_label">Favorilere Ekle</string>
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="skip_episode_label">Bölümü atla</string>
-  <string name="reset_position">Çalme konumunu sıfırla</string>
-  <string name="removed_item">Öge kaldırıldı</string>
-  <string name="no_items_selected">No items selected</string>
+  <string name="reset_position">Çalma konumunu sıfırla</string>
+  <string name="no_items_selected">Hiçbir öğe seçilmedi</string>
   <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
-  <string name="download_error_details">Detaylar</string>
+  <string name="download_error_details">Ayrıntılar</string>
   <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Ayrıntıları görüntülemek için dokunun.</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
@@ -203,6 +237,8 @@
   <string name="download_error_forbidden">Podcast\'in bulunduğu sunucu cevap vermeyi reddediyor.</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
   <string name="download_error_wrong_size">İndirme tamamlanamadan sunucu ile bağlantı kesildi.</string>
+  <string name="download_error_blocked">İndirmek cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi)  tarafından engellendi.</string>
+  <string name="download_error_certificate">Güvenli bir bağlantı kurulamadı. Bu, indirmenin cihazınızdaki başka bir uygulama (VPN veya reklam engelleyicisi gibi) tarafından engellendiği veya sunucu sertifikalarında bir hata olduğu anlamına gelebilir.</string>
   <string name="download_report_title">İndirme hata(lar) ile tamamlandı</string>
   <string name="auto_download_report_title">Auto-downloads completed</string>
   <string name="download_error_io_error">G/Ç Hatası</string>
@@ -212,7 +248,10 @@
     <item quantity="one">%d indirme kaldı</item>
     <item quantity="other">%d indirme kaldı</item>
   </plurals>
+  <string name="completing">Tamamlanıyor...</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
+  <string name="download_notification_title_feeds">Cepyayınları güncelleniyor</string>
+  <string name="download_notification_title_episodes">Bölümler indiriliyor</string>
   <string name="download_log_title_unknown">bilinmeyen başlık</string>
   <string name="download_type_feed">Besleme</string>
   <string name="download_type_media">Medya dosyası</string>
@@ -222,85 +261,92 @@
   <string name="confirm_mobile_download_dialog_title">Mobil İndirmeyi Onaylayın</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Mobil veri ile indirme ayarlarda devre dışıdır.\n\nGeçici olarak açılsın mı yoksa sadece kuyruğa mı eklensin?\n\n<small>Bu tercihiniz 10 dakika boyunca hatırlanacak.</small></string>
   <string name="confirm_mobile_download_dialog_message">Mobil veri ile indirme ayarlarda devre dışıdır.\n\nGeçici olarak açılsın mı?\n\n<small>Bu tercihiniz 10 dakika boyunca hatırlanacak.</small></string>
-  <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
-  <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
-  <string name="confirm_mobile_streaming_button_always">Always</string>
-  <string name="confirm_mobile_streaming_button_once">Once</string>
+  <string name="confirm_mobile_streaming_notification_title">İndirmeksizin yayın dinlemeyi onaylayın</string>
+  <string name="confirm_mobile_streaming_notification_message">Mobil veri üzerinden indirmeksizin yayın dinleme ayarlarda varsayılan olarak devre dışıdır. Yine de dinlemek istiyorsanız onaylayın.</string>
+  <string name="confirm_mobile_streaming_button_always">Her zaman</string>
+  <string name="confirm_mobile_streaming_button_once">Bir kere</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Sadece Kuyruğa ekle</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Geçici olarak aç</string>
   <!--Mediaplayer messages-->
   <string name="playback_error_server_died">Sunucu geberdi</string>
-  <string name="playback_error_unsupported">Unsupported media type</string>
-  <string name="playback_error_timeout">Operation timed out</string>
-  <string name="playback_error_source">Unable to access media file</string>
+  <string name="playback_error_unsupported">Desteklenmeyen medya türü</string>
+  <string name="playback_error_timeout">Zaman aşımına uğradı</string>
+  <string name="playback_error_source">Medya dosyasına ulaşılamıyor</string>
   <string name="playback_error_unknown">Bilinmeyen Hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
-  <string name="error_file_not_found">File not found</string>
+  <string name="error_file_not_found">Dosya bulunamadı</string>
   <string name="no_media_label">Öğe, bir medya dosyası içermiyor</string>
   <!--Queue operations-->
   <string name="lock_queue">Kuyruğu kilitle</string>
   <string name="queue_locked">Kuyruk kilitlendi</string>
   <string name="queue_unlocked">Kuyruk kilidi açıldı</string>
   <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
-  <string name="checkbox_do_not_show_again">Do not show again</string>
+  <string name="checkbox_do_not_show_again">Tekrar gösterme</string>
   <string name="clear_queue_label">Kuyruğu temizle</string>
   <string name="undo">Geri al</string>
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
   <string name="sort">Sırala</string>
-  <string name="keep_sorted">Keep sorted</string>
+  <string name="keep_sorted">Sıralamayı sabitle</string>
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
-  <string name="episode_title">Blüm başlığı</string>
+  <string name="episode_title">Bölüm başlığı</string>
   <string name="feed_title">Cepyayın bilgisi</string>
   <string name="random">Rastgele</string>
   <string name="smart_shuffle">Akıllı karıştırma</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
   <string name="time_left_label">Kalan süre:\u0020</string>
   <!--Variable Speed-->
-  <string name="speed_presets">Presets</string>
+  <string name="speed_presets">Kayıtlı Hızlar</string>
   <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
   <!--Empty list labels-->
-  <string name="no_items_header_label">No queued episodes</string>
-  <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
+  <string name="no_items_header_label">Kuyrukta bölüm yok</string>
+  <string name="no_items_label">Bir bölümü indirerek veya üzerine basılı tutup \\"Kuyruğa ekle\\" diyerek buraya ekleyebilirsiniz.</string>
   <string name="no_shownotes_label">Bu dosya herhangi bir bilgi notu içermiyor.</string>
   <string name="no_comp_downloads_head_label">No downloaded episodes</string>
-  <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>
-  <string name="no_log_downloads_head_label">No download log</string>
-  <string name="no_log_downloads_label">Download logs will appear here when available.</string>
-  <string name="no_history_head_label">No History</string>
-  <string name="no_history_label">After you listen to an episode, it will appear here.</string>
-  <string name="no_all_episodes_head_label">No Episodes</string>
-  <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
-  <string name="no_new_episodes_head_label">No new episodes</string>
-  <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
-  <string name="no_fav_episodes_head_label">No favorite episodes</string>
-  <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
-  <string name="no_subscriptions_head_label">No subscriptions</string>
-  <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
+  <string name="no_comp_downloads_label">Cepyayını ayrıntıları sayfasından bölümleri indirebilirsiniz.</string>
+  <string name="no_log_downloads_head_label">İndirme günlüğü yok</string>
+  <string name="no_log_downloads_label">İndirme günlüğü olduğunda burada gözükecek.</string>
+  <string name="no_history_head_label">Dinleme geçmişi yok</string>
+  <string name="no_history_label">Bir bölüm dinledikten sonra burada gözükecek.</string>
+  <string name="no_all_episodes_head_label">Bölüm yok</string>
+  <string name="no_all_episodes_label">Bir cepyayın ekledikten sonra bölümleri burada gözükecek.</string>
+  <string name="no_all_episodes_filtered_label">Daha çok bölüm görmek için filtreyi temizlemeyi deneyin.</string>
+  <string name="no_inbox_head_label">Gelen kutusunda bölüm yok</string>
+  <string name="no_inbox_label">Yeni bölümler geldiğinde burada görünecek. İlgi duyup duymadığınıza o zaman karar verebilirsiniz.</string>
+  <string name="no_subscriptions_head_label">Abonelik yok</string>
+  <string name="no_subscriptions_label">Bir cepyayınına abone olmak için, aşağıdaki Artı simgesine tıklayın.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="storage_sum">Episode auto delete, Import, Export</string>
+  <string name="statistics_moved">İstatistikler ekranı Abonelikler ekranına taşındı. Oradan ulaşabilirsiniz. </string>
   <string name="project_pref">Proje</string>
-  <string name="synchronization_pref">Synchronization</string>
+  <string name="synchronization_pref">Senkronizasyon</string>
+  <string name="synchronization_sum">Diğer cihazlarla senkronize et</string>
   <string name="automation">Otomasyon</string>
   <string name="download_pref_details">Detaylar</string>
   <string name="import_export_pref">Al/Aktar</string>
-  <string name="import_export_search_keywords">backup, restore</string>
+  <string name="import_export_search_keywords">Yedekle, Geri Al</string>
   <string name="appearance">Görünüm</string>
   <string name="external_elements">Dış elemanlar</string>
   <string name="interruptions">Kesintiler</string>
-  <string name="playback_control">Playback control</string>
-  <string name="preference_search_hint">Search…</string>
-  <string name="preference_search_no_results">No results</string>
-  <string name="preference_search_clear_history">Clear history</string>
+  <string name="playback_control">Oynatma kontrolü</string>
+  <string name="reassign_hardware_buttons">Cihaz düğmelerini yeniden ata</string>
+  <string name="preference_search_hint">Ara..</string>
+  <string name="preference_search_no_results">Sonuç yok</string>
+  <string name="preference_search_clear_history">Geçmişi temizle</string>
   <string name="media_player">Medya oynatıcı</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
   <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_hardware_forward_button_title">İleri Düğmesi</string>
+  <string name="pref_hardware_forward_button_summary">İleri düğmesinin davranışını değiştir</string>
+  <string name="pref_hardware_previous_button_title">Geri Düğmesi</string>
+  <string name="pref_hardware_previous_button_summary">Geri düğmesinin davranışını değiştir</string>
+  <string name="button_action_fast_forward">İleri Sar</string>
+  <string name="button_action_rewind">Geri Sar</string>
   <string name="button_action_skip_episode">Bölümü Atla</string>
   <string name="button_action_restart_episode">Bölümü Yeniden Oynat</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
@@ -313,15 +359,25 @@
   <string name="pref_favorite_keeps_episodes_sum">Bölümler Favori olarak işaretlendiğinde tut</string>
   <string name="pref_favorite_keeps_episodes_title">Favori bölümleri tut</string>
   <string name="playback_pref">Çalma</string>
-  <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
+  <string name="playback_pref_sum">Kulaklık kontrolleri, Atlama aralığı ve Kuyruk ayarları</string>
   <string name="network_pref">Ağ</string>
-  <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
+  <string name="network_pref_sum">Güncelleme aralığı, İndirme kontrolleri ve Mobil Veri</string>
+  <string name="feed_refresh_title">Cepyayınlarını güncelle</string>
+  <string name="feed_refresh_sum">Yeni bölümleri otomatik olarak almak için bir zaman veya zaman aralığı belirleyin</string>
+  <string name="feed_refresh_interval">Zaman Aralığı</string>
+  <string name="feed_refresh_time">Zaman</string>
+  <string name="feed_refresh_never">Hiçbir zaman</string>
+  <string name="feed_refresh_interval_at">%1$s\'de</string>
+  <plurals name="feed_refresh_every_x_hours">
+    <item quantity="one">Her saatte</item>
+    <item quantity="other">Her %d saatte</item>
+  </plurals>
   <string name="pref_followQueue_title">Devamlı çalma</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Kulaklık veya Bluetooth bağlantı kesintisi</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth yeniden bağlandı</string>
-  <string name="pref_stream_over_download_title">Prefer Streaming</string>
-  <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
+  <string name="pref_stream_over_download_title">İndirmeden Dinlemeyi Tercih Et</string>
+  <string name="pref_stream_over_download_sum">Listelerde indirme butonu yerine indirmeden dinleme butonu aktif olur.</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
   <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
   <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
@@ -330,7 +386,7 @@
   <string name="pref_mobileUpdate_episode_download">Episode download</string>
   <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="user_interface_label">Kullanıcı Arayüzü</string>
-  <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
+  <string name="user_interface_sum">Görünüm, Abonelikler, Kilit ekranı</string>
   <string name="pref_set_theme_title">Temayı seç</string>
   <string name="pref_nav_drawer_items_title">Uygulama Çekmecesi öğelerini ayarla</string>
   <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
@@ -339,7 +395,7 @@
   <string name="pref_nav_drawer_feed_counter_title">Abonelik sayacını ayarla</string>
   <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
   <string name="pref_set_theme_sum">AntennaPod\'un görüntüsünü değiştir.</string>
-  <string name="pref_automatic_download_title">Otomatk indirme</string>
+  <string name="pref_automatic_download_title">Otomatik indirme</string>
   <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filtresini etkinleştir</string>
   <string name="pref_autodl_wifi_filter_sum">Seçilen kablosuz ağlar için otomatik indirmeye izin ver.</string>
@@ -349,14 +405,24 @@
   <string name="pref_episode_cache_title">Bölüm ön belleği</string>
   <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
   <string name="pref_episode_cover_title">Use Episode Cover</string>
-  <string name="pref_theme_title_use_system">Use system theme</string>
+  <string name="pref_show_remain_time_title">Kalan Süreyi Göster</string>
+  <string name="pref_show_remain_time_summary">Seçilirse bölümlerin kalan süresini göster. Seçilmezse, bölümlerin toplam süresini göster.</string>
+  <string name="pref_theme_title_use_system">Sistem temasını kullan</string>
   <string name="pref_theme_title_light">Aydınlık</string>
   <string name="pref_theme_title_dark">Karanlık</string>
   <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
   <string name="pref_episode_cache_unlimited">Sınırsız</string>
+  <string name="synchronization_logout">Çıkış yap</string>
+  <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
   <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
-  <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
+  <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>
+  <string name="synchronization_full_sync_title">Tam senkronizasyona zorla</string>
+  <string name="synchronization_choose_title">Senkronizasyon sağlayıcınızı seçin</string>
+  <string name="synchronization_force_sync_summary">Bütün abonelikleri ve bölüm durumlarını tekrardan senkronize et</string>
+  <string name="synchronization_sync_summary">Abonelik ve bölüm durum değişikliklerini senkronize et</string>
+  <string name="dialog_choose_sync_service_title">Senkronizasyon sağlayıcınızı seçin</string>
+  <string name="pref_playback_speed_sum">Ses dinleme hızlarını ayarlayın.</string>
   <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
   <string name="pref_feed_skip">Auto Skip</string>
   <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
@@ -366,10 +432,10 @@
   <string name="pref_feed_skip_intro_toast">Skipped first %d seconds</string>
   <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
   <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
-  <string name="pref_fast_forward">Fast Forward Skip Time</string>
-  <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
-  <string name="pref_rewind">Rewind Skip Time</string>
-  <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
+  <string name="pref_fast_forward">İleri Sararken Atlama Süresi</string>
+  <string name="pref_fast_forward_sum">İleri Sar butonuna tıklayınca kaç saniye atlanacağını seçin.</string>
+  <string name="pref_rewind">Geri Sararken Atlama Süresi</string>
+  <string name="pref_rewind_sum">Geri Sar butonuna tıklayınca kaç saniye atlanacağını seçin.</string>
   <string name="pref_expandNotify_title">High Notification priority</string>
   <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
@@ -378,7 +444,7 @@
   <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
   <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
-  <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
+  <string name="pref_lockscreen_background_title">Kilit ekranı arkaplanını ayarla</string>
   <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
   <string name="pref_enqueue_location_title">Enqueue Location</string>
   <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
@@ -386,28 +452,31 @@
   <string name="enqueue_location_front">Front</string>
   <string name="enqueue_location_after_current">After current episode</string>
   <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
-  <string name="visit_user_forum">User forum</string>
-  <string name="bug_report_title">Report bug</string>
-  <string name="open_bug_tracker">Open bug tracker</string>
-  <string name="copy_to_clipboard">Copy to clipboard</string>
-  <string name="copied_to_clipboard">Copied to clipboard</string>
+  <string name="documentation_support">Dokümantasyon &amp; Destek</string>
+  <string name="visit_user_forum">Kullanıcı forumu</string>
+  <string name="bug_report_title">Hata bildir</string>
+  <string name="open_bug_tracker">Hata bildirimi takibi aç</string>
+  <string name="copy_to_clipboard">Kopyala</string>
+  <string name="copied_to_clipboard">Kopualandı</string>
   <string name="experimental_pref">Deneysel</string>
-  <string name="pref_media_player_message">Select which media player to use to play files</string>
-  <string name="pref_current_value">Current value: %1$s</string>
+  <string name="pref_media_player_message">Dosyaları oynatmak için hangi medya oynatıcısı kullanılacağını seçin</string>
+  <string name="pref_current_value">Şu anki değer: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Set a network proxy</string>
   <string name="pref_no_browser_found">No web browser found.</string>
   <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
   <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+  <string name="media_player_builtin">Dahili Android medya oynatıcısı (eski) </string>
+  <string name="media_player_sonic">Sonic medya oynatıcısı (eski) </string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (tavsiye edilen)</string>
-  <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
-  <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
-  <string name="pref_skip_silence_title">Skip Silence in Audio</string>
-  <string name="behavior">Behavior</string>
-  <string name="pref_back_button_behavior_title">Back Button Behavior</string>
-  <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
-  <string name="back_button_default">Default</string>
-  <string name="back_button_open_drawer">Open navigation drawer</string>
+  <string name="media_player_switch_to_exoplayer">ExoPlayer\'a geç</string>
+  <string name="media_player_switched_to_exoplayer">ExoPlayer\'a geçildi</string>
+  <string name="pref_skip_silence_title">Sesteki boşlukları atla</string>
+  <string name="behavior">Davranış</string>
+  <string name="pref_back_button_behavior_title">Geri Düğmesi Davranışı</string>
+  <string name="pref_back_button_behavior_sum">Geri düğmesinin davranışını değiştir</string>
+  <string name="back_button_default">Varsayılan</string>
+  <string name="back_button_open_drawer">Çekmeceyi aç</string>
   <string name="back_button_double_tap">Double tap to exit</string>
   <string name="back_button_show_prompt">Confirm to exit</string>
   <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
@@ -424,27 +493,36 @@
   <string name="not_auto_downloaded">Not auto downloaded</string>
   <string name="kept_updated">Kept updated</string>
   <string name="not_kept_updated">Not kept updated</string>
+  <string name="new_episode_notification_enabled">Bildirimler etkinleştirildi</string>
+  <string name="new_episode_notification_disabled">Bildirimler kapatıldı</string>
+  <string name="pref_feed_settings_dialog_msg">Bu ayar her bir cepyayına mahsustur. Cepyayını sayfasını açarak tekrar değiştirebilirsiniz.</string>
+  <string name="pref_contribute">Katkıda bulunanlar</string>
+  <string name="pref_show_subscription_title">Abonelik Başlığını Göster</string>
+  <string name="pref_show_subscription_title_summary">Kapak resminin altında Abonelik başlığını göster.</string>
   <!--About screen-->
   <string name="about_pref">Hakkında</string>
-  <string name="antennapod_version">AntennaPod version</string>
-  <string name="contributors">Contributors</string>
-  <string name="contributors_summary">Everyone can help to make AntennaPod better - with code, translations or by helping users in our forum</string>
-  <string name="developers">Developers</string>
-  <string name="translators">Translators</string>
-  <string name="special_thanks">Special thanks</string>
-  <string name="privacy_policy">Privacy policy</string>
-  <string name="licenses">Licenses</string>
-  <string name="licenses_summary">AntennaPod uses other great software</string>
+  <string name="antennapod_version">AntennaPod sürümü</string>
+  <string name="contributors">Katkıda bulunanlar</string>
+  <string name="contributors_summary">Everyone can help to make AntennaPod better - with code, translations or by helping users in our forum
+Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek kod yazarak gerek tercüme ederek, gerekse forumda kullanıcılara yardım ederek.</string>
+  <string name="developers">Geliştiriciler</string>
+  <string name="translators">Tercüme edenler</string>
+  <string name="special_thanks">Özel teşekkürler</string>
+  <string name="privacy_policy">Gizlilik Politikası</string>
+  <string name="licenses">Lisanslar</string>
+  <string name="licenses_summary">AntennaPod başka yazılımlardan da faydalanıyor</string>
   <!--Search-->
   <string name="search_status_no_results">Sonuç bulunamadı</string>
+  <string name="type_to_search">Aramak için bir kelime yazın</string>
   <string name="search_label">Ara</string>
-  <string name="no_results_for_query">No results were found for \"%1$s\"</string>
+  <string name="no_results_for_query"> \"%1$s\" için bir sonuç bulunamadı</string>
   <!--Synchronization-->
   <string name="sync_status_started">Sync started</string>
   <string name="sync_status_episodes_upload">Uploading episode changes…</string>
   <string name="sync_status_episodes_download">Downloading episode changes…</string>
   <string name="sync_status_upload_played">Uploading played status…</string>
   <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
+  <string name="sync_status_wait_for_downloads">İndirmelerin tamamlanması bekleniyor</string>
   <string name="sync_status_success">Synchronization successful</string>
   <string name="sync_status_error">Synchronization failed</string>
   <!--import and export-->
@@ -457,6 +535,7 @@
   <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
   <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
   <string name="database_import_summary">Import AntennaPod database from another device</string>
+  <string name="opml_import_label">OPML içe aktar</string>
   <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
   <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
   <string name="opml_import_error_no_file">No file selected!</string>
@@ -480,6 +559,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Zamanlayıcıyı ayarla</string>
   <string name="disable_sleeptimer_label">Zamanlayıcıyı devre dışı bırak</string>
+  <string name="extend_sleep_timer_label">+%d dakika</string>
   <string name="sleep_timer_label">Zamanlayıcı</string>
   <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
   <string name="shake_to_reset_label">Shake to reset</string>
@@ -500,20 +580,23 @@
     <item quantity="other">%d saat</item>
   </plurals>
   <string name="auto_enable_label">Auto-enable</string>
-  <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
+  <string name="sleep_timer_enabled_label">Uyku zamanlayıcısı açıldı</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORİLER</string>
-  <string name="gpodnet_toplist_header">POPÜLER CEP YAYINLARI</string>
-  <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
+  <string name="gpodnetauth_encryption_warning">Parola ve veri şifrelenmedi!</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
+  <string name="gpodnetauth_host">Sunucu (Host) adresi</string>
+  <string name="gpodnetauth_select_server">Sunucu seçiniz</string>
+  <string name="gpodnetauth_device_name">Cihaz ismi</string>
+  <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
+  <string name="gpodnetauth_create_device">Cihaz oluştur</string>
   <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
   <string name="gpodnetauth_finish_butsyncnow">Senkronizasyonu başlat</string>
   <string name="gpodnetsync_error_title">gpodder.net senkronizasyon hatası</string>
   <string name="gpodnetsync_error_descr">Senkronize edilirken bir hata oluştu:\u0020</string>
-  <string name="gpodnetsync_pref_report_successful">Successful</string>
-  <string name="gpodnetsync_pref_report_failed">Failed</string>
+  <string name="gpodnetsync_pref_report_successful">Başarılı</string>
+  <string name="gpodnetsync_pref_report_failed">Başarısız</string>
   <string name="gpodnetsync_username_characters_error">Usernames may only contain letters, digits, hyphens and underscores.</string>
   <!--Directory chooser-->
   <string name="choose_data_directory">Veri dizinini seç</string>
@@ -525,72 +608,84 @@
   <string name="pref_resumeAfterCall_title">Konuşmadan sonra devam et</string>
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
-  <string name="subscribing_label">Subscribing…</string>
-  <string name="preview_episode">Preview</string>
-  <string name="stop_preview">Stop preview</string>
+  <string name="subscribing_label">Abone olunuyor…</string>
+  <string name="preview_episode">Önizle</string>
+  <string name="stop_preview">Önizlemeyi durdur</string>
   <!--Content descriptions for image buttons-->
+  <string name="toolbar_back_button_content_description">Geri</string>
   <string name="rewind_label">Geri sar</string>
   <string name="fast_forward_label">İleri sar</string>
-  <string name="increase_speed">Increase speed</string>
-  <string name="decrease_speed">Decrease speed</string>
+  <string name="increase_speed">Hızı artır</string>
+  <string name="decrease_speed">Hızı azalt</string>
   <string name="media_type_video_label">Vidyo</string>
   <string name="status_downloading_label">Bölüm indiriliyor</string>
   <string name="in_queue_label">Bölüm kuyrukta</string>
-  <string name="is_favorite_label">Episode is marked as favorite</string>
+  <string name="is_favorite_label">Bölüm favori olarak işaretlendi</string>
+  <string name="is_inbox_label">Bölüm gelen kutusunda</string>
   <string name="load_next_page_label">Sonraki sayfayı yükle</string>
-  <string name="position">Position: %1$s</string>
+  <string name="position">Pozisyon: %1$s</string>
   <string name="apply_action">Apply action</string>
+  <string name="play_chapter">Kısmı çal</string>
+  <string name="prev_chapter">Önceki kısım</string>
+  <string name="next_chapter">Sonraki kısım</string>
   <!--Feed settings/information screen-->
   <string name="authentication_label">Yetkilendirme</string>
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
+  <string name="feed_tags_label">Etiketler</string>
+  <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu cepyayınının etiketlerini değiştirin</string>
+  <string name="feed_folders_include_root">Ana listede göster</string>
   <string name="auto_download_settings_label">Otomatik İndirme Seçenekleri</string>
-  <string name="episode_filters_label">Episode Filter</string>
+  <string name="episode_filters_label">Bölüm Filtresi</string>
   <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
   <string name="episode_filters_include">Include</string>
   <string name="episode_filters_exclude">Exclude</string>
+  <string name="episode_filters_duration">En kısa süre (dakika)</string>
   <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
   <string name="keep_updated">Keep Updated</string>
   <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
   <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-  <string name="statistics_episodes_on_device">Episodes on the device:</string>
-  <string name="statistics_space_used">Space used:</string>
-  <string name="statistics_view_all">View for all podcasts »</string>
+  <string name="statistics_time_played">Çalınan süre:</string>
+  <string name="statistics_total_duration">Toplam süre (tahmini):</string>
+  <string name="statistics_episodes_on_device">Cihazdaki bölüm sayısı:</string>
+  <string name="statistics_space_used">Kullanılan alan</string>
+  <string name="statistics_episodes_started_total">Başlatılan bölüm / Toplam:</string>
+  <string name="statistics_view_all">Diğer cepyayınları için de istatistiklere göz at »</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Search podcast…</string>
+  <string name="search_podcast_hint">Cepyayını ara…</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
   <string name="search_podcastindex_label">Search Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd</string>
+  <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="advanced">Advanced</string>
-  <string name="add_podcast_by_url">Add Podcast by RSS address</string>
-  <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
-  <string name="discover">Discover</string>
-  <string name="discover_hide">Hide</string>
-  <string name="discover_is_hidden">You selected to hide suggestions.</string>
-  <string name="discover_more">more »</string>
+  <string name="add_podcast_by_url">RSS adresi ile cepyayını ekle</string>
+  <string name="discover">Keşfet</string>
+  <string name="discover_hide">Gizle</string>
+  <string name="discover_is_hidden">Tavsiyleri gizlediniz.</string>
+  <string name="discover_more">daha fazla »</string>
   <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
   <string name="search_powered_by">Results by %1$s</string>
   <!--Local feeds-->
-  <string name="add_local_folder">Add local folder</string>
+  <string name="add_local_folder">Cihazdan yerel klasör ekle</string>
   <string name="local_folder">Yerel klasör</string>
-  <string name="reconnect_local_folder">Re-connect local folder</string>
+  <string name="reconnect_local_folder">Yerel klasöre tekrar bağlan</string>
   <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
   <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
   <string name="unable_to_start_system_file_manager">Sistem dosya yöneticisi başlatılamıyor</string>
-  <string name="filter">Filter</string>
+  <string name="filter">Filtre</string>
   <string name="hide_is_favorite_label">Favori</string>
-  <string name="not_favorite">Not favorite</string>
+  <string name="not_favorite">Favori değil</string>
   <string name="hide_downloaded_episodes_label">İndirildi</string>
   <string name="hide_not_downloaded_episodes_label">İndirilmedi</string>
-  <string name="queued_label">Queued</string>
-  <string name="not_queued_label">Not queued</string>
-  <string name="has_media">Has media</string>
-  <string name="no_media">No media</string>
+  <string name="queued_label">Kuyrukta</string>
+  <string name="not_queued_label">Kuyrukta değil</string>
+  <string name="has_media">Medya var</string>
+  <string name="no_media">Medya yok</string>
   <string name="hide_paused_episodes_label">Duraklatıldı</string>
-  <string name="not_paused">Not paused</string>
+  <string name="not_paused">Duraklatılmadı</string>
   <string name="hide_played_episodes_label">Oynatıldı</string>
-  <string name="not_played">Not played</string>
+  <string name="not_played">Oynatılmadı</string>
   <!--Sort-->
   <string name="sort_title_a_z">Başlık (A \u2192 Z)</string>
   <string name="sort_title_z_a">Başlık (Z \u2192 A)</string>
@@ -598,12 +693,14 @@
   <string name="sort_date_old_new">Tarih (Eski \u2192 Yeni)</string>
   <string name="sort_duration_short_long">Süre (Kısa \u2192 Uzun)</string>
   <string name="sort_duration_long_short">Süre (Uzun \u2192 Kısa)</string>
+  <string name="sort_filename_a_z">Dosya İsmi (A \u2192 Z)</string>
+  <string name="sort_filename_z_a">Dosya İsmi (Z \u2192 A)</string>
   <string name="sort_a_z">A \u2192 Z</string>
   <string name="sort_z_a">Z \u2192 A</string>
-  <string name="sort_new_old">New \u2192 Old</string>
-  <string name="sort_old_new">Old \u2192 New</string>
-  <string name="sort_short_long">Short \u2192 Long</string>
-  <string name="sort_long_short">Long \u2192 Short</string>
+  <string name="sort_new_old">Yeni \u2192 Eski</string>
+  <string name="sort_old_new">Eski \u2192 Yeni</string>
+  <string name="sort_short_long">Kısa \u2192 Uzun</string>
+  <string name="sort_long_short">Uzun \u2192 Kısa</string>
   <!--Rating dialog-->
   <string name="rating_title" tools:ignore="UnusedResources">AntennaPod\'u beğendiniz mi?</string>
   <string name="rating_message" tools:ignore="UnusedResources">Eğer AntennaPod\'a oy vermek için biraz zamanını ayırırsanız memnun oluruz.</string>
@@ -611,15 +708,20 @@
   <string name="rating_later_label" tools:ignore="UnusedResources">Daha sonra hatırlat</string>
   <string name="rating_now_label" tools:ignore="UnusedResources">Evet, şimdi yapalım!</string>
   <!--Share episode dialog-->
-  <string name="share_dialog_episode_website_label">Episode webpage</string>
-  <string name="share_dialog_media_file_label">Media file</string>
+  <string name="share_playback_position_dialog_label">Dinleme konumunu dahil et</string>
+  <string name="share_dialog_episode_website_label">Bölüm web sayfası</string>
+  <string name="share_dialog_for_social">Sosyal medya mesajı</string>
+  <string name="share_dialog_media_address">Medya adresi</string>
+  <string name="share_dialog_media_file_label">Medya dosyası</string>
+  <string name="share_starting_position_label">Şu saniyeden itibaren</string>
   <!--Audio controls-->
-  <string name="audio_controls">Audio controls</string>
-  <string name="playback_speed">Playback Speed</string>
-  <string name="audio_effects">Audio Effects</string>
+  <string name="audio_controls">Ses kontrolleri</string>
+  <string name="playback_speed">Oynatma hızı</string>
+  <string name="audio_effects">Ses efektleri</string>
   <string name="stereo_to_mono">Downmix: Stereo to mono</string>
   <string name="sonic_only">Sonic only</string>
   <string name="exoplayer_only">ExoPlayer only</string>
+  <string name="player_switch_to_audio_only">Sadece Ses Moduna Dön</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Host</string>
@@ -641,18 +743,23 @@
   <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
   <string name="notification_channel_downloading">Downloading</string>
   <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
-  <string name="notification_channel_playing">Currently playing</string>
+  <string name="notification_channel_playing">Oynatılıyor</string>
   <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
   <string name="notification_channel_download_error">İndirme başarısız</string>
+  <string name="notification_channel_sync_error">Senkronizasyon başarısız</string>
   <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
+  <string name="notification_channel_auto_download">Otomatik indirmeler tamamlandı</string>
   <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
   <string name="notification_channel_new_episode">Yeni Bölüm</string>
   <!--Widget settings-->
-  <string name="widget_settings">Widget settings</string>
-  <string name="widget_create_button">Create widget</string>
-  <string name="widget_opacity">Opacity</string>
+  <string name="widget_settings">Widget ayarları</string>
+  <string name="widget_create_button">Widget oluştur</string>
+  <string name="widget_opacity">Şeffaflık</string>
   <!--On-Demand configuration-->
-  <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
-  <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
-  <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+  <string name="on_demand_config_setting_changed">Ayar güncellendi.</string>
+  <string name="on_demand_config_stream_text">Sesleri indirmeden anlık dinlemeyi tercih ediyor gibisiniz. Bölüm listesinde anlık dinleme butonlarının kısayol olarak eklenmesini ister misiniz?</string>
+  <string name="on_demand_config_download_text">Sesleri indirdikten sonra dinlemeyi tercih ediyor gibisiniz. Bölüm listesinde indirme butonlarının kısayol olarak eklenmesini ister misiniz?</string>
+  <string name="shortcut_subscription_label">Abonelik kısayolu</string>
+  <string name="shortcut_select_subscription">Abonelik seçiniz</string>
+  <string name="add_shortcut">Kısayol ekle</string>
 </resources>

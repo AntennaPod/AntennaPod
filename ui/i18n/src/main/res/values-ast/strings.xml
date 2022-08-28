@@ -6,20 +6,14 @@
   <string name="add_feed_label">Amestar podcasts</string>
   <string name="episodes_label">Episodios</string>
   <string name="queue_label">Cola</string>
-  <string name="all_episodes_short_label">Too</string>
-  <string name="new_episodes_label">Novedá</string>
   <string name="favorite_episodes_label">Favoritos</string>
-  <string name="new_label">Novedá</string>
   <string name="settings_label">Axustes</string>
   <string name="downloads_label">Descargues</string>
   <string name="open_autodownload_settings">Abrir los axustes</string>
-  <string name="downloads_completed_label">Completóse</string>
-  <string name="downloads_log_label">Rexistru</string>
   <string name="subscriptions_label">Soscripciones</string>
   <string name="subscriptions_list_label">Llista de soscripciones</string>
   <string name="cancel_download_label">Encaboxar la descarga</string>
   <string name="playback_history_label">Historial de reproducción</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">La caché d\'episodios ta enllena</string>
   <string name="episode_cache_full_message">Algamóse la llende de la caché d\'episodios. Pues aumentar el so tamañu nos axustes de l\'aplicación.</string>
   <string name="notification_pref_fragment">Avisos</string>
@@ -40,8 +34,6 @@
   <string name="drawer_feed_order_alphabetical">Alfabéticamente</string>
   <string name="drawer_feed_order_last_update">Pola data d\'espublizamientu</string>
   <string name="drawer_feed_order_most_played">Pol númberu d\'episodios reproducíos</string>
-  <string name="drawer_feed_counter_new_unplayed">Episodios nuevos y ensin reproducir</string>
-  <string name="drawer_feed_counter_new">Episodios nuevos</string>
   <string name="drawer_feed_counter_unplayed">Episodios ensin reproducir</string>
   <string name="drawer_feed_counter_downloaded">Episodios baxaos</string>
   <string name="drawer_feed_counter_none">Nada</string>
@@ -115,12 +107,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Les soscripciones tienen episodios nuevos.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar too como «Reprodúxose»</string>
-  <string name="mark_all_read_confirmation_msg">Confirma que quies marcar tolos episodios como «Reprodúxose».</string>
-  <string name="mark_all_read_feed_confirmation_msg">Confirma que quies marcar tolos episodios d\'esti podcast como «Reprodúxose».</string>
-  <string name="remove_all_new_flags_label">Quitar toles banderes «Novedá»</string>
-  <string name="removed_all_new_flags_msg">Quitáronse toles banderes «Novedá»</string>
-  <string name="remove_all_new_flags_confirmation_msg">Confirma que quies quitar la bandera «Novedá» de tolos episodios.</string>
   <string name="show_info_label">Amosar la información</string>
   <string name="show_feed_settings_label">Amosar los axustes del podcast</string>
   <string name="feed_settings_label">Axustes del podcast</string>
@@ -148,8 +134,6 @@
   <string name="delete_label">Desaniciar</string>
   <string name="delete_failed">Nun ye posible desaniciar el ficheru. Reaniciar el preséu podría ayudar.</string>
   <string name="delete_episode_label">Desaniciar</string>
-  <string name="remove_new_flag_label">Quitar la bandera «Novedá»</string>
-  <string name="removed_new_flag_label">Quitóse la bandera «Novedá»</string>
   <string name="mark_read_label">Marcar como «Reprodúxose»</string>
   <string name="mark_unread_label">Marcar como «Ensin reproducir»</string>
   <string name="mark_unread_label_no_media">Marcar como «Ensin lleer»</string>
@@ -231,9 +215,6 @@
   <string name="no_history_label">Equí apaecen los episodios dempués de sentilos.</string>
   <string name="no_all_episodes_head_label">Nun hai episodios</string>
   <string name="no_all_episodes_label">Equí apaecen los episodios cuando amiestes un podcast.</string>
-  <string name="no_new_episodes_head_label">Nun hai episodios nuevos</string>
-  <string name="no_new_episodes_label">Equí apaecen los episodios nuevos cuando s\'espublicen.</string>
-  <string name="no_fav_episodes_head_label">Nun hai episodios favoritos</string>
   <string name="no_subscriptions_head_label">Nun hai soscripciones</string>
   <string name="no_subscriptions_label">Pa soscribise a un podcast, primi\'l botón + .</string>
   <!--Preferences-->
@@ -436,17 +417,10 @@
   </plurals>
   <string name="auto_enable_label">Activación automática</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">ESTAYES</string>
-  <string name="gpodnet_toplist_header">DESTÁCASE</string>
-  <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Aniciar sesión</string>
   <string name="gpodnetauth_encryption_warning">¡Los datos y la contraseña nun tán cifraos!</string>
-  <string name="create_account">Crear una cuenta</string>
   <string name="username_label">Nome d\'usuariu</string>
   <string name="password_label">Contraseña</string>
-  <string name="gpodnet_description">Gpodder.net ye un serviciu de sincronización de podcasts de códigu abiertu que ye independiente del proyeutu AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Sirvidor oficial de gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Sirvidor personalizáu</string>
   <string name="gpodnetauth_host">Agospiador</string>
   <string name="gpodnetauth_select_server">Esbillar el sirvidor</string>
   <string name="gpodnetauth_device_name">Nome del preséu</string>
@@ -504,9 +478,9 @@
   <string name="search_itunes_label">Buscar n\'iTunes</string>
   <string name="search_podcastindex_label">Buscar en Podcastindex.org</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
+  <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="advanced">Avanzao</string>
   <string name="add_podcast_by_url">Amestar un podcast pola direición RSS</string>
-  <string name="browse_gpoddernet_label">Restolar gpodder.net</string>
   <string name="discover">Descubrición</string>
   <string name="discover_hide">Anubrir</string>
   <string name="discover_is_hidden">Escoyesti anubrir les suxerencies.</string>
