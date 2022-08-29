@@ -137,10 +137,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
 
     /**
-     * Custom action used by Android Wear, Android Auto
+     * Custom actions used by Android Wear, Android Auto, and Android (API 33+ only)
      */
+    private static final String CUSTOM_ACTION_SKIP_TO_NEXT = "action.de.danoeh.antennapod.core.service.skipToNext";
     private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
+    private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED = "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
 
 
     /**
@@ -1202,12 +1204,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             state = PlaybackStateCompat.STATE_NONE;
         }
+
         sessionState.setState(state, getCurrentPosition(), getCurrentPlaybackSpeed());
-        long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
+        long capabilities = PlaybackStateCompat.ACTION_PLAY
+                | PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_PAUSE
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
@@ -1215,7 +1218,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
             // which will be used for rewind.
             // The workaround is used for pre Lollipop (Androidv5) devices.
-            // For Androidv5+, lockscreen widges are really notifications (compact),
+            // For Androidv5+, lockscreen widgets are really notifications (compact),
             // with an independent codepath
             //
             // @see #sessionCallback in the backing callback, skipToPrevious implementation
@@ -1225,33 +1228,59 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
         }
 
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
-                .getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        int currentModeType = uiModeManager.getCurrentModeType();
+        Log.d(TAG, "UI Mode CurrentModeType = " + currentModeType);
+
+        // Workaround bug in Android Auto custom actions described at https://issuetracker.google.com/issues/207389461 by checking for API 31+
+        // as well.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || currentModeType == Configuration.UI_MODE_TYPE_CAR) {
+            // On Android Auto, custom actions are added in the following order around the play button, if no default actions are present:
+            // Near left, near right, far left, far right, additional actions panel
             sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_REWIND,
-                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
-                        .build());
+                    new PlaybackStateCompat.CustomAction.Builder(
+                            CUSTOM_ACTION_REWIND,
+                            getString(R.string.rewind_label),
+                            R.drawable.ic_notification_fast_rewind
+                    ).build()
+            );
             sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_FAST_FORWARD,
-                        getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
-                        .build());
+                    new PlaybackStateCompat.CustomAction.Builder(
+                            CUSTOM_ACTION_FAST_FORWARD,
+                            getString(R.string.fast_forward_label),
+                            R.drawable.ic_notification_fast_forward
+                    ).build()
+            );
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
+                            CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                            getString(R.string.playback_speed),
+                            R.drawable.ic_notification_playback_speed
+                    ).build()
+            );
+            sessionState.addCustomAction(
+                    new PlaybackStateCompat.CustomAction.Builder(
+                            CUSTOM_ACTION_SKIP_TO_NEXT,
+                            getString(R.string.skip_episode_label),
+                            R.drawable.ic_notification_skip
+                    ).build()
+            );
         } else {
-            // This would give the PIP of videos a play button
-            capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
-            if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
-                WearMediaSession.sessionStateAddActionForWear(sessionState,
-                        CUSTOM_ACTION_REWIND,
-                        getString(R.string.rewind_label),
-                        android.R.drawable.ic_media_rew);
-                WearMediaSession.sessionStateAddActionForWear(sessionState,
-                        CUSTOM_ACTION_FAST_FORWARD,
-                        getString(R.string.fast_forward_label),
-                        android.R.drawable.ic_media_ff);
-                WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
-            }
+            // Prevent next button from showing up unless we aren't showing the custom skip action
+            capabilities |= PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+        }
+
+        // Add custom actions for watches - currently a no-op
+        if (currentModeType == Configuration.UI_MODE_TYPE_WATCH) {
+            WearMediaSession.sessionStateAddActionForWear(sessionState,
+                    CUSTOM_ACTION_REWIND,
+                    getString(R.string.rewind_label),
+                    android.R.drawable.ic_media_rew);
+            WearMediaSession.sessionStateAddActionForWear(sessionState,
+                    CUSTOM_ACTION_FAST_FORWARD,
+                    getString(R.string.fast_forward_label),
+                    android.R.drawable.ic_media_ff);
+            WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
         }
 
         sessionState.setActions(capabilities);
@@ -1838,6 +1867,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     .getSystemService(Context.UI_MODE_SERVICE);
             if (UserPreferences.getHardwareForwardButton() == KeyEvent.KEYCODE_MEDIA_NEXT
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
+                // TODO: Maybe always skip on Android 12+ due to bug addressed above?
+                //  Otherwise, this would always fast forward and never skip without using a hardware button.
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);
@@ -1878,6 +1909,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 onFastForward();
             } else if (CUSTOM_ACTION_REWIND.equals(action)) {
                 onRewind();
+            } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
+                onSkipToNext();
+            } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
+                // TODO: Wire up this action to change the playback speed
+                Log.d(TAG, "CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED not yet implemented");
             }
         }
     };
