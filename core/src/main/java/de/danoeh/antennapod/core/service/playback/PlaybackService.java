@@ -142,8 +142,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String CUSTOM_ACTION_SKIP_TO_NEXT = "action.de.danoeh.antennapod.core.service.skipToNext";
     private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
-    private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED = "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
-
+    private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
+            "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
 
     /**
      * Used in NOTIFICATION_TYPE_RELOAD.
@@ -1235,8 +1235,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         // Workaround bug in Android Auto custom actions described at https://issuetracker.google.com/issues/207389461 by checking for API 31+
         // as well.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || currentModeType == Configuration.UI_MODE_TYPE_CAR) {
-            // On Android Auto, custom actions are added in the following order around the play button, if no default actions are present:
-            // Near left, near right, far left, far right, additional actions panel
+            // On Android Auto, custom actions are added in the following order around the play button, if no default
+            // actions are present: Near left, near right, far left, far right, additional actions panel
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
                             CUSTOM_ACTION_REWIND,
