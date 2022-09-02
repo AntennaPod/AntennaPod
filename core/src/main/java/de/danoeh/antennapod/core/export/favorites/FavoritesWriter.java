@@ -3,13 +3,13 @@ package de.danoeh.antennapod.core.export.favorites;
 import android.content.Context;
 import android.util.Log;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,9 +22,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 /** Writes saved favorites to file. */
 public class FavoritesWriter implements ExportWriter {
     private static final String TAG = "FavoritesWriter";
-
-    private static final int PAGE_LIMIT = 100;
-
     private static final String FAVORITE_TEMPLATE = "html-export-favorites-item-template.html";
     private static final String FEED_TEMPLATE = "html-export-feed-template.html";
     private static final String UTF_8 = "UTF-8";
@@ -45,7 +42,9 @@ public class FavoritesWriter implements ExportWriter {
         InputStream feedTemplateStream = context.getAssets().open(FEED_TEMPLATE);
         String feedTemplate = IOUtils.toString(feedTemplateStream, UTF_8);
 
-        Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
+        List<FeedItem> allFavorites = DBReader.getRecentlyPublishedEpisodes(0, Integer.MAX_VALUE,
+                new FeedItemFilter(FeedItemFilter.IS_FAVORITE));
+        Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(allFavorites);
 
         writer.append(templateParts[0]);
 
@@ -64,23 +63,6 @@ public class FavoritesWriter implements ExportWriter {
         writer.append(templateParts[1]);
 
         Log.d(TAG, "Finished writing document");
-    }
-
-    private List<FeedItem> getFavorites() {
-        int page = 0;
-
-        List<FeedItem> favoritesList = new ArrayList<>();
-        List<FeedItem> favoritesPage;
-        do {
-            favoritesPage = DBReader.getFavoriteItemsList(page * PAGE_LIMIT, PAGE_LIMIT);
-            favoritesList.addAll(favoritesPage);
-            ++page;
-        } while (!favoritesPage.isEmpty() && favoritesPage.size() == PAGE_LIMIT);
-
-        // sort in descending order
-        Collections.sort(favoritesList, (lhs, rhs) -> rhs.getPubDate().compareTo(lhs.getPubDate()));
-
-        return favoritesList;
     }
 
     /**

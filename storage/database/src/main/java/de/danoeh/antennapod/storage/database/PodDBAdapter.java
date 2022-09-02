@@ -971,9 +971,11 @@ public class PodDBAdapter {
      * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " INNER JOIN " + TABLE_NAME_QUEUE
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
                 + " ORDER BY " + TABLE_NAME_QUEUE + "." + KEY_ID;
         return db.rawQuery(query, null);
     }
@@ -983,9 +985,11 @@ public class PodDBAdapter {
     }
 
     public Cursor getNextInQueue(final FeedItem item) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "INNER JOIN " + TABLE_NAME_QUEUE
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
                 + " WHERE Queue.ID > (SELECT Queue.ID FROM Queue WHERE Queue.FeedItem = "
                 +  item.getId()
                 + ")"
@@ -996,34 +1000,30 @@ public class PodDBAdapter {
 
     public final Cursor getPausedQueueCursor(int limit) {
         //playback position > 0 (paused), rank by last played, then rest of queue
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " INNER JOIN " + TABLE_NAME_QUEUE
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
                 + " ORDER BY " + TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + ">0 DESC , "
                 + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + " DESC , " + TABLE_NAME_QUEUE + "." + KEY_ID
                 + " LIMIT " + limit;
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFavoritesCursor(int offset, int limit) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+    public final Cursor getFavoritesIdsCursor(int offset, int limit) {
+        // Way faster than selecting all columns
+        final String query = "SELECT " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FAVORITES
-                + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " = " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
                 + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC"
                 + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
-    public void setFeedItems(int state) {
-        setFeedItems(Integer.MIN_VALUE, state, 0);
-    }
-
     public void setFeedItems(int oldState, int newState) {
         setFeedItems(oldState, newState, 0);
-    }
-
-    public void setFeedItems(int state, long feedId) {
-        setFeedItems(Integer.MIN_VALUE, state, feedId);
     }
 
     public void setFeedItems(int oldState, int newState, long feedId) {
