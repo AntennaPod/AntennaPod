@@ -1866,9 +1866,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                     .getSystemService(Context.UI_MODE_SERVICE);
             if (UserPreferences.getHardwareForwardButton() == KeyEvent.KEYCODE_MEDIA_NEXT
+                    || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
-                // TODO: Maybe always skip on Android 12+ due to bug addressed above?
-                //  Otherwise, this would always fast forward and never skip without using a hardware button.
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);
