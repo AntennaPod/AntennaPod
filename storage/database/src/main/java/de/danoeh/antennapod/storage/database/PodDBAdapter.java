@@ -448,8 +448,8 @@ public class PodDBAdapter {
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
-        values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
-        values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
+        values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilterRaw());
+        values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilterRaw());
         values.put(KEY_MINIMAL_DURATION_FILTER, prefs.getFilter().getMinimalDurationFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_TAGS, prefs.getTagsAsString());

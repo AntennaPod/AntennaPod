@@ -191,6 +191,7 @@
         <item quantity="other">%d subscriptions updated.</item>
     </plurals>
     <string name="edit_tags">Edit tags</string>
+    <string name="add_tag">Add tag</string>
     <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
 
@@ -694,10 +695,10 @@
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
-    <string name="episode_filters_include">Include</string>
-    <string name="episode_filters_exclude">Exclude</string>
-    <string name="episode_filters_duration">Minimal Duration (in minutes)</string>
-    <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
+    <string name="episode_filters_include">Included words</string>
+    <string name="episode_filters_exclude">Excluded words</string>
+    <string name="add_word">Add word</string>
+    <string name="episode_filters_duration">Minimal Duration</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
