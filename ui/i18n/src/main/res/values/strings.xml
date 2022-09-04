@@ -698,7 +698,7 @@
     <string name="episode_filters_include">Included words</string>
     <string name="episode_filters_exclude">Excluded words</string>
     <string name="add_word">Add word</string>
-    <string name="episode_filters_duration">Minimal Duration</string>
+    <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
