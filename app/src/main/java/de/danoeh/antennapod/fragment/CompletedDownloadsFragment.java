@@ -104,6 +104,7 @@ public class CompletedDownloadsFragment extends Fragment
         speedDialView.removeActionItemById(R.id.mark_read_batch);
         speedDialView.removeActionItemById(R.id.mark_unread_batch);
         speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.remove_all_inbox_item);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {

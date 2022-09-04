@@ -239,6 +239,10 @@
         <item quantity="one">%d episode removed from queue.</item>
         <item quantity="other">%d episodes removed from queue.</item>
     </plurals>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d episode removed from inbox.</item>
+        <item quantity="other">%d episodes removed from inbox.</item>
+    </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>

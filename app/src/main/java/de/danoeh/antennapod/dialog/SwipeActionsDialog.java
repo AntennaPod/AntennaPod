@@ -60,13 +60,15 @@ public class SwipeActionsDialog {
         switch (tag) {
             case InboxFragment.TAG:
                 forFragment = context.getString(R.string.inbox_label);
-                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.TOGGLE_PLAYED)).toList();
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.TOGGLE_PLAYED)
+                        && !a.getId().equals(SwipeAction.DELETE)).toList();
                 break;
             case AllEpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
                 break;
             case CompletedDownloadsFragment.TAG:
                 forFragment = context.getString(R.string.downloads_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
                 break;
             case FeedItemlistFragment.TAG:
                 forFragment = context.getString(R.string.feeds_label);
