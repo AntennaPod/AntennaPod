@@ -1885,6 +1885,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSetPlaybackSpeed(float speed) {
             Log.d(TAG, "onSetPlaybackSpeed()");
+            PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
+            if (currentMediaType == MediaType.VIDEO) {
+                UserPreferences.setVideoPlaybackSpeed(speed);
+            } else {
+                UserPreferences.setPlaybackSpeed(speed);
+            }
             setSpeed(speed);
         }
 
@@ -1912,8 +1918,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
                 onSkipToNext();
             } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
-                // TODO: Wire up this action to change the playback speed
-                Log.d(TAG, "CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED not yet implemented");
+                List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
+                int speedPosition = selectedSpeeds.indexOf(mediaPlayer.getPlaybackSpeed());
+
+                float newSpeed;
+                if (speedPosition == selectedSpeeds.size() - 1) {
+                    // This is the last element. Wrap instead of going over the size of the list.
+                    newSpeed = selectedSpeeds.get(0);
+                } else {
+                    // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the list.
+                    newSpeed = selectedSpeeds.get(speedPosition + 1);
+                }
+                onSetPlaybackSpeed(newSpeed);
             }
         }
     };
