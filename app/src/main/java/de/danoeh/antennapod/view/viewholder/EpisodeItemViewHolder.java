@@ -220,6 +220,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                 .withPlaceholderView(placeholder)
                 .withCoverView(cover)
                 .load();
+        hideSeparatorIfNecessary();
     }
 
     private void updateDuration(PlaybackPositionEvent event) {

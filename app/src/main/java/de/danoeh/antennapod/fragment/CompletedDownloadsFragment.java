@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,12 +57,12 @@ public class CompletedDownloadsFragment extends Fragment
     public static final String TAG = "DownloadsFragment";
     public static final String ARG_SHOW_LOGS = "show_logs";
     private static final String KEY_UP_ARROW = "up_arrow";
+    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
 
     private long[] runningDownloads = new long[0];
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
     private EpisodeItemListRecyclerView recyclerView;
-    private ProgressBar progressBar;
     private Disposable disposable;
     private EmptyViewHandler emptyView;
     private boolean displayUpArrow;
@@ -91,11 +92,12 @@ public class CompletedDownloadsFragment extends Fragment
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
+        int previousEpisodesCount = getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE)
+                .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
+        adapter.setDummyViews(Math.max(1, previousEpisodesCount));
         recyclerView.setAdapter(adapter);
         swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-        progressBar = root.findViewById(R.id.progLoading);
-        progressBar.setVisibility(View.VISIBLE);
 
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
@@ -159,6 +161,9 @@ public class CompletedDownloadsFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
+        getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE).edit()
+                .putInt(PREF_PREVIOUS_EPISODE_COUNT, adapter.getItemCount())
+                .apply();
     }
 
     @Override
@@ -291,11 +296,16 @@ public class CompletedDownloadsFragment extends Fragment
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> {
-            items = result;
-            adapter.updateItems(result);
-            progressBar.setVisibility(View.GONE);
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        .subscribe(
+                result -> {
+                    items = result;
+                    adapter.setDummyViews(0);
+                    adapter.updateItems(result);
+                }, error -> {
+                    adapter.setDummyViews(0);
+                    adapter.updateItems(Collections.emptyList());
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
     @Override

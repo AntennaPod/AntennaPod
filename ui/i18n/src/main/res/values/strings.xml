@@ -146,7 +146,6 @@
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
-    <string name="loading_more">Loading more…</string>
     <string name="episode_notification">Episode Notifications</string>
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
