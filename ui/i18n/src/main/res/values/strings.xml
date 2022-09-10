@@ -695,9 +695,9 @@
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
-    <string name="episode_filters_include">Included words</string>
-    <string name="episode_filters_exclude">Excluded words</string>
-    <string name="add_word">Add word</string>
+    <string name="add_term">Add Term</string>
+    <string name="exclude_terms">Exclude episodes containing any of the terms below</string>
+    <string name="include_terms">Include only episodes containing any of the terms below</string>
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>

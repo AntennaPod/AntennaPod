@@ -4,12 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-
 import androidx.appcompat.app.AlertDialog;
-
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.textfield.TextInputLayout;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SimpleChipAdapter;
 import de.danoeh.antennapod.databinding.EpisodeFilterDialogBinding;
@@ -23,14 +19,11 @@ import java.util.List;
  */
 public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
     private final EpisodeFilterDialogBinding viewBinding;
-    private final List<String> includedWords;
-    private final List<String> excludedWords;
+    private final List<String> termList;
 
     public EpisodeFilterDialog(Context context, FeedFilter filter) {
         super(context);
         viewBinding = EpisodeFilterDialogBinding.inflate(LayoutInflater.from(context));
-        includedWords = filter.getIncludeFilter();
-        excludedWords = filter.getExcludeFilter();
 
         setTitle(R.string.episode_filters_label);
         setView(viewBinding.getRoot());
@@ -41,36 +34,43 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
             viewBinding.episodeFilterDurationText
                     .setText(String.valueOf(filter.getMinimalDurationFilter() / 60));
         }
-        setupWordsList(viewBinding.excludedWordsRecycler, viewBinding.newExcludedWordTextInput, excludedWords);
-        setupWordsList(viewBinding.includedWordsRecycler, viewBinding.newIncludedWordTextInput, includedWords);
+
+        if (filter.excludeOnly()) {
+            termList = filter.getExcludeFilter();
+            viewBinding.excludeRadio.setChecked(true);
+        } else {
+            termList = filter.getIncludeFilter();
+            viewBinding.includeRadio.setChecked(true);
+        }
+        setupWordsList();
 
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, this::onConfirmClick);
     }
 
-    private void setupWordsList(RecyclerView recyclerView, TextInputLayout textInput, List<String> words) {
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(getContext(), 4));
+    private void setupWordsList() {
+        viewBinding.termsRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        viewBinding.termsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4));
         SimpleChipAdapter adapter = new SimpleChipAdapter(getContext()) {
             @Override
             protected List<String> getChips() {
-                return words;
+                return termList;
             }
 
             @Override
             protected void onRemoveClicked(int position) {
-                words.remove(position);
+                termList.remove(position);
                 notifyDataSetChanged();
             }
         };
-        recyclerView.setAdapter(adapter);
-        textInput.setEndIconOnClickListener(v -> {
-            String newWord = textInput.getEditText().getText().toString().replace("\"", "").trim();
-            if (TextUtils.isEmpty(newWord) || words.contains(newWord)) {
+        viewBinding.termsRecycler.setAdapter(adapter);
+        viewBinding.termsTextInput.setEndIconOnClickListener(v -> {
+            String newWord = viewBinding.termsTextInput.getEditText().getText().toString().replace("\"", "").trim();
+            if (TextUtils.isEmpty(newWord) || termList.contains(newWord)) {
                 return;
             }
-            words.add(newWord);
-            textInput.getEditText().setText("");
+            termList.add(newWord);
+            viewBinding.termsTextInput.getEditText().setText("");
             adapter.notifyDataSetChanged();
         });
     }
@@ -88,7 +88,14 @@ public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
                 // Do not change anything on error
             }
         }
-        onConfirmed(new FeedFilter(toFilterString(includedWords), toFilterString(excludedWords), minimalDuration));
+        String excludeFilter = "";
+        String includeFilter = "";
+        if (viewBinding.includeRadio.isChecked()) {
+            includeFilter = toFilterString(termList);
+        } else {
+            excludeFilter = toFilterString(termList);
+        }
+        onConfirmed(new FeedFilter(includeFilter, excludeFilter, minimalDuration));
     }
 
     private String toFilterString(List<String> words) {
