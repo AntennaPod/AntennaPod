@@ -1271,15 +1271,12 @@ public class PodDBAdapter {
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
         String whereRead;
         switch (setting) {
-            case SHOW_NEW_UNPLAYED_SUM:
-                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW +
-                        " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
-                break;
             case SHOW_NEW:
                 whereRead = KEY_READ + "=" + FeedItem.NEW;
                 break;
             case SHOW_UNPLAYED:
-                whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
+                        + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
                 whereRead = KEY_DOWNLOADED + "=1";
