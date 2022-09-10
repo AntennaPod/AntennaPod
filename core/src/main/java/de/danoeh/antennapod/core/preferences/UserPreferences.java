@@ -61,8 +61,7 @@ public class UserPreferences {
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
-    public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
-    private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
+    public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
 
@@ -137,6 +136,7 @@ public class UserPreferences {
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
+    public static final String DEFAULT_PAGE_REMEMBER = "remember";
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -901,29 +901,12 @@ public class UserPreferences {
         return getUpdateTimeOfDay().length == 2;
     }
 
-    public enum BackButtonBehavior {
-        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_PAGE
+    public static String getDefaultPage() {
+        return prefs.getString(PREF_DEFAULT_PAGE, "HomeFragment");
     }
 
-    public static BackButtonBehavior getBackButtonBehavior() {
-        switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
-            case "drawer": return BackButtonBehavior.OPEN_DRAWER;
-            case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
-            case "prompt": return BackButtonBehavior.SHOW_PROMPT;
-            case "page": return BackButtonBehavior.GO_TO_PAGE;
-            case "default": // Deliberate fall-through
-            default: return BackButtonBehavior.DEFAULT;
-        }
-    }
-
-    public static String getBackButtonGoToPage() {
-        return prefs.getString(PREF_BACK_BUTTON_GO_TO_PAGE, "QueueFragment");
-    }
-
-    public static void setBackButtonGoToPage(String tag) {
-        prefs.edit()
-                .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
-                .apply();
+    public static void setDefaultPage(String defaultPage) {
+        prefs.edit().putString(PREF_DEFAULT_PAGE, defaultPage).apply();
     }
 
     public static boolean timeRespectsSpeed() {
