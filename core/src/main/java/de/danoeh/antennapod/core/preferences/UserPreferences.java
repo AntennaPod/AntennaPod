@@ -61,7 +61,7 @@ public class UserPreferences {
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
-    private static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
+    public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
 

@@ -48,7 +48,7 @@ public class ShareDialogTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
-        EspressoTestUtils.setLastNavFragment(AllEpisodesFragment.TAG);
+        EspressoTestUtils.setLaunchScreen(AllEpisodesFragment.TAG);
         UITestUtils uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
         uiTestUtils.addLocalFeedData(true);
