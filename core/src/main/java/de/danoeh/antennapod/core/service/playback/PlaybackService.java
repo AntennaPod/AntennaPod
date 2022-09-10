@@ -848,12 +848,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
             }
 
-            // Trigger an update to the Quick Settings tile (see QuickSettingsTileService.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                TileService.requestListeningState(
-                        getApplicationContext(),
-                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class.getName())
-                );
+                TileService.requestListeningState(getApplicationContext(),
+                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);

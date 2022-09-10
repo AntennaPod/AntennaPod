@@ -21,9 +21,8 @@ public class QuickSettingsTileService extends TileService {
      * Logging tag
      * Missing final 'e' because of max 23 characters for log tags
      */
-    private static final String TAG = "QuickSettingsTileServic";
+    private static final String TAG = "QuickSettingsTileSvc";
 
-    // Initialize and update status when tile is added
     @Override
     public void onTileAdded() {
         super.onTileAdded();
@@ -48,28 +47,22 @@ public class QuickSettingsTileService extends TileService {
         updateTile();
     }
 
-    // Update tile status on binding
-    // (Without this, the tile may not be in the correct state after boot)
+    // Without this, the tile may not be in the correct state after boot
     @Override
     public IBinder onBind(Intent intent) {
-        TileService.requestListeningState(this,
-                new ComponentName(this, QuickSettingsTileService.class));
+        TileService.requestListeningState(this, new ComponentName(this, QuickSettingsTileService.class));
         return super.onBind(intent);
     }
 
-    // Change the active/inactive state of the tile to match current playback status
     public void updateTile() {
         Tile qsTile = getQsTile();
         if (qsTile == null) {
             Log.d(TAG, "Ignored call to update QS tile: getQsTile() returned null.");
         } else {
-            // Get current playback status
             boolean isPlaying = PlaybackService.isRunning
                     && PlaybackPreferences.getCurrentPlayerStatus()
                         == PlaybackPreferences.PLAYER_STATUS_PLAYING;
-            // Change the active/inactive state of the tile
             qsTile.setState(isPlaying ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
-            // Apply the above changes
             qsTile.updateTile();
         }
     }
