@@ -17,10 +17,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class QuickSettingsTileService extends TileService {
-    /**
-     * Logging tag
-     * Missing final 'e' because of max 23 characters for log tags
-     */
+
     private static final String TAG = "QuickSettingsTileSvc";
 
     @Override
@@ -29,7 +26,6 @@ public class QuickSettingsTileService extends TileService {
         updateTile();
     }
 
-    // Play/pause playback by faking a Media Button press when clicking the tile
     @Override
     public void onClick() {
         super.onClick();
