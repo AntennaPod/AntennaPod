@@ -171,7 +171,7 @@ public abstract class EpisodesListFragment extends Fragment
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
 
-        swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
+        swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
