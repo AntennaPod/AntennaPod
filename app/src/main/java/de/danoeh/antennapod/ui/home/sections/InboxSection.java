@@ -22,7 +22,9 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import io.reactivex.Observable;
@@ -59,6 +61,11 @@ public class InboxSection extends HomeSection {
         };
         adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
+
+        SwipeActions swipeActions = new SwipeActions(this, InboxFragment.TAG);
+        swipeActions.attachTo(viewBinding.recyclerView);
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
+
         loadItems();
         return view;
     }
