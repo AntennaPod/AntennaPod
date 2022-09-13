@@ -5,6 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.dialog.SwipeActionsDialog;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
@@ -13,6 +14,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 public class SwipePreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SWIPE_QUEUE = "prefSwipeQueue";
     private static final String PREF_SWIPE_INBOX = "prefSwipeInbox";
+    private static final String PREF_SWIPE_EPISODES = "prefSwipeEpisodes";
     private static final String PREF_SWIPE_DOWNLOADS = "prefSwipeDownloads";
     private static final String PREF_SWIPE_FEED = "prefSwipeFeed";
 
@@ -26,6 +28,10 @@ public class SwipePreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_SWIPE_INBOX).setOnPreferenceClickListener(preference -> {
             new SwipeActionsDialog(requireContext(), InboxFragment.TAG).show(() -> { });
+            return true;
+        });
+        findPreference(PREF_SWIPE_EPISODES).setOnPreferenceClickListener(preference -> {
+            new SwipeActionsDialog(requireContext(), AllEpisodesFragment.TAG).show(() -> { });
             return true;
         });
         findPreference(PREF_SWIPE_DOWNLOADS).setOnPreferenceClickListener(preference -> {
