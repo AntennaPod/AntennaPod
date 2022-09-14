@@ -51,7 +51,7 @@ import java.util.List;
 public class OpmlImportActivity extends AppCompatActivity {
     private static final String TAG = "OpmlImportBaseActivity";
     @Nullable private Uri uri;
-    OpmlSelectionBinding viewBinding;
+    private OpmlSelectionBinding viewBinding;
     private ArrayAdapter<String> listAdapter;
     private MenuItem selectAll;
     private MenuItem deselectAll;

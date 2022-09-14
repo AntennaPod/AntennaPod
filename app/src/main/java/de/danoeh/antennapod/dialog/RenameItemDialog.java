@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.View;
+import android.view.LayoutInflater;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
@@ -37,16 +37,15 @@ public class RenameItemDialog {
             return;
         }
 
-        View content = View.inflate(activity, R.layout.edit_text_dialog, null);
-        EditTextDialogBinding alertViewBinding = EditTextDialogBinding.bind(content);
+        final EditTextDialogBinding binding = EditTextDialogBinding.inflate(LayoutInflater.from(activity));
         String title = feed != null ? feed.getTitle() : drawerItem.getTitle();
 
-        alertViewBinding.urlEditText.setText(title);
+        binding.urlEditText.setText(title);
         AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setView(content)
+                .setView(binding.getRoot())
                 .setTitle(feed != null ? R.string.rename_feed_label : R.string.rename_tag_label)
                 .setPositiveButton(android.R.string.ok, (d, input) -> {
-                    String newTitle = alertViewBinding.urlEditText.getText().toString();
+                    String newTitle = binding.urlEditText.getText().toString();
                     if (feed != null) {
                         feed.setCustomTitle(newTitle);
                         DBWriter.setFeedCustomTitle(feed);
@@ -60,7 +59,7 @@ public class RenameItemDialog {
 
         // To prevent cancelling the dialog on button click
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
-                (view) -> alertViewBinding.urlEditText.setText(title));
+                (view) -> binding.urlEditText.setText(title));
     }
 
     private void renameTag(String title) {
