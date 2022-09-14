@@ -106,7 +106,7 @@ public abstract class WidgetUpdater {
                     views.setImageViewBitmap(R.id.imgvCover, icon);
                 } catch (Throwable tr2) {
                     Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
                 }
             }
 
@@ -151,7 +151,7 @@ public abstract class WidgetUpdater {
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
-            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_widget_play);
             views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_play);
         }

@@ -40,7 +40,7 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher_round"
+                android:src="@mipmap/ic_launcher"
                 android:importantForAccessibility="no"
                 android:layout_margin="12dp" />
 
