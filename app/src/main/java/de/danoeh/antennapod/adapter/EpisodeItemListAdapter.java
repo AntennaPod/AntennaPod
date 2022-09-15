@@ -70,7 +70,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         if (pos >= episodes.size()) {
+            beforeBindViewHolder(holder, pos);
             holder.bindDummy();
+            afterBindViewHolder(holder, pos);
+            holder.hideSeparatorIfNecessary();
             return;
         }
 

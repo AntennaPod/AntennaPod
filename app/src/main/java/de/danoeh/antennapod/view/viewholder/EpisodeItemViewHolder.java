@@ -199,6 +199,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindDummy() {
+        item = new FeedItem();
         container.setAlpha(0.1f);
         secondaryActionIcon.setImageDrawable(null);
         isInbox.setVisibility(View.VISIBLE);
@@ -215,12 +216,13 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         size.setText("");
         itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         placeholder.setText("");
-        new CoverLoader(activity)
-                .withResource(ThemeUtils.getDrawableFromAttr(activity, android.R.attr.textColorSecondary))
-                .withPlaceholderView(placeholder)
-                .withCoverView(cover)
-                .load();
-        hideSeparatorIfNecessary();
+        if (coverHolder.getVisibility() == View.VISIBLE) {
+            new CoverLoader(activity)
+                    .withResource(ThemeUtils.getDrawableFromAttr(activity, android.R.attr.textColorSecondary))
+                    .withPlaceholderView(placeholder)
+                    .withCoverView(cover)
+                    .load();
+        }
     }
 
     private void updateDuration(PlaybackPositionEvent event) {
