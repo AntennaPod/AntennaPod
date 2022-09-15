@@ -59,7 +59,7 @@ public class ShareDialogTest {
         onDrawerItem(withText(R.string.episodes_label)).perform(click());
 
         Matcher<View> allEpisodesMatcher;
-        allEpisodesMatcher = Matchers.allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
+        allEpisodesMatcher = Matchers.allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, click()));
         onView(first(EspressoTestUtils.actionBarOverflow())).perform(click());
