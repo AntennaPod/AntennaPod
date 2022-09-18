@@ -76,6 +76,7 @@
     <string name="drawer_feed_counter_inbox">Number of episodes in the inbox</string>
     <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
     <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">Number of downloaded and unplayed episodes</string>
     <string name="drawer_feed_counter_none">None</string>
 
     <!-- Bug report activity -->
