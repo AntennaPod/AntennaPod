@@ -28,25 +28,24 @@
         android:layout_height="wrap_content"
         android:text="@string/feed_folders_include_root" />
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newTagTextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_add"
+        app:endIconContentDescription="@string/add_tag"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <AutoCompleteTextView
             android:id="@+id/newTagEditText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="16dp"
             android:inputType="text"
             android:ems="10" />
 
-        <ImageButton
-            android:id="@+id/newTagButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_add" />
-
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

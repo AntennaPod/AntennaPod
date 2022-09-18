@@ -1,60 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <RadioGroup
-        android:id="@+id/radio_filter_group"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radio_filter_include"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/episode_filters_include" />
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio_filter_exclude"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/includeRadio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/include_terms" />
+
+            <RadioButton
+                android:id="@+id/excludeRadio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/exclude_terms" />
+
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/termsRecycler"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/episode_filters_exclude" />
+            tools:itemCount="2" />
 
-    </RadioGroup>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/termsTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_add"
+            app:endIconContentDescription="@string/add_term"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/etxtEpisodeFilterText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:cursorVisible="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:hint="@string/episode_filters_hint"
-        android:lines="8"
-        android:maxLines="20"
-        android:minLines="1"
-        android:scrollbars="vertical" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:singleLine="true" />
 
-    <CheckBox
-        android:id="@+id/checkbox_filter_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/episode_filters_duration" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etxtEpisodeFilterDurationText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:cursorVisible="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:inputType="numberSigned"
-        android:lines="1" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <CheckBox
+                android:id="@+id/durationCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/exclude_episodes_shorter_than" />
+
+            <EditText
+                android:id="@+id/episodeFilterDurationText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:cursorVisible="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:inputType="numberSigned"
+                android:lines="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_minutes" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
