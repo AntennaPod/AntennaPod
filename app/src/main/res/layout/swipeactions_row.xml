@@ -45,15 +45,15 @@
 
     </RelativeLayout>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/background_elevated" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/previewContainer"
         android:layout_width="match_parent"
         android:layout_height="76dp"
+        android:background="?attr/background_color"
         android:gravity="center"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
@@ -76,9 +76,8 @@
 
     </LinearLayout>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/background_elevated" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

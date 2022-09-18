@@ -16,12 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -88,7 +89,6 @@ public class MainActivity extends CastEnabledActivity {
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private View navDrawer;
     private LockableBottomSheetBehavior sheetBehavior;
-    private long lastBackButtonPressTime = 0;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
 
@@ -107,6 +107,7 @@ public class MainActivity extends CastEnabledActivity {
         if (savedInstanceState != null) {
             ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
         }
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
@@ -117,17 +118,21 @@ public class MainActivity extends CastEnabledActivity {
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
-            String lastFragment = NavDrawerFragment.getLastNavFragment(this);
-            if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
-                loadFragment(lastFragment, null);
+            if (!UserPreferences.DEFAULT_PAGE_REMEMBER.equals(UserPreferences.getDefaultPage())) {
+                loadFragment(UserPreferences.getDefaultPage(), null);
             } else {
-                try {
-                    loadFeedFragmentById(Integer.parseInt(lastFragment), null);
-                } catch (NumberFormatException e) {
-                    // it's not a number, this happens if we removed
-                    // a label from the NAV_DRAWER_TAGS
-                    // give them a nice default...
-                    loadFragment(QueueFragment.TAG, null);
+                String lastFragment = NavDrawerFragment.getLastNavFragment(this);
+                if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
+                    loadFragment(lastFragment, null);
+                } else {
+                    try {
+                        loadFeedFragmentById(Integer.parseInt(lastFragment), null);
+                    } catch (NumberFormatException e) {
+                        // it's not a number, this happens if we removed
+                        // a label from the NAV_DRAWER_TAGS
+                        // give them a nice default...
+                        loadFragment(HomeFragment.TAG, null);
+                    }
                 }
             }
         }
@@ -143,9 +148,15 @@ public class MainActivity extends CastEnabledActivity {
         PreferenceUpgrader.checkUpgrades(this);
         View bottomSheet = findViewById(R.id.audioplayerFragment);
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
-        sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
+        sheetBehavior.setPeekHeight(playerHeight + getBottomInset());
     }
 
     /**
@@ -197,7 +208,7 @@ public class MainActivity extends CastEnabledActivity {
         }
     };
 
-    public void setupToolbarToggle(@NonNull Toolbar toolbar, boolean displayUpArrow) {
+    public void setupToolbarToggle(@NonNull MaterialToolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             if (drawerToggle != null) {
                 drawerLayout.removeDrawerListener(drawerToggle);
@@ -237,6 +248,11 @@ public class MainActivity extends CastEnabledActivity {
         return sheetBehavior;
     }
 
+    private int getBottomInset() {
+        WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(getWindow().getDecorView());
+        return insets == null ? 0 : insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+    }
+
     public void setPlayerVisible(boolean visible) {
         getBottomSheet().setLocked(!visible);
         if (visible) {
@@ -246,7 +262,8 @@ public class MainActivity extends CastEnabledActivity {
         }
         FragmentContainerView mainView = findViewById(R.id.main_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
-        params.setMargins(0, 0, 0, visible ? (int) getResources().getDimension(R.dimen.external_player_height) : 0);
+        int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
+        params.setMargins(0, 0, 0, getBottomInset() + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
@@ -467,36 +484,12 @@ public class MainActivity extends CastEnabledActivity {
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {
-            switch (UserPreferences.getBackButtonBehavior()) {
-                case OPEN_DRAWER:
-                    if (drawerLayout != null) { // Tablet layout does not have drawer
-                        drawerLayout.openDrawer(navDrawer);
-                    }
-                    break;
-                case SHOW_PROMPT:
-                    new AlertDialog.Builder(this)
-                        .setMessage(R.string.close_prompt)
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
-                        .setNegativeButton(R.string.no, null)
-                        .setCancelable(false)
-                        .show();
-                    break;
-                case DOUBLE_TAP:
-                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
-                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
-                        lastBackButtonPressTime = System.currentTimeMillis();
-                    } else {
-                        super.onBackPressed();
-                    }
-                    break;
-                case GO_TO_PAGE:
-                    if (NavDrawerFragment.getLastNavFragment(this).equals(UserPreferences.getBackButtonGoToPage())) {
-                        super.onBackPressed();
-                    } else {
-                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
-                    }
-                    break;
-                default: super.onBackPressed();
+            String toPage = UserPreferences.getDefaultPage();
+            if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
+                    || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
+                super.onBackPressed();
+            } else {
+                loadFragment(toPage, null);
             }
         }
     }

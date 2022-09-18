@@ -22,7 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
@@ -156,7 +156,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void showNoPodcastFoundError() {
-        runOnUiThread(() -> new AlertDialog.Builder(OnlineFeedViewActivity.this)
+        runOnUiThread(() -> new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
                 .setTitle(R.string.error_label)
                 .setMessage(R.string.null_value_podcast_error)
@@ -588,7 +588,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @UiThread
     private void showErrorDialog(String errorMsg, String details) {
         if (!isFinishing() && !isPaused) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
                 String total = errorMsg + "\n\n" + details;
@@ -662,7 +662,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             startFeedDownload(selectedUrl);
         };
 
-        AlertDialog.Builder ab = new AlertDialog.Builder(OnlineFeedViewActivity.this)
+        MaterialAlertDialogBuilder ab = new MaterialAlertDialogBuilder(OnlineFeedViewActivity.this)
                 .setTitle(R.string.feeds_label)
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> finish())

@@ -25,19 +25,14 @@
     <color name="non_square_icon_background">#22777777</color>
     <color name="seek_background_light">#90000000</color>
     <color name="seek_background_dark">#905B5B5B</color>
-    <color name="navigation_bar_divider_light">#1F000000</color>
 
     <color name="accent_light">#0078C2</color>
+    <color name="accent_light_alpha">#250078C2</color>
     <color name="accent_dark">#3D8BFF</color>
+    <color name="accent_dark_alpha">#253D8BFF</color>
     <color name="icon_background_gradient_start">#0ba2ff</color>
     <color name="icon_background_gradient_end">#0878ff</color>
 
     <color name="master_switch_background_light">#DDDDDD</color>
     <color name="master_switch_background_dark">#191919</color>
-
-    <!-- filter dialog -->
-    <color name="dialog_filter_clear_inactive_light">#666666</color>
-    <color name="dialog_filter_clear_inactive_dark">#bbbbbb</color>
-    <color name="dialog_filter_inactive_light">#eeeeee</color>
-    <color name="dialog_filter_inactive_dark">#555555</color>
 </resources>

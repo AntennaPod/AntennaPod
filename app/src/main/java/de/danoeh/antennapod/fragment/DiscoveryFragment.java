@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
@@ -103,7 +103,7 @@ public class DiscoveryFragment extends Fragment {
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         //Show information about the podcast when the list item is clicked

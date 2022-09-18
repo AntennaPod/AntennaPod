@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SimpleChipAdapter;
 import de.danoeh.antennapod.databinding.EpisodeFilterDialogBinding;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Displays a dialog with a text box for filtering episodes and two radio buttons for exclusion/inclusion
  */
-public abstract class EpisodeFilterDialog extends AlertDialog.Builder {
+public abstract class EpisodeFilterDialog extends MaterialAlertDialogBuilder {
     private final EpisodeFilterDialogBinding viewBinding;
     private final List<String> termList;
 

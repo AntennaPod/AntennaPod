@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -38,6 +38,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
     public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
+    private SettingsActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +50,12 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        final SettingsActivityBinding binding = SettingsActivityBinding.inflate(getLayoutInflater());
+        binding = SettingsActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.settingsContainer, new MainPreferencesFragment(), FRAGMENT_TAG)
+                    .replace(binding.settingsContainer.getId(), new MainPreferencesFragment(), FRAGMENT_TAG)
                     .commit();
         }
         Intent intent = getIntent();
@@ -121,7 +122,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
             startActivity(intent);
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.settingsContainer, fragment)
+            getSupportFragmentManager().beginTransaction()
+                    .replace(binding.settingsContainer.getId(), fragment)
                     .addToBackStack(getString(getTitleOfPage(screen))).commit();
         }
 
@@ -153,7 +155,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
     public void onSearchResultClicked(SearchPreferenceResult result) {
         int screen = result.getResourceFile();
         if (screen == R.xml.feed_settings) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
             builder.setTitle(R.string.feed_settings_label);
             builder.setMessage(R.string.pref_feed_settings_dialog_msg);
             builder.setPositiveButton(android.R.string.ok, null);

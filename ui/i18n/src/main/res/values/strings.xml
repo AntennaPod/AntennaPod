@@ -73,10 +73,10 @@
     <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
     <string name="drawer_feed_order_last_update">Sort by publication date</string>
     <string name="drawer_feed_order_most_played">Sort by number of played episodes</string>
-    <string name="drawer_feed_counter_inbox_unplayed">Number of unplayed episodes and episodes in the inbox</string>
     <string name="drawer_feed_counter_inbox">Number of episodes in the inbox</string>
     <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
     <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">Number of downloaded and unplayed episodes</string>
     <string name="drawer_feed_counter_none">None</string>
 
     <!-- Bug report activity -->
@@ -146,7 +146,6 @@
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
-    <string name="loading_more">Loading more…</string>
     <string name="episode_notification">Episode Notifications</string>
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
@@ -239,6 +238,10 @@
     <plurals name="removed_from_queue_batch_label">
         <item quantity="one">%d episode removed from queue.</item>
         <item quantity="other">%d episodes removed from queue.</item>
+    </plurals>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d episode removed from inbox.</item>
+        <item quantity="other">%d episodes removed from inbox.</item>
     </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>
@@ -518,16 +521,9 @@
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="behavior">Behavior</string>
-    <string name="pref_back_button_behavior_title">Back Button Behavior</string>
-    <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
-    <string name="back_button_default">Default</string>
-    <string name="back_button_open_drawer">Open navigation drawer</string>
-    <string name="back_button_double_tap">Double tap to exit</string>
-    <string name="back_button_show_prompt">Confirm to exit</string>
-    <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
-    <string name="double_tap_toast">Tap back button again to exit</string>
-    <string name="back_button_go_to_page">Go to page…</string>
-    <string name="back_button_go_to_page_title">Select page</string>
+    <string name="pref_default_page">Default Page</string>
+    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
     <string name="pref_filter_feed_title">Subscription Filter</string>

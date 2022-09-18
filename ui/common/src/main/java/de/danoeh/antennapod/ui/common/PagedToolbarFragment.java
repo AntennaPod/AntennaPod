@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.ui.common;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
  * All items share the same general menu items and are just allowed to show/hide them.
  */
 public abstract class PagedToolbarFragment extends Fragment {
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private ViewPager2 viewPager;
 
     /**
@@ -24,7 +24,7 @@ public abstract class PagedToolbarFragment extends Fragment {
         }
     }
 
-    protected void setupPagedToolbar(Toolbar toolbar, ViewPager2 viewPager) {
+    protected void setupPagedToolbar(MaterialToolbar toolbar, ViewPager2 viewPager) {
         this.toolbar = toolbar;
         this.viewPager = viewPager;
 

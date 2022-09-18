@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -39,8 +39,8 @@ public abstract class IntraFeedSortDialog {
     public void openDialog() {
         int idxCurrentSort = getCurrentSortOrderIndex();
 
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder =
+                new MaterialAlertDialogBuilder(context)
                         .setTitle(R.string.sort)
                         .setSingleChoiceItems(sortItems, idxCurrentSort, (dialog, idxNewSort) -> {
                             updateSort(sortValues[idxNewSort]);

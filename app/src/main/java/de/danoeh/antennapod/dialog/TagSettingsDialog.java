@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import de.danoeh.antennapod.R;
@@ -93,7 +93,7 @@ public class TagSettingsDialog extends DialogFragment {
             viewBinding.commonTagsInfo.setVisibility(View.VISIBLE);
         }
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setView(viewBinding.getRoot());
         dialog.setTitle(R.string.feed_tags_label);
         dialog.setPositiveButton(android.R.string.ok, (d, input) -> {

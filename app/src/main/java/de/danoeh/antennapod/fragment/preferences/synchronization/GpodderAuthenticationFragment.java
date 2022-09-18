@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.R;
@@ -62,7 +62,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(R.string.gpodnetauth_login_butLabel);
         dialog.setNegativeButton(R.string.cancel_label, null);
         dialog.setCancelable(false);

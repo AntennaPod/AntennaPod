@@ -18,7 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -74,13 +74,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Displays a list of FeedItems.
  */
 public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        Toolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
+        MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -142,7 +143,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         updateToolbar();
 
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
-        viewBinding.progLoading.setVisibility(View.VISIBLE);
+        adapter = new FeedItemListAdapter((MainActivity) getActivity());
+        adapter.setOnSelectModeListener(this);
+        adapter.setDummyViews(10);
+        viewBinding.recyclerView.setAdapter(adapter);
+        swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
+
         ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
             @Override
@@ -221,10 +227,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
-        if (adapter != null) {
-            adapter.endSelectMode();
-        }
-        adapter = null;
+        adapter.endSelectMode();
     }
 
     @Override
@@ -294,9 +297,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (adapter == null) {
-            return;
-        }
         MainActivity activity = (MainActivity) getActivity();
         long[] ids = FeedItemUtil.getIds(feed.getItems());
         activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
@@ -315,9 +315,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (feed == null || feed.getItems() == null) {
             return;
-        } else if (adapter == null) {
-            loadItems();
-            return;
         }
         for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
@@ -335,7 +332,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         updateToolbar();
-        if (adapter != null && update.mediaIds.length > 0 && feed != null) {
+        if (update.mediaIds.length > 0 && feed != null) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
@@ -347,14 +344,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
-                        viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
-                if (holder != null && holder.isCurrentlyPlayingItem()) {
-                    holder.notifyPlaybackPositionUpdated(event);
-                    break;
-                }
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
+                    viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
+            if (holder != null && holder.isCurrentlyPlayingItem()) {
+                holder.notifyPlaybackPositionUpdated(event);
+                break;
             }
         }
     }
@@ -376,6 +371,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             speedDialBinding.fabSD.removeActionItemById(R.id.download_batch);
             speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
         }
+        speedDialBinding.fabSD.removeActionItemById(R.id.remove_all_inbox_item);
         speedDialBinding.fabSD.setVisibility(View.VISIBLE);
         updateToolbar();
     }
@@ -415,28 +411,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
         nextPageLoader.setLoadingState(DownloadService.isDownloadingFeeds());
-    }
-
-    private void displayList() {
-        if (getView() == null) {
-            Log.e(TAG, "Required root view is not yet created. Stop binding data to UI.");
-            return;
-        }
-        if (adapter == null) {
-            viewBinding.recyclerView.setAdapter(null);
-            adapter = new FeedItemListAdapter((MainActivity) getActivity());
-            adapter.setOnSelectModeListener(this);
-            viewBinding.recyclerView.setAdapter(adapter);
-            swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
-        }
-        viewBinding.progLoading.setVisibility(View.GONE);
-        if (feed != null) {
-            adapter.updateItems(feed.getItems());
-            swipeActions.setFilter(feed.getItemFilter());
-        }
-
-        updateToolbar();
-        updateSyncProgressBarVisibility();
     }
 
     private void refreshHeaderView() {
@@ -557,12 +531,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .subscribe(
                     result -> {
                         feed = result;
+                        swipeActions.setFilter(feed.getItemFilter());
                         refreshHeaderView();
-                        displayList();
+                        adapter.setDummyViews(0);
+                        adapter.updateItems(feed.getItems());
+                        updateToolbar();
+                        updateSyncProgressBarVisibility();
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
-                        displayList();
+                        adapter.setDummyViews(0);
+                        adapter.updateItems(Collections.emptyList());
+                        updateToolbar();
+                        updateSyncProgressBarVisibility();
                         Log.e(TAG, Log.getStackTraceString(error));
                     });
     }

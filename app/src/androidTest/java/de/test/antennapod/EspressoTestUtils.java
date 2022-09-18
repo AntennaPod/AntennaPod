@@ -172,11 +172,15 @@ public class EspressoTestUtils {
         RatingDialog.saveRated();
     }
 
-    public static void setLastNavFragment(String tag) {
+    public static void setLaunchScreen(String tag) {
         InstrumentationRegistry.getInstrumentation().getTargetContext()
                 .getSharedPreferences(NavDrawerFragment.PREF_NAME, Context.MODE_PRIVATE)
                 .edit()
                 .putString(NavDrawerFragment.PREF_LAST_FRAGMENT_TAG, tag)
+                .commit();
+        PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().getTargetContext())
+                .edit()
+                .putString(UserPreferences.PREF_DEFAULT_PAGE, UserPreferences.DEFAULT_PAGE_REMEMBER)
                 .commit();
     }
 
