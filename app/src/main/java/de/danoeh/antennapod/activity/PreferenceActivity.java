@@ -38,6 +38,7 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
     public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
+    private SettingsActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +50,12 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        final SettingsActivityBinding binding = SettingsActivityBinding.inflate(getLayoutInflater());
+        binding = SettingsActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.settingsContainer, new MainPreferencesFragment(), FRAGMENT_TAG)
+                    .replace(binding.settingsContainer.getId(), new MainPreferencesFragment(), FRAGMENT_TAG)
                     .commit();
         }
         Intent intent = getIntent();
@@ -121,7 +122,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
             startActivity(intent);
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.settingsContainer, fragment)
+            getSupportFragmentManager().beginTransaction()
+                    .replace(binding.settingsContainer.getId(), fragment)
                     .addToBackStack(getString(getTitleOfPage(screen))).commit();
         }
 
