@@ -13,7 +13,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -149,7 +149,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
     }
 
     private void chooseProviderAndLogin() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
 
         SynchronizationProviderViewData[] providers = SynchronizationProviderViewData.values();
@@ -199,8 +199,7 @@ public class SynchronizationPreferencesFragment extends PreferenceFragmentCompat
             updateScreen();
         });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.show();
     }
 
     private boolean isProviderSelected(@NonNull SynchronizationProviderViewData provider) {

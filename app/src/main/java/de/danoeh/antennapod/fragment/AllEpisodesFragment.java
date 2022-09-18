@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -88,8 +87,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private void updateFilterUi() {
         swipeActions.setFilter(getFilter());
         if (getFilter().getValues().length > 0) {
-            txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
-            Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
             emptyView.setMessage(R.string.no_all_episodes_filtered_label);
         } else {

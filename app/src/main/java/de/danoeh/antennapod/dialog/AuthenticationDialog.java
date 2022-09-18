@@ -4,14 +4,14 @@ import android.content.Context;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.AuthenticationDialogBinding;
 
 /**
  * Displays a dialog with a username and password text field and an optional checkbox to save username and preferences.
  */
-public abstract class AuthenticationDialog extends AlertDialog.Builder {
+public abstract class AuthenticationDialog extends MaterialAlertDialogBuilder {
     boolean passwordHidden = true;
 
     public AuthenticationDialog(Context context, int titleRes, boolean enableUsernameField,

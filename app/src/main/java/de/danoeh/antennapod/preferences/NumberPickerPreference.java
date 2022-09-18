@@ -2,6 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.preference.Preference;
 import android.text.InputFilter;
 import android.util.AttributeSet;
@@ -78,7 +79,7 @@ public class NumberPickerPreference extends Preference {
             return "";
         }});
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(getTitle())
                 .setView(view)
                 .setNegativeButton(android.R.string.cancel, null)

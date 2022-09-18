@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.gridlayout.widget.GridLayout;
@@ -52,7 +53,7 @@ public class SwipeActionsDialog {
         leftAction = actions.left;
         rightAction = actions.right;
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
 
         keys = SwipeActions.swipeActions;
 
@@ -128,7 +129,7 @@ public class SwipeActionsDialog {
     }
 
     private void showPicker(SwipeactionsRowBinding view, int direction) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == LEFT ? R.string.swipe_left : R.string.swipe_right);
 
         SwipeactionsPickerBinding picker = SwipeactionsPickerBinding.inflate(LayoutInflater.from(context));

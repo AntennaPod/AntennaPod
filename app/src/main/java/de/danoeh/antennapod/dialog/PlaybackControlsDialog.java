@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -54,7 +55,7 @@ public class PlaybackControlsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dialog = new AlertDialog.Builder(getContext())
+        dialog = new MaterialAlertDialogBuilder(getContext())
                 .setTitle(R.string.audio_controls)
                 .setView(R.layout.audio_controls)
                 .setPositiveButton(R.string.close_label, null).create();

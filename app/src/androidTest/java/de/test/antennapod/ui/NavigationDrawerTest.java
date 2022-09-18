@@ -81,11 +81,23 @@ public class NavigationDrawerTest {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
         activityRule.launchActivity(new Intent());
 
+        // home
+        openNavDrawer();
+        onDrawerItem(withText(R.string.home_label)).perform(click());
+        onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
+                withText(R.string.home_label)), 1000));
+
         // queue
         openNavDrawer();
         onDrawerItem(withText(R.string.queue_label)).perform(click());
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.queue_label)), 1000));
+
+        // Inbox
+        openNavDrawer();
+        onDrawerItem(withText(R.string.inbox_label)).perform(click());
+        onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
+                withText(R.string.inbox_label)), 1000));
 
         // episodes
         openNavDrawer();
@@ -143,6 +155,7 @@ public class NavigationDrawerTest {
         openNavDrawer();
         onDrawerItem(withText(R.string.queue_label)).perform(longClick());
         onView(withText(R.string.episodes_label)).perform(click());
+        onView(withId(R.id.contentPanel)).perform(swipeUp());
         onView(withText(R.string.playback_history_label)).perform(click());
         onView(withText(R.string.confirm_label)).perform(click());
 
@@ -160,8 +173,9 @@ public class NavigationDrawerTest {
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
 
-        onView(withText(R.string.downloads_label)).perform(click());
         onView(withText(R.string.queue_label)).perform(click());
+        onView(withId(R.id.contentPanel)).perform(swipeUp());
+        onView(withText(R.string.downloads_label)).perform(click());
         onView(withText(R.string.confirm_label)).perform(click());
 
         hidden = UserPreferences.getHiddenDrawerItems();
@@ -184,7 +198,7 @@ public class NavigationDrawerTest {
             onView(allOf(withText(title), isDisplayed())).perform(click());
 
             if (i == 3) {
-                onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
+                onView(withId(R.id.contentPanel)).perform(swipeUp());
             }
         }
 
@@ -206,6 +220,7 @@ public class NavigationDrawerTest {
         openNavDrawer();
 
         onView(first(withText(R.string.queue_label))).perform(longClick());
+        onView(withId(R.id.contentPanel)).perform(swipeUp());
         onView(first(withText(R.string.downloads_label))).perform(click());
         onView(withText(R.string.confirm_label)).perform(click());
 

@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
@@ -543,7 +543,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMediaPlayerError(PlayerErrorEvent event) {
-        final AlertDialog.Builder errorDialog = new AlertDialog.Builder(VideoplayerActivity.this);
+        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(VideoplayerActivity.this);
         errorDialog.setTitle(R.string.error_label);
         errorDialog.setMessage(event.getMessage());
         errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());

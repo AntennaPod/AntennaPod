@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -17,7 +17,7 @@ public class StreamingConfirmationDialog {
     }
 
     public void show() {
-        new AlertDialog.Builder(context)
+        new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.stream_label)
                 .setMessage(R.string.confirm_mobile_streaming_notification_message)
                 .setPositiveButton(R.string.confirm_mobile_streaming_button_once, (dialog, which) -> stream())

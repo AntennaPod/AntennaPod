@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.view.LayoutInflater;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -41,7 +42,7 @@ public class RenameItemDialog {
         String title = feed != null ? feed.getTitle() : drawerItem.getTitle();
 
         binding.urlEditText.setText(title);
-        AlertDialog dialog = new AlertDialog.Builder(activity)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(activity)
                 .setView(binding.getRoot())
                 .setTitle(feed != null ? R.string.rename_feed_label : R.string.rename_tag_label)
                 .setPositiveButton(android.R.string.ok, (d, input) -> {

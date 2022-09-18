@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +54,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,7 +70,7 @@ import java.util.Locale;
 /**
  * Shows all items in the queue.
  */
-public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener,
+public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener,
         EpisodeItemListAdapter.OnSelectModeListener {
     public static final String TAG = "QueueFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
@@ -78,7 +79,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private EpisodeItemListRecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
     private EmptyViewHandler emptyView;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private boolean displayUpArrow;
 
     private List<FeedItem> queue;
@@ -347,7 +348,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             if (!shouldShowLockWarning) {
                 setQueueLocked(true);
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                 builder.setTitle(R.string.lock_queue);
                 builder.setMessage(R.string.queue_lock_warning);
 
@@ -453,6 +454,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
+        recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
         recyclerAdapter = new QueueRecyclerAdapter((MainActivity) getActivity(), swipeActions) {
             @Override

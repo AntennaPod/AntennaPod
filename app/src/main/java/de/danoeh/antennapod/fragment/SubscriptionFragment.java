@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +29,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -69,7 +70,7 @@ import io.reactivex.schedulers.Schedulers;
  * Fragment for displaying feed subscriptions
  */
 public class SubscriptionFragment extends Fragment
-        implements Toolbar.OnMenuItemClickListener,
+        implements MaterialToolbar.OnMenuItemClickListener,
         SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
@@ -87,10 +88,9 @@ public class SubscriptionFragment extends Fragment
 
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
-    private FloatingActionButton subscriptionAddButton;
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
 
@@ -152,6 +152,7 @@ public class SubscriptionFragment extends Fragment
         setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
+        subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
         subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -164,7 +165,7 @@ public class SubscriptionFragment extends Fragment
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
 
-        subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
+        FloatingActionButton subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());

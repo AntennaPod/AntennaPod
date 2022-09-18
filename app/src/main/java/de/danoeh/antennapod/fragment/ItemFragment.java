@@ -296,7 +296,7 @@ public class ItemFragment extends Fragment {
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .transform(new FitCenter(),
-                        new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
+                        new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
         Glide.with(getActivity())

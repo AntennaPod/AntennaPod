@@ -4,6 +4,7 @@ import android.content.Context;
 
 import android.view.View;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,7 @@ public class ChooseDataFolderDialog {
     public static void showDialog(final Context context, Consumer<String> handlerFunc) {
 
         View content = View.inflate(context, R.layout.choose_data_folder_dialog, null);
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setView(content)
                 .setTitle(R.string.choose_data_directory)
                 .setMessage(R.string.choose_data_directory_message)
