@@ -1232,25 +1232,30 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         int currentModeType = uiModeManager.getCurrentModeType();
         Log.d(TAG, "UI Mode CurrentModeType = " + currentModeType);
 
+        // Always show rewind and forward actions and add the Wear extras to them if possible
+        PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
+                CUSTOM_ACTION_REWIND,
+                getString(R.string.rewind_label),
+                R.drawable.ic_notification_fast_rewind
+        );
+        WearMediaSession.addWearExtrasToAction(rewindBuilder);
+        sessionState.addCustomAction(rewindBuilder.build());
+
+        PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
+                CUSTOM_ACTION_FAST_FORWARD,
+                getString(R.string.fast_forward_label),
+                R.drawable.ic_notification_fast_forward
+        );
+        WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
+        sessionState.addCustomAction(fastForwardBuilder.build());
+
+        WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
+
         // Workaround bug in Android Auto custom actions described at https://issuetracker.google.com/issues/207389461 by checking for API 31+
         // as well.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || currentModeType == Configuration.UI_MODE_TYPE_CAR) {
             // On Android Auto, custom actions are added in the following order around the play button, if no default
             // actions are present: Near left, near right, far left, far right, additional actions panel
-            sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_REWIND,
-                            getString(R.string.rewind_label),
-                            R.drawable.ic_notification_fast_rewind
-                    ).build()
-            );
-            sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_FAST_FORWARD,
-                            getString(R.string.fast_forward_label),
-                            R.drawable.ic_notification_fast_forward
-                    ).build()
-            );
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
                             CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
@@ -1268,19 +1273,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             // Prevent next button from showing up unless we aren't showing the custom skip action
             capabilities |= PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
-        }
-
-        // Add custom actions for watches - currently a no-op
-        if (currentModeType == Configuration.UI_MODE_TYPE_WATCH) {
-            WearMediaSession.sessionStateAddActionForWear(sessionState,
-                    CUSTOM_ACTION_REWIND,
-                    getString(R.string.rewind_label),
-                    android.R.drawable.ic_media_rew);
-            WearMediaSession.sessionStateAddActionForWear(sessionState,
-                    CUSTOM_ACTION_FAST_FORWARD,
-                    getString(R.string.fast_forward_label),
-                    android.R.drawable.ic_media_ff);
-            WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
         }
 
         sessionState.setActions(capabilities);
