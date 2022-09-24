@@ -298,11 +298,14 @@ public final class DBTasks {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
 
-            // Add a new Feed
-            // all new feeds will have the most recent item marked as unplayed
-            FeedItem mostRecent = newFeed.getMostRecentItem();
-            if (mostRecent != null) {
-                mostRecent.setNew();
+            if (!UserPreferences.getSkipInboxSetting()) {
+                // All new feeds will have the most recent item placed in the
+                // Inbox (i.e. set as New), unless the "Skip Inbox" pref is
+                // turned on
+                FeedItem mostRecent = newFeed.getMostRecentItem();
+                if (mostRecent != null) {
+                    mostRecent.setNew();
+                }
             }
 
             resultFeed = newFeed;
@@ -388,14 +391,21 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    // only mark the item new if it was published after or at the same time
-                    // as the most recent item
-                    // (if the most recent date is null then we can assume there are no items
-                    // and this is the first, hence 'new')
-                    // New items that do not have a pubDate set are always marked as new
-                    if (item.getPubDate() == null || priorMostRecentDate == null
+                    // Only send the item to the Inbox if the if the "Skip
+                    // Inbox" preference is turned off and one of the following
+                    // is true:
+                    //
+                    //   1. The item was published after or at the same time as
+                    //      the most recent item
+                    //   2. The most recent date is null (i.e. no previous
+                    //      items and this is the first)
+                    //   3. The item has no pubDate
+                    //
+                    if (!UserPreferences.getSkipInboxSetting() && (
+                            item.getPubDate() == null
+                            || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())) {
+                            || priorMostRecentDate.equals(item.getPubDate()))) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();

@@ -510,6 +510,8 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_contribute">Mitwirken</string>
   <string name="pref_show_subscription_title">Abonnement-Titel anzeigen</string>
   <string name="pref_show_subscription_title_summary">Zeige den Titel des Abonnements unter dem Episodenbild an.</string>
+  <string name="pref_skip_inbox_title">Posteingang Überspringen</string>
+  <string name="pref_skip_inbox_sum">Neue Episoden nicht in den Posteingang ablegen</string>
   <!--About screen-->
   <string name="about_pref">Über</string>
   <string name="antennapod_version">AntennaPod-Version</string>

@@ -92,5 +92,11 @@
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
+        <SwitchPreferenceCompat
+                android:key="prefSkipInbox"
+                android:summary="@string/pref_skip_inbox_sum"
+                android:title="@string/pref_skip_inbox_title"
+                android:defaultValue="false"
+                android:enabled="true"/>
     </PreferenceCategory>
 </PreferenceScreen>
