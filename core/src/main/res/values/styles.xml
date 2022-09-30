@@ -166,6 +166,7 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimary">@color/icon_background_gradient_start</item>
         <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/icon_background_gradient_end</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
