@@ -456,6 +456,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         registerForContextMenu(recyclerView);
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
+        swipeActions = new QueueSwipeActions();
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.QUEUED));
+        swipeActions.attachTo(recyclerView);
+
         recyclerAdapter = new QueueRecyclerAdapter((MainActivity) getActivity(), swipeActions) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -474,10 +478,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
-
-        swipeActions = new QueueSwipeActions();
-        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.QUEUED));
-        swipeActions.attachTo(recyclerView);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -608,7 +608,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             int from = viewHolder.getBindingAdapterPosition();
             int to = target.getBindingAdapterPosition();
             Log.d(TAG, "move(" + from + ", " + to + ") in memory");
-            if (from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
+            if (queue == null || from >= queue.size() || to >= queue.size() || from < 0 || to < 0) {
                 return false;
             }
             queue.add(to, queue.remove(from));
