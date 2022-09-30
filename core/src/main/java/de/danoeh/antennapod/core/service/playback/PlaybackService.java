@@ -828,6 +828,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
+                    saveCurrentPosition(true, null, INVALID_TIME);
                     updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
