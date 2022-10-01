@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -84,6 +85,10 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     private MaterialToolbar toolbar;
 
     public static FeedInfoFragment newInstance(Feed feed) {
+        String oldUrl = feed.getDownload_url();
+        String newUrl = feed.getFile_url();
+        DBWriter.updateFeedDownloadURL(oldUrl, newUrl);
+
         FeedInfoFragment fragment = new FeedInfoFragment();
         Bundle arguments = new Bundle();
         arguments.putLong(EXTRA_FEED_ID, feed.getId());
