@@ -52,7 +52,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
-                            android:layout_margin="8dp"
+                            android:layout_margin="4dp"
                             android:padding="3dp"
                             app:srcCompat="@drawable/bg_circle" />
 
@@ -60,7 +60,7 @@
                             android:id="@+id/circularProgressBar"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_margin="8dp"
+                            android:layout_margin="4dp"
                             android:layout_gravity="bottom|end"
                             app:foregroundColor="?attr/colorOnPrimary" />
 
@@ -69,7 +69,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
-                            android:layout_margin="8dp"
+                            android:layout_margin="4dp"
                             android:padding="12dp"
                             android:clickable="true"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
