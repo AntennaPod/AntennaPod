@@ -47,11 +47,9 @@ android {
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
-            resValue "string", "application_id", "de.danoeh.antennapod.debug"
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
-            resValue "string", "application_id", "de.danoeh.antennapod"
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.releaseConfig
