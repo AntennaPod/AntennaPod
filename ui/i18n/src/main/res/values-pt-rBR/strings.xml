@@ -7,10 +7,12 @@
   <string name="add_feed_label">Adicionar podcast</string>
   <string name="episodes_label">Episódios</string>
   <string name="queue_label">Fila</string>
+  <string name="inbox_label">Caixa de entrada</string>
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="settings_label">Configurações</string>
   <string name="downloads_label">Downloads</string>
   <string name="open_autodownload_settings">Abrir as configurações</string>
+  <string name="downloads_log_label">Baixar relatório</string>
   <string name="subscriptions_label">Assinaturas</string>
   <string name="subscriptions_list_label">Lista de Assinaturas</string>
   <string name="cancel_download_label">Cancelar o download</string>
@@ -50,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por data de publicação</string>
   <string name="drawer_feed_order_most_played">Ordenar pelo número de episódios reproduzidos</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Número de episódios não reproduzidos e episódios na caixa de entrada</string>
+  <string name="drawer_feed_counter_inbox">Número de episódios na caixa de entrada</string>
   <string name="drawer_feed_counter_unplayed">Número de episódios não reproduzidos</string>
   <string name="drawer_feed_counter_downloaded">Número de episódios baixados</string>
   <string name="drawer_feed_counter_none">Nenhum</string>
@@ -136,6 +140,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Suas assinaturas têm novos episódios.</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Remover tudo da caixa de entrada</string>
+  <string name="removed_all_inbox_msg">Tudo removido da caixa de entrada</string>
+  <string name="remove_all_inbox_confirmation_msg">Por favor, confirme que você deseja remover tudo da caixa de entrada.</string>
+  <string name="multi_select_mark_played_confirmation">Por favor, confirme que você deseja marcar todos os itens selecionados como reproduzidos.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Por favor, confirme que você deseja marcar todos os itens selecionados como não reproduzidos.</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="show_feed_settings_label">Exibir configurações do podcast</string>
   <string name="feed_settings_label">Configurações do podcast</string>
@@ -183,6 +192,8 @@
     <item quantity="many">%d episódios baixados deletados.</item>
     <item quantity="other">%d episódios baixados deletados.</item>
   </plurals>
+  <string name="remove_inbox_label">Remover da caixa de entrada</string>
+  <string name="removed_inbox_label">Removido da caixa de entrada</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_played_label">Marcado como reproduzido</string>
   <string name="marked_as_unplayed_label">Marcado como não reproduzido</string>

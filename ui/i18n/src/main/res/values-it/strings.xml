@@ -740,7 +740,7 @@
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Includi la posizione di riproduzione</string>
   <string name="share_dialog_episode_website_label">Pagina web episodio</string>
-  <string name="share_dialog_for_social">Messaggio sociale</string>
+  <string name="share_dialog_for_social">Messaggio social</string>
   <string name="share_dialog_media_address">Indirizzo dei dati</string>
   <string name="share_dialog_media_file_label">File multimediale</string>
   <string name="share_starting_position_label">Inizia da</string>

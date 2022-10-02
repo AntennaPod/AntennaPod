@@ -7,10 +7,12 @@
   <string name="add_feed_label">Gehitu podcasta</string>
   <string name="episodes_label">Saioak</string>
   <string name="queue_label">Ilara</string>
+  <string name="inbox_label">Sarrera-erretilua</string>
   <string name="favorite_episodes_label">Gogokoak</string>
   <string name="settings_label">Ezarpenak</string>
   <string name="downloads_label">Deskargak</string>
   <string name="open_autodownload_settings">Ireki ezarpenak</string>
+  <string name="downloads_log_label">Deskargatu erregistroa</string>
   <string name="subscriptions_label">Harpidetzak</string>
   <string name="subscriptions_list_label">Harpidetza zerrenda</string>
   <string name="cancel_download_label">Deskarga ezeztatu</string>
@@ -50,6 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Antolatu alfabetikoki</string>
   <string name="drawer_feed_order_last_update">Antolatu argitaratze dataz</string>
   <string name="drawer_feed_order_most_played">Antolatu ikusitako saioen arabera</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Errepikatu gabeko kapituluen eta kapituluen kopurua sarrera-erretiluan</string>
+  <string name="drawer_feed_counter_inbox">Sarrerako erretiluan izandako kapituluen kopurua</string>
   <string name="drawer_feed_counter_unplayed">Entzun gabeko saioen zenbatekoa</string>
   <string name="drawer_feed_counter_downloaded">Deskargatutako saioen zenbatekoa</string>
   <string name="drawer_feed_counter_none">Bat ere ez</string>
@@ -130,6 +134,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Zure harpidetzak saio berriak ditu.</string>
   <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">Sarrerako erretilutik dena kendu</string>
+  <string name="removed_all_inbox_msg">Sarrera-erretilutik dena kendu da</string>
+  <string name="remove_all_inbox_confirmation_msg">Mesedez, baieztatu sarrera-erretilutik dena kendu nahi duzula.</string>
+  <string name="multi_select_mark_played_confirmation">Egiaztatu erreproduzitutzat hautatutako elementu guztiak markatu nahi dituzula.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Egiaztatu hautatutako elementu guztiak erreproduzitu gabekotzat markatu nahi dituzula.</string>
   <string name="show_info_label">Programaren informazioa</string>
   <string name="show_feed_settings_label">Erakutsi podcastaren ezarpenak</string>
   <string name="feed_settings_label">Podcastaren ezarpenak</string>
@@ -174,7 +183,10 @@
     <item quantity="one">deskargatutako kapitulu 1 ezabatu egin da</item>
     <item quantity="other">%d deskargatutako kapituluak ezabatu egin dira</item>
   </plurals>
+  <string name="remove_inbox_label">Kendu sarrera-erretilutik</string>
+  <string name="removed_inbox_label">Sarrera-erretilutik kenduta</string>
   <string name="mark_read_label">Markatu entzundakotzat</string>
+  <string name="toggle_played_label">Erreprodukzio-egoera txandakatu</string>
   <string name="marked_as_played_label">Entzundakotzat markatua</string>
   <string name="marked_as_unplayed_label">Ez entzundakotzat markatua</string>
   <string name="mark_read_no_media_label">Markatu iraurrita gisa</string>
@@ -304,11 +316,15 @@
   <string name="no_history_label">Saioa entzundakoan hemen azalduko da.</string>
   <string name="no_all_episodes_head_label">Saiorik ez</string>
   <string name="no_all_episodes_label">Podcast bat gehitzen duzunean saioak hemen azalduko dira.</string>
+  <string name="no_all_episodes_filtered_label">Saiatu iragazkia ezabatzen kapitulu gehiago ikusteko.</string>
+  <string name="no_inbox_head_label">Sarrerako erretiluan ez dago kapitulurik</string>
+  <string name="no_inbox_label">Kapitulu berriak iristen direnean, hemen agertuko dira. Orduan erabaki ahal izango duzu ea interesatzen zaizun ala ez.</string>
   <string name="no_subscriptions_head_label">Ez dago harpidetzarik</string>
   <string name="no_subscriptions_label">Podcast batean harpidetzeko, sakatu beheko \"gehi\" ikonoa.</string>
   <!--Preferences-->
   <string name="storage_pref">Biltegia</string>
   <string name="storage_sum">Ezabatze automatikoa, jaso, bidali</string>
+  <string name="statistics_moved">Estatistika-pantaila harpidetzen pantailara eraman da. Handik ireki dezakezu.</string>
   <string name="project_pref">Proiektua</string>
   <string name="synchronization_pref">Sinkronizazioa</string>
   <string name="synchronization_sum">Beste gailuekin sinkronizatu</string>
@@ -581,6 +597,7 @@
   <string name="gpodnetauth_encryption_warning">Pasahitza eta datuak ez daude enkriptaturik!</string>
   <string name="username_label">Erabioltzailea</string>
   <string name="password_label">Pasahitza</string>
+  <string name="gpodnet_description">Gpodder.net kode irekiko podcastak sinkronizatzeko zerbitzu bat da, zure zerbitzarian bertan instala dezakezuna. Gpodder.net AntennaPod proiektutik independentea da.</string>
   <string name="gpodnetauth_host">Ostalari izena</string>
   <string name="gpodnetauth_select_server">Aukeratu zerbitzaria</string>
   <string name="gpodnetauth_device_name">Gailuaren izena</string>
@@ -617,6 +634,7 @@
   <string name="status_downloading_label">Saioa deskargatzen ari da</string>
   <string name="in_queue_label">Saioa ilaran dago</string>
   <string name="is_favorite_label">Saioa gogokoa bezala markatu da</string>
+  <string name="is_inbox_label">Kapitulua sarrera-erretiluan dago</string>
   <string name="load_next_page_label">Hurrengo orria kargatu</string>
   <string name="position">Kokalekua: %1$s</string>
   <string name="apply_action">Aplikatu ekintza</string>

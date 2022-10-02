@@ -2,9 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
-  <string name="feeds_label">Cepyayınlar</string>
+  <string name="feeds_label">Podcast\'ler</string>
   <string name="statistics_label">İstatistikler</string>
-  <string name="add_feed_label">Cep yayını ekle</string>
+  <string name="add_feed_label">Podcast ekle</string>
   <string name="episodes_label">Bölümler</string>
   <string name="queue_label">Kuyruk</string>
   <string name="inbox_label">Gelen kutusu</string>
@@ -52,6 +52,7 @@
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
   <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
   <string name="drawer_feed_order_most_played">Oynatılan bölüm sayısına göre sırala</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Gelen kutusundaki oynatılmamış ve tüm bölümlerin sayısı</string>
   <string name="drawer_feed_counter_inbox">Gelen kutusundaki bölüm sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_downloaded">İndirilen bölümlerin sayısı</string>
@@ -91,6 +92,7 @@
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_delete_label">Bölümü Otomatik Sil</string>
   <string name="feed_volume_reduction">Ses azaltma</string>
+  <string name="feed_volume_reduction_summary">Bu Podcast\'in bölümleri için sesi kısın: %1$s</string>
   <string name="feed_volume_reduction_off">Kapalı</string>
   <string name="feed_volume_reduction_light">Az</string>
   <string name="feed_volume_reduction_heavy">Çok</string>
@@ -138,24 +140,24 @@
   <string name="multi_select_mark_played_confirmation">Tüm seçili olanları \"Çalındı\" olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="multi_select_mark_unplayed_confirmation">Tüm seçili olanları \"Çalınmadı\" olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
-  <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
-  <string name="feed_settings_label">Cepyayın ayarları</string>
-  <string name="rename_feed_label">Cepyayını yeniden adlandır</string>
-  <string name="remove_feed_label">Cepyayını kaldır</string>
+  <string name="show_feed_settings_label">Podcast ayarlarını göster</string>
+  <string name="feed_settings_label">Podcast ayarları</string>
+  <string name="rename_feed_label">Podcast\'i yeniden adlandır</string>
+  <string name="remove_feed_label">Podcast\'i kaldır</string>
   <string name="share_label">Paylaş</string>
   <string name="share_file_label">Dosyayı paylaş</string>
   <string name="share_rss_address_label">RSS adresi:</string>
   <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
-  <string name="feed_delete_confirmation_msg_batch">Lütfen seçmiş olduğunuz cepyayınlarını ve BÜTÜN bölümlerini (indirilmiş olanlar dahil) silmek istediğinizi onaylayın.</string>
+  <string name="feed_delete_confirmation_msg_batch">Lütfen seçmiş olduğunuz Podcastleri ve BÜTÜN bölümlerini (indirilmiş olanlar dahil) silmek istediğinizi onaylayın.</string>
   <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
-  <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
-  <string name="load_complete_feed">Tüm Cepyayınını yenile</string>
+  <string name="feed_remover_msg">Podcast kaldırılıyor</string>
+  <string name="load_complete_feed">Tüm Podcast\'i yenile</string>
   <string name="multi_select">Çoklu seçim</string>
   <string name="select_all_above">Üsttekilerin tümünü seç</string>
   <string name="select_all_below">Alttakilerin tümünü seç</string>
   <string name="filtered_label">Filtrelendi</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Son Yenileme başarısız oldu. Ayrıntıları görüntülemek için dokunun.</string>
-  <string name="open_podcast">Cep yayını aç</string>
+  <string name="open_podcast">Podcast\'i aç</string>
   <string name="please_wait_for_data">Please wait until the data is loaded</string>
   <string name="updates_disabled_label">Güncellemeler devre dışı</string>
   <plurals name="updated_feeds_batch_label">
@@ -164,7 +166,7 @@
   </plurals>
   <string name="edit_tags">Etiketleri düzenle</string>
   <string name="rename_tag_label">Etiketleri yeniden adlandır</string>
-  <string name="confirm_mobile_feed_refresh_dialog_message">Cepyayınlarını mobil veri üzerinden güncellemek ayarlarda varsayılan olarak kapalı.\n\nYine de güncellemek ister misiniz?</string>
+  <string name="confirm_mobile_feed_refresh_dialog_message">Mobil veri bağlantısı üzerinden Podcast\'lerin yenilenmesi ayarlarda devre dışı bırakılmıştır.\n\nYine de yenilemek istiyor musunuz?</string>
   <!--actions on feeditems-->
   <string name="download_label">İndir</string>
   <plurals name="downloading_batch_label">
@@ -184,6 +186,7 @@
   <string name="remove_inbox_label">Gelen kutusundan sil</string>
   <string name="removed_inbox_label">Gelen kutusundan silindi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
+  <string name="toggle_played_label">Oynatma durumunu değiştir</string>
   <string name="marked_as_played_label">Çalındı olarak işaretlendi</string>
   <string name="marked_as_unplayed_label">Çalınmadı olarak işaretlendi</string>
   <string name="mark_read_no_media_label">Okundu olarak işaretle</string>
@@ -250,12 +253,13 @@
   </plurals>
   <string name="completing">Tamamlanıyor...</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
-  <string name="download_notification_title_feeds">Cepyayınları güncelleniyor</string>
+  <string name="download_notification_title_feeds">Podcast güncelleniyor</string>
   <string name="download_notification_title_episodes">Bölümler indiriliyor</string>
   <string name="download_log_title_unknown">bilinmeyen başlık</string>
   <string name="download_type_feed">Besleme</string>
   <string name="download_type_media">Medya dosyası</string>
   <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
+  <string name="no_feed_url_podcast_found_by_search">Önerilen Podcast\'in bir RSS bağlantısı yoktu, AntennaPod eşleşebilecek bir Podcast buldu</string>
   <string name="authentication_notification_title">Yetkilendirme gerekiyor</string>
   <string name="authentication_notification_msg">İstediğiniz kaynak kullanıcı adı ve şifre istiyor</string>
   <string name="confirm_mobile_download_dialog_title">Mobil İndirmeyi Onaylayın</string>
@@ -292,7 +296,7 @@
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
   <string name="episode_title">Bölüm başlığı</string>
-  <string name="feed_title">Cepyayın bilgisi</string>
+  <string name="feed_title">Podcast bilgisi</string>
   <string name="random">Rastgele</string>
   <string name="smart_shuffle">Akıllı karıştırma</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
@@ -305,18 +309,18 @@
   <string name="no_items_label">Bir bölümü indirerek veya üzerine basılı tutup \\"Kuyruğa ekle\\" diyerek buraya ekleyebilirsiniz.</string>
   <string name="no_shownotes_label">Bu dosya herhangi bir bilgi notu içermiyor.</string>
   <string name="no_comp_downloads_head_label">No downloaded episodes</string>
-  <string name="no_comp_downloads_label">Cepyayını ayrıntıları sayfasından bölümleri indirebilirsiniz.</string>
+  <string name="no_comp_downloads_label">Podcast ayrıntıları sayfasından bölümleri indirebilirsiniz.</string>
   <string name="no_log_downloads_head_label">İndirme günlüğü yok</string>
   <string name="no_log_downloads_label">İndirme günlüğü olduğunda burada gözükecek.</string>
   <string name="no_history_head_label">Dinleme geçmişi yok</string>
   <string name="no_history_label">Bir bölüm dinledikten sonra burada gözükecek.</string>
   <string name="no_all_episodes_head_label">Bölüm yok</string>
-  <string name="no_all_episodes_label">Bir cepyayın ekledikten sonra bölümleri burada gözükecek.</string>
+  <string name="no_all_episodes_label">Bir Podcast ekledikten sonra bölümleri burada gözükecek.</string>
   <string name="no_all_episodes_filtered_label">Daha çok bölüm görmek için filtreyi temizlemeyi deneyin.</string>
   <string name="no_inbox_head_label">Gelen kutusunda bölüm yok</string>
   <string name="no_inbox_label">Yeni bölümler geldiğinde burada görünecek. İlgi duyup duymadığınıza o zaman karar verebilirsiniz.</string>
   <string name="no_subscriptions_head_label">Abonelik yok</string>
-  <string name="no_subscriptions_label">Bir cepyayınına abone olmak için, aşağıdaki Artı simgesine tıklayın.</string>
+  <string name="no_subscriptions_label">Bir Podcast\'e abone olmak için, aşağıdaki Artı simgesine tıklayın.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="storage_sum">Episode auto delete, Import, Export</string>
@@ -338,6 +342,7 @@
   <string name="preference_search_clear_history">Geçmişi temizle</string>
   <string name="media_player">Medya oynatıcı</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
+  <string name="pref_episode_cleanup_summary">Otomatik İndirme\'nin yeni bölümler için alana ihtiyacı varsa kaldırılmaya uygun olması gereken bölümler</string>
   <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
@@ -362,7 +367,7 @@
   <string name="playback_pref_sum">Kulaklık kontrolleri, Atlama aralığı ve Kuyruk ayarları</string>
   <string name="network_pref">Ağ</string>
   <string name="network_pref_sum">Güncelleme aralığı, İndirme kontrolleri ve Mobil Veri</string>
-  <string name="feed_refresh_title">Cepyayınlarını güncelle</string>
+  <string name="feed_refresh_title">Podcastleri güncelle</string>
   <string name="feed_refresh_sum">Yeni bölümleri otomatik olarak almak için bir zaman veya zaman aralığı belirleyin</string>
   <string name="feed_refresh_interval">Zaman Aralığı</string>
   <string name="feed_refresh_time">Zaman</string>
@@ -405,6 +410,7 @@
   <string name="pref_episode_cache_title">Bölüm ön belleği</string>
   <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
   <string name="pref_episode_cover_title">Use Episode Cover</string>
+  <string name="pref_episode_cover_summary">Mümkün olduğunda listelerde bölüme özel kapağı kullanın. İşaretli değilse, uygulama her zaman Podcast kapak resmini kullanacaktır.</string>
   <string name="pref_show_remain_time_title">Kalan Süreyi Göster</string>
   <string name="pref_show_remain_time_summary">Seçilirse bölümlerin kalan süresini göster. Seçilmezse, bölümlerin toplam süresini göster.</string>
   <string name="pref_theme_title_use_system">Sistem temasını kullan</string>
@@ -418,6 +424,10 @@
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
   <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>
   <string name="synchronization_full_sync_title">Tam senkronizasyona zorla</string>
+  <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> üzerinde<i>%1$s</i> olarak oturum açıldı. <br/><br/> Çıkış yaptıktan sonra senkronizasyon sağlayıcınızı tekrar seçebilirsiniz.]]></string>
+  <string name="synchronization_summary_unchoosen">Aboneliklerinizi ve bölüm oynatma durumunuzu senkronize etmek için birden fazla sağlayıcı arasından seçim yapabilirsiniz</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Uygulama AntennaPod projesinden bağımsızdır.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Açılan web tarayıcısını kullanarak erişim izni verin ve AntennaPod\'a geri dönün.</string>
   <string name="synchronization_choose_title">Senkronizasyon sağlayıcınızı seçin</string>
   <string name="synchronization_force_sync_summary">Bütün abonelikleri ve bölüm durumlarını tekrardan senkronize et</string>
   <string name="synchronization_sync_summary">Abonelik ve bölüm durum değişikliklerini senkronize et</string>
@@ -495,7 +505,7 @@
   <string name="not_kept_updated">Not kept updated</string>
   <string name="new_episode_notification_enabled">Bildirimler etkinleştirildi</string>
   <string name="new_episode_notification_disabled">Bildirimler kapatıldı</string>
-  <string name="pref_feed_settings_dialog_msg">Bu ayar her bir cepyayına mahsustur. Cepyayını sayfasını açarak tekrar değiştirebilirsiniz.</string>
+  <string name="pref_feed_settings_dialog_msg">Bu ayar her Podcast için benzersizdir. Podcast sayfasını açarak değiştirebilirsiniz.</string>
   <string name="pref_contribute">Katkıda bulunanlar</string>
   <string name="pref_show_subscription_title">Abonelik Başlığını Göster</string>
   <string name="pref_show_subscription_title_summary">Kapak resminin altında Abonelik başlığını göster.</string>
@@ -586,9 +596,11 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="gpodnetauth_encryption_warning">Parola ve veri şifrelenmedi!</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
+  <string name="gpodnet_description">Gpodder.net, kendi sunucunuza yükleyebileceğiniz açık kaynaklı bir podcast senkronizasyon hizmetidir. Gpodder.net, AntennaPod projesinden bağımsızdır.</string>
   <string name="gpodnetauth_host">Sunucu (Host) adresi</string>
   <string name="gpodnetauth_select_server">Sunucu seçiniz</string>
   <string name="gpodnetauth_device_name">Cihaz ismi</string>
+  <string name="gpodnetauth_device_name_default">AntennaPod\'da %1$s</string>
   <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
   <string name="gpodnetauth_create_device">Cihaz oluştur</string>
   <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
@@ -632,8 +644,9 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="authentication_label">Yetkilendirme</string>
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
   <string name="feed_tags_label">Etiketler</string>
-  <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu cepyayınının etiketlerini değiştirin</string>
+  <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu Podcast\'in etiketlerini değiştirin</string>
   <string name="feed_folders_include_root">Ana listede göster</string>
+  <string name="multi_feed_common_tags_info">{fa-info-circle} Yalnızca seçilen aboneliklerdeki ortak etiketler gösterilir. Diğer etiketler etkilenmez.</string>
   <string name="auto_download_settings_label">Otomatik İndirme Seçenekleri</string>
   <string name="episode_filters_label">Bölüm Filtresi</string>
   <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
@@ -649,11 +662,11 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="statistics_episodes_on_device">Cihazdaki bölüm sayısı:</string>
   <string name="statistics_space_used">Kullanılan alan</string>
   <string name="statistics_episodes_started_total">Başlatılan bölüm / Toplam:</string>
-  <string name="statistics_view_all">Diğer cepyayınları için de istatistiklere göz at »</string>
+  <string name="statistics_view_all">Tüm Podcastler için görüntüle»</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Cepyayını ara…</string>
+  <string name="search_podcast_hint">Podcast ara…</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
   <string name="search_podcastindex_label">Search Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd</string>
@@ -746,11 +759,13 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="notification_channel_playing">Oynatılıyor</string>
   <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
   <string name="notification_channel_download_error">İndirme başarısız</string>
+  <string name="notification_channel_download_error_description">İndirme veya besleme güncellemesi başarısız olduğunda gösterilir.</string>
   <string name="notification_channel_sync_error">Senkronizasyon başarısız</string>
   <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
   <string name="notification_channel_auto_download">Otomatik indirmeler tamamlandı</string>
   <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
   <string name="notification_channel_new_episode">Yeni Bölüm</string>
+  <string name="notification_channel_new_episode_description">Bildirimlerin etkinleştirildiği bir Podcast\'in yeni bir bölümü bulunduğunda gösterilir</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget ayarları</string>
   <string name="widget_create_button">Widget oluştur</string>
