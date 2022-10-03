@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +17,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 import java.util.List;
 
@@ -48,6 +52,24 @@ public class InboxFragment extends EpisodesListFragment {
         speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
         speedDialView.removeActionItemById(R.id.delete_batch);
         return root;
+    }
+
+    protected EpisodeItemListAdapter createListAdapter() {
+        return new EpisodeItemListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
+                MenuItemUtils.setOnClickListeners(menu, InboxFragment.this::onContextItemSelected);
+            }
+
+            @Override
+            protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+                holder.isInbox.setVisibility(View.GONE);
+            }
+        };
     }
 
     @Override

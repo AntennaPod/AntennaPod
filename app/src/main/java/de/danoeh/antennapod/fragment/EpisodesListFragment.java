@@ -193,16 +193,7 @@ public abstract class EpisodesListFragment extends Fragment
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
-        listAdapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-                if (!inActionMode()) {
-                    menu.findItem(R.id.multi_select).setVisible(true);
-                }
-                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
-            }
-        };
+        listAdapter = createListAdapter();
         listAdapter.setOnSelectModeListener(this);
         int previousEpisodesCount = getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE)
                 .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
@@ -259,6 +250,19 @@ public abstract class EpisodesListFragment extends Fragment
         });
 
         return root;
+    }
+
+    protected EpisodeItemListAdapter createListAdapter() {
+        return new EpisodeItemListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                if (!inActionMode()) {
+                    menu.findItem(R.id.multi_select).setVisible(true);
+                }
+                MenuItemUtils.setOnClickListeners(menu, EpisodesListFragment.this::onContextItemSelected);
+            }
+        };
     }
 
     private void performMultiSelectAction(int actionItemId) {
