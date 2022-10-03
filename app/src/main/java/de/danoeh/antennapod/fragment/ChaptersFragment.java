@@ -50,7 +50,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
-                .setNegativeButton(getString(R.string.cancel_label), null) //dismisses
+                .setNegativeButton(getString(R.string.close_label), null) //dismisses
                 .create();
     }
 
@@ -76,7 +76,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         recyclerView.setAdapter(adapter);
 
         progressBar.setVisibility(View.VISIBLE);
-        
+
         RelativeLayout.LayoutParams wrapHeight = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         recyclerView.setLayoutParams(wrapHeight);
