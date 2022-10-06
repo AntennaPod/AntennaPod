@@ -2,7 +2,6 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,19 +12,23 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 
 public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
@@ -99,14 +102,16 @@ public class SleepTimerDialog extends DialogFragment {
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.postDelayed(() -> {
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
+            if (controller != null && !controller.sleepTimerActive() && etxtTime.requestFocus()) {
+                etxtTime.selectAll();
+                openKeyboard(content);
+            }
         }, 100);
 
-        String[] spinnerContent = new String[] {
+        String[] spinnerContent = new String[]{
                 getString(R.string.time_seconds),
                 getString(R.string.time_minutes),
-                getString(R.string.time_hours) };
+                getString(R.string.time_hours)};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -169,5 +174,10 @@ public class SleepTimerDialog extends DialogFragment {
     private void closeKeyboard(View content) {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
+    }
+
+    private void openKeyboard(View content) {
+        InputMethodManager imm = (InputMethodManager) content.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

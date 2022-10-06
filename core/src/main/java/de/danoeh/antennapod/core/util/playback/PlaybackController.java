@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
@@ -166,6 +167,9 @@ public abstract class PlaybackController {
                 } else {
                     Log.i(TAG, "Connection to playback service has been established, " +
                             "but controller has already been released");
+                }
+                if (playbackService.sleepTimerActive()) {
+                    EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(playbackService.getSleepTimerTimeLeft()));
                 }
             }
         }
