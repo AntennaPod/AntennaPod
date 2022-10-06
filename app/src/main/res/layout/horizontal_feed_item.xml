@@ -16,7 +16,7 @@
         app:cardBackgroundColor="@color/non_square_icon_background"
         app:cardCornerRadius="16dp"
         app:cardPreventCornerOverlap="false"
-        app:cardElevation="2dp">
+        app:cardElevation="0dp">
 
         <de.danoeh.antennapod.ui.common.SquareImageView
             android:id="@+id/discovery_cover"
