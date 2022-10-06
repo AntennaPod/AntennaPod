@@ -177,7 +177,8 @@ public class SleepTimerDialog extends DialogFragment {
     }
 
     private void openKeyboard(View content) {
-        InputMethodManager imm = (InputMethodManager) content.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm =
+                (InputMethodManager) content.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }
