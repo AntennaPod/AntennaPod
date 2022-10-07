@@ -16,7 +16,6 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         app:cardElevation="0dp"
-        android:layout_margin="1px"
         app:cardCornerRadius="12dp">
 
         <LinearLayout
@@ -29,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
+                android:layout_margin="1px"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -89,7 +89,6 @@
                         android:layout_gravity="bottom"
                         style="?attr/progressBarTheme"
                         tools:background="@android:color/holo_blue_light" />
-
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
