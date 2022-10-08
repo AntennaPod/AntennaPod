@@ -369,6 +369,9 @@ public class ItemFragment extends Fragment {
     }
 
     private void openPodcast() {
+        if (item == null) {
+            return;
+        }
         Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
         ((MainActivity) getActivity()).loadChildFragment(fragment);
     }
