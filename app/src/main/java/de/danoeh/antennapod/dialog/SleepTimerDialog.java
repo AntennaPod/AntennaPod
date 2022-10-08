@@ -104,7 +104,6 @@ public class SleepTimerDialog extends DialogFragment {
         etxtTime.postDelayed(() -> {
             if (controller != null && !controller.sleepTimerActive() && etxtTime.requestFocus()) {
                 etxtTime.selectAll();
-                openKeyboard(content);
             }
         }, 100);
 
@@ -176,9 +175,4 @@ public class SleepTimerDialog extends DialogFragment {
         imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
     }
 
-    private void openKeyboard(View content) {
-        InputMethodManager imm =
-                (InputMethodManager) content.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
 }
