@@ -724,6 +724,8 @@
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="search_powered_by">Results by %1$s</string>
+    <string name="country">Country</string>
+    <string name="select">Select</string>
 
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>

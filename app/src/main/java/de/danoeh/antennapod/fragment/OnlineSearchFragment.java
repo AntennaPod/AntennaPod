@@ -95,7 +95,6 @@ public class OnlineSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        root.findViewById(R.id.spinner_country).setVisibility(INVISIBLE);
         gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
