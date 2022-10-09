@@ -7,29 +7,22 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:id="@+id/browsing"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:minHeight="?attr/actionBarSize"
         android:orientation="horizontal"
-        android:layout_alignParentTop="true">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:navigationIcon="?homeAsUpIndicator"
-            app:title="@string/discover" />
-
-    </LinearLayout>
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="?homeAsUpIndicator"
+        app:title="@string/discover" />
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/browsing"
+        android:layout_below="@id/toolbar"
         android:clipToPadding="false"
         android:columnWidth="400dp"
         android:gravity="center"

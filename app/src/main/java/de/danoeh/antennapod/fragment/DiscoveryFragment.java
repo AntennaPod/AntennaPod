@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ import io.reactivex.disposables.Disposable;
 public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = "ItunesSearchFragment";
+    private static final String PREF_KEY_PREVIOUS_COUNTRY_CODE = "previous_country_code";
     private SharedPreferences prefs;
 
     /**
@@ -71,6 +73,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private String countryCode = "US";
     private String previousCountryCode = countryCode;
     private MaterialToolbar toolbar;
+    private AlertDialog countryDialog;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -102,6 +105,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         super.onCreate(savedInstanceState);
         prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
+        previousCountryCode = prefs.getString(PREF_KEY_PREVIOUS_COUNTRY_CODE, Locale.getDefault().getCountry());
     }
 
     @Override
@@ -115,6 +119,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         toolbar.inflateMenu(R.menu.countries_menu);
+        MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
+        discoverHideItem.setChecked(countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE));
         toolbar.setOnMenuItemClickListener(this);
 
         //Show information about the podcast when the list item is clicked
@@ -193,6 +199,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             if (item.isChecked()) {
                 previousCountryCode = countryCode;
                 countryCode = ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE;
+                prefs.edit().putString(PREF_KEY_PREVIOUS_COUNTRY_CODE, previousCountryCode).apply();
             } else {
                 countryCode = previousCountryCode;
             }
@@ -222,7 +229,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             Collections.sort(countryNamesSort);
 
             ArrayAdapter<String> dataAdapter =
-                    new ArrayAdapter<>(this.getContext(), R.layout.list_item, countryNamesSort);
+                    new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, countryNamesSort);
             TextInputLayout textInput = selectCountryDialogView.findViewById(R.id.country_text_input);
             MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) textInput.getEditText();
             editText.setAdapter(dataAdapter);
@@ -238,9 +245,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                 editText.getText().clear();
                 editText.postDelayed(editText::showDropDown, 100);
             });
-            Button button = selectCountryDialogView.findViewById(R.id.select_country_button);
-            AlertDialog countryDialog = builder.show();
-            button.setOnClickListener(view -> {
+
+            builder.setPositiveButton(R.string.select, (dialogInterface, i) -> {
                 String countryName = editText.getText().toString();
                 if (countryNameCodes.containsKey(countryName)) {
                     countryCode = countryNameCodes.get(countryName);
@@ -252,8 +258,11 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
                 loadToplist(countryCode);
-                countryDialog.dismiss();
+                if (countryDialog != null) {
+                    countryDialog.dismiss();
+                }
             });
+            countryDialog = builder.show();
             return true;
         }
         return false;
