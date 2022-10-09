@@ -221,7 +221,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             List<String> countryNamesSort = new ArrayList<>(countryCodeNames.values());
             Collections.sort(countryNamesSort);
 
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this.getContext(), R.layout.list_item, countryNamesSort);
+            ArrayAdapter<String> dataAdapter =
+                    new ArrayAdapter<>(this.getContext(), R.layout.list_item, countryNamesSort);
             TextInputLayout textInput = selectCountryDialogView.findViewById(R.id.country_text_input);
             MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) textInput.getEditText();
             editText.setAdapter(dataAdapter);
