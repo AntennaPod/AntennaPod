@@ -166,18 +166,19 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             progressBar.setVisibility(View.GONE);
         } else {
             ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-            disposable = loader.loadToplist(country, 25).subscribe(podcasts -> {
-                progressBar.setVisibility(View.GONE);
-                topList = podcasts;
-                updateData(topList);
-            }, error -> {
-                Log.e(TAG, Log.getStackTraceString(error));
-                progressBar.setVisibility(View.GONE);
-                txtvError.setText(error.getMessage());
-                txtvError.setVisibility(View.VISIBLE);
-                butRetry.setOnClickListener(v -> loadToplist(country));
-                butRetry.setVisibility(View.VISIBLE);
-            });
+            disposable = loader.loadToplist(country, 25).subscribe(
+                    podcasts -> {
+                        progressBar.setVisibility(View.GONE);
+                        topList = podcasts;
+                        updateData(topList);
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                        txtvError.setText(error.getMessage());
+                        txtvError.setVisibility(View.VISIBLE);
+                        butRetry.setOnClickListener(v -> loadToplist(country));
+                        butRetry.setVisibility(View.VISIBLE);
+                    });
         }
     }
 
@@ -206,7 +207,6 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             View selectCountryDialogView = inflater.inflate(R.layout.select_country_dialog, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setView(selectCountryDialogView);
-            AlertDialog countryDialog = builder.show();
 
             List<String> countryCodeArray = new ArrayList<>(Arrays.asList(Locale.getISOCountries()));
             Map<String, String> countryCodeNames = new HashMap<>();
@@ -225,9 +225,11 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             TextInputLayout textInput = selectCountryDialogView.findViewById(R.id.country_text_input);
             MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) textInput.getEditText();
             editText.setAdapter(dataAdapter);
-            editText.setText(countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE) ?
-                    countryCodeNames.get(previousCountryCode) :
-                    countryCodeNames.get(countryCode));
+            if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
+                editText.setText(countryCodeNames.get(previousCountryCode));
+            } else {
+                editText.setText(countryCodeNames.get(countryCode));
+            }
             editText.setOnClickListener(view -> {
                 if (StringUtils.isEmpty(editText.getText().toString())) {
                     return;
@@ -236,6 +238,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                 editText.postDelayed(editText::showDropDown, 100);
             });
             Button button = selectCountryDialogView.findViewById(R.id.select_country_button);
+            AlertDialog countryDialog = builder.show();
             button.setOnClickListener(view -> {
                 String countryName = editText.getText().toString();
                 if (countryNameCodes.containsKey(countryName)) {
