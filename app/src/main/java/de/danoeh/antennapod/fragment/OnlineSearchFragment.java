@@ -3,22 +3,26 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.widget.AbsListView;
-import com.google.android.material.appbar.MaterialToolbar;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SearchView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
@@ -27,11 +31,6 @@ import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import io.reactivex.disposables.Disposable;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.view.View.INVISIBLE;
 
 public class OnlineSearchFragment extends Fragment {
 
