@@ -89,6 +89,7 @@
                         android:layout_gravity="bottom"
                         style="?attr/progressBarTheme"
                         tools:background="@android:color/holo_blue_light" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
