@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
@@ -82,11 +83,11 @@
 
                     <ProgressBar
                         android:id="@+id/progressBar"
-                        style="?attr/progressBarTheme"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:layout_gravity="bottom"
                         android:max="100"
+                        style="?attr/progressBarTheme"
                         tools:background="@android:color/holo_blue_light" />
 
                 </LinearLayout>
@@ -107,14 +108,14 @@
 
             <TextView
                 android:id="@+id/dateLabel"
-                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:paddingHorizontal="4dp"
                 android:singleLine="true"
                 android:textAlignment="textStart"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
         </LinearLayout>
 
