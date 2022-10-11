@@ -104,8 +104,7 @@
                 android:lines="2"
                 android:singleLine="false"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
-                tools:text="@sample/episodes.json/data/title" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dateLabel"
