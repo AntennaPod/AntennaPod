@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,7 +49,6 @@ import io.reactivex.disposables.Disposable;
 public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = "ItunesSearchFragment";
-    private static final String PREF_KEY_PREVIOUS_COUNTRY_CODE = "previous_country_code";
     private SharedPreferences prefs;
 
     /**
@@ -70,9 +68,13 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
     private String countryCode = "US";
-    private String previousCountryCode = countryCode;
+    private boolean hidden;
     private MaterialToolbar toolbar;
     private AlertDialog countryDialog;
+
+    public DiscoveryFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -95,16 +97,12 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         }
     }
 
-    public DiscoveryFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, Context.MODE_PRIVATE);
         countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
-        previousCountryCode = prefs.getString(PREF_KEY_PREVIOUS_COUNTRY_CODE, Locale.getDefault().getCountry());
+        hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
     }
 
     @Override
@@ -119,7 +117,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         toolbar.inflateMenu(R.menu.countries_menu);
         MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
-        discoverHideItem.setChecked(countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE));
+        discoverHideItem.setChecked(hidden);
         toolbar.setOnMenuItemClickListener(this);
 
         //Show information about the podcast when the list item is clicked
@@ -162,7 +160,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        if (country.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
+        if (hidden) {
             gridView.setVisibility(View.GONE);
             txtvError.setVisibility(View.VISIBLE);
             txtvError.setText(getResources().getString(R.string.discover_is_hidden));
@@ -195,14 +193,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         final int itemId = item.getItemId();
         if (itemId == R.id.discover_hide_item) {
             item.setChecked(!item.isChecked());
-            if (item.isChecked()) {
-                previousCountryCode = countryCode;
-                countryCode = ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE;
-                prefs.edit().putString(PREF_KEY_PREVIOUS_COUNTRY_CODE, previousCountryCode).apply();
-            } else {
-                countryCode = previousCountryCode;
-            }
-            prefs.edit().putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode).apply();
+            hidden = item.isChecked();
+            prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
 
             EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
             loadToplist(countryCode);
@@ -232,11 +224,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             TextInputLayout textInput = selectCountryDialogView.findViewById(R.id.country_text_input);
             MaterialAutoCompleteTextView editText = (MaterialAutoCompleteTextView) textInput.getEditText();
             editText.setAdapter(dataAdapter);
-            if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
-                editText.setText(countryCodeNames.get(previousCountryCode));
-            } else {
-                editText.setText(countryCodeNames.get(countryCode));
-            }
+            editText.setText(countryCodeNames.get(countryCode));
             editText.setOnClickListener(view -> {
                 if (StringUtils.isEmpty(editText.getText().toString())) {
                     return;
@@ -245,14 +233,16 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                 editText.postDelayed(editText::showDropDown, 100);
             });
 
-            builder.setPositiveButton(R.string.select, (dialogInterface, i) -> {
+            builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
                 String countryName = editText.getText().toString();
                 if (countryNameCodes.containsKey(countryName)) {
                     countryCode = countryNameCodes.get(countryName);
                     MenuItem discoverHideItem = toolbar.getMenu().findItem(R.id.discover_hide_item);
                     discoverHideItem.setChecked(false);
+                    hidden = false;
                 }
 
+                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, hidden).apply();
                 prefs.edit().putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode).apply();
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
