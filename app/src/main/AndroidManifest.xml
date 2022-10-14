@@ -374,6 +374,62 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
+
+        <activity-alias
+            android:icon="@mipmap/ic_launcher"
+            android:label="AP-IconOrig"
+            android:name="aliasOrig"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:icon="@mipmap/ic_launcher_001"
+            android:label="AP-Icon001"
+            android:name="alias001"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:icon="@mipmap/ic_launcher_002"
+            android:label="AP-Icon002"
+            android:name="alias002"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:icon="@mipmap/ic_launcher_003"
+            android:label="AP-Icon003"
+            android:name="alias003"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:icon="@mipmap/ic_launcher_004"
+            android:label="AP-Icon004"
+            android:name="alias004"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
     </application>
 
 </manifest>
