@@ -28,7 +28,6 @@ public class ItunesTopListLoader {
     public static final String PREF_KEY_COUNTRY_CODE = "country_code";
     public static final String PREF_KEY_HIDDEN_DISCOVERY_COUNTRY = "hidden_discovery_country";
     public static final String PREFS = "CountryRegionPrefs";
-    public static final String DISCOVER_HIDE_FAKE_COUNTRY_CODE = "00";
     public static final String COUNTRY_CODE_UNSET = "99";
 
     public ItunesTopListLoader(Context context) {
