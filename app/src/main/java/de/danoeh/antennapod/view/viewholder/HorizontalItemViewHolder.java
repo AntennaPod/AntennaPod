@@ -96,7 +96,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public boolean isCurrentlyPlayingItem() {
-        return item.getMedia() != null && FeedItemUtil.isCurrentlyPlaying(item.getMedia());
+        return item != null && item.getMedia() != null && FeedItemUtil.isCurrentlyPlaying(item.getMedia());
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
