@@ -106,6 +106,7 @@ public class SleepTimerDialog extends DialogFragment {
                 etxtTime.selectAll();
             }
         }, 100);
+        etxtTime.setOnClickListener(view -> etxtTime.selectAll());
 
         String[] spinnerContent = new String[]{
                 getString(R.string.time_seconds),
