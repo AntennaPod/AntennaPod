@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
