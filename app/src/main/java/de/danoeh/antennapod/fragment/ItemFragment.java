@@ -58,7 +58,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.core.util.gui.ShownotesCleaner;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -438,7 +438,7 @@ public class ItemFragment extends Fragment {
         if (feedItem != null && context != null) {
             int duration = feedItem.getMedia() != null ? feedItem.getMedia().getDuration() : Integer.MAX_VALUE;
             DBReader.loadDescriptionOfFeedItem(feedItem);
-            Timeline t = new Timeline(context, feedItem.getDescription(), duration);
+            ShownotesCleaner t = new ShownotesCleaner(context, feedItem.getDescription(), duration);
             webviewData = t.processShownotes();
         }
         return feedItem;
