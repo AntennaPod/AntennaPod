@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.core.util.gui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,27 +26,26 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.Converter;
 
 /**
- * Connects chapter information and shownotes of a shownotesProvider, for example by making it possible to use the
- * shownotes to navigate to another position in the podcast or by highlighting certain parts of the shownotesProvider's
- * shownotes.
- * <p/>
- * A timeline object needs a shownotesProvider from which the chapter information
- * is retrieved and shownotes are generated.
+ * Cleans up and prepares shownotes:
+ *  - Guesses time stamps to make them clickable
+ *  - Removes some formatting
  */
-public class Timeline {
+public class ShownotesCleaner {
     private static final String TAG = "Timeline";
 
     private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/(\\d+)");
     private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
     private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
+    private static final String CSS_COLOR = "(?<=(\\s|;|^))color\\s*:([^;])*;";
+    private static final String CSS_COMMENT = "/\\*.*?\\*/";
 
     private final String rawShownotes;
     private final String noShownotesLabel;
     private final int playableDuration;
     private final String webviewStyle;
 
-    public Timeline(Context context, @Nullable String rawShownotes, int playableDuration) {
+    public ShownotesCleaner(Context context, @Nullable String rawShownotes, int playableDuration) {
         this.rawShownotes = rawShownotes;
 
         noShownotesLabel = context.getString(R.string.no_shownotes_label);
@@ -98,9 +97,8 @@ public class Timeline {
         }
 
         Document document = Jsoup.parse(shownotes);
+        cleanCss(document);
         document.head().appendElement("style").attr("type", "text/css").text(webviewStyle);
-
-        // apply timecode links
         addTimecodes(document);
         return document.toString();
     }
@@ -192,5 +190,19 @@ public class Timeline {
             matcherForElement.appendTail(buffer);
             element.html(buffer.toString());
         }
+    }
+
+    private void cleanCss(Document document) {
+        for (Element element : document.getAllElements()) {
+            if (element.hasAttr("style")) {
+                element.attr("style", element.attr("style").replaceAll(CSS_COLOR, ""));
+            } else if (element.tagName().equals("style")) {
+                element.html(cleanStyleTag(element.html()));
+            }
+        }
+    }
+
+    public static String cleanStyleTag(String oldCss) {
+        return oldCss.replaceAll(CSS_COMMENT, "").replaceAll(CSS_COLOR, "");
     }
 }
