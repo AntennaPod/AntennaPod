@@ -35,8 +35,8 @@ public class SleepTimerPreferences {
         SleepTimerPreferences.prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public static void setLastTimer(String value, int timeUnit) {
-        prefs.edit().putString(PREF_VALUE, value).putInt(PREF_TIME_UNIT, timeUnit).apply();
+    public static void setLastTimer(String value) {
+        prefs.edit().putString(PREF_VALUE, value).apply();
     }
 
     public static String lastTimerValue() {
