@@ -70,7 +70,6 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private String countryCode = "US";
     private boolean hidden;
     private MaterialToolbar toolbar;
-    private AlertDialog countryDialog;
 
     public DiscoveryFragment() {
         // Required empty public constructor
@@ -247,11 +246,8 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
                 loadToplist(countryCode);
-                if (countryDialog != null) {
-                    countryDialog.dismiss();
-                }
             });
-            countryDialog = builder.show();
+            builder.show();
             return true;
         }
         return false;
