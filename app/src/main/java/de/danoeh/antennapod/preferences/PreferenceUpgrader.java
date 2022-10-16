@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import androidx.preference.PreferenceManager;
 
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -116,6 +119,16 @@ public class PreferenceUpgrader {
             if (feedCounterSetting.equals("0")) {
                 prefs.edit().putString(UserPreferences.PREF_DRAWER_FEED_COUNTER, "2").apply();
             }
+        }
+        if (oldVersion < 2070095) {
+
+            long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
+            TimeUnit unit = SleepTimerPreferences.UNITS[SleepTimerPreferences.lastTimerTimeUnit()];
+
+            SleepTimerPreferences.setLastTimer(
+                    String.valueOf(unit.toMinutes(value))
+            );
+
         }
     }
 }
