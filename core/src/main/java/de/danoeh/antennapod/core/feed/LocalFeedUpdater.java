@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -218,7 +219,8 @@ public class LocalFeedUpdater {
         mediaMetadataRetriever.close();
 
         try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
-            Id3MetadataReader reader = new Id3MetadataReader(new CountingInputStream(inputStream));
+            Id3MetadataReader reader = new Id3MetadataReader(
+                    new CountingInputStream(new BufferedInputStream(inputStream)));
             reader.readInputStream();
             item.setDescriptionIfLonger(reader.getComment());
         } catch (IOException | ID3ReaderException e) {
