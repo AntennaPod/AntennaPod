@@ -430,6 +430,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
+        <activity-alias
+            android:icon="@mipmap/ic_launcher_002_d2_fg"
+            android:label="AP-Icon002-d2"
+            android:name="alias002d2"
+            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
     </application>
 
 </manifest>
