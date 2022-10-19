@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +23,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -46,12 +48,22 @@ import org.apache.commons.io.input.CountingInputStream;
 public class LocalFeedUpdater {
     private static final String TAG = "LocalFeedUpdater";
 
-    static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
+    static final String[] PREFERRED_FEED_IMAGE_FILENAMES = {"folder.jpg", "Folder.jpg", "folder.png", "Folder.png"};
 
     public static void updateFeed(Feed feed, Context context,
                                   @Nullable UpdaterProgressListener updaterProgressListener) {
         try {
-            tryUpdateFeed(feed, context, updaterProgressListener);
+            String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
+            DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
+            if (documentFolder == null) {
+                throw new IOException("Unable to retrieve document tree. "
+                        + "Try re-connecting the folder on the podcast info page.");
+            }
+            if (!documentFolder.exists() || !documentFolder.canRead()) {
+                throw new IOException("Cannot read local directory. "
+                        + "Try re-connecting the folder on the podcast info page.");
+            }
+            tryUpdateFeed(feed, context, documentFolder.getUri(), updaterProgressListener);
 
             if (mustReportDownloadSuccessful(feed)) {
                 reportSuccess(feed);
@@ -62,19 +74,9 @@ public class LocalFeedUpdater {
         }
     }
 
-    private static void tryUpdateFeed(Feed feed, Context context, UpdaterProgressListener updaterProgressListener)
-            throws IOException {
-        String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
-        DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
-        if (documentFolder == null) {
-            throw new IOException("Unable to retrieve document tree. "
-                    + "Try re-connecting the folder on the podcast info page.");
-        }
-        if (!documentFolder.exists() || !documentFolder.canRead()) {
-            throw new IOException("Cannot read local directory. "
-                    + "Try re-connecting the folder on the podcast info page.");
-        }
-
+    @VisibleForTesting
+    static void tryUpdateFeed(Feed feed, Context context, Uri folderUri,
+                              UpdaterProgressListener updaterProgressListener) {
         if (feed.getItems() == null) {
             feed.setItems(new ArrayList<>());
         }
@@ -82,9 +84,10 @@ public class LocalFeedUpdater {
         feed = DBTasks.updateFeed(context, feed, false);
 
         // list files in feed folder
-        List<DocumentFile> mediaFiles = new ArrayList<>();
+        List<FastDocumentFile> allFiles = FastDocumentFile.list(context, folderUri);
+        List<FastDocumentFile> mediaFiles = new ArrayList<>();
         Set<String> mediaFileNames = new HashSet<>();
-        for (DocumentFile file : documentFolder.listFiles()) {
+        for (FastDocumentFile file : allFiles) {
             String mimeType = MimeTypeUtils.getMimeType(file.getType(), file.getUri().toString());
             MediaType mediaType = MediaType.fromMimeType(mimeType);
             if (mediaType == MediaType.AUDIO || mediaType == MediaType.VIDEO) {
@@ -117,7 +120,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        feed.setImageUrl(getImageUrl(documentFolder));
+        feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
         feed.getPreferences().setAutoDownload(false);
         feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
@@ -135,17 +138,18 @@ public class LocalFeedUpdater {
      * Returns the image URL for the local feed.
      */
     @NonNull
-    static String getImageUrl(@NonNull DocumentFile documentFolder) {
+    static String getImageUrl(List<FastDocumentFile> files, Uri folderUri) {
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
-            DocumentFile image = documentFolder.findFile(iconLocation);
-            if (image != null) {
-                return image.getUri().toString();
+            for (FastDocumentFile file : files) {
+                if (iconLocation.equals(file.getName())) {
+                    return file.getUri().toString();
+                }
             }
         }
 
         // use the first image in the folder if existing
-        for (DocumentFile file : documentFolder.listFiles()) {
+        for (FastDocumentFile file : files) {
             String mime = file.getType();
             if (mime != null && (mime.startsWith("image/jpeg") || mime.startsWith("image/png"))) {
                 return file.getUri().toString();
@@ -153,7 +157,7 @@ public class LocalFeedUpdater {
         }
 
         // use default icon as fallback
-        return Feed.PREFIX_GENERATIVE_COVER + documentFolder.getUri();
+        return Feed.PREFIX_GENERATIVE_COVER + folderUri;
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {
@@ -166,12 +170,12 @@ public class LocalFeedUpdater {
         return null;
     }
 
-    private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
+    private static FeedItem createFeedItem(Feed feed, FastDocumentFile file, Context context) {
         FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
-                file.getName(), new Date(file.lastModified()), FeedItem.UNPLAYED, feed);
+                file.getName(), new Date(file.getLastModified()), FeedItem.UNPLAYED, feed);
         item.disableAutoDownload();
 
-        long size = file.length();
+        long size = file.getLength();
         FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),
                 file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
         item.setMedia(media);
@@ -185,7 +189,7 @@ public class LocalFeedUpdater {
         return item;
     }
 
-    private static void loadMetadata(FeedItem item, DocumentFile file, Context context) {
+    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
 
@@ -211,6 +215,7 @@ public class LocalFeedUpdater {
         item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
         item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
+        mediaMetadataRetriever.close();
 
         try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
             Id3MetadataReader reader = new Id3MetadataReader(new CountingInputStream(inputStream));
