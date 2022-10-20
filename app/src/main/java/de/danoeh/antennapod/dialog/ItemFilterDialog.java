@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +69,7 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
             setupFullHeight(bottomSheetDialog);
         });
-        return  dialog;
+        return dialog;
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
