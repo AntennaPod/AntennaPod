@@ -181,12 +181,22 @@ public class LocalFeedUpdater {
                 file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
         item.setMedia(media);
 
+        for (FeedItem existingItem : feed.getItems()) {
+            if (existingItem.getMedia() != null
+                    && existingItem.getMedia().getDownload_url().equals(file.getUri().toString())
+                    && file.getLength() == existingItem.getMedia().getSize()) {
+                // We found an old file that we already scanned. Re-use metadata.
+                item.updateFromOther(existingItem);
+                return item;
+            }
+        }
+
+        // Did not find existing item. Scan metadata.
         try {
             loadMetadata(item, file, context);
         } catch (Exception e) {
             item.setDescriptionIfLonger(e.getMessage());
         }
-
         return item;
     }
 
