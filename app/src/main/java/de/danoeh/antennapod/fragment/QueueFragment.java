@@ -144,7 +144,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             case SET_QUEUE:
             case SORTED: //Deliberate fall-through
                 queue = event.items;
-                recyclerAdapter.notifyDataSetChanged();
+                recyclerAdapter.updateItems(event.items);
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
@@ -154,7 +154,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case CLEARED:
                 queue.clear();
-                recyclerAdapter.notifyDataSetChanged();
+                recyclerAdapter.updateItems(queue);
                 break;
             case MOVED:
                 return;
