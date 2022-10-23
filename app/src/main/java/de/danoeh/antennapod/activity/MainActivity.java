@@ -19,6 +19,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -150,6 +151,12 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+
+        // Consume navigation bar insets - we apply them in setPlayerVisible()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
+                new WindowInsetsCompat.Builder(insets)
+                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                        .build());
     }
 
     @Override
