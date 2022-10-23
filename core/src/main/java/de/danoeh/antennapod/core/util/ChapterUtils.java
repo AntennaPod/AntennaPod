@@ -23,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -120,17 +121,17 @@ public class ChapterUtils {
             if (!source.exists()) {
                 throw new IOException("Local file does not exist");
             }
-            return new CountingInputStream(new FileInputStream(source));
+            return new CountingInputStream(new BufferedInputStream(new FileInputStream(source)));
         } else if (playable.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
             Uri uri = Uri.parse(playable.getStreamUrl());
-            return new CountingInputStream(context.getContentResolver().openInputStream(uri));
+            return new CountingInputStream(new BufferedInputStream(context.getContentResolver().openInputStream(uri)));
         } else {
             Request request = new Request.Builder().url(playable.getStreamUrl()).build();
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.body() == null) {
                 throw new IOException("Body is null");
             }
-            return new CountingInputStream(response.body().byteStream());
+            return new CountingInputStream(new BufferedInputStream(response.body().byteStream()));
         }
     }
 
@@ -171,7 +172,7 @@ public class ChapterUtils {
 
     @NonNull
     private static List<Chapter> readOggChaptersFromInputStream(InputStream input) throws VorbisCommentReaderException {
-        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(input);
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(new BufferedInputStream(input));
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {

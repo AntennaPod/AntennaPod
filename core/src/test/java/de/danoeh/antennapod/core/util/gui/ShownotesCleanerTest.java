@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util.playback;
+package de.danoeh.antennapod.core.util.gui;
 
 import android.content.Context;
 
@@ -7,14 +7,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import de.danoeh.antennapod.core.storage.DBReader;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -23,25 +19,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for {@link Timeline}.
+ * Test class for {@link ShownotesCleaner}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class TimelineTest {
+public class ShownotesCleanerTest {
 
     private Context context;
-    MockedStatic<DBReader> dbReaderMock;
 
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        // mock DBReader, because Timeline.processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        dbReaderMock = Mockito.mockStatic(DBReader.class);
-    }
-
-    @After
-    public void tearDown() {
-        dbReaderMock.close();
     }
 
     @Test
@@ -50,7 +37,7 @@ public class TimelineTest {
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11 + 12 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -61,7 +48,7 @@ public class TimelineTest {
         final long time = 25 * 60 * 60 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -72,7 +59,7 @@ public class TimelineTest {
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -83,7 +70,7 @@ public class TimelineTest {
         final long time = 10 * 60 * 1000 + 11 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, 11 * 60 * 1000);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, 11 * 60 * 1000);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -94,7 +81,7 @@ public class TimelineTest {
         final long time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -105,7 +92,7 @@ public class TimelineTest {
         final long time = 60 * 1000 + 12 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, 2 * 60 * 1000);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, 2 * 60 * 1000);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -116,7 +103,7 @@ public class TimelineTest {
         final int time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
 
         String shownotes = "<p> Some test text with a timecode " + timeStr + " here.</p>";
-        Timeline t = new Timeline(context, shownotes, time);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, time);
         String res = t.processShownotes();
         Document d = Jsoup.parse(res);
         assertEquals("Should not parse time codes that equal duration", 0, d.body().getElementsByTag("a").size());
@@ -128,7 +115,7 @@ public class TimelineTest {
 
         String shownotes = "<p> Some test text with a timecode " + timeStrings[0]
                 + " here. Hey look another one " + timeStrings[1] + " here!</p>";
-        Timeline t = new Timeline(context, shownotes, 2 * 60 * 60 * 1000);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, 2 * 60 * 60 * 1000);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000,
                 60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000}, timeStrings);
@@ -142,7 +129,7 @@ public class TimelineTest {
 
         String shownotes = "<p> Some test text with a timecode " + timeStrings[0]
                 + " here. Hey look another one " + timeStrings[1] + " here!</p>";
-        Timeline t = new Timeline(context, shownotes, 3 * 60 * 60 * 1000);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, 3 * 60 * 60 * 1000);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000}, timeStrings);
     }
@@ -153,7 +140,7 @@ public class TimelineTest {
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         String shownotes = "<p> Some test text with a timecode (" + timeStr + ") here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -164,7 +151,7 @@ public class TimelineTest {
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         String shownotes = "<p> Some test text with a timecode [" + timeStr + "] here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -175,7 +162,7 @@ public class TimelineTest {
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         String shownotes = "<p> Some test text with a timecode <" + timeStr + "> here.</p>";
-        Timeline t = new Timeline(context, shownotes, Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes, Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
@@ -190,7 +177,7 @@ public class TimelineTest {
         }
         shownotes.append("here.</p>");
 
-        Timeline t = new Timeline(context, shownotes.toString(), Integer.MAX_VALUE);
+        ShownotesCleaner t = new ShownotesCleaner(context, shownotes.toString(), Integer.MAX_VALUE);
         String res = t.processShownotes();
         checkLinkCorrect(res, new long[0], new String[0]);
     }
@@ -216,20 +203,34 @@ public class TimelineTest {
 
     @Test
     public void testIsTimecodeLink() {
-        assertFalse(Timeline.isTimecodeLink(null));
-        assertFalse(Timeline.isTimecodeLink("http://antennapod/timecode/123123"));
-        assertFalse(Timeline.isTimecodeLink("antennapod://timecode/"));
-        assertFalse(Timeline.isTimecodeLink("antennapod://123123"));
-        assertFalse(Timeline.isTimecodeLink("antennapod://timecode/123123a"));
-        assertTrue(Timeline.isTimecodeLink("antennapod://timecode/123"));
-        assertTrue(Timeline.isTimecodeLink("antennapod://timecode/1"));
+        assertFalse(ShownotesCleaner.isTimecodeLink(null));
+        assertFalse(ShownotesCleaner.isTimecodeLink("http://antennapod/timecode/123123"));
+        assertFalse(ShownotesCleaner.isTimecodeLink("antennapod://timecode/"));
+        assertFalse(ShownotesCleaner.isTimecodeLink("antennapod://123123"));
+        assertFalse(ShownotesCleaner.isTimecodeLink("antennapod://timecode/123123a"));
+        assertTrue(ShownotesCleaner.isTimecodeLink("antennapod://timecode/123"));
+        assertTrue(ShownotesCleaner.isTimecodeLink("antennapod://timecode/1"));
     }
 
     @Test
     public void testGetTimecodeLinkTime() {
-        assertEquals(-1, Timeline.getTimecodeLinkTime(null));
-        assertEquals(-1, Timeline.getTimecodeLinkTime("http://timecode/123"));
-        assertEquals(123, Timeline.getTimecodeLinkTime("antennapod://timecode/123"));
+        assertEquals(-1, ShownotesCleaner.getTimecodeLinkTime(null));
+        assertEquals(-1, ShownotesCleaner.getTimecodeLinkTime("http://timecode/123"));
+        assertEquals(123, ShownotesCleaner.getTimecodeLinkTime("antennapod://timecode/123"));
+    }
 
+    @Test
+    public void testCleanupColors() {
+        final String input = "/* /* */ .foo { text-decoration: underline;color:#f00;font-weight:bold;}"
+                + "#bar { text-decoration: underline;color:#f00;font-weight:bold; }"
+                + "div {text-decoration: underline; color /* */ : /* */ #f00 /* */; font-weight:bold; }"
+                + "#foobar { /* color: */ text-decoration: underline; /* color: */font-weight:bold /* ; */; }"
+                + "baz { background-color:#f00;border: solid 2px;border-color:#0f0;text-decoration: underline; }";
+        final String expected = " .foo { text-decoration: underline;font-weight:bold;}"
+                + "#bar { text-decoration: underline;font-weight:bold; }"
+                + "div {text-decoration: underline;  font-weight:bold; }"
+                + "#foobar {  text-decoration: underline; font-weight:bold ; }"
+                + "baz { background-color:#f00;border: solid 2px;border-color:#0f0;text-decoration: underline; }";
+        assertEquals(expected, ShownotesCleaner.cleanStyleTag(input));
     }
 }

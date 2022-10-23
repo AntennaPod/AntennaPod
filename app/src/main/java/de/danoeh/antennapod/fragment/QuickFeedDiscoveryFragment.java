@@ -114,7 +114,8 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
-        if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
+        boolean hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
+        if (hidden) {
             errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
             discoverGridLayout.setVisibility(View.GONE);

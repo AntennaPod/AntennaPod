@@ -24,6 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:selectAllOnFocus="true"
                 android:layout_margin="8dp"
                 android:ems="2"
                 android:inputType="number"
