@@ -28,7 +28,9 @@ public class LiftOnScrollListener extends RecyclerView.OnScrollListener
 
     private boolean isScrolled(RecyclerView recyclerView) {
         int firstItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-        if (firstItem != 0) {
+        if (firstItem < 0) {
+            return false;
+        } else if (firstItem > 0) {
             return true;
         }
         View firstItemView = recyclerView.getLayoutManager().findViewByPosition(firstItem);
