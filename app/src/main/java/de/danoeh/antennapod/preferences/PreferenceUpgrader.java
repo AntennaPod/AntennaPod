@@ -119,16 +119,16 @@ public class PreferenceUpgrader {
             if (feedCounterSetting.equals("0")) {
                 prefs.edit().putString(UserPreferences.PREF_DRAWER_FEED_COUNTER, "2").apply();
             }
-        }
-        if (oldVersion < 2070095) {
+
+            SharedPreferences sleepTimerPreferences = context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
+            String PREF_TIME_UNIT = "LastTimeUnit";
+            int DEFAULT_TIME_UNIT = 1;
+            TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
-            TimeUnit unit = SleepTimerPreferences.UNITS[SleepTimerPreferences.lastTimerTimeUnit()];
+            TimeUnit unit = UNITS[sleepTimerPreferences.getInt(PREF_TIME_UNIT, DEFAULT_TIME_UNIT)];
 
-            SleepTimerPreferences.setLastTimer(
-                    String.valueOf(unit.toMinutes(value))
-            );
-
+            SleepTimerPreferences.setLastTimer(String.valueOf(unit.toMinutes(value)));
         }
     }
 }

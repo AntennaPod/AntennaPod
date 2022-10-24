@@ -13,15 +13,12 @@ public class SleepTimerPreferences {
 
     public static final String PREF_NAME = "SleepTimerDialog";
     private static final String PREF_VALUE = "LastValue";
-    private static final String PREF_TIME_UNIT = "LastTimeUnit";
+
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
 
-    public static final TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
-
     private static final String DEFAULT_VALUE = "15";
-    private static final int DEFAULT_TIME_UNIT = 1;
 
     private static SharedPreferences prefs;
 
@@ -41,10 +38,6 @@ public class SleepTimerPreferences {
 
     public static String lastTimerValue() {
         return prefs.getString(PREF_VALUE, DEFAULT_VALUE);
-    }
-
-    public static int lastTimerTimeUnit() {
-        return prefs.getInt(PREF_TIME_UNIT, DEFAULT_TIME_UNIT);
     }
 
     public static long timerMillis() {
