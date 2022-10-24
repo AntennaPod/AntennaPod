@@ -120,13 +120,14 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_DRAWER_FEED_COUNTER, "2").apply();
             }
 
-            SharedPreferences sleepTimerPreferences = context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
-            String PREF_TIME_UNIT = "LastTimeUnit";
-            int DEFAULT_TIME_UNIT = 1;
-            TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
+            SharedPreferences sleepTimerPreferences =
+                    context.getSharedPreferences(SleepTimerPreferences.PREF_NAME, Context.MODE_PRIVATE);
+            String prefTimeUnit = "LastTimeUnit";
+            int defaultTimeUnit = 1;
+            TimeUnit[] timeUnits = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
-            TimeUnit unit = UNITS[sleepTimerPreferences.getInt(PREF_TIME_UNIT, DEFAULT_TIME_UNIT)];
+            TimeUnit unit = timeUnits[sleepTimerPreferences.getInt(prefTimeUnit, defaultTimeUnit)];
 
             SleepTimerPreferences.setLastTimer(String.valueOf(unit.toMinutes(value)));
         }
