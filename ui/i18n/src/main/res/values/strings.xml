@@ -626,6 +626,8 @@
     </plurals>
     <string name="auto_enable_label">Auto-enable</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
+    <string name="sleep_timer_shake_to_reset_mode_end">At end</string>
+    <string name="sleep_timer_shake_to_reset_mode_always">Always</string>
 
     <!-- gpodder.net -->
     <string name="gpodnetauth_login_butLabel">Login</string>

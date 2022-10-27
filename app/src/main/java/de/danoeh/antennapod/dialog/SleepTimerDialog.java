@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,6 +32,7 @@ public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
     private EditText etxtTime;
     private Spinner spTimeUnit;
+    private Spinner spShakeToResetMode;
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
@@ -71,6 +73,7 @@ public class SleepTimerDialog extends DialogFragment {
 
         etxtTime = content.findViewById(R.id.etxtTime);
         spTimeUnit = content.findViewById(R.id.spTimeUnit);
+        spShakeToResetMode = content.findViewById(R.id.spShakeToResetMode);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         timeDisplay.setVisibility(View.GONE);
@@ -103,15 +106,33 @@ public class SleepTimerDialog extends DialogFragment {
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
-        String[] spinnerContent = new String[] {
+        String[] spTimeUnitContent = new String[] {
                 getString(R.string.time_seconds),
                 getString(R.string.time_minutes),
                 getString(R.string.time_hours) };
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item, spinnerContent);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTimeUnit.setAdapter(spinnerAdapter);
+        ArrayAdapter<String> spTimeUnitAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, spTimeUnitContent);
+        spTimeUnitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTimeUnit.setAdapter(spTimeUnitAdapter);
         spTimeUnit.setSelection(SleepTimerPreferences.lastTimerTimeUnit());
+
+        String[] spShakeToResetModeContent = new String[] {
+                getString(R.string.sleep_timer_shake_to_reset_mode_end),
+                getString(R.string.sleep_timer_shake_to_reset_mode_always) };
+        ArrayAdapter<String> spShakeToResetModeAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, spShakeToResetModeContent);
+        spShakeToResetModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spShakeToResetMode.setAdapter(spShakeToResetModeAdapter);
+        spShakeToResetMode.setSelection(SleepTimerPreferences.shakeToResetMode());
+        spShakeToResetMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SleepTimerPreferences.setShakeToResetMode(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { };
+        });
 
         CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);

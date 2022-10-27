@@ -16,12 +16,14 @@ public class SleepTimerPreferences {
     private static final String PREF_TIME_UNIT = "LastTimeUnit";
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
+    private static final String PREF_SHAKE_TO_RESET_MODE = "ShakeToResetMode";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
 
     private static final TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
     private static final String DEFAULT_VALUE = "15";
     private static final int DEFAULT_TIME_UNIT = 1;
+    private static final int DEFAULT_SHAKE_TO_RESET_MODE = 0;
 
     private static SharedPreferences prefs;
 
@@ -66,6 +68,14 @@ public class SleepTimerPreferences {
 
     public static boolean shakeToReset() {
         return prefs.getBoolean(PREF_SHAKE_TO_RESET, true);
+    }
+
+    public static void setShakeToResetMode(int value) {
+        prefs.edit().putInt(PREF_SHAKE_TO_RESET_MODE, value).apply();
+    }
+
+    public static int shakeToResetMode()  {
+        return prefs.getInt(PREF_SHAKE_TO_RESET_MODE, DEFAULT_SHAKE_TO_RESET_MODE);
     }
 
     public static void setAutoEnable(boolean autoEnable) {

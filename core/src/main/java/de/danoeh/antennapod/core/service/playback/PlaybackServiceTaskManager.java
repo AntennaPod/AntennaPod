@@ -290,6 +290,13 @@ public class PlaybackServiceTaskManager {
             this.timeLeft = waitingTime;
         }
 
+        private void stopShakeListener() {
+            if (shakeListener != null) {
+                shakeListener.pause();
+                shakeListener = null;
+            }
+        }
+
         @Override
         public void run() {
             Log.d(TAG, "Starting");
@@ -317,16 +324,24 @@ public class PlaybackServiceTaskManager {
                             hasVibrated = true;
                         }
                     }
-                    if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-                        shakeListener = new ShakeListener(context, this);
-                    }
                 }
+
+                //Start shake listener if enabled
+                //Mode 0: At end / fade out
+                //Mode 1: Always
+                if (shakeListener == null && SleepTimerPreferences.shakeToReset()
+                        && ((SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft < NOTIFICATION_THRESHOLD) || (SleepTimerPreferences.shakeToResetMode() == 1))) {
+                    shakeListener = new ShakeListener(context, this);
+                }
+                //Stop shake listener if not enabled anymore
+                if (shakeListener != null
+                        && (!SleepTimerPreferences.shakeToReset() || (SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft > NOTIFICATION_THRESHOLD))) {
+                    stopShakeListener();
+                }
+
                 if (timeLeft <= 0) {
                     Log.d(TAG, "Sleep timer expired");
-                    if (shakeListener != null) {
-                        shakeListener.pause();
-                        shakeListener = null;
-                    }
+                    stopShakeListener();
                     hasVibrated = false;
                 }
             }
@@ -339,17 +354,12 @@ public class PlaybackServiceTaskManager {
         public void restart() {
             EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
             setSleepTimer(waitingTime);
-            if (shakeListener != null) {
-                shakeListener.pause();
-                shakeListener = null;
-            }
+            stopShakeListener();
         }
 
         public void cancel() {
             sleepTimerFuture.cancel(true);
-            if (shakeListener != null) {
-                shakeListener.pause();
-            }
+            stopShakeListener();
             EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         }
     }
