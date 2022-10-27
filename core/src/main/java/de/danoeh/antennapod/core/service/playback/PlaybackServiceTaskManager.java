@@ -330,12 +330,14 @@ public class PlaybackServiceTaskManager {
                 //Mode 0: At end / fade out
                 //Mode 1: Always
                 if (shakeListener == null && SleepTimerPreferences.shakeToReset()
-                        && ((SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft < NOTIFICATION_THRESHOLD) || (SleepTimerPreferences.shakeToResetMode() == 1))) {
+                        && ((SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft < NOTIFICATION_THRESHOLD)
+                            || (SleepTimerPreferences.shakeToResetMode() == 1))) {
                     shakeListener = new ShakeListener(context, this);
                 }
                 //Stop shake listener if not enabled anymore
                 if (shakeListener != null
-                        && (!SleepTimerPreferences.shakeToReset() || (SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft > NOTIFICATION_THRESHOLD))) {
+                        && (!SleepTimerPreferences.shakeToReset()
+                            || (SleepTimerPreferences.shakeToResetMode() == 0 && timeLeft > NOTIFICATION_THRESHOLD))) {
                     stopShakeListener();
                 }
 
