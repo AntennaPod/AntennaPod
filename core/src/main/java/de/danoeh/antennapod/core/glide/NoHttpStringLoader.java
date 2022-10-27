@@ -6,6 +6,8 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.load.model.StringLoader;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 
 import java.io.InputStream;
 
@@ -34,6 +36,10 @@ public final class NoHttpStringLoader extends StringLoader<InputStream> {
 
     @Override
     public boolean handles(@NonNull String model) {
-        return !model.startsWith("http") && super.handles(model);
+        return !model.startsWith("http")
+                // If the custom loaders fail, do not attempt to load with Glide internal loaders
+                && !model.startsWith(Feed.PREFIX_GENERATIVE_COVER)
+                && !model.startsWith(FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER)
+                && super.handles(model);
     }
 }

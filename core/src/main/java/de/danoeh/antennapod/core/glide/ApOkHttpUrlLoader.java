@@ -12,6 +12,8 @@ import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -81,8 +83,11 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     @Override
     public boolean handles(@NonNull String model) {
-        // Leave content URIs to Glide's default loaders
         return !TextUtils.isEmpty(model)
+                // If the other loaders fail, do not attempt to load as web resource
+                && !model.startsWith(Feed.PREFIX_GENERATIVE_COVER)
+                && !model.startsWith(FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER)
+                // Leave content URIs to Glide's default loaders
                 && !model.startsWith(ContentResolver.SCHEME_CONTENT)
                 && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
