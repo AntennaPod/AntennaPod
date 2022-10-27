@@ -131,7 +131,7 @@ public class SleepTimerDialog extends DialogFragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { };
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
