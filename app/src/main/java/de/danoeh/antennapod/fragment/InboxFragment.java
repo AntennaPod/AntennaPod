@@ -23,7 +23,7 @@ import java.util.List;
  * supports swiping to mark as read.
  */
 public class InboxFragment extends EpisodesListFragment {
-    public static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "InboxFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
 
     @NonNull
