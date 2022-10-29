@@ -117,6 +117,12 @@ public class MainActivity extends CastEnabledActivity {
         navDrawer = findViewById(R.id.navDrawerFragment);
         setNavDrawerSize();
 
+        // Consume navigation bar insets - we apply them in setPlayerVisible()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
+                new WindowInsetsCompat.Builder(insets)
+                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                        .build());
+
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             if (!UserPreferences.DEFAULT_PAGE_REMEMBER.equals(UserPreferences.getDefaultPage())) {
@@ -151,12 +157,6 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
-
-        // Consume navigation bar insets - we apply them in setPlayerVisible()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
-                new WindowInsetsCompat.Builder(insets)
-                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
-                        .build());
     }
 
     @Override
