@@ -11,7 +11,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 // see https://github.com/bumptech/glide/issues/699
@@ -26,8 +25,7 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
 
     @Override
     public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
+        try (MediaMetadataRetriever retriever = new MediaMetadataRetriever()) {
             if (path.startsWith(ContentResolver.SCHEME_CONTENT)) {
                 retriever.setDataSource(context, Uri.parse(path));
             } else {
@@ -36,12 +34,10 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
             byte[] picture = retriever.getEmbeddedPicture();
             if (picture != null) {
                 callback.onDataReady(new ByteArrayInputStream(picture));
-                return;
             }
-        } finally {
-            retriever.release();
+        } catch (Exception e) {
+            callback.onLoadFailed(e);
         }
-        callback.onLoadFailed(new IOException("Loading embedded cover did not work"));
     }
 
     @Override public void cleanup() {

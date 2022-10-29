@@ -32,6 +32,7 @@ public class ApGlideModule extends AppGlideModule {
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
         builder.setDefaultRequestOptions(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888));
+        builder.setLogLevel(Log.WARN);
         @SuppressLint("UsableSpace")
         long spaceAvailable = context.getCacheDir().getUsableSpace();
         long imageCacheSize = (spaceAvailable > 2 * GIGABYTES) ? (250 * MEGABYTES) : (50 * MEGABYTES);
