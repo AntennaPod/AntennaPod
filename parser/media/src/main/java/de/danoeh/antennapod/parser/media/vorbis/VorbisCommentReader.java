@@ -37,7 +37,7 @@ public abstract class VorbisCommentReader {
                 readUserComment();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
     }
 
