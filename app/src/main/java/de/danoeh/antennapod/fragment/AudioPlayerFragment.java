@@ -28,7 +28,6 @@ import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -375,7 +374,7 @@ public class AudioPlayerFragment extends Fragment implements
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         currentChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), currentPosition);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }

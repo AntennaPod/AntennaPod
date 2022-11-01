@@ -669,8 +669,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         int remainingTime = converter.convert(
                 controller.getDuration() - controller.getPosition());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == PlaybackService.INVALID_TIME
-                || duration == PlaybackService.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME
+                || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }

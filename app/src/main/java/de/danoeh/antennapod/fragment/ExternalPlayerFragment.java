@@ -139,8 +139,8 @@ public class ExternalPlayerFragment extends Fragment {
     public void onPositionObserverUpdate(PlaybackPositionEvent event) {
         if (controller == null) {
             return;
-        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
-                || controller.getDuration() == PlaybackService.INVALID_TIME) {
+        } else if (controller.getPosition() == Playable.INVALID_TIME
+                || controller.getDuration() == Playable.INVALID_TIME) {
             return;
         }
         progressBar.setProgress((int)

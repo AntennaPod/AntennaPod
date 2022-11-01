@@ -30,10 +30,10 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 
@@ -230,7 +230,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         int timeDuration = event.getDuration();
         int remainingTime = Math.max(timeDuration - currentPosition, 0);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == PlaybackService.INVALID_TIME || timeDuration == PlaybackService.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME || timeDuration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }

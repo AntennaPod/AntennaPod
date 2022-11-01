@@ -39,7 +39,6 @@ import java.util.List;
 public abstract class PlaybackController {
 
     private static final String TAG = "PlaybackController";
-    private static final int INVALID_TIME = -1;
 
     private final Activity activity;
     private PlaybackService playbackService;
@@ -363,7 +362,7 @@ public abstract class PlaybackController {
         } else if (getMedia() != null) {
             return getMedia().getPosition();
         } else {
-            return PlaybackService.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
@@ -373,7 +372,7 @@ public abstract class PlaybackController {
         } else if (getMedia() != null) {
             return getMedia().getDuration();
         } else {
-            return PlaybackService.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
@@ -398,13 +397,13 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             return playbackService.getSleepTimerTimeLeft();
         } else {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
     public void extendSleepTimer(long extendTime) {
         long timeLeft = getSleepTimerTimeLeft();
-        if (playbackService != null && timeLeft != INVALID_TIME) {
+        if (playbackService != null && timeLeft != Playable.INVALID_TIME) {
             setSleepTimer(timeLeft + extendTime);
         }
     }
