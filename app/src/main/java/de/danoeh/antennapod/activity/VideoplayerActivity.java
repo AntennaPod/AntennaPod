@@ -190,6 +190,16 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 viewBinding.playButton.setIsShowPlay(showPlay);
+                if (showPlay) {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } else {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    setupVideoAspectRatio();
+                    if (videoSurfaceCreated && controller != null) {
+                        Log.d(TAG, "Videosurface already created, setting videosurface now");
+                        controller.setVideoSurface(viewBinding.videoView.getHolder());
+                    }
+                }
             }
 
             @Override
@@ -198,26 +208,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
 
             @Override
-            public void onAwaitingVideoSurface() {
-                setupVideoAspectRatio();
-                if (videoSurfaceCreated && controller != null) {
-                    Log.d(TAG, "Videosurface already created, setting videosurface now");
-                    controller.setVideoSurface(viewBinding.videoView.getHolder());
-                }
-            }
-
-            @Override
             public void onPlaybackEnd() {
                 finish();
-            }
-
-            @Override
-            protected void setScreenOn(boolean enable) {
-                if (enable) {
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                } else {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
             }
         };
     }

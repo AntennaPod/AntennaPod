@@ -235,17 +235,7 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         checkMediaInfoLoaded();
         switch (status) {
-            case PAUSED:
-                updatePlayButtonShowsPlay(true);
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
-                    setScreenOn(false);
-                }
-                break;
             case PLAYING:
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
-                    onAwaitingVideoSurface();
-                    setScreenOn(true);
-                }
                 updatePlayButtonShowsPlay(false);
                 break;
             case PREPARING:
@@ -253,7 +243,8 @@ public abstract class PlaybackController {
                     updatePlayButtonShowsPlay(!playbackService.isStartWhenPrepared());
                 }
                 break;
-            case PREPARED:
+            case PAUSED:
+            case PREPARED: // Fall-through
             case STOPPED: // Fall-through
             case INITIALIZED: // Fall-through
                 updatePlayButtonShowsPlay(true);
@@ -277,8 +268,6 @@ public abstract class PlaybackController {
 
     public abstract void loadMediaInfo();
 
-    public  void onAwaitingVideoSurface()  {}
-
     /**
      * Called when connection to playback service has been established or
      * information has to be refreshed
@@ -298,16 +287,6 @@ public abstract class PlaybackController {
             Log.e(TAG,
                     "queryService() was called without an existing connection to playbackservice");
         }
-    }
-
-    /**
-     * Should be implemented by classes that show a video. The default implementation
-     * does nothing
-     *
-     * @param enable True if the screen should be kept on, false otherwise
-     */
-    protected void setScreenOn(boolean enable) {
-
     }
 
     public void playPause() {
