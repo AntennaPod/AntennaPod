@@ -128,17 +128,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.core.service.actionShutdownPlaybackService";
 
     /**
-     * If the PlaybackService receives this action, it will end playback of the
-     * current episode and load the next episode if there is one available.
-     */
-    public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
-
-    /**
-     * If the PlaybackService receives this action, it will pause playback.
-     */
-    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
-
-    /**
      * Custom action used by Android Wear, Android Auto
      */
     private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
@@ -263,8 +252,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
-        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
         EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
@@ -347,8 +334,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(shutdownReceiver);
         unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
-        unregisterReceiver(skipCurrentEpisodeReceiver);
-        unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -1551,26 +1536,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     };
 
-    private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.skip();
-            }
-        }
-    };
-
-    private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
-                mediaPlayer.pause(false, false);
-            }
-        }
-    };
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
@@ -1628,10 +1593,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
-    }
-
-    public void reinit() {
-        mediaPlayer.reinit();
     }
 
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {

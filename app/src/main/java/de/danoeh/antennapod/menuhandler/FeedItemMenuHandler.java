@@ -3,6 +3,7 @@ package de.danoeh.antennapod.menuhandler;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +16,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
@@ -143,7 +145,7 @@ public class FeedItemMenuHandler {
 
         @NonNull Context context = fragment.requireContext();
         if (menuItemId == R.id.skip_episode_item) {
-            IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+            context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else if (menuItemId == R.id.remove_item) {
             DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
         } else if (menuItemId == R.id.remove_inbox_item) {

@@ -3,6 +3,7 @@ package de.test.antennapod.playback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import androidx.preference.PreferenceManager;
 import android.view.View;
 
@@ -10,6 +11,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.awaitility.Awaitility;
@@ -32,10 +34,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.test.antennapod.EspressoTestUtils;
@@ -241,11 +241,11 @@ public class PlaybackTest {
     }
 
     private void skipEpisode() {
-        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+        context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
     }
 
     protected void pauseEpisode() {
-        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
     }
 
     protected void startLocalPlayback() {
