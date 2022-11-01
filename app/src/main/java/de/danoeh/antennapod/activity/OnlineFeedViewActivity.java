@@ -38,7 +38,6 @@ import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -431,7 +430,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
                     .into(viewBinding.coverImage);
@@ -440,7 +438,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     .apply(new RequestOptions()
                             .placeholder(R.color.image_readability_tint)
                             .error(R.color.image_readability_tint)
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .transform(new FastBlurTransformation())
                             .dontAnimate())
                     .into(viewBinding.backgroundImage);

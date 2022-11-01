@@ -36,7 +36,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -203,7 +202,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
                 .into(imgvCover);
@@ -212,7 +210,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .transform(new FastBlurTransformation())
                         .dontAnimate())
                 .into(imgvBackground);

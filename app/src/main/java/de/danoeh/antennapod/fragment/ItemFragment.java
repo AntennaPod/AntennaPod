@@ -47,7 +47,6 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -294,7 +293,6 @@ public class ItemFragment extends Fragment {
 
         RequestOptions options = new RequestOptions()
                 .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .transform(new FitCenter(),
                         new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();

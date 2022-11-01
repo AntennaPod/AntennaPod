@@ -32,7 +32,6 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -505,7 +504,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .transform(new FastBlurTransformation())
                     .dontAnimate())
                 .into(viewBinding.imgvBackground);
@@ -515,7 +513,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate())
                 .into(viewBinding.header.imgvCover);

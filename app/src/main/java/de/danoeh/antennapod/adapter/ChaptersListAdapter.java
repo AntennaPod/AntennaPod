@@ -16,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -106,7 +105,6 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
                 Glide.with(context)
                         .load(EmbeddedChapterImage.getModelFor(media, position))
                         .apply(new RequestOptions()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
                                 .transform(new FitCenter(), new RoundedCorners((int)
                                         (4 * context.getResources().getDisplayMetrics().density))))
