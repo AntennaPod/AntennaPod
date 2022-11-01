@@ -88,11 +88,6 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             public void loadMediaInfo() {
                 ChaptersFragment.this.loadMediaInfo();
             }
-
-            @Override
-            public void onPositionObserverUpdate() {
-                adapter.notifyDataSetChanged();
-            }
         };
         controller.init();
         EventBus.getDefault().register(this);

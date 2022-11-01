@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -174,7 +173,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         super.onPause();
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
@@ -189,16 +187,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this) {
-            @Override
-            public void onPositionObserverUpdate() {
-                VideoplayerActivity.this.onPositionObserverUpdate();
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-                VideoplayerActivity.this.onReloadNotification(code);
-            }
-
             @Override
             protected void updatePlayButtonShowsPlay(boolean showPlay) {
                 viewBinding.playButton.setIsShowPlay(showPlay);
@@ -257,6 +245,13 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     protected void loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
         if (controller == null || controller.getMedia() == null) {
+            return;
+        }
+        if (controller.getStatus() == PlayerStatus.PLAYING && !controller.isPlayingVideoLocally()) {
+            Log.d(TAG, "Closing, no longer video");
+            destroyingDueToReload = true;
+            finish();
+            new MainActivityStarter(this).withOpenPlayer().start();
             return;
         }
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
@@ -484,22 +479,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             }
         }
     };
-
-    protected void onReloadNotification(int notificationCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && PictureInPictureUtil.isInPictureInPictureMode(this)) {
-            if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
-                    || notificationCode == PlaybackService.EXTRA_CODE_CAST) {
-                finish();
-            }
-            return;
-        }
-        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
-            Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
-            destroyingDueToReload = true;
-            finish();
-            new MainActivityStarter(this).withOpenPlayer().start();
-        }
-    }
 
     private void showVideoControls() {
         viewBinding.bottomControlsContainer.setVisibility(View.VISIBLE);

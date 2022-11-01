@@ -216,8 +216,6 @@ public abstract class PlaybackController {
                     }
                     mediaInfoLoaded = false;
                     queryService();
-                    onReloadNotification(intent.getIntExtra(
-                            PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
@@ -226,13 +224,6 @@ public abstract class PlaybackController {
         }
 
     };
-
-    public void onPositionObserverUpdate() {}
-
-    /**
-     * Called when the currently displayed information should be refreshed.
-     */
-    public void onReloadNotification(int code) {}
 
     public void onPlaybackEnd() {}
 
@@ -245,7 +236,6 @@ public abstract class PlaybackController {
         checkMediaInfoLoaded();
         switch (status) {
             case PAUSED:
-                onPositionObserverUpdate();
                 updatePlayButtonShowsPlay(true);
                 if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
@@ -264,14 +254,8 @@ public abstract class PlaybackController {
                 }
                 break;
             case PREPARED:
-                updatePlayButtonShowsPlay(true);
-                onPositionObserverUpdate();
-                break;
-            case SEEKING:
-                onPositionObserverUpdate();
-                break;
             case STOPPED: // Fall-through
-            case INITIALIZED:
+            case INITIALIZED: // Fall-through
                 updatePlayButtonShowsPlay(true);
                 break;
             default:
