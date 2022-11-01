@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.glide;
+package de.danoeh.antennapod.ui.glide;
 
 import android.net.Uri;
 import androidx.annotation.NonNull;

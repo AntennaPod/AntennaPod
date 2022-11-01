@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.glide;
+package de.danoeh.antennapod.ui.glide;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
+import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
 import okhttp3.Call;
 import org.apache.commons.io.FileUtils;
@@ -36,8 +37,8 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
     }
 
     @Override
-    public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
-        super.loadData(priority, new DataCallback<InputStream>() {
+    public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super InputStream> callback) {
+        super.loadData(priority, new DataFetcher.DataCallback<InputStream>() {
             @Override
             public void onDataReady(@Nullable InputStream data) {
                 if (data == null) {

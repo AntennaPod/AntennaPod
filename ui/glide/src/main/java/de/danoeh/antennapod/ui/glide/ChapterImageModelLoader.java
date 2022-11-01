@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.glide;
+package de.danoeh.antennapod.ui.glide;
 
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Priority;

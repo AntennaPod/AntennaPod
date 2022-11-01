@@ -18,6 +18,7 @@ include ':storage:database'
 
 include ':ui:app-start-intent'
 include ':ui:common'
+include ':ui:glide'
 include ':ui:i18n'
 include ':ui:png-icons'
 include ':ui:statistics'

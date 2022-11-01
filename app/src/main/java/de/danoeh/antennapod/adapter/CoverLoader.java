@@ -23,9 +23,9 @@ import com.bumptech.glide.request.transition.Transition;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.glide.PaletteBitmap;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.glide.PaletteBitmap;
 
 public class CoverLoader {
     private int resource = 0;
