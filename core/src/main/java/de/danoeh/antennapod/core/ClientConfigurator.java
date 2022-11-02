@@ -7,6 +7,7 @@ import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.download.NetworkConnectionChangeHandler;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.net.ssl.SslProviderInstaller;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -26,6 +27,7 @@ public class ClientConfigurator {
         PlaybackPreferences.init(context);
         SslProviderInstaller.install(context);
         NetworkUtils.init(context);
+        NetworkConnectionChangeHandler.init(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         AntennapodHttpClient.setProxyConfig(UserPreferences.getProxyConfig());
         SleepTimerPreferences.init(context);

@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfigurator;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.download.NetworkConnectionChangeHandler;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {
     private static final String TAG = "ConnectivityActionRecvr";
@@ -19,7 +19,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
             Log.d(TAG, "Received intent");
 
             ClientConfigurator.initialize(context);
-            NetworkUtils.networkChangedDetected();
+            NetworkConnectionChangeHandler.networkChangedDetected();
         }
     }
 }
