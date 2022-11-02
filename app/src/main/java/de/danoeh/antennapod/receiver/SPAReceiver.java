@@ -10,7 +10,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -41,7 +41,7 @@ public class SPAReceiver extends BroadcastReceiver{
             return;
         }
         Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
-        ClientConfig.initialize(context);
+        ClientConfigurator.initialize(context);
         for (String url : feedUrls) {
             Feed f = new Feed(url, null);
             DownloadService.download(context, false, DownloadRequestCreator.create(f).build());

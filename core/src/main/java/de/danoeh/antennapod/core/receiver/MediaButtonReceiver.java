@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 /**
@@ -31,7 +31,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
         }
         KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
         if (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
-            ClientConfig.initialize(context);
+            ClientConfigurator.initialize(context);
             Intent serviceIntent = new Intent(context, PlaybackService.class);
             serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
             serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
