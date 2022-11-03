@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import de.danoeh.antennapod.core.ClientConfigurator;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 /**
  * Receives media button events.
@@ -22,6 +21,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
     public static final String EXTRA_HARDWAREBUTTON
             = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.HARDWAREBUTTON";
     public static final String NOTIFY_BUTTON_RECEIVER = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
+    public static final String PLAYBACK_SERVICE_INTENT = "de.danoeh.antennapod.intents.PLAYBACK_SERVICE";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,7 +32,8 @@ public class MediaButtonReceiver extends BroadcastReceiver {
         KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
         if (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
             ClientConfigurator.initialize(context);
-            Intent serviceIntent = new Intent(context, PlaybackService.class);
+            Intent serviceIntent = new Intent(PLAYBACK_SERVICE_INTENT);
+            serviceIntent.setPackage(context.getPackageName());
             serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
             serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
             serviceIntent.putExtra(EXTRA_HARDWAREBUTTON, event.getEventTime() > 0 || event.getDownTime() > 0);
