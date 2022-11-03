@@ -128,17 +128,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.core.service.actionShutdownPlaybackService";
 
     /**
-     * If the PlaybackService receives this action, it will end playback of the
-     * current episode and load the next episode if there is one available.
-     */
-    public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
-
-    /**
-     * If the PlaybackService receives this action, it will pause playback.
-     */
-    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
-
-    /**
      * Custom action used by Android Wear, Android Auto
      */
     private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
@@ -166,12 +155,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * No more episodes are going to be played.
      */
     public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
-
-    /**
-     * Returned by getPositionSafe() or getDurationSafe() if the playbackService
-     * is in an invalid state.
-     */
-    public static final int INVALID_TIME = -1;
 
     /**
      * Is true if service is running.
@@ -263,8 +246,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
-        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
         EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
@@ -347,8 +328,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(shutdownReceiver);
         unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
-        unregisterReceiver(skipCurrentEpisodeReceiver);
-        unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -776,7 +755,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-            saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
+            saveCurrentPosition(true, null, Playable.INVALID_TIME);
         }
 
         @Override
@@ -828,7 +807,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
-                    saveCurrentPosition(true, null, INVALID_TIME);
+                    saveCurrentPosition(true, null, Playable.INVALID_TIME);
                     updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
@@ -883,7 +862,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
             taskManager.startWidgetUpdater();
-            if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
+            if (position != Playable.INVALID_TIME) {
                 playable.setPosition(position);
             } else {
                 skipIntro(playable);
@@ -896,8 +875,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME || playable == null,
-                    playable, position);
+            saveCurrentPosition(position == Playable.INVALID_TIME || playable == null, playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia) {
@@ -1392,7 +1370,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             duration = playable.getDuration();
         }
-        if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
+        if (position != Playable.INVALID_TIME && duration != Playable.INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
             PlayableUtils.saveCurrentPosition(playable, position, System.currentTimeMillis());
         }
@@ -1551,26 +1529,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     };
 
-    private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.skip();
-            }
-        }
-    };
-
-    private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
-                mediaPlayer.pause(false, false);
-            }
-        }
-    };
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
@@ -1628,10 +1586,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
-    }
-
-    public void reinit() {
-        mediaPlayer.reinit();
     }
 
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
@@ -1692,7 +1646,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public int getDuration() {
         if (mediaPlayer == null) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return mediaPlayer.getDuration();
     }
@@ -1703,7 +1657,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public int getCurrentPosition() {
         if (mediaPlayer == null) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return mediaPlayer.getPosition();
     }

@@ -1,15 +1,14 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
-
-import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
 public class PauseActionButton extends ItemActionButton {
 
@@ -37,7 +36,7 @@ public class PauseActionButton extends ItemActionButton {
         }
 
         if (FeedItemUtil.isCurrentlyPlaying(media)) {
-            IntentUtils.sendLocalBroadcast(context, ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+            context.sendBroadcast(MediaButtonReceiver.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
         }
     }
 }
