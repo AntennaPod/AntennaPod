@@ -341,7 +341,7 @@ public abstract class PlaybackController {
 
     public Playable getMedia() {
         if (media == null) {
-            media = PlayableUtils.createInstanceFromPreferences(activity);
+            media = PlaybackPreferences.createInstanceFromPreferences(activity);
         }
         return media;
     }

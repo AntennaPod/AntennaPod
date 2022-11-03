@@ -42,7 +42,6 @@ import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -391,7 +390,7 @@ public class DBWriter {
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
-            Playable currentlyPlaying = PlayableUtils.createInstanceFromPreferences(context);
+            Playable currentlyPlaying = PlaybackPreferences.createInstanceFromPreferences(context);
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (long itemId : itemIds) {
                 if (!itemListContains(queue, itemId)) {
