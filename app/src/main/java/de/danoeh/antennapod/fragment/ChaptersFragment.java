@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -43,11 +45,25 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(requireContext())
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
-                .setNegativeButton(getString(R.string.close_label), null) //dismisses
-                .create();
+                .setPositiveButton(getString(R.string.close_label), null) //dismisses
+                .setNeutralButton("Reset", null)
+                .show();
+        dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
+            controller = new PlaybackController(getActivity()) {
+                @Override
+                public void loadMediaInfo() {
+                    ChaptersFragment.this.loadMediaInfo();
+                }
+            };
+            loadMediaInfo();
+        });
+
+        return dialog;
     }
 
 
