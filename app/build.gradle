@@ -90,6 +90,7 @@ dependencies {
     implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:glide')
     implementation project(':ui:i18n')
     implementation project(':ui:statistics')
 
@@ -112,7 +113,6 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"

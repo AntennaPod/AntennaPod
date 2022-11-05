@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.Converter;
@@ -72,9 +71,7 @@ public class PlaybackServiceNotificationBuilder {
 
     public void loadIcon() {
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        final RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .centerCrop();
+        final RequestOptions options = new RequestOptions().centerCrop();
         try {
             icon = Glide.with(context)
                     .asBitmap()

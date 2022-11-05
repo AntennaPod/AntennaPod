@@ -29,7 +29,6 @@ import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -326,7 +325,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .transform(new FitCenter(),
                             new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
                     .dontAnimate())

@@ -13,14 +13,12 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.util.Converter;
@@ -89,7 +87,6 @@ public abstract class WidgetUpdater {
                 icon = Glide.with(context)
                         .asBitmap()
                         .load(widgetState.media.getImageLocation())
-                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
@@ -98,7 +95,6 @@ public abstract class WidgetUpdater {
                     icon = Glide.with(context)
                             .asBitmap()
                             .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                             .submit(iconSize, iconSize)
                             .get(500, TimeUnit.MILLISECONDS);
                     views.setImageViewBitmap(R.id.imgvCover, icon);
