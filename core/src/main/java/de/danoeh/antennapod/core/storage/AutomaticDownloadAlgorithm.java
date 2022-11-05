@@ -10,10 +10,10 @@ import java.util.List;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
 
@@ -68,7 +68,8 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable(System.currentTimeMillis()) || FeedItemUtil.isPlaying(item.getMedia())
+                    if (!item.isAutoDownloadable(System.currentTimeMillis())
+                            || PlaybackStatus.isPlaying(item.getMedia())
                             || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }
