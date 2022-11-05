@@ -35,7 +35,6 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
-import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
@@ -119,7 +118,7 @@ public final class DBTasks {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-        SyncService.sync(context);
+        SynchronizationQueueSink.syncNow();
         // Note: automatic download of episodes will be done but not here.
         // Instead it is done after all feeds have been refreshed (asynchronously),
         // in DownloadService.onDestroy()
