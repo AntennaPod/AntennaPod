@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.core.util.FastDocumentFile;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -75,6 +77,7 @@ public class LocalFeedUpdaterTest {
         Application app = (Application) context;
         ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
         when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+        DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
         // Initialize database
         PodDBAdapter.init(context);

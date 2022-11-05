@@ -5,7 +5,7 @@ import android.content.Context;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -44,6 +44,6 @@ class MobileDownloadHelper {
 
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
-        DownloadService.download(context, true, DownloadRequestCreator.create(item.getMedia()).build());
+        DownloadServiceInterface.get().download(context, true, DownloadRequestCreator.create(item.getMedia()).build());
     }
 }

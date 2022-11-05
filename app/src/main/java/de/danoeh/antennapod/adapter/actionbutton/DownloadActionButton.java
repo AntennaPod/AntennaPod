@@ -11,6 +11,7 @@ import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
@@ -50,7 +51,8 @@ public class DownloadActionButton extends ItemActionButton {
         UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
         if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
-            DownloadService.download(context, false, DownloadRequestCreator.create(item.getMedia()).build());
+            DownloadServiceInterface.get()
+                    .download(context, false, DownloadRequestCreator.create(item.getMedia()).build());
         } else if (MobileDownloadHelper.userChoseAddToQueue() && !item.isTagged(FeedItem.TAG_QUEUE)) {
             DBWriter.addQueueItem(context, item);
             Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();

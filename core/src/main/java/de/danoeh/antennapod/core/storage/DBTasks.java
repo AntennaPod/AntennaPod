@@ -12,7 +12,7 @@ import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
 import org.greenrobot.eventbus.EventBus;
@@ -113,7 +113,7 @@ public final class DBTasks {
      * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
      */
     public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
-        DownloadService.refreshAllFeeds(context, initiatedByUser);
+        DownloadServiceInterface.get().refreshAllFeeds(context, initiatedByUser);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
@@ -145,7 +145,7 @@ public final class DBTasks {
 
             DownloadRequest.Builder builder = DownloadRequestCreator.create(nextFeed);
             builder.loadAllPages(loadAllPages);
-            DownloadService.download(context, false, builder.build());
+            DownloadServiceInterface.get().download(context, false, builder.build());
         } else {
             Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
         }
@@ -164,7 +164,7 @@ public final class DBTasks {
         builder.withInitiatedByUser(initiatedByUser);
         builder.setForce(true);
         builder.loadAllPages(loadAllPages);
-        DownloadService.download(context, false, builder.build());
+        DownloadServiceInterface.get().download(context, false, builder.build());
     }
 
     /**

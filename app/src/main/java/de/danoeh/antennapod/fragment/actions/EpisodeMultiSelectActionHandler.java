@@ -13,7 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -99,7 +99,7 @@ public class EpisodeMultiSelectActionHandler {
                 requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
             }
         }
-        DownloadService.download(activity, true, requests.toArray(new DownloadRequest[0]));
+        DownloadServiceInterface.get().download(activity, true, requests.toArray(new DownloadRequest[0]));
         showMessage(R.plurals.downloading_batch_label, requests.size());
     }
 

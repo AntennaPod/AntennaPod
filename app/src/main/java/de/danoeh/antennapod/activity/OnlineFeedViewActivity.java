@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -455,7 +456,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 openFeed();
             } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                DownloadService.download(this, false, DownloadRequestCreator.create(f)
+                DownloadServiceInterface.get().download(this, false, DownloadRequestCreator.create(f)
                         .withAuthentication(username, password)
                         .build());
                 didPressSubscribe = true;

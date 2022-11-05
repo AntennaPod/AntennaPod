@@ -10,6 +10,8 @@ import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.awaitility.Awaitility;
 import org.junit.After;
@@ -65,6 +67,7 @@ public class DbWriterTest {
         Application app = (Application) context;
         ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
         when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+        DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
         // create new database
         PodDBAdapter.init(context);

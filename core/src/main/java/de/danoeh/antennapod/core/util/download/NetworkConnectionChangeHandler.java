@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.util.download;
 
 import android.content.Context;
 import com.google.android.exoplayer2.util.Log;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
@@ -22,7 +22,7 @@ public abstract class NetworkConnectionChangeHandler {
             // otherwise cancel all downloads
             if (NetworkUtils.isNetworkRestricted()) {
                 Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
-                DownloadService.cancelAll(context);
+                DownloadServiceInterface.get().cancelAll(context);
             }
         }
     }

@@ -13,7 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -139,7 +139,8 @@ public class DownloadLogAdapter extends BaseAdapter {
                             Log.e(TAG, "Could not find feed media for feed id: " + status.getFeedfileId());
                             return;
                         }
-                        DownloadService.download(context, true, DownloadRequestCreator.create(media).build());
+                        DownloadServiceInterface.get()
+                                .download(context, true, DownloadRequestCreator.create(media).build());
                         ((MainActivity) context).showSnackbarAbovePlayer(
                                 R.string.status_downloading_label, Toast.LENGTH_SHORT);
                     });
@@ -156,7 +157,7 @@ public class DownloadLogAdapter extends BaseAdapter {
         holder.secondaryActionButton.setVisibility(View.VISIBLE);
         holder.secondaryActionButton.setTag(downloader);
         holder.secondaryActionButton.setOnClickListener(v -> {
-            DownloadService.cancel(context, request.getSource());
+            DownloadServiceInterface.get().cancel(context, request.getSource());
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
                 FeedItem feedItem = media.getItem();
