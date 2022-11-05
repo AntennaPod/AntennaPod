@@ -60,8 +60,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
 
             ConfirmationDialog conDialog = new ConfirmationDialog(
                     getActivity(),
-                    de.danoeh.antennapod.ui.statistics.R.string.clear_playback_history,
-                    de.danoeh.antennapod.ui.statistics.R.string.clear_playback_history_msg) {
+                    R.string.clear_history_label,
+                    R.string.clear_playback_history_msg) {
 
                 @Override
                 public void onConfirmButtonPressed(DialogInterface dialog) {
