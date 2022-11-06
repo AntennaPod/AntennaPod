@@ -9,7 +9,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 
@@ -43,7 +43,7 @@ public class WidgetUpdaterWorker extends Worker {
      * Loads the current media from the database and updates the widget in a background job.
      */
     private void updateWidget() {
-        final Playable media = PlayableUtils.createInstanceFromPreferences(getApplicationContext());
+        final Playable media = PlaybackPreferences.createInstanceFromPreferences(getApplicationContext());
         if (media != null) {
             WidgetUpdater.updateWidget(getApplicationContext(),
                     new WidgetUpdater.WidgetState(media, PlayerStatus.STOPPED,

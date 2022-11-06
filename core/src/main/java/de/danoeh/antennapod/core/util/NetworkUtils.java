@@ -7,36 +7,17 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.text.TextUtils;
-import android.util.Log;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class NetworkUtils {
     private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
 
     private NetworkUtils(){}
-
-    private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static Context context;
 
@@ -159,74 +140,5 @@ public class NetworkUtils {
             return wasDownloadBlocked(throwable.getCause());
         }
         return false;
-    }
-
-    public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
-        return Single.create((SingleOnSubscribe<Long>) emitter -> {
-            if (!NetworkUtils.isEpisodeHeadDownloadAllowed()) {
-                emitter.onSuccess(0L);
-                return;
-            }
-            long size = Integer.MIN_VALUE;
-            if (media.isDownloaded()) {
-                File mediaFile = new File(media.getLocalMediaUrl());
-                if (mediaFile.exists()) {
-                    size = mediaFile.length();
-                }
-            } else if (!media.checkedOnSizeButUnknown()) {
-                // only query the network if we haven't already checked
-
-                String url = media.getDownload_url();
-                if(TextUtils.isEmpty(url)) {
-                    emitter.onSuccess(0L);
-                    return;
-                }
-
-                OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                Request.Builder httpReq = new Request.Builder()
-                        .url(url)
-                        .header("Accept-Encoding", "identity")
-                        .head();
-                try {
-                    Response response = client.newCall(httpReq.build()).execute();
-                    if (response.isSuccessful()) {
-                        String contentLength = response.header("Content-Length");
-                        try {
-                            size = Integer.parseInt(contentLength);
-                        } catch (NumberFormatException e) {
-                            Log.e(TAG, Log.getStackTraceString(e));
-                        }
-                    }
-                } catch (IOException e) {
-                    emitter.onSuccess(0L);
-                    Log.e(TAG, Log.getStackTraceString(e));
-                    return; // better luck next time
-                }
-            }
-            Log.d(TAG, "new size: " + size);
-            if (size <= 0) {
-                // they didn't tell us the size, but we don't want to keep querying on it
-                media.setCheckedOnSizeButUnknown();
-            } else {
-                media.setSize(size);
-            }
-            emitter.onSuccess(size);
-            DBWriter.setFeedMedia(media);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public static void networkChangedDetected() {
-        if (NetworkUtils.isAutoDownloadAllowed()) {
-            Log.d(TAG, "auto-dl network available, starting auto-download");
-            DBTasks.autodownloadUndownloadedItems(context);
-        } else { // if new network is Wi-Fi, finish ongoing downloads,
-            // otherwise cancel all downloads
-            if (NetworkUtils.isNetworkRestricted()) {
-                Log.i(TAG, "Device is no longer connected to Wi-Fi. Cancelling ongoing downloads");
-                DownloadService.cancelAll(context);
-            }
-        }
     }
 }

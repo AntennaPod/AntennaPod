@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -53,7 +54,6 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -332,7 +332,7 @@ public class ItemFragment extends Fragment {
                 txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
-            if (FeedItemUtil.isCurrentlyPlaying(media)) {
+            if (PlaybackStatus.isCurrentlyPlaying(media)) {
                 actionButton1 = new PauseActionButton(item);
             } else if (item.getFeed().isLocalFeed()) {
                 actionButton1 = new PlayLocalActionButton(item);

@@ -8,7 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,13 +37,11 @@ import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -129,7 +128,7 @@ public class DBWriter {
 
             if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
-                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
 
                 NotificationManagerCompat nm = NotificationManagerCompat.from(context);
                 nm.cancel(R.id.notification_playing);
@@ -202,12 +201,12 @@ public class DBWriter {
                 if (item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
                     // Applies to both downloaded and streamed media
                     PlaybackPreferences.writeNoMediaPlaying();
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                    IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 }
                 if (item.getMedia().isDownloaded()) {
                     deleteFeedMediaSynchronous(context, item.getMedia());
                 }
-                DownloadService.cancel(context, item.getMedia().getDownload_url());
+                DownloadServiceInterface.get().cancel(context, item.getMedia().getDownload_url());
             }
         }
 
@@ -391,7 +390,7 @@ public class DBWriter {
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
-            Playable currentlyPlaying = PlayableUtils.createInstanceFromPreferences(context);
+            Playable currentlyPlaying = PlaybackPreferences.createInstanceFromPreferences(context);
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (long itemId : itemIds) {
                 if (!itemListContains(queue, itemId)) {

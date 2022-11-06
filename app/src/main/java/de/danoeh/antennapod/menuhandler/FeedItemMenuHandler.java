@@ -17,12 +17,13 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -52,7 +53,7 @@ public class FeedItemMenuHandler {
             return false;
         }
         final boolean hasMedia = selectedItem.getMedia() != null;
-        final boolean isPlaying = hasMedia && FeedItemUtil.isPlaying(selectedItem.getMedia());
+        final boolean isPlaying = hasMedia && PlaybackStatus.isPlaying(selectedItem.getMedia());
         final boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
         final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
         final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
@@ -187,7 +188,7 @@ public class FeedItemMenuHandler {
             selectedItem.getMedia().setPosition(0);
             if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == selectedItem.getMedia().getId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
-                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
             DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
         } else if (menuItemId == R.id.visit_website_item) {

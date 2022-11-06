@@ -17,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ServiceCompat;
 
-import androidx.core.content.ContextCompat;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
@@ -139,58 +137,6 @@ public class DownloadService extends Service {
             connectionMonitor = new ConnectionStateMonitor();
             connectionMonitor.enable(getApplicationContext());
         }
-    }
-
-    public static void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
-        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
-        for (DownloadRequest request : requests) {
-            if (!isDownloadingFile(request.getSource())) {
-                requestsToSend.add(request);
-            }
-        }
-        if (requestsToSend.isEmpty()) {
-            return;
-        } else if (requestsToSend.size() > 100) {
-            if (BuildConfig.DEBUG) {
-                throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
-            } else {
-                Log.d(TAG, "Too many download requests. Dropping some to avoid Android dropping all.");
-                requestsToSend = new ArrayList<>(requestsToSend.subList(0, 100));
-            }
-        }
-
-        Intent launchIntent = new Intent(context, DownloadService.class);
-        launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
-        if (cleanupMedia) {
-            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
-        }
-        ContextCompat.startForegroundService(context, launchIntent);
-    }
-
-    public static void refreshAllFeeds(Context context, boolean initiatedByUser) {
-        Intent launchIntent = new Intent(context, DownloadService.class);
-        launchIntent.putExtra(DownloadService.EXTRA_REFRESH_ALL, true);
-        launchIntent.putExtra(DownloadService.EXTRA_INITIATED_BY_USER, initiatedByUser);
-        ContextCompat.startForegroundService(context, launchIntent);
-    }
-
-    public static void cancel(Context context, String url) {
-        if (!isRunning) {
-            return;
-        }
-        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
-        cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, url);
-        cancelIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(cancelIntent);
-    }
-
-    public static void cancelAll(Context context) {
-        if (!isRunning) {
-            return;
-        }
-        Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
-        cancelIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(cancelIntent);
     }
 
     public static boolean isDownloadingFeeds() {
@@ -373,7 +319,7 @@ public class DownloadService extends Service {
 
                 Log.d(TAG, "Requested invalid range, restarting download from the beginning");
                 FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-                download(this, false, downloader.getDownloadRequest());
+                DownloadServiceInterface.get().download(this, false, downloader.getDownloadRequest());
             } else {
                 Log.e(TAG, "Download failed");
                 saveDownloadStatus(status);

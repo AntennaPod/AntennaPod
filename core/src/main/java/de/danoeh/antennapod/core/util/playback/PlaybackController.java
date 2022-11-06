@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -84,10 +85,9 @@ public abstract class PlaybackController {
         initialized = true;
 
         activity.registerReceiver(statusUpdate, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
-
+                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
         activity.registerReceiver(notificationReceiver, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_NOTIFICATION));
+                PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION));
 
         if (!released) {
             bindToService();
@@ -202,14 +202,14 @@ public abstract class PlaybackController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            int type = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
-            int code = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
+            int type = intent.getIntExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_TYPE, -1);
+            int code = intent.getIntExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_CODE, -1);
             if (code == -1 || type == -1) {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_RELOAD:
+                case PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD:
                     if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
                         return;
@@ -217,7 +217,7 @@ public abstract class PlaybackController {
                     mediaInfoLoaded = false;
                     queryService();
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
+                case PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
                     break;
             }
@@ -341,7 +341,7 @@ public abstract class PlaybackController {
 
     public Playable getMedia() {
         if (media == null) {
-            media = PlayableUtils.createInstanceFromPreferences(activity);
+            media = PlaybackPreferences.createInstanceFromPreferences(activity);
         }
         return media;
     }

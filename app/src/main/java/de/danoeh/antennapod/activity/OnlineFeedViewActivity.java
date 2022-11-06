@@ -35,6 +35,8 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
+import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -44,7 +46,6 @@ import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
@@ -452,7 +453,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 openFeed();
             } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                DownloadService.download(this, false, DownloadRequestCreator.create(f)
+                DownloadServiceInterface.get().download(this, false, DownloadRequestCreator.create(f)
                         .withAuthentication(username, password)
                         .build());
                 didPressSubscribe = true;
@@ -462,7 +463,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
-            IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+            IntentUtils.sendLocalBroadcast(this, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
         if (UserPreferences.isEnableAutodownload()) {
