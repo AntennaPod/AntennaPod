@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
 

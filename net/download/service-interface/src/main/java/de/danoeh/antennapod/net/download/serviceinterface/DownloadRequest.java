@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.util.URLChecker;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 
 public class DownloadRequest implements Parcelable {
@@ -276,7 +276,7 @@ public class DownloadRequest implements Parcelable {
 
         public Builder(@NonNull String destination, @NonNull FeedMedia media) {
             this.destination = destination;
-            this.source = URLChecker.prepareURL(media.getDownload_url());
+            this.source = UrlChecker.prepareUrl(media.getDownload_url());
             this.title = media.getHumanReadableIdentifier();
             this.feedfileId = media.getId();
             this.feedfileType = media.getTypeAsInt();
@@ -284,7 +284,7 @@ public class DownloadRequest implements Parcelable {
 
         public Builder(@NonNull String destination, @NonNull Feed feed) {
             this.destination = destination;
-            this.source = feed.isLocalFeed() ? feed.getDownload_url() : URLChecker.prepareURL(feed.getDownload_url());
+            this.source = feed.isLocalFeed() ? feed.getDownload_url() : UrlChecker.prepareUrl(feed.getDownload_url());
             this.title = feed.getHumanReadableIdentifier();
             this.feedfileId = feed.getId();
             this.feedfileType = feed.getTypeAsInt();

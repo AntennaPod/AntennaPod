@@ -7,7 +7,7 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBTasks;
 
 // modified from http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
