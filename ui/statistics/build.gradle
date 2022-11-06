@@ -4,13 +4,6 @@ plugins {
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
-android {
-    lintOptions {
-        disable "InvalidPeriodicWorkRequestInterval", "MissingPermission", "GradleCompatible",
-                "QueryPermissionsNeeded", "Overdraw", "SetTextI18n", "RtlHardcoded"
-    }
-}
-
 dependencies {
     implementation project(":core")
     implementation project(":event")
