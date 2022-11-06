@@ -724,6 +724,7 @@
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
     <string name="country">Country</string>
 
