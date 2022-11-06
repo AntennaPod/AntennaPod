@@ -7,6 +7,7 @@ apply from: "../../playFlavor.gradle"
 dependencies {
     implementation project(":model")
     implementation project(":core")
+    implementation project(':storage:preferences')
 
     implementation "androidx.palette:palette:$paletteVersion"
 

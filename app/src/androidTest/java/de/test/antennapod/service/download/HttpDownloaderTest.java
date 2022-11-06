@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import de.danoeh.antennapod.model.feed.FeedFile;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;

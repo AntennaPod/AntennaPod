@@ -1,8 +1,7 @@
-package de.danoeh.antennapod.core.preferences;
+package de.danoeh.antennapod.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,7 +29,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -132,7 +130,7 @@ public class UserPreferences {
     private static final int NOTIFICATION_BUTTON_REWIND = 0;
     private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     private static final int NOTIFICATION_BUTTON_SKIP = 2;
-    private static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
+    public static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
@@ -155,34 +153,20 @@ public class UserPreferences {
         createNoMediaFile();
     }
 
-    /**
-     * Returns theme as R.style value
-     *
-     * @return R.style.Theme_AntennaPod_Light or R.style.Theme_AntennaPod_Dark
-     */
-    public static int getTheme() {
-        return readThemeValue(prefs.getString(PREF_THEME, "system"));
+    public enum ThemePreference {
+        LIGHT, DARK, BLACK, SYSTEM
     }
 
-    public static int getNoTitleTheme() {
-        int theme = getTheme();
-        if (theme == R.style.Theme_AntennaPod_Dark) {
-            return R.style.Theme_AntennaPod_Dark_NoTitle;
-        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
-            return R.style.Theme_AntennaPod_TrueBlack_NoTitle;
-        } else {
-            return R.style.Theme_AntennaPod_Light_NoTitle;
-        }
-    }
-
-    public static int getTranslucentTheme() {
-        int theme = getTheme();
-        if (theme == R.style.Theme_AntennaPod_Dark) {
-            return R.style.Theme_AntennaPod_Dark_Translucent;
-        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
-            return R.style.Theme_AntennaPod_TrueBlack_Translucent;
-        } else {
-            return R.style.Theme_AntennaPod_Light_Translucent;
+    public static ThemePreference getTheme() {
+        switch (prefs.getString(PREF_THEME, "system")) {
+            case "0":
+                return ThemePreference.LIGHT;
+            case "1":
+                return ThemePreference.DARK;
+            case "2":
+                return ThemePreference.BLACK;
+            default:
+                return ThemePreference.SYSTEM;
         }
     }
 
@@ -551,17 +535,13 @@ public class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
     }
 
-    public static int getEpisodeCacheSizeUnlimited() {
-        return context.getResources().getInteger(R.integer.episode_cache_size_unlimited);
-    }
-
     /**
      * Returns the capacity of the episode cache. This method will return the
      * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
      * 'unlimited'.
      */
     public static int getEpisodeCacheSize() {
-        return readEpisodeCacheSizeInternal(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CACHE_SIZE, "20"));
     }
 
     public static boolean isEnableAutodownload() {
@@ -744,34 +724,9 @@ public class UserPreferences {
              .apply();
     }
 
-    private static int readThemeValue(String valueFromPrefs) {
-        switch (valueFromPrefs) {
-            case "0":
-                return R.style.Theme_AntennaPod_Light;
-            case "1":
-                return R.style.Theme_AntennaPod_Dark;
-            case "2":
-                return R.style.Theme_AntennaPod_TrueBlack;
-            default:
-                int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
-                    return R.style.Theme_AntennaPod_Dark;
-                }
-                return R.style.Theme_AntennaPod_Light;
-        }
-    }
-
     private static long readUpdateInterval(String valueFromPrefs) {
         int hours = Integer.parseInt(valueFromPrefs);
         return TimeUnit.HOURS.toMillis(hours);
-    }
-
-    private static int readEpisodeCacheSizeInternal(String valueFromPrefs) {
-        if (valueFromPrefs.equals(context.getString(R.string.pref_episode_cache_unlimited))) {
-            return EPISODE_CACHE_SIZE_UNLIMITED;
-        } else {
-            return Integer.parseInt(valueFromPrefs);
-        }
     }
 
     private static List<Float> readPlaybackSpeedArray(String valueFromPrefs) {

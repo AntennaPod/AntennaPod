@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -40,7 +41,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -99,7 +100,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        lastTheme = UserPreferences.getNoTitleTheme();
+        lastTheme = ThemeSwitcher.getNoTitleTheme(this);
         setTheme(lastTheme);
         if (savedInstanceState != null) {
             ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
@@ -427,7 +428,7 @@ public class MainActivity extends CastEnabledActivity {
         handleNavIntent();
         RatingDialog.check();
 
-        if (lastTheme != UserPreferences.getNoTitleTheme()) {
+        if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -436,7 +437,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        lastTheme = UserPreferences.getNoTitleTheme(); // Don't recreate activity when a result is pending
+        lastTheme = ThemeSwitcher.getNoTitleTheme(this); // Don't recreate activity when a result is pending
     }
 
     @Override

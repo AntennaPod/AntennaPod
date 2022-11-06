@@ -13,8 +13,7 @@ import androidx.palette.graphics.Palette;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.transcode.ResourceTranscoder;
-
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class PaletteBitmapTranscoder implements ResourceTranscoder<Bitmap, PaletteBitmap> {
 

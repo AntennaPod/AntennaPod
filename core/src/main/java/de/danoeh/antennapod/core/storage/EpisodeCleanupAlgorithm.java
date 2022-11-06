@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class EpisodeCleanupAlgorithm {
 
@@ -50,8 +50,7 @@ public abstract class EpisodeCleanupAlgorithm {
      */
     int getNumEpisodesToCleanup(final int amountOfRoomNeeded) {
         if (amountOfRoomNeeded >= 0
-                && UserPreferences.getEpisodeCacheSize() != UserPreferences
-                .getEpisodeCacheSizeUnlimited()) {
+                && UserPreferences.getEpisodeCacheSize() != UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED) {
             int downloadedEpisodes = DBReader
                     .getNumberOfDownloadedEpisodes();
             if (downloadedEpisodes + amountOfRoomNeeded >= UserPreferences
