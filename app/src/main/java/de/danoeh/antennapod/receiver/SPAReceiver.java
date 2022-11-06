@@ -12,7 +12,7 @@ import java.util.Arrays;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfigurator;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadServiceInterface;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.Feed;
 
 /**

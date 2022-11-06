@@ -6,6 +6,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;

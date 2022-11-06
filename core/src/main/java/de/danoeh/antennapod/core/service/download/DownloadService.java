@@ -21,6 +21,8 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 

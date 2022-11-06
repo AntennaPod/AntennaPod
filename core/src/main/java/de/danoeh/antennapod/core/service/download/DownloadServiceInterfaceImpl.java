@@ -5,6 +5,8 @@ import android.content.Intent;
 import androidx.core.content.ContextCompat;
 import com.google.android.exoplayer2.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 
 import java.util.ArrayList;
 
