@@ -4,15 +4,6 @@ plugins {
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
-android {
-    lintOptions {
-        disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
-                "ParcelClassLoader", "CheckResult", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "IconDensities", "IconDuplicates", "MissingPermission", "AppCompatResource",
-                "GradleCompatible", "QueryPermissionsNeeded"
-    }
-}
-
 dependencies {
     implementation project(":model")
     implementation project(":core")
