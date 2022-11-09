@@ -143,7 +143,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext(),controller.isRefresed());
+                ChapterUtils.loadChapters(media, getContext(), controller.isRefresed());
                 controller.setRefresed(false);
                 emitter.onSuccess(media);
             } else {

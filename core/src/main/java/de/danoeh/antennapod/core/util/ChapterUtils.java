@@ -74,7 +74,7 @@ public class ChapterUtils {
 
             if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl(),refreshed);
+                        feedMedia.getItem().getPodcastIndexChapterUrl(), refreshed);
             }
 
         }
@@ -139,9 +139,9 @@ public class ChapterUtils {
     public static List<Chapter> loadChaptersFromUrl(String url, boolean refreshed) {
         try {
             Request request = null;
-            if (refreshed){
+            if (refreshed) {
                 request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).build();
-            }else{
+            } else {
                 request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
             }
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
