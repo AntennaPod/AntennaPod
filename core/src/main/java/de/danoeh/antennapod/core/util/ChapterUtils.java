@@ -135,6 +135,7 @@ public class ChapterUtils {
             return new CountingInputStream(new BufferedInputStream(response.body().byteStream()));
         }
     }
+
     public static List<Chapter> loadChaptersFromUrl(String url, boolean refreshed) {
         try {
             Request request = null;
