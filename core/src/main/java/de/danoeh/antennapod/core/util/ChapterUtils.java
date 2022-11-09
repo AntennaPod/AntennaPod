@@ -54,7 +54,8 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static void loadChapters(Playable playable, Context context) {
+    public static void loadChapters(Playable playable, Context context, boolean refreshed) {
+
         if (playable.getChapters() != null) {
             // Already loaded
             return;
@@ -73,7 +74,7 @@ public class ChapterUtils {
 
             if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl());
+                        feedMedia.getItem().getPodcastIndexChapterUrl(),refreshed);
             }
 
         }
@@ -134,10 +135,15 @@ public class ChapterUtils {
             return new CountingInputStream(new BufferedInputStream(response.body().byteStream()));
         }
     }
-
-    public static List<Chapter> loadChaptersFromUrl(String url) {
+;
+    public static List<Chapter> loadChaptersFromUrl(String url, boolean refreshed) {
         try {
-            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
+            Request request = null;
+            if (refreshed){
+                request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).build();
+            }else{
+                request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
+            }
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 List<Chapter> chapters = PodcastIndexChapterParser.parse(response.body().string());
@@ -145,6 +151,7 @@ public class ChapterUtils {
                     return chapters;
                 }
             }
+
             request = new Request.Builder().url(url).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {

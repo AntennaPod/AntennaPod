@@ -227,7 +227,7 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             chapterLoaderFuture = Completable.create(emitter -> {
-                ChapterUtils.loadChapters(media, context);
+                ChapterUtils.loadChapters(media, context,false);
                 emitter.onComplete();
             })
                     .subscribeOn(Schedulers.io())

@@ -51,6 +51,8 @@ public abstract class PlaybackController {
     private boolean eventsRegistered = false;
     private long loadedFeedMedia = -1;
 
+    private boolean refresed = false;
+
     public PlaybackController(@NonNull Activity activity) {
         this.activity = activity;
     }
@@ -68,6 +70,14 @@ public abstract class PlaybackController {
         } else {
             updatePlayButtonShowsPlay(true);
         }
+    }
+
+    public boolean isRefresed() {
+        return refresed;
+    }
+
+    public void setRefresed(boolean refresed) {
+        this.refresed = refresed;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

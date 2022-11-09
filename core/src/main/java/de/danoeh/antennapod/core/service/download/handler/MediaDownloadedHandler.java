@@ -59,7 +59,7 @@ public class MediaDownloadedHandler implements Runnable {
         }
 
         if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
-            ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl());
+            ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(),false);
         }
         // Get duration
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();

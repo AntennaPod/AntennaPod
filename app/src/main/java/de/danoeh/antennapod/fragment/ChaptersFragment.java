@@ -60,6 +60,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                     ChaptersFragment.this.loadMediaInfo();
                 }
             };
+            controller.setRefresed(true);
             loadMediaInfo();
         });
 
@@ -142,7 +143,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext());
+                ChapterUtils.loadChapters(media, getContext(),controller.isRefresed());
+                controller.setRefresed(false);
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
