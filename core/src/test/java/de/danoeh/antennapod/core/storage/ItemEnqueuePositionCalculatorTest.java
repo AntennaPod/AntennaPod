@@ -19,14 +19,14 @@ import de.danoeh.antennapod.model.feed.FeedComponent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.FRONT;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.BACK;
+import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.FRONT;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;

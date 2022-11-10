@@ -7,7 +7,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

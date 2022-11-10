@@ -45,7 +45,7 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;

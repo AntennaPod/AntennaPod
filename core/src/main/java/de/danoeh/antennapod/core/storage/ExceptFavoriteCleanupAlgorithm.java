@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * A cleanup algorithm that removes any item that isn't a favorite but only if space is needed.
@@ -88,7 +88,7 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @Override
     public int getDefaultCleanupParameter() {
         int cacheSize = UserPreferences.getEpisodeCacheSize();
-        if (cacheSize != UserPreferences.getEpisodeCacheSizeUnlimited()) {
+        if (cacheSize != UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED) {
             int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
             if (downloadedEpisodes > cacheSize) {
                 return downloadedEpisodes - cacheSize;

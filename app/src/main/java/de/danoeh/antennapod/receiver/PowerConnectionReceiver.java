@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfigurator;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBTasks;
 

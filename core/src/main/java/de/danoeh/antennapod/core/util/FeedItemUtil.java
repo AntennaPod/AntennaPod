@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.util;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

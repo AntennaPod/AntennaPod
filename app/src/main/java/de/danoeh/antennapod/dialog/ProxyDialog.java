@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import io.reactivex.Completable;

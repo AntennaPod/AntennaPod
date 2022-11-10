@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -31,7 +31,7 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTranslucentTheme());
+        setTheme(ThemeSwitcher.getTranslucentTheme(this));
         super.onCreate(savedInstanceState);
 
         Validate.isTrue(getIntent().hasExtra(ARG_DOWNLOAD_REQUEST), "Download request missing");

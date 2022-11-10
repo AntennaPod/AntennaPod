@@ -8,7 +8,7 @@ import android.view.SurfaceHolder;
 import de.danoeh.antennapod.core.ClientConfig;
 import org.antennapod.audio.MediaPlayer;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -13,7 +13,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
 
@@ -80,7 +80,7 @@ public class AutomaticDownloadAlgorithm {
                 int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
-                        UserPreferences.getEpisodeCacheSize() == UserPreferences.getEpisodeCacheSizeUnlimited();
+                        UserPreferences.getEpisodeCacheSize() == UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED;
                 int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
 
                 int episodeSpaceLeft;

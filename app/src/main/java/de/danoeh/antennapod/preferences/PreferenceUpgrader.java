@@ -8,11 +8,11 @@ import androidx.preference.PreferenceManager;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
@@ -78,8 +78,8 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070400) {
-            int theme = UserPreferences.getTheme();
-            if (theme == R.style.Theme_AntennaPod_Light) {
+            UserPreferences.ThemePreference theme = UserPreferences.getTheme();
+            if (theme == UserPreferences.ThemePreference.LIGHT) {
                 prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
             }
 
@@ -126,6 +126,12 @@ public class PreferenceUpgrader {
             long value = Long.parseLong(SleepTimerPreferences.lastTimerValue());
             TimeUnit unit = timeUnits[sleepTimerPreferences.getInt("LastTimeUnit", 1)];
             SleepTimerPreferences.setLastTimer(String.valueOf(unit.toMinutes(value)));
+
+            if (prefs.getString(UserPreferences.PREF_EPISODE_CACHE_SIZE, "20")
+                    .equals(context.getString(R.string.pref_episode_cache_unlimited))) {
+                prefs.edit().putString(UserPreferences.PREF_EPISODE_CACHE_SIZE,
+                        "" + UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED).apply();
+            }
         }
     }
 }

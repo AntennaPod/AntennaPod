@@ -11,7 +11,7 @@ import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class ItemActionButton {
     FeedItem item;
