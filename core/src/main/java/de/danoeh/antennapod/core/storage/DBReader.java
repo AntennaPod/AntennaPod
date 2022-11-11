@@ -405,11 +405,12 @@ public final class DBReader {
      * has been completed at least once.
      *
      * @param limit The maximum number of items to return.
+     * @param filter The start (index = 0) and end (index = 1) dates (as a timestamp) of the FeedItems to be displayed.
      *
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
      */
     @NonNull
-    public static List<FeedItem> getPlaybackHistory(int offset, int limit) {
+    public static List<FeedItem> getPlaybackHistory(int offset, int limit, long[] filter) {
         Log.d(TAG, "getPlaybackHistory() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -418,7 +419,7 @@ public final class DBReader {
         Cursor mediaCursor = null;
         Cursor itemCursor = null;
         try {
-            mediaCursor = adapter.getCompletedMediaCursor(offset, limit);
+            mediaCursor = adapter.getCompletedMediaCursor(offset, limit, filter);
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);

@@ -93,6 +93,7 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
+    <string name="date_range_picker_title">Choose a start date and an end date</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
@@ -180,6 +181,8 @@
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
+    <string name="choose_date_filter">Choose timeframe</string>
+    <string name="remove_filter">Remove filter</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open Podcast</string>

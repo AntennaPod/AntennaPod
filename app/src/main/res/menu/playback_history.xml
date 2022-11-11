@@ -2,6 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/filter_playback_history"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/playback_filter_by_date_range"
+                android:title="@string/choose_date_filter" />
+            <item
+                android:id="@+id/playback_remove_filter"
+                android:title="@string/remove_filter" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/clear_history_item"
         android:icon="@drawable/ic_delete"
         android:title="@string/clear_history_label"

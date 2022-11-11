@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 /**
  * Test class for DBReader.
@@ -471,6 +474,8 @@ public class DbReaderTest {
 
         }
 
+        //TODO: Add test cases
+
         @Test
         public void testGetPlaybackHistory() {
             final int numItems = (paramLimit + 1) * 2;
@@ -491,7 +496,11 @@ public class DbReaderTest {
             }
             adapter.close();
 
-            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(MaterialDatePicker.todayInUtcMilliseconds());
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+
+            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{0, cal.getTime().getTime()});
             assertNotNull(saved);
             assertEquals(String.format("Wrong size with offset %d and limit %d: ",
                             paramOffset, paramLimit),

@@ -1113,14 +1113,16 @@ public class PodDBAdapter {
      *              integer >= 0.
      * @throws IllegalArgumentException if limit < 0
      */
-    public final Cursor getCompletedMediaCursor(int offset, int limit) {
+    public final Cursor getCompletedMediaCursor(int offset, int limit, long[] timestamps) {
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be >= 0");
         }
+        String query = "SELECT * FROM " + TABLE_NAME_FEED_MEDIA
+                + " WHERE " + KEY_PLAYBACK_COMPLETION_DATE + " > " + timestamps[0]
+                + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]
+                + " ORDER BY " + String.format(Locale.US, "%s DESC LIMIT %d, %d", KEY_PLAYBACK_COMPLETION_DATE, offset, limit);
 
-        return db.query(TABLE_NAME_FEED_MEDIA, null,
-                KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format(Locale.US, "%s DESC LIMIT %d, %d", KEY_PLAYBACK_COMPLETION_DATE, offset, limit));
+        return db.rawQuery(query, null);
     }
 
     public final long getCompletedMediaLength() {
