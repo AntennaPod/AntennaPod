@@ -54,7 +54,7 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static void loadChapters(Playable playable, Context context, boolean forceRefreshed) {
+    public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {
 
         if (playable.getChapters() != null) {
             // Already loaded
@@ -74,7 +74,7 @@ public class ChapterUtils {
 
             if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefreshed);
+                        feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
             }
 
         }
@@ -136,10 +136,10 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefreshed) {
+    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefresh) {
         try {
             Request request = null;
-            if (forceRefreshed) {
+            if (forceRefresh) {
                 request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).build();
             } else {
                 request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
