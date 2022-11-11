@@ -50,8 +50,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
                 .setPositiveButton(getString(R.string.close_label), null) //dismisses
-                .setNeutralButton("Reset", null)
-                .show();
+                .setNeutralButton(getString(R.string.refresh_label), null)
+                .create();
         dialog.show();
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
             controller = new PlaybackController(getActivity()) {
