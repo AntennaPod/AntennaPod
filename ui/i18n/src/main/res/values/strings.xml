@@ -122,6 +122,8 @@
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
+    <string name="edit_url_feed_reduction">Edit URL</string>
+    <string name="edit_url_feed_summary">Change feed URL</string>
     <string name="parallel_downloads">%1$d parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
@@ -541,6 +543,7 @@
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show Subscription Title</string>
     <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
+    <string name="pref_edit_url_feed">Feed URL</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

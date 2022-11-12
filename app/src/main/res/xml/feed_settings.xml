@@ -57,6 +57,12 @@
         android:summary="@string/feed_volume_reduction_summary"
         android:title="@string/feed_volume_reduction" />
 
+    <Preference
+        android:icon="@drawable/ic_feed"
+        android:key="editFeedUrl"
+        android:summary="@string/edit_url_feed_summary"
+        android:title="@string/edit_url_feed_reduction" />
+
     <PreferenceCategory
         android:key="autoDownloadCategory"
         android:title="@string/auto_download_settings_label">

@@ -16,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.EditUrlSettingsDialog;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -104,6 +105,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
+        private static final String PREF_EDIT_FEED_URL = "editFeedUrl";
 
         private Feed feed;
         private Disposable disposable;
@@ -158,6 +160,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupFeedAutoSkipPreference();
                         setupEpisodeNotificationPreference();
                         setupTags();
+                        setupFeedEditUrlPreference();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
@@ -195,6 +198,20 @@ public class FeedSettingsFragment extends Fragment {
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
                                         feed.getId()));
+                    }
+                }.show();
+                return false;
+            });
+        }
+
+        private void setupFeedEditUrlPreference() {
+            findPreference(PREF_EDIT_FEED_URL).setOnPreferenceClickListener(preference -> {
+                new EditUrlSettingsDialog(getContext(),
+                        feed) {
+                    @Override
+                    protected void onConfirmed(String origial, String updated) {
+                        DBWriter.updateFeedDownloadURL(origial, updated);
+                        feed.setDownload_url(updated);
                     }
                 }.show();
                 return false;
