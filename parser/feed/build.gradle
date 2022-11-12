@@ -3,12 +3,6 @@ plugins {
 }
 apply from: "../../common.gradle"
 
-android {
-    lintOptions {
-        disable "TrustAllX509TrustManager"
-    }
-}
-
 dependencies {
     implementation project(':model')
 

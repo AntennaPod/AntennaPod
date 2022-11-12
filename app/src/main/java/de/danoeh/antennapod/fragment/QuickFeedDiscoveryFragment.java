@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import org.greenrobot.eventbus.EventBus;
@@ -61,7 +62,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         errorView = root.findViewById(R.id.discover_error);
         errorTextView = root.findViewById(R.id.discover_error_txtV);
         errorRetry = root.findViewById(R.id.discover_error_retry_btn);
-        errorRetry.setOnClickListener((listener) -> loadToplist());
         poweredByTextView = root.findViewById(R.id.discover_powered_by_itunes);
 
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
@@ -108,19 +108,33 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private void loadToplist() {
         errorView.setVisibility(View.GONE);
         errorRetry.setVisibility(View.INVISIBLE);
+        errorRetry.setText(R.string.retry_label);
         poweredByTextView.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
-        boolean hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
-        if (hidden) {
+        if (prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {
             errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
             discoverGridLayout.setVisibility(View.GONE);
             errorRetry.setVisibility(View.GONE);
             poweredByTextView.setVisibility(View.GONE);
+            return;
+        }
+        //noinspection ConstantConditions
+        if (BuildConfig.FLAVOR.equals("free") && prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true)) {
+            errorTextView.setText("");
+            errorView.setVisibility(View.VISIBLE);
+            discoverGridLayout.setVisibility(View.VISIBLE);
+            errorRetry.setVisibility(View.VISIBLE);
+            errorRetry.setText(R.string.discover_confirm);
+            poweredByTextView.setVisibility(View.VISIBLE);
+            errorRetry.setOnClickListener(v -> {
+                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                loadToplist();
+            });
             return;
         }
 
@@ -142,6 +156,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                             errorView.setVisibility(View.VISIBLE);
                             discoverGridLayout.setVisibility(View.INVISIBLE);
                             errorRetry.setVisibility(View.VISIBLE);
+                            errorRetry.setOnClickListener((listener) -> loadToplist());
                         });
     }
 

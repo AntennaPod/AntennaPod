@@ -39,7 +39,7 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
@@ -543,7 +543,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         executor.submit(() -> {
             playerLock.lock();
             int currentPosition = getPosition();
-            if (currentPosition != INVALID_TIME) {
+            if (currentPosition != Playable.INVALID_TIME) {
                 seekToSync(currentPosition + d);
             } else {
                 Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
@@ -559,10 +559,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public int getDuration() {
         if (!playerLock.tryLock()) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
 
-        int retVal = INVALID_TIME;
+        int retVal = Playable.INVALID_TIME;
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
@@ -583,13 +583,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     public int getPosition() {
         try {
             if (!playerLock.tryLock(50, TimeUnit.MILLISECONDS)) {
-                return INVALID_TIME;
+                return Playable.INVALID_TIME;
             }
         } catch (InterruptedException e) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
 
-        int retVal = INVALID_TIME;
+        int retVal = Playable.INVALID_TIME;
         if (playerStatus.isAtLeast(PlayerStatus.PREPARED)) {
             retVal = mediaPlayer.getCurrentPosition();
         }

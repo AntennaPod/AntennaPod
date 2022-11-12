@@ -3,9 +3,7 @@ package de.danoeh.antennapod.core.util;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -74,20 +72,5 @@ public class FeedItemUtil {
     public static boolean hasAlmostEnded(FeedMedia media) {
         int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
         return media.getDuration() > 0 && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
-    }
-
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played and the current player status is playing.
-     */
-    public static boolean isCurrentlyPlaying(FeedMedia media) {
-        return isPlaying(media) && PlaybackService.isRunning
-                && ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
-    }
-
-    public static boolean isPlaying(FeedMedia media) {
-        return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                && media != null
-                && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId();
     }
 }

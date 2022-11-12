@@ -4,10 +4,8 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,14 +13,12 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.util.Converter;
@@ -91,7 +87,6 @@ public abstract class WidgetUpdater {
                 icon = Glide.with(context)
                         .asBitmap()
                         .load(widgetState.media.getImageLocation())
-                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
@@ -100,7 +95,6 @@ public abstract class WidgetUpdater {
                     icon = Glide.with(context)
                             .asBitmap()
                             .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
-                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                             .submit(iconSize, iconSize)
                             .get(500, TimeUnit.MILLISECONDS);
                     views.setImageViewBitmap(R.id.imgvCover, icon);
@@ -133,21 +127,21 @@ public abstract class WidgetUpdater {
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butRew,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
             views.setOnClickPendingIntent(R.id.butFastForward,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
             views.setOnClickPendingIntent(R.id.butSkip,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonReceiver.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
@@ -203,19 +197,6 @@ public abstract class WidgetUpdater {
             ++n;
         }
         return n - 1;
-    }
-
-    /**
-     * Creates an intent which fakes a mediabutton press.
-     */
-    private static PendingIntent createMediaButtonIntent(Context context, int eventCode) {
-        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
-        Intent startingIntent = new Intent(context, MediaButtonReceiver.class);
-        startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
-        startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
-
-        return PendingIntent.getBroadcast(context, eventCode, startingIntent,
-                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
     private static String getProgressString(int position, int duration, float speed) {

@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import io.reactivex.Observable;
 

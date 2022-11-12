@@ -173,7 +173,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
         if (mediaChanged && stateChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING
                 && state != MediaStatus.PLAYER_STATE_IDLE) {
-            callback.onPlaybackPause(null, INVALID_TIME);
+            callback.onPlaybackPause(null, Playable.INVALID_TIME);
             // We don't want setPlayerStatus to handle the onPlaybackPause callback
             setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
         }
@@ -197,7 +197,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             case MediaStatus.PLAYER_STATE_BUFFERING:
                 setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING)
                                 ? PlayerStatus.PREPARING : PlayerStatus.SEEKING, currentMedia,
-                        currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
+                        currentMedia != null ? currentMedia.getPosition() : Playable.INVALID_TIME);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
                 int reason = status.getIdleReason();
@@ -218,7 +218,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                         // Means that a request to load a different media was sent
                         // Not sure if currentMedia already reflects the to be loaded one
                         if (mediaChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING) {
-                            callback.onPlaybackPause(null, INVALID_TIME);
+                            callback.onPlaybackPause(null, Playable.INVALID_TIME);
                             setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         }
                         setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
@@ -376,7 +376,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Override
     public void seekDelta(int d) {
         int position = getPosition();
-        if (position != INVALID_TIME) {
+        if (position != Playable.INVALID_TIME) {
             seekTo(position + d);
         } else {
             Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
@@ -386,7 +386,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Override
     public int getDuration() {
         int retVal = (int) remoteMediaClient.getStreamDuration();
-        if (retVal == INVALID_TIME && media != null && media.getDuration() > 0) {
+        if (retVal == Playable.INVALID_TIME && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
         return retVal;
@@ -542,7 +542,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             }
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,
-                    currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
+                    currentMedia != null ? currentMedia.getPosition() : Playable.INVALID_TIME);
         }
 
         FutureTask<?> future = new FutureTask<>(() -> { }, null);
