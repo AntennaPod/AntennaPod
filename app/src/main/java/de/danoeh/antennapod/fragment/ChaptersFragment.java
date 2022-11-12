@@ -57,11 +57,11 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             controller = new PlaybackController(getActivity()) {
                 @Override
                 public void loadMediaInfo() {
-                    ChaptersFragment.this.loadMediaInfo();
+                    ChaptersFragment.this.loadMediaInfo(true);
                 }
             };
             controller.setRefresed(true);
-            loadMediaInfo();
+            loadMediaInfo(true);
         });
 
         return dialog;
@@ -103,12 +103,12 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                ChaptersFragment.this.loadMediaInfo();
+                ChaptersFragment.this.loadMediaInfo(false);
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
-        loadMediaInfo();
+        loadMediaInfo(false);
     }
 
     @Override
@@ -136,15 +136,14 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         return ChapterUtils.getCurrentChapterIndex(media, controller.getPosition());
     }
 
-    private void loadMediaInfo() {
+    private void loadMediaInfo(boolean forceRefresh) {
         if (disposable != null) {
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                ChapterUtils.loadChapters(media, getContext(), controller.isRefresed());
-                controller.setRefresed(false);
+                ChapterUtils.loadChapters(media, getContext(), forceRefresh);
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();

@@ -371,7 +371,6 @@ public class FeedMedia extends FeedFile implements Playable {
     public long getItemId() {
         return itemID;
     }
-    
     @Override
     public void onPlaybackStart() {
         startPosition = Math.max(position, 0);
