@@ -72,14 +72,6 @@ public abstract class PlaybackController {
         }
     }
 
-    public boolean isRefresed() {
-        return refresed;
-    }
-
-    public void setRefresed(boolean refresed) {
-        this.refresed = refresed;
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackServiceEvent event) {
         if (event.action == PlaybackServiceEvent.Action.SERVICE_STARTED) {

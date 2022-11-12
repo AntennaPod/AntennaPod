@@ -60,7 +60,6 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                     ChaptersFragment.this.loadMediaInfo(true);
                 }
             };
-            controller.setRefresed(true);
             loadMediaInfo(true);
         });
 
