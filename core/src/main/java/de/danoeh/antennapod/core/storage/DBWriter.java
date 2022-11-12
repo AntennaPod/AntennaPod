@@ -245,6 +245,16 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.removeFromPlaybackHistory(feedItem);
+            adapter.close();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
+        });
+    }
+
     /**
      * Deletes the entire download log.
      */
@@ -270,6 +280,20 @@ public class DBWriter {
         return dbExec.submit(() -> {
             Log.d(TAG, "Adding new item to playback history");
             media.setPlaybackCompletionDate(new Date());
+
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedMediaPlaybackCompletionDate(media);
+            adapter.close();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
+
+        });
+    }
+
+    public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
+        return dbExec.submit(() -> {
+            Log.d(TAG, "Re-adding item to playback history");
+            media.setPlaybackCompletionDate(date);
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

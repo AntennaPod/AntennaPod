@@ -12,6 +12,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,7 +33,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
-        swipeActions.detach();
+        swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
+        swipeActions.setFilter(getFilter());
         return root;
     }
 

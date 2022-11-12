@@ -94,6 +94,8 @@
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
     <string name="clear_playback_history_msg">This will clear the entire playback history. Are you sure you want to proceed?</string>
+    <string name="remove_history_label">Remove from history</string>
+    <string name="removed_history_label">Removed from history</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>

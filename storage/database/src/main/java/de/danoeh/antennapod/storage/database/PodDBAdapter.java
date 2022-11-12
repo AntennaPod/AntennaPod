@@ -901,6 +901,10 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
 
+    public void removeFromPlaybackHistory(FeedItem feedItem) {
+        db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?", new String[]{String.valueOf(feedItem.getId())});
+    }
+
     public void clearDownloadLog() {
         db.delete(TABLE_NAME_DOWNLOAD_LOG, null, null);
     }

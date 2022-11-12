@@ -132,6 +132,16 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+        if(tag.equals("PlaybackHistoryFragment")) {
+            new RemoveFromHistorySwipeAction().performAction(
+                    ((EpisodeItemViewHolder) viewHolder).getFeedItem(),
+                    fragment,
+                    filter
+            );
+            return;
+        }
+
         if (!actions.hasActions()) {
             //open settings dialog if no prefs are set
             new SwipeActionsDialog(fragment.requireContext(), tag).show(this::reloadPreference);
