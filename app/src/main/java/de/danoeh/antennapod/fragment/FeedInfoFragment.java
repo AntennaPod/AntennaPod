@@ -305,7 +305,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             return true;
         }
 
-        if(item.getItemId() == R.id.edit_feed_url_item){
+        if (item.getItemId() == R.id.edit_feed_url_item) {
             EditUrlSettingsDialog editUrlSettingsDialog = new EditUrlSettingsDialog(getActivity(), feed) {
                 @Override
                 protected void setUrl(String url) {

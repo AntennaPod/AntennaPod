@@ -29,7 +29,7 @@ public abstract class EditUrlSettingsDialog {
 
     }
 
-    public void show(){
+    public void show() {
         Activity activity = activityRef.get();
         if (activity == null) {
             return;
@@ -53,29 +53,29 @@ public abstract class EditUrlSettingsDialog {
                 (view) -> binding.urlEditText.setText(feed.getDownload_url()));
     }
 
-    private void onConfirmed(String original, String updated){
+    private void onConfirmed(String original, String updated) {
         DBWriter.updateFeedDownloadURL(original, updated);
         feed.setDownload_url(updated);
     }
 
-    private void showConfirmAlertDialog(String url){
+    private void showConfirmAlertDialog(String url) {
         Activity activity = activityRef.get();
 
         AlertDialog alertDialog = new MaterialAlertDialogBuilder(activity)
-        .setTitle(R.string.edit_url_menu)
-        .setMessage(R.string.edit_url_confirmation_msg)
+                .setTitle(R.string.edit_url_menu)
+                .setMessage(R.string.edit_url_confirmation_msg)
 
                 // Specifying a listener allows you to take an action before dismissing the dialog.
                 // The dialog is automatically dismissed when a dialog button is clicked.
-        .setPositiveButton(de.danoeh.antennapod.core.R.string.confirm_label, (d, input) -> {
-                    if(enableConfirm) {
+                .setPositiveButton(de.danoeh.antennapod.core.R.string.confirm_label, (d, input) -> {
+                    if (enableConfirm) {
                         onConfirmed(feed.getDownload_url(), url);
                         setUrl(url);
                     }
                 })
 
                 // A null listener allows the button to dismiss the dialog and take no further action.
-        .setNegativeButton(de.danoeh.antennapod.core.R.string.cancel_label, null)
+                .setNegativeButton(de.danoeh.antennapod.core.R.string.cancel_label, null)
                 .show();
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
@@ -83,7 +83,8 @@ public abstract class EditUrlSettingsDialog {
         new CountDownTimer(10000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                alertDialog.setMessage(activity.getString(R.string.edit_url_confirmation_msg, Long.toString(millisUntilFinished / 1000)));
+                alertDialog.setMessage(activity.getString(R.string.edit_url_confirmation_msg,
+                        Long.toString(millisUntilFinished / 1000)));
             }
 
             public void onFinish() {
@@ -91,8 +92,6 @@ public abstract class EditUrlSettingsDialog {
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
             }
         }.start();
-
-
     }
 
     protected abstract void setUrl(String url);
