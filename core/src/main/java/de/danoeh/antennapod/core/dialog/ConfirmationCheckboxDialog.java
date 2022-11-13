@@ -2,16 +2,12 @@ package de.danoeh.antennapod.core.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.LayoutInflaterCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
