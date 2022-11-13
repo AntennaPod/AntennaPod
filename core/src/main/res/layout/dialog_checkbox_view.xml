@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<com.google.android.material.checkbox.MaterialCheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/do_not_show_remove_inbox_prompt_shorted"
+    android:id="@+id/dialog_checkbox"
+    android:layout_marginStart="@dimen/dialog_checkbox_margin"
+    />
+</FrameLayout>

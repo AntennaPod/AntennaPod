@@ -25,6 +25,7 @@
     <dimen name="audioplayer_playercontrols_length">48dp</dimen>
     <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>
     <dimen name="audioplayer_playercontrols_margin">12dp</dimen>
+    <dimen name="dialog_checkbox_margin">20dp</dimen>
 
     <dimen name="nav_drawer_max_screen_size">480dp</dimen>
 </resources>

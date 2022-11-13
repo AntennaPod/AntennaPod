@@ -87,5 +87,11 @@
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="prefDoNotPromptRemovalAllFromInbox"
+            android:summary="@string/pref_show_inbox_removal_dialog"
+            android:title="@string/do_not_show_remove_inbox_prompt"
+            />
     </PreferenceCategory>
 </PreferenceScreen>

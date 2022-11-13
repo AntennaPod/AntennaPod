@@ -1,16 +1,21 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.ConfirmationCheckboxDialog;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -25,6 +30,7 @@ import java.util.List;
 public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private boolean shouldNotPromptRemoveAll;
 
     @NonNull
     @Override
@@ -63,19 +69,28 @@ public class InboxFragment extends EpisodesListFragment {
             return true;
         }
         if (item.getItemId() == R.id.remove_all_inbox_item) {
-            ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
-                    R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg) {
+            shouldNotPromptRemoveAll = UserPreferences.shouldNotPromptRemoveAllFromInboxDialog();
+            if (shouldNotPromptRemoveAll)
+                removeAllFromInbox();
+            else {
+                ConfirmationCheckboxDialog removeAllNewFlagsConfirmationDialog = new ConfirmationCheckboxDialog(getActivity(),
+                        R.string.remove_all_inbox_label,
+                        R.string.remove_all_inbox_confirmation_msg, R.string.do_not_show_remove_inbox_prompt_shorted, UserPreferences.shouldNotPromptRemoveAllFromInboxDialog()) {
 
-                @Override
-                public void onConfirmButtonPressed(DialogInterface dialog) {
-                    dialog.dismiss();
-                    DBWriter.removeAllNewFlags();
-                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                            R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
-                }
-            };
-            removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        removeAllFromInbox();
+                        UserPreferences.setShouldNotPromptRemoveAllFromInboxDialog(shouldNotPromptRemoveAll);
+                    }
+
+                    @Override
+                    public void onCheckStateChanged(CompoundButton checkBox, boolean isCheckboxChecked) {
+                        shouldNotPromptRemoveAll = isCheckboxChecked;
+                    }
+                };
+                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            }
             return true;
         }
         return false;
@@ -96,5 +111,11 @@ public class InboxFragment extends EpisodesListFragment {
     @Override
     protected int loadTotalItemCount() {
         return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
+    }
+
+    private void removeAllFromInbox() {
+        DBWriter.removeAllNewFlags();
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
     }
 }

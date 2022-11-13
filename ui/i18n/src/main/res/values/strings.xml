@@ -37,6 +37,8 @@
     <string name="swipe_left">Swipe Left</string>
     <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
+    <string name="do_not_show_remove_inbox_prompt">Do not show Inbox removal dialog</string>
+    <string name="do_not_show_remove_inbox_prompt_shorted">Never ask again.</string>
 
     <!-- Statistics fragment -->
     <string name="statistics_include_marked">Include duration of episodes that are just marked as played</string>
@@ -524,6 +526,7 @@
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default Page</string>
     <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="pref_show_inbox_removal_dialog">Never ask for confirmation again before removing all from Inbox.</string>
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>

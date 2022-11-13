@@ -62,6 +62,7 @@ public class UserPreferences {
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
+    public static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -935,4 +936,21 @@ public class UserPreferences {
     public static boolean shouldShowSubscriptionTitle() {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
     }
+
+    /**
+     * Returns whether should not show the RemoveAllInbox confirmation dialog.
+     * @return if should not show the remove all from inbox prompt dialog.
+     */
+    public static boolean shouldNotPromptRemoveAllFromInboxDialog() {
+        return prefs.getBoolean(PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX, false);
+    }
+
+    /**
+     * Sets if should not show the RemoveAllInbox confirmation dialog.
+     * @param shouldNot
+     */
+    public static void setShouldNotPromptRemoveAllFromInboxDialog(boolean shouldNot) {
+        prefs.edit().putBoolean(PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX, shouldNot).apply();
+    }
+
 }
