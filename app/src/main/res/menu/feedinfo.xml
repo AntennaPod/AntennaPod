@@ -18,4 +18,7 @@
         custom:showAsAction="collapseActionView"
         android:title="@string/reconnect_local_folder"
         android:visible="false" />
+    <item
+        android:id="@+id/edit_feed_url_item"
+        android:title="@string/edit_url_menu" />
 </menu>
