@@ -1,19 +1,19 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.dialog.ConfirmationCheckboxDialog;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -71,27 +71,8 @@ public class InboxFragment extends EpisodesListFragment {
             shouldNotPromptRemoveAll = UserPreferences.shouldNotPromptRemoveAllFromInboxDialog();
             if (shouldNotPromptRemoveAll) {
                 removeAllFromInbox();
-            }
-            else {
-                ConfirmationCheckboxDialog removeDialog = new ConfirmationCheckboxDialog(getActivity(),
-                        R.string.remove_all_inbox_label,
-                        R.string.remove_all_inbox_confirmation_msg,
-                        R.string.do_not_show_remove_inbox_prompt_shorted,
-                        UserPreferences.shouldNotPromptRemoveAllFromInboxDialog()) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        removeAllFromInbox();
-                        UserPreferences.setShouldNotPromptRemoveAllFromInboxDialog(shouldNotPromptRemoveAll);
-                    }
-
-                    @Override
-                    public void onCheckStateChanged(CompoundButton checkBox, boolean isCheckboxChecked) {
-                        shouldNotPromptRemoveAll = isCheckboxChecked;
-                    }
-                };
-                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+            } else {
+                showRemoveAllDialog();
             }
             return true;
         }
@@ -117,7 +98,28 @@ public class InboxFragment extends EpisodesListFragment {
 
     private void removeAllFromInbox() {
         DBWriter.removeAllNewFlags();
-        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+    }
+
+    private void showRemoveAllDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle(R.string.remove_all_inbox_label);
+        builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
+
+        View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
+        CheckBox checkNeverAskAgain = view.findViewById(R.id.checkbox_do_not_show_again);
+        checkNeverAskAgain.setText(R.string.do_not_show_remove_inbox_prompt);
+        checkNeverAskAgain.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            shouldNotPromptRemoveAll = isChecked;
+        }));
+        builder.setView(view);
+
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            dialog.dismiss();
+            removeAllFromInbox();
+            UserPreferences.setShouldNotPromptRemoveAllFromInboxDialog(shouldNotPromptRemoveAll);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 }
