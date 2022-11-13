@@ -31,8 +31,10 @@ public abstract class ConfirmationCheckboxDialog {
 
     private int positiveText;
 
-    public ConfirmationCheckboxDialog(Context context, int titleId, int messageId, int checkboxMsgId, boolean isCheckboxChecked) {
-        this(context, context.getString(titleId), context.getString(messageId), context.getString(checkboxMsgId), isCheckboxChecked);
+    public ConfirmationCheckboxDialog(Context context, int titleId, int messageId,
+                                      int checkboxMsgId, boolean isCheckboxChecked) {
+        this(context, context.getString(titleId), context.getString(messageId),
+                context.getString(checkboxMsgId), isCheckboxChecked);
     }
 
     public ConfirmationCheckboxDialog(Context context, String title, String message, String checkboxMsg, boolean isCheckboxChecked) {
@@ -42,7 +44,8 @@ public abstract class ConfirmationCheckboxDialog {
         this.checkboxMsg = checkboxMsg;
         this.isCheckboxChecked = isCheckboxChecked;
         checkBoxView = View.inflate(context, R.layout.dialog_checkbox_view, null);
-        ((CheckBox) checkBoxView.findViewById(R.id.dialog_checkbox)).setOnCheckedChangeListener(((buttonView, isChecked) -> onCheckStateChanged(buttonView, isChecked)));
+        ((CheckBox) checkBoxView.findViewById(R.id.dialog_checkbox)).setOnCheckedChangeListener(
+                ((buttonView, isChecked) -> onCheckStateChanged(buttonView, isChecked)));
 
     }
 

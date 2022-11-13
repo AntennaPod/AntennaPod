@@ -947,7 +947,7 @@ public class UserPreferences {
 
     /**
      * Sets if should not show the RemoveAllInbox confirmation dialog.
-     * @param shouldNot
+     * @param shouldNot if the removal dialog should not be shown.
      */
     public static void setShouldNotPromptRemoveAllFromInboxDialog(boolean shouldNot) {
         prefs.edit().putBoolean(PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX, shouldNot).apply();

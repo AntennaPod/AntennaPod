@@ -69,12 +69,15 @@ public class InboxFragment extends EpisodesListFragment {
         }
         if (item.getItemId() == R.id.remove_all_inbox_item) {
             shouldNotPromptRemoveAll = UserPreferences.shouldNotPromptRemoveAllFromInboxDialog();
-            if (shouldNotPromptRemoveAll)
+            if (shouldNotPromptRemoveAll) {
                 removeAllFromInbox();
+            }
             else {
-                ConfirmationCheckboxDialog removeAllNewFlagsConfirmationDialog = new ConfirmationCheckboxDialog(getActivity(),
+                ConfirmationCheckboxDialog removeDialog = new ConfirmationCheckboxDialog(getActivity(),
                         R.string.remove_all_inbox_label,
-                        R.string.remove_all_inbox_confirmation_msg, R.string.do_not_show_remove_inbox_prompt_shorted, UserPreferences.shouldNotPromptRemoveAllFromInboxDialog()) {
+                        R.string.remove_all_inbox_confirmation_msg,
+                        R.string.do_not_show_remove_inbox_prompt_shorted,
+                        UserPreferences.shouldNotPromptRemoveAllFromInboxDialog()) {
 
                     @Override
                     public void onConfirmButtonPressed(DialogInterface dialog) {
