@@ -450,31 +450,37 @@ public class DbReaderTest {
 
         private int paramOffset;
         private int paramLimit;
+        private long[] paramFilter;
 
         @ParameterizedRobolectricTestRunner.Parameters
         public static Collection<Object[]> data() {
+            long[] timeNoFilter = new long[]{0L,MaterialDatePicker.todayInUtcMilliseconds()};
+            long[] timeFilterToday = new long[]{MaterialDatePicker.todayInUtcMilliseconds(), MaterialDatePicker.todayInUtcMilliseconds()};
+
             List<Integer> limits = Arrays.asList(1, 20, 100);
             List<Integer> offsets = Arrays.asList(0, 10, 20);
-            Object[][] rv = new Object[limits.size() * offsets.size()][2];
+            List<long[]> filters = Arrays.asList(timeNoFilter, timeFilterToday);
+            Object[][] rv = new Object[limits.size() * offsets.size() * filters.size()][3];
             int i = 0;
             for (int offset : offsets) {
                 for (int limit : limits) {
-                    rv[i][0] = offset;
-                    rv[i][1] = limit;
-                    i++;
+                    for(long[] filter : filters) {
+                        rv[i][0] = offset;
+                        rv[i][1] = limit;
+                        rv[i][2] = filter;
+                        i++;
+                    }
                 }
             }
 
             return Arrays.asList(rv);
         }
 
-        public PlaybackHistoryTest(int offset, int limit) {
+        public PlaybackHistoryTest(int offset, int limit, long[] filter) {
             this.paramOffset = offset;
             this.paramLimit = limit;
-
+            this.paramFilter = filter;
         }
-
-        //TODO: Add test cases
 
         @Test
         public void testGetPlaybackHistory() {
@@ -484,6 +490,27 @@ public class DbReaderTest {
             final int numFeeds = 1;
 
             Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
+            long[] ids = saveFeed(playedItems, feed);
+
+            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{0, playedItems});
+            assertTest(saved,numReturnedItems,ids);
+        }
+
+        @Test
+        public void getPlaybackHistoryInDateRange(){
+            final int numItems = (paramLimit + 1) * 2;
+            final int playedItems = paramLimit + 1;
+            final int numReturnedItems = Math.min(Math.max(playedItems - paramOffset, 0), paramLimit);
+            final int numFeeds = 1;
+
+            Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
+            long[] ids = saveFeed(playedItems, feed);
+
+            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{0, playedItems});
+            assertTest(saved,numReturnedItems,ids);
+        }
+
+        private long[] saveFeed(int playedItems, Feed feed){
             long[] ids = new long[playedItems];
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -496,11 +523,10 @@ public class DbReaderTest {
             }
             adapter.close();
 
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(MaterialDatePicker.todayInUtcMilliseconds());
-            cal.add(Calendar.DAY_OF_MONTH, 1);
+            return ids;
+        }
 
-            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{0, cal.getTime().getTime()});
+        private void assertTest(List<FeedItem> saved, long numReturnedItems, long[] ids){
             assertNotNull(saved);
             assertEquals(String.format("Wrong size with offset %d and limit %d: ",
                             paramOffset, paramLimit),

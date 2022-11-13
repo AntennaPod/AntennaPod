@@ -357,6 +357,7 @@
     <string name="no_all_episodes_head_label">No Episodes</string>
     <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
     <string name="no_all_episodes_filtered_label">Try clearing the filter to see more episodes.</string>
+    <string name="no_all_history_filtered_label">Try clearing the filter to see more of your history.</string>
     <string name="no_inbox_head_label">No episodes in the inbox</string>
     <string name="no_inbox_label">When new episodes arrive, they will be shown here. You can then decide if you are interested in them or not.</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
