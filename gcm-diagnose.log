@@ -1,0 +1,146 @@
+﻿Diagnose log at 2022-11-12T14:08:45Z
+
+Executable: /usr/share/git-credential-manager-core/git-credential-manager-core
+Version: 2.0.785+6074e4e3d3
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Linux
+OSVersion: Linux Starscream 6.0.7-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 03 Nov 2022 18:01:58 +0000 x86_64 GNU/Linux
+Reading environment variables... OK
+ Variables:
+MOTD_SHOWN=pam
+HOME=/home/ricardo
+TILIX_ID=a51934bc-1ccd-48ef-9e51-a423d8e93960
+DESKTOP_SESSION=gnome
+XDG_MENU_PREFIX=gnome-
+DISPLAY=:0
+XDG_RUNTIME_DIR=/run/user/1000
+TERM=xterm-256color
+LESS_TERMCAP_ue=[0m
+GDMSESSION=gnome
+PATH=/data/flutter/bin/:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+LESS_TERMCAP_so=[01;44;33m
+VTE_VERSION=7001
+SHLVL=1
+XDG_DATA_DIRS=/home/ricardo/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/home/ricardo/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/home/ricardo/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
+LESS_TERMCAP_us=[01;32m
+XAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.4AFIV1
+XDG_SESSION_DESKTOP=gnome
+GDM_LANG=pt_BR.UTF-8
+INVOCATION_ID=3b402bfb915741d3a3a56778b7b109c6
+LESS_TERMCAP_se=[0m
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+LOGNAME=ricardo
+LESS_TERMCAP_me=[0m
+MANAGERPID=1122
+WAYLAND_DISPLAY=wayland-0
+GNOME_SETUP_DISPLAY=:1
+DBUS_STARTER_BUS_TYPE=session
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:
+USER=ricardo
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=80aeb7d79c8e2be43a863b7d636f88ec
+USERNAME=ricardo
+LANG=pt_BR.UTF-8
+MAIL=/var/spool/mail/ricardo
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=80aeb7d79c8e2be43a863b7d636f88ec
+VISUAL=nvim
+XDG_SESSION_TYPE=wayland
+JOURNAL_STREAM=8:2671
+COLORTERM=truecolor
+LESS_TERMCAP_md=[01;31m
+XDG_SESSION_CLASS=user
+SYSTEMD_EXEC_PID=1214
+SHELL=/usr/bin/fish
+SESSION_MANAGER=local/Starscream:@/tmp/.ICE-unix/1214,unix/Starscream:/tmp/.ICE-unix/1214
+XDG_CURRENT_DESKTOP=GNOME
+PWD=/home/ricardo/Projects/AntennaPod
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is '/tmp/'...
+Checking basic file I/O...
+Writing to temporary file '/tmp/409745febf84d3bc1c04fc0a'... OK
+Reading from temporary file '/tmp/409745febf84d3bc1c04fc0a'... OK
+Deleting temporary file '/tmp/409745febf84d3bc1c04fc0a'... OK
+Testing IFileSystem instance...
+UserHomePath: /home/ricardo
+UserDataDirectoryPath: /home/ricardo/.gcm
+GetCurrentDirectory(): /home/ricardo/Projects/AntennaPod
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: True
+Exception: None
+Log:
+Checking basic networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com... OK
+Sending HEAD request to https://example.com... OK
+Acquiring free TCP port... OK
+Testing local HTTP loopback connections...
+Creating new HTTP listener for http://localhost:42647/... OK
+Waiting for loopback connection... OK
+Writing response... OK
+Waiting for response data... OK
+Loopback connection data OK
+Testing with IHttpClientFactory created HTTP client...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com... OK
+Sending HEAD request to https://example.com... OK
+Acquiring free TCP port... OK
+Testing local HTTP loopback connections...
+Creating new HTTP listener for http://localhost:45551/... OK
+Waiting for loopback connection... OK
+Writing response... OK
+Waiting for response data... OK
+Loopback connection data OK
+
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.38.1'
+Locating current repository... OK
+Git repository at '/home/ricardo/Projects/AntennaPod/.git'
+Listing all Git configuration... OK
+Git configuration:
+file:/home/ricardo/.gitconfig	user.name=Ricardo Borges Jr.
+file:/home/ricardo/.gitconfig	user.email=ricardoborges.jr@gmail.com
+file:/home/ricardo/.gitconfig	core.editor=vim
+file:/home/ricardo/.gitconfig	color.branch=auto
+file:/home/ricardo/.gitconfig	color.diff=auto
+file:/home/ricardo/.gitconfig	color.grep=auto
+file:/home/ricardo/.gitconfig	color.status=auto
+file:/home/ricardo/.gitconfig	merge.tool=meld
+file:/home/ricardo/.gitconfig	filesystem.Oracle Corporation|1.8.0_242|/dev/sdc5.timestampresolution=1001 microseconds
+file:/home/ricardo/.gitconfig	filesystem.Oracle Corporation|1.8.0_242|/dev/sdc5.minracythreshold=4969 microseconds
+file:/home/ricardo/.gitconfig	filesystem.N/A|11.0.8|/dev/sdc5.timestampresolution=4000 nanoseconds
+file:/home/ricardo/.gitconfig	filesystem.N/A|11.0.8|/dev/sdc5.minracythreshold=5627 microseconds
+file:/home/ricardo/.gitconfig	credential.credentialstore=secretservice
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=true
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	remote.origin.url=https://github.com/ricardoborgesjr/AntennaPod.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config	branch.develop.remote=origin
+file:.git/config	branch.develop.merge=refs/heads/develop
+file:.git/config	gitg.mainline=
+
+
