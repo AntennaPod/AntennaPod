@@ -51,8 +51,6 @@ public abstract class PlaybackController {
     private boolean eventsRegistered = false;
     private long loadedFeedMedia = -1;
 
-    private boolean refresed = false;
-
     public PlaybackController(@NonNull Activity activity) {
         this.activity = activity;
     }

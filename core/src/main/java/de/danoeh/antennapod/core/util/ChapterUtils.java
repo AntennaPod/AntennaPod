@@ -55,7 +55,6 @@ public class ChapterUtils {
     }
 
     public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {
-
         if (playable.getChapters() != null) {
             // Already loaded
             return;
@@ -151,7 +150,6 @@ public class ChapterUtils {
                     return chapters;
                 }
             }
-
             request = new Request.Builder().url(url).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
