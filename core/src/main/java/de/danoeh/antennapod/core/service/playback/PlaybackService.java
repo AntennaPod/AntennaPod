@@ -1232,13 +1232,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_REWIND,
-                            getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
+                            CUSTOM_ACTION_FAST_FORWARD,
+                            getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
                             .build());
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_FAST_FORWARD,
-                            getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
+                            CUSTOM_ACTION_REWIND,
+                            getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
                             .build());
         } else {
             // This would give the PIP of videos a play button
