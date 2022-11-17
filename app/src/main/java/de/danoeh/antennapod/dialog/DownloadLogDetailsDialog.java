@@ -6,6 +6,7 @@ import android.content.Context;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -14,7 +15,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.greenrobot.eventbus.EventBus;
 
-public class DownloadLogDetailsDialog extends AlertDialog.Builder {
+public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
     public DownloadLogDetailsDialog(@NonNull Context context, DownloadStatus status) {
         super(context);

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -27,7 +28,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import io.reactivex.Completable;
@@ -62,7 +63,7 @@ public class ProxyDialog {
         View content = View.inflate(context, R.layout.proxy_settings, null);
         spType = content.findViewById(R.id.spType);
 
-        dialog = new AlertDialog.Builder(context)
+        dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.pref_proxy_title)
                 .setView(content)
                 .setNegativeButton(R.string.cancel_label, null)

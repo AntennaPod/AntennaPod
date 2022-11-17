@@ -6,39 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layout_alignParentTop="true"
-        app:title="@string/queue_label" />
+        android:fitsSystemWindows="true"
+        android:elevation="0dp">
 
-    <TextView
-        android:id="@+id/info_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:textSize="12sp"
-        android:layout_marginTop="-8dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginBottom="4dp"
-        tools:text="12 Episodes - Time remaining: 12 hours" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?homeAsUpIndicator"
+            app:title="@string/queue_label" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/info_bar"
-        android:background="?android:attr/listDivider" />
+        <TextView
+            android:id="@+id/info_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:textSize="12sp"
+            android:layout_marginTop="-12dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginBottom="8dp"
+            tools:text="12 Episodes - Time remaining: 12 hours" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divider">
+        android:layout_below="@id/appbar">
 
         <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
             android:id="@+id/recyclerView"
@@ -47,14 +47,6 @@
             android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <ProgressBar
-        android:id="@+id/progLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminateOnly="true"
-        android:visibility="gone" />
 
     <include
         layout="@layout/multi_select_speed_dial" />

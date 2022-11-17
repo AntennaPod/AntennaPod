@@ -1,0 +1,482 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">Perbarui Langganan</string>
+  <string name="feeds_label">Podcast</string>
+  <string name="statistics_label">Statistik</string>
+  <string name="add_feed_label">Tambah Podcast</string>
+  <string name="episodes_label">Episode</string>
+  <string name="queue_label">Antrian</string>
+  <string name="favorite_episodes_label">Favorit</string>
+  <string name="settings_label">Pengaturan</string>
+  <string name="downloads_label">Unduhan</string>
+  <string name="open_autodownload_settings">Buka Pengaturan</string>
+  <string name="subscriptions_label">Langganan</string>
+  <string name="subscriptions_list_label">Daftar Langganan</string>
+  <string name="cancel_download_label">Batalkan Pengunduhan</string>
+  <string name="playback_history_label">Riwayat Pemutaran</string>
+  <string name="episode_cache_full_title">Cache episode penuh</string>
+  <string name="episode_cache_full_message">Batas tembolok episode telah tercapai. Anda dapat meningkatkan ukuran tembolok pada Pengaturan.</string>
+  <string name="notification_pref_fragment">Notifikasi</string>
+  <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" tidak ditemukan</string>
+  <!--SwipeActions-->
+  <string name="change_setting">Ganti</string>
+  <!--Statistics fragment-->
+  <string name="statistics_speed_not_counted">Perhatian: Kecepatan pemutaran tidak pernah diperhintungkan.</string>
+  <string name="statistics_reset_data">Reset data statistik</string>
+  <string name="statistics_reset_data_msg">Ini akan menghapus riwayat durasi yang diputar untuk semua episode. Apa Anda yakin ingin melanjutkan?</string>
+  <!--Download Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_open">Buka menu</string>
+  <string name="drawer_close">Tutup menu</string>
+  <string name="drawer_preferences">Preferensi Laci</string>
+  <string name="drawer_feed_order_unplayed_episodes">Urutkan berdasarkan penghitung</string>
+  <string name="drawer_feed_order_alphabetical">Urutkan menurut abjad</string>
+  <string name="drawer_feed_order_last_update">Urutkan menurut tanggal publikasi</string>
+  <string name="drawer_feed_order_most_played">Urutkan menurut jumlah episode yang diputar</string>
+  <string name="drawer_feed_counter_unplayed">Jumlah episode yang belum diputar</string>
+  <string name="drawer_feed_counter_downloaded">Jumlah episode yang diunduh</string>
+  <string name="drawer_feed_counter_none">Tidak ada</string>
+  <!--Bug report activity-->
+  <string name="log_file_share_exception">Tidak ada aplikasi kompatibel yang ditemukan</string>
+  <string name="export_logs_menu_title">Ekspor log rinci</string>
+  <string name="confirm_export_log_dialog_message">Log rinci mungkin berisi informasi sensitif, seperti daftar langganan Anda</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Buka di Browser</string>
+  <string name="copy_url_label">Salin URL</string>
+  <string name="share_url_label">Bagikan URL</string>
+  <string name="copied_url_msg">URL disalin ke Papan Klip</string>
+  <string name="go_to_position_label">Pergi ke Posisi ini</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Bersihkan Riwayat</string>
+  <!--Other-->
+  <string name="confirm_label">Konfirmasi</string>
+  <string name="cancel_label">Batal</string>
+  <string name="yes">Ya</string>
+  <string name="no">Tidak</string>
+  <string name="reset">Reset</string>
+  <string name="url_label">URL</string>
+  <string name="support_funding_label">Dukung</string>
+  <string name="support_podcast">Dukung Podcast ini</string>
+  <string name="error_label">Kesalahan</string>
+  <string name="error_msg_prefix">Sebuah kesalahan terjadi</string>
+  <string name="refresh_label">Segarkan</string>
+  <string name="chapters_label">Bab</string>
+  <string name="chapter_duration">Durasi: %1$s</string>
+  <string name="description_label">Keterangan</string>
+  <string name="shownotes_label">Catatan acara</string>
+  <string name="episodes_suffix">\u0020episode</string>
+  <string name="close_label">Tutup</string>
+  <string name="retry_label">Coba lagi</string>
+  <string name="auto_download_label">Sertakan di unduh otomatis</string>
+  <string name="auto_delete_label">Hapus Otomatis Episode</string>
+  <string name="feed_volume_reduction_off">Nonaktif</string>
+  <string name="feed_volume_reduction_light">Ringan</string>
+  <string name="feed_volume_reduction_heavy">Berat</string>
+  <string name="feed_auto_download_global">Standar global</string>
+  <string name="feed_auto_download_always">Selalu</string>
+  <string name="feed_auto_download_never">Tidak pernah</string>
+  <string name="send_label">Kirim…</string>
+  <string name="episode_cleanup_never">Tidak pernah</string>
+  <string name="episode_cleanup_queue_removal">Ketika tidak dalam antrian</string>
+  <string name="episode_cleanup_after_listening">Setelah menyelesaikan</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="other">%d jam setelah menyelesaikan</item>
+  </plurals>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="other">%d hari setelah menyelesaikan</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="other">%1$d/%2$d terpilih</item>
+  </plurals>
+  <plurals name="num_episodes">
+    <item quantity="other">%d episode</item>
+  </plurals>
+  <string name="loading_more">Memuat lebih banyak...</string>
+  <string name="episode_notification_summary">Tampilkan sebuah notifikasi ketika episode baru diluncurkan.</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="other">%2$s memiliki %1$d episode baru</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="other">Episode-episode Baru</item>
+  </plurals>
+  <!--Actions on feeds-->
+  <string name="show_info_label">Tampilkan informasi</string>
+  <string name="show_feed_settings_label">Tampilkan pengaturan podcast</string>
+  <string name="feed_settings_label">Pengaturan podcast</string>
+  <string name="rename_feed_label">Ubah nama podcast</string>
+  <string name="remove_feed_label">Hapus podcast</string>
+  <string name="share_label">Bagikan</string>
+  <string name="share_file_label">Bagikan Berkas</string>
+  <string name="feed_delete_confirmation_msg">Tolong konfirmasi bahwa Anda ingin menghapus podcast \"%1$s\" dan SEMUA episodenya (termasuk episode yang diunduh).</string>
+  <string name="feed_remover_msg">Menghapus podcast</string>
+  <string name="load_complete_feed">Segarkan podcast selesai</string>
+  <string name="select_all_above">Pilih semua di atas</string>
+  <string name="select_all_below">Pilih semua dibawah</string>
+  <string name="filtered_label">Disaring</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Penyegaran Terakhir gagal. Tekan untuk melihat detail.</string>
+  <string name="open_podcast">Buka Podcast</string>
+  <string name="please_wait_for_data">Harap tunggu sampai data dimuat</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Unduh</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="other">Mengunduh %d episode.</item>
+  </plurals>
+  <string name="play_label">Putar</string>
+  <string name="pause_label">Jeda</string>
+  <string name="stream_label">Siaran</string>
+  <string name="delete_label">Hapus</string>
+  <string name="delete_failed">Tidak dapat menghapus berkas. Mem-boot ulang perangkat mungkin membantu.</string>
+  <string name="delete_episode_label">Hapus Episode</string>
+  <string name="mark_read_label">Tandai diputar</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="other">%d episode ditandai sebagai telah diputar.</item>
+  </plurals>
+  <string name="mark_unread_label">Tandai belum diputar</string>
+  <string name="mark_unread_label_no_media">Tandai belum dibaca</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="other">%d episode ditandai sebagai belum diputar</item>
+  </plurals>
+  <string name="add_to_queue_label">Tambah ke Antrian</string>
+  <string name="added_to_queue_label">Ditambah ke Antrian</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="other">%d episode ditambahkan ke antrian.</item>
+  </plurals>
+  <string name="remove_from_queue_label">Hapus dari Antrian</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="other">%d episode dihapus dari antrian,</item>
+  </plurals>
+  <string name="add_to_favorite_label">Tambah ke Favorit</string>
+  <string name="remove_from_favorite_label">Hapus dari Favorit</string>
+  <string name="visit_website_label">Kunjungi Website.</string>
+  <string name="skip_episode_label">Lewati episode</string>
+  <string name="reset_position">Reset Posisi Pemutaran</string>
+  <string name="no_items_selected">Tidak ada item yang dipilih</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">berhasil</string>
+  <string name="download_pending">Unduhan terunda</string>
+  <string name="download_running">Unduhan berjalan</string>
+  <string name="download_error_details">Detail</string>
+  <string name="download_error_details_message">%1$s \n\nURL Berkas:\n%2$s</string>
+  <string name="download_error_tap_for_details">Ketuk untuk melihat keterangan.</string>
+  <string name="download_error_device_not_found">Perangkat Penyimpanan tidak ditemukan</string>
+  <string name="download_error_insufficient_space">Tidak ada cukup ruang tersisa di perangkat Anda.</string>
+  <string name="download_error_http_data_error">Kesalahan Data HTTP</string>
+  <string name="download_error_error_unknown">Kesalahan Tak Dikenal</string>
+  <string name="download_error_parser_exception">Server host podcast telah mengirim umpan podcast yang rusak.</string>
+  <string name="download_error_unsupported_type">Tipe Umpan Tidak Didukung</string>
+  <string name="download_error_connection_error">Kesalahan Koneksi</string>
+  <string name="download_error_unknown_host">Tidak dapat menemukan server. Cek jika alamatnya diketik dengan benar dan jika Anda mempunyai jaringan internet yang bekerja.</string>
+  <string name="download_error_unauthorized">Kesalahan Autentikasi</string>
+  <string name="download_error_file_type_type">Kesalahan Tipe Berkas</string>
+  <string name="download_error_forbidden">Server host podcast menolak untuk merespon.</string>
+  <string name="download_canceled_msg">Unduhan dibatalkan</string>
+  <string name="download_report_title">Unduhan berhasil dengan kesalahan</string>
+  <string name="download_error_io_error">Kesalahan IO</string>
+  <string name="download_error_request_error">Kesalahan Permintaan</string>
+  <string name="download_error_db_access">Kesalahan Akses Database</string>
+  <plurals name="downloads_left">
+    <item quantity="other">%d unduhan tersisa</item>
+  </plurals>
+  <string name="download_notification_title">Mengunduh data podcast</string>
+  <string name="download_log_title_unknown">Judul Tidak Diketahui</string>
+  <string name="download_type_feed">Umpan</string>
+  <string name="download_type_media">Berkas Media</string>
+  <string name="null_value_podcast_error">Tidak ada podcast disediakan yang dapat ditampilkan.</string>
+  <string name="authentication_notification_title">Autentikasi dibutuhkan</string>
+  <string name="authentication_notification_msg">Sumber yang Anda minta membutuhkan nama pengguna dan kata sandi</string>
+  <string name="confirm_mobile_download_dialog_title">Konfirmasi Unduhan Seluler</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Mengunduh melalui jaringan data seluler dinonaktifkan dalam setting. \n\nAnda bisa pilih salah satu dari hanya menambahkan episode ke dalam antrean atau Anda dapat mengizinkan mengunduh sementara.\n\n<small>Pilihan Anda akan diingat selama 10 menit.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Mengunduh melalui jaringan data seluler dinonaktifkan dalam setting.\n\n Apakah Anda ingin mengizinkan mengunduh sementara?\n\n<small>Pilihan Anda akan diingat selama 10 menit.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Tambah ke antrian</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Izinkan sementara</string>
+  <!--Mediaplayer messages-->
+  <string name="playback_error_server_died">Server mati</string>
+  <string name="playback_error_unknown">Kesalahan Tidak Diketahui</string>
+  <string name="no_media_playing_label">Tidak ada media yang dimainkan</string>
+  <string name="unknown_media_key">AntennaPod - Kunci media tidak diketahui: %1$d</string>
+  <!--Queue operations-->
+  <string name="lock_queue">Kunci Antrian</string>
+  <string name="queue_locked">Antrian Dikunci</string>
+  <string name="queue_unlocked">Antrian terbuka</string>
+  <string name="checkbox_do_not_show_again">Jangan tampilkan lagi</string>
+  <string name="clear_queue_label">Hapus Antrian</string>
+  <string name="undo">Batalkan</string>
+  <string name="move_to_top_label">Pindahkan ke atas</string>
+  <string name="move_to_bottom_label">Pindahkan ke bawah</string>
+  <string name="sort">Urutkan</string>
+  <string name="date">Tanggal</string>
+  <string name="duration">Durasi</string>
+  <string name="episode_title">Judul episode</string>
+  <string name="feed_title">Judul podcast</string>
+  <string name="random">Acak</string>
+  <string name="smart_shuffle">Acak Cerdas</string>
+  <string name="clear_queue_confirmation_msg">Tolong konfirmasi bahwa Anda ingin bersihkan antrean dari SEMUA episode dalamnya</string>
+  <string name="time_left_label">Waktu tersisa:\u0020</string>
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <string name="no_items_header_label">Tidak ada episode di antrian</string>
+  <string name="no_items_label">Tambahkan sebuah episode dengan mengunduhnya, atau tekan lama sebuah episode dan pilih \"Tambahkan ke antrian\".</string>
+  <string name="no_shownotes_label">Episode ini tidak mempunyai catatan acara.</string>
+  <string name="no_comp_downloads_head_label">Tidak ada episode yang diunduh</string>
+  <string name="no_comp_downloads_label">Anda dapat mengunduh episode di layar detail podcast.</string>
+  <string name="no_log_downloads_head_label">Tidak ada catatan unduhan</string>
+  <string name="no_log_downloads_label">Catatan unduhan akan tampil disini ketika tersedia.</string>
+  <string name="no_history_head_label">Tidak Ada Sejarah</string>
+  <string name="no_history_label">Setelah Anda mendengarkan sebuah episode, dia akan tampil disini.</string>
+  <string name="no_all_episodes_head_label">Tidak Ada Episode</string>
+  <string name="no_all_episodes_label">Ketika Anda menambah sebuah podcast, episodenya akan ditampilkan disini.</string>
+  <string name="no_subscriptions_label">Untuk berlangganan podcast, tekan ikon plus dibawah.</string>
+  <!--Preferences-->
+  <string name="storage_pref">Penyimpanan</string>
+  <string name="project_pref">Projek</string>
+  <string name="automation">Otomatisasi</string>
+  <string name="download_pref_details">Detail</string>
+  <string name="import_export_pref">Impor/Ekspor</string>
+  <string name="import_export_search_keywords">cadangan, pemulihan</string>
+  <string name="appearance">Penampilan</string>
+  <string name="external_elements">Elemen eksternal</string>
+  <string name="interruptions">Gangguan</string>
+  <string name="playback_control">Kontrol pemutaran</string>
+  <string name="media_player">Pemain media</string>
+  <string name="pref_episode_cleanup_title">Pembersihan Episode</string>
+  <string name="pref_episode_cleanup_summary">Episode yang memenuhi syarat untuk penghapusan jika Pengunduhan Otomatis membutuhkan ruang untuk episode baru</string>
+  <string name="pref_pauseOnDisconnect_sum">Jeda pemutaran ketika headphone atau bluetooth putus</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Lanjut pemutaran ketika headphone terhubung kembali</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Lanjutkan pemutaran ketika bluetooth terhubung kembali</string>
+  <string name="pref_followQueue_sum">Lompat ke item antrian berikutnya ketika pemutaran selesai</string>
+  <string name="pref_auto_delete_sum">Hapus episode ketika pemutaran selesai</string>
+  <string name="pref_auto_delete_title">Hapus Otomatis</string>
+  <string name="pref_smart_mark_as_played_sum">Tandai episode sebagai telah diputar jika kurang dari beberapa detik waktu masih tersisa</string>
+  <string name="pref_smart_mark_as_played_title">Tandai sebagai Telah Diputar Cerdas</string>
+  <string name="pref_skip_keeps_episodes_sum">Simpan episode ketika dilewatkan</string>
+  <string name="pref_skip_keeps_episodes_title">Simpan Episode Yang Dilewatkan</string>
+  <string name="pref_favorite_keeps_episodes_sum">Simpan episode ketika ditandai Favorit</string>
+  <string name="pref_favorite_keeps_episodes_title">Simpan Episode Favorit</string>
+  <string name="playback_pref">Pemutaran</string>
+  <string name="network_pref">Jaringan</string>
+  <string name="pref_followQueue_title">Pemutaran Berlanjut</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Headphone atau Bluetooth putus</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Headphone Terhubung Kembali</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Terhubung Kembali</string>
+  <string name="pref_mobileUpdate_title">Perbaruan Seluler</string>
+  <string name="pref_mobileUpdate_sum">Pilih apa yang dibolehkan melalui koneksi data seluler</string>
+  <string name="pref_mobileUpdate_images">Gambar cover</string>
+  <string name="user_interface_label">Antarmuka Pengguna</string>
+  <string name="pref_set_theme_title">Pilih Tema</string>
+  <string name="pref_nav_drawer_items_title">Atur Item Laci Navigasi</string>
+  <string name="pref_nav_drawer_items_sum">Ubah item apa yang muncul dalam laci navigasi.</string>
+  <string name="pref_nav_drawer_feed_order_title">Atur Urutan Langganan</string>
+  <string name="pref_nav_drawer_feed_order_sum">Ubah urutan dari langganan Anda</string>
+  <string name="pref_nav_drawer_feed_counter_title">Atur Penghitung Langganan</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Ubah informasi yang ditampilkan oleh penghitung langganan. Juga mempengaruhi urutan dari langganan jika \'Urutan Langganan\' diatur ke \'Penghitung\'.</string>
+  <string name="pref_set_theme_sum">Ubah penampilan dari AntennaPod.</string>
+  <string name="pref_automatic_download_title">Unduh Otomatis</string>
+  <string name="pref_automatic_download_sum">Atur unduh otomatis dari episode.</string>
+  <string name="pref_autodl_wifi_filter_title">Aktifkan filter Wi-Fi</string>
+  <string name="pref_autodl_wifi_filter_sum">Izinkan unduh otomatis hanya untuk jaringan Wi-Fi yang terpilih.</string>
+  <string name="pref_automatic_download_on_battery_title">Unduh saat tidak mengisi daya</string>
+  <string name="pref_automatic_download_on_battery_sum">Izinkan unduh otomatis saat baterai tidak mengisi daya</string>
+  <string name="pref_parallel_downloads_title">Unduhan Paralel</string>
+  <string name="pref_episode_cache_title">Cache Episode</string>
+  <string name="pref_theme_title_light">Terang</string>
+  <string name="pref_theme_title_dark">Gelap</string>
+  <string name="pref_theme_title_trueblack">Hitam (AMOLED tersedia)</string>
+  <string name="pref_episode_cache_unlimited">Tidak terbatas</string>
+  <string name="pref_gpodnet_setlogin_information_title">Ubah informasi login</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Ubah informasi login untuk akun gpodder.net Anda</string>
+  <string name="pref_playback_speed_sum">Sesuaikan kecepatan yang tersedia untuk pemutarna kecepatan variabel</string>
+  <string name="pref_playback_time_respects_speed_title">Atur info media ke kecepatan pemutaran</string>
+  <string name="pref_playback_time_respects_speed_sum">Posisi dan durasi yang ditampilkan disesuaikan dengan kecepatan pemutaran</string>
+  <string name="pref_fast_forward">Maju Cepat Melewati Waktu</string>
+  <string name="pref_fast_forward_sum">Sesuaikan jumlah detik untuk loncat ke depan ketika tombol maju cepat diklik</string>
+  <string name="pref_rewind">Putar Ulang Melewati Waktu</string>
+  <string name="pref_rewind_sum">Sesuaikan jumlah detik untuk loncat ke belakang ketika tombol putar ulang diklik</string>
+  <string name="pref_expandNotify_title">Prioritas Notifikasi Tinggi</string>
+  <string name="pref_expandNotify_sum">Ini biasanya memperluas notifikasi untuk menunjukkan tombol pemutaran.</string>
+  <string name="pref_persistNotify_title">Kontrol Pemutaran Tetap</string>
+  <string name="pref_persistNotify_sum">Simpan notifikasi dan kontrol layar kunci ketika pemutaran dijeda.</string>
+  <string name="pref_compact_notification_buttons_title">Atur Tombol Notifikasi Rapat</string>
+  <string name="pref_compact_notification_buttons_sum">Ubah tombol pemutaran ketika notifikasi diciutkan. Tombol main/jeda selalu disertakan.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Pilih maksimum dari %1$d item</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Anda hanya dapat memilih maksimum dari %1$d item.</string>
+  <string name="pref_lockscreen_background_title">Atur Latar Belakang Layar Kunci</string>
+  <string name="pref_lockscreen_background_sum">Atur latar belakang layar kunci ke gambar dari episode ini. Sebagai efek samping, ini juga akan menunjukkan gambarnya dalam aplikasi pihak ketiga.</string>
+  <string name="pref_enqueue_location_title">Masukan Lokasi ke Antrian</string>
+  <string name="enqueue_location_back">Kembali</string>
+  <string name="enqueue_location_front">Depan</string>
+  <string name="enqueue_location_after_current">Setelah episode saat ini</string>
+  <string name="pref_smart_mark_as_played_disabled">Dinonaktifkan</string>
+  <string name="bug_report_title">Laporkan bug</string>
+  <string name="copy_to_clipboard">Salin ke clipboard</string>
+  <string name="experimental_pref">Eksperimental</string>
+  <string name="pref_media_player_message">Pilih pemutar media yang digunakan untuk memutar file</string>
+  <string name="pref_current_value">Nilai saat ini: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Atur proxy jaringan</string>
+  <string name="pref_no_browser_found">Tidak ada peramban web yang ditemukan.</string>
+  <string name="pref_enqueue_downloaded_title">Masukan yang diunduh ke antrian</string>
+  <string name="pref_enqueue_downloaded_summary">Masukan episode yang telah diunduh ke antrian</string>
+  <string name="media_player_builtin">Pemain Android bawaan (usang)</string>
+  <string name="pref_skip_silence_title">Lewatkan Keheningan dalam Audio</string>
+  <string name="behavior">Perilaku</string>
+  <string name="pref_back_button_behavior_title">Perilaku Tombol Kembali</string>
+  <string name="pref_back_button_behavior_sum">Ubah perilaku dari tombol kembali</string>
+  <string name="back_button_default">Standar</string>
+  <string name="back_button_open_drawer">Buka laci navigasi</string>
+  <string name="back_button_double_tap">Tekan dobel untuk keluar</string>
+  <string name="back_button_show_prompt">Konfirmasi untuk keluar</string>
+  <string name="close_prompt">Apa Anda yakin ingin menutup AntennaPod?</string>
+  <string name="double_tap_toast">Tekan tombol kembali lagi untuk keluar</string>
+  <string name="back_button_go_to_page">Pergi kek halaman...</string>
+  <string name="back_button_go_to_page_title">Pilih halaman</string>
+  <string name="pref_delete_removes_from_queue_title">Hapus menghapus dari Antrian</string>
+  <string name="pref_delete_removes_from_queue_sum">Secara otomatis hapus sebuah episode dari antrian ketika episode dihapus.</string>
+  <!--About screen-->
+  <string name="about_pref">Tentang</string>
+  <string name="licenses">Lisensi</string>
+  <string name="licenses_summary">AntennaPod menggunakan perangkat lunak hebat lainnya</string>
+  <!--Search-->
+  <string name="search_status_no_results">Tidak ada hasil yang ditemukan</string>
+  <string name="search_label">Telusur</string>
+  <string name="no_results_for_query">Tidak ada hasil yang ditemukan untuk \"%1$s\"`</string>
+  <!--Synchronization-->
+  <!--import and export-->
+  <string name="opml_import_label">Impor OPML</string>
+  <string name="opml_reader_error">Sebuah kesalahan terjadi ketika membaca dokumen OPML:</string>
+  <string name="opml_import_error_no_file">Tidak ada berkas yang dipilih!</string>
+  <string name="select_all_label">Pilih semua</string>
+  <string name="deselect_all_label">Batal pilih semua</string>
+  <string name="opml_export_label">Ekspor OPML</string>
+  <string name="html_export_label">Ekspor HTML</string>
+  <string name="export_error_label">Kesalahan ekspor</string>
+  <string name="export_success_title">Ekspor berhasil</string>
+  <string name="export_success_sum">Berkas yang diekspor ditulis ke:\n\n%1$s</string>
+  <string name="opml_import_ask_read_permission">Akses ke penyimpanan eksternal diperlukan untuk membaca berkas OPML</string>
+  <string name="import_ok">Tolong tekan OK untuk mengulang kembali AntennaPod</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Atur timer tidur</string>
+  <string name="disable_sleeptimer_label">Nonaktifkan timer tidur</string>
+  <string name="sleep_timer_label">Timer tidur</string>
+  <string name="time_dialog_invalid_input">Input tidak valid, waktu harus bilangan bulat</string>
+  <string name="shake_to_reset_label">Goyangkan untuk reset</string>
+  <string name="timer_vibration_label">Getar sesaat sebelum berakhir</string>
+  <string name="time_seconds">detik</string>
+  <string name="time_minutes">menit</string>
+  <string name="time_hours">jam</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="other">%d detik</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="other">%d menit</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="other">%d jam</item>
+  </plurals>
+  <string name="auto_enable_label">Aktifkan otomatis</string>
+  <string name="sleep_timer_enabled_label">Timer tidur diaktifkan</string>
+  <!--gpodder.net-->
+  <string name="gpodnetauth_login_butLabel">Masuk</string>
+  <string name="username_label">Nama pengguna</string>
+  <string name="password_label">Kata sandi</string>
+  <string name="gpodnetauth_finish_descr">Selamat! Akun gpodder.net Anda sekarang terhubung dengan perangkat Anda. AntennaPod sekarang akan secara otomatis sinkronkan langganan pada perangkat Anda dengan akun gpodder.net Anda.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Mulai sinkronisasi sekarang</string>
+  <string name="gpodnetsync_error_title">Kesalahan sinkronisasi gpodder.net</string>
+  <string name="gpodnetsync_error_descr">Sebuah kesalahan terjadi selama sinkronisasi:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Berhasil</string>
+  <string name="gpodnetsync_pref_report_failed">Gagal</string>
+  <string name="gpodnetsync_username_characters_error">Nama pengguna hanya dapat mengandung huruf, angka, tanda penghubung, dan underscore.</string>
+  <!--Directory chooser-->
+  <string name="choose_data_directory">Pilih Direktori Data</string>
+  <string name="choose_data_directory_message">Tolong pilih dasar dari folder data Anda. AntennaPod akan membuat sub-direktori yang sesuai.</string>
+  <string name="choose_data_directory_available_space">%1$s dari %2$s kosong</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Jeda pemutaran ulang dari pada menurunkan volume ketika aplikasi lain ingin memainkan suara</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Jeda untuk Gangguan</string>
+  <string name="pref_resumeAfterCall_sum">Lanjutkan pemutaran setelah panggilan telepon selesai</string>
+  <string name="pref_resumeAfterCall_title">Lanjutkan setelah Panggilan</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Berlangganan</string>
+  <!--Content descriptions for image buttons-->
+  <string name="rewind_label">Putar ulang</string>
+  <string name="fast_forward_label">Maju cepat</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="status_downloading_label">Episode sedang diunduh</string>
+  <string name="in_queue_label">Episode dalam antrian</string>
+  <string name="load_next_page_label">Muat halaman berikut</string>
+  <!--Feed settings/information screen-->
+  <string name="authentication_label">Autentikasi</string>
+  <string name="authentication_descr">Ubah nama pengguna dan kata sandi untuk podcast ini dan episodenya.</string>
+  <string name="auto_download_settings_label">Pengaturan Pengunduhan Otomatis</string>
+  <string name="episode_filters_label">Filter Episode</string>
+  <string name="episode_filters_description">Daftar ketentuan yang digunakan untuk memutuskan jika episode sebuah episode harus disertakan atau dikecualikan ketika mengunduh otomatis</string>
+  <string name="episode_filters_include">Sertakan</string>
+  <string name="episode_filters_exclude">Kecualikan</string>
+  <string name="episode_filters_hint">Satu kata \n\"Banyak kata\"</string>
+  <string name="keep_updated">Terus Perbarui</string>
+  <string name="keep_updated_summary">Sertakan podcast ini saat (otomatis) menyegarkan semua podcast</string>
+  <string name="auto_download_disabled_globally">Unduh otomatis dinonaktifkan di pengaturan AntennaPod utama</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal...</string>
+  <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Cari podcast...</string>
+  <string name="search_itunes_label">Telusur iTunes</string>
+  <string name="search_fyyd_label">Cari fyyd</string>
+  <string name="gpodnet_search_hint">Telusur gpodder.net</string>
+  <string name="discover">Temukan</string>
+  <string name="discover_more">lebih »</string>
+  <!--Local feeds-->
+  <string name="filter">Filter</string>
+  <string name="hide_is_favorite_label">Adalah favorit</string>
+  <string name="hide_downloaded_episodes_label">Diunduh</string>
+  <string name="hide_not_downloaded_episodes_label">Tidak diunduh</string>
+  <string name="queued_label">Diantri</string>
+  <string name="not_queued_label">Tidak diantri</string>
+  <string name="has_media">Mempunyai media</string>
+  <string name="hide_paused_episodes_label">Dijeda</string>
+  <string name="hide_played_episodes_label">Diputar</string>
+  <!--Sort-->
+  <string name="sort_title_a_z">Judul (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Judul (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Tanggal (Baru \u2192 Lama)</string>
+  <string name="sort_date_old_new">Tanggal (Lama \u2192 Baru)</string>
+  <string name="sort_duration_short_long">Durasi (Pendek \u2192 Panjang)</string>
+  <string name="sort_duration_long_short">Durasi (Pannjang \u2192 Pendek)</string>
+  <!--Rating dialog-->
+  <string name="rating_title" tools:ignore="UnusedResources">Suka AntennaPod?</string>
+  <string name="rating_message" tools:ignore="UnusedResources">Kami menghargainya jika Anda meluangkan waktu untuk menilai AntennaPod.</string>
+  <string name="rating_never_label" tools:ignore="UnusedResources">Tinggalkan aku sendiri</string>
+  <string name="rating_later_label" tools:ignore="UnusedResources">Ingati aku nanti</string>
+  <string name="rating_now_label" tools:ignore="UnusedResources">Tentu, ayo lakukan ini!</string>
+  <!--Share episode dialog-->
+  <!--Audio controls-->
+  <string name="audio_controls">Kontrol audio</string>
+  <string name="playback_speed">Kecepatan Pemutaran</string>
+  <string name="audio_effects">Efek Audio</string>
+  <string name="stereo_to_mono">Downmix: Stereo ke mono</string>
+  <string name="sonic_only">Hanya sonic</string>
+  <string name="exoplayer_only">Hanya ExoPlayer</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Tipe</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Port</string>
+  <string name="optional_hint">(Opsional)</string>
+  <string name="proxy_test_label">Tes</string>
+  <string name="proxy_checking">Memeriksa...</string>
+  <string name="proxy_test_successful">Tes berhasil</string>
+  <string name="proxy_test_failed">Tes gagal</string>
+  <string name="proxy_host_empty_error">Host tidak bisa kosong</string>
+  <string name="proxy_host_invalid_error">Host bukan IP adress atau domain yang valid</string>
+  <string name="proxy_port_invalid_error">Port tidak valid</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Jumlah kolom</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Tindakan diperlukan</string>
+  <string name="notification_channel_user_action_description">Ditampilkan jika tindakan Anda diperlukan, contohnya jika Anda perlu memasukkan kata sandi.</string>
+  <string name="notification_channel_downloading">Mengunduh</string>
+  <string name="notification_channel_downloading_description">Ditampilkan saat sedang mengunduh.</string>
+  <string name="notification_channel_playing">Sedang diputar</string>
+  <string name="notification_channel_playing_description">Izinkan untuk kontrol pemutaran. Ini adalah notifikasi utama yang Anda lihat ketika memutar sebuah podcast.</string>
+  <!--Widget settings-->
+  <!--On-Demand configuration-->
+</resources>

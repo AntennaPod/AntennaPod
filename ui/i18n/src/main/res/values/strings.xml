@@ -10,8 +10,8 @@
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
+    <string name="home_label">Home</string>
     <string name="queue_label">Queue</string>
-    <string name="all_episodes_short_label">All</string>
     <string name="inbox_label">Inbox</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="settings_label">Settings</string>
@@ -51,6 +51,17 @@
     <string name="statistics_counting_range">Played between %1$s and %2$s</string>
     <string name="statistics_counting_total">Played in total</string>
 
+    <!-- Home fragment -->
+    <string name="home_surprise_title">Get surprised</string>
+    <string name="home_classics_title">Check your classics</string>
+    <string name="home_continue_title">Continue listening</string>
+    <string name="home_new_title">Review the new</string>
+    <string name="home_downloads_title">Manage downloads</string>
+    <string name="home_welcome_title">Welcome to AntennaPod!</string>
+    <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
+    <string name="navigate_arrows">%s »</string>
+    <string name="configure_home">Configure Home Screen</string>
+
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device</string>
 
@@ -62,10 +73,10 @@
     <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
     <string name="drawer_feed_order_last_update">Sort by publication date</string>
     <string name="drawer_feed_order_most_played">Sort by number of played episodes</string>
-    <string name="drawer_feed_counter_inbox_unplayed">Number of unplayed episodes and episodes in the inbox</string>
     <string name="drawer_feed_counter_inbox">Number of episodes in the inbox</string>
     <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
     <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">Number of downloaded and unplayed episodes</string>
     <string name="drawer_feed_counter_none">None</string>
 
     <!-- Bug report activity -->
@@ -82,6 +93,7 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
+    <string name="clear_playback_history_msg">This will clear the entire playback history. Are you sure you want to proceed?</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
@@ -95,7 +107,6 @@
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
-    <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
@@ -136,7 +147,6 @@
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
-    <string name="loading_more">Loading more…</string>
     <string name="episode_notification">Episode Notifications</string>
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
@@ -181,6 +191,7 @@
         <item quantity="other">%d subscriptions updated.</item>
     </plurals>
     <string name="edit_tags">Edit tags</string>
+    <string name="add_tag">Add tag</string>
     <string name="rename_tag_label">Rename tag</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Refreshing podcasts over mobile data connection is disabled in the settings.\n\nDo you want to refresh anyway?</string>
 
@@ -229,12 +240,15 @@
         <item quantity="one">%d episode removed from queue.</item>
         <item quantity="other">%d episodes removed from queue.</item>
     </plurals>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d episode removed from inbox.</item>
+        <item quantity="other">%d episodes removed from inbox.</item>
+    </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_position">Reset Playback Position</string>
-    <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>
 
     <!-- Download messages and labels -->
@@ -340,16 +354,16 @@
     <string name="no_history_label">After you listen to an episode, it will appear here.</string>
     <string name="no_all_episodes_head_label">No Episodes</string>
     <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
+    <string name="no_all_episodes_filtered_label">Try clearing the filter to see more episodes.</string>
     <string name="no_inbox_head_label">No episodes in the inbox</string>
     <string name="no_inbox_label">When new episodes arrive, they will be shown here. You can then decide if you are interested in them or not.</string>
-    <string name="no_fav_episodes_head_label">No favorite episodes</string>
-    <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
     <string name="storage_sum">Episode auto delete, Import, Export</string>
+    <string name="statistics_moved">The statistics screen was moved to the subscriptions screen. You can open it from there.</string>
     <string name="project_pref">Project</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices</string>
@@ -508,16 +522,9 @@
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="behavior">Behavior</string>
-    <string name="pref_back_button_behavior_title">Back Button Behavior</string>
-    <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
-    <string name="back_button_default">Default</string>
-    <string name="back_button_open_drawer">Open navigation drawer</string>
-    <string name="back_button_double_tap">Double tap to exit</string>
-    <string name="back_button_show_prompt">Confirm to exit</string>
-    <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
-    <string name="double_tap_toast">Tap back button again to exit</string>
-    <string name="back_button_go_to_page">Go to page…</string>
-    <string name="back_button_go_to_page_title">Select page</string>
+    <string name="pref_default_page">Default Page</string>
+    <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
     <string name="pref_filter_feed_title">Subscription Filter</string>
@@ -685,10 +692,10 @@
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
-    <string name="episode_filters_include">Include</string>
-    <string name="episode_filters_exclude">Exclude</string>
-    <string name="episode_filters_duration">Minimal Duration (in minutes)</string>
-    <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
+    <string name="add_term">Add Term</string>
+    <string name="exclude_terms">Exclude episodes containing any of the terms below</string>
+    <string name="include_terms">Include only episodes containing any of the terms below</string>
+    <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
@@ -717,7 +724,9 @@
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
+    <string name="country">Country</string>
 
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>

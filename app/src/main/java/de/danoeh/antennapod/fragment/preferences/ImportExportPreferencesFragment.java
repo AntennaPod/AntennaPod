@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
@@ -166,7 +166,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private void importDatabase() {
         // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle(R.string.database_import_label);
         builder.setMessage(R.string.database_import_warning);
 
@@ -183,7 +183,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void showDatabaseImportSuccessDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.successful_import_label);
         builder.setMessage(R.string.import_ok);
         builder.setCancelable(false);
@@ -192,7 +192,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void showExportSuccessDialog(String path, Uri streamUri, Export exportType) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
         alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_success_title);
         alert.setMessage(getContext().getString(R.string.export_success_sum, path));
@@ -209,7 +209,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
 
     private void showExportErrorDialog(final Throwable error) {
         progressDialog.dismiss();
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
         alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_error_label);
         alert.setMessage(error.getMessage());

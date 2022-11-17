@@ -6,7 +6,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.ListFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -81,7 +81,7 @@ public class LicensesFragment extends ListFragment {
 
         LicenseItem item = licenses.get(position);
         CharSequence[] items = {"View website", "View license"};
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
                 .setTitle(item.title)
                 .setItems(items, (dialog, which) -> {
                     if (which == 0) {
@@ -102,7 +102,7 @@ public class LicensesFragment extends ListFragment {
                 licenseText.append(line).append("\n");
             }
 
-            new AlertDialog.Builder(getContext())
+            new MaterialAlertDialogBuilder(getContext())
                     .setMessage(licenseText)
                     .show();
         } catch (IOException e) {

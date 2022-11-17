@@ -10,8 +10,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2060195
-        versionName "2.6.1"
+        versionCode 2070095
+        versionName "2.7.0"
 
         def commit = ""
         try {
@@ -81,15 +81,19 @@ dependencies {
     implementation project(":core")
     implementation project(":event")
     implementation project(':model')
+    implementation project(':net:common')
     implementation project(':net:discovery')
+    implementation project(':net:download:service-interface')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
     implementation project(':parser:feed')
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
+    implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:glide')
     implementation project(':ui:i18n')
     implementation project(':ui:statistics')
 
@@ -112,7 +116,6 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
@@ -136,7 +139,6 @@ dependencies {
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
-    androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"

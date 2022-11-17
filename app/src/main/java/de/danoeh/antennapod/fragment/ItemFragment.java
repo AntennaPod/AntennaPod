@@ -39,24 +39,25 @@ import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateFormatter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.core.util.gui.ShownotesCleaner;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -106,7 +107,7 @@ public class ItemFragment extends Fragment {
     private TextView txtvDuration;
     private TextView txtvPublished;
     private ImageView imgvCover;
-    private ProgressBar progbarDownload;
+    private CircularProgressBar progbarDownload;
     private ProgressBar progbarLoading;
     private TextView butAction1Text;
     private TextView butAction2Text;
@@ -158,7 +159,7 @@ public class ItemFragment extends Fragment {
 
         imgvCover = layout.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> openPodcast());
-        progbarDownload = layout.findViewById(R.id.progbarDownload);
+        progbarDownload = layout.findViewById(R.id.circularProgressBar);
         progbarLoading = layout.findViewById(R.id.progbarLoading);
         butAction1 = layout.findViewById(R.id.butAction1);
         butAction2 = layout.findViewById(R.id.butAction2);
@@ -292,9 +293,8 @@ public class ItemFragment extends Fragment {
 
         RequestOptions options = new RequestOptions()
                 .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .transform(new FitCenter(),
-                        new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
+                        new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
         Glide.with(getActivity())
@@ -311,10 +311,11 @@ public class ItemFragment extends Fragment {
         progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
-                if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                        && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                DownloadRequest request = downloader.getDownloadRequest();
+                if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                        && request.getFeedfileId() == item.getMedia().getId()) {
                     progbarDownload.setVisibility(View.VISIBLE);
-                    progbarDownload.setProgress(downloader.getDownloadRequest().getProgressPercent());
+                    progbarDownload.setPercentage(0.01f * Math.max(1, request.getProgressPercent()), request);
                 }
             }
         }
@@ -331,7 +332,7 @@ public class ItemFragment extends Fragment {
                 txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
-            if (FeedItemUtil.isCurrentlyPlaying(media)) {
+            if (PlaybackStatus.isCurrentlyPlaying(media)) {
                 actionButton1 = new PauseActionButton(item);
             } else if (item.getFeed().isLocalFeed()) {
                 actionButton1 = new PlayLocalActionButton(item);
@@ -366,6 +367,9 @@ public class ItemFragment extends Fragment {
     }
 
     private void openPodcast() {
+        if (item == null) {
+            return;
+        }
         Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
         ((MainActivity) getActivity()).loadChildFragment(fragment);
     }
@@ -432,7 +436,7 @@ public class ItemFragment extends Fragment {
         if (feedItem != null && context != null) {
             int duration = feedItem.getMedia() != null ? feedItem.getMedia().getDuration() : Integer.MAX_VALUE;
             DBReader.loadDescriptionOfFeedItem(feedItem);
-            Timeline t = new Timeline(context, feedItem.getDescription(), duration);
+            ShownotesCleaner t = new ShownotesCleaner(context, feedItem.getDescription(), duration);
             webviewData = t.processShownotes();
         }
         return feedItem;

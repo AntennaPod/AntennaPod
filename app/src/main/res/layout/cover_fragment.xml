@@ -7,28 +7,33 @@
     android:id="@+id/cover_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="8dp"
-    android:gravity="center">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <Space
-        android:id="@+id/counterweight"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/coverHolder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <de.danoeh.antennapod.ui.common.SquareImageView
-        android:id="@+id/imgvCover"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="16dp"
-        android:layout_weight="0"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:importantForAccessibility="no"
-        android:scaleType="fitCenter"
-        squareImageView:direction="height"
-        tools:src="@android:drawable/sym_def_app_icon" />
+        <ImageView
+            android:id="@+id/imgvCover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="32dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:importantForAccessibility="no"
+            android:scaleType="fitCenter"
+            squareImageView:direction="minimum"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@android:drawable/sym_def_app_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/cover_fragment_text_container"
@@ -65,29 +70,18 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="false"
             android:textSize="@dimen/text_size_small"
+            android:layout_marginBottom="32dp"
             tools:text="Episode" />
 
-        <Space
-            android:id="@+id/vertical_divider"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:visibility="gone" />
-
     </LinearLayout>
-
-    <Space
-        android:id="@+id/details_spacer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:id="@+id/episode_details"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_weight="0"
         android:baselineAligned="false"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
@@ -139,7 +133,8 @@
             android:gravity="center"
             android:minWidth="150dp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <ImageButton
                 android:id="@+id/butPrevChapter"

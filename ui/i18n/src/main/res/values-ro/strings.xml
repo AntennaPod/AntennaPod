@@ -7,20 +7,14 @@
   <string name="add_feed_label">Adaugă podcast</string>
   <string name="episodes_label">Episoade</string>
   <string name="queue_label">Coadă</string>
-  <string name="all_episodes_short_label">Toate</string>
-  <string name="new_episodes_label">Nou</string>
   <string name="favorite_episodes_label">Favorite</string>
-  <string name="new_label">Nou</string>
   <string name="settings_label">Setări</string>
   <string name="downloads_label">Descărcări</string>
   <string name="open_autodownload_settings">Setări deschise</string>
-  <string name="downloads_completed_label">Complete</string>
-  <string name="downloads_log_label">Jurnal</string>
   <string name="subscriptions_label">Abonamente</string>
   <string name="subscriptions_list_label">Listă Abonamente</string>
   <string name="cancel_download_label">Anulează descărcarea</string>
   <string name="playback_history_label">Istorie ascultare</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Memorie cache plină</string>
   <string name="episode_cache_full_message">Memoria cache pentru episoade este plină. Puteți mări mărimea memoriei in Setări.</string>
   <string name="years_statistics_label">Ani</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Sortează alfabetic</string>
   <string name="drawer_feed_order_last_update">Sortează după data publicării</string>
   <string name="drawer_feed_order_most_played">Sortează după numărul de episoade urmărite</string>
-  <string name="drawer_feed_counter_new_unplayed">Numărul de episoade noi și neredate</string>
-  <string name="drawer_feed_counter_new">Numărul de episoade noi</string>
   <string name="drawer_feed_counter_unplayed">Numărul de episoade neredate</string>
   <string name="drawer_feed_counter_downloaded">Numărul de episoade descărcate</string>
   <string name="drawer_feed_counter_none">Niciunul</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Eroare</string>
   <string name="error_msg_prefix">A avut loc o eroare:</string>
   <string name="refresh_label">Reîncarcă</string>
-  <string name="external_storage_error_msg">Nu există stocare externă. Asigurați-vă că stocarea externă este conectată pentru ca aplicația să funcționeze corespunzător.</string>
   <string name="chapters_label">Capitole</string>
   <string name="chapter_duration">Durata: %1$s</string>
   <string name="description_label">Descriere</string>
@@ -145,13 +136,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Abonamentele dumneavoastră au episoade noi</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marchează toate ca citite</string>
-  <string name="mark_all_read_msg">Marchează toate ca citite</string>
-  <string name="mark_all_read_confirmation_msg">Vă rugăm confirmați că doriți să marcați toate episoadele ca fiind ascultate.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Vă rugăm confirmați că doriți să marcați toate episoadele din acest podcast ca fiind ascultate.</string>
-  <string name="remove_all_new_flags_label">Elimină toate semnele \"nou\"</string>
-  <string name="removed_all_new_flags_msg">Toate semnele \"new\" sunt eliminate</string>
-  <string name="remove_all_new_flags_confirmation_msg">Vă rugăm confirmați că doriți să eliminați semnele \"nou\" de la toate episoadele.</string>
   <string name="show_info_label">Arată informații</string>
   <string name="show_feed_settings_label">Arată setările pentru podcst</string>
   <string name="feed_settings_label">Setări podcast</string>
@@ -199,8 +183,6 @@
     <item quantity="few">%d episoade descărcare au fost șterse.</item>
     <item quantity="other">%d de episoade descărcare au fost șterse.</item>
   </plurals>
-  <string name="remove_new_flag_label">Îndepărtați semnul \"nou\"</string>
-  <string name="removed_new_flag_label">Semnul \"nou\" a fost șters</string>
   <string name="mark_read_label">Marchează ca citit</string>
   <string name="marked_as_played_label">Marcat ca redat</string>
   <string name="marked_as_unplayed_label">Marcat ca neredat</string>
@@ -236,7 +218,6 @@
   <string name="visit_website_label">Vizitează Website</string>
   <string name="skip_episode_label">Sari peste episod</string>
   <string name="reset_position">Resetați poziția de redare</string>
-  <string name="removed_item">Articol eliminat</string>
   <string name="no_items_selected">Niciun articol selectat</string>
   <!--Download messages and labels-->
   <string name="download_successful">de succes</string>
@@ -337,10 +318,6 @@
   <string name="no_history_label">După ce veți asculta un episod acesta va apărea aici.</string>
   <string name="no_all_episodes_head_label">Fără episoade</string>
   <string name="no_all_episodes_label">Când adăugati un podcast, episoadele vor apărea aici.</string>
-  <string name="no_new_episodes_head_label">Fără episoade noi</string>
-  <string name="no_new_episodes_label">Când episoade noi apar, acestea vor apărea aici.</string>
-  <string name="no_fav_episodes_head_label">Nu există episoade favorite</string>
-  <string name="no_fav_episodes_label">Puteți adăua episoade la favorite dacă apăsați lung pe acestea.</string>
   <string name="no_subscriptions_head_label">Fără abonamente</string>
   <string name="no_subscriptions_label">Pentru a vă abona la un podcast, apăsați pe butonul \"plus\" de mai jos.</string>
   <!--Preferences-->
@@ -616,17 +593,10 @@
   <string name="auto_enable_label">Activare automată</string>
   <string name="sleep_timer_enabled_label">Cronometru pentru somn pornit</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">CATEGORII</string>
-  <string name="gpodnet_toplist_header">PODCASTURI DE TOP</string>
-  <string name="gpodnet_search_hint">Caută pe gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Conectare</string>
   <string name="gpodnetauth_encryption_warning">Parola și datele nu sunt criptate!</string>
-  <string name="create_account">Creează un cont</string>
   <string name="username_label">Utilizator</string>
   <string name="password_label">Parolă</string>
-  <string name="gpodnet_description">Gpodder.net este un serviciu de sincronizare a podcasturilor, open-source, care este independent de AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Serverul oficial gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Server Particular</string>
   <string name="gpodnetauth_host">Hostname</string>
   <string name="gpodnetauth_select_server">Selectează serverul</string>
   <string name="gpodnetauth_device_name">Numele dispozitivului</string>
@@ -699,9 +669,9 @@
   <string name="search_itunes_label">Caută în iTunes</string>
   <string name="search_podcastindex_label">Caută în Podcastindex.org</string>
   <string name="search_fyyd_label">Caută în fyyd</string>
+  <string name="gpodnet_search_hint">Caută pe gpodder.net</string>
   <string name="advanced">Avansat</string>
   <string name="add_podcast_by_url">Adaugă podcast folosind o adresă RSS</string>
-  <string name="browse_gpoddernet_label">Răsfoiește gpodder.net</string>
   <string name="discover">Descoperă</string>
   <string name="discover_hide">Ascunde</string>
   <string name="discover_is_hidden">Ai selectat să ascunzi sugestiile.</string>

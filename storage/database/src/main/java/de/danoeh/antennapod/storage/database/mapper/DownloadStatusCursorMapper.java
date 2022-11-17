@@ -17,14 +17,14 @@ public abstract class DownloadStatusCursorMapper {
      */
     @NonNull
     public static DownloadStatus convert(@NonNull Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE);
-        int indexFeedFile = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDFILE);
-        int indexFileFileType = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDFILETYPE);
-        int indexSuccessful = cursor.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL);
-        int indexReason = cursor.getColumnIndex(PodDBAdapter.KEY_REASON);
-        int indexCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE);
-        int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
+        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ID);
+        int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE);
+        int indexFeedFile = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDFILE);
+        int indexFileFileType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDFILETYPE);
+        int indexSuccessful = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SUCCESSFUL);
+        int indexReason = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_REASON);
+        int indexCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_COMPLETION_DATE);
+        int indexReasonDetailed = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_REASON_DETAILED);
 
         return new DownloadStatus(cursor.getLong(indexId), cursor.getString(indexTitle), cursor.getLong(indexFeedFile),
                 cursor.getInt(indexFileFileType), cursor.getInt(indexSuccessful) > 0, false, true,

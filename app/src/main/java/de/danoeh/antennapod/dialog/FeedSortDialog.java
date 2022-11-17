@@ -2,7 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -11,11 +11,11 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class FeedSortDialog {
     public static void showDialog(Context context) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setTitle(context.getString(R.string.pref_nav_drawer_feed_order_title));
         dialog.setNegativeButton(android.R.string.cancel, (d, listener) -> d.dismiss());
 

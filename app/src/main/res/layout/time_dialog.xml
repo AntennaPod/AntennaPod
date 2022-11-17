@@ -24,15 +24,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:selectAllOnFocus="true"
                 android:layout_margin="8dp"
                 android:ems="2"
                 android:inputType="number"
                 android:maxLength="3" />
 
-            <Spinner
-                android:id="@+id/spTimeUnit"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/time_minutes"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp" />
 

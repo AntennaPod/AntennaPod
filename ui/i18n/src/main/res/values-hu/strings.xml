@@ -7,20 +7,14 @@
   <string name="add_feed_label">Podcast hozzáadása</string>
   <string name="episodes_label">Epizódok</string>
   <string name="queue_label">Lejátszási sor</string>
-  <string name="all_episodes_short_label">Mind</string>
-  <string name="new_episodes_label">Újak</string>
   <string name="favorite_episodes_label">Kedvencek</string>
-  <string name="new_label">Új</string>
   <string name="settings_label">Beállítások</string>
   <string name="downloads_label">Letöltések</string>
   <string name="open_autodownload_settings">Beállítások megnyitása</string>
-  <string name="downloads_completed_label">Befejezett</string>
-  <string name="downloads_log_label">Napló</string>
   <string name="subscriptions_label">Feliratkozások</string>
   <string name="subscriptions_list_label">Feliratkozások listája</string>
   <string name="cancel_download_label">Letöltés megszakítása</string>
   <string name="playback_history_label">Lejátszási napló</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Epizód tárhely megtelt</string>
   <string name="episode_cache_full_message">Az epizódok tárolására megadott maximális tárhely megtelt. A mérete a beállításokban növelhető meg.</string>
   <string name="years_statistics_label">Évek</string>
@@ -56,8 +50,6 @@
   <string name="drawer_feed_order_alphabetical">Rendezés betűrendben</string>
   <string name="drawer_feed_order_last_update">Rendezés közzététel dátuma szerint</string>
   <string name="drawer_feed_order_most_played">Rendezés lejátszott epizódok szerint</string>
-  <string name="drawer_feed_counter_new_unplayed">Új és nem lejátszott epizódok száma</string>
-  <string name="drawer_feed_counter_new">Új epizódok száma</string>
   <string name="drawer_feed_counter_unplayed">Nem játszott epizódok száma</string>
   <string name="drawer_feed_counter_downloaded">Letöltött epizódok száma</string>
   <string name="drawer_feed_counter_none">Nincs</string>
@@ -85,7 +77,6 @@
   <string name="error_label">Hiba</string>
   <string name="error_msg_prefix">Hiba történt:</string>
   <string name="refresh_label">Frissítés</string>
-  <string name="external_storage_error_msg">Nem található külső tárhely. Az alkalmazás helyes működése érdekében győződjön meg róla, hogy csatolva van-e.</string>
   <string name="chapters_label">Fejezetek</string>
   <string name="chapter_duration">Hossz: %1$s</string>
   <string name="description_label">Leírás</string>
@@ -139,13 +130,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">A feliratkozásainak új epizódjai vannak.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Az összes megjelölése lejátszottként</string>
-  <string name="mark_all_read_msg">Az összes epizód lejátszottnak jelölve</string>
-  <string name="mark_all_read_confirmation_msg">Biztos, hogy lejátszottnak jelöli az összes epizódot?</string>
-  <string name="mark_all_read_feed_confirmation_msg">Biztos, hogy a podcast összes epizódját lejátszottnak jelöli?</string>
-  <string name="remove_all_new_flags_label">Az összes „új” jelző eltávolítása</string>
-  <string name="removed_all_new_flags_msg">Az összes „új” jelző eltávolítva</string>
-  <string name="remove_all_new_flags_confirmation_msg">Biztos, hogy eltávolítja az „új” jelzőt az összes epizódról?</string>
   <string name="show_info_label">Információ megjelenítése</string>
   <string name="show_feed_settings_label">Podcast beállítások megjelenítése</string>
   <string name="feed_settings_label">Podcast beállítások</string>
@@ -190,8 +174,6 @@
     <item quantity="one">1 letöltött epizód törölve.</item>
     <item quantity="other">%d letöltött epizód törölve.</item>
   </plurals>
-  <string name="remove_new_flag_label">Az „új” jelző eltávolítása</string>
-  <string name="removed_new_flag_label">Az „új” jelző eltávolítva</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>
   <string name="marked_as_played_label">Megjelölve lejátszottként</string>
   <string name="marked_as_unplayed_label">Megjelölve nem lejátszottként</string>
@@ -223,7 +205,6 @@
   <string name="visit_website_label">Honlap megtekintése</string>
   <string name="skip_episode_label">Epizód átugrása</string>
   <string name="reset_position">Lejátszási pozíció visszaállítása</string>
-  <string name="removed_item">Elem eltávolítva</string>
   <string name="no_items_selected">Nincs elem kiválasztva</string>
   <!--Download messages and labels-->
   <string name="download_successful">sikeres</string>
@@ -323,10 +304,6 @@
   <string name="no_history_label">Ha meghallgat egy epizódot, meg fog itt jelenni.</string>
   <string name="no_all_episodes_head_label">Nincsenek epizódok</string>
   <string name="no_all_episodes_label">Ha hozzáad egy podcastot, az epizódok itt fognak megjelenni.</string>
-  <string name="no_new_episodes_head_label">Nincsenek új epizódok</string>
-  <string name="no_new_episodes_label">Ha új epizódok érkeznek, meg fognak itt jelenni.</string>
-  <string name="no_fav_episodes_head_label">Nincsenek kedvenc epizódok</string>
-  <string name="no_fav_episodes_label">Epizódokat hosszú megnyomással adhat a kedvencekhez.</string>
   <string name="no_subscriptions_head_label">Nincsenek feliratkozások</string>
   <string name="no_subscriptions_label">Podcastra való feliratkozáshoz nyomja meg az alábbi plusz ikont.</string>
   <!--Preferences-->
@@ -598,17 +575,10 @@
   <string name="auto_enable_label">Automatikus bekapcsolás</string>
   <string name="sleep_timer_enabled_label">Alvási időzítő bekapcsolva</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGÓRIÁK</string>
-  <string name="gpodnet_toplist_header">LEGJOBB PODCASTOK</string>
-  <string name="gpodnet_search_hint">Keresés a gpodder.neten</string>
   <string name="gpodnetauth_login_butLabel">Bejelentkezés</string>
   <string name="gpodnetauth_encryption_warning">A jelszavak és adatok nem titkosítottak!</string>
-  <string name="create_account">Fiók létrehozása</string>
   <string name="username_label">Felhasználónév</string>
   <string name="password_label">Jelszó</string>
-  <string name="gpodnet_description">A gpodder.net egy nyílt forráskódú podcast szinkronizációs szolgáltatás, amely független az AntennaPod projekttől.</string>
-  <string name="gpodnetauth_server_official">Hivatalos gpodder.net kiszolgáló</string>
-  <string name="gpodnetauth_server_custom">Egyéni kiszolgáló</string>
   <string name="gpodnetauth_host">Kiszolgálónév</string>
   <string name="gpodnetauth_select_server">Válasszon kiszolgálót</string>
   <string name="gpodnetauth_device_name">Eszköz neve</string>
@@ -681,9 +651,9 @@
   <string name="search_itunes_label">Keresés az iTunes-on</string>
   <string name="search_podcastindex_label">Keresés a Podcastindex.org-on</string>
   <string name="search_fyyd_label">Keresés a fyyden</string>
+  <string name="gpodnet_search_hint">Keresés a gpodder.neten</string>
   <string name="advanced">Speciális</string>
   <string name="add_podcast_by_url">Podcast hozzáadása RSS cím alapján</string>
-  <string name="browse_gpoddernet_label">A gpodder.net böngészése</string>
   <string name="discover">Felfedezés</string>
   <string name="discover_hide">Elrejtés</string>
   <string name="discover_is_hidden">A javaslatok elrejtését választotta.</string>

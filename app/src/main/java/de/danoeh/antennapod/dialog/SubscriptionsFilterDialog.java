@@ -4,11 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
@@ -19,14 +21,13 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class SubscriptionsFilterDialog {
     public static void showDialog(Context context) {
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         final Set<String> filterValues = new HashSet<>(Arrays.asList(subscriptionsFilter.getValues()));
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(context.getString(R.string.pref_filter_feed_title));
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -35,39 +36,42 @@ public class SubscriptionsFilterDialog {
         builder.setView(layout);
 
         for (SubscriptionsFilterGroup item : SubscriptionsFilterGroup.values()) {
-            RecursiveRadioGroup row = (RecursiveRadioGroup) inflater.inflate(R.layout.filter_dialog_row, null);
-            RadioButton filter1 = row.findViewById(R.id.filter_dialog_radioButton1);
-            RadioButton filter2 = row.findViewById(R.id.filter_dialog_radioButton2);
-            filter1.setText(item.values[0].displayName);
-            filter1.setTag(item.values[0].filterId);
+            FilterDialogRowBinding binding = FilterDialogRowBinding.inflate(inflater);
+            binding.filterButton1.setText(item.values[0].displayName);
+            binding.filterButton1.setTag(item.values[0].filterId);
             if (item.values.length == 2) {
-                filter2.setText(item.values[1].displayName);
-                filter2.setTag(item.values[1].filterId);
+                binding.filterButton2.setText(item.values[1].displayName);
+                binding.filterButton2.setTag(item.values[1].filterId);
             } else {
-                filter2.setVisibility(View.GONE);
+                binding.filterButton2.setVisibility(View.GONE);
             }
-            rows.addView(row);
+            rows.addView(binding.getRoot());
         }
 
         for (String filterId : filterValues) {
             if (!TextUtils.isEmpty(filterId)) {
-                ((RadioButton) layout.findViewWithTag(filterId)).setChecked(true);
+                Button button = layout.findViewWithTag(filterId);
+                if (button != null) {
+                    ((MaterialButtonToggleGroup) button.getParent()).check(button.getId());
+                }
             }
         }
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             filterValues.clear();
             for (int i = 0; i < rows.getChildCount(); i++) {
-                if (!(rows.getChildAt(i) instanceof RecursiveRadioGroup)) {
+                if (!(rows.getChildAt(i) instanceof MaterialButtonToggleGroup)) {
                     continue;
                 }
-                RecursiveRadioGroup group = (RecursiveRadioGroup) rows.getChildAt(i);
-                if (group.getCheckedButton() != null) {
-                    String tag = (String) group.getCheckedButton().getTag();
-                    if (tag != null) { // Clear buttons use no tag
-                        filterValues.add((String) group.getCheckedButton().getTag());
-                    }
+                MaterialButtonToggleGroup group = (MaterialButtonToggleGroup) rows.getChildAt(i);
+                if (group.getCheckedButtonId() == View.NO_ID) {
+                    continue;
                 }
+                String tag = (String) group.findViewById(group.getCheckedButtonId()).getTag();
+                if (tag == null) { // Clear buttons use no tag
+                    continue;
+                }
+                filterValues.add(tag);
             }
             updateFilter(filterValues);
         });

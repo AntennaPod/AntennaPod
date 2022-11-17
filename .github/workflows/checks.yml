@@ -57,8 +57,8 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Lint
-        run: ./gradlew lintPlayRelease lintRelease
+      - name: Lint :app module recursively
+        run: ./gradlew :app:lintPlayRelease
       - name: SpotBugs
         run: ./gradlew spotbugsPlayDebug spotbugsDebug 2>&1 | grep -i "spotbugs"
 
@@ -110,7 +110,7 @@ jobs:
     runs-on: macOS-latest
     timeout-minutes: 45
     env:
-      api-level: 27
+      api-level: 30
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -118,8 +118,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Build with Gradle
-        run: ./gradlew assemblePlayDebugAndroidTest
       - name: Cache Gradle
         uses: actions/cache@v3
         with:
@@ -127,6 +125,8 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Build with Gradle
+        run: ./gradlew assemblePlayDebugAndroidTest
       - name: Cache AVD
         uses: actions/cache@v3
         id: avd-cache
@@ -134,20 +134,24 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ env.api-level }}
+          key: avd-${{ hashFiles('.github/workflows/*') }}
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.api-level }}
+          target: aosp_atd
+          channel: canary
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           script: echo "Generated AVD snapshot for caching."
       - name: Android Emulator test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.api-level }}
+          target: aosp_atd
+          channel: canary
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true

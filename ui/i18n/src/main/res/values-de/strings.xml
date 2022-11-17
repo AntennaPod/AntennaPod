@@ -7,20 +7,16 @@
   <string name="add_feed_label">Podcast hinzufügen</string>
   <string name="episodes_label">Episoden</string>
   <string name="queue_label">Warteschlange</string>
-  <string name="all_episodes_short_label">Alle</string>
-  <string name="new_episodes_label">Neu</string>
+  <string name="inbox_label">Posteingang</string>
   <string name="favorite_episodes_label">Favoriten</string>
-  <string name="new_label">Neu</string>
   <string name="settings_label">Einstellungen</string>
   <string name="downloads_label">Downloads</string>
   <string name="open_autodownload_settings">Einstellungen öffnen</string>
-  <string name="downloads_completed_label">Beendet</string>
-  <string name="downloads_log_label">Log</string>
+  <string name="downloads_log_label">Download-Protokoll</string>
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Abonnement-Übersicht</string>
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Episodenspeicher voll</string>
   <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
   <string name="years_statistics_label">Jahre</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Alphabetisch sortieren</string>
   <string name="drawer_feed_order_last_update">Nach Veröffentlichungsdatum sortieren</string>
   <string name="drawer_feed_order_most_played">Nach Anzahl gespielter Episoden sortieren</string>
-  <string name="drawer_feed_counter_new_unplayed">Anzahl neuer und ungespielter Episoden</string>
-  <string name="drawer_feed_counter_new">Anzahl neuer Episoden</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Anzahl der nicht abgespielten Episoden und Episoden im Posteingang</string>
+  <string name="drawer_feed_counter_inbox">Anzahl der Episoden im Posteingang</string>
   <string name="drawer_feed_counter_unplayed">Anzahl ungespielter Episoden</string>
   <string name="drawer_feed_counter_downloaded">Anzahl heruntergeladener Episoden</string>
   <string name="drawer_feed_counter_none">Keine</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
   <string name="refresh_label">Aktualisieren</string>
-  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="description_label">Beschreibung</string>
@@ -139,13 +134,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Deine Abonnements haben neue Episoden.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Alle als gespielt markieren</string>
-  <string name="mark_all_read_msg">Alle Episoden als gespielt markiert</string>
-  <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
-  <string name="remove_all_new_flags_label">Alle \"neu\"-Markierungen entfernen</string>
-  <string name="removed_all_new_flags_msg">Alle \"neu\"-Markierungen entfernt</string>
-  <string name="remove_all_new_flags_confirmation_msg">Bitte bestätige, dass du die \"neu\"-Markierung aller Episoden entfernen willst.</string>
+  <string name="remove_all_inbox_label">Alle aus dem Posteingang entfernen</string>
+  <string name="removed_all_inbox_msg">Alle aus dem Posteingang entfernt</string>
+  <string name="remove_all_inbox_confirmation_msg">Bitte bestätige, dass du alles aus dem Posteingang entfernen möchtest.</string>
+  <string name="multi_select_mark_played_confirmation">Bitte bestätige, dass du alle ausgewählten Elemente als abgespielt markieren möchtest.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Bitte bestätige, dass du alle ausgewählten Elemente als nicht abgespielt markieren möchtest.</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="show_feed_settings_label">Zeige Podcast-Einstellungen</string>
   <string name="feed_settings_label">Podcast-Einstellungen</string>
@@ -191,9 +184,10 @@ Tippen, um Details anzuzeigen.</string>
     <item quantity="one">1 heruntergeladene Episode gelöscht.</item>
     <item quantity="other">%d heruntergeladene Episoden gelöscht.</item>
   </plurals>
-  <string name="remove_new_flag_label">\"Neu\"-Markierung entfernen</string>
-  <string name="removed_new_flag_label">\"Neu\"-Markierung entfernt</string>
+  <string name="remove_inbox_label">Aus dem Posteingang entfernen</string>
+  <string name="removed_inbox_label">Aus dem Posteingang entfernt</string>
   <string name="mark_read_label">Als gespielt markieren</string>
+  <string name="toggle_played_label">Abgespielt-Zustand umschalten</string>
   <string name="marked_as_played_label">Als gespielt markieren</string>
   <string name="marked_as_unplayed_label">Als ungespielt markieren</string>
   <string name="mark_read_no_media_label">Als gelesen markieren</string>
@@ -224,7 +218,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="skip_episode_label">Episode überspringen</string>
   <string name="reset_position">Wiedergabeposition zurücksetzen</string>
-  <string name="removed_item">Element entfernt</string>
   <string name="no_items_selected">Keine Einträge ausgewählt</string>
   <!--Download messages and labels-->
   <string name="download_successful">erfolgreich</string>
@@ -267,7 +260,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediendatei</string>
   <string name="null_value_podcast_error">Es wurde kein Podcast angegeben, der angezeigt werden könnte.</string>
-  <string name="no_feed_url_podcast_found_by_search">Der vorgeschlagene Podcast hat kein RSS-Link. AntennaPod hat einen Podcast gefunden, der dazu passen könnte</string>
+  <string name="no_feed_url_podcast_found_by_search">Der vorgeschlagene Podcast hat keinen RSS-Link. AntennaPod hat einen Podcast gefunden, welcher der gleiche sein könnte</string>
   <string name="authentication_notification_title">Authentifizierung erforderlich</string>
   <string name="authentication_notification_msg">Die angeforderte Quelle erfordert einen Benutzernamen und ein Passwort</string>
   <string name="confirm_mobile_download_dialog_title">Mobilen Download bestätigen</string>
@@ -324,15 +317,15 @@ Tippen, um Details anzuzeigen.</string>
   <string name="no_history_label">Nach dem Anhören einer Episode erscheint sie hier.</string>
   <string name="no_all_episodes_head_label">Keine Episoden</string>
   <string name="no_all_episodes_label">Wenn du einen Podcast hinzufügst, werden die Episoden hier angezeigt.</string>
-  <string name="no_new_episodes_head_label">Keine neuen Episoden</string>
-  <string name="no_new_episodes_label">Wenn neue Episoden veröffentlicht werden, erscheinen sie hier.</string>
-  <string name="no_fav_episodes_head_label">Keine Favoriten</string>
-  <string name="no_fav_episodes_label">Du kannst Episoden als Favorit markieren, indem du sie lange antippst.</string>
+  <string name="no_all_episodes_filtered_label">Versuche den Filter zu deaktivieren, um mehr Episoden zu sehen.</string>
+  <string name="no_inbox_head_label">Keine Episoden im Posteingang</string>
+  <string name="no_inbox_label">Wenn neue Episoden erscheinen, werden sie hier angezeigt. Du kannst dann entscheiden, ob du daran interessiert bist oder nicht.</string>
   <string name="no_subscriptions_head_label">Keine Abonnements</string>
   <string name="no_subscriptions_label">Um einen Podcast zu abonnieren, tippe auf das Plus-Symbol.</string>
   <!--Preferences-->
   <string name="storage_pref">Speicher</string>
   <string name="storage_sum">Automatisches Löschen von Episoden, Importieren, Exportieren</string>
+  <string name="statistics_moved">Der Statistikbildschirm wurde in die \"Abonnements\"-Anzeige verschoben. Du kannst ihn von dort aus öffnen.</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synchronisation</string>
   <string name="synchronization_sum">Mit anderen Geräten synchronisieren</string>
@@ -420,7 +413,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_episode_cover_title">Episoden-Bilder verwenden</string>
   <string name="pref_episode_cover_summary">Falls verfügbar episodenspezifische Titelbilder in Listen verwenden. Falls nicht ausgewählt wird immer das Titelbild des Podcasts verwendet.</string>
   <string name="pref_show_remain_time_title">Verbleibende Zeit anzeigen</string>
-  <string name="pref_show_remain_time_summary">Zeigt, falls ausgewählt, die verbleibende Zeit für die Episode, andernfalls die gesamte verbleibende Zeit aller Episoden.</string>
+  <string name="pref_show_remain_time_summary">Zeigt die verbleibende Zeit der Episode. Falls deaktiviert, die gesamte Dauer der Episode.</string>
   <string name="pref_theme_title_use_system">System-Design verwenden</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
@@ -530,7 +523,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
   <!--Search-->
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
-  <string name="type_to_search">Geben Sie eine Suchanfrage ein</string>
+  <string name="type_to_search">Gib eine Suchanfrage ein</string>
   <string name="search_label">Suchen</string>
   <string name="no_results_for_query">Es wurden keine Ergebnisse für \"%1$s\" gefunden</string>
   <!--Synchronization-->
@@ -569,7 +562,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="export_success_sum">Die exportierte Datei wurde geschrieben nach:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML Datei zu lesen</string>
   <string name="successful_import_label">Import erfolgreich</string>
-  <string name="import_ok">Bitte drücken Sie OK, um AntennaPod neu zu starten.</string>
+  <string name="import_ok">Bitte drücke OK, um AntennaPod neu zu starten.</string>
   <string name="import_no_downgrade">Diese Datenbank wurde mit einer neueren Version von AntennaPod exportiert. Deine im Moment installierte Version kann die Datei leider nicht bearbeiten.</string>
   <string name="favorites_export_label">Favoriten exportieren</string>
   <string name="favorites_export_summary">Speichere Favoriten in einer Datei</string>
@@ -599,17 +592,11 @@ Tippen, um Details anzuzeigen.</string>
   <string name="auto_enable_label">Automatisch aktivieren</string>
   <string name="sleep_timer_enabled_label">Schlummerfunktion aktiviert</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIEN</string>
-  <string name="gpodnet_toplist_header">BESTE PODCASTS</string>
-  <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
   <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
-  <string name="create_account">Konto anlegen</string>
   <string name="username_label">Benutzername</string>
   <string name="password_label">Passwort</string>
-  <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Dienst zur Synchronisation von Podcasts und unabhängig vom AntennaPod-Projekt.</string>
-  <string name="gpodnetauth_server_official">Offizieller Server gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Anderer Server</string>
+  <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig von dem AntennaPod-Projekt.</string>
   <string name="gpodnetauth_host">Hostname</string>
   <string name="gpodnetauth_select_server">Server auswählen</string>
   <string name="gpodnetauth_device_name">Gerätename</string>
@@ -646,6 +633,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="status_downloading_label">Episode wird heruntergeladen</string>
   <string name="in_queue_label">Episode befindet sich in der Warteschlange</string>
   <string name="is_favorite_label">Episode ist als Favorit markiert</string>
+  <string name="is_inbox_label">Episode ist im Posteingang</string>
   <string name="load_next_page_label">Nächste Seite laden</string>
   <string name="position">Position: %1$s</string>
   <string name="apply_action">Aktion anwenden</string>
@@ -682,12 +670,12 @@ Tippen, um Details anzuzeigen.</string>
   <string name="search_itunes_label">iTunes durchsuchen</string>
   <string name="search_podcastindex_label">Podcastindex.org durchsuchen</string>
   <string name="search_fyyd_label">fyyd durchsuchen</string>
+  <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
   <string name="advanced">Fortgeschritten</string>
   <string name="add_podcast_by_url">Podcast über RSS-Adresse hinzufügen</string>
-  <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <string name="discover">Entdecken</string>
   <string name="discover_hide">Ausblenden</string>
-  <string name="discover_is_hidden">Sie haben ausgewählt, Vorschläge auszublenden.</string>
+  <string name="discover_is_hidden">Du hast ausgewählt, Vorschläge auszublenden.</string>
   <string name="discover_more">mehr »</string>
   <string name="discover_powered_by_itunes">Vorschläge von iTunes</string>
   <string name="search_powered_by">Ergebnisse von %1$s</string>
@@ -695,7 +683,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="add_local_folder">Lokalen Ordner hinzufügen</string>
   <string name="local_folder">Lokaler Ordner</string>
   <string name="reconnect_local_folder">Lokalen Ordner erneut verbinden</string>
-  <string name="reconnect_local_folder_warning">Im Falle von Berechtigungsverweigerungen können Sie hiermit eine erneute Verbindung zu genau demselben Ordner herstellen. Wählen Sie keinen anderen Ordner aus.</string>
+  <string name="reconnect_local_folder_warning">Im Falle von Berechtigungsverweigerungen kannst du hiermit eine erneute Verbindung zu genau demselben Ordner herstellen. Wähle keinen anderen Ordner aus.</string>
   <string name="local_feed_description">Dieser virtuelle Podcast wurde durch einen lokalen Ordner hinzugefügt.</string>
   <string name="unable_to_start_system_file_manager">System-Dateimanager kann nicht gestartet werden</string>
   <string name="filter">Filtern</string>

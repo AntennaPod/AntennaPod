@@ -7,31 +7,40 @@
   <string name="add_feed_label">Přidat podcast</string>
   <string name="episodes_label">Epizody</string>
   <string name="queue_label">Fronta</string>
-  <string name="all_episodes_short_label">Vše</string>
-  <string name="new_episodes_label">Nový</string>
   <string name="favorite_episodes_label">Oblíbené</string>
-  <string name="new_label">Nový</string>
   <string name="settings_label">Nastavení</string>
   <string name="downloads_label">Stahování</string>
   <string name="open_autodownload_settings">Otevřít nastavení</string>
-  <string name="downloads_completed_label">Dokončeno</string>
-  <string name="downloads_log_label">Log</string>
   <string name="subscriptions_label">Odběry</string>
   <string name="subscriptions_list_label">Seznam odběrů</string>
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="playback_history_label">Historie přehrávání</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
   <string name="notification_pref_fragment">Upozornění</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" nenalezen</string>
   <!--SwipeActions-->
+  <string name="swipeactions_label">Akce přejetí prstem</string>
+  <string name="swipeactions_summary">Zvolte si, co se stane po přejetí prstu na epizodě v seznamu</string>
+  <string name="swipe_right">Přejetí vpravo</string>
+  <string name="swipe_left">Přejetí vlevo</string>
+  <string name="enable_swipeactions">Povolit akce přejetí prstem pro tuto obrazovku</string>
+  <string name="change_setting">Změnit</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Zahrnout i trvání epizod, které jsou jen označeny jako přehnané</string>
   <string name="statistics_speed_not_counted">Upozornění: Rychlost přehrávání se nikdy nebere v potaz.</string>
+  <string name="statistics_from">Od</string>
+  <string name="statistics_to">Do</string>
+  <string name="statistics_today">Dnes</string>
+  <string name="statistics_filter_all_time">Za celou dobu</string>
+  <string name="statistics_filter_past_year">Za poslední rok</string>
   <string name="statistics_reset_data">Vynulovat statistiky</string>
   <string name="statistics_reset_data_msg">Toto smaže veškerou historii přehrávání pro všechny epizody. Vážně chcete pokračovat?</string>
+  <string name="statistics_counting_range">Přehráno mezi 1%1$s a 2%2$s</string>
+  <string name="statistics_counting_total">Celkem přehnáno</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Celková velikost epizod na zařízení</string>
   <!--Main activity-->
   <string name="drawer_open">Otevřít menu</string>
   <string name="drawer_close">Zavřít menu</string>
@@ -40,8 +49,6 @@
   <string name="drawer_feed_order_alphabetical">Řadit abecedně</string>
   <string name="drawer_feed_order_last_update">Řadit dle data zveřejnění</string>
   <string name="drawer_feed_order_most_played">Řadit podle počtu poslechnutých epizod</string>
-  <string name="drawer_feed_counter_new_unplayed">Počet nových a nepřehraných epizod</string>
-  <string name="drawer_feed_counter_new">Počet nových epizod</string>
   <string name="drawer_feed_counter_unplayed">Počet nepřehraných epizod</string>
   <string name="drawer_feed_counter_downloaded">Počet stažených epizod</string>
   <string name="drawer_feed_counter_none">Žádné</string>
@@ -70,7 +77,6 @@
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Došlo k chybě:</string>
   <string name="refresh_label">Obnovit</string>
-  <string name="external_storage_error_msg">Není dostupné žádné externí uložiště. Pro správnou funkci aplikace se prosím ujistěte, že je připojeno externí úložiště.</string>
   <string name="chapters_label">Kapitoly</string>
   <string name="chapter_duration">Délka: %1$s</string>
   <string name="description_label">Popis</string>
@@ -107,6 +113,12 @@
     <item quantity="many">%d dnů po dokončení</item>
     <item quantity="other">%d dnů po dokončení</item>
   </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">vybráno %1$d/%2$d</item>
+    <item quantity="few">vybráno %1$d/%2$d</item>
+    <item quantity="many">vybráno %1$d/%2$d</item>
+    <item quantity="other">vybráno %1$d/%2$d</item>
+  </plurals>
   <plurals name="num_episodes">
     <item quantity="one">%d epizoda</item>
     <item quantity="few">%d epizody</item>
@@ -130,13 +142,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Tvé odběry mají nové epizody</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
-  <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
-  <string name="mark_all_read_confirmation_msg">Potvrďte prosím, že chcete označit všechny vybrané epizody jako poslechnuté.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody tohoto podcastu jako poslechnuté.</string>
-  <string name="remove_all_new_flags_label">Odstranit příznak „nová“ ze všech epizod</string>
-  <string name="removed_all_new_flags_msg">Příznak „nová“ odstraněn ze všech epizod</string>
-  <string name="remove_all_new_flags_confirmation_msg">Potvrďte prosím, že chcete odstranit příznak „nová“ ze všech epizod.</string>
   <string name="show_info_label">Informace o zdroji</string>
   <string name="show_feed_settings_label">Zobrazit nastavení podcastu</string>
   <string name="feed_settings_label">Nastavení podcastu</string>
@@ -144,6 +149,7 @@
   <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_label">Sdílet</string>
   <string name="share_file_label">Sdílet soubor</string>
+  <string name="share_rss_address_label">adresa RSS:</string>
   <string name="feed_delete_confirmation_msg">Potvrďte prosím, že chcete smazat podcast „%1$s“ a VŠECHNY jeho epizody (včetně stažených epizod).</string>
   <string name="feed_delete_confirmation_local_msg">Potvrďte odstranění podcastu \"%1$s\". Soubory v místním úložišti nebudou smazány.</string>
   <string name="feed_remover_msg">Odstraňování podcastu</string>
@@ -170,8 +176,6 @@
   <string name="delete_label">Smazat</string>
   <string name="delete_failed">Nelze smazat soubor. Restart přístroje může pomoci.</string>
   <string name="delete_episode_label">Smazat epizodu</string>
-  <string name="remove_new_flag_label">Odstranit příznak „nová“</string>
-  <string name="removed_new_flag_label">Příznak „nová“ odstraněn</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="mark_read_no_media_label">Označit jako poslechnuté</string>
   <string name="play_this_to_seek_position">Pro přeskočení na pozice musíte epizodu přehrát</string>
@@ -209,7 +213,6 @@
   <string name="visit_website_label">Navštívit stránku</string>
   <string name="skip_episode_label">Přeskočit epizodu</string>
   <string name="reset_position">Vymazat pozici přehrávání</string>
-  <string name="removed_item">Položka odebrána</string>
   <string name="no_items_selected">Nic není vybráno</string>
   <!--Download messages and labels-->
   <string name="download_successful">úspěšné</string>
@@ -305,10 +308,6 @@
   <string name="no_history_label">Až si poslechnete nějakou epizodu, tak se objeví zde.</string>
   <string name="no_all_episodes_head_label">Žádné epizody</string>
   <string name="no_all_episodes_label">Až si přidáte nějaký podcast, tak se objeví zde.</string>
-  <string name="no_new_episodes_head_label">Žádné nové epizody</string>
-  <string name="no_new_episodes_label">Až budou zveřejněny nové epizody, tak se objeví zde.</string>
-  <string name="no_fav_episodes_head_label">Žádné oblíbené epizody</string>
-  <string name="no_fav_episodes_label">Epizody si můžete přidat mezi oblíbené dlouhým dotykem.</string>
   <string name="no_subscriptions_head_label">Žádné odběry</string>
   <string name="no_subscriptions_label">Pro přihlášení odběru podcastu stiskněte ikonu plus níže.</string>
   <!--Preferences-->
@@ -570,17 +569,10 @@
   <string name="auto_enable_label">Automaticky zapnout</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutí povolen</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">KATEGORIE</string>
-  <string name="gpodnet_toplist_header">TOP PODCASTY</string>
-  <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Přihlásit</string>
   <string name="gpodnetauth_encryption_warning">Heslo a data nejsou šifrována!</string>
-  <string name="create_account">Vytvořit účet</string>
   <string name="username_label">Uživatelské jméno</string>
   <string name="password_label">Heslo</string>
-  <string name="gpodnet_description">Gpodder.net je open-source služba na synchronizaci podcástů nezávislá na AntennaPod projektu.</string>
-  <string name="gpodnetauth_server_official">Oficiální server gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Vlastní server</string>
   <string name="gpodnetauth_host">Hostname</string>
   <string name="gpodnetauth_select_server">Vybrat server</string>
   <string name="gpodnetauth_device_name">Název zařízení</string>
@@ -645,9 +637,9 @@
   <string name="search_itunes_label">Prohledat iTunes</string>
   <string name="search_podcastindex_label">Prohledat Podcastindex.org</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
+  <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
   <string name="advanced">Pokročilé</string>
   <string name="add_podcast_by_url">Přidat podcast pomocí RSS</string>
-  <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
   <string name="discover">Objevit</string>
   <string name="discover_hide">Skrýt</string>
   <string name="discover_is_hidden">Zvolili jste skrýt doporučení.</string>

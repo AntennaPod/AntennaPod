@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +27,7 @@ import com.google.android.material.chip.Chip;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.adapter.FeedSearchResultAdapter;
+import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
@@ -65,7 +65,7 @@ public class SearchFragment extends Fragment {
     private static final int SEARCH_DEBOUNCE_INTERVAL = 1500;
 
     private EpisodeItemListAdapter adapter;
-    private FeedSearchResultAdapter adapterFeeds;
+    private HorizontalFeedListAdapter adapterFeeds;
     private Disposable disposable;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
@@ -144,7 +144,7 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        adapterFeeds = new FeedSearchResultAdapter((MainActivity) getActivity());
+        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity());
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
@@ -189,7 +189,7 @@ public class SearchFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    private void setupToolbar(Toolbar toolbar) {
+    private void setupToolbar(MaterialToolbar toolbar) {
         toolbar.setTitle(R.string.search_label);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
         toolbar.inflateMenu(R.menu.search);

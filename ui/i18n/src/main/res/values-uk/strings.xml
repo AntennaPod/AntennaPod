@@ -7,20 +7,14 @@
   <string name="add_feed_label">Додати подкаст</string>
   <string name="episodes_label">Епізоди</string>
   <string name="queue_label">Черга</string>
-  <string name="all_episodes_short_label">Усі</string>
-  <string name="new_episodes_label">Нові</string>
   <string name="favorite_episodes_label">Відібрані</string>
-  <string name="new_label">Нове</string>
   <string name="settings_label">Налаштування</string>
   <string name="downloads_label">Завантаження</string>
   <string name="open_autodownload_settings">Відкрити налаштування</string>
-  <string name="downloads_completed_label">Завершено</string>
-  <string name="downloads_log_label">Журнал</string>
   <string name="subscriptions_label">Підписки</string>
   <string name="subscriptions_list_label">Перелік підписок</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
   <string name="playback_history_label">Історія відтворення</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Його можна збільшити в налаштуваннях.</string>
   <string name="notification_pref_fragment">Сповіщення</string>
@@ -46,8 +40,6 @@
   <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
   <string name="drawer_feed_order_last_update">Сортувати за датою опублікування</string>
   <string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих епізодів</string>
-  <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
-  <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
   <string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
   <string name="drawer_feed_counter_none">Жодних</string>
@@ -75,7 +67,6 @@
   <string name="error_label">Помилка</string>
   <string name="error_msg_prefix">Трапилась помілка:</string>
   <string name="refresh_label">Оновити</string>
-  <string name="external_storage_error_msg">Немає доступної карти пам\'яті. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
   <string name="chapter_duration">Тривалість: %1$s</string>
   <string name="description_label">Опис</string>
@@ -141,13 +132,6 @@
   </plurals>
   <string name="new_episode_notification_group_text">Ваші підписки мають нові епізоди.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Позначити всі як відтворені</string>
-  <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
-  <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені. </string>
-  <string name="remove_all_new_flags_label">Видаліть усі «нові» прапорці</string>
-  <string name="removed_all_new_flags_msg">Видалено всі «нові» прапорці</string>
-  <string name="remove_all_new_flags_confirmation_msg">Будь ласка, підтвердьте, що хочете видалити «новий» прапорець з усіх епізодів.</string>
   <string name="show_info_label">Інформація</string>
   <string name="show_feed_settings_label">Показати налаштування подкасту</string>
   <string name="feed_settings_label">Налаштування подкасту</string>
@@ -196,8 +180,6 @@
     <item quantity="many">%dзавантажених епізодів видалено.</item>
     <item quantity="other">%dзавантажених епізодів видалено.</item>
   </plurals>
-  <string name="remove_new_flag_label">Видалити \"нові\" прапорці</string>
-  <string name="removed_new_flag_label">Видалено \"нові\" прапорці</string>
   <string name="mark_read_label">Позначити як відтворений</string>
   <string name="marked_as_played_label">Позначено як відтворений</string>
   <string name="marked_as_unplayed_label">Позначено як невідтворений</string>
@@ -237,7 +219,6 @@
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="skip_episode_label">Пропустити епізод</string>
   <string name="reset_position">Скинути позицію відтворення</string>
-  <string name="removed_item">Видалено</string>
   <string name="no_items_selected">Не вибрано жодного елемента</string>
   <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
@@ -335,10 +316,6 @@
   <string name="no_history_label">Коли ви прослухаєте епізод, ця інформація з’явиться тут.</string>
   <string name="no_all_episodes_head_label">Немає епізодів</string>
   <string name="no_all_episodes_label">Коли ви додасте подкаст, тут з’явиться перелік його епізодів.</string>
-  <string name="no_new_episodes_head_label">Немає нових епізодів</string>
-  <string name="no_new_episodes_label">Коли з’являться нові епізоди, іх буде показано тут.</string>
-  <string name="no_fav_episodes_head_label">Немає улюблених епізодів</string>
-  <string name="no_fav_episodes_label">Ви можете додавати епізоди до улюблених за допомогою довгого натискання.</string>
   <string name="no_subscriptions_head_label">Немає підписок</string>
   <string name="no_subscriptions_label">Щоб підписатись на подкаст, натисніть на значок плюса нижче</string>
   <!--Preferences-->
@@ -608,17 +585,10 @@
   <string name="auto_enable_label">Увімкнути автоматично</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
-  <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
-  <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Логін</string>
   <string name="gpodnetauth_encryption_warning">Пароль та дані не зашифровані!</string>
-  <string name="create_account">Створити акаунт</string>
   <string name="username_label">Ім\'я користувача</string>
   <string name="password_label">Пароль</string>
-  <string name="gpodnet_description">Gpodder.net - це служба синхронізації подкастів з відкритим вихідним кодом, яка незалежна від проекту AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Офіційний сервер gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Користувацький сервер</string>
   <string name="gpodnetauth_host">Ім\'я хоста</string>
   <string name="gpodnetauth_select_server">Вибрати сервер</string>
   <string name="gpodnetauth_device_name">Назва пристрою</string>
@@ -686,9 +656,9 @@
   <string name="search_itunes_label">Пошук в iTunes</string>
   <string name="search_podcastindex_label">Пошук в Podcastindex.org</string>
   <string name="search_fyyd_label">Пошук в Fyyd</string>
+  <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="advanced">Розширені можливості</string>
   <string name="add_podcast_by_url">Додати подкаст за RSS адресою</string>
-  <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <string name="discover">Знайдіть канали</string>
   <string name="discover_hide">Сховати</string>
   <string name="discover_is_hidden">Ви вибрали, щоб приховати пропозиції.</string>

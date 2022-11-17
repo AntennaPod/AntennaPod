@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
@@ -39,7 +40,7 @@ import java.util.List;
  * Shows the download log
  */
 public class DownloadLogFragment extends BottomSheetDialogFragment
-        implements AdapterView.OnItemClickListener, Toolbar.OnMenuItemClickListener {
+        implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener {
     private static final String TAG = "DownloadLogFragment";
 
     private List<DownloadStatus> downloadLog = new ArrayList<>();
@@ -79,6 +80,9 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
         adapter = new DownloadLogAdapter(getActivity());
         viewBinding.list.setAdapter(adapter);
         viewBinding.list.setOnItemClickListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            viewBinding.list.setNestedScrollingEnabled(true);
+        }
         EventBus.getDefault().register(this);
         return viewBinding.getRoot();
     }

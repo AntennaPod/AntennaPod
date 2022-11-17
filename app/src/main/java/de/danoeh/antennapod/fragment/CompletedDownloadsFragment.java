@@ -1,17 +1,16 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -22,7 +21,6 @@ import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -37,6 +35,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,35 +47,34 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Displays all completed downloads and provides a button to delete them.
  */
 public class CompletedDownloadsFragment extends Fragment
-        implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
+        implements EpisodeItemListAdapter.OnSelectModeListener, MaterialToolbar.OnMenuItemClickListener {
     public static final String TAG = "DownloadsFragment";
     public static final String ARG_SHOW_LOGS = "show_logs";
     private static final String KEY_UP_ARROW = "up_arrow";
+    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
 
     private long[] runningDownloads = new long[0];
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
     private EpisodeItemListRecyclerView recyclerView;
-    private ProgressBar progressBar;
     private Disposable disposable;
     private EmptyViewHandler emptyView;
     private boolean displayUpArrow;
-    private boolean isUpdatingFeeds = false;
     private SpeedDialView speedDialView;
-    private Toolbar toolbar;
     private SwipeActions swipeActions;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        toolbar = root.findViewById(R.id.toolbar);
+        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         toolbar.setOnMenuItemClickListener(this);
@@ -85,7 +83,6 @@ public class CompletedDownloadsFragment extends Fragment
             recyclerView.post(() -> recyclerView.smoothScrollToPosition(0));
             return false;
         });
-        refreshToolbarState();
         displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
         if (savedInstanceState != null) {
             displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
@@ -96,11 +93,13 @@ public class CompletedDownloadsFragment extends Fragment
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
+        int previousEpisodesCount = getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE)
+                .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
+        adapter.setDummyViews(Math.max(1, previousEpisodesCount));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
         swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-        progressBar = root.findViewById(R.id.progLoading);
-        progressBar.setVisibility(View.VISIBLE);
 
         speedDialView = root.findViewById(R.id.fabSD);
         speedDialView.setOverlayLayout(root.findViewById(R.id.fabSDOverlay));
@@ -109,6 +108,7 @@ public class CompletedDownloadsFragment extends Fragment
         speedDialView.removeActionItemById(R.id.mark_read_batch);
         speedDialView.removeActionItemById(R.id.mark_unread_batch);
         speedDialView.removeActionItemById(R.id.remove_from_queue_batch);
+        speedDialView.removeActionItemById(R.id.remove_all_inbox_item);
         speedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
@@ -164,12 +164,9 @@ public class CompletedDownloadsFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        menu.findItem(R.id.clear_logs_item).setVisible(false);
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
+        getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE).edit()
+                .putInt(PREF_PREVIOUS_EPISODE_COUNT, adapter.getItemCount())
+                .apply();
     }
 
     @Override
@@ -190,9 +187,6 @@ public class CompletedDownloadsFragment extends Fragment
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            refreshToolbarState();
-        }
         if (!Arrays.equals(event.update.mediaIds, runningDownloads)) {
             runningDownloads = event.update.mediaIds;
             loadItems();
@@ -207,9 +201,6 @@ public class CompletedDownloadsFragment extends Fragment
             }
         }
     }
-
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
-            () -> DownloadService.isRunning && DownloadService.isDownloadingFeeds();
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
@@ -270,11 +261,6 @@ public class CompletedDownloadsFragment extends Fragment
         }
     }
 
-    private void refreshToolbarState() {
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, updateRefreshMenuItemChecker);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
@@ -313,11 +299,16 @@ public class CompletedDownloadsFragment extends Fragment
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> {
-            items = result;
-            adapter.updateItems(result);
-            progressBar.setVisibility(View.GONE);
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        .subscribe(
+                result -> {
+                    items = result;
+                    adapter.setDummyViews(0);
+                    adapter.updateItems(result);
+                }, error -> {
+                    adapter.setDummyViews(0);
+                    adapter.updateItems(Collections.emptyList());
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
     @Override

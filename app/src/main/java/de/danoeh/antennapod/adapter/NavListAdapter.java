@@ -10,33 +10,33 @@ import android.view.LayoutInflater;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.ui.home.HomeFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -113,18 +113,20 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     private @DrawableRes int getDrawable(String tag) {
         switch (tag) {
+            case HomeFragment.TAG:
+                return R.drawable.ic_home;
             case QueueFragment.TAG:
-                return R.drawable.ic_playlist;
+                return R.drawable.ic_playlist_play;
             case InboxFragment.TAG:
                 return R.drawable.ic_inbox;
-            case EpisodesFragment.TAG:
+            case AllEpisodesFragment.TAG:
                 return R.drawable.ic_feed;
             case CompletedDownloadsFragment.TAG:
                 return R.drawable.ic_download;
             case PlaybackHistoryFragment.TAG:
                 return R.drawable.ic_history;
             case SubscriptionFragment.TAG:
-                return R.drawable.ic_folder;
+                return R.drawable.ic_subscriptions;
             case AddFeedFragment.TAG:
                 return R.drawable.ic_add;
             default:
@@ -206,12 +208,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.itemView.setOnCreateContextMenuListener(itemAccess);
         }
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TypedValue typedValue = new TypedValue();
-
-            activity.get().getTheme().resolveAttribute(itemAccess.isSelected(position)
-                    ? R.attr.drawer_activated_color : android.R.attr.windowBackground, typedValue, true);
-            holder.itemView.setBackgroundResource(typedValue.resourceId);
-
+            holder.itemView.setSelected(itemAccess.isSelected(position));
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
             holder.itemView.setOnTouchListener((v, e) -> {
@@ -269,7 +266,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setOnClickListener(v ->
-                        new AlertDialog.Builder(context)
+                        new MaterialAlertDialogBuilder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
                             .setPositiveButton(android.R.string.ok, null)
@@ -328,8 +325,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
+                    .transform(new FitCenter(),
+                            new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(holder.image);
 
@@ -388,7 +385,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     static class FeedHolder extends Holder {
         final ImageView image;
         final TextView title;
-        final IconTextView failure;
+        final ImageView failure;
         final TextView count;
 
         public FeedHolder(@NonNull View itemView) {

@@ -7,20 +7,16 @@
   <string name="add_feed_label">הוספת פודקאסט</string>
   <string name="episodes_label">פרקים</string>
   <string name="queue_label">תור</string>
-  <string name="all_episodes_short_label">הכול</string>
-  <string name="new_episodes_label">חדש</string>
+  <string name="inbox_label">דואר נכנס</string>
   <string name="favorite_episodes_label">מועדפים</string>
-  <string name="new_label">חדש</string>
   <string name="settings_label">הגדרות</string>
   <string name="downloads_label">הורדות</string>
   <string name="open_autodownload_settings">פתיחת ההגדרות</string>
-  <string name="downloads_completed_label">הושלם</string>
-  <string name="downloads_log_label">יומן</string>
+  <string name="downloads_log_label">הורדת יומן</string>
   <string name="subscriptions_label">פודקאסטים</string>
   <string name="subscriptions_list_label">רשימת פודקאסטים</string>
   <string name="cancel_download_label">ביטול הורדה</string>
   <string name="playback_history_label">היסטוריית ניגון</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">מטמון הפרקים מלא</string>
   <string name="episode_cache_full_message">מטמון הפרקים התמלא. ניתן להגדיל את גודל המטמון בהגדרות.</string>
   <string name="years_statistics_label">שנים</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">מיון בסדר אלפביתי</string>
   <string name="drawer_feed_order_last_update">מיון לפי תאריך פרסום</string>
   <string name="drawer_feed_order_most_played">מיון לפי מספר פרקים שהושמעו </string>
-  <string name="drawer_feed_counter_new_unplayed">מספר פרקים חדשים וכאלו שעדיין לא התנגנו</string>
-  <string name="drawer_feed_counter_new">מספר פרקים חדשים</string>
+  <string name="drawer_feed_counter_inbox_unplayed">מספר הפרקים שלא נוגנו ופרקים בדואר הנכנס</string>
+  <string name="drawer_feed_counter_inbox">מספר הפרקים בדואר הנכנס</string>
   <string name="drawer_feed_counter_unplayed">מספר פרקים שעוד לא התנגנו</string>
   <string name="drawer_feed_counter_downloaded">מספר פרקים שהתקבלו</string>
   <string name="drawer_feed_counter_none">ללא</string>
@@ -85,7 +81,6 @@
   <string name="error_label">שגיאה</string>
   <string name="error_msg_prefix">אירעה שגיאה:</string>
   <string name="refresh_label">רענון</string>
-  <string name="external_storage_error_msg">אין אחסון חיצוני זמין. נא לוודא שיש אחסון חיצוני מעוגן כדי שהיישומון יוכל לפעול כראוי.</string>
   <string name="chapters_label">פרקים</string>
   <string name="chapter_duration">משך: %1$s</string>
   <string name="description_label">תיאור</string>
@@ -151,13 +146,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">למינוי שלך יש פרקים חדשים.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">לסמן הכול כנוגנו</string>
-  <string name="mark_all_read_msg">לסמן את כל הפרקים כנוגנו</string>
-  <string name="mark_all_read_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנוגנו.</string>
-  <string name="mark_all_read_feed_confirmation_msg">נא לאשר שברצונך לסמן את הפרקים של הפודקאסט הזה כאילו כבר נוגנו.</string>
-  <string name="remove_all_new_flags_label">הסרת כל סימוני „חדש”</string>
-  <string name="removed_all_new_flags_msg">הוסרו כל סימוני „חדש”</string>
-  <string name="remove_all_new_flags_confirmation_msg">נא לאשר שברצונך להסיר את הסימון „חדש” מכל הפרקים.</string>
+  <string name="remove_all_inbox_label">הסרה של הכול מהדואר הנכנס</string>
+  <string name="removed_all_inbox_msg">הכול הוסר מהדואר הנכנס</string>
+  <string name="remove_all_inbox_confirmation_msg">נא לאשר להסיר הכול מהדואר הנכנס.</string>
+  <string name="multi_select_mark_played_confirmation">נא לאשר את סימון כל הפריטים המסומנים כנוגנו.</string>
+  <string name="multi_select_mark_unplayed_confirmation">נא לאשר את סימון כל הפריטים המסומנים כטרם נוגנו.</string>
   <string name="show_info_label">הצגת מידע</string>
   <string name="show_feed_settings_label">הצגת הגדרות פודקאסט</string>
   <string name="feed_settings_label">הגדרות פודקאסט</string>
@@ -208,9 +201,10 @@
     <item quantity="many">%d פרקים שהורדו נמחקו.</item>
     <item quantity="other">%d פרקים שהורדו נמחקו.</item>
   </plurals>
-  <string name="remove_new_flag_label">הסרת הסימון „חדש”</string>
-  <string name="removed_new_flag_label">הוסר הסימון „חדש”</string>
+  <string name="remove_inbox_label">הסרה מהדואר הנכנס</string>
+  <string name="removed_inbox_label">הוסר מהדואר הנכנס</string>
   <string name="mark_read_label">סימון כנצפה</string>
+  <string name="toggle_played_label">החלפת מצב נגינה</string>
   <string name="marked_as_played_label">סומן כהתנגן</string>
   <string name="marked_as_unplayed_label">סומן שלא התנגן</string>
   <string name="mark_read_no_media_label">סימון כנקרא</string>
@@ -249,7 +243,6 @@
   <string name="visit_website_label">ביקור באתר</string>
   <string name="skip_episode_label">דילוג על פרק</string>
   <string name="reset_position">איפוס מיקום הנגינה</string>
-  <string name="removed_item">פריט הוסר</string>
   <string name="no_items_selected">לא נבחרו פריטים</string>
   <!--Download messages and labels-->
   <string name="download_successful">הצלחה</string>
@@ -351,15 +344,15 @@
   <string name="no_history_label">לאחר האזנה לפרק, הוא יופיע כאן.</string>
   <string name="no_all_episodes_head_label">אין פרקים</string>
   <string name="no_all_episodes_label">בעת הוספת פודקאסט, הפרקים יופיעו כאן.</string>
-  <string name="no_new_episodes_head_label">אין פרקים חדשים</string>
-  <string name="no_new_episodes_label">עם הופעת פרקים חדשים, הם יופיעו כאן.</string>
-  <string name="no_fav_episodes_head_label">אין פרקים מועדפים</string>
-  <string name="no_fav_episodes_label">ניתן להוסיף פרקים למועדפים בלחיצה ארוכה.</string>
+  <string name="no_all_episodes_filtered_label">יש לנסות לנקות את המסנן כדי לצפות בפרקים נוספים.</string>
+  <string name="no_inbox_head_label">אין פרקים בדואר הנכנס</string>
+  <string name="no_inbox_label">כאשר פרקים חדשים מגיעים, הם מופיעים כאן. אפשר להחליט אם הם מעניינים אותך או לא.</string>
   <string name="no_subscriptions_head_label">אין מינויים</string>
   <string name="no_subscriptions_label">כדי להירשם לפודקאסט, יש ללחוץ על סימן הפלוס שלהלן.</string>
   <!--Preferences-->
   <string name="storage_pref">אחסון</string>
   <string name="storage_sum">מחיקה אוטומטית של פרקים, ייבוא, ייצוא</string>
+  <string name="statistics_moved">מסך הסטטיסטיקה הועבר למסך המינויים. אפשר לפתוח אותו מכאן.</string>
   <string name="project_pref">מיזם</string>
   <string name="synchronization_pref">סנכרון</string>
   <string name="synchronization_sum">סנכרון עם מכשירים אחרים</string>
@@ -634,17 +627,11 @@
   <string name="auto_enable_label">הפעלה אוטומטית</string>
   <string name="sleep_timer_enabled_label">מתזמן השינה פעיל</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">קטגוריות</string>
-  <string name="gpodnet_toplist_header">פודקאסטים מובילים</string>
-  <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">כניסה</string>
   <string name="gpodnetauth_encryption_warning">הססמה והנתונים אינם מוצפנים!</string>
-  <string name="create_account">יצירת חשבון</string>
   <string name="username_label">שם משתמש</string>
   <string name="password_label">ססמה</string>
-  <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שאין לו קשר למיזם אנטנה־פּוֹד.</string>
-  <string name="gpodnetauth_server_official">שרת gpodder.net רשמי</string>
-  <string name="gpodnetauth_server_custom">שרת בהתאמה אישית</string>
+  <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שניתן להתקין על שרת משלך. ל־Gpodder.net אין לו קשר למיזם אנטנה־פּוֹד.</string>
   <string name="gpodnetauth_host">שם מארח</string>
   <string name="gpodnetauth_select_server">בחירת שרת</string>
   <string name="gpodnetauth_device_name">שם המכשיר</string>
@@ -681,6 +668,7 @@
   <string name="status_downloading_label">הפרק יורד</string>
   <string name="in_queue_label">הפרק בתור</string>
   <string name="is_favorite_label">הפרק מסומן כמועדף</string>
+  <string name="is_inbox_label">הפרק בדואר הנכנס</string>
   <string name="load_next_page_label">טעינת הדף הבא</string>
   <string name="position">מיקום: %1$s</string>
   <string name="apply_action">החלת פעולה</string>
@@ -717,9 +705,9 @@
   <string name="search_itunes_label">חיפוש ב־iTunes</string>
   <string name="search_podcastindex_label">חיפוש ב־Podcastindex.org</string>
   <string name="search_fyyd_label">בחיפוש ב־fyyd</string>
+  <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
   <string name="advanced">מתקדם</string>
   <string name="add_podcast_by_url">הוספת פודקאסט לפי כתובת RSS</string>
-  <string name="browse_gpoddernet_label">עיון ב־gpodder.net</string>
   <string name="discover">עיון</string>
   <string name="discover_hide">הסתרה</string>
   <string name="discover_is_hidden">בחרת להסתיר הצעות.</string>

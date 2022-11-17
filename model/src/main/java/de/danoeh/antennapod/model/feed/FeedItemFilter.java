@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 public class FeedItemFilter implements Serializable {
 
@@ -45,7 +46,7 @@ public class FeedItemFilter implements Serializable {
         this(TextUtils.split(properties, ","));
     }
 
-    public FeedItemFilter(String[] properties) {
+    public FeedItemFilter(String... properties) {
         this.properties = properties;
 
         // see R.arrays.feed_filter_values
@@ -72,7 +73,40 @@ public class FeedItemFilter implements Serializable {
         return properties.clone();
     }
 
-    public boolean isShowDownloaded() {
-        return showDownloaded;
+    public List<String> getValuesList() {
+        return Arrays.asList(properties);
+    }
+
+    public boolean matches(FeedItem item) {
+        if (showNew && !item.isNew()) {
+            return false;
+        } else if (showPlayed && !item.isPlayed()) {
+            return false;
+        } else if (showUnplayed && item.isPlayed()) {
+            return false;
+        } else if (showPaused && !item.isInProgress()) {
+            return false;
+        } else if (showNotPaused && item.isInProgress()) {
+            return false;
+        } else if (showNew && !item.isNew()) {
+            return false;
+        } else if (showQueued && !item.isTagged(FeedItem.TAG_QUEUE)) {
+            return false;
+        } else if (showNotQueued && item.isTagged(FeedItem.TAG_QUEUE)) {
+            return false;
+        } else if (showDownloaded && !item.isDownloaded()) {
+            return false;
+        } else if (showNotDownloaded && item.isDownloaded()) {
+            return false;
+        } else if (showHasMedia && !item.hasMedia()) {
+            return false;
+        } else if (showNoMedia && item.hasMedia()) {
+            return false;
+        } else if (showIsFavorite && !item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return false;
+        } else if (showNotFavorite && item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return false;
+        }
+        return true;
     }
 }

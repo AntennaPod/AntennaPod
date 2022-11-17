@@ -41,7 +41,7 @@ public class DownloadStatisticsFragment extends Fragment {
         View root = inflater.inflate(R.layout.statistics_fragment, container, false);
         downloadStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
-        listAdapter = new DownloadStatisticsListAdapter(getContext());
+        listAdapter = new DownloadStatisticsListAdapter(getContext(), this);
         downloadStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         downloadStatisticsList.setAdapter(listAdapter);
         return root;

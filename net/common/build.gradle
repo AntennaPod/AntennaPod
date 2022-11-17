@@ -1,0 +1,12 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+dependencies {
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+}

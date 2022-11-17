@@ -6,6 +6,7 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import okhttp3.CacheControl;
 import okhttp3.internal.http.StatusLine;
 import org.apache.commons.io.IOUtils;
@@ -112,9 +113,6 @@ public class HttpDownloader extends Downloader {
                 return;
             } else if (!response.isSuccessful() || response.body() == null) {
                 callOnFailByResponseCode(response);
-                return;
-            } else if (!StorageUtils.storageAvailable()) {
-                onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
                 return;
             } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
                     && isContentTypeTextAndSmallerThan100kb(response)) {

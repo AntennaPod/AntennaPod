@@ -7,20 +7,16 @@
   <string name="add_feed_label">Podcast toevoegen</string>
   <string name="episodes_label">Afleveringen</string>
   <string name="queue_label">Wachtrij</string>
-  <string name="all_episodes_short_label">Alle</string>
-  <string name="new_episodes_label">Nieuw</string>
+  <string name="inbox_label">Postvak IN</string>
   <string name="favorite_episodes_label">Favorieten</string>
-  <string name="new_label">Nieuw</string>
   <string name="settings_label">Instellingen</string>
   <string name="downloads_label">Downloads</string>
   <string name="open_autodownload_settings">Instellingen openen</string>
-  <string name="downloads_completed_label">Voltooid</string>
-  <string name="downloads_log_label">Logboek</string>
+  <string name="downloads_log_label">Downloadlogboek</string>
   <string name="subscriptions_label">Abonnementen</string>
   <string name="subscriptions_list_label">Abonnementenlijst</string>
   <string name="cancel_download_label">Download afbreken</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Afleveringscache is vol</string>
   <string name="episode_cache_full_message">Het maximum aantal gecachete afleveringen is bereikt. Je kunt dit aantal verhogen in de instellingen.</string>
   <string name="years_statistics_label">Jaren</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Op alfabetische volgorde</string>
   <string name="drawer_feed_order_last_update">Op verschijningsdatum</string>
   <string name="drawer_feed_order_most_played">Op aantal afgespeelde afleveringen</string>
-  <string name="drawer_feed_counter_new_unplayed">Aantal nieuwe plus niet afgespeelde afleveringen</string>
-  <string name="drawer_feed_counter_new">Aantal nieuwe afleveringen</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Aantal (onbeluisterde) afleveringen in Postvak IN</string>
+  <string name="drawer_feed_counter_inbox">Aantal beluisterde afleveringen in Postvak IN</string>
   <string name="drawer_feed_counter_unplayed">Aantal niet afgespeelde afleveringen</string>
   <string name="drawer_feed_counter_downloaded">Aantal gedownloade afleveringen</string>
   <string name="drawer_feed_counter_none">Geen</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Fout</string>
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
   <string name="refresh_label">Verversen</string>
-  <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag gekoppeld is zodat de app juist kan functioneren.</string>
   <string name="chapters_label">Hoofdstukken</string>
   <string name="chapter_duration">Duur: %1$s</string>
   <string name="description_label">Omschrijving</string>
@@ -139,13 +134,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">Er zijn nieuwe afleveringen beschikbaar.</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Alles als afgespeeld markeren</string>
-  <string name="mark_all_read_msg">Alle afleveringen zijn gemarkeerd als afgespeeld</string>
-  <string name="mark_all_read_confirmation_msg">Bevestig dat je alle afleveringen wilt markeren als afgespeeld.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bevestig dat je alle afleveringen van deze podcast wilt markeren als afgespeeld.</string>
-  <string name="remove_all_new_flags_label">Alle \'nieuw\'-labels verwijderen</string>
-  <string name="removed_all_new_flags_msg">Alle \'nieuw\'-labels zijn verwijderd</string>
-  <string name="remove_all_new_flags_confirmation_msg">Bevestig dat je alle \'nieuw\'-labels wilt verwijderen bij alle afleveringen.</string>
+  <string name="remove_all_inbox_label">Alles verwijderen uit Postvak IN</string>
+  <string name="removed_all_inbox_msg">Alles is verwijderd uit Postvak IN</string>
+  <string name="remove_all_inbox_confirmation_msg">Bevestig dat je alle items wilt verwijderen uit Postvak IN.</string>
+  <string name="multi_select_mark_played_confirmation">Bevestig dat je alle afleveringen wilt markeren als beluisterd.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Bevestig dat je alle afleveringen wilt markeren als onbeluisterd.</string>
   <string name="show_info_label">Informatie tonen</string>
   <string name="show_feed_settings_label">Podcastinstellingen tonen</string>
   <string name="feed_settings_label">Podcastinstellingen</string>
@@ -190,9 +183,10 @@
     <item quantity="one">1 gedownloade aflevering verwijderd.</item>
     <item quantity="other">%d gedownloade afleveringen verwijderd.</item>
   </plurals>
-  <string name="remove_new_flag_label">Vlag \'Nieuw\' verwijderen</string>
-  <string name="removed_new_flag_label">De vlag \"Nieuw\" is verwijderd</string>
+  <string name="remove_inbox_label">Verwijderen uit Postvak IN</string>
+  <string name="removed_inbox_label">Verwijderd uit Postvak IN</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
+  <string name="toggle_played_label">Afspeelstatus wijzigen</string>
   <string name="marked_as_played_label">Gemarkeerd als afgespeeld</string>
   <string name="marked_as_unplayed_label">Gemarkeerd als niet-afgespeeld</string>
   <string name="mark_read_no_media_label">Markeren als gelezen</string>
@@ -223,7 +217,6 @@
   <string name="visit_website_label">Website openen</string>
   <string name="skip_episode_label">Aflevering overslaan</string>
   <string name="reset_position">Afspeelpositie herstellen</string>
-  <string name="removed_item">Item verwijderd</string>
   <string name="no_items_selected">Geen items geselecteerd</string>
   <!--Download messages and labels-->
   <string name="download_successful">voltooid</string>
@@ -323,15 +316,15 @@
   <string name="no_history_label">Een beluisterde aflevering wordt na afloop hier getoond.</string>
   <string name="no_all_episodes_head_label">Geen afleveringen</string>
   <string name="no_all_episodes_label">Als je een podcast toevoegt, verschijnen de afleveringen hier.</string>
-  <string name="no_new_episodes_head_label">Geen nieuwe afleveringen</string>
-  <string name="no_new_episodes_label">Nieuwe afleveringen worden hier getoond.</string>
-  <string name="no_fav_episodes_head_label">Geen favoriete afleveringen</string>
-  <string name="no_fav_episodes_label">Het is mogelijk afleveringen toe te voegen aan de favorieten door er lang op te drukken.</string>
+  <string name="no_all_episodes_filtered_label">Wis het filter om meer afleveringen te bekijken.</string>
+  <string name="no_inbox_head_label">Er staan geen afleveringen in Postvak IN</string>
+  <string name="no_inbox_label">Nieuwe afleveringen worden hier getoond. Vanaf hier kun je beslissen of je ze wilt behouden of niet.</string>
   <string name="no_subscriptions_head_label">Geen abonnementen</string>
   <string name="no_subscriptions_label">Tik op het plus-pictogram om je te abonneren op een podcast.</string>
   <!--Preferences-->
   <string name="storage_pref">Opslag</string>
   <string name="storage_sum">Aflevering automatisch verwijderen, im- of exporteren</string>
+  <string name="statistics_moved">Het statistiekenscherm is verplaatst naar het abonnementenscherm.</string>
   <string name="project_pref">Project</string>
   <string name="synchronization_pref">Synchronisatie</string>
   <string name="synchronization_sum">Synchroniseren met andere apparaten</string>
@@ -598,17 +591,11 @@
   <string name="auto_enable_label">Automatisch inschakelen</string>
   <string name="sleep_timer_enabled_label">Slaaptimer ingeschakeld</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">CATEGORIEËN</string>
-  <string name="gpodnet_toplist_header">POPULAIRE PODCASTS</string>
-  <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
   <string name="gpodnetauth_login_butLabel">Inloggen</string>
   <string name="gpodnetauth_encryption_warning">Het wachtwoord en de gegevens zijn onversleuteld!</string>
-  <string name="create_account">Account aanmaken</string>
   <string name="username_label">Gebruikersnaam</string>
   <string name="password_label">Wachtwoord</string>
-  <string name="gpodnet_description">Gpodder.net is een open source podcast-synchronisatiedienst die niet betrokken is bij het AntennaPod-project.</string>
-  <string name="gpodnetauth_server_official">Officiële gpodder.net-server</string>
-  <string name="gpodnetauth_server_custom">Aangepaste server</string>
+  <string name="gpodnet_description">Gpodder.net is een opensource-podcastsynchronisatiedienst die je op je eigen server kunt installeren. Let op: Gpodder.net is niet verbonden aan het AntennaPod-project.</string>
   <string name="gpodnetauth_host">Hostnaam</string>
   <string name="gpodnetauth_select_server">Server kiezen</string>
   <string name="gpodnetauth_device_name">Toestelnaam</string>
@@ -645,6 +632,7 @@
   <string name="status_downloading_label">Aflevering wordt gedownload</string>
   <string name="in_queue_label">Aflevering staat in de wachtrij</string>
   <string name="is_favorite_label">Aflevering als favoriet gemarkeerd</string>
+  <string name="is_inbox_label">Aflevering staat in Postvak IN</string>
   <string name="load_next_page_label">Volgende pagina laden</string>
   <string name="position">Positie: %1$s</string>
   <string name="apply_action">Toepassen</string>
@@ -681,9 +669,9 @@
   <string name="search_itunes_label">iTunes doorzoeken</string>
   <string name="search_podcastindex_label">Podcastindex.org doorzoeken</string>
   <string name="search_fyyd_label">Fyyd doorzoeken</string>
+  <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
   <string name="advanced">Geavanceerd</string>
   <string name="add_podcast_by_url">Podcast toevoegen middels RSS link</string>
-  <string name="browse_gpoddernet_label">Verken gpodder.net</string>
   <string name="discover">Ontdekken</string>
   <string name="discover_hide">Verbergen</string>
   <string name="discover_is_hidden">Je kiest er voor aanbevelingen te verbergen.</string>

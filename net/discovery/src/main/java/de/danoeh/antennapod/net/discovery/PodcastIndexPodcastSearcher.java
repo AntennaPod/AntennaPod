@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import de.danoeh.antennapod.net.discovery.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
@@ -27,7 +26,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PodcastIndexPodcastSearcher implements PodcastSearcher {
-    private static final String PODCASTINDEX_API_URL = "https://api.podcastindex.org/api/1.0/search/byterm?q=%s";
+    private static final String SEARCH_API_URL = "https://api.podcastindex.org/api/1.0/search/byterm?q=%s";
 
     public PodcastIndexPodcastSearcher() {
     }
@@ -35,16 +34,6 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
     @Override
     public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
-
-            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            calendar.clear();
-            Date now = new Date();
-            calendar.setTime(now);
-            long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
-            String apiHeaderTime = String.valueOf(secondsSinceEpoch);
-            String data4Hash = BuildConfig.PODCASTINDEX_API_KEY + BuildConfig.PODCASTINDEX_API_SECRET + apiHeaderTime;
-            String hashString = sha1(data4Hash);
-
             String encodedQuery;
             try {
                 encodedQuery = URLEncoder.encode(query, "UTF-8");
@@ -52,19 +41,11 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
                 // this won't ever be thrown
                 encodedQuery = query;
             }
-
-            String formattedUrl = String.format(PODCASTINDEX_API_URL, encodedQuery);
-
-            OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            Request.Builder httpReq = new Request.Builder()
-                    .addHeader("X-Auth-Date", apiHeaderTime)
-                    .addHeader("X-Auth-Key", BuildConfig.PODCASTINDEX_API_KEY)
-                    .addHeader("Authorization", hashString)
-                    .addHeader("User-Agent", ClientConfig.USER_AGENT)
-                    .url(formattedUrl);
+            String formattedUrl = String.format(SEARCH_API_URL, encodedQuery);
             List<PodcastSearchResult> podcasts = new ArrayList<>();
             try {
-                Response response = client.newCall(httpReq.build()).execute();
+                OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                Response response = client.newCall(buildAuthenticatedRequest(formattedUrl)).execute();
 
                 if (response.isSuccessful()) {
                     String resultString = response.body().string();
@@ -103,6 +84,25 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
     @Override
     public String getName() {
         return "Podcastindex.org";
+    }
+
+    private Request buildAuthenticatedRequest(String url) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.clear();
+        Date now = new Date();
+        calendar.setTime(now);
+        long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
+        String apiHeaderTime = String.valueOf(secondsSinceEpoch);
+        String data4Hash = BuildConfig.PODCASTINDEX_API_KEY + BuildConfig.PODCASTINDEX_API_SECRET + apiHeaderTime;
+        String hashString = sha1(data4Hash);
+
+        Request.Builder httpReq = new Request.Builder()
+                .addHeader("X-Auth-Date", apiHeaderTime)
+                .addHeader("X-Auth-Key", BuildConfig.PODCASTINDEX_API_KEY)
+                .addHeader("Authorization", hashString)
+                .addHeader("User-Agent", ClientConfig.USER_AGENT)
+                .url(url);
+        return httpReq.build();
     }
 
     private static String sha1(String clearString) {

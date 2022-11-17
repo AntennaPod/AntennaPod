@@ -22,6 +22,7 @@ trans.gl     = ui/i18n/src/main/res/values-gl/strings.xml
 trans.he_IL  = ui/i18n/src/main/res/values-iw/strings.xml
 trans.hi_IN  = ui/i18n/src/main/res/values-hi/strings.xml
 trans.hu     = ui/i18n/src/main/res/values-hu/strings.xml
+trans.id     = ui/i18n/src/main/res/values-in/strings.xml
 trans.it_IT  = ui/i18n/src/main/res/values-it/strings.xml
 trans.ja     = ui/i18n/src/main/res/values-ja/strings.xml
 trans.ko     = ui/i18n/src/main/res/values-ko/strings.xml

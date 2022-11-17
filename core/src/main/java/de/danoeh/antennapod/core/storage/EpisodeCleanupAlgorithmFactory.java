@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public abstract class EpisodeCleanupAlgorithmFactory {
     public static EpisodeCleanupAlgorithm build() {

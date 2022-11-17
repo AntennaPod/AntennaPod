@@ -41,7 +41,7 @@ csvFile.close()
 config = configparser.ConfigParser()
 config.read(os.path.expanduser("~") + '/.transifexrc')
 if 'https://www.transifex.com' in config and config['https://www.transifex.com']['username'] == 'api':
-    TRANSIFEX_TOKEN = config['https://www.transifex.com']['password']
+    TRANSIFEX_TOKEN = config['https://www.transifex.com']['token']
 else:
     TRANSIFEX_TOKEN = ""
 

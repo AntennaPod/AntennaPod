@@ -227,46 +227,6 @@ public class PodDBAdapter {
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
     /**
-     * Select all columns from the feed-table
-     */
-    private static final String[] FEED_SEL_STD = {
-            TABLE_NAME_FEEDS + "." + KEY_ID,
-            TABLE_NAME_FEEDS + "." + KEY_TITLE,
-            TABLE_NAME_FEEDS + "." + KEY_CUSTOM_TITLE,
-            TABLE_NAME_FEEDS + "." + KEY_FILE_URL,
-            TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL,
-            TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED,
-            TABLE_NAME_FEEDS + "." + KEY_LINK,
-            TABLE_NAME_FEEDS + "." + KEY_DESCRIPTION,
-            TABLE_NAME_FEEDS + "." + KEY_PAYMENT_LINK,
-            TABLE_NAME_FEEDS + "." + KEY_LASTUPDATE,
-            TABLE_NAME_FEEDS + "." + KEY_LANGUAGE,
-            TABLE_NAME_FEEDS + "." + KEY_AUTHOR,
-            TABLE_NAME_FEEDS + "." + KEY_IMAGE_URL,
-            TABLE_NAME_FEEDS + "." + KEY_TYPE,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
-            TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD_ENABLED,
-            TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED,
-            TABLE_NAME_FEEDS + "." + KEY_IS_PAGED,
-            TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
-            TABLE_NAME_FEEDS + "." + KEY_USERNAME,
-            TABLE_NAME_FEEDS + "." + KEY_PASSWORD,
-            TABLE_NAME_FEEDS + "." + KEY_HIDE,
-            TABLE_NAME_FEEDS + "." + KEY_SORT_ORDER,
-            TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
-            TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION,
-            TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_MINIMAL_DURATION_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
-            TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
-    };
-
-    /**
      * All the tables in the database
      */
     private static final String[] ALL_TABLES = {
@@ -281,6 +241,7 @@ public class PodDBAdapter {
 
     public static final String SELECT_KEY_ITEM_ID = "item_id";
     public static final String SELECT_KEY_MEDIA_ID = "media_id";
+    public static final String SELECT_KEY_FEED_ID = "feed_id";
 
     private static final String KEYS_FEED_ITEM_WITHOUT_DESCRIPTION =
             TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " AS " + SELECT_KEY_ITEM_ID + ", "
@@ -311,6 +272,42 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_HAS_EMBEDDED_PICTURE + ", "
             + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME;
+
+    private static final String KEYS_FEED =
+            TABLE_NAME_FEEDS + "." + KEY_ID + " AS " + SELECT_KEY_FEED_ID + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_TITLE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_CUSTOM_TITLE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FILE_URL + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_LINK + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_DESCRIPTION + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_PAYMENT_LINK + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_LASTUPDATE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_LANGUAGE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_AUTHOR + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_IMAGE_URL + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_TYPE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_IS_PAGED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD_ENABLED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_USERNAME + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_PASSWORD + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_HIDE + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_SORT_ORDER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_MINIMAL_DURATION_FILTER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION;
 
     private static final String JOIN_FEED_ITEM_AND_MEDIA = " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
             + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " ";
@@ -451,8 +448,8 @@ public class PodDBAdapter {
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
-        values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
-        values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
+        values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilterRaw());
+        values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilterRaw());
         values.put(KEY_MINIMAL_DURATION_FILTER, prefs.getFilter().getMinimalDurationFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_TAGS, prefs.getTagsAsString());
@@ -914,8 +911,10 @@ public class PodDBAdapter {
      * @return The cursor of the query
      */
     public final Cursor getAllFeedsCursor() {
-        return db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, null, null, null, null,
-                KEY_TITLE + " COLLATE NOCASE ASC");
+        final String query = "SELECT " + KEYS_FEED
+                + " FROM " + TABLE_NAME_FEEDS
+                + " ORDER BY " + TABLE_NAME_FEEDS + "." + KEY_TITLE + " COLLATE NOCASE ASC";
+        return db.rawQuery(query, null);
     }
 
     public final Cursor getFeedCursorDownloadUrls() {
@@ -972,9 +971,11 @@ public class PodDBAdapter {
      * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " INNER JOIN " + TABLE_NAME_QUEUE
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
                 + " ORDER BY " + TABLE_NAME_QUEUE + "." + KEY_ID;
         return db.rawQuery(query, null);
     }
@@ -984,9 +985,11 @@ public class PodDBAdapter {
     }
 
     public Cursor getNextInQueue(final FeedItem item) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "INNER JOIN " + TABLE_NAME_QUEUE
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
                 + " WHERE Queue.ID > (SELECT Queue.ID FROM Queue WHERE Queue.FeedItem = "
                 +  item.getId()
                 + ")"
@@ -995,25 +998,35 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFavoritesCursor(int offset, int limit) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+    public final Cursor getPausedQueueCursor(int limit) {
+        //playback position > 0 (paused), rank by last played, then rest of queue
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
+                // In the front: Episodes that have a position >1sec, but also the episode that was just started
+                + " ORDER BY (" + TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + " >= 1000"
+                    + " OR " + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME
+                        + " >= " + (System.currentTimeMillis() - 30000) + ") DESC , "
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + " DESC , " + TABLE_NAME_QUEUE + "." + KEY_ID
+                + " LIMIT " + limit;
+        return db.rawQuery(query, null);
+    }
+
+    public final Cursor getFavoritesIdsCursor(int offset, int limit) {
+        // Way faster than selecting all columns
+        final String query = "SELECT " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FAVORITES
-                + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " = " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
                 + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC"
                 + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
-    public void setFeedItems(int state) {
-        setFeedItems(Integer.MIN_VALUE, state, 0);
-    }
-
     public void setFeedItems(int oldState, int newState) {
         setFeedItems(oldState, newState, 0);
-    }
-
-    public void setFeedItems(int state, long feedId) {
-        setFeedItems(Integer.MIN_VALUE, state, feedId);
     }
 
     public void setFeedItems(int oldState, int newState, long feedId) {
@@ -1050,6 +1063,25 @@ public class PodDBAdapter {
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
                 + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
+    }
+
+    public Cursor getRandomEpisodesCursor(int limit, int seed) {
+        final String allItemsRandomOrder = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE (" + KEY_READ + " = " + FeedItem.NEW + " OR " + KEY_READ + " = " + FeedItem.UNPLAYED + ") "
+                    // Only from the last two years. Older episodes frequently contain broken covers and stuff like that
+                    + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
+                + " ORDER BY " + randomEpisodeNumber(seed);
+        final String query = "SELECT * FROM (" + allItemsRandomOrder + ")"
+                + " GROUP BY " + KEY_FEED
+                + " ORDER BY " + randomEpisodeNumber(seed * 3) + " DESC LIMIT " + limit;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * SQLite does not support random seeds. Create our own "random" number based on that seed and the item ID
+     */
+    private String randomEpisodeNumber(int seed) {
+        return "((" + SELECT_KEY_ITEM_ID + " * " + seed + ") % 46471)";
     }
 
     public final Cursor getTotalEpisodeCountCursor(FeedItemFilter filter) {
@@ -1102,8 +1134,10 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedCursor(final long id) {
-        return db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_ID + "=" + id, null,
-                null, null, null);
+        final String query = "SELECT " + KEYS_FEED
+                + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + SELECT_KEY_FEED_ID + " = " + id;
+        return db.rawQuery(query, null);
     }
 
     public final Cursor getFeedItemCursor(final String id) {
@@ -1167,6 +1201,46 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getFeedStatisticsCursor(boolean includeMarkedAsPlayed, long timeFilterFrom, long timeFilterTo) {
+        final String lastPlayedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME;
+        String wasStarted = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYBACK_COMPLETION_DATE + " > 0"
+                + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION + " > 0";
+        if (includeMarkedAsPlayed) {
+            wasStarted = "(" + wasStarted + ") OR "
+                    + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.PLAYED + " OR "
+                    + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + "> 0";
+        }
+        final String timeFilter = lastPlayedTime + ">=" + timeFilterFrom
+                + " AND " + lastPlayedTime + "<=" + timeFilterTo;
+        String playedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION;
+        if (includeMarkedAsPlayed) {
+            playedTime = "(CASE WHEN " + playedTime + " != 0"
+                    + " THEN " + playedTime + " ELSE ("
+                            + "CASE WHEN " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.PLAYED
+                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + " ELSE 0 END"
+                    + ") END)";
+        }
+
+        final String query = "SELECT " + KEYS_FEED + ", "
+                        + "COUNT(*) AS num_episodes, "
+                        + "MIN(CASE WHEN " + lastPlayedTime + " > 0"
+                                + " THEN " + lastPlayedTime + " ELSE " + Long.MAX_VALUE + " END) AS oldest_date, "
+                        + "SUM(CASE WHEN (" + wasStarted + ") THEN 1 ELSE 0 END) AS episodes_started, "
+                        + "IFNULL(SUM(CASE WHEN (" + timeFilter + ")"
+                                + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "
+                        + "IFNULL(SUM(" + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + "), 0) AS total_time, "
+                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                                + " THEN 1 ELSE 0 END) AS num_downloaded, "
+                        + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + " ELSE 0 END) AS download_size"
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + JOIN_FEED_ITEM_AND_MEDIA
+                + " INNER JOIN " + TABLE_NAME_FEEDS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " GROUP BY " + TABLE_NAME_FEEDS + "." + KEY_ID;
+        return db.rawQuery(query, null);
+    }
+
     public int getQueueSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_QUEUE);
         Cursor c = db.rawQuery(query, null);
@@ -1200,18 +1274,20 @@ public class PodDBAdapter {
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
         String whereRead;
         switch (setting) {
-            case SHOW_NEW_UNPLAYED_SUM:
-                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW +
-                        " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
-                break;
             case SHOW_NEW:
                 whereRead = KEY_READ + "=" + FeedItem.NEW;
                 break;
             case SHOW_UNPLAYED:
-                whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
+                        + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
                 whereRead = KEY_DOWNLOADED + "=1";
+                break;
+            case SHOW_DOWNLOADED_UNPLAYED:
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
+                        + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")"
+                        + " AND " + KEY_DOWNLOADED + "=1";
                 break;
             case SHOW_NONE:
                 // deliberate fall-through

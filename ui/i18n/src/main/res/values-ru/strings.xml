@@ -7,20 +7,16 @@
   <string name="add_feed_label">Добавить подкаст</string>
   <string name="episodes_label">Выпуски</string>
   <string name="queue_label">Очередь</string>
-  <string name="all_episodes_short_label">Все</string>
-  <string name="new_episodes_label">Новые</string>
+  <string name="inbox_label">Входящие</string>
   <string name="favorite_episodes_label">Избранное</string>
-  <string name="new_label">Новое</string>
   <string name="settings_label">Настройки</string>
   <string name="downloads_label">Загрузки</string>
   <string name="open_autodownload_settings">Открыть настройки</string>
-  <string name="downloads_completed_label">Завершены</string>
-  <string name="downloads_log_label">Журнал</string>
+  <string name="downloads_log_label">Журнал загрузок</string>
   <string name="subscriptions_label">Подписки</string>
   <string name="subscriptions_list_label">Перечень подписок</string>
   <string name="cancel_download_label">Отменить загрузку</string>
   <string name="playback_history_label">История</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
   <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
   <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объем кэша можно увеличить в настройках.</string>
   <string name="years_statistics_label">Годы</string>
@@ -56,8 +52,8 @@
   <string name="drawer_feed_order_alphabetical">Сортировать по алфавиту</string>
   <string name="drawer_feed_order_last_update">Сортировать по дате</string>
   <string name="drawer_feed_order_most_played">Сортировать по количеству прослушанных выпусков</string>
-  <string name="drawer_feed_counter_new_unplayed">Количество новых и непрослушанных выпусков</string>
-  <string name="drawer_feed_counter_new">Количество новых выпусков</string>
+  <string name="drawer_feed_counter_inbox_unplayed">Количество непрослушанных выпусков и выпусков во входящих</string>
+  <string name="drawer_feed_counter_inbox">Количество непрослушанных выпусков во входящих</string>
   <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
   <string name="drawer_feed_counter_downloaded">Количество загруженных выпусков</string>
   <string name="drawer_feed_counter_none">Ничего</string>
@@ -85,7 +81,6 @@
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="refresh_label">Обновить</string>
-  <string name="external_storage_error_msg">Внешнее хранилище недоступно. Убедитесь, что оно установлено, чтобы приложение могло нормально работать.</string>
   <string name="chapters_label">Главы</string>
   <string name="chapter_duration">Длительность: %1$s</string>
   <string name="description_label">Описание</string>
@@ -103,7 +98,7 @@
   <string name="feed_volume_reduction_heavy">Сильно</string>
   <string name="parallel_downloads">%1$d совместных загрузок</string>
   <string name="feed_auto_download_global">как по умолчанию</string>
-  <string name="feed_auto_download_always">всегда</string>
+  <string name="feed_auto_download_always">Всегда</string>
   <string name="feed_auto_download_never">никогда</string>
   <string name="send_label">Отправить…</string>
   <string name="episode_cleanup_never">никогда</string>
@@ -151,13 +146,11 @@
   </plurals>
   <string name="new_episode_notification_group_text">В списке Ваших подписок появились новые выпуски</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Отметить как прослушанное</string>
-  <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
-  <string name="mark_all_read_confirmation_msg">Подтвердите, что хотите отметить все выпуски как прослушанные.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Подтвердите, что хотите отметить все выпуски этого подкаста как прослушанные.</string>
-  <string name="remove_all_new_flags_label">Убрать все пометки «Новый»</string>
-  <string name="removed_all_new_flags_msg">Все пометки «Новый» убраны</string>
-  <string name="remove_all_new_flags_confirmation_msg">Подтвердите, что хотите убрать пометки «Новый» со всех выпусков.</string>
+  <string name="remove_all_inbox_label">Удалить все из входящих</string>
+  <string name="removed_all_inbox_msg">Удалены все из входящих</string>
+  <string name="remove_all_inbox_confirmation_msg">Подтвердите, что хотите удалить все выпуски из входящих.</string>
+  <string name="multi_select_mark_played_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как прослушанные.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как непрослушанные.</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="show_feed_settings_label">Показать настройки подкаста</string>
   <string name="feed_settings_label">Настройки подкаста</string>
@@ -208,9 +201,10 @@
     <item quantity="many">%d загруженных выпусков удалёно.</item>
     <item quantity="other">%d загруженных выпусков удалёно.</item>
   </plurals>
-  <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
-  <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
+  <string name="remove_inbox_label">Удалить из входящих</string>
+  <string name="removed_inbox_label">Удалено из входящих</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
+  <string name="toggle_played_label">Переключить состояние воспроизведения</string>
   <string name="marked_as_played_label">Отмечено как прослушанное</string>
   <string name="marked_as_unplayed_label">Отметить как непрослушанное</string>
   <string name="mark_read_no_media_label">Отметить как прочитанное</string>
@@ -249,7 +243,6 @@
   <string name="visit_website_label">Посетить сайт</string>
   <string name="skip_episode_label">Пропустить выпуск</string>
   <string name="reset_position">Сбросить время воспроизведения</string>
-  <string name="removed_item">Удалено</string>
   <string name="no_items_selected">Ничего не выбрано</string>
   <!--Download messages and labels-->
   <string name="download_successful">успешно</string>
@@ -302,7 +295,7 @@
   <string name="confirm_mobile_download_dialog_message">Загрузка через мобильное соединение отключена в настройках.\n\nЖелаете временно разрешить загрузку?\n\n<small>Настройка сохранится на 10 минут.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Подтвердите трансляцию через мобильное соединение</string>
   <string name="confirm_mobile_streaming_notification_message">Трансляция через мобильное подключение отключена в настройках. Нажмите, чтобы продолжить трансляцию.</string>
-  <string name="confirm_mobile_streaming_button_always">всегда</string>
+  <string name="confirm_mobile_streaming_button_always">Всегда</string>
   <string name="confirm_mobile_streaming_button_once">Однократно</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Добавить в очередь</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Разрешить временно</string>
@@ -351,15 +344,15 @@
   <string name="no_history_label">После того, как вы прослушаете выпуск, он появится здесь.</string>
   <string name="no_all_episodes_head_label">Нет выпусков</string>
   <string name="no_all_episodes_label">Когда вы добавите подкаст, выпуски будут показаны здесь.</string>
-  <string name="no_new_episodes_head_label">Нет новых выпусков</string>
-  <string name="no_new_episodes_label">Когда появятся новые выпуски, они будут показаны здесь.</string>
-  <string name="no_fav_episodes_head_label">Нет избранных выпусков</string>
-  <string name="no_fav_episodes_label">Вы можете добавить выпуски в избранное долгим нажатием на них.</string>
+  <string name="no_all_episodes_filtered_label">Попробуйте очистить фильтр, чтобы увидеть больше выпусков.</string>
+  <string name="no_inbox_head_label">Во входящих нет выпусков</string>
+  <string name="no_inbox_label">Когда появятся новые выпуски, они будут показаны здесь. Вы сможете решить, интересны они вам или нет.</string>
   <string name="no_subscriptions_head_label">Подписки не оформлены</string>
   <string name="no_subscriptions_label">Чтобы подписаться на подкаст, нажмите значок «плюс» внизу.</string>
   <!--Preferences-->
   <string name="storage_pref">Хранилище</string>
   <string name="storage_sum">Автоматическое удаление выпусков, импорт, экспорт</string>
+  <string name="statistics_moved">Экран статистики был перемещен на экран подписок. Вы можете открыть его оттуда.</string>
   <string name="project_pref">Проект</string>
   <string name="synchronization_pref">Синхронизация</string>
   <string name="synchronization_sum">Синхронизация с другими устройствами</string>
@@ -634,17 +627,11 @@
   <string name="auto_enable_label">Запускать автоматически</string>
   <string name="sleep_timer_enabled_label">Таймер сна включен</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">Категории</string>
-  <string name="gpodnet_toplist_header">Лучшее</string>
-  <string name="gpodnet_search_hint">Искать на gpodder.net</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
   <string name="gpodnetauth_encryption_warning">Пароль и данные не зашифрованы!</string>
-  <string name="create_account">Создать учётную запись</string>
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
-  <string name="gpodnet_description">Gpodder.net — сервис синхронизации подкастов с открытым исходным кодом не связанный с проектом AntennaPod.</string>
-  <string name="gpodnetauth_server_official">Официальный сервер gpodder.net</string>
-  <string name="gpodnetauth_server_custom">Свой сервер</string>
+  <string name="gpodnet_description">Gpodder.net — сервис синхронизации подкастов с открытым исходным кодом, которое вы можете установить на свой сервер. Gpodder.net не связан с проектом AntennaPod.</string>
   <string name="gpodnetauth_host">Имя узла</string>
   <string name="gpodnetauth_select_server">Выберите сервер</string>
   <string name="gpodnetauth_device_name">Название устройства</string>
@@ -681,6 +668,7 @@
   <string name="status_downloading_label">Выпуск загружается</string>
   <string name="in_queue_label">Выпуск в очереди</string>
   <string name="is_favorite_label">Эпизод отмечен как избранный</string>
+  <string name="is_inbox_label">Выпуск во входящих</string>
   <string name="load_next_page_label">Загрузить следующую страницу</string>
   <string name="position">Позиция: %1$s</string>
   <string name="apply_action">Применить действие</string>
@@ -717,9 +705,9 @@
   <string name="search_itunes_label">Поиск в iTunes</string>
   <string name="search_podcastindex_label">Поиск на Podcastindex.org</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
+  <string name="gpodnet_search_hint">Искать на gpodder.net</string>
   <string name="advanced">Дополнительные</string>
   <string name="add_podcast_by_url">Добавить подкаст по RSS адресу</string>
-  <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <string name="discover">Ознакомиться</string>
   <string name="discover_hide">Скрыть</string>
   <string name="discover_is_hidden">Вы выбрали скрытие предложений.</string>
