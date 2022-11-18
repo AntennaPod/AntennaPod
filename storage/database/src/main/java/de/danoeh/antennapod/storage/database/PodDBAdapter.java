@@ -1120,14 +1120,15 @@ public class PodDBAdapter {
         String query = "SELECT * FROM " + TABLE_NAME_FEED_MEDIA
                 + " WHERE " + KEY_PLAYBACK_COMPLETION_DATE + " > " + timestamps[0]
                 + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]
-                + " ORDER BY " + String.format(Locale.US, "%s DESC LIMIT %d, %d", KEY_PLAYBACK_COMPLETION_DATE, offset, limit);
+                + " ORDER BY " + String.format(Locale.US, "%s DESC LIMIT %d, %d",
+                KEY_PLAYBACK_COMPLETION_DATE, offset, limit);
 
         return db.rawQuery(query, null);
     }
 
     public final long getCompletedMediaLength(long[] timestamps) {
-        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + " > " + timestamps[0]
-                + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]);
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA,KEY_PLAYBACK_COMPLETION_DATE
+                + " > " + timestamps[0] + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]);
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {

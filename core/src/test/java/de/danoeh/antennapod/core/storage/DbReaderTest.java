@@ -300,7 +300,7 @@ public class DbReaderTest {
         @Test
         public void testGetPlaybackHistoryLength() {
             final int totalItems = 100;
-            final long[] defaultFilter = new long[]{0,100};
+            final long[] defaultFilter = new long[]{0, 100};
             Feed feed = DbTestUtils.saveFeedlist(1, totalItems, true).get(0);
 
             for (int playedItems : Arrays.asList(0, 1, 20, 100)) {
@@ -311,21 +311,21 @@ public class DbReaderTest {
         @Test
         public void testGetPlaybackHistoryWithFilter() {
             final int totalItems = 100;
-            final long[] filterEmpty = new long[]{0,0};
-            final long[] filterEnd = new long[]{0,60};
-            final long[] filterStart = new long[]{40,100};
-            final long[] filterFrame = new long[]{20,80};
+            final long[] filterEmpty = new long[]{0, 0};
+            final long[] filterEnd = new long[]{0, 60};
+            final long[] filterStart = new long[]{40, 100};
+            final long[] filterFrame = new long[]{20, 80};
             List<long[]> filters = Arrays.asList(filterEmpty, filterEnd, filterStart, filterFrame);
-            final List<Integer> numReturnedItems = Arrays.asList(0,60,60,60);
+            final List<Integer> numReturnedItems = Arrays.asList(0, 60, 60, 60);
 
             Feed feed = DbTestUtils.saveFeedlist(1, totalItems, true).get(0);
 
-            for(int i = 0; i < filters.size(); i++){
+            for (int i = 0; i < filters.size(); i++) {
                 saveFeed(feed, totalItems, filters.get(i), numReturnedItems.get(i));
             }
         }
 
-        private void saveFeed(Feed feed, int playedItems, long[] filter, int numReturnedItems){
+        private void saveFeed(Feed feed, int playedItems, long[] filter, int numReturnedItems) {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
 
             adapter.open();
@@ -479,7 +479,7 @@ public class DbReaderTest {
             int i = 0;
             for (int offset : offsets) {
                 for (int limit : limits) {
-                    for(boolean filter : isFiltered) {
+                    for (boolean filter : isFiltered) {
                         rv[i][0] = offset;
                         rv[i][1] = limit;
                         rv[i][2] = filter;
@@ -504,8 +504,8 @@ public class DbReaderTest {
             final int numFeeds = 1;
             long start = 0;
 
-            if(paramIsFiltered && numReturnedItems > 1){
-                start = numReturnedItems/2;
+            if (paramIsFiltered && numReturnedItems > 1) {
+                start = numReturnedItems / 2;
                 numReturnedItems = Math.max(playedItems - paramOffset - start, 0);
             }
 
@@ -513,10 +513,10 @@ public class DbReaderTest {
             long[] ids = saveFeed(playedItems, feed);
 
             List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{start, playedItems});
-            assertResult(saved,numReturnedItems,ids);
+            assertResult(saved, numReturnedItems, ids);
         }
 
-        private long[] saveFeed(int playedItems, Feed feed){
+        private long[] saveFeed(int playedItems, Feed feed) {
             long[] ids = new long[playedItems];
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -532,7 +532,7 @@ public class DbReaderTest {
             return ids;
         }
 
-        private void assertResult(List<FeedItem> saved, long numReturnedItems, long[] ids){
+        private void assertResult(List<FeedItem> saved, long numReturnedItems, long[] ids) {
             assertNotNull(saved);
             assertEquals(String.format("Wrong size with offset %d and limit %d: ",
                             paramOffset, paramLimit),

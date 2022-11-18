@@ -120,8 +120,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         dateRangePicker.show(this.getParentFragmentManager(), TAG);
     }
 
-    private void setDefaultSelection(MaterialDatePicker.Builder<Pair<Long, Long>> builder){
-        if(!isFiltered){
+    private void setDefaultSelection(MaterialDatePicker.Builder<Pair<Long, Long>> builder) {
+        if (!isFiltered) {
             return;
         }
 
@@ -138,7 +138,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         updateFilterUi();
     }
 
-    private void setPrefFiltered(boolean isFiltered){
+    private void setPrefFiltered(boolean isFiltered) {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(PREF_FILTERED, isFiltered).apply();
         this.isFiltered = isFiltered;
@@ -174,7 +174,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         return (int) DBReader.getPlaybackHistoryLength(getTimeframe());
     }
 
-    private long addDayToTimestamp(long timestamp, int day){
+    private long addDayToTimestamp(long timestamp, int day) {
         // Calculation needed to account for daylight savings time
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp);
@@ -183,7 +183,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     }
 
     private void updateFilterUi() {
-        if(isFiltered){
+        if (isFiltered) {
             txtvInformation.setVisibility(View.VISIBLE);
             emptyView.setMessage(R.string.no_all_history_filtered_label);
         } else {
@@ -195,7 +195,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     @NonNull
     private long[] getTimeframe() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        if(!prefs.getBoolean(PREF_FILTERED, false)){
+        if (!prefs.getBoolean(PREF_FILTERED, false)) {
             // Adding a day to the end date so that podcasts listened to on the same day are also displayed
             return new long[]{0, addDayToTimestamp(MaterialDatePicker.todayInUtcMilliseconds(), 1)};
         }
@@ -203,6 +203,6 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         long start = prefs.getLong(PREF_START_DATE, 0);
         long end = prefs.getLong(PREF_END_DATE, System.currentTimeMillis());
 
-        return new long[]{start,end};
+        return new long[]{start, end};
     }
 }
