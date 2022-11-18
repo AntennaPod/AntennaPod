@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import io.reactivex.Maybe;
@@ -53,13 +55,9 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 .setNeutralButton(getString(R.string.refresh_label), null)
                 .create();
         dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
-            controller = new PlaybackController(getActivity()) {
-                @Override
-                public void loadMediaInfo() {
-                    ChaptersFragment.this.loadMediaInfo(true);
-                }
-            };
+            progressBar.setVisibility(View.VISIBLE);
             loadMediaInfo(true);
         });
 
@@ -166,6 +164,11 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             progressBar.setVisibility(View.GONE);
         }
         adapter.setMedia(media);
+        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+        if (media instanceof FeedMedia && ((FeedMedia) media).getItem() != null
+                && !TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexChapterUrl())) {
+            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+        }
         int positionOfCurrentChapter = getCurrentChapter(media);
         updateChapterSelection(positionOfCurrentChapter, true);
     }
