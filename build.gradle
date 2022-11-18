@@ -54,9 +54,10 @@ project.ext {
     awaitilityVersion = "3.1.6"
     junitVersion = "4.13"
     robolectricVersion = "4.5-alpha-1"
-    espressoVersion = "3.2.0"
-    runnerVersion = "1.2.0"
-    rulesVersion = "1.2.0"
+    espressoVersion = "3.5.0"
+    runnerVersion = "1.5.0"
+    rulesVersion = "1.5.0"
+    testCoreVersion = "1.5.0"
 }
 
 apply plugin: "checkstyle"
