@@ -52,7 +52,7 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
@@ -263,7 +263,7 @@ public class AudioPlayerFragment extends Fragment implements
             Playable media = controller.getMedia();
             if (media != null) {
                 if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext());
+                    ChapterUtils.loadChapters(media, getContext(), false);
                 }
                 emitter.onSuccess(media);
             } else {

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ConnectionStateMonitor
@@ -27,7 +26,7 @@ public class ConnectionStateMonitor
     @Override
     public void onNetworkActive() {
         Log.d(TAG, "ConnectionStateMonitor::onNetworkActive network connection changed");
-        NetworkUtils.networkChangedDetected();
+        NetworkConnectionChangeHandler.networkChangedDetected();
     }
 
     public void enable(Context context) {

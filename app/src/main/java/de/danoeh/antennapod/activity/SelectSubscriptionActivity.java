@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
@@ -47,7 +47,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTranslucentTheme());
+        setTheme(ThemeSwitcher.getTranslucentTheme(this));
         super.onCreate(savedInstanceState);
 
         viewBinding = SubscriptionSelectionActivityBinding.inflate(getLayoutInflater());

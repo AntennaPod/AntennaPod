@@ -32,7 +32,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateFormatter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -96,7 +95,7 @@ public class CoverFragment extends Fragment {
             Playable media = controller.getMedia();
             if (media != null) {
                 if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext());
+                    ChapterUtils.loadChapters(media, getContext(), false);
                 }
                 emitter.onSuccess(media);
             } else {
@@ -268,7 +267,6 @@ public class CoverFragment extends Fragment {
 
     private void displayCoverImage() {
         RequestOptions options = new RequestOptions()
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .dontAnimate()
                 .transform(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));

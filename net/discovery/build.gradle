@@ -14,11 +14,6 @@ android {
             buildConfigField "String", "PODCASTINDEX_API_SECRET", '"XAaAhk4^2YBsTE33vdbwbZNj82ZRLABDDqFdKe7x"'
         }
     }
-
-    lintOptions {
-        disable 'InvalidPeriodicWorkRequestInterval', 'MissingPermission',
-                'GradleCompatible', 'AppCompatResource', 'QueryPermissionsNeeded'
-    }
 }
 
 dependencies {

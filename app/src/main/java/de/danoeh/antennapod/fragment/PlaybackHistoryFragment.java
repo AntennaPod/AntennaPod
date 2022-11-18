@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackHistoryEvent;
@@ -71,7 +73,20 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
             return true;
         }
         if (item.getItemId() == R.id.clear_history_item) {
-            DBWriter.clearPlaybackHistory();
+
+            ConfirmationDialog conDialog = new ConfirmationDialog(
+                    getActivity(),
+                    R.string.clear_history_label,
+                    R.string.clear_playback_history_msg) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    DBWriter.clearPlaybackHistory();
+                }
+            };
+            conDialog.createNewDialog().show();
+
             return true;
         } else if (item.getItemId() == R.id.playback_remove_filter) {
             setPrefFiltered(false);

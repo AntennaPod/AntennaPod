@@ -94,6 +94,7 @@
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
     <string name="date_range_picker_title">Choose a start date and an end date</string>
+    <string name="clear_playback_history_msg">This will clear the entire playback history. Are you sure you want to proceed?</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
@@ -727,6 +728,7 @@
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
     <string name="country">Country</string>
 

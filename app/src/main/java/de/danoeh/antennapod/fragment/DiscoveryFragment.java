@@ -24,6 +24,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -69,6 +70,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private Disposable disposable;
     private String countryCode = "US";
     private boolean hidden;
+    private boolean needsConfirm;
     private MaterialToolbar toolbar;
 
     public DiscoveryFragment() {
@@ -102,6 +104,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, Context.MODE_PRIVATE);
         countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
         hidden = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false);
+        needsConfirm = prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true);
     }
 
     @Override
@@ -156,6 +159,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         gridView.setVisibility(View.GONE);
         txtvError.setVisibility(View.GONE);
         butRetry.setVisibility(View.GONE);
+        butRetry.setText(R.string.retry_label);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -166,22 +170,38 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             butRetry.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
-        } else {
-            ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-            disposable = loader.loadToplist(country, 25).subscribe(
-                    podcasts -> {
-                        progressBar.setVisibility(View.GONE);
-                        topList = podcasts;
-                        updateData(topList);
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
-                        txtvError.setText(error.getMessage());
-                        txtvError.setVisibility(View.VISIBLE);
-                        butRetry.setOnClickListener(v -> loadToplist(country));
-                        butRetry.setVisibility(View.VISIBLE);
-                    });
+            return;
         }
+        //noinspection ConstantConditions
+        if (BuildConfig.FLAVOR.equals("free") && needsConfirm) {
+            txtvError.setVisibility(View.VISIBLE);
+            txtvError.setText("");
+            butRetry.setVisibility(View.VISIBLE);
+            butRetry.setText(R.string.discover_confirm);
+            butRetry.setOnClickListener(v -> {
+                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                needsConfirm = false;
+                loadToplist(country);
+            });
+            txtvEmpty.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+
+        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
+        disposable = loader.loadToplist(country, 25).subscribe(
+                podcasts -> {
+                    progressBar.setVisibility(View.GONE);
+                    topList = podcasts;
+                    updateData(topList);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                    progressBar.setVisibility(View.GONE);
+                    txtvError.setText(error.getMessage());
+                    txtvError.setVisibility(View.VISIBLE);
+                    butRetry.setOnClickListener(v -> loadToplist(country));
+                    butRetry.setVisibility(View.VISIBLE);
+                });
     }
 
     @Override

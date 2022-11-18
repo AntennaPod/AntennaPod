@@ -28,6 +28,7 @@
 
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="de.danoeh.antennapod.intents.PLAYBACK_SERVICE" />
             </intent-filter>
         </service>
 
