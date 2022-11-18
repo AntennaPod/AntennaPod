@@ -30,15 +30,15 @@
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
-        android:icon="@mipmap/ic_launcher_002_d2_fg"
-        android:roundIcon="@mipmap/ic_launcher_002_d2_fg"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:label="Icon test AntennaPod"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
         android:theme="@style/Theme.AntennaPod.Splash"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:logo="@mipmap/ic_launcher_002_d2_fg"
+        android:logo="@mipmap/ic_launcher"
         android:resizeableActivity="true"
         android:allowAudioPlaybackCapture="true"
         android:networkSecurityConfig="@xml/network_security_config">
@@ -372,73 +372,6 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
-
-        <!--<activity-alias
-            android:icon="@mipmap/ic_launcher"
-            android:label="AP-IconOrig"
-            android:name="aliasOrig"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:icon="@mipmap/ic_launcher_001"
-            android:label="AP-Icon001"
-            android:name="alias001"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:icon="@mipmap/ic_launcher_002"
-            android:label="AP-Icon002"
-            android:name="alias002"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:icon="@mipmap/ic_launcher_003"
-            android:label="AP-Icon003"
-            android:name="alias003"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:icon="@mipmap/ic_launcher_004"
-            android:label="AP-Icon004"
-            android:name="alias004"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:icon="@mipmap/ic_launcher_002_d2_fg"
-            android:label="AP-Icon002-d2"
-            android:name="alias002d2"
-            android:targetActivity="de.danoeh.antennapod.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>-->
     </application>
 
 </manifest>
