@@ -95,7 +95,7 @@ public class CoverFragment extends Fragment {
             Playable media = controller.getMedia();
             if (media != null) {
                 if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext());
+                    ChapterUtils.loadChapters(media, getContext(), false);
                 }
                 emitter.onSuccess(media);
             } else {
