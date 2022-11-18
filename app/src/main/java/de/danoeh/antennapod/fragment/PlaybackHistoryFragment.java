@@ -28,6 +28,7 @@ import java.util.List;
 public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
     private static final String PREF_NAME = "PrefPlaybackHistory";
+    private static final String PREF_FILTERED = "isFiltered";
     private static final String PREF_START_DATE = "startDate";
     private static final String PREF_END_DATE = "endDate";
     private boolean isFiltered = false;
@@ -42,6 +43,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         txtvInformation.setOnClickListener(v -> openDateRangePicker());
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        this.isFiltered = prefs.getBoolean(PREF_FILTERED, false);
         updateFilterUi();
         swipeActions.detach();
         return root;
@@ -71,8 +74,8 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
             DBWriter.clearPlaybackHistory();
             return true;
         } else if (item.getItemId() == R.id.playback_remove_filter) {
-            // Adding a day to the end date so that podcasts listened to on the same day are also displayed
-            onFilterChanged(0, addDayToTimestamp(MaterialDatePicker.todayInUtcMilliseconds(), 1), false);
+            setPrefFiltered(false);
+            updateFilterUi();
             loadItems();
             return true;
         } else if (item.getItemId() == R.id.playback_filter_by_date_range) {
@@ -80,14 +83,6 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
             return true;
         }
         return false;
-    }
-
-    private void onFilterChanged(long start, long end, boolean isFiltered) {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putLong(PREF_START_DATE, start).apply();
-        prefs.edit().putLong(PREF_END_DATE, end).apply();
-        this.isFiltered = isFiltered;
-        updateFilterUi();
     }
 
     private void openDateRangePicker() {
@@ -101,8 +96,9 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
 
         MaterialDatePicker<Pair<Long, Long>> dateRangePicker = materialBuilder.build();
         dateRangePicker.addOnPositiveButtonClickListener((value) -> {
-            // Add one day to the end timestamp so that podcast listened on the same day shows up as well
-            onFilterChanged(value.first, addDayToTimestamp(value.second, 1), true);
+            setPrefFiltered(true);
+            // Adding a day to the end date so that podcasts listened to on the same day are also displayed
+            onFilterChanged(value.first, addDayToTimestamp(value.second, 1));
             loadItems();
         });
 
@@ -110,20 +106,33 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     }
 
     private void setDefaultSelection(MaterialDatePicker.Builder<Pair<Long, Long>> builder){
+        if(!isFiltered){
+            return;
+        }
+
         long[] timeframe = getTimeframe();
         long start = timeframe[0];
         long end = timeframe[1];
+        builder.setSelection(new Pair<>(start, addDayToTimestamp(end, -1)));
+    }
 
-        if(start != 0){
-            builder.setSelection(new Pair<>(start, addDayToTimestamp(end, -1)));
-        }
+    private void onFilterChanged(long start, long end) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putLong(PREF_START_DATE, start).apply();
+        prefs.edit().putLong(PREF_END_DATE, end).apply();
+        updateFilterUi();
+    }
+
+    private void setPrefFiltered(boolean isFiltered){
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(PREF_FILTERED, isFiltered).apply();
+        this.isFiltered = isFiltered;
     }
 
     @Override
     protected void updateToolbar() {
         // Not calling super, as we do not have a refresh button that could be updated
         toolbar.getMenu().findItem(R.id.clear_history_item).setVisible(!episodes.isEmpty());
-        toolbar.getMenu().findItem(R.id.filter_playback_history).setVisible(true);
         toolbar.getMenu().findItem(R.id.playback_remove_filter).setVisible(isFiltered);
     }
 
@@ -147,7 +156,7 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
 
     @Override
     protected int loadTotalItemCount() {
-        return (int) DBReader.getPlaybackHistoryLength();
+        return (int) DBReader.getPlaybackHistoryLength(getTimeframe());
     }
 
     private long addDayToTimestamp(long timestamp, int day){
@@ -171,6 +180,11 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     @NonNull
     private long[] getTimeframe() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        if(!prefs.getBoolean(PREF_FILTERED, false)){
+            // Adding a day to the end date so that podcasts listened to on the same day are also displayed
+            return new long[]{0, addDayToTimestamp(MaterialDatePicker.todayInUtcMilliseconds(), 1)};
+        }
+
         long start = prefs.getLong(PREF_START_DATE, 0);
         long end = prefs.getLong(PREF_END_DATE, System.currentTimeMillis());
 

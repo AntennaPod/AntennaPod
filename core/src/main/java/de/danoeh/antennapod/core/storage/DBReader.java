@@ -441,12 +441,12 @@ public final class DBReader {
         }
     }
 
-    public static long getPlaybackHistoryLength() {
+    public static long getPlaybackHistoryLength(long[] filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
         try {
-            return adapter.getCompletedMediaLength();
+            return adapter.getCompletedMediaLength(filter);
         } finally {
             adapter.close();
         }

@@ -1125,8 +1125,9 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final long getCompletedMediaLength() {
-        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + "> 0");
+    public final long getCompletedMediaLength(long[] timestamps) {
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE + " > " + timestamps[0]
+                + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]);
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {
