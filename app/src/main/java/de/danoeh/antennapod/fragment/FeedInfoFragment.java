@@ -306,16 +306,14 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         }
 
         if (item.getItemId() == R.id.edit_feed_url_item) {
-            EditUrlSettingsDialog editUrlSettingsDialog = new EditUrlSettingsDialog(getActivity(), feed) {
+            new EditUrlSettingsDialog(getActivity(), feed) {
                 @Override
                 protected void setUrl(String url) {
                     feed.setDownload_url(url);
                     txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
                     Iconify.addIcons(txtvUrl);
                 }
-            };
-
-            editUrlSettingsDialog.show();
+            }.show();
 
             return true;
         }

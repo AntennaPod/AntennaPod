@@ -104,7 +104,6 @@ public class FeedSettingsFragment extends Fragment {
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
-        private static final String PREF_EDIT_FEED_URL = "editFeedUrl";
 
         private Feed feed;
         private Disposable disposable;

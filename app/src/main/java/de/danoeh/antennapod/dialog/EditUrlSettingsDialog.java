@@ -21,7 +21,6 @@ public abstract class EditUrlSettingsDialog {
     public static final String TAG = "EditUrlSettingsDialog";
     private final WeakReference<Activity> activityRef;
     private Feed feed;
-    boolean enableConfirm = false;
 
     public EditUrlSettingsDialog(Activity activity, Feed feed) {
         this.activityRef = new WeakReference<>(activity);
@@ -46,7 +45,7 @@ public abstract class EditUrlSettingsDialog {
                     showConfirmAlertDialog(String.valueOf(binding.urlEditText.getText()));
                 })
                 .setNeutralButton(de.danoeh.antennapod.core.R.string.reset, null)
-                .setNegativeButton(de.danoeh.antennapod.core.R.string.cancel_label, null)
+                .setNegativeButton(R.string.cancel_label, null)
                 .show();
 
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
@@ -64,14 +63,9 @@ public abstract class EditUrlSettingsDialog {
         AlertDialog alertDialog = new MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.edit_url_menu)
                 .setMessage(R.string.edit_url_confirmation_msg)
-
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-                .setPositiveButton(de.danoeh.antennapod.core.R.string.confirm_label, (d, input) -> {
-                    if (enableConfirm) {
-                        onConfirmed(feed.getDownload_url(), url);
-                        setUrl(url);
-                    }
+                .setPositiveButton(R.string.cancel_label, (d, input) -> {
+                    onConfirmed(feed.getDownload_url(), url);
+                    setUrl(url);
                 })
 
                 // A null listener allows the button to dismiss the dialog and take no further action.
@@ -88,7 +82,6 @@ public abstract class EditUrlSettingsDialog {
             }
 
             public void onFinish() {
-                enableConfirm = true;
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
             }
         }.start();

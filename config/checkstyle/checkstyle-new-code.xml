@@ -8,7 +8,7 @@
     <property name="fileExtensions" value="java, properties, xml"/>
 
     <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}/suppressions.xml" />
+        <property name="file" value="suppressions.xml" />
     </module>
 
     <module name="FileTabCharacter">
