@@ -73,7 +73,7 @@ public abstract class EditUrlSettingsDialog {
             public void onTick(long millisUntilFinished) {
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(
                         String.format(Locale.getDefault(), "%s (%d)",
-                                activity.getString(android.R.string.ok), millisUntilFinished/1000 + 1));
+                                activity.getString(android.R.string.ok), millisUntilFinished / 1000 + 1));
             }
 
             @Override
