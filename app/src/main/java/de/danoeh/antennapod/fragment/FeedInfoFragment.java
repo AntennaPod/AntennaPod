@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
+import de.danoeh.antennapod.dialog.EditUrlSettingsDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
@@ -277,6 +278,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         toolbar.getMenu().findItem(R.id.share_item).setVisible(feed != null && !feed.isLocalFeed());
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
+        toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(feed != null && !feed.isLocalFeed());
     }
 
     @Override
@@ -300,6 +302,19 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             });
             alert.setNegativeButton(android.R.string.cancel, null);
             alert.show();
+            return true;
+        }
+
+        if (item.getItemId() == R.id.edit_feed_url_item) {
+            new EditUrlSettingsDialog(getActivity(), feed) {
+                @Override
+                protected void setUrl(String url) {
+                    feed.setDownload_url(url);
+                    txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+                    Iconify.addIcons(txtvUrl);
+                }
+            }.show();
+
             return true;
         }
 
