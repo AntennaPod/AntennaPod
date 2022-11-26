@@ -30,7 +30,7 @@ project.ext {
     preferenceVersion = "1.1.1"
     recyclerViewVersion = "1.2.1"
     viewPager2Version = "1.1.0-beta01"
-    workManagerVersion = "2.3.4"
+    workManagerVersion = "2.7.1"
     googleMaterialVersion = "1.6.0"
 
     // Third-party
