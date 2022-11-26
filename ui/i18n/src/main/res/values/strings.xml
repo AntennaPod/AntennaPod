@@ -707,8 +707,7 @@
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">{fa-spinner}</string>
     <string name="edit_url_menu">Edit feed URL</string>
-    <string name="edit_url_feed">Feed URL</string>
-    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommended changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing. Please wait %1$s seconds before continuing.</string>
+    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
