@@ -3,6 +3,8 @@ package de.danoeh.antennapod.ui.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,6 +72,14 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         refreshToolbarState();
         populateSectionList();
         updateWelcomeScreenVisibility();
+
+        viewBinding.swipeRefresh.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
+        viewBinding.swipeRefresh.setOnRefreshListener(() -> {
+            AutoUpdateManager.runImmediate(requireContext());
+            new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        });
+
         return viewBinding.getRoot();
     }
 
