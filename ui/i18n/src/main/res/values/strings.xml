@@ -256,7 +256,7 @@
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
-    <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
+    <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
