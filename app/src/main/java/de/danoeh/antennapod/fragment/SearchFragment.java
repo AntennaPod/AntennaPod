@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -139,6 +140,7 @@ public class SearchFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LiftOnScrollListener(layout.findViewById(R.id.appbar)));
 
         RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
