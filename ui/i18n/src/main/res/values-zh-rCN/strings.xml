@@ -30,7 +30,6 @@
   <string name="swipe_left">左滑</string>
   <string name="enable_swipeactions">启用此屏幕的滑动操作 </string>
   <string name="change_setting">更改</string>
-  <string name="do_not_show_remove_inbox_prompt">不再询问.</string>
 
   <!--Statistics fragment-->
   <string name="statistics_include_marked">包括刚被标记为已播放节目的时长</string>

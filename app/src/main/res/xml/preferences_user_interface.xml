@@ -87,6 +87,5 @@
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
-
     </PreferenceCategory>
 </PreferenceScreen>
