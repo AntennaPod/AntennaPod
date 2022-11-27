@@ -4,6 +4,8 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
+import androidx.core.util.Pair;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -410,7 +412,7 @@ public final class DBReader {
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
      */
     @NonNull
-    public static List<FeedItem> getPlaybackHistory(int offset, int limit, long[] filter) {
+    public static List<FeedItem> getPlaybackHistory(int offset, int limit, Pair<Long, Long> filter) {
         Log.d(TAG, "getPlaybackHistory() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -419,7 +421,7 @@ public final class DBReader {
         Cursor mediaCursor = null;
         Cursor itemCursor = null;
         try {
-            mediaCursor = adapter.getCompletedMediaCursor(offset, limit, filter);
+            mediaCursor = adapter.getCompletedMediaCursor(offset, limit, filter.first, filter.second);
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
@@ -441,12 +443,12 @@ public final class DBReader {
         }
     }
 
-    public static long getPlaybackHistoryLength(long[] filter) {
+    public static long getPlaybackHistoryLength(Pair<Long, Long> filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
         try {
-            return adapter.getCompletedMediaLength(filter);
+            return adapter.getCompletedMediaLength(filter.first, filter.second);
         } finally {
             adapter.close();
         }

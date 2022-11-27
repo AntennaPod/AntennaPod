@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import androidx.core.util.Pair;
 import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -337,7 +338,7 @@ public class DbReaderTest {
             }
             adapter.close();
 
-            long len = DBReader.getPlaybackHistoryLength(filter);
+            long len = DBReader.getPlaybackHistoryLength(new Pair<>(filter[0], filter[1]));
             assertEquals("Wrong size: ", (int) len, numReturnedItems);
         }
 
@@ -512,7 +513,8 @@ public class DbReaderTest {
             Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
             long[] ids = saveFeed(playedItems, feed);
 
-            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit, new long[]{start, playedItems});
+            List<FeedItem> saved = DBReader.getPlaybackHistory(paramOffset, paramLimit,
+                    new Pair<>(start, (long) playedItems));
             assertResult(saved, numReturnedItems, ids);
         }
 

@@ -1113,22 +1113,22 @@ public class PodDBAdapter {
      *              integer >= 0.
      * @throws IllegalArgumentException if limit < 0
      */
-    public final Cursor getCompletedMediaCursor(int offset, int limit, long[] timestamps) {
+    public final Cursor getCompletedMediaCursor(int offset, int limit, long start, long end) {
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be >= 0");
         }
         String query = "SELECT * FROM " + TABLE_NAME_FEED_MEDIA
-                + " WHERE " + KEY_PLAYBACK_COMPLETION_DATE + " > " + timestamps[0]
-                + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]
-                + " ORDER BY " + String.format(Locale.US, "%s DESC LIMIT %d, %d",
-                KEY_PLAYBACK_COMPLETION_DATE, offset, limit);
+                + " WHERE " + KEY_PLAYBACK_COMPLETION_DATE + " > " + start
+                + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + end
+                + " ORDER BY " + KEY_PLAYBACK_COMPLETION_DATE + " DESC"
+                + " LIMIT " + offset + ", " + limit;
 
         return db.rawQuery(query, null);
     }
 
-    public final long getCompletedMediaLength(long[] timestamps) {
+    public final long getCompletedMediaLength(long start, long end) {
         return DatabaseUtils.queryNumEntries(db, TABLE_NAME_FEED_MEDIA, KEY_PLAYBACK_COMPLETION_DATE
-                + " > " + timestamps[0] + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + timestamps[1]);
+                + " > " + start + " AND " + KEY_PLAYBACK_COMPLETION_DATE + " <= " + end);
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {

@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
@@ -105,15 +106,19 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
                 .setValidator(DateValidatorPointBackward.now()).build();
 
         MaterialDatePicker.Builder<Pair<Long, Long>> materialBuilder = MaterialDatePicker.Builder.dateRangePicker()
-                .setTitleText(R.string.date_range_picker_title)
+                .setTitleText(R.string.choose_date_filter)
                 .setCalendarConstraints(calendarConstraints);
         setDefaultSelection(materialBuilder);
 
         MaterialDatePicker<Pair<Long, Long>> dateRangePicker = materialBuilder.build();
         dateRangePicker.addOnPositiveButtonClickListener((value) -> {
             setPrefFiltered(true);
+            // Converting the timestamps from UTC to the local time.
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            long start = value.first - calendar.getTimeZone().getOffset(value.first);
+            long end = value.second - calendar.getTimeZone().getOffset(value.second);
             // Adding a day to the end date so that podcasts listened to on the same day are also displayed
-            onFilterChanged(value.first, addDayToTimestamp(value.second, 1));
+            onFilterChanged(start, addDayToTimestamp(end, 1));
             loadItems();
         });
 
@@ -125,9 +130,12 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
             return;
         }
 
-        long[] timeframe = getTimeframe();
-        long start = timeframe[0];
-        long end = timeframe[1];
+        Pair<Long, Long> timeframe = getTimeframe();
+
+        // Converting the timestamps from local time to UTC.
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        long start = timeframe.first + calendar.getTimeZone().getOffset(timeframe.first);;
+        long end = timeframe.second + calendar.getTimeZone().getOffset(timeframe.second);;
         builder.setSelection(new Pair<>(start, addDayToTimestamp(end, -1)));
     }
 
@@ -193,16 +201,16 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
     }
 
     @NonNull
-    private long[] getTimeframe() {
+    private Pair<Long, Long> getTimeframe() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         if (!prefs.getBoolean(PREF_FILTERED, false)) {
             // Adding a day to the end date so that podcasts listened to on the same day are also displayed
-            return new long[]{0, addDayToTimestamp(MaterialDatePicker.todayInUtcMilliseconds(), 1)};
+            return new Pair<>(0L, Long.MAX_VALUE);
         }
 
         long start = prefs.getLong(PREF_START_DATE, 0);
         long end = prefs.getLong(PREF_END_DATE, System.currentTimeMillis());
 
-        return new long[]{start, end};
+        return new Pair<>(start, end);
     }
 }

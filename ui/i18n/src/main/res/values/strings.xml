@@ -93,7 +93,6 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
-    <string name="date_range_picker_title">Choose a start date and an end date</string>
     <string name="clear_playback_history_msg">This will clear the entire playback history. Are you sure you want to proceed?</string>
 
     <!-- Other -->
