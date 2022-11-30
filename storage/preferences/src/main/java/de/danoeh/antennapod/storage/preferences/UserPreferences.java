@@ -935,5 +935,4 @@ public class UserPreferences {
     public static boolean shouldShowSubscriptionTitle() {
         return prefs.getBoolean(PREF_SUBSCRIPTION_TITLE, false);
     }
-
 }

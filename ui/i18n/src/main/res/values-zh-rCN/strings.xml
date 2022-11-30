@@ -30,7 +30,6 @@
   <string name="swipe_left">左滑</string>
   <string name="enable_swipeactions">启用此屏幕的滑动操作 </string>
   <string name="change_setting">更改</string>
-
   <!--Statistics fragment-->
   <string name="statistics_include_marked">包括刚被标记为已播放节目的时长</string>
   <string name="statistics_speed_not_counted">注意：播放速度不在考虑范围之内。</string>

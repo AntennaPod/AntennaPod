@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
-    public static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
 
     @NonNull
@@ -110,13 +110,12 @@ public class InboxFragment extends EpisodesListFragment {
 
         View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
         CheckBox checkNeverAskAgain = view.findViewById(R.id.checkbox_do_not_show_again);
-        checkNeverAskAgain.setText(R.string.checkbox_do_not_show_again);
         builder.setView(view);
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             dialog.dismiss();
             removeAllFromInbox();
-            prefs.edit().putBoolean(PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX, checkNeverAskAgain.isChecked()).apply();;
+            prefs.edit().putBoolean(PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX, checkNeverAskAgain.isChecked()).apply();
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.show();
