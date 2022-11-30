@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
@@ -19,7 +19,7 @@ public class DrawerPreferencesDialog {
                 checked[i] = true;
             }
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(R.string.drawer_preferences);
         builder.setMultiChoiceItems(navTitles, checked, (dialog, which, isChecked) -> {
             if (isChecked) {
