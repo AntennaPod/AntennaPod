@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.view.viewholder;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -21,9 +21,10 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.SquareImageView;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
-    public final View card;
+    public final CardView card;
     public final ImageView secondaryActionIcon;
     private final SquareImageView cover;
     private final TextView title;
@@ -67,6 +68,12 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         if (media == null) {
             circularProgressBar.setPercentage(0, item);
         } else {
+            if (PlaybackStatus.isCurrentlyPlaying(media)) {
+                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.card_background_playing));
+            } else {
+                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.card_background));
+            }
+
             if (item.getMedia().getDuration() > 0) {
                 progressBar.setProgress(100 * item.getMedia().getPosition() / item.getMedia().getDuration());
             }

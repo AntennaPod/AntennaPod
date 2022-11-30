@@ -1434,7 +1434,7 @@ public class PodDBAdapter {
     public Cursor searchFeeds(String searchQuery) {
         String[] queryWords = prepareSearchQuery(searchQuery);
 
-        String queryStart = "SELECT * FROM " + TABLE_NAME_FEEDS + " WHERE ";
+        String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS + " WHERE ";
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {
