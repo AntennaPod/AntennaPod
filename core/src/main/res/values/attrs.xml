@@ -16,4 +16,6 @@
     <attr name="icon_green" format="color" />
     <attr name="icon_purple" format="color" />
     <attr name="icon_gray" format="color" />
+    <attr name="card_background" format="color" />
+    <attr name="card_background_playing" format="color" />
 </resources>

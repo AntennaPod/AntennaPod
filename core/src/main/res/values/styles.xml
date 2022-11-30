@@ -29,6 +29,8 @@
         <item name="navigation_up">@drawable/navigation_up</item>
         <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
+        <item name="card_background">#EFEEEE</item>
+        <item name="card_background_playing">#D8D8D8</item>
         <item name="icon_red">#CF1800</item>
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
@@ -68,6 +70,8 @@
         <item name="navigation_up">@drawable/navigation_up_dark</item>
         <item name="dragview_background">@drawable/ic_drag_darktheme</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
+        <item name="card_background">#2d3337</item>
+        <item name="card_background_playing">#444D53</item>
         <item name="icon_red">#CF1800</item>
         <item name="icon_yellow">#F59F00</item>
         <item name="icon_green">#008537</item>
