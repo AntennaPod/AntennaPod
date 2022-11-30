@@ -12,10 +12,10 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.DateFormatter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -96,7 +96,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public boolean isCurrentlyPlayingItem() {
-        return item != null && item.getMedia() != null && FeedItemUtil.isCurrentlyPlaying(item.getMedia());
+        return item != null && item.getMedia() != null && PlaybackStatus.isCurrentlyPlaying(item.getMedia());
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {

@@ -19,7 +19,7 @@ public interface Playable extends Parcelable, Serializable {
 
     /**
      * Save information about the playable in a preference so that it can be
-     * restored later via PlayableUtils.createInstanceFromPreferences.
+     * restored later via PlaybackPreferences.createInstanceFromPreferences.
      * Implementations must NOT call commit() after they have written the values
      * to the preferences file.
      */
@@ -136,7 +136,7 @@ public interface Playable extends Parcelable, Serializable {
 
     /**
      * Returns an integer that must be unique among all Playable classes. The
-     * return value is later used by PlayableUtils to determine the type of the
+     * return value is later used by PlaybackPreferences to determine the type of the
      * Playable object that is restored.
      */
     int getPlayableType();

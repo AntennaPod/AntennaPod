@@ -268,7 +268,7 @@
     <string-array name="default_page_values">
         <item>HomeFragment</item>
         <item>QueueFragment</item>
-        <item>InboxFragment</item>
+        <item>NewEpisodesFragment</item>
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
         <item>remember</item>

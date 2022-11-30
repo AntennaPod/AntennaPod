@@ -21,7 +21,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilterGroup;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class SubscriptionsFilterDialog {
     public static void showDialog(Context context) {

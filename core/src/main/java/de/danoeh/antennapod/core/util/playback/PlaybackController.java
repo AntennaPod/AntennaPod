@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -20,7 +21,7 @@ import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
@@ -39,7 +40,6 @@ import java.util.List;
 public abstract class PlaybackController {
 
     private static final String TAG = "PlaybackController";
-    private static final int INVALID_TIME = -1;
 
     private final Activity activity;
     private PlaybackService playbackService;
@@ -85,10 +85,9 @@ public abstract class PlaybackController {
         initialized = true;
 
         activity.registerReceiver(statusUpdate, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
-
+                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
         activity.registerReceiver(notificationReceiver, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_NOTIFICATION));
+                PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION));
 
         if (!released) {
             bindToService();
@@ -203,37 +202,28 @@ public abstract class PlaybackController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            int type = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
-            int code = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
+            int type = intent.getIntExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_TYPE, -1);
+            int code = intent.getIntExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_CODE, -1);
             if (code == -1 || type == -1) {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
             switch (type) {
-                case PlaybackService.NOTIFICATION_TYPE_RELOAD:
+                case PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD:
                     if (playbackService == null && PlaybackService.isRunning) {
                         bindToService();
                         return;
                     }
                     mediaInfoLoaded = false;
                     queryService();
-                    onReloadNotification(intent.getIntExtra(
-                            PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
+                case PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END:
                     onPlaybackEnd();
                     break;
             }
         }
 
     };
-
-    public void onPositionObserverUpdate() {}
-
-    /**
-     * Called when the currently displayed information should be refreshed.
-     */
-    public void onReloadNotification(int code) {}
 
     public void onPlaybackEnd() {}
 
@@ -245,18 +235,7 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         checkMediaInfoLoaded();
         switch (status) {
-            case PAUSED:
-                onPositionObserverUpdate();
-                updatePlayButtonShowsPlay(true);
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
-                    setScreenOn(false);
-                }
-                break;
             case PLAYING:
-                if (!PlaybackService.isCasting() && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
-                    onAwaitingVideoSurface();
-                    setScreenOn(true);
-                }
                 updatePlayButtonShowsPlay(false);
                 break;
             case PREPARING:
@@ -264,15 +243,10 @@ public abstract class PlaybackController {
                     updatePlayButtonShowsPlay(!playbackService.isStartWhenPrepared());
                 }
                 break;
-            case PREPARED:
-                updatePlayButtonShowsPlay(true);
-                onPositionObserverUpdate();
-                break;
-            case SEEKING:
-                onPositionObserverUpdate();
-                break;
+            case PAUSED:
+            case PREPARED: // Fall-through
             case STOPPED: // Fall-through
-            case INITIALIZED:
+            case INITIALIZED: // Fall-through
                 updatePlayButtonShowsPlay(true);
                 break;
             default:
@@ -294,8 +268,6 @@ public abstract class PlaybackController {
 
     public abstract void loadMediaInfo();
 
-    public  void onAwaitingVideoSurface()  {}
-
     /**
      * Called when connection to playback service has been established or
      * information has to be refreshed
@@ -315,16 +287,6 @@ public abstract class PlaybackController {
             Log.e(TAG,
                     "queryService() was called without an existing connection to playbackservice");
         }
-    }
-
-    /**
-     * Should be implemented by classes that show a video. The default implementation
-     * does nothing
-     *
-     * @param enable True if the screen should be kept on, false otherwise
-     */
-    protected void setScreenOn(boolean enable) {
-
     }
 
     public void playPause() {
@@ -363,7 +325,7 @@ public abstract class PlaybackController {
         } else if (getMedia() != null) {
             return getMedia().getPosition();
         } else {
-            return PlaybackService.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
@@ -373,13 +335,13 @@ public abstract class PlaybackController {
         } else if (getMedia() != null) {
             return getMedia().getDuration();
         } else {
-            return PlaybackService.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
     public Playable getMedia() {
         if (media == null) {
-            media = PlayableUtils.createInstanceFromPreferences(activity);
+            media = PlaybackPreferences.createInstanceFromPreferences(activity);
         }
         return media;
     }
@@ -398,13 +360,13 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             return playbackService.getSleepTimerTimeLeft();
         } else {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
     }
 
     public void extendSleepTimer(long extendTime) {
         long timeLeft = getSleepTimerTimeLeft();
-        if (playbackService != null && timeLeft != INVALID_TIME) {
+        if (playbackService != null && timeLeft != Playable.INVALID_TIME) {
             setSleepTimer(timeLeft + extendTime);
         }
     }

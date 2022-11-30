@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
 
@@ -68,7 +68,8 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable(System.currentTimeMillis()) || FeedItemUtil.isPlaying(item.getMedia())
+                    if (!item.isAutoDownloadable(System.currentTimeMillis())
+                            || PlaybackStatus.isPlaying(item.getMedia())
                             || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }
@@ -79,7 +80,7 @@ public class AutomaticDownloadAlgorithm {
                 int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                 boolean cacheIsUnlimited =
-                        UserPreferences.getEpisodeCacheSize() == UserPreferences.getEpisodeCacheSizeUnlimited();
+                        UserPreferences.getEpisodeCacheSize() == UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED;
                 int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
 
                 int episodeSpaceLeft;
@@ -99,7 +100,7 @@ public class AutomaticDownloadAlgorithm {
                         request.withInitiatedByUser(false);
                         requests.add(request.build());
                     }
-                    DownloadService.download(context, false, requests.toArray(new DownloadRequest[0]));
+                    DownloadServiceInterface.get().download(context, false, requests.toArray(new DownloadRequest[0]));
                 }
             }
         };

@@ -9,7 +9,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * Shows the dialog that allows setting the skip time.

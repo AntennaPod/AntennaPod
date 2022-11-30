@@ -23,6 +23,8 @@ android {
 dependencies {
     implementation project(':event')
     implementation project(':model')
+    implementation project(':net:common')
+    implementation project(':net:download:service-interface')
     implementation project(':net:ssl')
     implementation project(':net:sync:gpoddernet')
     implementation project(':net:sync:model')
@@ -31,6 +33,7 @@ dependencies {
     implementation project(':playback:base')
     implementation project(':playback:cast')
     implementation project(':storage:database')
+    implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':ui:i18n')
@@ -42,7 +45,6 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.media:media:$mediaVersion"
-    implementation "androidx.palette:palette:$paletteVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
@@ -51,7 +53,6 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glideVersion@aar"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
@@ -70,7 +71,7 @@ dependencies {
     playApi "com.google.android.support:wearable:$wearableSupportVersion"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
-    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation "androidx.test:core:$testCoreVersion"
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation "junit:junit:$junitVersion"
     testImplementation 'org.mockito:mockito-inline:3.5.13'

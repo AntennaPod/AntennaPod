@@ -28,11 +28,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 public abstract class PlaybackServiceMediaPlayer {
     private static final String TAG = "PlaybackSvcMediaPlayer";
 
-    /**
-     * Return value of some PSMP methods if the method call failed.
-     */
-    public static final int INVALID_TIME = -1;
-
     private volatile PlayerStatus oldPlayerStatus;
     protected volatile PlayerStatus playerStatus;
 
@@ -307,7 +302,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      * @param position  The position to be set to the current Playable object in case playback started or paused.
-     *                  Will be ignored if given the value of {@link #INVALID_TIME}.
+     *                  Will be ignored if given the value of {@link Playable#INVALID_TIME}.
      */
     protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus,
                                                       Playable newMedia, int position) {
@@ -337,7 +332,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @see #setPlayerStatus(PlayerStatus, Playable, int)
      */
     protected final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
-        setPlayerStatus(newStatus, newMedia, INVALID_TIME);
+        setPlayerStatus(newStatus, newMedia, Playable.INVALID_TIME);
     }
 
     public interface PSMPCallback {

@@ -93,6 +93,7 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
+    <string name="clear_playback_history_msg">This will clear the entire playback history. Are you sure you want to proceed?</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
@@ -705,6 +706,8 @@
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">{fa-spinner}</string>
+    <string name="edit_url_menu">Edit feed URL</string>
+    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
@@ -723,7 +726,9 @@
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
+    <string name="country">Country</string>
 
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>

@@ -8,9 +8,9 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -145,7 +145,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 for (OpmlElement opmlElem : opmlElements) {
                     Feed feed = new Feed(opmlElem.getXmlUrl(), null, opmlElem.getText());
                     DownloadRequest request = DownloadRequestCreator.create(feed).build();
-                    DownloadService.download(mContext, false, request);
+                    DownloadServiceInterface.get().download(mContext, false, request);
                 }
             } catch (XmlPullParserException e) {
                 Log.e(TAG, "Error while parsing the OPML file", e);

@@ -44,8 +44,13 @@ public class SubscriptionsSection extends HomeSection {
         listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
         listAdapter.setDummyViews(NUM_FEEDS);
         viewBinding.recyclerView.setAdapter(listAdapter);
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

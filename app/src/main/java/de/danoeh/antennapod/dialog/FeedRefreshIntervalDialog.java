@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.databinding.FeedRefreshDialogBinding;
 import org.apache.commons.lang3.ArrayUtils;

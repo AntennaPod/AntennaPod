@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -51,10 +52,9 @@ import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
@@ -215,8 +215,8 @@ public class AudioPlayerFragment extends Fragment implements
                     SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
             return false;
         });
-        butSkip.setOnClickListener(v ->
-                IntentUtils.sendLocalBroadcast(getActivity(), PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+        butSkip.setOnClickListener(v -> getActivity().sendBroadcast(
+                MediaButtonReceiver.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT)));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -263,7 +263,7 @@ public class AudioPlayerFragment extends Fragment implements
             Playable media = controller.getMedia();
             if (media != null) {
                 if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext());
+                    ChapterUtils.loadChapters(media, getContext(), false);
                 }
                 emitter.onSuccess(media);
             } else {
@@ -374,7 +374,7 @@ public class AudioPlayerFragment extends Fragment implements
         int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         currentChapterIndex = ChapterUtils.getCurrentChapterIndex(controller.getMedia(), currentPosition);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }

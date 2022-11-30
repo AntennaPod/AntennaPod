@@ -65,9 +65,13 @@ public class InboxSection extends HomeSection {
         SwipeActions swipeActions = new SwipeActions(this, InboxFragment.TAG);
         swipeActions.attachTo(viewBinding.recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
-
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

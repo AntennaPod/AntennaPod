@@ -26,10 +26,10 @@ import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import io.reactivex.Completable;
@@ -59,7 +59,7 @@ public class OpmlImportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewBinding = OpmlSelectionBinding.inflate(getLayoutInflater());
@@ -96,7 +96,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                     }
                     OpmlElement element = readElements.get(checked.keyAt(i));
                     Feed feed = new Feed(element.getXmlUrl(), null, element.getText());
-                    DownloadService.download(this, false, DownloadRequestCreator.create(feed).build());
+                    DownloadServiceInterface.get().download(this, false, DownloadRequestCreator.create(feed).build());
                 }
             })
                     .subscribeOn(Schedulers.io())

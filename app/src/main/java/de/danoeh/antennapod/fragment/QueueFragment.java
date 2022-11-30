@@ -34,7 +34,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -144,7 +144,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             case SET_QUEUE:
             case SORTED: //Deliberate fall-through
                 queue = event.items;
-                recyclerAdapter.notifyDataSetChanged();
+                recyclerAdapter.updateItems(event.items);
                 break;
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
@@ -154,7 +154,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case CLEARED:
                 queue.clear();
-                recyclerAdapter.notifyDataSetChanged();
+                recyclerAdapter.updateItems(queue);
                 break;
             case MOVED:
                 return;

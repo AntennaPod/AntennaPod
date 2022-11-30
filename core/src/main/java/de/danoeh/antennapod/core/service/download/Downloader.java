@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
 /**
  * Downloads files

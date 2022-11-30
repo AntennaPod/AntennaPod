@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +20,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.appbar.MaterialToolbar;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
@@ -38,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -46,9 +45,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -106,7 +104,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        lastTheme = UserPreferences.getNoTitleTheme();
+        lastTheme = ThemeSwitcher.getNoTitleTheme(this);
         setTheme(lastTheme);
         if (savedInstanceState != null) {
             ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
@@ -119,6 +117,12 @@ public class MainActivity extends CastEnabledActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
         setNavDrawerSize();
+
+        // Consume navigation bar insets - we apply them in setPlayerVisible()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
+                new WindowInsetsCompat.Builder(insets)
+                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                        .build());
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
@@ -454,7 +458,7 @@ public class MainActivity extends CastEnabledActivity {
         handleNavIntent();
         RatingDialog.check();
 
-        if (lastTheme != UserPreferences.getNoTitleTheme()) {
+        if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -463,7 +467,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        lastTheme = UserPreferences.getNoTitleTheme(); // Don't recreate activity when a result is pending
+        lastTheme = ThemeSwitcher.getNoTitleTheme(this); // Don't recreate activity when a result is pending
     }
 
     @Override
@@ -472,7 +476,6 @@ public class MainActivity extends CastEnabledActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
@@ -686,9 +689,7 @@ public class MainActivity extends CastEnabledActivity {
         }
 
         if (customKeyCode != null) {
-            Intent intent = new Intent(this, PlaybackService.class);
-            intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
-            ContextCompat.startForegroundService(this, intent);
+            sendBroadcast(MediaButtonReceiver.createIntent(this, customKeyCode));
             return true;
         }
         return super.onKeyUp(keyCode, event);
