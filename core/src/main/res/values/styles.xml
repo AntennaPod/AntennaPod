@@ -160,9 +160,17 @@
 
     <style name="Theme.AntennaPod.Splash" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">@color/icon_background_gradient_start</item>
-        <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/icon_background_gradient_end</item>
+        <item name="colorPrimary">#000</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

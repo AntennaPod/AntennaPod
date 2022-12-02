@@ -4,13 +4,16 @@
     <item>
         <shape android:shape="rectangle" >
             <gradient
-                android:angle="-45"
+                android:angle="315"
                 android:startColor="#00c7fa"
                 android:endColor="#3650f3" />
         </shape>
     </item>
 
-    <item>
+    <item
+        android:gravity="center"
+        android:width="64dp"
+        android:height="64dp">
         <bitmap
             android:gravity="center"
             android:src="@drawable/ic_monochrome"/>

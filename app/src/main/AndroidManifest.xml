@@ -32,7 +32,7 @@
         android:name="de.danoeh.antennapod.PodcastApp"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="Icon test AntennaPod"
+        android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
         android:theme="@style/Theme.AntennaPod.Splash"
@@ -76,6 +76,7 @@
 
         <activity
             android:name=".activity.SplashActivity"
+            android:label="@string/app_name"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
@@ -98,6 +99,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|keyboard|navigation"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
+            android:label="@string/app_name"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
