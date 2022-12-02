@@ -31,8 +31,8 @@
     <color name="accent_light_alpha">#250078C2</color>
     <color name="accent_dark">#3D8BFF</color>
     <color name="accent_dark_alpha">#253D8BFF</color>
-    <color name="icon_background_gradient_start">#0ba2ff</color>
-    <color name="icon_background_gradient_end">#0878ff</color>
+    <color name="icon_background_gradient_start">#00c7fa</color>
+    <color name="icon_background_gradient_end">#3650f3</color>
 
     <color name="master_switch_background_light">#DDDDDD</color>
     <color name="master_switch_background_dark">#191919</color>
