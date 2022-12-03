@@ -1068,8 +1068,11 @@ public class PodDBAdapter {
     public Cursor getRandomEpisodesCursor(int limit, int seed) {
         final String allItemsRandomOrder = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE (" + KEY_READ + " = " + FeedItem.NEW + " OR " + KEY_READ + " = " + FeedItem.UNPLAYED + ") "
-                    // Only from the last two years. Older episodes frequently contain broken covers and stuff like that
+                    // Only from the last two years. Older episodes often contain broken covers and stuff like that
                     + " AND " + KEY_PUBDATE + " > " + (System.currentTimeMillis() - 1000L * 3600L * 24L * 356L * 2)
+                    // Hide episodes that have been played but not completed
+                    + " AND (" + KEY_LAST_PLAYED_TIME + " == 0"
+                        + " OR " + KEY_LAST_PLAYED_TIME + " > " + (System.currentTimeMillis() - 1000L * 3600L) + ")"
                 + " ORDER BY " + randomEpisodeNumber(seed);
         final String query = "SELECT * FROM (" + allItemsRandomOrder + ")"
                 + " GROUP BY " + KEY_FEED
