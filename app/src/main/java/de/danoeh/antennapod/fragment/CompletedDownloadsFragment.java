@@ -22,7 +22,9 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -33,6 +35,8 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -180,8 +184,32 @@ public class CompletedDownloadsFragment extends Fragment
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        }  else if (item.getItemId() == R.id.downloads_sort_duration_asc) {
+            setSortOrder(SortOrder.DURATION_SHORT_LONG);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_duration_desc) {
+            setSortOrder(SortOrder.DURATION_LONG_SHORT);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_episode_title_asc) {
+            setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_episode_title_desc) {
+            setSortOrder(SortOrder.EPISODE_TITLE_Z_A);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_feed_title_asc) {
+            setSortOrder(SortOrder.FEED_TITLE_A_Z);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_feed_title_desc) {
+            setSortOrder(SortOrder.FEED_TITLE_Z_A);
+            return true;
         }
+
         return false;
+    }
+
+    private void setSortOrder(SortOrder sortOrder) {
+        UserPreferences.setDownloadsSortedOrder(sortOrder);
+        loadItems();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -283,6 +311,11 @@ public class CompletedDownloadsFragment extends Fragment
         emptyView.hide();
         disposable = Observable.fromCallable(() -> {
             List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+
+            SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
+            final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
+            permutor.reorder(downloadedItems);
+
             List<Long> mediaIds = new ArrayList<>();
             if (runningDownloads == null) {
                 return downloadedItems;

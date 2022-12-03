@@ -22,5 +22,54 @@
         android:menuCategory="container"
         android:icon="@drawable/ic_refresh"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/sort"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/sort"
+        custom:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/downloads_sort_duration"
+                android:title="@string/duration">
+
+                <menu>
+                    <item
+                        android:id="@+id/downloads_sort_duration_asc"
+                        android:title="@string/sort_short_long" />
+                    <item
+                        android:id="@+id/downloads_sort_duration_desc"
+                        android:title="@string/sort_long_short" />
+                </menu>
+            </item>
+
+            <item
+                android:id="@+id/downloads_sort_episode_title"
+                android:title="@string/episode_title">
+
+                <menu>
+                    <item
+                        android:id="@+id/downloads_sort_episode_title_asc"
+                        android:title="@string/sort_a_z" />
+                    <item
+                        android:id="@+id/downloads_sort_episode_title_desc"
+                        android:title="@string/sort_z_a" />
+                </menu>
+            </item>
+            <item
+                android:id="@+id/downloads_sort_feed_title"
+                android:title="@string/feed_title">
+
+                <menu>
+                    <item
+                        android:id="@+id/downloads_sort_feed_title_asc"
+                        android:title="@string/sort_a_z" />
+                    <item
+                        android:id="@+id/downloads_sort_feed_title_desc"
+                        android:title="@string/sort_z_a" />
+                </menu>
+            </item>
+        </menu>
+    </item>
 
 </menu>
