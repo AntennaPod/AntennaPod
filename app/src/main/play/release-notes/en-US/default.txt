@@ -1,6 +1,1 @@
-∙ View "New Episodes" list now in a dedicated screen called Inbox, with swipe actions (@ByteHamster)
-∙ Use swipe actions and quickly toggle Favourites on the Episodes screen (@ByteHamster)
-∙ View a list of (unplayed) episodes in Android Auto (@tonytamsf)
-∙ Scroll to the top of lists by long-pressing the toolbar (@ByteHamster)
-∙ Bug fixes around authentication for podcasts & Nextcloud sync (@ByteHamster)
-∙ Directly open localised documentation if available (for now: da, fr, it, nl) (@ByteHamster)
+This is an alpha release.
