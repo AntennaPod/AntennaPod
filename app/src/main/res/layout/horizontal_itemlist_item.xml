@@ -93,6 +93,12 @@
 
             </androidx.cardview.widget.CardView>
 
+            <View
+                android:id="@+id/progressBarReplacementSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/titleLabel"
                 android:layout_width="128dp"
@@ -103,7 +109,8 @@
                 android:paddingHorizontal="4dp"
                 android:singleLine="false"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="@sample/episodes.json/data/title" />
 
             <TextView
                 android:id="@+id/dateLabel"
@@ -114,6 +121,7 @@
                 android:singleLine="true"
                 android:textAlignment="textStart"
                 android:textSize="14sp"
+                tools:text="@sample/episodes.json/data/published_at"
                 style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
         </LinearLayout>
