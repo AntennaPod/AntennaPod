@@ -184,6 +184,12 @@ public class CompletedDownloadsFragment extends Fragment
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        }  else if (item.getItemId() == R.id.downloads_sort_date_asc) {
+            setSortOrder(SortOrder.DATE_OLD_NEW);
+            return true;
+        } else if (item.getItemId() == R.id.downloads_sort_date_desc) {
+            setSortOrder(SortOrder.DATE_NEW_OLD);
+            return true;
         }  else if (item.getItemId() == R.id.downloads_sort_duration_asc) {
             setSortOrder(SortOrder.DURATION_SHORT_LONG);
             return true;

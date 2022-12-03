@@ -929,7 +929,7 @@ public class UserPreferences {
     public static SortOrder getDownloadsSortedOrder() {
         String sortOrderStr = prefs.getString(PREF_DOWNLOADS_SORTED_ORDER, "use-default");
         Log.d(TAG, sortOrderStr);
-        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.FEED_TITLE_A_Z);
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
     }
 
     /**

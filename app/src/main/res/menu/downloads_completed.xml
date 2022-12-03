@@ -23,12 +23,24 @@
         android:icon="@drawable/ic_refresh"
         app:showAsAction="always" />
     <item
-        android:id="@+id/sort"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="@string/sort"
-        custom:showAsAction="always">
+        android:id="@+id/downloads_sort"
+        android:title="@string/sort">
 
         <menu>
+            <item
+                android:id="@+id/downloads_sort_date"
+                android:title="@string/date">
+
+                <menu>
+                    <item
+                        android:id="@+id/downloads_sort_date_asc"
+                        android:title="@string/sort_old_new" />
+                    <item
+                        android:id="@+id/downloads_sort_date_desc"
+                        android:title="@string/sort_new_old" />
+                </menu>
+            </item>
+
             <item
                 android:id="@+id/downloads_sort_duration"
                 android:title="@string/duration">
@@ -56,6 +68,7 @@
                         android:title="@string/sort_z_a" />
                 </menu>
             </item>
+
             <item
                 android:id="@+id/downloads_sort_feed_title"
                 android:title="@string/feed_title">
