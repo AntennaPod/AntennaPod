@@ -165,7 +165,7 @@
     <item quantity="other">%d abonnementer opdateret.</item>
   </plurals>
   <string name="edit_tags">Rediger etiketter</string>
-  <string name="rename_tag_label">Omdøb etikette</string>
+  <string name="rename_tag_label">Omdøb etiket</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Opdatering af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nØnsker du alligevel at opdatere?</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
@@ -240,7 +240,7 @@
   <string name="download_error_forbidden">Podcast-værtens server nægter at svare.</string>
   <string name="download_canceled_msg">Overførsel annulleret</string>
   <string name="download_error_wrong_size">Mistede serverforbindelsen før overførsel var komplet.</string>
-  <string name="download_error_blocked">Overførslen blev blokeret af en anden app på din enhed (f.eks. en VPN eller en reklameblokering).</string>
+  <string name="download_error_blocked">Overførslen blev blokeret af en anden app på din enhed (f.eks. en VPN eller en reklameblokeringsapp).</string>
   <string name="download_error_certificate">Kan ikke oprette en sikker forbindelse. Det kan betyde, at en anden app på din enhed (f.eks. en VPN eller en reklameblokering) har blokeret overførslen, eller at der er noget galt med servercertifikaterne.</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
   <string name="auto_download_report_title">Automatiske overførsler fuldført</string>
@@ -375,7 +375,7 @@
   <string name="feed_refresh_interval_at">kl. %1$s</string>
   <plurals name="feed_refresh_every_x_hours">
     <item quantity="one">Hver time</item>
-    <item quantity="other">Hver %d time</item>
+    <item quantity="other">Hver %d. time</item>
   </plurals>
   <string name="pref_followQueue_title">Kontinuerlig afspilning</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Hovedtelefoner eller bluetooth afbrudt</string>
@@ -592,7 +592,7 @@
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
   <!--gpodder.net-->
   <string name="gpodnetauth_login_butLabel">Log ind</string>
-  <string name="gpodnetauth_encryption_warning">Adgangskode og date er ikke krypteret!</string>
+  <string name="gpodnetauth_encryption_warning">Adgangskode og data er ikke krypteret!</string>
   <string name="username_label">Brugernavn</string>
   <string name="password_label">Adgangskode</string>
   <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>

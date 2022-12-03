@@ -10,6 +10,10 @@
         android:title="@string/inbox_label"/>
 
     <Preference
+        android:key="prefSwipeEpisodes"
+        android:title="@string/episodes_label"/>
+
+    <Preference
         android:key="prefSwipeDownloads"
         android:title="@string/downloads_label"/>
 
