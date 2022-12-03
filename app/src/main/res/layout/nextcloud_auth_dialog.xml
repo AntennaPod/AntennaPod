@@ -18,7 +18,7 @@
             android:id="@+id/serverUrlText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/gpodnetauth_host"
+            android:hint="@string/synchronization_host_label"
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:imeOptions="actionNext|flagNoFullscreen" />
@@ -58,6 +58,6 @@
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gpodnetauth_login_butLabel" />
+        android:text="@string/proceed_butLabel" />
 
 </LinearLayout>
