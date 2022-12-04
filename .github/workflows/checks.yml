@@ -113,11 +113,11 @@ jobs:
       matrix:
         include:
           - api: 19
-            target: aosp
+            target: default
           - api: 25
             target: aosp_atd
           - api: 31
-            target: aosp-atd
+            target: default
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
