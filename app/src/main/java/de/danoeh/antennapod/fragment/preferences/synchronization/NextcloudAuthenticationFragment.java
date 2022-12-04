@@ -87,6 +87,6 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         viewBinding.loginProgressContainer.setVisibility(View.GONE);
         viewBinding.errorText.setVisibility(View.VISIBLE);
         viewBinding.errorText.setText(errorMessage);
-        viewBinding.loginButton.setVisibility(View.VISIBLE);
+        viewBinding.chooseHostButton.setVisibility(View.VISIBLE);
     }
 }
