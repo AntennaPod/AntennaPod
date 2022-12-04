@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/gpodnetauth_device_name"
             android:lines="1"
-            android:imeOptions="actionNext|flagNoFullscreen"/>
+            android:imeOptions="actionNext|flagNoFullscreen" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -32,14 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|end"
-        android:text="@string/gpodnetauth_create_device"/>
+        android:text="@string/gpodnetauth_create_device" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/gpodnetauth_existing_devices"
-        style="@style/AntennaPod.TextView.Heading"/>
+        style="@style/AntennaPod.TextView.Heading" />
 
     <TextView
         android:id="@+id/deviceSelectError"
