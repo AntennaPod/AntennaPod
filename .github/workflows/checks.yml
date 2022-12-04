@@ -23,7 +23,7 @@ jobs:
         id: vars
         run: |
           git fetch origin develop
-          echo "::set-output name=branchBaseCommit::$(git merge-base origin/develop HEAD)"
+          echo "branchBaseCommit=$(git merge-base origin/develop HEAD)" >> $GITHUB_OUTPUT
       - name: Diff-Checkstyle
         run: |
           curl -s -L https://github.com/yangziwen/diff-check/releases/download/0.0.7/diff-checkstyle.jar > diff-checkstyle.jar
@@ -113,8 +113,11 @@ jobs:
       matrix:
         include:
           - api: 19
+            target: aosp
           - api: 25
+            target: aosp_atd
           - api: 31
+            target: aosp-atd
     env:
       api-level: ${{ matrix.api }}
     steps:
