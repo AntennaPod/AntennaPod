@@ -621,7 +621,7 @@
     <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
     <string name="synchronization_host_label">Server address</string>
-    <string name="proceed_butLabel">Proceed</string>
+    <string name="proceed_to_login_butLabel">Proceed to login</string>
     <string name="synchronization_nextcloud_authenticate_browser">Grant access using the opened web browser and come back to AntennaPod.</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>

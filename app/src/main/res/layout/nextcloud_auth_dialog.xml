@@ -55,9 +55,9 @@
         android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/chooseHostButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/proceed_butLabel" />
+        android:text="@string/proceed_to_login_butLabel" />
 
 </LinearLayout>
