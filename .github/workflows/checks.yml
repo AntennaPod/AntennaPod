@@ -105,12 +105,18 @@ jobs:
           path: app/build/outputs/apk/play/debug/app-play-debug.apk
 
   emulator-test:
-    name: "Emulator Test"
+    name: "Emulator Test: API ${{ matrix.api }}"
     needs: code-style
     runs-on: macOS-latest
     timeout-minutes: 45
+    strategy:
+      matrix:
+        include:
+          - api: 19
+          - api: 25
+          - api: 31
     env:
-      api-level: 30
+      api-level: ${{ matrix.api }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -125,8 +131,6 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Build with Gradle
-        run: ./gradlew assemblePlayDebugAndroidTest
       - name: Cache AVD
         uses: actions/cache@v3
         id: avd-cache
@@ -134,7 +138,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ hashFiles('.github/workflows/*') }}
+          key: avd-${{ matrix.api }}-${{ hashFiles('.github/workflows/*') }}
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
