@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
-import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
@@ -22,10 +21,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
 import de.test.antennapod.EspressoTestUtils;
@@ -37,7 +33,6 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
-import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
@@ -94,18 +89,6 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testEnablePersistentPlaybackControls() {
-        final boolean persistNotify = UserPreferences.isPersistNotify();
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_persistNotify_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> persistNotify != UserPreferences.isPersistNotify());
-        clickPreference(R.string.pref_persistNotify_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> persistNotify == UserPreferences.isPersistNotify());
-    }
-
-    @Test
     public void testSetLockscreenButtons() {
         clickPreference(R.string.user_interface_label);
         String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
@@ -141,108 +124,11 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testEnqueueLocation() {
-        clickPreference(R.string.playback_pref);
-        doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
-        doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
-        doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
-    }
-
-    private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
-        clickPreference(R.string.pref_enqueue_location_title);
-        onView(withText(optionResId)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> expected == UserPreferences.getEnqueueLocation());
-    }
-
-    @Test
-    public void testHeadPhonesDisconnect() {
-        clickPreference(R.string.playback_pref);
-        final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetDisconnect();
-        onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseOnHeadsetDisconnect != UserPreferences.isPauseOnHeadsetDisconnect());
-        onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetDisconnect());
-    }
-
-    @Test
-    public void testHeadPhonesReconnect() {
-        clickPreference(R.string.playback_pref);
-        if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
-            onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
-            Awaitility.await().atMost(1000, MILLISECONDS)
-                    .until(UserPreferences::isPauseOnHeadsetDisconnect);
-        }
-        final boolean unpauseOnHeadsetReconnect = UserPreferences.isUnpauseOnHeadsetReconnect();
-        onView(withText(R.string.pref_unpauseOnHeadsetReconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> unpauseOnHeadsetReconnect != UserPreferences.isUnpauseOnHeadsetReconnect());
-        onView(withText(R.string.pref_unpauseOnHeadsetReconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> unpauseOnHeadsetReconnect == UserPreferences.isUnpauseOnHeadsetReconnect());
-    }
-
-    @Test
-    public void testBluetoothReconnect() {
-        clickPreference(R.string.playback_pref);
-        if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
-            onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
-            Awaitility.await().atMost(1000, MILLISECONDS)
-                    .until(UserPreferences::isPauseOnHeadsetDisconnect);
-        }
-        final boolean unpauseOnBluetoothReconnect = UserPreferences.isUnpauseOnBluetoothReconnect();
-        onView(withText(R.string.pref_unpauseOnBluetoothReconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> unpauseOnBluetoothReconnect != UserPreferences.isUnpauseOnBluetoothReconnect());
-        onView(withText(R.string.pref_unpauseOnBluetoothReconnect_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> unpauseOnBluetoothReconnect == UserPreferences.isUnpauseOnBluetoothReconnect());
-    }
-
-    @Test
-    public void testContinuousPlayback() {
-        clickPreference(R.string.playback_pref);
-        final boolean continuousPlayback = UserPreferences.isFollowQueue();
-        clickPreference(R.string.pref_followQueue_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> continuousPlayback != UserPreferences.isFollowQueue());
-        clickPreference(R.string.pref_followQueue_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> continuousPlayback == UserPreferences.isFollowQueue());
-    }
-
-    @Test
-    public void testAutoDelete() {
-        clickPreference(R.string.storage_pref);
-        final boolean autoDelete = UserPreferences.isAutoDelete();
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> autoDelete != UserPreferences.isAutoDelete());
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> autoDelete == UserPreferences.isAutoDelete());
-    }
-
-    @Test
     public void testPlaybackSpeeds() {
         clickPreference(R.string.playback_pref);
         clickPreference(R.string.playback_speed);
         onView(isRoot()).perform(waitForView(withText("1.25"), 1000));
         onView(withText("1.25")).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testPauseForInterruptions() {
-        clickPreference(R.string.playback_pref);
-        final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss());
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
     }
 
     @Test
@@ -319,37 +205,6 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testSetEpisodeCacheMin() {
-        String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
-        String[] values = res.getStringArray(R.array.episode_cache_size_values);
-        String minEntry = entries[0];
-        final int minValue = Integer.parseInt(values[0]);
-
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_automatic_download_title);
-        clickPreference(R.string.pref_episode_cache_title);
-        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
-        onView(withText(minEntry)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getEpisodeCacheSize() == minValue);
-    }
-
-    @Test
-    public void testSetEpisodeCacheMax() {
-        String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
-        String[] values = res.getStringArray(R.array.episode_cache_size_values);
-        String maxEntry = entries[entries.length - 1];
-        final int maxValue = Integer.parseInt(values[values.length - 1]);
-        onView(withText(R.string.network_pref)).perform(click());
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
-        onView(withText(R.string.pref_episode_cache_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
-        onView(withText(maxEntry)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getEpisodeCacheSize() == maxValue);
-    }
-
-    @Test
     public void testAutomaticDownload() {
         final boolean automaticDownload = UserPreferences.isEnableAutodownload();
         clickPreference(R.string.network_pref);
@@ -380,46 +235,6 @@ public class PreferencesTest {
         onView(withText(R.string.episode_cleanup_except_favorite_removal)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof ExceptFavoriteCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupQueueOnly() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
-        onView(withText(R.string.episode_cleanup_queue_removal)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APQueueCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupNeverAlg() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
-        onView(withText(R.string.episode_cleanup_never)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APNullCleanupAlgorithm);
-    }
-
-    @Test
-    public void testEpisodeCleanupClassic() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
-        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
-        onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> {
-                    EpisodeCleanupAlgorithm alg = EpisodeCleanupAlgorithmFactory.build();
-                    if (alg instanceof APCleanupAlgorithm) {
-                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
-                        return cleanupAlg.getNumberOfHoursAfterPlayback() == 0;
-                    }
-                    return false;
-                });
     }
 
     @Test
@@ -482,22 +297,5 @@ public class PreferencesTest {
             Awaitility.await().atMost(1000, MILLISECONDS)
                     .until(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex]);
         }
-    }
-
-    @Test
-    public void testDeleteRemovesFromQueue() {
-        clickPreference(R.string.storage_pref);
-        if (!UserPreferences.shouldDeleteRemoveFromQueue()) {
-            clickPreference(R.string.pref_delete_removes_from_queue_title);
-            Awaitility.await().atMost(1000, MILLISECONDS)
-                    .until(UserPreferences::shouldDeleteRemoveFromQueue);
-        }
-        final boolean deleteRemovesFromQueue = UserPreferences.shouldDeleteRemoveFromQueue();
-        onView(withText(R.string.pref_delete_removes_from_queue_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> deleteRemovesFromQueue != UserPreferences.shouldDeleteRemoveFromQueue());
-        onView(withText(R.string.pref_delete_removes_from_queue_title)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> deleteRemovesFromQueue == UserPreferences.shouldDeleteRemoveFromQueue());
     }
 }

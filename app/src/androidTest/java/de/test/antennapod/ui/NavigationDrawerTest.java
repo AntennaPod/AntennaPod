@@ -11,10 +11,7 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
-import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +21,6 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -147,43 +143,6 @@ public class NavigationDrawerTest {
         onView(withText(R.string.settings_label)).perform(click());
         intended(hasComponent(PreferenceActivity.class.getName()));
     }
-
-    @Test
-    public void testDrawerPreferencesHideSomeElements() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        activityRule.launchActivity(new Intent());
-        openNavDrawer();
-        onDrawerItem(withText(R.string.queue_label)).perform(longClick());
-        onView(withText(R.string.episodes_label)).perform(click());
-        onView(withId(R.id.contentPanel)).perform(swipeUp());
-        onView(withText(R.string.playback_history_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-
-        List<String> hidden = UserPreferences.getHiddenDrawerItems();
-        assertEquals(2, hidden.size());
-        assertTrue(hidden.contains(AllEpisodesFragment.TAG));
-        assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
-    }
-
-    @Test
-    public void testDrawerPreferencesUnhideSomeElements() {
-        List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, CompletedDownloadsFragment.TAG);
-        UserPreferences.setHiddenDrawerItems(hidden);
-        activityRule.launchActivity(new Intent());
-        openNavDrawer();
-        onView(first(withText(R.string.queue_label))).perform(longClick());
-
-        onView(withText(R.string.queue_label)).perform(click());
-        onView(withId(R.id.contentPanel)).perform(swipeUp());
-        onView(withText(R.string.downloads_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-
-        hidden = UserPreferences.getHiddenDrawerItems();
-        assertEquals(2, hidden.size());
-        assertTrue(hidden.contains(QueueFragment.TAG));
-        assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
-    }
-
 
     @Test
     public void testDrawerPreferencesHideAllElements() {
