@@ -630,7 +630,7 @@
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
     <string name="synchronization_login_butLabel">Log in</string>
-    <string name="synchronization_select-device_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
+    <string name="synchronization_selectDevice_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
     <string name="gpodnetauth_device_name">Device name</string>
     <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_existing_devices">Existing devices</string>
