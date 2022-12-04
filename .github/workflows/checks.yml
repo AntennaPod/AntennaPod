@@ -116,8 +116,8 @@ jobs:
             target: default
           - api: 25
             target: aosp_atd
-          - api: 31
-            target: default
+          - api: 30
+            target: aosp_atd
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
