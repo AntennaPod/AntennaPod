@@ -133,7 +133,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-        if(tag.equals("PlaybackHistoryFragment")) {
+        if (tag.equals("PlaybackHistoryFragment")) {
             new RemoveFromHistorySwipeAction().performAction(
                     ((EpisodeItemViewHolder) viewHolder).getFeedItem(),
                     fragment,
