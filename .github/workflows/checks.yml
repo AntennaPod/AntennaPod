@@ -118,8 +118,6 @@ jobs:
             target: aosp_atd
           - api: 31
             target: aosp-atd
-    env:
-      api-level: ${{ matrix.api }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -146,8 +144,8 @@ jobs:
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ env.api-level }}
-          target: aosp_atd
+          api-level: ${{ matrix.api }}
+          target: ${{ matrix.target }}
           channel: canary
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -156,8 +154,8 @@ jobs:
       - name: Android Emulator test
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ env.api-level }}
-          target: aosp_atd
+          api-level: ${{ matrix.api }}
+          target: ${{ matrix.target }}
           channel: canary
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
