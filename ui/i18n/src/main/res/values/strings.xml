@@ -620,14 +620,17 @@
     <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
     <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
+    <string name="synchronization_host_explanation">Please provide the address (URL or IP address) of your synchronization server.</string>
     <string name="synchronization_host_label">Server address</string>
     <string name="proceed_to_login_butLabel">Proceed to login</string>
     <string name="synchronization_nextcloud_authenticate_browser">Grant access using the opened web browser and come back to AntennaPod.</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="synchronization_credentials_explanation">Please provide the credentials of your account on the synchronization server.</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
     <string name="synchronization_login_butLabel">Log in</string>
+    <string name="synchronization_select-device_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
     <string name="gpodnetauth_device_name">Device name</string>
     <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_existing_devices">Existing devices</string>
