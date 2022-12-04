@@ -8,6 +8,7 @@
         android:id="@+id/viewflipper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:measureAllChildren="false"
         android:inAnimation="@anim/slide_right_in"
         android:outAnimation="@anim/slide_left_out">
 
