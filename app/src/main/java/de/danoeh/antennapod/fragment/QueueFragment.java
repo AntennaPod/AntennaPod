@@ -124,7 +124,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (disposable != null) {
             disposable.dispose();
         }
-        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, queue.size()).apply();
+        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, queue == null ? 0 : queue.size()).apply();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -468,7 +468,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
         };
         recyclerAdapter.setOnSelectModeListener(this);
-        recyclerAdapter.setDummyViews(Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5)));
+        int previousEpisodes = Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5));
+        recyclerView.postDelayed(() -> recyclerAdapter.showDummyViewsIfNeverUpdated(previousEpisodes), 250);
         recyclerView.setAdapter(recyclerAdapter);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);

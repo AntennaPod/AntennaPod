@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.HorizontalItemListAdapter;
 import de.danoeh.antennapod.databinding.HomeSectionBinding;
@@ -43,6 +44,10 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         if (TextUtils.isEmpty(getMoreLinkTitle())) {
             viewBinding.moreButton.setVisibility(View.INVISIBLE);
         }
+        // Dummies are necessary to ensure height, but do not animate them
+        viewBinding.recyclerView.setItemAnimator(null);
+        viewBinding.recyclerView.postDelayed(
+                () -> viewBinding.recyclerView.setItemAnimator(new DefaultItemAnimator()), 500);
         return viewBinding.getRoot();
     }
 
