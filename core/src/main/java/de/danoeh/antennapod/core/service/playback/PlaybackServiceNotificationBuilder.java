@@ -212,17 +212,14 @@ public class PlaybackServiceNotificationBuilder {
         }
         numActions++;
 
-        if (UserPreferences.isFollowQueue()) {
-            PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                    KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-            notification.addAction(R.drawable.ic_notification_skip,
-                    context.getString(R.string.skip_episode_label),
-                    skipButtonPendingIntent);
-            if (UserPreferences.showSkipOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
-            numActions++;
+        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
+                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
+        notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
+                skipButtonPendingIntent);
+        if (UserPreferences.showSkipOnCompactNotification()) {
+            compactActionList.add(numActions);
         }
+        numActions++;
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
