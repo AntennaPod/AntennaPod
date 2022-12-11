@@ -2,6 +2,7 @@ package de.danoeh.antennapod.net.sync;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.IDN;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +19,7 @@ public class HostnameParser {
         Matcher m = URLSPLIT_REGEX.matcher(hosturl);
         if (m.matches()) {
             scheme = m.group(1);
-            host = m.group(2);
+            host = IDN.toASCII(m.group(2));
             if (m.group(3) == null) {
                 port = -1;
             } else {
@@ -32,7 +33,7 @@ public class HostnameParser {
         } else {
             // URL does not match regex: use it anyway -> this will cause an exception on connect
             scheme = "https";
-            host = hosturl;
+            host = IDN.toASCII(hosturl);
             port = 443;
         }
 

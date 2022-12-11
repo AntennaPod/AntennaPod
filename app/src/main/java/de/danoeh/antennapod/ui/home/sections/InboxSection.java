@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
@@ -133,7 +134,11 @@ public class InboxSection extends HomeSection {
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);
                     viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
-                    viewBinding.numNewItemsLabel.setText(String.valueOf(data.second));
+                    if (data.second >= 100) {
+                        viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d+", 99));
+                    } else {
+                        viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d", data.second));
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }
