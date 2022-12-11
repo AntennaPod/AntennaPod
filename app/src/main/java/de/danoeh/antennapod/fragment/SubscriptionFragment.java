@@ -161,7 +161,8 @@ public class SubscriptionFragment extends Fragment
             }
         };
         subscriptionAdapter.setOnSelectModeListener(this);
-        subscriptionAdapter.setDummyViews(Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5)));
+        int previousEpisodes = Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5));
+        subscriptionRecycler.postDelayed(() -> subscriptionAdapter.showDummyViewsIfNeverUpdated(previousEpisodes), 250);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
 
@@ -318,7 +319,6 @@ public class SubscriptionFragment extends Fragment
                         listItems = result;
                         subscriptionAdapter.setDummyViews(0);
                         subscriptionAdapter.setItems(result);
-                        subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -410,7 +410,6 @@ public class SubscriptionFragment extends Fragment
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
         subscriptionAdapter.setItems(listItems);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -422,6 +421,5 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 }

@@ -144,7 +144,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new FeedItemListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
-        adapter.setDummyViews(10);
+        viewBinding.recyclerView.postDelayed(() -> adapter.showDummyViewsIfNeverUpdated(10), 250);
         viewBinding.recyclerView.setAdapter(adapter);
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
 

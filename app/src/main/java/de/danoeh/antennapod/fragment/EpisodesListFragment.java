@@ -206,7 +206,7 @@ public abstract class EpisodesListFragment extends Fragment
         listAdapter.setOnSelectModeListener(this);
         int previousEpisodesCount = getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE)
                 .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
-        listAdapter.setDummyViews(Math.max(1, previousEpisodesCount));
+        recyclerView.postDelayed(() -> listAdapter.showDummyViewsIfNeverUpdated(previousEpisodesCount), 250);
         recyclerView.setAdapter(listAdapter);
 
         emptyView = new EmptyViewHandler(getContext());

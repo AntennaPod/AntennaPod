@@ -39,6 +39,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     private FeedItem longPressedItem;
     int longPressedPosition = 0; // used to init actionMode
     private int dummyViews = 0;
+    private boolean wasEverUpdated = false;
 
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -48,10 +49,18 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     public void setDummyViews(int dummyViews) {
         this.dummyViews = dummyViews;
+        notifyDataSetChanged();
+    }
+
+    public void showDummyViewsIfNeverUpdated(int dummyViews) {
+        if (!wasEverUpdated) {
+            setDummyViews(dummyViews);
+        }
     }
 
     public void updateItems(List<FeedItem> items) {
         episodes = items;
+        wasEverUpdated = true;
         notifyDataSetChanged();
         updateTitle();
     }
