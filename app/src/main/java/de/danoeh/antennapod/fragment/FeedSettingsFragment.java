@@ -16,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -256,6 +257,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
                         DBWriter.setFeedPreferences(feedPreferences);
+                        DBTasks.forceRefreshFeed(requireContext(), feed, true);
                     }
                 }.show();
                 return false;
