@@ -113,6 +113,15 @@ public class UITestUtils {
         return mediaFile;
     }
 
+    /**
+     * Update feed at the given index on the server.
+     *
+     * @param feedIndex the index of feed to update in `hostedFeeds`.
+     */
+    public void refreshFeedOnServer(int feedIndex) throws IOException {
+        hostFeed(hostedFeeds.get(feedIndex));
+    }
+
     private boolean feedDataHosted = false;
 
     /**
