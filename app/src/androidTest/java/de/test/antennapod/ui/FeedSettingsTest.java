@@ -85,7 +85,6 @@ public class FeedSettingsTest {
 
     /**
      * Test that modifying a feed's authentication settings results in proper behavior.
-     *
      * Expect:
      *      - Database has updated username and password
      *      - Feed is refreshed automatically
