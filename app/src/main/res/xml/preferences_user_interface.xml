@@ -11,6 +11,11 @@
                 android:key="prefTheme"
                 android:summary="@string/pref_set_theme_sum"
                 android:defaultValue="system"/>
+        <SwitchPreferenceCompat
+                android:title="@string/pref_tinted_theme_title"
+                android:key="prefTintedColors"
+                android:summary="@string/pref_tinted_theme_message"
+                android:defaultValue="false" />
         <Preference
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"

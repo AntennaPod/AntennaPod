@@ -2,13 +2,13 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/currently_playing_background"/>
+            <solid android:color="?attr/colorSurfaceVariant"/>
             <corners android:radius="32dp"/>
         </shape>
     </item>
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/drawer_activated_color" />
+            <solid android:color="?attr/colorSurfaceVariant" />
             <corners android:radius="32dp" />
         </shape>
     </item>

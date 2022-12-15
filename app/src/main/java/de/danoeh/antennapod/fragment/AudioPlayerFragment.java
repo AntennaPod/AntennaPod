@@ -121,7 +121,8 @@ public class AudioPlayerFragment extends Fragment implements
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
-        root.findViewById(R.id.playerFragment).setBackgroundColor(SurfaceColors.getColorForElevation(getContext(), 8));
+        root.findViewById(R.id.playerFragment).setBackgroundColor(
+                SurfaceColors.getColorForElevation(getContext(), 8 * getResources().getDisplayMetrics().density));
 
         butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);

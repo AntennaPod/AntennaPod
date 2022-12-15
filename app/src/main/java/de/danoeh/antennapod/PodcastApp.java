@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.StrictMode;
 
 import androidx.multidex.MultiDexApplication;
+import com.google.android.material.color.DynamicColors;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.joanzapata.iconify.fonts.MaterialModule;
@@ -64,6 +65,8 @@ public class PodcastApp extends MultiDexApplication {
                 .logNoSubscriberMessages(false)
                 .sendNoSubscriberEvent(false)
                 .installDefaultEventBus();
+
+        DynamicColors.applyToActivitiesIfAvailable(this);
     }
 
     public static void forceRestart() {

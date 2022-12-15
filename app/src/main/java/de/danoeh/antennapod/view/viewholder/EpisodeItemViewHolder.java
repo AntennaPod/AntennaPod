@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.elevation.SurfaceColors;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.R;
@@ -141,7 +142,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
 
         if (PlaybackStatus.isCurrentlyPlaying(media)) {
-            itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
+            float density = activity.getResources().getDisplayMetrics().density;
+            itemView.setBackgroundColor(SurfaceColors.getColorForElevation(activity, 8 * density));
         } else {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }

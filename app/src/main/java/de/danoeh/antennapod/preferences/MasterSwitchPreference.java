@@ -7,10 +7,10 @@ import android.os.Build;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class MasterSwitchPreference extends SwitchPreferenceCompat {
 
@@ -36,10 +36,7 @@ public class MasterSwitchPreference extends SwitchPreferenceCompat {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.master_switch_background, typedValue, true);
-        holder.itemView.setBackgroundColor(typedValue.data);
-
+        holder.itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSurfaceVariant));
         TextView title = (TextView) holder.findViewById(android.R.id.title);
         if (title != null) {
             title.setTypeface(title.getTypeface(), Typeface.BOLD);

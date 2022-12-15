@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
-import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
@@ -93,7 +92,7 @@ public class DownloadLogAdapter extends BaseAdapter {
         }
 
         if (status.isSuccessful()) {
-            holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_success_green));
+            holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_green));
             holder.icon.setText("{fa-check-circle}");
             holder.icon.setContentDescription(context.getString(R.string.download_successful));
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
@@ -101,10 +100,10 @@ public class DownloadLogAdapter extends BaseAdapter {
             holder.tapForDetails.setVisibility(View.GONE);
         } else {
             if (status.getReason() == DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE) {
-                holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_warning_yellow));
+                holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_yellow));
                 holder.icon.setText("{fa-exclamation-circle}");
             } else {
-                holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
+                holder.icon.setTextColor(ThemeUtils.getColorFromAttr(context, R.attr.icon_red));
                 holder.icon.setText("{fa-times-circle}");
             }
             holder.icon.setContentDescription(context.getString(R.string.error_label));
