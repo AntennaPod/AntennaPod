@@ -14,7 +14,9 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -131,12 +133,25 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             MessageDigest digester = null;
             Reader reader;
 
+            // Work around BackupDataInputStream's improper InputStream implementation
+            // by reading all the data ahead of time.
+            ByteArrayInputStream byteStream;
+            try {
+                byte[] bytes = new byte[data.size()];
+                DataInputStream dataStream = new DataInputStream(data);
+                dataStream.readFully(bytes);
+                byteStream = new ByteArrayInputStream(bytes);
+            } catch (IOException e) {
+                Log.e(TAG, "Failed reading data for OPML restoration", e);
+                return;
+            }
+
             try {
                 digester = MessageDigest.getInstance("MD5");
-                reader = new InputStreamReader(new DigestInputStream(data, digester),
+                reader = new InputStreamReader(new DigestInputStream(byteStream, digester),
                         Charset.forName("UTF-8"));
             } catch (NoSuchAlgorithmException e) {
-                reader = new InputStreamReader(data, Charset.forName("UTF-8"));
+                reader = new InputStreamReader(byteStream, Charset.forName("UTF-8"));
             }
 
             try {
@@ -151,8 +166,6 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 Log.e(TAG, "Error while parsing the OPML file", e);
             } catch (IOException e) {
                 Log.e(TAG, "Failed to restore OPML backup", e);
-            } finally {
-                IOUtils.closeQuietly(reader);
             }
         }
 
