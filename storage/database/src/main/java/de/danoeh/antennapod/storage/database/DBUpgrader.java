@@ -330,6 +330,10 @@ class DBUpgrader {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_CHAPTER_URL + " TEXT");
         }
+        if (oldVersion < 2070000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_MARK_EXCLUDED_AS_PLAYED + " INTEGER DEFAULT 0;");
+        }
     }
 
 }

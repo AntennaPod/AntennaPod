@@ -695,6 +695,7 @@
     <string name="exclude_terms">Exclude episodes containing any of the terms below</string>
     <string name="include_terms">Include only episodes containing any of the terms below</string>
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
+    <string name="mark_excluded_as_played">Mark excluded episodes as played</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>

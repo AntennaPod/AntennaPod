@@ -94,6 +94,12 @@
 
         </LinearLayout>
 
+        <CheckBox
+            android:id="@+id/markAsPlayedCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mark_excluded_as_played" />
+
     </LinearLayout>
 
 </ScrollView>

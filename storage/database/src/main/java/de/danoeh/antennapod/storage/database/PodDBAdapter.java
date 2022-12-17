@@ -50,7 +50,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2060000;
+    public static final int VERSION = 2070000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -111,6 +111,7 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_MINIMAL_DURATION_FILTER = "minimal_duration_filter";
+    public static final String KEY_MARK_EXCLUDED_AS_PLAYED = "mark_excluded_as_played";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
@@ -145,6 +146,7 @@ public class PodDBAdapter {
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_EXCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_MINIMAL_DURATION_FILTER + " INTEGER DEFAULT -1,"
+            + KEY_MARK_EXCLUDED_AS_PLAYED + " INTEGER DEFAULT -1,"
             + KEY_KEEP_UPDATED + " INTEGER DEFAULT 1,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
@@ -303,6 +305,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER + ", "
             + TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER + ", "
             + TABLE_NAME_FEEDS + "." + KEY_MINIMAL_DURATION_FILTER + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_MARK_EXCLUDED_AS_PLAYED + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
@@ -451,6 +454,7 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilterRaw());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilterRaw());
         values.put(KEY_MINIMAL_DURATION_FILTER, prefs.getFilter().getMinimalDurationFilter());
+        values.put(KEY_MARK_EXCLUDED_AS_PLAYED, prefs.getFilter().isMarkExcludedAsPlayed());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_TAGS, prefs.getTagsAsString());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
