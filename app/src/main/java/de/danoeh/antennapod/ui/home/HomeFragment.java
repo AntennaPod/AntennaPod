@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.backup.OpmlBackupAgent;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -79,6 +80,8 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             new Handler(Looper.getMainLooper()).postDelayed(() -> viewBinding.swipeRefresh.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
+
+        (new OpmlBackupAgent.OpmlBackupHelper(requireContext())).restorePendingOpmlIfAny();
 
         return viewBinding.getRoot();
     }

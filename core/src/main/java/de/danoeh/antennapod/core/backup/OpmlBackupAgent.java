@@ -8,22 +8,23 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.core.R;
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -34,8 +35,11 @@ import java.util.Arrays;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
+import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 
 public class OpmlBackupAgent extends BackupAgentHelper {
     private static final String OPML_BACKUP_KEY = "opml";
@@ -48,7 +52,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
     /**
      * Class for backing up and restoring the OPML file.
      */
-    private static class OpmlBackupHelper implements BackupHelper {
+    public static class OpmlBackupHelper implements BackupHelper {
         private static final String TAG = "OpmlBackupHelper";
 
         private static final String OPML_ENTITY_KEY = "antennapod-feeds.opml";
@@ -129,30 +133,57 @@ public class OpmlBackupAgent extends BackupAgentHelper {
             }
 
             MessageDigest digester = null;
-            Reader reader;
 
+            // Work around BackupDataInputStream's improper InputStream implementation
+            // by reading all the data ahead of time.
+            byte[] bytes = new byte[data.size()];
             try {
-                digester = MessageDigest.getInstance("MD5");
-                reader = new InputStreamReader(new DigestInputStream(data, digester),
-                        Charset.forName("UTF-8"));
-            } catch (NoSuchAlgorithmException e) {
-                reader = new InputStreamReader(data, Charset.forName("UTF-8"));
+                DataInputStream dataStream;
+                try {
+                    digester = MessageDigest.getInstance("MD5");
+                    dataStream = new DataInputStream(new DigestInputStream(data, digester));
+                } catch (NoSuchAlgorithmException e) {
+                    dataStream = new DataInputStream(data);
+                }
+                dataStream.readFully(bytes);
+            } catch (IOException e) {
+                Log.e(TAG, "Failed reading data for OPML restoration", e);
+                return;
             }
 
-            try {
-                ArrayList<OpmlElement> opmlElements = new OpmlReader().readDocument(reader);
+            // Write the OPML file to private storage to be read when AntennaPod is launched.
+            // We cannot start a foreground service for downloads from here.
+            final String opmlFileName =
+                    mContext.getResources().getString(R.string.backup_agent_pending_opml_file);
+            try (FileOutputStream output = mContext.openFileOutput(opmlFileName, 0)) {
+                output.write(bytes);
                 mChecksum = digester == null ? null : digester.digest();
+            } catch (Exception e) {
+                Log.e(TAG, "Error writing OPML for later import", e);
+            }
+        }
+
+        public void restorePendingOpmlIfAny() {
+            File pendingOpmlFile = mContext.getFileStreamPath(
+                    mContext.getResources().getString(R.string.backup_agent_pending_opml_file));
+            try (FileInputStream stream = new FileInputStream(pendingOpmlFile)) {
+                ArrayList<OpmlElement> opmlElements = new OpmlReader().readDocument(
+                        new InputStreamReader(stream, StandardCharsets.UTF_8));
                 for (OpmlElement opmlElem : opmlElements) {
                     Feed feed = new Feed(opmlElem.getXmlUrl(), null, opmlElem.getText());
                     DownloadRequest request = DownloadRequestCreator.create(feed).build();
                     DownloadServiceInterface.get().download(mContext, false, request);
                 }
+                stream.close();
+                if (!pendingOpmlFile.delete()) {
+                    Log.e(TAG, "Failed to delete pending OPML file");
+                }
+            } catch (FileNotFoundException ignored) {
+                // nothing to do
             } catch (XmlPullParserException e) {
                 Log.e(TAG, "Error while parsing the OPML file", e);
             } catch (IOException e) {
-                Log.e(TAG, "Failed to restore OPML backup", e);
-            } finally {
-                IOUtils.closeQuietly(reader);
+                Log.e(TAG, "Failed to process OPML file received from BackupAgent", e);
             }
         }
 
