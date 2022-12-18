@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,7 +76,6 @@ public class SubscriptionFragment extends Fragment
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
-    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
@@ -91,6 +91,7 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
     private MaterialToolbar toolbar;
+    private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
 
@@ -161,10 +162,11 @@ public class SubscriptionFragment extends Fragment
             }
         };
         subscriptionAdapter.setOnSelectModeListener(this);
-        int previousEpisodes = Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5));
-        subscriptionRecycler.postDelayed(() -> subscriptionAdapter.showDummyViewsIfNeverUpdated(previousEpisodes), 250);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
+
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         FloatingActionButton subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
@@ -284,8 +286,6 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, subscriptionAdapter.getItemCount()).apply();
-
         if (subscriptionAdapter != null) {
             subscriptionAdapter.endSelectMode();
         }
@@ -317,7 +317,7 @@ public class SubscriptionFragment extends Fragment
                             subscriptionAdapter.endSelectMode();
                         }
                         listItems = result;
-                        subscriptionAdapter.setDummyViews(0);
+                        progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
                         emptyView.updateVisibility();
                     }, error -> {
