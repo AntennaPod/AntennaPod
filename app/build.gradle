@@ -63,7 +63,8 @@ android {
                 'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
                 'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
                 'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter', 'VectorPath',
-                'InvalidPeriodicWorkRequestInterval', 'NotifyDataSetChanged', 'RtlEnabled', 'MonochromeLauncherIcon'
+                'InvalidPeriodicWorkRequestInterval', 'NotifyDataSetChanged', 'RtlEnabled', 'MonochromeLauncherIcon',
+                'CustomSplashScreen'
     }
 
     androidResources {
