@@ -178,6 +178,22 @@ public class MainActivity extends CastEnabledActivity {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentText("Old notification icon")
                 .build());
+        nm.notify(45, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setSmallIcon(R.drawable.notification_icon_alt1)
+                .setContentText("Alt1 notification icon")
+                .build());
+        nm.notify(46, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setSmallIcon(R.drawable.notification_icon_alt2)
+                .setContentText("Alt2 notification icon")
+                .build());
     }
 
     @Override
