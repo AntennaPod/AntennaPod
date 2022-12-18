@@ -52,8 +52,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     private List<NavDrawerData.DrawerItem> listItems;
     private NavDrawerData.DrawerItem selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
-    private int dummyViews = 0;
-    private boolean wasEverUpdated = false;
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -97,11 +95,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
-        if (position >= listItems.size()) {
-            holder.selectView.setVisibility(View.GONE);
-            holder.bindDummy();
-            return;
-        }
         NavDrawerData.DrawerItem drawerItem = listItems.get(position);
         boolean isFeed = drawerItem.type == NavDrawerData.DrawerItem.Type.FEED;
         holder.bind(drawerItem);
@@ -164,7 +157,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public int getItemCount() {
-        return listItems.size() + dummyViews;
+        return listItems.size();
     }
 
     @Override
@@ -212,20 +205,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return items;
     }
 
-    public void setDummyViews(int dummyViews) {
-        this.dummyViews = dummyViews;
-        notifyDataSetChanged();
-    }
-
-    public void showDummyViewsIfNeverUpdated(int dummyViews) {
-        if (!wasEverUpdated) {
-            setDummyViews(dummyViews);
-        }
-    }
-
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
-        wasEverUpdated = true;
         notifyDataSetChanged();
     }
 
@@ -292,17 +273,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         .withCoverView(imageView)
                         .load();
             }
-        }
-
-        public void bindDummy() {
-            feedTitle.setText("███████");
-            feedTitle.setVisibility(View.VISIBLE);
-            count.setVisibility(View.GONE);
-            new CoverLoader(mainActivityRef.get())
-                    .withResource(android.R.color.transparent)
-                    .withPlaceholderView(feedTitle, false)
-                    .withCoverView(imageView)
-                    .load();
         }
     }
 

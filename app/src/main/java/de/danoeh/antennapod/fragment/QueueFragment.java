@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -86,13 +87,13 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     private static final String PREFS = "QueueFragment";
     private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
-    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
 
     private Disposable disposable;
     private SwipeActions swipeActions;
     private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (disposable != null) {
             disposable.dispose();
         }
-        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, queue == null ? 0 : queue.size()).apply();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -445,6 +445,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
         refreshToolbarState();
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         infoBar = root.findViewById(R.id.info_bar);
         recyclerView = root.findViewById(R.id.recyclerView);
@@ -468,8 +470,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
         };
         recyclerAdapter.setOnSelectModeListener(this);
-        int previousEpisodes = Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5));
-        recyclerView.postDelayed(() -> recyclerAdapter.showDummyViewsIfNeverUpdated(previousEpisodes), 250);
         recyclerView.setAdapter(recyclerAdapter);
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
@@ -559,6 +559,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     queue = items;
+                    progressBar.setVisibility(View.GONE);
                     recyclerAdapter.setDummyViews(0);
                     recyclerAdapter.updateItems(queue);
                     if (restoreScrollPosition) {
