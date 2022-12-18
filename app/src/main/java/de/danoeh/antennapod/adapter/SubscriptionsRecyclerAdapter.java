@@ -53,6 +53,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     private NavDrawerData.DrawerItem selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
     private int dummyViews = 0;
+    private boolean wasEverUpdated = false;
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
@@ -213,10 +214,19 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     public void setDummyViews(int dummyViews) {
         this.dummyViews = dummyViews;
+        notifyDataSetChanged();
+    }
+
+    public void showDummyViewsIfNeverUpdated(int dummyViews) {
+        if (!wasEverUpdated) {
+            setDummyViews(dummyViews);
+        }
     }
 
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
+        wasEverUpdated = true;
+        notifyDataSetChanged();
     }
 
     @Override

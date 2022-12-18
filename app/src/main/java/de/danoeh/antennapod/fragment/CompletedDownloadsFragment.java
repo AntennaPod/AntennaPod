@@ -95,7 +95,7 @@ public class CompletedDownloadsFragment extends Fragment
         adapter.setOnSelectModeListener(this);
         int previousEpisodesCount = getContext().getSharedPreferences(TAG, Context.MODE_PRIVATE)
                 .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
-        adapter.setDummyViews(Math.max(1, previousEpisodesCount));
+        recyclerView.postDelayed(() -> adapter.showDummyViewsIfNeverUpdated(previousEpisodesCount), 250);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
         swipeActions = new SwipeActions(this, TAG).attachTo(recyclerView);

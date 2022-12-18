@@ -4,7 +4,7 @@
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:entryValues="@array/theme_values"
                 android:entries="@array/theme_options"
                 android:title="@string/pref_set_theme_title"
@@ -33,7 +33,7 @@
             android:title="@string/pref_nav_drawer_feed_order_title"
             android:key="prefDrawerFeedOrder"
             android:summary="@string/pref_nav_drawer_feed_order_sum"/>
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
             android:entryValues="@array/nav_drawer_feed_counter_values"
             android:entries="@array/nav_drawer_feed_counter_options"
             android:title="@string/pref_nav_drawer_feed_counter_title"
@@ -76,7 +76,7 @@
                 android:title="@string/pref_lockscreen_background_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
-        <ListPreference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
                 android:entryValues="@array/default_page_values"
                 android:entries="@array/default_page_titles"
                 android:key="prefDefaultPage"

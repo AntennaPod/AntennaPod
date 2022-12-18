@@ -63,9 +63,13 @@ public class DownloadsSection extends HomeSection {
         SwipeActions swipeActions = new SwipeActions(this, CompletedDownloadsFragment.TAG);
         swipeActions.attachTo(viewBinding.recyclerView);
         swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

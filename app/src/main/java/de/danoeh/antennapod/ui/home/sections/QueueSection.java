@@ -58,8 +58,13 @@ public class QueueSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

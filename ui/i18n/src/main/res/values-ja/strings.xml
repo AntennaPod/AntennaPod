@@ -383,7 +383,7 @@
   <string name="pref_nav_drawer_feed_order_title">購読の順序を設定</string>
   <string name="pref_nav_drawer_feed_order_sum">購読の順序を変更します</string>
   <string name="pref_nav_drawer_feed_counter_title">購読カウンターを設定</string>
-  <string name="pref_nav_drawer_feed_counter_sum">購読カウンターに表示される情報を変更します。\'購読順\'が\'カウンター\'に設定されている場合は、購読の並べ替えにも影響します。</string>
+  <string name="pref_nav_drawer_feed_counter_sum">購読カウンターに表示される情報を変更します。「購読の順序」に「カウンター」が設定されている場合は、購読の並べ替えにも影響します。</string>
   <string name="pref_set_theme_sum">AntennaPodの外観を変更します。</string>
   <string name="pref_automatic_download_title">自動ダウンロード</string>
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを設定します。</string>
@@ -454,7 +454,7 @@
   <string name="copy_to_clipboard">クリップボードにコピー</string>
   <string name="copied_to_clipboard">クリップボードにコピーしました</string>
   <string name="experimental_pref">実験的</string>
-  <string name="pref_media_player_message">ファイルを再生するメディアプレーヤーを選択</string>
+  <string name="pref_media_player_message">ファイルを再生するメディアプレーヤーを選択します</string>
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
@@ -474,8 +474,8 @@
   <string name="back_button_open_drawer">ナビゲーションドロワーを開く</string>
   <string name="back_button_double_tap">ダブルタップで終了</string>
   <string name="back_button_show_prompt">終了の確認</string>
-  <string name="close_prompt">AntennaPodを終了してもよろしいですか?</string>
-  <string name="double_tap_toast">戻るボタンをもう一度タップすると終了します</string>
+  <string name="close_prompt">AntennaPodを終了しますか？</string>
+  <string name="double_tap_toast">戻るボタンをもう一度押すと終了します</string>
   <string name="back_button_go_to_page">ページ移動…</string>
   <string name="back_button_go_to_page_title">ページの選択</string>
   <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
@@ -520,7 +520,7 @@
   <string name="sync_status_success">同期しました</string>
   <string name="sync_status_error">同期に失敗しました</string>
   <!--import and export-->
-  <string name="import_export_summary">購読とキューを別のデバイスに移動</string>
+  <string name="import_export_summary">購読とキューを別のデバイスに移動する</string>
   <string name="database">データベース</string>
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
@@ -729,7 +729,7 @@
   <string name="proxy_host_invalid_error">ホストが有効なIPアドレスやドメインではありません</string>
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
   <!--Subscriptions fragment-->
-  <string name="subscription_num_columns">カラムの数</string>
+  <string name="subscription_num_columns">列数</string>
   <!--Notification channels-->
   <string name="notification_group_errors">エラー</string>
   <string name="notification_group_news">ニュース</string>

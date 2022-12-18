@@ -55,11 +55,10 @@
     <string name="home_surprise_title">Get surprised</string>
     <string name="home_classics_title">Check your classics</string>
     <string name="home_continue_title">Continue listening</string>
-    <string name="home_new_title">Review the new</string>
+    <string name="home_new_title">See what\'s new</string>
     <string name="home_downloads_title">Manage downloads</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
-    <string name="navigate_arrows">%s »</string>
     <string name="configure_home">Configure Home Screen</string>
 
     <!-- Download Statistics fragment -->
@@ -256,7 +255,7 @@
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
-    <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
+    <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
@@ -706,6 +705,8 @@
     <string name="statistics_episodes_started_total">Episodes started/total:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
     <string name="wait_icon" translatable="false">{fa-spinner}</string>
+    <string name="edit_url_menu">Edit feed URL</string>
+    <string name="edit_url_confirmation_msg">Changing the RSS address can easily break the playback state and episode listings of the podcast. We do NOT recommend changing it and will NOT provide support if anything goes wrong. This cannot be undone. The broken subscription CANNOT be repaired by simply changing the address back. We suggest creating a backup before continuing.</string>
 
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>

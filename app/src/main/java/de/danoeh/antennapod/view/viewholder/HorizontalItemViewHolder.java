@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -21,15 +22,17 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.SquareImageView;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
-    public final View card;
+    public final CardView card;
     public final ImageView secondaryActionIcon;
     private final SquareImageView cover;
     private final TextView title;
     private final TextView date;
     private final ProgressBar progressBar;
     private final CircularProgressBar circularProgressBar;
+    private final View progressBarReplacementSpacer;
 
     private final MainActivity activity;
     private FeedItem item;
@@ -45,6 +48,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         circularProgressBar = itemView.findViewById(R.id.circularProgressBar);
         progressBar = itemView.findViewById(R.id.progressBar);
+        progressBarReplacementSpacer = itemView.findViewById(R.id.progressBarReplacementSpacer);
         itemView.setTag(this);
     }
 
@@ -66,10 +70,20 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         FeedMedia media = item.getMedia();
         if (media == null) {
             circularProgressBar.setPercentage(0, item);
+            setProgressBar(false, 0);
         } else {
-            if (item.getMedia().getDuration() > 0) {
-                progressBar.setProgress(100 * item.getMedia().getPosition() / item.getMedia().getDuration());
+            if (PlaybackStatus.isCurrentlyPlaying(media)) {
+                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.card_background_playing));
+            } else {
+                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.card_background));
             }
+
+            if (item.getMedia().getDuration() > 0 && item.getMedia().getPosition() > 0) {
+                setProgressBar(true, 100.0f * item.getMedia().getPosition() / item.getMedia().getDuration());
+            } else {
+                setProgressBar(false, 0);
+            }
+
             if (DownloadService.isDownloadingFile(media.getDownload_url())) {
                 final DownloadRequest downloadRequest = DownloadService.findRequest(media.getDownload_url());
                 float percent = 0.01f * downloadRequest.getProgressPercent();
@@ -92,7 +106,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         date.setText("███");
         secondaryActionIcon.setImageDrawable(null);
         circularProgressBar.setPercentage(0, null);
-        progressBar.setProgress(50);
+        setProgressBar(true, 50);
     }
 
     public boolean isCurrentlyPlayingItem() {
@@ -100,6 +114,12 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
-        progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+        setProgressBar(true, 100.0f * event.getPosition() / event.getDuration());
+    }
+
+    private void setProgressBar(boolean visible, float progress) {
+        progressBar.setVisibility(visible ? ViewGroup.VISIBLE : ViewGroup.GONE);
+        progressBarReplacementSpacer.setVisibility(visible ? View.GONE : ViewGroup.VISIBLE);
+        progressBar.setProgress(Math.max(5, (int) progress)); // otherwise invisible below the edge radius
     }
 }

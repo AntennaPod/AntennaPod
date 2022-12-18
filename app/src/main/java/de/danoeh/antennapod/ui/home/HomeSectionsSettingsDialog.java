@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class HomeSectionsSettingsDialog {
             }
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(R.string.configure_home);
         builder.setMultiChoiceItems(sectionLabels, checked, (dialog, which, isChecked) -> {
             if (isChecked) {
