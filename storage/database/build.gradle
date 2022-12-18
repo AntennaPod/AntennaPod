@@ -5,7 +5,7 @@ apply from: "../../common.gradle"
 
 android {
     lint {
-        disable "StaticFieldLeak"
+        disable "StaticFieldLeak", "StringFormatCount", "StringFormatMatches", "StringFormatInvalid", "PluralsCandidate", "StringFormatTrivial"
     }
 }
 
