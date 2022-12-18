@@ -727,7 +727,7 @@
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
-    <string name="country">Country</string>
+    <string name="select_country">Select country</string>
 
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>
