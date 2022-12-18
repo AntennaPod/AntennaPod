@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.preferences;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
@@ -18,7 +16,6 @@ public class MasterSwitchPreference extends SwitchPreferenceCompat {
         super(context, attrs, defStyleAttr);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

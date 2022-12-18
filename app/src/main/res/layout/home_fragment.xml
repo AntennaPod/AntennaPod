@@ -34,7 +34,7 @@
             android:layout_height="80dp"
             android:layout_marginBottom="8dp"
             android:layout_gravity="start"
-            android:src="@drawable/ic_curved_arrow" />
+            app:srcCompat="@drawable/ic_curved_arrow" />
 
         <ImageView
             android:id="@+id/icon"
@@ -42,7 +42,7 @@
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
-            android:src="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher" />
 
         <TextView
             android:layout_width="match_parent"

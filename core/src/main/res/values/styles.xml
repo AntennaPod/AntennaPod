@@ -3,6 +3,10 @@
 
     <style name="Theme.AntennaPod.Dynamic.Light" parent="Theme.Base.AntennaPod.Dynamic.Light">
         <!-- Room for API dependent attributes -->
+
+        <!-- To make icons visible on API 21-23. Overwritten in API-specific folder -->
+        <item name="android:statusBarColor">@color/grey600</item>
+        <item name="android:navigationBarColor">@color/grey600</item>
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
@@ -22,7 +26,7 @@
         <item name="icon_gray">#25365A</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
@@ -59,10 +63,10 @@
         <item name="icon_gray">#CDD9E4</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fitsSystemWindows">false</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/background_darktheme</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@color/background_darktheme</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
@@ -85,7 +89,7 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
@@ -95,7 +99,7 @@
         <item name="colorSurface">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Light.NoTitle" parent="Theme.AntennaPod.Dynamic.Light">
@@ -135,7 +139,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Light.Translucent" parent="Theme.AntennaPod.Dynamic.Light.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -146,7 +150,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -157,7 +161,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.Dark.Translucent" parent="Theme.AntennaPod.Dynamic.Dark.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -168,7 +172,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -179,7 +183,7 @@
     </style>
 
     <style name="Theme.AntennaPod.Dynamic.TrueBlack.Translucent" parent="Theme.AntennaPod.Dynamic.TrueBlack.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -190,7 +194,7 @@
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -209,7 +213,7 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimary">@color/icon_background_gradient_start</item>
         <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/icon_background_gradient_end</item>
+        <item name="android:navigationBarColor">@color/icon_background_gradient_end</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

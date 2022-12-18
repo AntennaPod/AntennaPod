@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
@@ -135,10 +134,8 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor = new ConnectionStateMonitor();
-            connectionMonitor.enable(getApplicationContext());
-        }
+        connectionMonitor = new ConnectionStateMonitor();
+        connectionMonitor.enable(getApplicationContext());
     }
 
     public static boolean isDownloadingFeeds() {
@@ -206,9 +203,7 @@ public class DownloadService extends Service {
         }
 
         unregisterReceiver(cancelDownloadReceiver);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor.disable(getApplicationContext());
-        }
+        connectionMonitor.disable(getApplicationContext());
 
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
         cancelNotificationUpdater();
