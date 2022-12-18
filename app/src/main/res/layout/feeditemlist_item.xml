@@ -109,8 +109,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/is_inbox_label"
-                    app:srcCompat="@drawable/ic_inbox"
-                    app:tint="?attr/colorAccent" />
+                    app:srcCompat="@drawable/ic_inbox" />
 
                 <ImageView
                     android:id="@+id/ivIsVideo"
@@ -214,7 +213,7 @@
                     android:layout_weight="1"
                     android:max="100"
                     android:layout_margin="4dp"
-                    style="?attr/progressBarTheme"
+                    style="?android:attr/progressBarStyleHorizontal"
                     tools:background="@android:color/holo_blue_light" />
 
                 <TextView

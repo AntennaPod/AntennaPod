@@ -44,6 +44,16 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                             return true;
                         });
 
+        if (Build.VERSION.SDK_INT < 31) {
+            findPreference(UserPreferences.PREF_TINTED_COLORS).setVisible(false);
+        }
+        findPreference(UserPreferences.PREF_TINTED_COLORS)
+                .setOnPreferenceChangeListener(
+                        (preference, newValue) -> {
+                            ActivityCompat.recreate(getActivity());
+                            return true;
+                        });
+
         findPreference(UserPreferences.PREF_SHOW_TIME_LEFT)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {

@@ -58,8 +58,7 @@
         android:layout_toLeftOf="@id/txtvCount"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_error"
-        app:tint="@color/download_failed_red"
-        tools:background="@android:color/holo_green_dark"
+        app:tint="?attr/icon_red"
         tools:text="!" />
 
     <TextView

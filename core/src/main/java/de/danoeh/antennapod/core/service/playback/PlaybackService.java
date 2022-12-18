@@ -1168,20 +1168,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
-        if (useSkipToPreviousForRewindInLockscreen()) {
-            // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
-            // which will be used for rewind.
-            // The workaround is used for pre Lollipop (Androidv5) devices.
-            // For Androidv5+, lockscreen widges are really notifications (compact),
-            // with an independent codepath
-            //
-            // @see #sessionCallback in the backing callback, skipToPrevious implementation
-            //   is actually the same as rewind. So no new inconsistency is created.
-            // @see #setupNotification() for the method to create Androidv5+ lockscreen UI
-            //   with notification (compact)
-            capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
-        }
-
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                 .getSystemService(Context.UI_MODE_SERVICE);
         if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
@@ -1214,14 +1200,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sessionState.setActions(capabilities);
 
         mediaSession.setPlaybackState(sessionState.build());
-    }
-
-    private static boolean useSkipToPreviousForRewindInLockscreen() {
-        // showRewindOnCompactNotification() corresponds to the "Set Lockscreen Buttons"
-        // Settings in UI.
-        // Hence, from user perspective, he/she is setting the buttons for Lockscreen
-        return (UserPreferences.showRewindOnCompactNotification() &&
-                (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP));
     }
 
     private void updateNotificationAndMediaSession(final Playable p) {

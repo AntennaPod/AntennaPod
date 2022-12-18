@@ -14,12 +14,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.elevation.SurfaceColors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
@@ -85,8 +85,8 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         });
 
         if (position == currentChapterIndex) {
-            int playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
-            holder.itemView.setBackgroundColor(playingBackGroundColor);
+            float density = context.getResources().getDisplayMetrics().density;
+            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 8 * density));
             float progress = ((float) (currentChapterPosition - sc.getStart())) / duration;
             progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
             progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
