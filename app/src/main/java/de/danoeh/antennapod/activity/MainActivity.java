@@ -169,7 +169,6 @@ public class MainActivity extends CastEnabledActivity {
                 .setShowWhen(false)
                 .setSmallIcon(R.drawable.notification_icon_alt2)
                 .setContentText("Alt2 notification icon")
-                .setColor(ResourcesCompat.getColor(getResources(), R.color.accent_light, getTheme()))
                 .build());
         nm.notify(47, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(false)
