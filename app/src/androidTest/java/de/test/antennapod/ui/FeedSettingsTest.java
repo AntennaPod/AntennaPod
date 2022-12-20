@@ -116,7 +116,7 @@ public class FeedSettingsTest {
         assertEquals("database updated with password", password, updatedFeedPreferences.getPassword());
 
         // expect feed to have refreshed and be showing new episode title
-        onView(isRoot()).perform(waitForView(withText(updatedTitle), 500));
+        onView(isRoot()).perform(waitForView(withText(updatedTitle), 5000));
     }
 
 
