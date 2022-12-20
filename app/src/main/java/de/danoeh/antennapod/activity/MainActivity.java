@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -161,31 +162,6 @@ public class MainActivity extends CastEnabledActivity {
 
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        nm.notify(42, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(false)
-                .setWhen(0)
-                .setOnlyAlertOnce(true)
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.ic_notification_new_design)
-                .setContentText("New notification icon")
-                .build());
-        nm.notify(43, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(false)
-                .setWhen(0)
-                .setOnlyAlertOnce(true)
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentText("Old notification icon")
-                .build());
-        nm.notify(45, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(false)
-                .setWhen(0)
-                .setOnlyAlertOnce(true)
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.notification_icon_alt1)
-                .setContentText("Alt1 notification icon")
-                .build());
         nm.notify(46, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(false)
                 .setWhen(0)
@@ -193,6 +169,16 @@ public class MainActivity extends CastEnabledActivity {
                 .setShowWhen(false)
                 .setSmallIcon(R.drawable.notification_icon_alt2)
                 .setContentText("Alt2 notification icon")
+                .setColor(ResourcesCompat.getColor(getResources(), R.color.accent_light, getTheme()))
+                .build());
+        nm.notify(47, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setSmallIcon(R.drawable.notification_icon_alt2_large)
+                .setContentText("Alt2 large notification icon")
+                .setColor(ResourcesCompat.getColor(getResources(), R.color.accent_light, getTheme()))
                 .build());
     }
 
