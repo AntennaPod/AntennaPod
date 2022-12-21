@@ -31,6 +31,8 @@ import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+
 @RunWith(AndroidJUnit4.class)
 public class FeedSettingsTest {
     private UITestUtils uiTestUtils;
@@ -90,7 +92,7 @@ public class FeedSettingsTest {
      *      - Feed is refreshed automatically
      */
     @Test
-    public void testAuthenticationSettingsUpdate() throws Exception {
+    public void testAuthenticationSettingsUpdate() throws IOException {
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.appBar)),
                 withText(feed.getTitle()), isDisplayed()), 1000));
 
@@ -100,7 +102,7 @@ public class FeedSettingsTest {
 
         // update feed hosted on server
         feed.getItems().get(0).setTitle(updatedTitle);
-        uiTestUtils.refreshFeedOnServer(0);
+        uiTestUtils.hostFeed(feed);
 
         // interact with UI to update authentication settings
         updateAuthenticationSettings(username, password);

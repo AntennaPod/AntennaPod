@@ -78,7 +78,7 @@ public class UITestUtils {
         }
     }
 
-    private String hostFeed(Feed feed) throws IOException {
+    public String hostFeed(Feed feed) throws IOException {
         File feedFile = new File(hostedFeedDir, feed.getTitle());
         FileOutputStream out = new FileOutputStream(feedFile);
         Rss2Generator generator = new Rss2Generator();
@@ -111,15 +111,6 @@ public class UITestUtils {
         out.close();
 
         return mediaFile;
-    }
-
-    /**
-     * Update feed at the given index on the server.
-     *
-     * @param feedIndex the index of feed to update in `hostedFeeds`.
-     */
-    public void refreshFeedOnServer(int feedIndex) throws IOException {
-        hostFeed(hostedFeeds.get(feedIndex));
     }
 
     private boolean feedDataHosted = false;
