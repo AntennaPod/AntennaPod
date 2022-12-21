@@ -88,8 +88,8 @@ public class FeedSettingsTest {
     /**
      * Test that modifying a feed's authentication settings results in proper behavior.
      * Expect:
-     *      - Database has updated username and password
      *      - Feed is refreshed automatically
+     *      - Database has updated username and password
      */
     @Test
     public void testAuthenticationSettingsUpdate() throws IOException {
@@ -107,6 +107,9 @@ public class FeedSettingsTest {
         // interact with UI to update authentication settings
         updateAuthenticationSettings(username, password);
 
+        // expect feed to have refreshed and be showing new episode title
+        onView(isRoot()).perform(waitForView(withText(updatedTitle), 5000));
+
         // expect database to be updated with correct username and password
         Feed updatedFeed = DBReader.getFeed(feed.getId());
         assertNotNull(updatedFeed);
@@ -116,9 +119,6 @@ public class FeedSettingsTest {
 
         assertEquals("database updated with username", username, updatedFeedPreferences.getUsername());
         assertEquals("database updated with password", password, updatedFeedPreferences.getPassword());
-
-        // expect feed to have refreshed and be showing new episode title
-        onView(isRoot()).perform(waitForView(withText(updatedTitle), 5000));
     }
 
 
