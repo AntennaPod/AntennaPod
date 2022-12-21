@@ -121,7 +121,6 @@ public class FeedSettingsTest {
         assertEquals("database updated with password", password, updatedFeedPreferences.getPassword());
     }
 
-
     private void updateAuthenticationSettings(String username, String password) {
         onView(withId(R.id.butShowSettings)).perform(click());
 
