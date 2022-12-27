@@ -40,16 +40,24 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
         DBWriter.deleteFromPlaybackHistory(item);
 
         ((MainActivity) fragment.requireActivity())
-        .showSnackbarAbovePlayer(
-                R.string.removed_history_label,
-                Snackbar.LENGTH_LONG
-        ).setAction(
-                fragment.getString(R.string.undo),
-                v -> DBWriter.addItemToPlaybackHistory(
-                        item.getMedia(),
-                        item.getMedia().getPlaybackCompletionDate()
-                )
-        );
+                .showSnackbarAbovePlayer(
+                        R.string.removed_history_label,
+                        Snackbar.LENGTH_LONG
+                ).setAction(
+                        fragment.getString(R.string.undo),
+                        v -> {
+
+                            if(DBWriter.addItemToPlaybackHistory(
+                                    item.getMedia(),
+                                    item.getMedia().getPlaybackCompletionDate()
+                            ).isDone())
+                                ((MainActivity) fragment.requireActivity())
+                                        .showSnackbarAbovePlayer(
+                                                R.string.restored_history_label,
+                                                Snackbar.LENGTH_LONG
+                                        );
+                        }
+                );
     }
 
     @Override
