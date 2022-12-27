@@ -54,8 +54,7 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
                                 ((MainActivity) fragment.requireActivity())
                                         .showSnackbarAbovePlayer(
                                                 R.string.restored_history_label,
-                                                Snackbar.LENGTH_LONG
-                                        );
+                                                Snackbar.LENGTH_LONG);
                             }
                         });
     }
