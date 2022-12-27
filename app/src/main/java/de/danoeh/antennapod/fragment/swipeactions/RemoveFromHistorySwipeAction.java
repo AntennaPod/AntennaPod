@@ -47,7 +47,7 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
                         fragment.getString(R.string.undo),
                         v -> {
 
-                            if(DBWriter.addItemToPlaybackHistory(
+                            if (DBWriter.addItemToPlaybackHistory(
                                     item.getMedia(),
                                     item.getMedia().getPlaybackCompletionDate()
                             ).isDone()) {
@@ -57,8 +57,7 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
                                                 Snackbar.LENGTH_LONG
                                         );
                             }
-                        }
-                );
+                        });
     }
 
     @Override
