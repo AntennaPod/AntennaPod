@@ -41,6 +41,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -438,6 +440,20 @@ public class MainActivity extends CastEnabledActivity {
         if (lastTheme != ThemeSwitcher.getNoTitleTheme(this)) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
+        }
+
+        handleHiddenScreen();
+    }
+
+    private void handleHiddenScreen() {
+        String lastNavFragment = NavDrawerFragment.getLastNavFragment(this);
+        List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
+        if (hiddenDrawerItems.contains(lastNavFragment)) {
+            String defaultPage = UserPreferences.getDefaultPage();
+            loadFragment(defaultPage, null);
+            if (drawerLayout != null) {
+                drawerLayout.open();
+            }
         }
     }
 
