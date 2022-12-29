@@ -445,15 +445,12 @@ public class MainActivity extends CastEnabledActivity {
         handleHiddenScreen();
     }
 
-    private void handleHiddenScreen() {
+    public void handleHiddenScreen() {
         String lastNavFragment = NavDrawerFragment.getLastNavFragment(this);
         List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         if (hiddenDrawerItems.contains(lastNavFragment)) {
             String defaultPage = UserPreferences.getDefaultPage();
-            loadFragment(defaultPage, null);
-            if (drawerLayout != null) {
-                drawerLayout.open();
-            }
+            new MainActivityStarter(this).withFragmentLoaded(defaultPage).start();
         }
     }
 
@@ -553,6 +550,12 @@ public class MainActivity extends CastEnabledActivity {
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             handleDeeplink(intent.getData());
+        } else if (intent.hasExtra(MainActivityStarter.EXTRA_LOAD_FRAGMENT)){
+            String fragment = intent.getStringExtra(MainActivityStarter.EXTRA_LOAD_FRAGMENT);
+            loadFragment(fragment, null);
+            if (drawerLayout != null) {
+                drawerLayout.open();
+            }
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

@@ -338,7 +338,10 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         @Override
         public boolean onItemLongClick(int position) {
             if (position < navAdapter.getFragmentTags().size()) {
-                DrawerPreferencesDialog.show(getContext(), () -> navAdapter.notifyDataSetChanged());
+                DrawerPreferencesDialog.show(getContext(), () -> {
+                    navAdapter.notifyDataSetChanged();
+                    ((MainActivity) getActivity()).handleHiddenScreen();
+                });
                 return true;
             } else {
                 contextPressedItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
