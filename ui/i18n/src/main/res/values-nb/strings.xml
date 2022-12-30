@@ -86,6 +86,9 @@
   <string name="feed_auto_download_global">Global standard</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
+  <string name="feed_skip_inbox_global">Global standard</string>
+  <string name="feed_skip_inbox_yes">Ja</string>
+  <string name="feed_skip_inbox_no">Nei</string>
   <string name="send_label">Send...</string>
   <string name="episode_cleanup_never">Aldri</string>
   <string name="episode_cleanup_except_favorite_removal">Hvis ikke favoritt</string>

@@ -100,6 +100,9 @@
   <string name="feed_auto_download_global">Standaardinstelling</string>
   <string name="feed_auto_download_always">Altijd</string>
   <string name="feed_auto_download_never">Nooit</string>
+  <string name="feed_skip_inbox_global">Standaardinstelling</string>
+  <string name="feed_skip_inbox_yes">Ja</string>
+  <string name="feed_skip_inbox_no">Nee</string>
   <string name="send_label">Versturen...</string>
   <string name="episode_cleanup_never">Nooit</string>
   <string name="episode_cleanup_except_favorite_removal">Indien niet favoriet</string>

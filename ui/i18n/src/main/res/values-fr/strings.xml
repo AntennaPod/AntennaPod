@@ -100,6 +100,9 @@
   <string name="feed_auto_download_global">Option par défaut</string>
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
+  <string name="feed_skip_inbox_global">Option par défaut</string>
+  <string name="feed_skip_inbox_yes">Oui</string>
+  <string name="feed_skip_inbox_no">Non</string>
   <string name="send_label">Envoyer...</string>
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_except_favorite_removal">Quand pas un favori</string>

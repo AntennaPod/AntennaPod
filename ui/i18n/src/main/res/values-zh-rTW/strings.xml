@@ -73,6 +73,9 @@
   <string name="feed_auto_download_global">預設值</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
+  <string name="feed_skip_inbox_global">預設值</string>
+  <string name="feed_skip_inbox_yes">是</string>
+  <string name="feed_skip_inbox_no">否</string>
   <string name="send_label">發送中…</string>
   <string name="episode_cleanup_never">不予刪除</string>
   <string name="episode_cleanup_except_favorite_removal">若未標記為最愛</string>

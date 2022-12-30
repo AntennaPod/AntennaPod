@@ -86,6 +86,9 @@
   <string name="feed_auto_download_global">За замовчуванням</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
+  <string name="feed_skip_inbox_global">За замовчуванням</string>
+  <string name="feed_skip_inbox_yes">Так</string>
+  <string name="feed_skip_inbox_no">Ні</string>
   <string name="send_label">Надіслати…</string>
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_except_favorite_removal">Коли не вибрано</string>

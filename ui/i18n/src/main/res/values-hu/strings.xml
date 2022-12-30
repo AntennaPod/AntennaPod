@@ -96,6 +96,9 @@
   <string name="feed_auto_download_global">Globális alapértelmezett</string>
   <string name="feed_auto_download_always">Mindig</string>
   <string name="feed_auto_download_never">Soha</string>
+  <string name="feed_skip_inbox_global">Globális alapértelmezett</string>
+  <string name="feed_skip_inbox_yes">Igen</string>
+  <string name="feed_skip_inbox_no">Nem</string>
   <string name="send_label">Küldés…</string>
   <string name="episode_cleanup_never">Soha</string>
   <string name="episode_cleanup_except_favorite_removal">Ha nincs felvéve a kedvencek közé</string>

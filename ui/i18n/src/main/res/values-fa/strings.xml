@@ -86,6 +86,9 @@
   <string name="feed_auto_download_global">پیش‌فرض جهانی</string>
   <string name="feed_auto_download_always">همیشه</string>
   <string name="feed_auto_download_never">هیچگاه</string>
+  <string name="feed_skip_inbox_global">پیش‌فرض جهانی</string>
+  <string name="feed_skip_inbox_yes">بله</string>
+  <string name="feed_skip_inbox_no">خیر</string>
   <string name="send_label">ارسال…</string>
   <string name="episode_cleanup_never">هرگز</string>
   <string name="episode_cleanup_except_favorite_removal">وقتی که جزو علاقه‌مندی‌ها نباشد</string>

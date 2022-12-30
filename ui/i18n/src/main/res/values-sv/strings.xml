@@ -100,6 +100,9 @@
   <string name="feed_auto_download_global">Globala standardinställningar</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldrig</string>
+  <string name="feed_skip_inbox_global">Globala standardinställningar</string>
+  <string name="feed_skip_inbox_yes">Ja</string>
+  <string name="feed_skip_inbox_no">Nej</string>
   <string name="send_label">Skicka…</string>
   <string name="episode_cleanup_never">Aldrig</string>
   <string name="episode_cleanup_except_favorite_removal">När ej favorit</string>

@@ -86,6 +86,9 @@
   <string name="feed_auto_download_global">Üldine vaikeväärtus</string>
   <string name="feed_auto_download_always">Alati</string>
   <string name="feed_auto_download_never">Mitte kunagi</string>
+  <string name="feed_skip_inbox_global">Üldine vaikeväärtus</string>
+  <string name="feed_skip_inbox_yes">Jah</string>
+  <string name="feed_skip_inbox_no">Ei</string>
   <string name="send_label">Saada...</string>
   <string name="episode_cleanup_never">Mitte kunagi</string>
   <string name="episode_cleanup_except_favorite_removal">Kui pole lemmik</string>

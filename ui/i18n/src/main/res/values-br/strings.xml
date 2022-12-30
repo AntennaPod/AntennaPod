@@ -92,6 +92,9 @@
   <string name="feed_auto_download_global">Dre ziouer</string>
   <string name="feed_auto_download_always">Bepred</string>
   <string name="feed_auto_download_never">Morse</string>
+  <string name="feed_skip_inbox_global">Dre ziouer</string>
+  <string name="feed_skip_inbox_yes">Ya</string>
+  <string name="feed_skip_inbox_no">Ket</string>
   <string name="send_label">Kas...</string>
   <string name="episode_cleanup_never">Morse</string>
   <string name="episode_cleanup_except_favorite_removal">Pa n\'emañ ket er sinedoù</string>

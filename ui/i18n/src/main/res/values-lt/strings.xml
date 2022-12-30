@@ -96,6 +96,9 @@
   <string name="feed_auto_download_global">Globali numatytoji</string>
   <string name="feed_auto_download_always">Visada</string>
   <string name="feed_auto_download_never">Niekada</string>
+  <string name="feed_skip_inbox_global">Globali numatytoji</string>
+  <string name="feed_skip_inbox_yes">Taip</string>
+  <string name="feed_skip_inbox_no">Ne</string>
   <string name="send_label">Siųsti...</string>
   <string name="episode_cleanup_never">Niekada</string>
   <string name="episode_cleanup_except_favorite_removal">Kai nėra mėgstamas</string>
