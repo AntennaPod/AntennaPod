@@ -100,9 +100,6 @@
   <string name="feed_auto_download_global">Standardwert</string>
   <string name="feed_auto_download_always">Immer</string>
   <string name="feed_auto_download_never">Nie</string>
-  <string name="feed_skip_inbox_global">Standardwert</string>
-  <string name="feed_skip_inbox_yes">Ja</string>
-  <string name="feed_skip_inbox_no">Nein</string>
   <string name="send_label">Senden…</string>
   <string name="episode_cleanup_never">Nie</string>
   <string name="episode_cleanup_except_favorite_removal">Wenn nicht favorisiert</string>
@@ -513,8 +510,6 @@ Tippen, um Details anzuzeigen.</string>
   <string name="pref_contribute">Mitwirken</string>
   <string name="pref_show_subscription_title">Abonnement-Titel anzeigen</string>
   <string name="pref_show_subscription_title_summary">Zeige den Titel des Abonnements unter dem Episodenbild an.</string>
-  <string name="pref_skip_inbox_title">Posteingang Überspringen</string>
-  <string name="pref_skip_inbox_sum">Neue Episoden nicht in den Posteingang ablegen</string>
   <!--About screen-->
   <string name="about_pref">Über</string>
   <string name="antennapod_version">AntennaPod-Version</string>

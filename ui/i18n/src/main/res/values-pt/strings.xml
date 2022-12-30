@@ -100,9 +100,6 @@
   <string name="feed_auto_download_global">Predefinições</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
-  <string name="feed_skip_inbox_global">Predefinições</string>
-  <string name="feed_skip_inbox_yes">Sim</string>
-  <string name="feed_skip_inbox_no">Não</string>
   <string name="send_label">Enviar...</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Se não for favorito</string>
@@ -527,8 +524,6 @@
   <string name="pref_contribute">Participar</string>
   <string name="pref_show_subscription_title">Mostrar título da subscrição</string>
   <string name="pref_show_subscription_title_summary">Mostrar título da subscrição por baixo da imagem.</string>
-  <string name="pref_skip_inbox_title">Ignorar Caixa de entrada</string>
-  <string name="pref_skip_inbox_sum">Não colocar novos episódios na caixa de entrada</string>
   <!--About screen-->
   <string name="about_pref">Acerca</string>
   <string name="antennapod_version">Versão do AntennaPod</string>
