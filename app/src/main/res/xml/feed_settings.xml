@@ -57,7 +57,7 @@
         android:summary="@string/feed_volume_reduction_summary"
         android:title="@string/feed_volume_reduction" />
 
-    <ListPreference
+    <de.danoeh.antennapod.preferences.MaterialListPreference
         android:entries="@array/spnSkipInboxItems"
         android:entryValues="@array/spnSkipInboxValues"
         android:icon="@drawable/ic_inbox"
