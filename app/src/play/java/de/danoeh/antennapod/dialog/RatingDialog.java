@@ -108,7 +108,7 @@ public class RatingDialog {
     }
 
     private static boolean shouldShow() {
-        if (rated()) {
+        if (rated() || BuildConfig.DEBUG) {
             return false;
         }
 
