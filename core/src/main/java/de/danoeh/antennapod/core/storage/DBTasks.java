@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
@@ -401,7 +402,11 @@ public final class DBTasks {
                     //      items and this is the first)
                     //   3. The item has no pubDate
                     //
-                    if (!UserPreferences.getSkipInboxSetting() && (
+                    FeedPreferences.SkipInboxSetting feedSkipInbox = savedFeed.getPreferences().getSkipInboxSetting();
+                    boolean shouldSkipInbox = feedSkipInbox == FeedPreferences.SkipInboxSetting.YES
+                            || (feedSkipInbox == FeedPreferences.SkipInboxSetting.GLOBAL
+                                && UserPreferences.getSkipInboxSetting());
+                    if (!shouldSkipInbox && (
                             item.getPubDate() == null
                             || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())

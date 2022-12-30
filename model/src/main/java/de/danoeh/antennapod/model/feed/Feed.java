@@ -173,7 +173,8 @@ public class Feed extends FeedFile {
      */
     public Feed(String url, String lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+		FeedPreferences.SkipInboxSetting.GLOBAL, username, password);
     }
 
     /**

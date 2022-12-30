@@ -126,6 +126,33 @@ public class FeedMultiSelectActionHandler {
         preferenceSwitchDialog.openDialog();
     }
 
+    private void skipInboxPrefHandler() {
+        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
+                "Skip Inbox");
+        String[] items = activity.getResources().getStringArray(R.array.spnSkipInboxItems);
+        String[] values = activity.getResources().getStringArray(R.array.spnSkipInboxValues);
+        preferenceListDialog.openDialog(items);
+        preferenceListDialog.setOnPreferenceChangedListener(which -> {
+            FeedPreferences.SkipInboxSetting skipInboxSetting = null;
+            switch (values[which]) {
+                case "global":
+                    skipInboxSetting = FeedPreferences.SkipInboxSetting.GLOBAL;
+                    break;
+                case "yes":
+                    skipInboxSetting = FeedPreferences.SkipInboxSetting.YES;
+                    break;
+                case "no":
+                    skipInboxSetting = FeedPreferences.SkipInboxSetting.NO;
+                    break;
+                default:
+            }
+            FeedPreferences.SkipInboxSetting finalSkipInboxSetting = skipInboxSetting;
+            saveFeedPreferences(feedPreferences -> {
+                feedPreferences.setSkipInboxSetting(finalSkipInboxSetting);
+            });
+        });
+    }
+
     private void showMessage(@PluralsRes int msgId, int numItems) {
         activity.showSnackbarAbovePlayer(activity.getResources()
                 .getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);

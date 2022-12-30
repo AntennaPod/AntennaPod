@@ -34,6 +34,7 @@ public abstract class FeedPreferencesCursorMapper {
         int indexAutoSkipIntro = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_ENDING);
         int indexEpisodeNotification = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
+        int indexSkipInboxSetting = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_INBOX);
         int indexTags = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_TAGS);
 
         long feedId = cursor.getLong(indexId);
@@ -52,6 +53,9 @@ public abstract class FeedPreferencesCursorMapper {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        int feedSkipInboxIndex = cursor.getInt(indexSkipInboxSetting);
+        FeedPreferences.SkipInboxSetting feedSkipInbox =
+                FeedPreferences.SkipInboxSetting.values()[feedSkipInboxIndex];
         boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
         String tagsString = cursor.getString(indexTags);
         if (TextUtils.isEmpty(tagsString)) {
@@ -69,6 +73,7 @@ public abstract class FeedPreferencesCursorMapper {
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,
                 showNotification,
+                feedSkipInbox,
                 new HashSet<>(Arrays.asList(tagsString.split(FeedPreferences.TAG_SEPARATOR))));
     }
 }

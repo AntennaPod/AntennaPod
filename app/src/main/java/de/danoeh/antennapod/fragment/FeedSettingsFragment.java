@@ -105,6 +105,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_AUTHENTICATION = "authentication";
         private static final CharSequence PREF_AUTO_DELETE = "autoDelete";
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
+        private static final CharSequence PREF_SKIP_INBOX = "feedSkipInbox";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
@@ -156,6 +157,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
                         setupVolumeReductionPreferences();
+                        setupSkipInboxSetting();
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
@@ -166,6 +168,7 @@ public class FeedSettingsFragment extends Fragment {
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
+                        updateSkipInboxSetting();
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
@@ -348,6 +351,44 @@ public class FeedSettingsFragment extends Fragment {
                     break;
                 case HEAVY_REDUCTION:
                     volumeReductionPreference.setValue("heavy");
+                    break;
+            }
+        }
+
+        private void setupSkipInboxSetting() {
+            findPreference(PREF_SKIP_INBOX).setOnPreferenceChangeListener((preference, newValue) -> {
+                switch ((String) newValue) {
+                    case "global":
+                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.GLOBAL);
+                        break;
+                    case "yes":
+                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.YES);
+                        break;
+                    case "no":
+                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.NO);
+                        break;
+                }
+                DBWriter.setFeedPreferences(feedPreferences);
+                updateSkipInboxSetting();
+                return false;
+            });
+        }
+
+        private void updateSkipInboxSetting() {
+            ListPreference skipInboxSetting = findPreference(PREF_SKIP_INBOX);
+
+            switch (feedPreferences.getSkipInboxSetting()) {
+                case GLOBAL:
+                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_global);
+                    skipInboxSetting.setValue("global");
+                    break;
+                case YES:
+                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_yes);
+                    skipInboxSetting.setValue("yes");
+                    break;
+                case NO:
+                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_no);
+                    skipInboxSetting.setValue("no");
                     break;
             }
         }

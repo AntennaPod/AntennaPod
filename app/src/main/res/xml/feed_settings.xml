@@ -57,6 +57,14 @@
         android:summary="@string/feed_volume_reduction_summary"
         android:title="@string/feed_volume_reduction" />
 
+    <ListPreference
+        android:entries="@array/spnSkipInboxItems"
+        android:entryValues="@array/spnSkipInboxValues"
+        android:icon="@drawable/ic_inbox"
+        android:key="feedSkipInbox"
+        android:summary="@string/feed_skip_inbox_global"
+        android:title="@string/pref_skip_inbox_title" />
+
     <PreferenceCategory
         android:key="autoDownloadCategory"
         android:title="@string/auto_download_settings_label">
