@@ -99,9 +99,6 @@
   <string name="feed_auto_download_global">Globálne predvolené</string>
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
-  <string name="feed_skip_inbox_global">Globálne predvolené</string>
-  <string name="feed_skip_inbox_yes">Áno</string>
-  <string name="feed_skip_inbox_no">Nie</string>
   <string name="send_label">Poslať…</string>
   <string name="episode_cleanup_never">Nikdy</string>
   <string name="episode_cleanup_except_favorite_removal">Ak nie je medzi obľúbenými</string>

@@ -75,9 +75,6 @@
   <string name="feed_auto_download_global">전체 기본값</string>
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
-  <string name="feed_skip_inbox_global">전체 기본값</string>
-  <string name="feed_skip_inbox_yes">예</string>
-  <string name="feed_skip_inbox_no">아니요</string>
   <string name="send_label">보내기…</string>
   <string name="episode_cleanup_never">안 함</string>
   <string name="episode_cleanup_except_favorite_removal">즐겨찾기 아닐 때</string>

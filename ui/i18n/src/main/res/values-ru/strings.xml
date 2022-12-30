@@ -100,9 +100,6 @@
   <string name="feed_auto_download_global">как по умолчанию</string>
   <string name="feed_auto_download_always">Всегда</string>
   <string name="feed_auto_download_never">никогда</string>
-  <string name="feed_skip_inbox_global">как по умолчанию</string>
-  <string name="feed_skip_inbox_yes">Да</string>
-  <string name="feed_skip_inbox_no">Нет</string>
   <string name="send_label">Отправить…</string>
   <string name="episode_cleanup_never">никогда</string>
   <string name="episode_cleanup_except_favorite_removal">Когда не в избранном</string>

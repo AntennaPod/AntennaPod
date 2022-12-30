@@ -96,9 +96,6 @@
   <string name="feed_auto_download_global">Valor predeterminat global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
-  <string name="feed_skip_inbox_global">Valor predeterminat global</string>
-  <string name="feed_skip_inbox_yes">Sí</string>
-  <string name="feed_skip_inbox_no">No</string>
   <string name="send_label">Enviar...</string>
   <string name="episode_cleanup_never">Mai</string>
   <string name="episode_cleanup_except_favorite_removal">Quan no és favorit</string>

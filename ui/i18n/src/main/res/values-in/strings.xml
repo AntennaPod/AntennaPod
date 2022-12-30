@@ -77,9 +77,6 @@
   <string name="feed_auto_download_global">Standar global</string>
   <string name="feed_auto_download_always">Selalu</string>
   <string name="feed_auto_download_never">Tidak pernah</string>
-  <string name="feed_skip_inbox_global">Standar global</string>
-  <string name="feed_skip_inbox_yes">Ya</string>
-  <string name="feed_skip_inbox_no">Tidak</string>
   <string name="send_label">Kirim…</string>
   <string name="episode_cleanup_never">Tidak pernah</string>
   <string name="episode_cleanup_queue_removal">Ketika tidak dalam antrian</string>

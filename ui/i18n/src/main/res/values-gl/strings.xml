@@ -100,9 +100,6 @@
   <string name="feed_auto_download_global">Valor xeral por defecto</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
-  <string name="feed_skip_inbox_global">Valor xeral por defecto</string>
-  <string name="feed_skip_inbox_yes">Si</string>
-  <string name="feed_skip_inbox_no">Non</string>
   <string name="send_label">Enviar...</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_except_favorite_removal">Cando non favorito</string>

@@ -68,7 +68,8 @@
   <string name="confirm_label">Potvrdit</string>
   <string name="cancel_label">Zrušit</string>
   <string name="yes">Ano</string>
-  <string name="no">Ne</string>
+  <string name="no">Ne
+</string>
   <string name="reset">Reset</string>
   <string name="url_label">URL</string>
   <string name="support_funding_label">Podpořit</string>
@@ -95,9 +96,6 @@
   <string name="feed_auto_download_global">Globální nastavení</string>
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
-  <string name="feed_skip_inbox_global">Globální nastavení</string>
-  <string name="feed_skip_inbox_yes">Ano</string>
-  <string name="feed_skip_inbox_no">Ne</string>
   <string name="send_label">Odeslat</string>
   <string name="episode_cleanup_never">Nikdy</string>
   <string name="episode_cleanup_except_favorite_removal">Pokud není mezi oblíbenými</string>

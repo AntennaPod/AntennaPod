@@ -100,9 +100,6 @@
   <string name="feed_auto_download_global">全般のデフォルト</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
-  <string name="feed_skip_inbox_global">全般のデフォルト</string>
-  <string name="feed_skip_inbox_yes">はい</string>
-  <string name="feed_skip_inbox_no">いいえ</string>
   <string name="send_label">送信…</string>
   <string name="episode_cleanup_never">しない</string>
   <string name="episode_cleanup_except_favorite_removal">お気に入りされていない</string>

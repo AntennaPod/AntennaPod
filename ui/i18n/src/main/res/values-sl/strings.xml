@@ -86,9 +86,6 @@
   <string name="feed_auto_download_global">Globalna privzeta nastavitev</string>
   <string name="feed_auto_download_always">Vedno</string>
   <string name="feed_auto_download_never">Nikoli</string>
-  <string name="feed_skip_inbox_global">Globalna privzeta nastavitev</string>
-  <string name="feed_skip_inbox_yes">Da</string>
-  <string name="feed_skip_inbox_no">Ne</string>
   <string name="send_label">Pošlji ...</string>
   <string name="episode_cleanup_never">Nikoli</string>
   <string name="episode_cleanup_except_favorite_removal">Ko ni dodan med priljubljene</string>

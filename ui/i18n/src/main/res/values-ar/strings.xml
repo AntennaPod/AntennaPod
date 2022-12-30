@@ -86,9 +86,6 @@
   <string name="feed_auto_download_global">اعدادات افتراضية شاملة</string>
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
-  <string name="feed_skip_inbox_global">اعدادات افتراضية شاملة</string>
-  <string name="feed_skip_inbox_yes">نعم</string>
-  <string name="feed_skip_inbox_no">لا</string>
   <string name="send_label">ارسال ...</string>
   <string name="episode_cleanup_never">ابدا</string>
   <string name="episode_cleanup_except_favorite_removal">عند عدم التفضيل</string>
