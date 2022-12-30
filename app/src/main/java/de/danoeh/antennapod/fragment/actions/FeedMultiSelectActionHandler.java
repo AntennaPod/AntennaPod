@@ -128,7 +128,7 @@ public class FeedMultiSelectActionHandler {
 
     private void skipInboxPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                "Skip Inbox");
+                activity.getString(R.string.pref_skip_inbox_title));
         String[] items = activity.getResources().getStringArray(R.array.spnSkipInboxItems);
         String[] values = activity.getResources().getStringArray(R.array.spnSkipInboxValues);
         preferenceListDialog.openDialog(items);
@@ -145,6 +145,7 @@ public class FeedMultiSelectActionHandler {
                     skipInboxSetting = FeedPreferences.SkipInboxSetting.NO;
                     break;
                 default:
+                    Log.e(TAG, "Unrecognized skipInboxSetting value: " + values[which]);
             }
             FeedPreferences.SkipInboxSetting finalSkipInboxSetting = skipInboxSetting;
             saveFeedPreferences(feedPreferences -> {

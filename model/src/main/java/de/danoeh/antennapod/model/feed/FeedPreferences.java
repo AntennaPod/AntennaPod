@@ -23,9 +23,19 @@ public class FeedPreferences implements Serializable {
     }
 
     public enum SkipInboxSetting {
-        GLOBAL,
-        YES,
-        NO
+        GLOBAL("global"),
+        YES("yes"),
+        NO("no");
+
+        private String val;
+
+        SkipInboxSetting(String val) {
+            this.val = val;
+        }
+
+        public String value() {
+            return val;
+        }
     }
 
     @NonNull

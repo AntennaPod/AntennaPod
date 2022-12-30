@@ -386,15 +386,15 @@ public class FeedSettingsFragment extends Fragment {
             switch (feedPreferences.getSkipInboxSetting()) {
                 case GLOBAL:
                     skipInboxSetting.setSummary(R.string.feed_skip_inbox_global);
-                    skipInboxSetting.setValue("global");
+                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.GLOBAL.value());
                     break;
                 case YES:
                     skipInboxSetting.setSummary(R.string.feed_skip_inbox_yes);
-                    skipInboxSetting.setValue("yes");
+                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.YES.value());
                     break;
                 case NO:
                     skipInboxSetting.setSummary(R.string.feed_skip_inbox_no);
-                    skipInboxSetting.setValue("no");
+                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.NO.value());
                     break;
                 default:
                     Log.e(TAG, "skipInboxSetting value not one of: global, yes, no");
