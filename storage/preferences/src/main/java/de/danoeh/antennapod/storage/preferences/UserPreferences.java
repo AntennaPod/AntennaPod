@@ -66,7 +66,7 @@ public class UserPreferences {
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
-    public static final String PREF_SKIP_INBOX = "prefSkipInbox";
+    public static final String PREF_NEW_EPISODES_ACTION = "prefNewEpisodesAction";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -927,12 +927,8 @@ public class UserPreferences {
                 .apply();
     }
 
-    /**
-     * @return {@code false} if new episodes should go to the Inbox,
-     * {@code true} otherwise
-     */
-    public static boolean getSkipInboxSetting() {
-        return prefs.getBoolean(PREF_SKIP_INBOX, false);
+    public static String getNewEpisodesAction() {
+        return prefs.getString(PREF_NEW_EPISODES_ACTION, "add_to_inbox");
     }
 
     public static SubscriptionsFilter getSubscriptionsFilter() {

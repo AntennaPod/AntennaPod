@@ -126,30 +126,29 @@ public class FeedMultiSelectActionHandler {
         preferenceSwitchDialog.openDialog();
     }
 
-    private void skipInboxPrefHandler() {
+    private void newEpisodesActionPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.pref_skip_inbox_title));
-        String[] items = activity.getResources().getStringArray(R.array.spnSkipInboxItems);
-        String[] values = activity.getResources().getStringArray(R.array.spnSkipInboxValues);
+                activity.getString(R.string.pref_new_episodes_action_title));
+        String[] items = activity.getResources().getStringArray(R.array.feedNewEpisodesActionItems);
+        String[] values = activity.getResources().getStringArray(R.array.feedNewEpisodesActionValues);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
-            FeedPreferences.SkipInboxSetting skipInboxSetting = null;
+            FeedPreferences.NewEpisodesAction newEpisodesAction = null;
             switch (values[which]) {
                 case "global":
-                    skipInboxSetting = FeedPreferences.SkipInboxSetting.GLOBAL;
+                    newEpisodesAction = FeedPreferences.NewEpisodesAction.GLOBAL;
                     break;
-                case "yes":
-                    skipInboxSetting = FeedPreferences.SkipInboxSetting.YES;
+                case "add_to_inbox":
+                    newEpisodesAction = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
                     break;
-                case "no":
-                    skipInboxSetting = FeedPreferences.SkipInboxSetting.NO;
+                case "nothing":
+                    newEpisodesAction = FeedPreferences.NewEpisodesAction.NOTHING;
                     break;
                 default:
-                    Log.e(TAG, "Unrecognized skipInboxSetting value: " + values[which]);
             }
-            FeedPreferences.SkipInboxSetting finalSkipInboxSetting = skipInboxSetting;
+            FeedPreferences.NewEpisodesAction finalNewEpisodesAction = newEpisodesAction;
             saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setSkipInboxSetting(finalSkipInboxSetting);
+                feedPreferences.setNewEpisodesAction(finalNewEpisodesAction);
             });
         });
     }

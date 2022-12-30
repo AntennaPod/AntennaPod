@@ -25,16 +25,26 @@
         <item>heavy</item>
     </string-array>
 
-    <string-array name="spnSkipInboxItems">
-        <item>@string/feed_skip_inbox_global</item>
-        <item>@string/feed_skip_inbox_yes</item>
-        <item>@string/feed_skip_inbox_no</item>
+    <string-array name="globalNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
     </string-array>
 
-    <string-array name="spnSkipInboxValues">
+    <string-array name="globalNewEpisodesActionValues">
+        <item>add_to_inbox</item>
+        <item>nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_global</item>
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionValues">
         <item>global</item>
-        <item>yes</item>
-        <item>no</item>
+        <item>add_to_inbox</item>
+        <item>nothing</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">

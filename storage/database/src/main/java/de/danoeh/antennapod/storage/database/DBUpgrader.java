@@ -332,7 +332,7 @@ class DBUpgrader {
         }
         if (oldVersion < 3010000) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_INBOX + " INTEGER DEFAULT 0;");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0;");
         }
     }
 

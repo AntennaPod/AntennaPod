@@ -299,16 +299,6 @@ public final class DBTasks {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
 
-            if (!UserPreferences.getSkipInboxSetting()) {
-                // All new feeds will have the most recent item placed in the
-                // Inbox (i.e. set as New), unless the "Skip Inbox" pref is
-                // turned on
-                FeedItem mostRecent = newFeed.getMostRecentItem();
-                if (mostRecent != null) {
-                    mostRecent.setNew();
-                }
-            }
-
             resultFeed = newFeed;
         } else {
             Log.d(TAG, "Feed with title " + newFeed.getTitle()
@@ -392,9 +382,8 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    // Only send the item to the Inbox if the if the "Skip
-                    // Inbox" preference is turned off and one of the following
-                    // is true:
+                    // Only send the item to the Inbox if the if the "New Episodes Action"
+                    // preference is set to "Add to Inbox", and one of the following is true:
                     //
                     //   1. The item was published after or at the same time as
                     //      the most recent item
@@ -402,11 +391,16 @@ public final class DBTasks {
                     //      items and this is the first)
                     //   3. The item has no pubDate
                     //
-                    FeedPreferences.SkipInboxSetting feedSkipInbox = savedFeed.getPreferences().getSkipInboxSetting();
-                    boolean shouldSkipInbox = feedSkipInbox == FeedPreferences.SkipInboxSetting.YES
-                            || (feedSkipInbox == FeedPreferences.SkipInboxSetting.GLOBAL
-                                && UserPreferences.getSkipInboxSetting());
-                    if (!shouldSkipInbox && (
+                    FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
+                            savedFeed.getPreferences().getNewEpisodesAction();
+                    String globalNewEpisodesAction = UserPreferences.getNewEpisodesAction();
+                    boolean shouldAddToInbox = (
+                            feedNewEpisodesAction == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            ) || (
+                            feedNewEpisodesAction == FeedPreferences.NewEpisodesAction.GLOBAL
+                            && globalNewEpisodesAction.equals(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.value())
+                            );
+                    if (shouldAddToInbox && (
                             item.getPubDate() == null
                             || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())

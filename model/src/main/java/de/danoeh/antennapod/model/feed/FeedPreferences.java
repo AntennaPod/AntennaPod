@@ -22,14 +22,14 @@ public class FeedPreferences implements Serializable {
         NO
     }
 
-    public enum SkipInboxSetting {
+    public enum NewEpisodesAction {
         GLOBAL("global"),
-        YES("yes"),
-        NO("no");
+        ADD_TO_INBOX("add_to_inbox"),
+        NOTHING("nothing");
 
         private String val;
 
-        SkipInboxSetting(String val) {
+        NewEpisodesAction(String val) {
             this.val = val;
         }
 
@@ -45,7 +45,7 @@ public class FeedPreferences implements Serializable {
     private boolean keepUpdated;
     private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
-    private SkipInboxSetting skipInboxSetting;
+    private NewEpisodesAction newEpisodesAction;
     private String username;
     private String password;
     private float feedPlaybackSpeed;
@@ -55,17 +55,17 @@ public class FeedPreferences implements Serializable {
     private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
-                           VolumeAdaptionSetting volumeAdaptionSetting, SkipInboxSetting skipInboxSetting,
+                           VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
-                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, skipInboxSetting, new HashSet<>());
+                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, newEpisodesAction, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
                             float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
-                            boolean showEpisodeNotification, SkipInboxSetting skipInboxSetting,
+                            boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
                             Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
@@ -79,7 +79,7 @@ public class FeedPreferences implements Serializable {
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
         this.showEpisodeNotification = showEpisodeNotification;
-        this.skipInboxSetting = skipInboxSetting;
+        this.newEpisodesAction = newEpisodesAction;
         this.tags.addAll(tags);
     }
 
@@ -160,8 +160,8 @@ public class FeedPreferences implements Serializable {
         return volumeAdaptionSetting;
     }
 
-    public SkipInboxSetting getSkipInboxSetting() {
-        return skipInboxSetting;
+    public NewEpisodesAction getNewEpisodesAction() {
+        return newEpisodesAction;
     }
 
     public void setAutoDeleteAction(AutoDeleteAction autoDeleteAction) {
@@ -172,8 +172,8 @@ public class FeedPreferences implements Serializable {
         this.volumeAdaptionSetting = volumeAdaptionSetting;
     }
 
-    public void setSkipInboxSetting(SkipInboxSetting skipInboxSetting) {
-        this.skipInboxSetting = skipInboxSetting;
+    public void setNewEpisodesAction(NewEpisodesAction newEpisodesAction) {
+        this.newEpisodesAction = newEpisodesAction;
     }
 
     public AutoDeleteAction getCurrentAutoDelete() {

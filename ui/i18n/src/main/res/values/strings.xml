@@ -125,9 +125,9 @@
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
-    <string name="feed_skip_inbox_global">Global default</string>
-    <string name="feed_skip_inbox_yes">Yes</string>
-    <string name="feed_skip_inbox_no">No</string>
+    <string name="feed_new_episodes_action_global">Global default</string>
+    <string name="feed_new_episodes_action_add_to_inbox">Add to Inbox</string>
+    <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
@@ -545,8 +545,8 @@
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show Subscription Title</string>
     <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
-    <string name="pref_skip_inbox_title">Skip Inbox</string>
-    <string name="pref_skip_inbox_sum">Do not place new episodes in the Inbox</string>
+    <string name="pref_new_episodes_action_title">New Episodes Action</string>
+    <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

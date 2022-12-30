@@ -58,12 +58,12 @@
         android:title="@string/feed_volume_reduction" />
 
     <de.danoeh.antennapod.preferences.MaterialListPreference
-        android:entries="@array/spnSkipInboxItems"
-        android:entryValues="@array/spnSkipInboxValues"
-        android:icon="@drawable/ic_inbox"
-        android:key="feedSkipInbox"
-        android:summary="@string/feed_skip_inbox_global"
-        android:title="@string/pref_skip_inbox_title" />
+        android:entries="@array/feedNewEpisodesActionItems"
+        android:entryValues="@array/feedNewEpisodesActionValues"
+        android:icon="@drawable/ic_feed"
+        android:key="feedNewEpisodesAction"
+        android:summary="@string/feed_new_episodes_action_global"
+        android:title="@string/pref_new_episodes_action_title" />
 
     <PreferenceCategory
         android:key="autoDownloadCategory"

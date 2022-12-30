@@ -43,7 +43,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         feed.setId(request.getFeedfileId());
         feed.setDownloaded(true);
         feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
-                VolumeAdaptionSetting.OFF, FeedPreferences.SkipInboxSetting.GLOBAL, request.getUsername(),
+                VolumeAdaptionSetting.OFF, FeedPreferences.NewEpisodesAction.GLOBAL, request.getUsername(),
                 request.getPassword()));
         feed.setPageNr(request.getArguments().getInt(DownloadRequest.REQUEST_ARG_PAGE_NR, 0));
 

@@ -105,7 +105,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_AUTHENTICATION = "authentication";
         private static final CharSequence PREF_AUTO_DELETE = "autoDelete";
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
-        private static final CharSequence PREF_SKIP_INBOX = "feedSkipInbox";
+        private static final CharSequence PREF_NEW_EPISODES_ACTION = "feedNewEpisodesAction";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final String PREF_TAGS = "tags";
@@ -157,7 +157,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
                         setupVolumeReductionPreferences();
-                        setupSkipInboxSetting();
+                        setupNewEpisodesAction();
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
@@ -168,7 +168,7 @@ public class FeedSettingsFragment extends Fragment {
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
-                        updateSkipInboxSetting();
+                        updateNewEpisodesAction();
 
                         if (feed.isLocalFeed()) {
                             findPreference(PREF_AUTHENTICATION).setVisible(false);
@@ -292,7 +292,6 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
                         break;
                     default:
-                        Log.e(TAG, "Unexpected autoDeletePreference value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDeleteSummary();
@@ -333,7 +332,6 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
                     default:
-                        Log.e(TAG, "Unexpected volumeReductionPreference value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateVolumeReductionValue();
@@ -359,45 +357,43 @@ public class FeedSettingsFragment extends Fragment {
             }
         }
 
-        private void setupSkipInboxSetting() {
-            findPreference(PREF_SKIP_INBOX).setOnPreferenceChangeListener((preference, newValue) -> {
+        private void setupNewEpisodesAction() {
+            findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceChangeListener((preference, newValue) -> {
                 switch ((String) newValue) {
                     case "global":
-                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.GLOBAL);
+                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.GLOBAL);
                         break;
-                    case "yes":
-                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.YES);
+                    case "add_to_inbox":
+                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX);
                         break;
-                    case "no":
-                        feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.NO);
+                    case "nothing":
+                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.NOTHING);
                         break;
                     default:
-                        Log.e(TAG, "Unexpected skipInboxSetting value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
-                updateSkipInboxSetting();
+                updateNewEpisodesAction();
                 return false;
             });
         }
 
-        private void updateSkipInboxSetting() {
-            ListPreference skipInboxSetting = findPreference(PREF_SKIP_INBOX);
+        private void updateNewEpisodesAction() {
+            ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
 
-            switch (feedPreferences.getSkipInboxSetting()) {
+            switch (feedPreferences.getNewEpisodesAction()) {
                 case GLOBAL:
-                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_global);
-                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.GLOBAL.value());
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_global);
+                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.GLOBAL.value());
                     break;
-                case YES:
-                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_yes);
-                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.YES.value());
+                case ADD_TO_INBOX:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
+                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.value());
                     break;
-                case NO:
-                    skipInboxSetting.setSummary(R.string.feed_skip_inbox_no);
-                    skipInboxSetting.setValue(FeedPreferences.SkipInboxSetting.NO.value());
+                case NOTHING:
+                    newEpisodesAction.setSummary(R.string.feed_new_episodes_action_nothing);
+                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.NOTHING.value());
                     break;
                 default:
-                    Log.e(TAG, "skipInboxSetting value not one of: global, yes, no");
             }
         }
 
