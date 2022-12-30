@@ -46,17 +46,17 @@ public class FeedPreferences implements Serializable {
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
                            VolumeAdaptionSetting volumeAdaptionSetting, SkipInboxSetting skipInboxSetting,
-			   String username, String password) {
+                           String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
                 new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, skipInboxSetting, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
-			    String username, String password, @NonNull FeedFilter filter,
-			    float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
-			    boolean showEpisodeNotification, SkipInboxSetting skipInboxSetting,
-			    Set<String> tags) {
+                            String username, String password, @NonNull FeedFilter filter,
+                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
+                            boolean showEpisodeNotification, SkipInboxSetting skipInboxSetting,
+                            Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;

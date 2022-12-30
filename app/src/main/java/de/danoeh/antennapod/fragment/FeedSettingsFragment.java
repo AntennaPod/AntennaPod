@@ -291,6 +291,8 @@ public class FeedSettingsFragment extends Fragment {
                     case "never":
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
                         break;
+                    default:
+                        Log.e(TAG, "Unexpected autoDeletePreference value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDeleteSummary();
@@ -330,6 +332,8 @@ public class FeedSettingsFragment extends Fragment {
                     case "heavy":
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
+                    default:
+                        Log.e(TAG, "Unexpected volumeReductionPreference value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateVolumeReductionValue();
@@ -367,6 +371,8 @@ public class FeedSettingsFragment extends Fragment {
                     case "no":
                         feedPreferences.setSkipInboxSetting(FeedPreferences.SkipInboxSetting.NO);
                         break;
+                    default:
+                        Log.e(TAG, "Unexpected skipInboxSetting value: " + newValue);
                 }
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateSkipInboxSetting();
@@ -390,6 +396,8 @@ public class FeedSettingsFragment extends Fragment {
                     skipInboxSetting.setSummary(R.string.feed_skip_inbox_no);
                     skipInboxSetting.setValue("no");
                     break;
+                default:
+                    Log.e(TAG, "skipInboxSetting value not one of: global, yes, no");
             }
         }
 
