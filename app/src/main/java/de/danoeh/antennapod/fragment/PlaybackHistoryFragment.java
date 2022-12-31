@@ -33,7 +33,6 @@ public class PlaybackHistoryFragment extends EpisodesListFragment {
         emptyView.setIcon(R.drawable.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
-        swipeActions = new SwipeActions(this, getFragmentTag()).attachTo(recyclerView);
         swipeActions.setFilter(getFilter());
         return root;
     }
