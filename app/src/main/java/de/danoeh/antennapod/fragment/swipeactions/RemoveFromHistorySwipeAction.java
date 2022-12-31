@@ -61,6 +61,6 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter, FeedItem item) {
-        return filter.showNew;
+        return true;
     }
 }
