@@ -278,23 +278,21 @@ public class DBWriter {
      *
      * @param media FeedMedia that should be added to the playback history.
      */
-    public static Future<?> addItemToPlaybackHistory(final FeedMedia media) {
-        return dbExec.submit(() -> {
-            Log.d(TAG, "Adding new item to playback history");
-            media.setPlaybackCompletionDate(new Date());
-
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedMediaPlaybackCompletionDate(media);
-            adapter.close();
-            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
-
-        });
+    public static Future<?> addItemToPlaybackHistory(FeedMedia media) {
+        return addItemToPlaybackHistory(media, new Date());
     }
 
+    /**
+     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
+     * its playback completion date is set to a non-null value. This method will set the playback completion date to the
+     * current date regardless of the current value.
+     *
+     * @param media FeedMedia that should be added to the playback history.
+     * @param date PlaybackCompletionDate for <code>media</code>
+     */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return dbExec.submit(() -> {
-            Log.d(TAG, "Re-adding item to playback history");
+            Log.d(TAG, "Adding item to playback history");
             media.setPlaybackCompletionDate(date);
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
