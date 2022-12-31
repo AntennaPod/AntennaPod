@@ -27,6 +27,7 @@ import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -78,6 +79,10 @@ public class SwipeActionsDialog {
                 forFragment = context.getString(R.string.queue_label);
                 keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.ADD_TO_QUEUE)
                         && !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
+                break;
+            case PlaybackHistoryFragment.TAG:
+                forFragment = context.getString(R.string.playback_history_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
                 break;
             default: break;
         }

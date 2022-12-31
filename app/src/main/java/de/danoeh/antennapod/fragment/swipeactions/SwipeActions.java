@@ -24,6 +24,7 @@ import de.danoeh.antennapod.dialog.SwipeActionsDialog;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -40,7 +41,7 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
                     new TogglePlaybackStateSwipeAction(), new RemoveFromQueueSwipeAction(),
-                    new DeleteSwipeAction())
+                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction())
     );
 
     private final Fragment fragment;
@@ -105,6 +106,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
             case CompletedDownloadsFragment.TAG:
                 defaultActions = SwipeAction.DELETE + "," + SwipeAction.DELETE;
                 break;
+            case PlaybackHistoryFragment.TAG:
+                defaultActions = SwipeAction.REMOVE_FROM_HISTORY + "," + SwipeAction.REMOVE_FROM_HISTORY;
+                break;
             default:
             case AllEpisodesFragment.TAG:
                 defaultActions = SwipeAction.MARK_FAV + "," + SwipeAction.START_DOWNLOAD;
@@ -132,16 +136,6 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-        if (tag.equals("PlaybackHistoryFragment")) {
-            new RemoveFromHistorySwipeAction().performAction(
-                    ((EpisodeItemViewHolder) viewHolder).getFeedItem(),
-                    fragment,
-                    filter
-            );
-            return;
-        }
-
         if (!actions.hasActions()) {
             //open settings dialog if no prefs are set
             new SwipeActionsDialog(fragment.requireContext(), tag).show(this::reloadPreference);

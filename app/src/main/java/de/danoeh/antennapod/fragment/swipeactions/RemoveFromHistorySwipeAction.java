@@ -14,6 +14,8 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 
 public class RemoveFromHistorySwipeAction implements SwipeAction {
 
+    public static final String TAG = "RemoveFromHistorySwipeAction";
+
     @Override
     public String getId() {
         return REMOVE_FROM_HISTORY;
