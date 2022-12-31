@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Date;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -39,6 +41,8 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
 
+        Date playbackCompletionDate = item.getMedia().getPlaybackCompletionDate();
+
         DBWriter.deleteFromPlaybackHistory(item);
 
         ((MainActivity) fragment.requireActivity())
@@ -49,7 +53,7 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
                         fragment.getString(R.string.undo),
                         v -> DBWriter.addItemToPlaybackHistory(
                                 item.getMedia(),
-                                item.getMedia().getPlaybackCompletionDate()
+                                playbackCompletionDate
                         ));
     }
 
