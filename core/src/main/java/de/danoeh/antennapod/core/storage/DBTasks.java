@@ -393,13 +393,11 @@ public final class DBTasks {
                     //
                     FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
                             savedFeed.getPreferences().getNewEpisodesAction();
-                    String globalNewEpisodesAction = UserPreferences.getNewEpisodesAction();
-                    boolean shouldAddToInbox = (
-                            feedNewEpisodesAction == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
-                            ) || (
-                            feedNewEpisodesAction == FeedPreferences.NewEpisodesAction.GLOBAL
-                            && globalNewEpisodesAction.equals(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.value())
-                            );
+                    FeedPreferences.NewEpisodesAction action = feedNewEpisodesAction;
+                    if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
+                        action = UserPreferences.getNewEpisodesAction();
+                    }
+                    boolean shouldAddToInbox = action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
                     if (shouldAddToInbox && (
                             item.getPubDate() == null
                             || priorMostRecentDate == null
