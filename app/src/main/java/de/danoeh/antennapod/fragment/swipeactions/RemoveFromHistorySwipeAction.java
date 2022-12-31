@@ -25,7 +25,7 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
 
     @Override
     public int getActionIcon() {
-        return R.drawable.ic_delete;
+        return R.drawable.ic_history_remove;
     }
 
     @Override
