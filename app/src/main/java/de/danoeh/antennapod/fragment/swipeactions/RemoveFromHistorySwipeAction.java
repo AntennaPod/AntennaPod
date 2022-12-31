@@ -45,18 +45,10 @@ public class RemoveFromHistorySwipeAction implements SwipeAction {
                         Snackbar.LENGTH_LONG
                 ).setAction(
                         fragment.getString(R.string.undo),
-                        v -> {
-
-                            if (DBWriter.addItemToPlaybackHistory(
-                                    item.getMedia(),
-                                    item.getMedia().getPlaybackCompletionDate()
-                            ).isDone()) {
-                                ((MainActivity) fragment.requireActivity())
-                                        .showSnackbarAbovePlayer(
-                                                R.string.restored_history_label,
-                                                Snackbar.LENGTH_LONG);
-                            }
-                        });
+                        v -> DBWriter.addItemToPlaybackHistory(
+                                item.getMedia(),
+                                item.getMedia().getPlaybackCompletionDate()
+                        ));
     }
 
     @Override
