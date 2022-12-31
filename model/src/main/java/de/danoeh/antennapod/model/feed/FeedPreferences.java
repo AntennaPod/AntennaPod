@@ -17,25 +17,27 @@ public class FeedPreferences implements Serializable {
     public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {
-        GLOBAL,
-        YES,
-        NO
+        GLOBAL(AutoDeleteAction.GLOBAL_VALUE),
+        ALWAYS(AutoDeleteAction.ALWAYS_VALUE),
+        NEVER(AutoDeleteAction.NEVER_VALUE);
+
+        public static final String GLOBAL_VALUE = "global";
+        public static final String ALWAYS_VALUE = "always";
+        public static final String NEVER_VALUE = "never";
+
+        AutoDeleteAction(String val) {}
     }
 
     public enum NewEpisodesAction {
-        GLOBAL("global"),
-        ADD_TO_INBOX("add_to_inbox"),
-        NOTHING("nothing");
+        GLOBAL(NewEpisodesAction.GLOBAL_VALUE),
+        ADD_TO_INBOX(NewEpisodesAction.ADD_TO_INBOX_VALUE),
+        NOTHING(NewEpisodesAction.NOTHING_VALUE);
 
-        private String val;
+        public static final String GLOBAL_VALUE = "global";
+        public static final String ADD_TO_INBOX_VALUE = "add_to_inbox";
+        public static final String NOTHING_VALUE = "nothing";
 
-        NewEpisodesAction(String val) {
-            this.val = val;
-        }
-
-        public String value() {
-            return val;
-        }
+        NewEpisodesAction(String val) {}
     }
 
     @NonNull

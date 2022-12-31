@@ -92,12 +92,5 @@
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
                 android:title="@string/swipeactions_label"/>
-        <de.danoeh.antennapod.preferences.MaterialListPreference
-                android:entryValues="@array/globalNewEpisodesActionValues"
-                android:entries="@array/globalNewEpisodesActionItems"
-                android:key="prefNewEpisodesAction"
-                android:title="@string/pref_new_episodes_action_title"
-                android:summary="@string/pref_new_episodes_action_sum"
-                android:defaultValue="add_to_inbox"/>
     </PreferenceCategory>
 </PreferenceScreen>

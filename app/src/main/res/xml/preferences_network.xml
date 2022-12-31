@@ -13,6 +13,13 @@
                 android:key="prefAutoDownloadSettings"
                 android:title="@string/pref_automatic_download_title"
                 search:ignore="true" />
+        <de.danoeh.antennapod.preferences.MaterialListPreference
+                android:entryValues="@array/globalNewEpisodesActionValues"
+                android:entries="@array/globalNewEpisodesActionItems"
+                android:key="prefNewEpisodesAction"
+                android:title="@string/pref_new_episodes_action_title"
+                android:summary="@string/pref_new_episodes_action_sum"
+                android:defaultValue="add_to_inbox"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">

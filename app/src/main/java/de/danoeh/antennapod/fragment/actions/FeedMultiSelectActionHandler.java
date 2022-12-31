@@ -96,14 +96,14 @@ public class FeedMultiSelectActionHandler {
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
             FeedPreferences.AutoDeleteAction autoDeleteAction = null;
             switch (values[which]) {
-                case "global":
+                case FeedPreferences.AutoDeleteAction.GLOBAL_VALUE:
                     autoDeleteAction = FeedPreferences.AutoDeleteAction.GLOBAL;
                     break;
-                case "always":
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.YES;
+                case FeedPreferences.AutoDeleteAction.ALWAYS_VALUE:
+                    autoDeleteAction = FeedPreferences.AutoDeleteAction.ALWAYS;
                     break;
-                case "never":
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.NO;
+                case FeedPreferences.AutoDeleteAction.NEVER_VALUE:
+                    autoDeleteAction = FeedPreferences.AutoDeleteAction.NEVER;
                     break;
                 default:
             }
@@ -135,13 +135,13 @@ public class FeedMultiSelectActionHandler {
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
             FeedPreferences.NewEpisodesAction newEpisodesAction = null;
             switch (values[which]) {
-                case "global":
+                case FeedPreferences.NewEpisodesAction.GLOBAL_VALUE:
                     newEpisodesAction = FeedPreferences.NewEpisodesAction.GLOBAL;
                     break;
-                case "add_to_inbox":
+                case FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE:
                     newEpisodesAction = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
                     break;
-                case "nothing":
+                case FeedPreferences.NewEpisodesAction.NOTHING_VALUE:
                     newEpisodesAction = FeedPreferences.NewEpisodesAction.NOTHING;
                     break;
                 default:

@@ -391,13 +391,17 @@ public final class DBTasks {
                     //      items and this is the first)
                     //   3. The item has no pubDate
                     //
-                    FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
-                            savedFeed.getPreferences().getNewEpisodesAction();
-                    FeedPreferences.NewEpisodesAction action = feedNewEpisodesAction;
+                    FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                     if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
-                        action = UserPreferences.getNewEpisodesAction();
+                        // Feed preference is set to global, check if the globlal setting is
+                        // to add to the inbox
+                        String globalNewEpisodesAction = UserPreferences.getNewEpisodesAction();
+                        if (globalNewEpisodesAction.equals(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE)) {
+                            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
+                        }
                     }
                     boolean shouldAddToInbox = action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
+
                     if (shouldAddToInbox && (
                             item.getPubDate() == null
                             || priorMostRecentDate == null

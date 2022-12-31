@@ -45,7 +45,7 @@
         android:entryValues="@array/spnAutoDeleteValues"
         android:icon="@drawable/ic_delete"
         android:key="autoDelete"
-        android:summary="@string/feed_auto_download_global"
+        android:summary="@string/global_default"
         android:title="@string/auto_delete_label" />
 
     <de.danoeh.antennapod.preferences.MaterialListPreference
@@ -62,7 +62,7 @@
         android:entryValues="@array/feedNewEpisodesActionValues"
         android:icon="@drawable/ic_feed"
         android:key="feedNewEpisodesAction"
-        android:summary="@string/feed_new_episodes_action_global"
+        android:summary="@string/global_default"
         android:title="@string/pref_new_episodes_action_title" />
 
     <PreferenceCategory

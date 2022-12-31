@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="spnAutoDeleteItems">
-        <item>@string/feed_auto_download_global</item>
+        <item>@string/global_default</item>
         <item>@string/feed_auto_download_always</item>
         <item>@string/feed_auto_download_never</item>
     </string-array>
@@ -36,7 +36,7 @@
     </string-array>
 
     <string-array name="feedNewEpisodesActionItems">
-        <item>@string/feed_new_episodes_action_global</item>
+        <item>@string/global_default</item>
         <item>@string/feed_new_episodes_action_add_to_inbox</item>
         <item>@string/feed_new_episodes_action_nothing</item>
     </string-array>

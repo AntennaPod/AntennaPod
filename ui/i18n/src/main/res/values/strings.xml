@@ -100,6 +100,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset">Reset</string>
+    <string name="global_default">Global default</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this Podcast</string>
@@ -122,10 +123,8 @@
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads">%1$d parallel downloads</string>
-    <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
-    <string name="feed_new_episodes_action_global">Global default</string>
     <string name="feed_new_episodes_action_add_to_inbox">Add to Inbox</string>
     <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="send_label">Send&#8230;</string>
