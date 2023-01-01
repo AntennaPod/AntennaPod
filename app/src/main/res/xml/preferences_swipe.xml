@@ -17,4 +17,8 @@
         android:key="prefSwipeFeed"
         android:title="@string/feeds_label"/>
 
+    <Preference
+        android:key="prefSwipeHistory"
+        android:title="@string/playback_history_label"/>
+
 </PreferenceScreen>
