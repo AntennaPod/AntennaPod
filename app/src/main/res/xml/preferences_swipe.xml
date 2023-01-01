@@ -14,11 +14,11 @@
         android:title="@string/downloads_label"/>
 
     <Preference
-        android:key="prefSwipeFeed"
-        android:title="@string/feeds_label"/>
-
-    <Preference
         android:key="prefSwipeHistory"
         android:title="@string/playback_history_label"/>
+
+    <Preference
+        android:key="prefSwipeFeed"
+        android:title="@string/feeds_label"/>
 
 </PreferenceScreen>

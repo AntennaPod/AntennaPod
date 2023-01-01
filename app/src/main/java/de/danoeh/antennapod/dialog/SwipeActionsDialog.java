@@ -73,7 +73,8 @@ public class SwipeActionsDialog {
             case CompletedDownloadsFragment.TAG:
                 forFragment = context.getString(R.string.downloads_label);
                 keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)
-                        && !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)
+                        && !a.getId().equals(SwipeAction.START_DOWNLOAD)).toList();
                 break;
             case FeedItemlistFragment.TAG:
                 forFragment = context.getString(R.string.feeds_label);
@@ -87,6 +88,7 @@ public class SwipeActionsDialog {
                 break;
             case PlaybackHistoryFragment.TAG:
                 forFragment = context.getString(R.string.playback_history_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
                 break;
             default: break;
         }

@@ -244,10 +244,6 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
-        return addItemToPlaybackHistory(feedItem.getMedia(), new Date(0));
-    }
-
     /**
      * Deletes the entire download log.
      */
@@ -261,6 +257,9 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
+        return addItemToPlaybackHistory(feedItem.getMedia(), new Date(0));
+    }
 
     /**
      * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
