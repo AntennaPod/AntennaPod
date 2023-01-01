@@ -245,16 +245,7 @@ public class DBWriter {
     }
 
     public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-
-            feedItem.getMedia().setPlaybackCompletionDate(new Date(0));
-            adapter.setFeedMediaPlaybackCompletionDate(feedItem.getMedia());
-
-            adapter.close();
-            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
-        });
+        return addItemToPlaybackHistory(media, new Date(0));
     }
 
     /**
