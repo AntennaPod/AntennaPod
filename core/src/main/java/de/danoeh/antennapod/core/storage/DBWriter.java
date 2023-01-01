@@ -245,7 +245,7 @@ public class DBWriter {
     }
 
     public static Future<?> deleteFromPlaybackHistory(FeedItem feedItem) {
-        return addItemToPlaybackHistory(media, new Date(0));
+        return addItemToPlaybackHistory(feedItem.getMedia(), new Date(0));
     }
 
     /**
