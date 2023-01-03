@@ -80,8 +80,7 @@ import java.util.List;
 /**
  * Displays a list of FeedItems.
  */
-public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener,
-        MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener, RemoveFeedDialog.Callback {
+public class FeedItemlistFragment extends Fragment implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener, EpisodeItemListAdapter.OnSelectModeListener, RemoveFeedDialog.Callback {
     public static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
     private static final String KEY_UP_ARROW = "up_arrow";
