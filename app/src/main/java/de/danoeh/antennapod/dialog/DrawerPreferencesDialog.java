@@ -5,16 +5,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 
 import java.util.List;
-import java.util.Objects;
 
 public class DrawerPreferencesDialog {
     public static void show(Context context, Runnable callback) {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         final String[] navTitles = context.getResources().getStringArray(R.array.nav_drawer_titles);
         boolean[] checked = new boolean[NavDrawerFragment.NAV_DRAWER_TAGS.length];
-        String defaultPage = UserPreferences.getDefaultPage();
         for (int i = 0; i < NavDrawerFragment.NAV_DRAWER_TAGS.length; i++) {
             String tag = NavDrawerFragment.NAV_DRAWER_TAGS[i];
             if (!hiddenDrawerItems.contains(tag)) {
@@ -27,15 +26,15 @@ public class DrawerPreferencesDialog {
             if (isChecked) {
                 hiddenDrawerItems.remove(NavDrawerFragment.NAV_DRAWER_TAGS[which]);
             } else {
-                String hiddenItem = NavDrawerFragment.NAV_DRAWER_TAGS[which];
-                if (Objects.equals(hiddenItem, defaultPage)) {
-                    showHiddingHomePageWarning(context);
-                }
-                hiddenDrawerItems.add(hiddenItem);
+                hiddenDrawerItems.add(NavDrawerFragment.NAV_DRAWER_TAGS[which]);
             }
         });
+        String lastNavFragment = NavDrawerFragment.getLastNavFragment(context);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+            if (hiddenDrawerItems.contains(lastNavFragment)) {
+                handleHiddenScreen(context);
+            }
             if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
                 for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
                     if (!hiddenDrawerItems.contains(tag)) {
@@ -53,10 +52,12 @@ public class DrawerPreferencesDialog {
         builder.create().show();
     }
 
-    private static void showHiddingHomePageWarning(Context context) {
-        new MaterialAlertDialogBuilder(context)
-                .setMessage(R.string.hide_home_screen_warning)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
+    private static void handleHiddenScreen(Context context) {
+        String lastNavFragment = NavDrawerFragment.getLastNavFragment(context);
+        List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
+        if (hiddenDrawerItems.contains(lastNavFragment)) {
+            String defaultPage = UserPreferences.getDefaultPage();
+            new MainActivityStarter(context).withFragmentLoaded(defaultPage).start();
+        }
     }
 }
