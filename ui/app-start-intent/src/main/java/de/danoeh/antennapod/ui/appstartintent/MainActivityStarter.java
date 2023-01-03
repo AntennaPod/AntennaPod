@@ -14,6 +14,7 @@ public class MainActivityStarter {
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_ADD_TO_BACK_STACK = "add_to_back_stack";
+    public static final String EXTRA_LOAD_FRAGMENT = "load_fragment";
 
     private final Intent intent;
     private final Context context;
@@ -49,6 +50,11 @@ public class MainActivityStarter {
 
     public MainActivityStarter withAddToBackStack() {
         intent.putExtra(EXTRA_ADD_TO_BACK_STACK, true);
+        return this;
+    }
+
+    public MainActivityStarter withFragmentLoaded(String fragmentName) {
+        intent.putExtra(EXTRA_LOAD_FRAGMENT, fragmentName);
         return this;
     }
 }

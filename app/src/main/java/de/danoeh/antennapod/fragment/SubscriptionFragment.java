@@ -29,6 +29,7 @@ import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
 import org.greenrobot.eventbus.EventBus;
@@ -72,7 +73,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class SubscriptionFragment extends Fragment
         implements MaterialToolbar.OnMenuItemClickListener,
-        SubscriptionsRecyclerAdapter.OnSelectModeListener {
+        SubscriptionsRecyclerAdapter.OnSelectModeListener, RemoveFeedDialog.Callback {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
@@ -364,7 +365,7 @@ public class SubscriptionFragment extends Fragment
             new RenameItemDialog(getActivity(), feed).show();
             return true;
         } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed);
+            RemoveFeedDialog.show(getContext(), feed, this);
             return true;
         } else if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
@@ -421,5 +422,11 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
+    }
+
+    @Override
+    public void onConfirmRemovePodcast() {
+        String lastNavFragment = NavDrawerFragment.getLastNavFragmentExceptFeed(getContext());
+        new MainActivityStarter(getContext()).withFragmentLoaded(lastNavFragment).start();
     }
 }
