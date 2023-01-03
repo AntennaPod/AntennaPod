@@ -37,7 +37,7 @@ public class RemoveFeedDialog {
             @Override
             public void onConfirmButtonPressed(DialogInterface clickedDialog) {
 
-                if (callback != null){
+                if (callback != null) {
                     callback.onConfirmRemovePodcast();
                 }
 
