@@ -57,7 +57,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, RemoveFeedDialog.Callback {
+public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener,
+        RemoveFeedDialog.Callback {
     @VisibleForTesting
     public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
     public static final String PREF_LAST_DEFAULT_FRAGMENT_TAG = "prefLastDefaultFragmentTag";
