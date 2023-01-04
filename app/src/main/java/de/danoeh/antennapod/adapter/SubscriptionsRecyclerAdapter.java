@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +28,6 @@ import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -39,7 +36,6 @@ import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.common.TriangleLabelView;
 
 /**
  * Adapter for subscriptions
@@ -80,8 +76,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         if (viewType == COVER_WITH_TITLE) {
             topAndBottomItemId = 0;
             belowItemId = R.id.imgvCover;
-            feedTitle.setBackgroundColor(
-                    ContextCompat.getColor(feedTitle.getContext(), R.color.feed_text_bg));
             int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
             feedTitle.setPadding(padding, padding, padding, padding);
         }
@@ -226,7 +220,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private final TextView feedTitle;
         private final ImageView imageView;
-        private final TriangleLabelView count;
+        private final TextView count;
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
 
@@ -234,7 +228,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             super(itemView);
             feedTitle = itemView.findViewById(R.id.txtvTitle);
             imageView = itemView.findViewById(R.id.imgvCover);
-            count = itemView.findViewById(R.id.triangleCountView);
+            count = itemView.findViewById(R.id.countViewPill);
             selectView = itemView.findViewById(R.id.selectView);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
         }
@@ -246,12 +240,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             feedTitle.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
             feedTitle.setVisibility(View.VISIBLE);
-            if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
-                count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
-            }
-
             if (drawerItem.getCounter() > 0) {
-                count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
+                count.setText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                 count.setVisibility(View.VISIBLE);
             } else {
                 count.setVisibility(View.GONE);
@@ -265,12 +255,14 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         .withUri(feed.getImageUrl())
                         .withPlaceholderView(feedTitle, textAndImageCombind)
                         .withCoverView(imageView)
+                        .setRoundedCorner()
                         .load();
             } else {
                 new CoverLoader(mainActivityRef.get())
                         .withResource(R.drawable.ic_tag)
                         .withPlaceholderView(feedTitle, true)
                         .withCoverView(imageView)
+                        .setRoundedCorner()
                         .load();
             }
         }

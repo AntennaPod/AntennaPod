@@ -279,4 +279,11 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="TextPill">
+        <item name="android:background">@drawable/bg_pill_translucent</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>

@@ -6,42 +6,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:elevation="4dp"
     android:foreground="?attr/selectableItemBackground">
 
     <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/non_square_icon_background"
         android:scaleType="fitCenter"
+        android:outlineProvider="background"
         squareImageView:direction="width"
         tools:src="@tools:sample/avatars" />
 
-    <com.joanzapata.iconify.widget.IconTextView
+    <TextView
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignStart="@+id/imgvCover"
-        android:layout_alignLeft="@+id/imgvCover"
-        android:layout_alignTop="@+id/imgvCover"
-        android:layout_alignEnd="@+id/imgvCover"
-        android:layout_alignRight="@+id/imgvCover"
-        android:layout_alignBottom="@+id/imgvCover"
-        android:background="@color/non_square_icon_background"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
+        android:layout_below="@id/imgvCover"
+        android:padding="6dp"
         android:textColor="?android:attr/textColorPrimary"
         tools:text="@string/app_name" />
 
-    <de.danoeh.antennapod.ui.common.TriangleLabelView
-        android:id="@+id/triangleCountView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/countViewPill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:text="3"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        app:backgroundColor="?attr/colorSecondary"
-        app:corner="rightTop"
+        android:textSize="12sp"
+        style="@style/TextPill"
         app:primaryText="Test"
         app:primaryTextColor="?attr/colorOnSecondary"
         app:primaryTextSize="12sp" />

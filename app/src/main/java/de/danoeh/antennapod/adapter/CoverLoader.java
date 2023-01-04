@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 
@@ -35,6 +37,7 @@ public class CoverLoader {
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private MainActivity activity;
+    private boolean hasRoundedCorner = false;
 
     public CoverLoader(MainActivity activity) {
         this.activity = activity;
@@ -66,13 +69,23 @@ public class CoverLoader {
     }
 
     /**
+     * Set whether the cover image should have rounded corners; sharp corners by default.
+     *
+     */
+
+    public CoverLoader setRoundedCorner() {
+        hasRoundedCorner = true;
+        return this;
+    }
+
+    /**
      * Set cover text and if it should be shown even if there is a cover image.
      *
      * @param placeholderView      Cover text.
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
-    public CoverLoader withPlaceholderView(@NonNull TextView placeholderView, boolean textAndImageCombined) {
+    public CoverLoader withPlaceholderView(@NonNull TextView placeholderView,  boolean textAndImageCombined) {
         this.txtvPlaceholder = placeholderView;
         this.textAndImageCombined = textAndImageCombined;
         return this;
@@ -91,6 +104,11 @@ public class CoverLoader {
         RequestOptions options = new RequestOptions()
                 .fitCenter()
                 .dontAnimate();
+
+        if (hasRoundedCorner) {
+            options.transform(new FitCenter(), new RoundedCorners((int)
+                    (8 * activity.getResources().getDisplayMetrics().density)));
+        }
 
         RequestBuilder<PaletteBitmap> builder = Glide.with(activity)
                 .as(PaletteBitmap.class)
@@ -148,22 +166,22 @@ public class CoverLoader {
                 if (textAndImageCombined || showTitle) {
                     final Context context = placeholder.getContext();
                     placeholder.setVisibility(View.VISIBLE);
-                    int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
-                    if (palette == null || !showTitle) {
-                        placeholder.setBackgroundColor(bgColor);
-                        placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
-                                android.R.attr.textColorPrimary));
-                        return;
+                    if (textAndImageCombined && !showTitle) {
+                        int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
+                        if (palette == null) {
+                            placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
+                                    android.R.attr.textColorPrimary));
+                            return;
+                        }
+                        int dominantColor = palette.getDominantColor(bgColor);
+                        int textColor = ContextCompat.getColor(context, R.color.white);
+                        if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
+                            textColor = ContextCompat.getColor(context, R.color.black);
+                        }
+                        placeholder.setTextColor(textColor);
                     }
-                    int dominantColor = palette.getDominantColor(bgColor);
-                    int textColor = ContextCompat.getColor(context, R.color.white);
-                    if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
-                        textColor = ContextCompat.getColor(context, R.color.black);
-                    }
-                    placeholder.setTextColor(textColor);
-                    placeholder.setBackgroundColor(dominantColor);
                 } else {
-                    placeholder.setVisibility(View.INVISIBLE);
+                    placeholder.setVisibility(View.GONE);
                 }
             }
         }
