@@ -158,10 +158,8 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Splash" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">#000</item>
-        <item name="colorPrimaryDark">#000</item>
+    <style name="Theme.AntennaPod.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowBackground">@color/accent_light</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
@@ -170,7 +168,7 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
-        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/ic_monochrome</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/splash_icon</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/accent_light</item>
     </style>
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selected"
+    android:oneshot="false">
+    <item android:drawable="@drawable/ic_monochrome" android:duration="400" />
+    <item android:drawable="@drawable/ic_settings_white" android:duration="400" />
+    <item android:drawable="@drawable/ic_add_white_24dp" android:duration="400" />
+    <item android:drawable="@drawable/ic_info_white" android:duration="400" />
+</animation-list>
