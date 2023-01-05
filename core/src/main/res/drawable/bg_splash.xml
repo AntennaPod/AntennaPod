@@ -12,8 +12,8 @@
 
     <item
         android:gravity="center"
-        android:width="64dp"
-        android:height="64dp">
+        android:width="80dp"
+        android:height="80dp">
         <bitmap
             android:gravity="center"
             android:src="@drawable/ic_monochrome"/>

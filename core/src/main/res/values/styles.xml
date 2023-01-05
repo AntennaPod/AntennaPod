@@ -170,6 +170,8 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/ic_monochrome</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/accent_light</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

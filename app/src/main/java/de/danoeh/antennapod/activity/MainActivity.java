@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -177,7 +176,6 @@ public class MainActivity extends CastEnabledActivity {
                 .setShowWhen(false)
                 .setSmallIcon(R.drawable.notification_icon_alt2_large)
                 .setContentText("Alt2 large notification icon")
-                .setColor(ResourcesCompat.getColor(getResources(), R.color.accent_light, getTheme()))
                 .build());
     }
 
