@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -256,8 +257,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
         toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
         toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
-        toolbar.getMenu().findItem(R.id.queue_sort_random).setVisible(!keepSorted);
-        toolbar.getMenu().findItem(R.id.queue_keep_sorted).setChecked(keepSorted);
+        toolbar.getMenu().findItem(R.id.sort_random).setVisible(!keepSorted);
+        toolbar.getMenu().findItem(R.id.keep_sorted).setChecked(keepSorted);
         MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
                 R.id.refresh_item, DownloadService.isRunning && DownloadService.isDownloadingFeeds());
     }
@@ -286,40 +287,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             };
             conDialog.createNewDialog().show();
             return true;
-        } else if (itemId == R.id.queue_sort_episode_title_asc) {
-            setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
-            return true;
-        } else if (itemId == R.id.queue_sort_episode_title_desc) {
-            setSortOrder(SortOrder.EPISODE_TITLE_Z_A);
-            return true;
-        } else if (itemId == R.id.queue_sort_date_asc) {
-            setSortOrder(SortOrder.DATE_OLD_NEW);
-            return true;
-        } else if (itemId == R.id.queue_sort_date_desc) {
-            setSortOrder(SortOrder.DATE_NEW_OLD);
-            return true;
-        } else if (itemId == R.id.queue_sort_duration_asc) {
-            setSortOrder(SortOrder.DURATION_SHORT_LONG);
-            return true;
-        } else if (itemId == R.id.queue_sort_duration_desc) {
-            setSortOrder(SortOrder.DURATION_LONG_SHORT);
-            return true;
-        } else if (itemId == R.id.queue_sort_feed_title_asc) {
-            setSortOrder(SortOrder.FEED_TITLE_A_Z);
-            return true;
-        } else if (itemId == R.id.queue_sort_feed_title_desc) {
-            setSortOrder(SortOrder.FEED_TITLE_Z_A);
-            return true;
-        } else if (itemId == R.id.queue_sort_random) {
-            setSortOrder(SortOrder.RANDOM);
-            return true;
-        } else if (itemId == R.id.queue_sort_smart_shuffle_asc) {
-            setSortOrder(SortOrder.SMART_SHUFFLE_OLD_NEW);
-            return true;
-        } else if (itemId == R.id.queue_sort_smart_shuffle_desc) {
-            setSortOrder(SortOrder.SMART_SHUFFLE_NEW_OLD);
-            return true;
-        } else if (itemId == R.id.queue_keep_sorted) {
+        } else if (itemId == R.id.keep_sorted) {
             boolean keepSortedOld = UserPreferences.isQueueKeepSorted();
             boolean keepSortedNew = !keepSortedOld;
             UserPreferences.setQueueKeepSorted(keepSortedNew);
@@ -335,6 +303,12 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        }  else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                setSortOrder(sortOrder);
+                return true;
+            }
         }
         return false;
     }
@@ -444,6 +418,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
+
+        MenuItem queueItem = toolbar.getMenu().findItem(R.id.queue_sort);
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.sort_menu, queueItem.getSubMenu());
         refreshToolbarState();
 
         infoBar = root.findViewById(R.id.info_bar);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,8 @@ public class CompletedDownloadsFragment extends Fragment
         MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
+        inflateSortMenu(toolbar);
+
         toolbar.setOnMenuItemClickListener(this);
         toolbar.setOnLongClickListener(v -> {
             recyclerView.scrollToPosition(5);
@@ -143,6 +146,17 @@ public class CompletedDownloadsFragment extends Fragment
         return root;
     }
 
+    private void inflateSortMenu(MaterialToolbar toolbar) {
+        MenuItem queueItem = toolbar.getMenu().findItem(R.id.downloads_sort);
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.sort_menu, queueItem.getSubMenu());
+
+        // Remove the sorting options that are not needed in this fragment
+        toolbar.getMenu().findItem(R.id.sort_random).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_smart_shuffle).setVisible(false);
+        toolbar.getMenu().findItem(R.id.keep_sorted).setVisible(false);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
@@ -184,30 +198,12 @@ public class CompletedDownloadsFragment extends Fragment
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
-        }  else if (item.getItemId() == R.id.downloads_sort_date_asc) {
-            setSortOrder(SortOrder.DATE_OLD_NEW);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_date_desc) {
-            setSortOrder(SortOrder.DATE_NEW_OLD);
-            return true;
-        }  else if (item.getItemId() == R.id.downloads_sort_duration_asc) {
-            setSortOrder(SortOrder.DURATION_SHORT_LONG);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_duration_desc) {
-            setSortOrder(SortOrder.DURATION_LONG_SHORT);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_episode_title_asc) {
-            setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_episode_title_desc) {
-            setSortOrder(SortOrder.EPISODE_TITLE_Z_A);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_feed_title_asc) {
-            setSortOrder(SortOrder.FEED_TITLE_A_Z);
-            return true;
-        } else if (item.getItemId() == R.id.downloads_sort_feed_title_desc) {
-            setSortOrder(SortOrder.FEED_TITLE_Z_A);
-            return true;
+        }  else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                setSortOrder(sortOrder);
+                return true;
+            }
         }
 
         return false;
