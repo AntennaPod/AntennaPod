@@ -1,78 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:baselineAligned="false"
-        android:descendantFocusability="blocksDescendants">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:baselineAligned="false"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+        android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:padding="2dp"
-                    android:id="@+id/txtvIcon"
-                    android:textSize="18sp"
-                    android:gravity="center"/>
+                android:id="@+id/txtvIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:padding="2dp"
+                android:textSize="18sp"
+                android:gravity="center" />
 
             <TextView
-                    android:id="@+id/txtvTitle"
-                    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="@sample/episodes.json/data/title"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:background="@android:color/holo_blue_light"/>
+                android:id="@+id/txtvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                tools:text="@sample/episodes.json/data/title"
+                tools:background="@android:color/holo_blue_light" />
 
         </LinearLayout>
 
         <TextView
-                android:id="@+id/status"
-                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Media file - 01/01/1970"/>
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            tools:text="Media file - 01/01/1970" />
 
         <TextView
-                android:id="@+id/txtvReason"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/download_failed_red"
-                tools:text="@string/design_time_downloaded_log_failure_reason"/>
+            android:id="@+id/txtvReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?attr/icon_red"
+            tools:text="@string/design_time_downloaded_log_failure_reason" />
 
         <TextView
-                android:id="@+id/txtvTapForDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:text="@string/download_error_tap_for_details"/>
+            android:id="@+id/txtvTapForDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:text="@string/download_error_tap_for_details" />
 
     </LinearLayout>
 
-    <include layout="@layout/secondary_action"/>
+    <include
+        layout="@layout/secondary_action" />
+
 </LinearLayout>

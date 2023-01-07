@@ -28,11 +28,15 @@ public abstract class EpisodeFilterDialog extends MaterialAlertDialogBuilder {
         setTitle(R.string.episode_filters_label);
         setView(viewBinding.getRoot());
 
+        viewBinding.durationCheckBox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> viewBinding.episodeFilterDurationText.setEnabled(isChecked));
         if (filter.hasMinimalDurationFilter()) {
             viewBinding.durationCheckBox.setChecked(true);
             // Store minimal duration in seconds, show in minutes
             viewBinding.episodeFilterDurationText
                     .setText(String.valueOf(filter.getMinimalDurationFilter() / 60));
+        } else {
+            viewBinding.episodeFilterDurationText.setEnabled(false);
         }
 
         if (filter.excludeOnly()) {

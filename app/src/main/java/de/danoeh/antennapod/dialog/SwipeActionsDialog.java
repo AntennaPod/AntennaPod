@@ -27,6 +27,7 @@ import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -62,22 +63,32 @@ public class SwipeActionsDialog {
             case InboxFragment.TAG:
                 forFragment = context.getString(R.string.inbox_label);
                 keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.TOGGLE_PLAYED)
-                        && !a.getId().equals(SwipeAction.DELETE)).toList();
+                        && !a.getId().equals(SwipeAction.DELETE)
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
                 break;
             case AllEpisodesFragment.TAG:
                 forFragment = context.getString(R.string.episodes_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
                 break;
             case CompletedDownloadsFragment.TAG:
                 forFragment = context.getString(R.string.downloads_label);
-                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)
+                        && !a.getId().equals(SwipeAction.START_DOWNLOAD)).toList();
                 break;
             case FeedItemlistFragment.TAG:
                 forFragment = context.getString(R.string.feeds_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
                 break;
             case QueueFragment.TAG:
                 forFragment = context.getString(R.string.queue_label);
                 keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.ADD_TO_QUEUE)
-                        && !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)
+                        && !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
+                break;
+            case PlaybackHistoryFragment.TAG:
+                forFragment = context.getString(R.string.playback_history_label);
+                keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_INBOX)).toList();
                 break;
             default: break;
         }

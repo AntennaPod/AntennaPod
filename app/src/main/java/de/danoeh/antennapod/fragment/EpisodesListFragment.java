@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -68,7 +68,6 @@ public abstract class EpisodesListFragment extends Fragment
         implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "EpisodesListFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
-    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
     protected static final int EPISODES_PER_PAGE = 150;
     protected int page = 1;
     protected boolean isLoadingMore = false;
@@ -81,6 +80,7 @@ public abstract class EpisodesListFragment extends Fragment
     SpeedDialView speedDialView;
     MaterialToolbar toolbar;
     SwipeActions swipeActions;
+    private ProgressBar progressBar;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -115,9 +115,6 @@ public abstract class EpisodesListFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-        getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE).edit()
-                .putInt(PREF_PREVIOUS_EPISODE_COUNT, episodes.size())
-                .apply();
     }
 
     @Override
@@ -204,10 +201,9 @@ public abstract class EpisodesListFragment extends Fragment
             }
         };
         listAdapter.setOnSelectModeListener(this);
-        int previousEpisodesCount = getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE)
-                .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
-        listAdapter.setDummyViews(Math.max(1, previousEpisodesCount));
         recyclerView.setAdapter(listAdapter);
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -432,6 +428,7 @@ public abstract class EpisodesListFragment extends Fragment
                         data -> {
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
+                            progressBar.setVisibility(View.GONE);
                             listAdapter.setDummyViews(0);
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);

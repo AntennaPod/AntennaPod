@@ -37,7 +37,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     @Override
     @SuppressLint("ClickableViewAccessibility")
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-        if (!dragDropEnabled || inActionMode()) {
+        if (!dragDropEnabled) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);
@@ -63,6 +63,10 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
                 }
                 return false;
             });
+        }
+        if (inActionMode()) {
+            holder.dragHandle.setOnTouchListener(null);
+            holder.coverHolder.setOnTouchListener(null);
         }
 
         holder.isInQueue.setVisibility(View.GONE);

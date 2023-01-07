@@ -16,6 +16,8 @@ import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.Task;
 
+import de.danoeh.antennapod.BuildConfig;
+
 public class RatingDialog {
 
     private RatingDialog() {
@@ -108,7 +110,7 @@ public class RatingDialog {
     }
 
     private static boolean shouldShow() {
-        if (rated()) {
+        if (rated() || BuildConfig.DEBUG) {
             return false;
         }
 

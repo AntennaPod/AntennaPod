@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -110,7 +109,6 @@ public class PlaybackServiceNotificationBuilder {
         return defaultIcon;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static Bitmap getBitmap(VectorDrawable vectorDrawable) {
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
                 vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -124,7 +122,7 @@ public class PlaybackServiceNotificationBuilder {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
+        } else if (drawable instanceof VectorDrawable) {
             return getBitmap((VectorDrawable) drawable);
         } else {
             return null;
@@ -212,17 +210,14 @@ public class PlaybackServiceNotificationBuilder {
         }
         numActions++;
 
-        if (UserPreferences.isFollowQueue()) {
-            PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                    KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-            notification.addAction(R.drawable.ic_notification_skip,
-                    context.getString(R.string.skip_episode_label),
-                    skipButtonPendingIntent);
-            if (UserPreferences.showSkipOnCompactNotification()) {
-                compactActionList.add(numActions);
-            }
-            numActions++;
+        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
+                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
+        notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
+                skipButtonPendingIntent);
+        if (UserPreferences.showSkipOnCompactNotification()) {
+            compactActionList.add(numActions);
         }
+        numActions++;
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import io.reactivex.Completable;

@@ -4,9 +4,10 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -44,7 +45,6 @@ import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,6 +66,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
     private final AudioFocusRequestCompat audioFocusRequest;
+    private final Handler audioFocusCanceller;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -154,6 +155,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new PlayerLock();
         this.startWhenPrepared = new AtomicBoolean(false);
+        audioFocusCanceller = new Handler(Looper.getMainLooper());
 
         executor = new PlayerExecutor();
         executor.threadPool = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
@@ -853,53 +855,46 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (!PlaybackService.isRunning) {
                 abandonAudioFocus();
                 Log.d(TAG, "onAudioFocusChange: PlaybackService is no longer running");
-                if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
-                    pausedBecauseOfTransientAudiofocusLoss = false;
-                    new PlaybackServiceStarter(context, getPlayable())
-                            .callEvenIfRunning(false)
-                            .start();
-                }
                 return;
             }
 
             executor.submit(() -> {
                 playerLock.lock();
-
-                // If there is an incoming call, playback should be paused permanently
-                TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-                final int callState = (tm != null) ? tm.getCallState() : 0;
-                Log.i(TAG, "Call state:" + callState);
-
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS ||
-                        (!UserPreferences.shouldResumeAfterCall() && callState != TelephonyManager.CALL_STATE_IDLE)) {
+                if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                     Log.d(TAG, "Lost audio focus");
                     pause(true, false);
                     callback.shouldStop();
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
+                        && !UserPreferences.shouldPauseForFocusLoss()) {
+                    if (playerStatus == PlayerStatus.PLAYING) {
+                        Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+                        setVolumeSync(0.25f, 0.25f);
+                        pausedBecauseOfTransientAudiofocusLoss = false;
+                    }
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
+                        || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                    if (playerStatus == PlayerStatus.PLAYING) {
+                        Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+                        mediaPlayer.pause(); // Pause without telling the PlaybackService
+                        pausedBecauseOfTransientAudiofocusLoss = true;
+
+                        audioFocusCanceller.removeCallbacksAndMessages(null);
+                        audioFocusCanceller.postDelayed(() -> {
+                            if (pausedBecauseOfTransientAudiofocusLoss) {
+                                // Still did not get back the audio focus. Now actually pause.
+                                pause(true, false);
+                            }
+                        }, 10000);
+                    }
                 } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
                     Log.d(TAG, "Gained audio focus");
+                    audioFocusCanceller.removeCallbacksAndMessages(null);
                     if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
-                        resume();
+                        mediaPlayer.start();
                     } else { // we ducked => raise audio level back
                         setVolumeSync(1.0f, 1.0f);
                     }
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        if (!UserPreferences.shouldPauseForFocusLoss()) {
-                            Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                            setVolumeSync(0.25f, 0.25f);
-                            pausedBecauseOfTransientAudiofocusLoss = false;
-                        } else {
-                            Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
-                            pause(false, false);
-                            pausedBecauseOfTransientAudiofocusLoss = true;
-                        }
-                    }
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-                        pause(false, false);
-                        pausedBecauseOfTransientAudiofocusLoss = true;
-                    }
+                    pausedBecauseOfTransientAudiofocusLoss = false;
                 }
                 playerLock.unlock();
             });
@@ -939,20 +934,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 // is an episode in the queue left.
                 // Start playback immediately if continuous playback is enabled
                 nextMedia = callback.getNextInQueue(currentMedia);
-                boolean playNextEpisode = isPlaying && nextMedia != null;
-                if (playNextEpisode) {
-                    Log.d(TAG, "Playback of next episode will start immediately.");
-                } else if (nextMedia == null) {
-                    Log.d(TAG, "No more episodes available to play");
-                } else {
-                    Log.d(TAG, "Loading next episode, but not playing automatically.");
-                }
-
                 if (nextMedia != null) {
-                    callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
-                    // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
+                    callback.onPlaybackEnded(nextMedia.getMediaType(), false);
+                    // setting media to null signals to playMediaObject() that
+                    // we're taking care of post-playback processing
                     media = null;
-                    playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), playNextEpisode, playNextEpisode);
+                    playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), isPlaying, isPlaying);
                 }
             }
             if (shouldContinue || toStoppedState) {
