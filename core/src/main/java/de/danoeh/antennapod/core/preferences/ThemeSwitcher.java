@@ -9,40 +9,48 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 public abstract class ThemeSwitcher {
     @StyleRes
     public static int getTheme(Context context) {
+        boolean dynamic = UserPreferences.getIsThemeColorTinted();
         switch (readThemeValue(context)) {
             case DARK:
-                return R.style.Theme_AntennaPod_Dark;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Dark : R.style.Theme_AntennaPod_Dark;
             case BLACK:
-                return R.style.Theme_AntennaPod_TrueBlack;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_TrueBlack : R.style.Theme_AntennaPod_TrueBlack;
             case LIGHT: // fall-through
             default:
-                return R.style.Theme_AntennaPod_Light;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Light : R.style.Theme_AntennaPod_Light;
         }
     }
 
     @StyleRes
     public static int getNoTitleTheme(Context context) {
+        boolean dynamic = UserPreferences.getIsThemeColorTinted();
         switch (readThemeValue(context)) {
             case DARK:
-                return R.style.Theme_AntennaPod_Dark_NoTitle;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Dark_NoTitle : R.style.Theme_AntennaPod_Dark_NoTitle;
             case BLACK:
-                return R.style.Theme_AntennaPod_TrueBlack_NoTitle;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_TrueBlack_NoTitle
+                        : R.style.Theme_AntennaPod_TrueBlack_NoTitle;
             case LIGHT: // fall-through
             default:
-                return R.style.Theme_AntennaPod_Light_NoTitle;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Light_NoTitle
+                        : R.style.Theme_AntennaPod_Light_NoTitle;
         }
     }
 
     @StyleRes
     public static int getTranslucentTheme(Context context) {
+        boolean dynamic = UserPreferences.getIsThemeColorTinted();
         switch (readThemeValue(context)) {
             case DARK:
-                return R.style.Theme_AntennaPod_Dark_Translucent;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Dark_Translucent
+                        : R.style.Theme_AntennaPod_Dark_Translucent;
             case BLACK:
-                return R.style.Theme_AntennaPod_TrueBlack_Translucent;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_TrueBlack_Translucent
+                        : R.style.Theme_AntennaPod_TrueBlack_Translucent;
             case LIGHT: // fall-through
             default:
-                return R.style.Theme_AntennaPod_Light_Translucent;
+                return dynamic ? R.style.Theme_AntennaPod_Dynamic_Light_Translucent
+                        : R.style.Theme_AntennaPod_Light_Translucent;
         }
     }
 

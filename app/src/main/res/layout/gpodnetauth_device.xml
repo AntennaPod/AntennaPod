@@ -45,7 +45,7 @@
         android:id="@+id/deviceSelectError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/download_failed_red"
+        android:textColor="?attr/icon_red"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Error message"
@@ -61,7 +61,7 @@
         android:id="@+id/progbarCreateDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/download_failed_red"
+        android:textColor="?attr/icon_red"
         android:visibility="gone" />
 
 </LinearLayout>

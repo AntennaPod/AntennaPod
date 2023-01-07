@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
@@ -85,7 +87,7 @@ public class RatingDialog {
     }
 
     private static boolean shouldShow() {
-        if (rated()) {
+        if (rated() || BuildConfig.DEBUG) {
             return false;
         }
 

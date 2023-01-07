@@ -37,9 +37,7 @@ public class SkipPreferenceDialog {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == SkipDirection.SKIP_FORWARD ? R.string.pref_fast_forward : R.string.pref_rewind);
-        builder.setSingleChoiceItems(choices, checked, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        builder.setSingleChoiceItems(choices, checked, (dialog, which) -> {
             int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
             if (choice < 0 || choice >= values.length) {
                 System.err.printf("Choice in showSkipPreference is out of bounds %d", choice);
@@ -53,9 +51,11 @@ public class SkipPreferenceDialog {
                 if (textView != null) {
                     textView.setText(NumberFormat.getInstance().format(seconds));
                 }
+                dialog.dismiss();
             }
         });
-        builder.create().show();
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 
     public enum SkipDirection {
