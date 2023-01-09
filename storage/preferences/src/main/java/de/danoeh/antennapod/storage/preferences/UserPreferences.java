@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.model.feed.DateSortType;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -66,6 +67,8 @@ public class UserPreferences {
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
+
+    public static final String PREF_INBOX_SORT_ORDER = "prefInboxSortOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -923,6 +926,20 @@ public class UserPreferences {
         }
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
+    }
+
+    public static DateSortType getInboxSortOrder() {
+        String sortOrderStr = prefs.getString(PREF_INBOX_SORT_ORDER, "use-default");
+        return DateSortType.parseWithDefault(sortOrderStr, DateSortType.DESC);
+    }
+
+    public static void setInboxSortOrder(DateSortType sortType) {
+        if (sortType == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_INBOX_SORT_ORDER, sortType.name())
                 .apply();
     }
 

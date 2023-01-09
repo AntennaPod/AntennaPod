@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.danoeh.antennapod.model.feed.DateSortType;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
@@ -52,7 +53,10 @@ public class AutomaticDownloadAlgorithm {
 
                 List<FeedItem> candidates;
                 final List<FeedItem> queue = DBReader.getQueue();
-                final List<FeedItem> newItems = DBReader.getNewItemsList(0, Integer.MAX_VALUE);
+                final List<FeedItem> newItems = DBReader.getNewItemsList(
+                        0,
+                        Integer.MAX_VALUE,
+                        DateSortType.DESC.name());
                 candidates = new ArrayList<>(queue.size() + newItems.size());
                 candidates.addAll(queue);
                 for (FeedItem newItem : newItems) {

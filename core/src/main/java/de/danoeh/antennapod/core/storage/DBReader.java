@@ -323,12 +323,12 @@ public final class DBReader {
      * @param limit The maximum number of episodes that should be loaded.
      * @return A list of FeedItems that are considered new.
      */
-    public static List<FeedItem> getNewItemsList(int offset, int limit) {
+    public static List<FeedItem> getNewItemsList(int offset, int limit, String sortType) {
         Log.d(TAG, "getNewItemsList() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getNewItemsCursor(offset, limit)) {
+        try (Cursor cursor = adapter.getNewItemsCursor(offset, limit, sortType)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;

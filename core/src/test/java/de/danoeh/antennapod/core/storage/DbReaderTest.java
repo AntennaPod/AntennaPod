@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import de.danoeh.antennapod.model.feed.DateSortType;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -281,7 +283,7 @@ public class DbReaderTest {
             for (int i = 0; i < newItems.size(); i++) {
                 unreadIds[i] = newItems.get(i).getId();
             }
-            List<FeedItem> newItemsSaved = DBReader.getNewItemsList(0, Integer.MAX_VALUE);
+            List<FeedItem> newItemsSaved = DBReader.getNewItemsList(0, Integer.MAX_VALUE, DateSortType.DESC.name());
             assertNotNull(newItemsSaved);
             assertEquals(newItemsSaved.size(), newItems.size());
             for (FeedItem feedItem : newItemsSaved) {

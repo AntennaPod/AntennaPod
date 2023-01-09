@@ -18,8 +18,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.menuhandler.SortMenuBuilder;
+import de.danoeh.antennapod.model.feed.DateSortType;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.List;
 
@@ -33,11 +36,16 @@ public class InboxFragment extends EpisodesListFragment {
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
     private SharedPreferences prefs;
 
+    private DateSortType sortType = UserPreferences.getInboxSortOrder();
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
+
+        SortMenuBuilder.addSortMenu(toolbar.getMenu());
+
         toolbar.setTitle(R.string.inbox_label);
         prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         updateToolbar();
@@ -77,20 +85,32 @@ public class InboxFragment extends EpisodesListFragment {
                 showRemoveAllDialog();
             }
             return true;
+        } else if (item.getItemId() == SortMenuBuilder.SORT_DATE_NEW_TO_OLD_ID) {
+            saveSortOrderAndRefresh(DateSortType.DESC);
+            return true;
+        } else if (item.getItemId() == SortMenuBuilder.SORT_DATE_OLD_TO_NEW_ID) {
+            saveSortOrderAndRefresh(DateSortType.ASC);
+            return true;
         }
         return false;
+    }
+
+    private void saveSortOrderAndRefresh(DateSortType type) {
+        sortType = type;
+        UserPreferences.setInboxSortOrder(sortType);
+        loadItems();
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE);
+        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, sortType.name());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, sortType.name());
     }
 
     @Override
