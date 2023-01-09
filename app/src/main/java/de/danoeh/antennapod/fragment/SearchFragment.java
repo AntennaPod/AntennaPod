@@ -32,6 +32,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -54,6 +55,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.StatusListener;
+
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -132,6 +140,8 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+        registerForContextMenu(recyclerView);
+
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -146,7 +156,16 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity());
+
+        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
+
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                            ContextMenu.ContextMenuInfo contextMenuInfo) {
+                super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+            }
+        };
+
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
@@ -241,12 +260,54 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
         FeedItem selectedItem = adapter.getLongPressedItem();
+        Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
+
+        if (selectedFeedItem != null) {
+            if (itemId == R.id.rename_folder_item) {
+                new RenameItemDialog(getActivity(), selectedFeedItem).show();
+                return true;
+            } else if (itemId == R.id.remove_all_inbox_item) {
+
+                DisplayConfirmationDialog.display(getActivity(), R.string.remove_all_inbox_label,
+                        R.string.remove_all_inbox_confirmation_msg,
+                        () -> DBWriter.removeFeedNewFlag(selectedFeedItem.getId()), new StatusListener() {
+                            @Override
+                            public void onActionSuccess() {}
+
+                            @Override
+                            public void onActionFailure(Throwable throwableError) {
+                                Log.e(TAG, Log.getStackTraceString(throwableError));
+                            }
+                        });
+                return true;
+            } else if (itemId == R.id.edit_tags) {
+                TagSettingsDialog.newInstance(Collections.singletonList(selectedFeedItem.getPreferences()))
+                        .show(getChildFragmentManager(), TagSettingsDialog.TAG);
+                return true;
+            } else if (itemId == R.id.rename_item) {
+                new RenameItemDialog(getActivity(), selectedFeedItem).show();
+                return true;
+            } else if (itemId == R.id.remove_feed) {
+                RemoveFeedDialog.show(getContext(), selectedFeedItem);
+                return true;
+            }
+            return super.onContextItemSelected(item);
+        }
+
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        search();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

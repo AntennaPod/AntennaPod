@@ -16,13 +16,23 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder> {
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import androidx.annotation.Nullable;
+
+public class HorizontalFeedListAdapter extends SelectableAdapter<HorizontalFeedListAdapter.Holder>
+        implements View.OnCreateContextMenuListener  {
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<Feed> data = new ArrayList<>();
     private int dummyViews = 0;
+    private Feed longPressedItem;
+
 
     public HorizontalFeedListAdapter(MainActivity mainActivity) {
+        super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
+        setHasStableIds(true);
+
     }
 
     public void setDummyViews(int dummyViews) {
@@ -64,6 +74,18 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
                         .fitCenter()
                         .dontAnimate())
                 .into(holder.imageView);
+
+        holder.imageView.setOnCreateContextMenuListener(this);
+        holder.imageView.setOnLongClickListener(v -> {
+            int currentItemPosition = holder.getBindingAdapterPosition();
+            longPressedItem = data.get(currentItemPosition);
+            return false;
+        });
+    }
+
+    @Nullable
+    public Feed getLongPressedItem() {
+        return longPressedItem;
     }
 
     @Override
@@ -78,6 +100,17 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
     public int getItemCount() {
         return dummyViews + data.size();
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        MenuInflater inflater = mainActivityRef.get().getMenuInflater();
+        if (longPressedItem == null) {
+            return;
+        }
+        inflater.inflate(R.menu.nav_feed_context, contextMenu);
+        contextMenu.setHeaderTitle(longPressedItem.getTitle());
+    }
+
 
     static class Holder extends RecyclerView.ViewHolder {
         SquareImageView imageView;
