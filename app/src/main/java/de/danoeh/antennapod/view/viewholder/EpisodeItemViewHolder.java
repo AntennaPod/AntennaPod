@@ -20,6 +20,7 @@ import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -67,10 +68,12 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private final MainActivity activity;
     private FeedItem item;
+    private final EpisodeItemListAdapter adapter;
 
-    public EpisodeItemViewHolder(MainActivity activity, ViewGroup parent) {
+    public EpisodeItemViewHolder(MainActivity activity, ViewGroup parent, EpisodeItemListAdapter adapter) {
         super(LayoutInflater.from(activity).inflate(R.layout.feeditemlist_item, parent, false));
         this.activity = activity;
+        this.adapter = adapter;
         container = itemView.findViewById(R.id.container);
         dragHandle = itemView.findViewById(R.id.drag_handle);
         placeholder = itemView.findViewById(R.id.txtvPlaceholder);
@@ -225,9 +228,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private void updateDuration(PlaybackPositionEvent event) {
-        int currentPosition = event.getPosition();
-        int timeDuration = event.getDuration();
+    private void updateDuration(int currentPosition, int timeDuration) {
         int remainingTime = Math.max(timeDuration - currentPosition, 0);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || timeDuration == Playable.INVALID_TIME) {
@@ -250,9 +251,29 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
-        progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
-        position.setText(Converter.getDurationStringLong(event.getPosition()));
-        updateDuration(event);
+        if (!DownloadService.isRunning || getFeedItem().getMedia() == null) {
+            notifyPlaybackPositionUpdated(event.getPosition(), event.getDuration());
+            return;
+        }
+        boolean isDownloading = DownloadService.isDownloadingFile(
+                getFeedItem().getMedia().getDownload_url());
+        if (isDownloading) {
+            /**
+             * This is to fix playback timer flickering issue
+             * when downloading & streaming at the same time
+             */
+            getFeedItem().getMedia().setDuration(event.getDuration());
+            getFeedItem().getMedia().setPosition(event.getPosition());
+            adapter.notifyItemChangedCompat(getBindingAdapterPosition());
+        } else {
+            notifyPlaybackPositionUpdated(event.getPosition(), event.getDuration());
+        }
+    }
+
+    private void notifyPlaybackPositionUpdated(int pos, int dur) {
+        progressBar.setProgress((int) (100.0 * pos / dur));
+        position.setText(Converter.getDurationStringLong(pos));
+        updateDuration(pos, dur);
         duration.setVisibility(View.VISIBLE); // Even if the duration was previously unknown, it is now known
     }
 
