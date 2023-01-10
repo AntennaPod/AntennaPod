@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import org.greenrobot.eventbus.EventBus;
@@ -29,11 +31,16 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -41,6 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "FeedDiscoveryFragment";
     private static final int NUM_SUGGESTIONS = 12;
+    public static final int ITUNES_LIMIT = 200;
 
     private Disposable disposable;
     private FeedDiscoverAdapter adapter;
@@ -49,6 +57,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private TextView poweredByTextView;
     private LinearLayout errorView;
     private Button errorRetry;
+    private List<Feed> subscribedFeeds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +93,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         }
 
         adapter.updateData(dummies);
-        loadToplist();
+        subscribedFeeds = new ArrayList<>();
 
         EventBus.getDefault().register(this);
         return root;
@@ -103,6 +112,23 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     @SuppressWarnings("unused")
     public void onDiscoveryDefaultUpdateEvent(DiscoveryDefaultUpdateEvent event) {
         loadToplist();
+    }
+
+    private void loadUserSubscriptions() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(DBReader::getFeedList)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    result -> {
+                                        subscribedFeeds = result;
+                                        loadToplist();
+                                    }, error -> {
+                                        Log.e(TAG, Log.getStackTraceString(error));
+                                        handleLoadDataErrors(error, (listener) -> loadUserSubscriptions());
+                                    });
     }
 
     private void loadToplist() {
@@ -138,7 +164,11 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
 
-        disposable = loader.loadToplist(countryCode, NUM_SUGGESTIONS)
+        int numRequesting = NUM_SUGGESTIONS + subscribedFeeds.size();
+        if (numRequesting > ITUNES_LIMIT) {
+            numRequesting = ITUNES_LIMIT;
+        }
+        disposable = loader.loadToplist(countryCode, numRequesting)
                 .subscribe(
                         podcasts -> {
                             errorView.setVisibility(View.GONE);
@@ -148,16 +178,49 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                                 discoverGridLayout.setVisibility(View.INVISIBLE);
                             } else {
                                 discoverGridLayout.setVisibility(View.VISIBLE);
-                                adapter.updateData(podcasts);
+                                adapter.updateData(
+                                        removeSubscribedFromSuggested(podcasts, subscribedFeeds, NUM_SUGGESTIONS));
                             }
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
-                            errorTextView.setText(error.getLocalizedMessage());
-                            errorView.setVisibility(View.VISIBLE);
-                            discoverGridLayout.setVisibility(View.INVISIBLE);
-                            errorRetry.setVisibility(View.VISIBLE);
-                            errorRetry.setOnClickListener((listener) -> loadToplist());
+                            handleLoadDataErrors(error, (listener) -> loadToplist());
                         });
+    }
+
+    private void handleLoadDataErrors(Throwable error, View.OnClickListener listener) {
+        errorTextView.setText(error.getLocalizedMessage());
+        errorView.setVisibility(View.VISIBLE);
+        discoverGridLayout.setVisibility(View.INVISIBLE);
+        errorRetry.setVisibility(View.VISIBLE);
+        errorRetry.setOnClickListener(listener);
+    }
+
+    public static List<PodcastSearchResult> removeSubscribedFromSuggested(
+            List<PodcastSearchResult> suggestedPodcasts, List<Feed> subscribedFeeds, int limit) {
+        Set<String> subscribedPodcastsSet = new HashSet<>();
+        for (Feed subscribedFeed : subscribedFeeds) {
+            String subscribedTitle = subscribedFeed.getTitle().trim() + " - "
+                    + subscribedFeed.getAuthor().trim();
+            subscribedPodcastsSet.add(subscribedTitle);
+        }
+        List<PodcastSearchResult> suggestedNotSubscribed = new ArrayList<>();
+        int elementsAdded = 0;
+
+        for (PodcastSearchResult suggested : suggestedPodcasts) {
+            if (!isSuggestedSubscribed(suggested, subscribedPodcastsSet)) {
+                suggestedNotSubscribed.add(suggested);
+                elementsAdded++;
+                if (elementsAdded == limit) {
+                    return suggestedNotSubscribed;
+                }
+            }
+        }
+        return suggestedNotSubscribed;
+    }
+
+    private static boolean isSuggestedSubscribed(
+            PodcastSearchResult suggested, Set<String> subscribedPodcastsSet) {
+        return subscribedPodcastsSet.contains(suggested.title.trim());
     }
 
     @Override
@@ -169,5 +232,11 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserSubscriptions();
     }
 }
