@@ -25,7 +25,6 @@ public class SplashActivity extends Activity {
         content.getViewTreeObserver().addOnPreDrawListener(() -> false); // Keep splash screen active
 
         Completable.create(subscriber -> {
-            Thread.sleep(2000);
             // Trigger schema updates
             PodDBAdapter.getInstance().open();
             PodDBAdapter.getInstance().close();

@@ -23,7 +23,4 @@
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>
-
-    <color name="master_switch_background_light">#DDDDDD</color>
-    <color name="master_switch_background_dark">#191919</color>
 </resources>

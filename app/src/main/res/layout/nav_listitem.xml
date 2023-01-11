@@ -7,7 +7,7 @@
     android:layout_height="@dimen/listitem_iconwithtext_height"
     android:orientation="vertical"
     android:layout_marginHorizontal="8dp"
-    >
+    android:background="@drawable/drawer_item_background">
 
     <ImageView
         android:id="@+id/imgvCover"
