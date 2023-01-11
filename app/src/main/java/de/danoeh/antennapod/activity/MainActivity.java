@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -35,7 +33,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import org.apache.commons.lang3.ArrayUtils;
@@ -158,25 +155,6 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
-
-
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(46, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(false)
-                .setWhen(0)
-                .setOnlyAlertOnce(true)
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.notification_icon_alt2)
-                .setContentText("Alt2 notification icon")
-                .build());
-        nm.notify(47, new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(false)
-                .setWhen(0)
-                .setOnlyAlertOnce(true)
-                .setShowWhen(false)
-                .setSmallIcon(R.drawable.notification_icon_alt2_large)
-                .setContentText("Alt2 large notification icon")
-                .build());
     }
 
     @Override
