@@ -797,7 +797,6 @@
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
     <string name="exoplayer_only">ExoPlayer only</string>
-    <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->
     <string name="proxy_type_label">Type</string>
