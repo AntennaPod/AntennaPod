@@ -90,7 +90,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private PlaybackController controller;
     private boolean showTimeLeft = false;
     private boolean isFavorite = false;
-    private boolean switchToAudioOnly = false;
+    private boolean switchToAudioOnly = true;
     private Disposable disposable;
     private float prog;
 
@@ -117,7 +117,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @Override
     protected void onResume() {
         super.onResume();
-        switchToAudioOnly = false;
+        switchToAudioOnly = UserPreferences.shouldContinueVideoPlaybackOnAudioMode();
         if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
@@ -558,7 +558,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
 
-        menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
         menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         menu.findItem(R.id.playback_speed).setVisible(true);
         return true;
@@ -566,11 +565,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.player_switch_to_audio_only) {
-            switchToAudioOnly = true;
-            finish();
-            return true;
-        }
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -612,6 +606,9 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             shareDialog.show(getSupportFragmentManager(), "ShareEpisodeDialog");
         } else if (item.getItemId() == R.id.playback_speed) {
             new VariableSpeedDialog().show(getSupportFragmentManager(), null);
+        } else if (item.getItemId() == R.id.player_switch_to_audio_only) {
+            switchToAudioOnly = true;
+            finish();
         } else {
             return false;
         }

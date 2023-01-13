@@ -83,6 +83,7 @@ public class UserPreferences {
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
+    public static final String PREF_CONTINUE_VIDEO_PLAYBACK = "prefContinueVideoPlayback";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -879,6 +880,10 @@ public class UserPreferences {
 
     public static void setStreamOverDownload(boolean stream) {
         prefs.edit().putBoolean(PREF_STREAM_OVER_DOWNLOAD, stream).apply();
+    }
+
+    public static boolean shouldContinueVideoPlaybackOnAudioMode() {
+        return prefs.getBoolean(PREF_CONTINUE_VIDEO_PLAYBACK, true);
     }
 
     /**

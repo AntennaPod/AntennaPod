@@ -59,6 +59,11 @@
                 android:key="prefStreamOverDownload"
                 android:summary="@string/pref_stream_over_download_sum"
                 android:title="@string/pref_stream_over_download_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:key="prefContinueVideoPlayback"
+                android:summary="@string/pref_continue_video_playback_on_audio_mode"
+                android:title="@string/pref_continue_video_playback"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">
