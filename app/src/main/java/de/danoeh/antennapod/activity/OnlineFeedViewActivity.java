@@ -65,6 +65,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -128,6 +129,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
+        viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
