@@ -38,6 +38,8 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
+import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
+
 import org.apache.commons.io.FileUtils;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -1046,13 +1048,14 @@ public class PodDBAdapter {
      * Excludes those feeds that do not have 'Keep Updated' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
-    public final Cursor getNewItemsCursor(int offset, int limit, String sortType) {
+    public final Cursor getNewItemsCursor(int offset, int limit, SortOrder sortOrder) {
+        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                     + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
-                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " " + sortType
+                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + sortQuery
                 + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }

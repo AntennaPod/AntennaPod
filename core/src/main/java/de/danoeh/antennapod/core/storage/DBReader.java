@@ -20,6 +20,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
@@ -323,7 +324,7 @@ public final class DBReader {
      * @param limit The maximum number of episodes that should be loaded.
      * @return A list of FeedItems that are considered new.
      */
-    public static List<FeedItem> getNewItemsList(int offset, int limit, String sortType) {
+    public static List<FeedItem> getNewItemsList(int offset, int limit, SortOrder sortType) {
         Log.d(TAG, "getNewItemsList() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();

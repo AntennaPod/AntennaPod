@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/inbox_sort"
+        android:title="@string/sort">
+        <menu>
+            <item
+                android:id="@+id/inbox_sort_date_desc"
+                android:title="@string/sort_date_new_old"/>
+            <item
+                android:id="@+id/inbox_sort_date_asc"
+                android:title="@string/sort_date_old_new"/>
+        </menu>
+    </item>
+</menu>

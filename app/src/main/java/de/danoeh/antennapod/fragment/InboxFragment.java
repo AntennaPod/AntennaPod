@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -18,11 +19,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.menuhandler.SortMenuBuilder;
-import de.danoeh.antennapod.model.feed.DateSortType;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 
 import java.util.List;
 
@@ -34,20 +33,26 @@ public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
+    public static final String PREF_INBOX_SORT_ORDER = "prefInboxSortOrder";
     private SharedPreferences prefs;
 
-    private DateSortType sortType = UserPreferences.getInboxSortOrder();
+    private SortOrder sortType = SortOrder.DATE_NEW_OLD;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
-
-        SortMenuBuilder.addSortMenu(toolbar.getMenu());
+        toolbar.inflateMenu(R.menu.inbox_sort);
+        sortType = getSortOrder();
 
         toolbar.setTitle(R.string.inbox_label);
-        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         updateToolbar();
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
@@ -85,32 +90,37 @@ public class InboxFragment extends EpisodesListFragment {
                 showRemoveAllDialog();
             }
             return true;
-        } else if (item.getItemId() == SortMenuBuilder.SORT_DATE_NEW_TO_OLD_ID) {
-            saveSortOrderAndRefresh(DateSortType.DESC);
+        } else if (item.getItemId() == R.id.inbox_sort_date_desc) {
+            saveSortOrderAndRefresh(SortOrder.DATE_NEW_OLD);
             return true;
-        } else if (item.getItemId() == SortMenuBuilder.SORT_DATE_OLD_TO_NEW_ID) {
-            saveSortOrderAndRefresh(DateSortType.ASC);
+        } else if (item.getItemId() == R.id.inbox_sort_date_asc) {
+            saveSortOrderAndRefresh(SortOrder.DATE_OLD_NEW);
             return true;
         }
         return false;
     }
 
-    private void saveSortOrderAndRefresh(DateSortType type) {
+    private void saveSortOrderAndRefresh(SortOrder type) {
         sortType = type;
-        UserPreferences.setInboxSortOrder(sortType);
+        prefs.edit().putString(PREF_INBOX_SORT_ORDER, sortType.name()).apply();
         loadItems();
+    }
+
+    private SortOrder getSortOrder() {
+        String sortOrderStr = prefs.getString(PREF_INBOX_SORT_ORDER, "use-default");
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, sortType.name());
+        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, sortType);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, sortType.name());
+        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, sortType);
     }
 
     @Override
