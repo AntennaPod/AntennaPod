@@ -14,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
