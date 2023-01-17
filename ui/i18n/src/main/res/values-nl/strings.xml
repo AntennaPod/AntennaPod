@@ -6,6 +6,7 @@
   <string name="statistics_label">Statistieken</string>
   <string name="add_feed_label">Podcast toevoegen</string>
   <string name="episodes_label">Afleveringen</string>
+  <string name="home_label">Startpagina</string>
   <string name="queue_label">Wachtrij</string>
   <string name="inbox_label">Postvak IN</string>
   <string name="favorite_episodes_label">Favorieten</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">Dit wist alle luistertijden van alle afleveringen. Doorgaan?</string>
   <string name="statistics_counting_range">Beluisterd tussen %1$s en %2$s</string>
   <string name="statistics_counting_total">In totaal beluisterd</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Verras jezelf</string>
+  <string name="home_classics_title">Beluister klassiekers</string>
+  <string name="home_continue_title">Luister verder</string>
+  <string name="home_new_title">Bekijk wat er nieuw is</string>
+  <string name="home_downloads_title">Downloads beheren</string>
+  <string name="home_welcome_title">Welkom bij AntennaPod!</string>
+  <string name="home_welcome_text">Je bent nog niet geabonneerd op een podcast. Open het zijpaneel om er een toe te voegen.</string>
+  <string name="configure_home">Startscherm instellen</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Totaalgrootte van lokale afleveringen</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Op alfabetische volgorde</string>
   <string name="drawer_feed_order_last_update">Op verschijningsdatum</string>
   <string name="drawer_feed_order_most_played">Op aantal afgespeelde afleveringen</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Aantal (onbeluisterde) afleveringen in Postvak IN</string>
   <string name="drawer_feed_counter_inbox">Aantal beluisterde afleveringen in Postvak IN</string>
   <string name="drawer_feed_counter_unplayed">Aantal niet afgespeelde afleveringen</string>
   <string name="drawer_feed_counter_downloaded">Aantal gedownloade afleveringen</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Aantal gedownloade, onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_none">Geen</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Geen compatibele apps aangetroffen</string>
@@ -69,6 +79,7 @@
   <string name="go_to_position_label">Ga naar deze positie</string>
   <!--Playback history-->
   <string name="clear_history_label">Geschiedenis wissen</string>
+  <string name="clear_playback_history_msg">Hierdoor wordt alle geschiedenis gewist. Weet je zeker dat je wilt doorgaan?</string>
   <!--Other-->
   <string name="confirm_label">Bevestigen</string>
   <string name="cancel_label">Annuleren</string>
@@ -121,7 +132,6 @@
     <item quantity="one">%d aflevering</item>
     <item quantity="other">%d afleveringen</item>
   </plurals>
-  <string name="loading_more">Bezig met laden...</string>
   <string name="episode_notification">Afleveringsmeldingen</string>
   <string name="episode_notification_summary">Toon een melding als er een nieuwe aflevering is uitgebracht.</string>
   <plurals name="new_episode_notification_message">
@@ -165,6 +175,7 @@
     <item quantity="other">%d abonnementen bijgewerkt.</item>
   </plurals>
   <string name="edit_tags">Labels bewerken</string>
+  <string name="add_tag">Label toekennen</string>
   <string name="rename_tag_label">Labelnaam wijzigen</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Het vernieuwen van de podcasts via mobiel internet is uitgeschakeld in de instellingen.\n\nWeet je zeker dat je wilt vernieuwen?</string>
   <!--actions on feeditems-->
@@ -212,6 +223,10 @@
     <item quantity="one">%d aflevering verwijderd uit de wachtrij.</item>
     <item quantity="other">%d afleveringen verwijderd uit de wachtrij.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d aflevering verwijderd uit Postvak In.</item>
+    <item quantity="other">%d afleveringen verwijderd uit Postvak In.</item>
+  </plurals>
   <string name="add_to_favorite_label">Toevoegen aan favorieten</string>
   <string name="remove_from_favorite_label">Verwijderen uit favorieten</string>
   <string name="visit_website_label">Website openen</string>
@@ -223,7 +238,7 @@
   <string name="download_pending">In afwachting van downloaden</string>
   <string name="download_running">Bezig met downloaden</string>
   <string name="download_error_details">Details</string>
-  <string name="download_error_details_message">%1$s \n\nURL van bestand:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\nTechnische reden: \n%2$s \n\nBestandsurl:\n%3$s</string>
   <string name="download_error_tap_for_details">Tik voor meer informatie.</string>
   <string name="download_error_device_not_found">Geen opslagapparaat gevonden</string>
   <string name="download_error_insufficient_space">Er is onvoldoende ruimte op het toestel.</string>
@@ -418,20 +433,6 @@
   <string name="pref_theme_title_dark">Donker</string>
   <string name="pref_theme_title_trueblack">Zwart (AMOLED geschikt)</string>
   <string name="pref_episode_cache_unlimited">Onbeperkt</string>
-  <string name="synchronization_logout">Uitloggen</string>
-  <string name="pref_synchronization_logout_toast">Uitloggen geslaagd</string>
-  <string name="pref_gpodnet_setlogin_information_title">Inloggegevens wijzigen</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Wijzig de inloggegevens van je gpodder.net-account.</string>
-  <string name="synchronization_sync_changes_title">Nu synchroniseren</string>
-  <string name="synchronization_full_sync_title">Volledige synchronisatie afdwingen</string>
-  <string name="synchronization_login_status"><![CDATA[Ingelogd als <i>%1$s</i> op <i>%2$s</i>. <br/><br/>Na uitloggen is het weer mogelijk een synchronisatie provider te kiezen]]></string>
-  <string name="synchronization_summary_unchoosen">Er is keuze uit meerdere aanbieders om de abonnementen en aflevering-stand mee te synchroniseren</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync kan als open source Nextcloud-app op een eigen server geïnstalleerd worden. De app is niet betrokken bij het AntennaPod-project.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Verleen toegang in de geopende webbrowser en keer terug naar AntennaPod.</string>
-  <string name="synchronization_choose_title">Kies een synchronisatiedienst</string>
-  <string name="synchronization_force_sync_summary">Alle abonnementen en afspeelstatussen opnieuw synchroniseren</string>
-  <string name="synchronization_sync_summary">Alle gewijzigde abonnementen en afspeelstatussen opnieuw synchroniseren</string>
-  <string name="dialog_choose_sync_service_title">Kies een synchronisatiedienst</string>
   <string name="pref_playback_speed_sum">De snelheden aanpassen die beschikbaar zijn voor afspelen met variabele snelheid</string>
   <string name="pref_feed_playback_speed_sum">De te gebruiken snelheid bij het afspelen van afleveringen in deze podcast</string>
   <string name="pref_feed_skip">Automatisch overslaan</string>
@@ -483,16 +484,9 @@
   <string name="media_player_switched_to_exoplayer">Overgeschakeld naar ExoPlayer.</string>
   <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
   <string name="behavior">Gedrag</string>
-  <string name="pref_back_button_behavior_title">Gedrag van de terugknop</string>
-  <string name="pref_back_button_behavior_sum">Wijzig het gedrag van de terugknop.</string>
-  <string name="back_button_default">Standaard</string>
-  <string name="back_button_open_drawer">Navigatiemenu openen</string>
-  <string name="back_button_double_tap">Dubbeltik om af te sluiten</string>
-  <string name="back_button_show_prompt">Afsluiten bevestigen</string>
-  <string name="close_prompt">AntennaPod afsluiten?</string>
-  <string name="double_tap_toast">Tik nogmaals op de terugknop om af te sluiten</string>
-  <string name="back_button_go_to_page">Ga naar pagina...</string>
-  <string name="back_button_go_to_page_title">Kies een pagina</string>
+  <string name="pref_default_page">Standaardpagina</string>
+  <string name="pref_default_page_sum">De pagina die wordt geopend na het starten van AntennaPod.</string>
+  <string name="remember_last_page">Vorige pagina onthouden</string>
   <string name="pref_delete_removes_from_queue_title">Afleveringen verwijderen uit wachtrij na wissen</string>
   <string name="pref_delete_removes_from_queue_sum">Automatisch uit de wachtrij wissen als de aflevering is verwijderd.</string>
   <string name="pref_filter_feed_title">Abonnementsfilter</string>
@@ -590,20 +584,32 @@
   </plurals>
   <string name="auto_enable_label">Automatisch inschakelen</string>
   <string name="sleep_timer_enabled_label">Slaaptimer ingeschakeld</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Kies een synchronisatiedienst</string>
+  <string name="synchronization_summary_unchoosen">Er is keuze uit meerdere aanbieders om de abonnementen en aflevering-stand mee te synchroniseren</string>
+  <string name="dialog_choose_sync_service_title">Kies een synchronisatiedienst</string>
+  <string name="gpodnet_description">Gpodder.net is een opensource-podcastsynchronisatiedienst die je op je eigen server kunt installeren. Let op: Gpodder.net is niet verbonden aan het AntennaPod-project.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync kan als open source Nextcloud-app op een eigen server geïnstalleerd worden. De app is niet betrokken bij het AntennaPod-project.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Verleen toegang in de geopende webbrowser en keer terug naar AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Inloggen</string>
   <string name="gpodnetauth_encryption_warning">Het wachtwoord en de gegevens zijn onversleuteld!</string>
   <string name="username_label">Gebruikersnaam</string>
   <string name="password_label">Wachtwoord</string>
-  <string name="gpodnet_description">Gpodder.net is een opensource-podcastsynchronisatiedienst die je op je eigen server kunt installeren. Let op: Gpodder.net is niet verbonden aan het AntennaPod-project.</string>
-  <string name="gpodnetauth_host">Hostnaam</string>
-  <string name="gpodnetauth_select_server">Server kiezen</string>
   <string name="gpodnetauth_device_name">Toestelnaam</string>
   <string name="gpodnetauth_device_name_default">AntennaPod op %1$s</string>
   <string name="gpodnetauth_existing_devices">Bestaande toestellen</string>
   <string name="gpodnetauth_create_device">Toestel toevoegen</string>
   <string name="gpodnetauth_finish_descr">Gefeliciteerd! het gpodder.net-account is nu gekoppeld. AntennaPod synchroniseert voortaan de abonnementen op het toestel automatisch met het gpodder.net-account</string>
   <string name="gpodnetauth_finish_butsyncnow">Nu synchroniseren</string>
+  <string name="pref_gpodnet_setlogin_information_title">Inloggegevens wijzigen</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Wijzig de inloggegevens van je gpodder.net-account.</string>
+  <string name="synchronization_sync_changes_title">Nu synchroniseren</string>
+  <string name="synchronization_sync_summary">Alle gewijzigde abonnementen en afspeelstatussen opnieuw synchroniseren</string>
+  <string name="synchronization_full_sync_title">Volledige synchronisatie afdwingen</string>
+  <string name="synchronization_force_sync_summary">Alle abonnementen en afspeelstatussen opnieuw synchroniseren</string>
+  <string name="synchronization_logout">Uitloggen</string>
+  <string name="synchronization_login_status"><![CDATA[Ingelogd als <i>%1$s</i> op <i>%2$s</i>. <br/><br/>Na uitloggen is het weer mogelijk een synchronisatie provider te kiezen]]></string>
+  <string name="pref_synchronization_logout_toast">Uitloggen geslaagd</string>
   <string name="gpodnetsync_error_title">gpodder.net - synchronisatiefout</string>
   <string name="gpodnetsync_error_descr">Er is een fout opgetreden tijdens het synchroniseren:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Voltooid</string>
@@ -649,10 +655,10 @@
   <string name="auto_download_settings_label">Instellingen voor Automatisch downloaden</string>
   <string name="episode_filters_label">Afleveringsfilter</string>
   <string name="episode_filters_description">Lijst van zoektermen om te beslissen of een aflevering al of niet automatisch wordt gedownload</string>
-  <string name="episode_filters_include">Meenemen</string>
-  <string name="episode_filters_exclude">Uitsluiten</string>
-  <string name="episode_filters_duration">Minimale duur (in minuten)</string>
-  <string name="episode_filters_hint">Losse woorden \n\"Meerdere tussen aanhalingstekens\"</string>
+  <string name="add_term">Term toevoegen</string>
+  <string name="exclude_terms">Afleveringen die onderstaande termen bevatten uitsluiten</string>
+  <string name="include_terms">Afleveringen die onderstaande termen bevatten opnemen</string>
+  <string name="exclude_episodes_shorter_than">Afleveringen uitsluiten die korter zijn dan</string>
   <string name="keep_updated">Bijgewerkt houden</string>
   <string name="keep_updated_summary">Deze podcast meenemen bij het (automatisch) verversen van alle podcasts</string>
   <string name="auto_download_disabled_globally">Automatisch downloaden is uitgeschakeld in de AntennaPod-instellingen</string>
@@ -662,6 +668,8 @@
   <string name="statistics_space_used">Gebruikte ruimte:</string>
   <string name="statistics_episodes_started_total">Aantal afleveringen gestart / totaal:</string>
   <string name="statistics_view_all">Alle podcasts tonen »</string>
+  <string name="edit_url_menu">Feed-url bewerken</string>
+  <string name="edit_url_confirmation_msg">Let op: door het aanpassen van het rss-adres kan de afspeelstatus en afleveringenlijst worden vergeten. We raden NIET aan om dit te doen en bieden GEEN ondersteuning als er iets misgaat. Deze actie is tevens onomkeerbaar, dus het oorspronkelijke adres kan niet worden hersteld. Maak van tevoren een reservekopie.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Bezig met importeren van abonnementen uit eenmalige apps...</string>
   <!--Add podcast fragment-->
@@ -677,6 +685,7 @@
   <string name="discover_is_hidden">Je kiest er voor aanbevelingen te verbergen.</string>
   <string name="discover_more">meer »</string>
   <string name="discover_powered_by_itunes">Aanbevelingen van iTunes</string>
+  <string name="discover_confirm">Suggesties tonen</string>
   <string name="search_powered_by">Resultaten van %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lokale map toevoegen</string>
