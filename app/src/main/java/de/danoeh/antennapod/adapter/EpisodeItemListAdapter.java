@@ -67,7 +67,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     @NonNull
     @Override
     public final EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new EpisodeItemViewHolder(mainActivityRef.get(), parent, this);
+        return new EpisodeItemViewHolder(mainActivityRef.get(), parent);
     }
 
     @Override
