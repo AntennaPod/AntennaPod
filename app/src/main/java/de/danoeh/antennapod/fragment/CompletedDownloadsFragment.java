@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -37,7 +38,6 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -64,6 +64,8 @@ public class CompletedDownloadsFragment extends Fragment
     public static final String ARG_SHOW_LOGS = "show_logs";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
+    private static final String PREFS = "CompletedDownloadsFragment";
+    private static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadsSortedOrder";
 
     private long[] runningDownloads = new long[0];
     private List<FeedItem> items = new ArrayList<>();
@@ -74,6 +76,13 @@ public class CompletedDownloadsFragment extends Fragment
     private boolean displayUpArrow;
     private SpeedDialView speedDialView;
     private SwipeActions swipeActions;
+    private SharedPreferences prefs;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -205,12 +214,11 @@ public class CompletedDownloadsFragment extends Fragment
                 return true;
             }
         }
-
         return false;
     }
 
     private void setSortOrder(SortOrder sortOrder) {
-        UserPreferences.setDownloadsSortedOrder(sortOrder);
+        setDownloadsSortedOrder(sortOrder);
         loadItems();
     }
 
@@ -314,7 +322,7 @@ public class CompletedDownloadsFragment extends Fragment
         disposable = Observable.fromCallable(() -> {
             List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
 
-            SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
+            SortOrder sortOrder = getDownloadsSortedOrder();
             final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
             permutor.reorder(downloadedItems);
 
@@ -358,6 +366,28 @@ public class CompletedDownloadsFragment extends Fragment
         speedDialView.setVisibility(View.GONE);
         swipeActions.attachTo(recyclerView);
     }
+
+    /**
+     * Returns the sort order for the downloads.
+     */
+    public SortOrder getDownloadsSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_DOWNLOADS_SORTED_ORDER, "use-default");
+        Log.d(TAG, sortOrderStr);
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+    }
+
+    /**
+     * Sets the sort order for the downloads.
+     */
+    public void setDownloadsSortedOrder(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_DOWNLOADS_SORTED_ORDER, sortOrder.name())
+                .apply();
+    }
+
 
     private class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
 

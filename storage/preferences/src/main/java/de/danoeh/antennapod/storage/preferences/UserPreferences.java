@@ -66,8 +66,6 @@ public class UserPreferences {
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
-    public static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadsSortedOrder";
-
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
@@ -920,27 +918,6 @@ public class UserPreferences {
         }
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
-                .apply();
-    }
-
-    /**
-     * Returns the sort order for the downloads.
-     */
-    public static SortOrder getDownloadsSortedOrder() {
-        String sortOrderStr = prefs.getString(PREF_DOWNLOADS_SORTED_ORDER, "use-default");
-        Log.d(TAG, sortOrderStr);
-        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
-    }
-
-    /**
-     * Sets the sort order for the downloads.
-     */
-    public static void setDownloadsSortedOrder(SortOrder sortOrder) {
-        if (sortOrder == null) {
-            return;
-        }
-        prefs.edit()
-                .putString(PREF_DOWNLOADS_SORTED_ORDER, sortOrder.name())
                 .apply();
     }
 
