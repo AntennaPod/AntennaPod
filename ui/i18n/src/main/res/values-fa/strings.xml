@@ -7,16 +7,19 @@
   <string name="add_feed_label">افزودن پادکست</string>
   <string name="episodes_label">قسمت‌ها</string>
   <string name="queue_label">صف</string>
+  <string name="inbox_label">صندوق ورودی</string>
   <string name="favorite_episodes_label">محبوب‌ها</string>
   <string name="settings_label">تنظیمات</string>
   <string name="downloads_label">بارگیری‌ها</string>
   <string name="open_autodownload_settings">باز کردن تنظیمات</string>
+  <string name="downloads_log_label">گزارش بارگیری</string>
   <string name="subscriptions_label">اشتراک‌ها</string>
   <string name="subscriptions_list_label">فهرست اشتراک‌ها</string>
   <string name="cancel_download_label">لغو بارگیری</string>
   <string name="playback_history_label">تاریخچهٔ پخش</string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز تکمیل شده است. شما می‌توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
+  <string name="years_statistics_label">سال</string>
   <string name="notification_pref_fragment">آگاهی‌ها</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">«%1$s» یافت نشد</string>
@@ -28,9 +31,17 @@
   <string name="enable_swipeactions">فعال کردن کشیدن برای این صفحه</string>
   <string name="change_setting">تغییر</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">شامل طول قسمت‌هایی که فقط به پخش شده علامت خورده‌اند</string>
   <string name="statistics_speed_not_counted">توجه: سرعت پخش هرگز به حساب نمی‌آید.</string>
+  <string name="statistics_from">از</string>
+  <string name="statistics_to">به</string>
+  <string name="statistics_today">امروز</string>
+  <string name="statistics_filter_all_time">همیشه</string>
+  <string name="statistics_filter_past_year">پارسال</string>
   <string name="statistics_reset_data">بازنشانی داده‌های آماری</string>
   <string name="statistics_reset_data_msg">این همهٔ تاریخچهٔ طول پخش همهٔ قسمت‌های را پاک می‌کند. مطمئنید که می‌خواید ادامه دهید؟</string>
+  <string name="statistics_counting_total">پخش شده در مجموع</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
@@ -107,7 +118,6 @@
     <item quantity="one">%d قسمت</item>
     <item quantity="other">%d قسمت</item>
   </plurals>
-  <string name="loading_more">بارگیری بیشتر…</string>
   <string name="episode_notification">آگاهی‌های قسمت</string>
   <string name="episode_notification_summary">نمایش آگاهی هنگام انتشار قسمت جدید.</string>
   <plurals name="new_episode_notification_message">
@@ -127,6 +137,7 @@
   <string name="remove_feed_label">پاک کردن پادکست</string>
   <string name="share_label">هم‌رسانی</string>
   <string name="share_file_label">هم‌رسانی پرونده</string>
+  <string name="share_rss_address_label">نشانی خوراک:</string>
   <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و تمام قسمت‌های آن که بارگیری کرده‌اید را حذف کنید.</string>
   <string name="feed_delete_confirmation_msg_batch">لطفا تایید کنید که می‌خواهید پادکست انتخاب شده و همه قسمت‌های آن (شامل قسمت‌های بارگیری شده) را پاک کنید.</string>
   <string name="feed_delete_confirmation_local_msg">لطفا تایید کنید که مایل به حذف پادکست می باشید. «%1$s »  . فایلها در فولدر داخلی حذف نخواهد شد.</string>
@@ -144,6 +155,7 @@
     <item quantity="one">%d اشتراک به‌روز شد.</item>
     <item quantity="other">%d اشتراک به‌روز شد.</item>
   </plurals>
+  <string name="edit_tags">ویرایش برچسب‌ها</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
   <plurals name="downloading_batch_label">
@@ -193,7 +205,6 @@
   <string name="download_pending">بارگیری معوق</string>
   <string name="download_running">بارگیری در حال اجرا</string>
   <string name="download_error_details">جزئیات</string>
-  <string name="download_error_details_message">%1$s\n\nنشانی پرونده:\n%2$s</string>
   <string name="download_error_tap_for_details">برای مشاهده جزئیات ضربه بزنید.</string>
   <string name="download_error_device_not_found">حافظهٔ خارجی یافت نشد</string>
   <string name="download_error_insufficient_space">حجم کافی بر روی دستگاه شما باقی نمانده است.</string>
@@ -281,13 +292,17 @@
   <string name="no_history_label">پس از گوش دادن به یک قسمت، اینجا نمایش داده می‌شود.</string>
   <string name="no_all_episodes_head_label">بدون قسمت</string>
   <string name="no_all_episodes_label">هنگامی که پادکستی می‌افزایید، قسمت‌ها اینجا نمایش داده می‌شود.</string>
+  <string name="no_inbox_head_label">هیچ قسمتی در صندوق ورودی نیست</string>
+  <string name="no_inbox_label">قسمت‌های جدید، هنگام آمدن در این‌جا نشان داده خواهند شد. آنگاه می‌توانید تصمیم بگیرید که به آن‌ها علاقه‌مندید یا نه.</string>
   <string name="no_subscriptions_head_label">بدون اشتراک</string>
   <string name="no_subscriptions_label">برای اشتراک در یک پادکست، آیکون بعلاوه را زیر را فشار دهید.</string>
   <!--Preferences-->
   <string name="storage_pref">حافظه</string>
   <string name="storage_sum">حذف خودکار قسمت، درون‌ریزی، برون‌ریزی</string>
+  <string name="statistics_moved">صفحهٔ آمار به صفحهٔ اشتراک‌ها جابه‌جا شد. می‌توانید از آن‌جا بگشاییدش.</string>
   <string name="project_pref">پروژه</string>
   <string name="synchronization_pref">هم‌گام‌سازی</string>
+  <string name="synchronization_sum">همگام‌سازی با دیگر افزاره‌ها</string>
   <string name="automation">اتوماسیون</string>
   <string name="download_pref_details">جزئیات</string>
   <string name="import_export_pref">وارد/صادر کرد</string>
@@ -378,8 +393,6 @@
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_theme_title_trueblack">سیاه (مناسب AMOLED)</string>
   <string name="pref_episode_cache_unlimited">نامحدود</string>
-  <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
-  <string name="pref_gpodnet_setlogin_information_sum">اطلاعات ورود به سیستم حساب gpodder.net خود را تغییر دهید.</string>
   <string name="pref_playback_speed_sum">سرعتهای موجود برای بازپخش با سرعت متغیر را سفارشی کنید</string>
   <string name="pref_feed_playback_speed_sum">سرعت شروع  بازپخش صدا برای قسمت های این پادکست</string>
   <string name="pref_feed_skip">پرش خودکار</string>
@@ -431,16 +444,6 @@
   <string name="media_player_switched_to_exoplayer">به ExoPlayer تغییر وضعیت داده شد.</string>
   <string name="pref_skip_silence_title">رد کردن سکوت در صدا</string>
   <string name="behavior">رفتار</string>
-  <string name="pref_back_button_behavior_title">رفتار دکمه برگشت</string>
-  <string name="pref_back_button_behavior_sum">تغییر رفتار دکمه بازگشت</string>
-  <string name="back_button_default">پیش فرض</string>
-  <string name="back_button_open_drawer">کشوی ناوبری را باز کنید</string>
-  <string name="back_button_double_tap">برای خروج دو ضربه سریع بزنید</string>
-  <string name="back_button_show_prompt">برای خروج تأیید کنید</string>
-  <string name="close_prompt">آیا مطمئن هستید که می خواهید انتن پاد را ببندید؟</string>
-  <string name="double_tap_toast">برای خروج دوباره روی دکمه برگشت ضربه بزنید</string>
-  <string name="back_button_go_to_page">برو به صفحه...</string>
-  <string name="back_button_go_to_page_title">انتخاب صفحه</string>
   <string name="pref_delete_removes_from_queue_title">حذف باعث پاک شدن از صف شود</string>
   <string name="pref_delete_removes_from_queue_sum">وقتی اپیزود حذف شد ، به طور خودکار از صف حذف شود.</string>
   <string name="pref_filter_feed_title">فیلتر اشتراک</string>
@@ -534,19 +537,20 @@
   </plurals>
   <string name="auto_enable_label">به کار اندازی خودکار</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">ورود</string>
   <string name="gpodnetauth_encryption_warning">رمز عبور و داده ها رمزگذاری نمی شوند!</string>
   <string name="username_label">نام کاربری</string>
   <string name="password_label">گذرواژه</string>
-  <string name="gpodnetauth_host">نام میزبان</string>
-  <string name="gpodnetauth_select_server">انتخاب سرور</string>
   <string name="gpodnetauth_device_name">نام دستگاه</string>
   <string name="gpodnetauth_device_name_default">AntennaPod برروی %1$s</string>
   <string name="gpodnetauth_existing_devices">دستگاههای موجود</string>
   <string name="gpodnetauth_create_device">ایجاد دستگاه</string>
   <string name="gpodnetauth_finish_descr">تبریک می گویم! حساب gpodder.net شما اکنون با دستگاه شما پیوند داده شده است. آنتن پاد از این پس اشتراک های دستگاه شما را با حساب gpodder.net خود به طور خودکار همگام سازی می کند.</string>
   <string name="gpodnetauth_finish_butsyncnow">شروع همگام‌سازی</string>
+  <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
+  <string name="pref_gpodnet_setlogin_information_sum">اطلاعات ورود به سیستم حساب gpodder.net خود را تغییر دهید.</string>
+  <string name="synchronization_logout">خروج</string>
   <string name="gpodnetsync_error_title">خطای همگام‌سازی gpodder.net</string>
   <string name="gpodnetsync_error_descr">هنگام همگام‌سازی خطایی رخ داد:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">موفق</string>
@@ -587,9 +591,6 @@
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
   <string name="episode_filters_label">فیلتر قسمت</string>
   <string name="episode_filters_description">لیست اصطلاحاتی که برای تصمیم گیری در مورد درج یا حذف یک قسمت هنگام بارگیری خودکار استفاده می شود</string>
-  <string name="episode_filters_include">شامل </string>
-  <string name="episode_filters_exclude">مستثنی</string>
-  <string name="episode_filters_hint">تک کلمه \n \"چند کلمه\"</string>
   <string name="keep_updated">به روز باش</string>
   <string name="keep_updated_summary">هنگام بازخوانی (خودکار) همه پادکست ها ، این پادکست را وارد کنید</string>
   <string name="auto_download_disabled_globally">بارگیری خودکار در تنظیمات اصلی  آنتن پاد غیرفعال است</string>
@@ -700,4 +701,5 @@
   <string name="on_demand_config_setting_changed">تنظیم با موفقیت به روز شد.</string>
   <string name="on_demand_config_stream_text">به نظر می رسد که زیاد پخش مستقیم دارید. آیا می خواهید در لیست های قسمت دکمه های پخش مستقیم نشان داده شود؟</string>
   <string name="on_demand_config_download_text">به نظر می رسد که شما زیاد بارگیری می کنید. آیا می خواهید در لیست قسمت دکمه های بارگیری نشان داده شود؟</string>
+  <string name="add_shortcut">افزودن میان‌بر</string>
 </resources>

@@ -23,6 +23,7 @@
   <string name="statistics_speed_not_counted">注意：此統計不考慮播放速度影響</string>
   <string name="statistics_reset_data">重設統計數據</string>
   <string name="statistics_reset_data_msg">這會清除過去的播放紀錄，您確定要進行嗎？</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">打開選單</string>
@@ -84,7 +85,6 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">聽完後 %d 天</item>
   </plurals>
-  <string name="loading_more">載入更多…</string>
   <string name="episode_notification">單集通知</string>
   <string name="episode_notification_summary">當新單集推出時顯示通知訊息</string>
   <plurals name="new_episode_notification_message">
@@ -155,7 +155,6 @@
   <string name="download_pending">下載等待中</string>
   <string name="download_running">下載中</string>
   <string name="download_error_details">詳情</string>
-  <string name="download_error_details_message">%1$s \n\n檔案網址：\n%2$s</string>
   <string name="download_error_tap_for_details">點擊查閱詳情。</string>
   <string name="download_error_device_not_found">沒找到儲存空間</string>
   <string name="download_error_insufficient_space">您設備的儲存空間不夠了。</string>
@@ -321,8 +320,6 @@
   <string name="pref_theme_title_dark">深色</string>
   <string name="pref_theme_title_trueblack">黑色 (適用 AMOLED 螢幕)</string>
   <string name="pref_episode_cache_unlimited">無限</string>
-  <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
-  <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
   <string name="pref_playback_speed_sum">自訂可選用的播放速度</string>
   <string name="pref_feed_playback_speed_sum">播放此 Podcast 中各單集時的播放速度</string>
   <string name="pref_feed_skip">自動跳過</string>
@@ -374,16 +371,6 @@
   <string name="media_player_switched_to_exoplayer">已切換至 ExoPlayer</string>
   <string name="pref_skip_silence_title">跳過沒有聲音的部分</string>
   <string name="behavior">操作行為</string>
-  <string name="pref_back_button_behavior_title">返回鍵行為</string>
-  <string name="pref_back_button_behavior_sum">調整按下返回鍵時的行為</string>
-  <string name="back_button_default">預設</string>
-  <string name="back_button_open_drawer">開啟側邊選單</string>
-  <string name="back_button_double_tap">按兩下後離開 App</string>
-  <string name="back_button_show_prompt">離開前需要確認</string>
-  <string name="close_prompt">確定關閉 AntennaPod？</string>
-  <string name="double_tap_toast">重按返回鍵以離開</string>
-  <string name="back_button_go_to_page">前往頁面…</string>
-  <string name="back_button_go_to_page_title">選擇頁面</string>
   <string name="pref_delete_removes_from_queue_title">刪除時同步自待播清單中移除</string>
   <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
   <string name="pref_filter_feed_title">篩選訂閱內容</string>
@@ -469,18 +456,18 @@
   </plurals>
   <string name="auto_enable_label">自動啟用</string>
   <string name="sleep_timer_enabled_label">已設定睡眠定時</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">登入</string>
   <string name="gpodnetauth_encryption_warning">密碼與資料都沒有加密！</string>
   <string name="username_label">帳號</string>
   <string name="password_label">密碼</string>
-  <string name="gpodnetauth_host">主機名稱</string>
-  <string name="gpodnetauth_select_server">選擇主機</string>
   <string name="gpodnetauth_device_name">裝置名稱</string>
   <string name="gpodnetauth_existing_devices">現存裝置</string>
   <string name="gpodnetauth_create_device">新增裝置</string>
   <string name="gpodnetauth_finish_descr">恭喜，您的 gpodder.net 帳號已經成功連結到當前的設備！AntennaPod 今後將自動與 gpodder.net 同步此設備的訂閱清單。</string>
   <string name="gpodnetauth_finish_butsyncnow">現在開始同步</string>
+  <string name="pref_gpodnet_setlogin_information_title">變更登入資訊</string>
+  <string name="pref_gpodnet_setlogin_information_sum">修改您的 gpodder.net 帳號登入資訊</string>
   <string name="gpodnetsync_error_title">gpodder.net 同步錯誤</string>
   <string name="gpodnetsync_error_descr">更新時發生錯誤：\u0020</string>
   <string name="gpodnetsync_pref_report_successful">成功</string>
@@ -518,9 +505,6 @@
   <string name="auto_download_settings_label">自動下載設定</string>
   <string name="episode_filters_label">篩選</string>
   <string name="episode_filters_description">自動下載時要列入或排除的條件清單</string>
-  <string name="episode_filters_include">包含</string>
-  <string name="episode_filters_exclude">排除</string>
-  <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
   <string name="keep_updated">維持更新</string>
   <string name="keep_updated_summary">自動更新所有 Podcast 時，也包括此 Podcast</string>
   <string name="auto_download_disabled_globally">AntennaPod 的主設定中已停用自動下載功能</string>

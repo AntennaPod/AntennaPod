@@ -25,6 +25,7 @@
   <string name="statistics_speed_not_counted">주의: 재생 속도는 고려하지 않습니다</string>
   <string name="statistics_reset_data">통계 데이터 초기화</string>
   <string name="statistics_reset_data_msg">모든 에피소드의 재생 시간 기록을 지웁니다. 정말로 계속 하시겠습니까?</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">메뉴 열기</string>
@@ -89,7 +90,6 @@
   <plurals name="num_episodes">
     <item quantity="other">%d개 에피소드</item>
   </plurals>
-  <string name="loading_more">더 읽어들이기…</string>
   <string name="episode_notification">에피소드 알림</string>
   <string name="episode_notification_summary">새 에피소드가 나오면 알림을 표시합니다.</string>
   <plurals name="new_episode_notification_message">
@@ -159,7 +159,6 @@
   <string name="download_pending">다운로드 지연 중</string>
   <string name="download_running">다운로드 실행 중</string>
   <string name="download_error_details">자세히</string>
-  <string name="download_error_details_message">%1$s \n\n파일 URL:\n%2$s</string>
   <string name="download_error_device_not_found">저장 장치가 없습니다</string>
   <string name="download_error_http_data_error">HTTP 데이터 오류</string>
   <string name="download_error_error_unknown">알 수 없는 오류</string>
@@ -324,8 +323,6 @@
   <string name="pref_theme_title_dark">어둡게</string>
   <string name="pref_theme_title_trueblack">검정 (AMOLED 화면에 좋음)</string>
   <string name="pref_episode_cache_unlimited">무제한</string>
-  <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
-  <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
   <string name="pref_playback_speed_sum">재생 속도를 다양하게 할 경우 속도를 직접 설정</string>
   <string name="pref_feed_playback_speed_sum">이 팟캐스트의 에피소드를 재생할 때 사용할 오디오 재생 속도</string>
   <string name="pref_feed_skip">자동 건너뛰기</string>
@@ -377,16 +374,6 @@
   <string name="media_player_switched_to_exoplayer">ExoPlayer로 전환함.</string>
   <string name="pref_skip_silence_title">오디오에서 묵음 구간 건너뛰기</string>
   <string name="behavior">동작</string>
-  <string name="pref_back_button_behavior_title">뒤로 가기 버튼 동작</string>
-  <string name="pref_back_button_behavior_sum">뒤로 가기 버튼의 동작을 바꿉니다.</string>
-  <string name="back_button_default">기본값</string>
-  <string name="back_button_open_drawer">네비게이션 드로어 열기</string>
-  <string name="back_button_double_tap">두 번 누르면 끝내기</string>
-  <string name="back_button_show_prompt">끝내려면 확인</string>
-  <string name="close_prompt">정말로 안테나팟을 닫으시겠습니까?</string>
-  <string name="double_tap_toast">뒤로 가기 버튼을 한 번 더 누르면 끝납니다</string>
-  <string name="back_button_go_to_page">페이지로 이동…</string>
-  <string name="back_button_go_to_page_title">페이지 선택</string>
   <string name="pref_delete_removes_from_queue_title">제거된 항목 대기열에서 삭제</string>
   <string name="pref_delete_removes_from_queue_sum">삭제된 항목을 대기열에서 자동으로 삭제합니다.</string>
   <string name="pref_filter_feed_title">구독 필터</string>
@@ -472,18 +459,18 @@
   </plurals>
   <string name="auto_enable_label">자동 사용</string>
   <string name="sleep_timer_enabled_label">취침 타이머 사용함</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">로그인</string>
   <string name="username_label">사용자 이름</string>
   <string name="password_label">암호</string>
-  <string name="gpodnetauth_host">호스트 이름</string>
-  <string name="gpodnetauth_select_server">서버 선택</string>
   <string name="gpodnetauth_device_name">장치 이름</string>
   <string name="gpodnetauth_device_name_default">안테나팟, %1$s</string>
   <string name="gpodnetauth_existing_devices">기존 장치</string>
   <string name="gpodnetauth_create_device">장치 만들기</string>
   <string name="gpodnetauth_finish_descr">축하합니다! gpodder.net 계정이 장치와 연결되었습니다. 이제 안테나팟에서 gpodder.net 계정의 구독 정보와 자동으로 동기화합니다.</string>
   <string name="gpodnetauth_finish_butsyncnow">지금 동기화 시작</string>
+  <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
+  <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
   <string name="gpodnetsync_error_title">gpodder.net 동기화 오류</string>
   <string name="gpodnetsync_error_descr">동기화 중에 오류가 발생했습니다:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">성공</string>
@@ -521,9 +508,6 @@
   <string name="auto_download_settings_label">자동 다운로드 설정</string>
   <string name="episode_filters_label">에피소드 필터</string>
   <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
-  <string name="episode_filters_include">포함</string>
-  <string name="episode_filters_exclude">제외</string>
-  <string name="episode_filters_hint">개별 단어 \n\"여러 단어\"</string>
   <string name="keep_updated">최신 업데이트 유지</string>
   <string name="keep_updated_summary">모든 팟캐스트를 (자동) 새로 고칠 때 이 팟캐스트 포함</string>
   <string name="auto_download_disabled_globally">자동 다운로드는 안테나팟 메인 설정에서 꺼져 있습니다</string>
