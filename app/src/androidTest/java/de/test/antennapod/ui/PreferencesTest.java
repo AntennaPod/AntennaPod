@@ -138,6 +138,8 @@ public class PreferencesTest {
                 .until(UserPreferences::showFastForwardOnCompactNotification);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> !UserPreferences.showSkipOnCompactNotification());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> !UserPreferences.showNextChapterOnCompactNotification());
     }
 
     @Test

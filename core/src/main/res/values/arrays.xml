@@ -263,6 +263,7 @@
         <item>@string/rewind_label</item>
         <item>@string/fast_forward_label</item>
         <item>@string/skip_episode_label</item>
+        <item>@string/next_chapter</item>
     </string-array>
 
     <string-array name="default_page_values">

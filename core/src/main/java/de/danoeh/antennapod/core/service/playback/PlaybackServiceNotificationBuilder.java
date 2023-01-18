@@ -210,6 +210,17 @@ public class PlaybackServiceNotificationBuilder {
         }
         numActions++;
 
+        if (playable.getChapters() != null) {
+            PendingIntent nextChapterPendingIntent = getPendingIntentForCustomMediaAction(
+                    PlaybackService.CUSTOM_ACTION_NEXT_CHAPTER, numActions);
+            notification.addAction(R.drawable.ic_notification_next_chapter, context.getString(R.string.next_chapter),
+                    nextChapterPendingIntent);
+            if (UserPreferences.showNextChapterOnCompactNotification()) {
+                compactActionList.add(numActions);
+            }
+            numActions++;
+        }
+
         PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
         notification.addAction(R.drawable.ic_notification_skip, context.getString(R.string.skip_episode_label),
@@ -232,6 +243,20 @@ public class PlaybackServiceNotificationBuilder {
         Intent intent = new Intent(context, PlaybackService.class);
         intent.setAction("MediaCode" + keycodeValue);
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            return PendingIntent.getForegroundService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+        }
+    }
+
+    private PendingIntent getPendingIntentForCustomMediaAction(String action, int requestCode) {
+        Intent intent = new Intent(context, PlaybackService.class);
+        intent.setAction("MediaAction" + action);
+        intent.putExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION, action);
 
         if (Build.VERSION.SDK_INT >= 26) {
             return PendingIntent.getForegroundService(context, requestCode, intent,
