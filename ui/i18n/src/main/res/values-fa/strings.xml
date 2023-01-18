@@ -6,6 +6,7 @@
   <string name="statistics_label">آمار</string>
   <string name="add_feed_label">افزودن پادکست</string>
   <string name="episodes_label">قسمت‌ها</string>
+  <string name="home_label">خانه</string>
   <string name="queue_label">صف</string>
   <string name="inbox_label">صندوق ورودی</string>
   <string name="favorite_episodes_label">محبوب‌ها</string>
@@ -42,6 +43,8 @@
   <string name="statistics_reset_data_msg">این همهٔ تاریخچهٔ طول پخش همهٔ قسمت‌های را پاک می‌کند. مطمئنید که می‌خواید ادامه دهید؟</string>
   <string name="statistics_counting_total">پخش شده در مجموع</string>
   <!--Home fragment-->
+  <string name="home_downloads_title">مدیریت موارد بارگیری‌شده</string>
+  <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
@@ -66,6 +69,8 @@
   <string name="go_to_position_label">برو به این موقعیت</string>
   <!--Playback history-->
   <string name="clear_history_label">پاک کردن تاریخچه</string>
+  <string name="remove_history_label">از تاریخچه حذف شود</string>
+  <string name="removed_history_label">از تاریخچه حذف شد</string>
   <!--Other-->
   <string name="confirm_label">تأیید</string>
   <string name="cancel_label">لغو</string>
@@ -156,6 +161,7 @@
     <item quantity="other">%d اشتراک به‌روز شد.</item>
   </plurals>
   <string name="edit_tags">ویرایش برچسب‌ها</string>
+  <string name="add_tag">افزودن برچسب</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
   <plurals name="downloading_batch_label">
@@ -538,6 +544,7 @@
   <string name="auto_enable_label">به کار اندازی خودکار</string>
   <string name="sleep_timer_enabled_label">زمان‌سنج خواب به کار افتاد</string>
   <!--Synchronisation-->
+  <string name="synchronization_host_label">نشانی کارساز</string>
   <string name="gpodnetauth_login_butLabel">ورود</string>
   <string name="gpodnetauth_encryption_warning">رمز عبور و داده ها رمزگذاری نمی شوند!</string>
   <string name="username_label">نام کاربری</string>
@@ -587,6 +594,7 @@
   <!--Feed settings/information screen-->
   <string name="authentication_label">احراز هویت</string>
   <string name="authentication_descr">تغییر نام کاربری و رمز ورود خود را برای این پادکست و قسمت های آن</string>
+  <string name="feed_tags_label">برچسب‌ها</string>
   <string name="feed_folders_include_root">نمایش در لیست اصلی</string>
   <string name="auto_download_settings_label">تنظیمات بارگیری خودکار</string>
   <string name="episode_filters_label">فیلتر قسمت</string>
@@ -647,7 +655,7 @@
   <string name="sort_short_long">کوتاه به بلند</string>
   <string name="sort_long_short">بلند به کوتاه</string>
   <!--Rating dialog-->
-  <string name="rating_title" tools:ignore="UnusedResources">علاقهمند به  آنتن پاد ؟</string>
+  <string name="rating_title" tools:ignore="UnusedResources">از آنتناپاد خوشتان آمده؟</string>
   <string name="rating_message" tools:ignore="UnusedResources">اگر وقت بگذارید و به  آنتن پاد امتیاز دهید ، از آن استقبال می کنیم.</string>
   <string name="rating_never_label" tools:ignore="UnusedResources">دست از سر من بردار</string>
   <string name="rating_later_label" tools:ignore="UnusedResources">بعدا به من یادآوری کن</string>

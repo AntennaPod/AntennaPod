@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Smazat historii</string>
   <string name="clear_playback_history_msg">Toto vymaže celou historii přehrávání. Jste si jisti, že chcete pokračovat?</string>
+  <string name="remove_history_label">Odstranit z historie</string>
+  <string name="removed_history_label">Odstraněno z historie</string>
   <!--Other-->
   <string name="confirm_label">Potvrdit</string>
   <string name="cancel_label">Zrušit</string>
@@ -441,6 +443,8 @@
   <string name="user_interface_label">Uživatelské rozhraní</string>
   <string name="user_interface_sum">Vzhled, odběry, uzamčená obrazovka</string>
   <string name="pref_set_theme_title">Vybrat motiv</string>
+  <string name="pref_tinted_theme_title">Použít tónování barev</string>
+  <string name="pref_tinted_theme_message">Tónovat barvy aplikace podle obrázku na pozadí</string>
   <string name="pref_nav_drawer_items_title">Změnit navigační panel</string>
   <string name="pref_nav_drawer_items_sum">Upravit zobrazení položek v navigačním panelu.</string>
   <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí odběrů</string>
@@ -629,11 +633,17 @@
   <string name="dialog_choose_sync_service_title">Vyberte poskytovatele synchronizace</string>
   <string name="gpodnet_description">Gpodder.net je open-source služba pro synchronizaci podcastů, kterou si můžete nainstalovat na vlastní server. Gpodder.net je nezávislý na projektu AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync je open-source Nextcloud aplikace, kterou můžete snadno nainstalovat na vlastní server. Aplikace je nezávislá na projektu AntennaPod.</string>
+  <string name="synchronization_host_explanation">Lze si zvolit vlastní server k synchronizaci. Po volbě preferovaného serveru synchronizace, sem prosím zadejte jeho adresu. </string>
+  <string name="synchronization_host_label">Adresa serveru</string>
+  <string name="proceed_to_login_butLabel">Pokračovat k přihlášení</string>
   <string name="synchronization_nextcloud_authenticate_browser">Povolte přístup pomocí otevřeného webového prohlížeče a pak se vraťte do AntennaPodu.</string>
   <string name="gpodnetauth_login_butLabel">Přihlásit se</string>
+  <string name="synchronization_credentials_explanation">Prosím, uveďte přihlašovací údaje k synchronizovanému serveru. </string>
   <string name="gpodnetauth_encryption_warning">Heslo a data nejsou šifrována!</string>
   <string name="username_label">Uživatelské jméno</string>
   <string name="password_label">Heslo</string>
+  <string name="synchronization_login_butLabel">Přihlásit se</string>
+  <string name="synchronization_selectDevice_explanation">Zde prosím vyberte zařízení již vytvořené na sychronizovaném serveru, nebo zde vytvořte nové. </string>
   <string name="gpodnetauth_device_name">Název zařízení</string>
   <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
   <string name="gpodnetauth_existing_devices">Existující zařízení</string>
@@ -726,6 +736,7 @@
   <string name="discover_powered_by_itunes">iTunes doporučuje</string>
   <string name="discover_confirm">Zobrazit návrhy</string>
   <string name="search_powered_by">Výsledky dle %1$s</string>
+  <string name="select_country">Vybrat zemi</string>
   <!--Local feeds-->
   <string name="add_local_folder">Přidat místní adresář</string>
   <string name="local_folder">Místní adresář</string>
