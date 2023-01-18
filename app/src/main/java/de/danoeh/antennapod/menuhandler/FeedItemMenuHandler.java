@@ -12,10 +12,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Collections;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.StatusListener;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -25,10 +28,15 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.PlaybackStatus;
 import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -133,6 +141,40 @@ public class FeedItemMenuHandler {
             }
         }
         return rc;
+    }
+
+    public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
+                                            @NonNull Feed selectedFeed) {
+
+        @NonNull Context context = fragment.requireContext();
+        if (menuItemId == R.id.rename_folder_item) {
+            new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
+        } else if (menuItemId == R.id.remove_all_inbox_item) {
+            DisplayConfirmationDialog.display(fragment.getActivity(), R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg,
+                    () -> DBWriter.removeFeedNewFlag(selectedFeed.getId()), new StatusListener() {
+                        @Override
+                        public void onActionSuccess() {}
+
+                        @Override
+                        public void onActionFailure(Throwable throwableError) {
+                            Log.e(TAG, Log.getStackTraceString(throwableError));
+                        }
+                    });
+        } else if (menuItemId == R.id.edit_tags) {
+            TagSettingsDialog.newInstance(Collections.singletonList(selectedFeed.getPreferences()))
+                    .show(fragment.getChildFragmentManager(), TagSettingsDialog.TAG);
+        } else if (menuItemId == R.id.rename_item) {
+            new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
+        } else if (menuItemId == R.id.remove_feed) {
+            RemoveFeedDialog.show(context, selectedFeed);
+        } else {
+            Log.d(TAG, "Unknown menuItemId: " + menuItemId);
+            return false;
+        }
+
+
+        return true;
     }
 
     /**

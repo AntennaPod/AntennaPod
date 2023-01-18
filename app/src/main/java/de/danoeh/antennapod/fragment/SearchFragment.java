@@ -14,15 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -31,16 +39,16 @@ import de.danoeh.antennapod.adapter.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -49,18 +57,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.RenameItemDialog;
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
-import de.danoeh.antennapod.core.dialog.StatusListener;
 
 
 /**
@@ -163,6 +159,7 @@ public class SearchFragment extends Fragment {
             public void onCreateContextMenu(ContextMenu contextMenu, View view,
                                             ContextMenu.ContextMenuInfo contextMenuInfo) {
                 super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+                MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
             }
         };
 
@@ -261,40 +258,17 @@ public class SearchFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
 
-        int itemId = item.getItemId();
         FeedItem selectedItem = adapter.getLongPressedItem();
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
 
-        if (selectedFeedItem != null) {
-            if (itemId == R.id.rename_folder_item) {
-                new RenameItemDialog(getActivity(), selectedFeedItem).show();
-                return true;
-            } else if (itemId == R.id.remove_all_inbox_item) {
-
-                DisplayConfirmationDialog.display(getActivity(), R.string.remove_all_inbox_label,
-                        R.string.remove_all_inbox_confirmation_msg,
-                        () -> DBWriter.removeFeedNewFlag(selectedFeedItem.getId()), new StatusListener() {
-                            @Override
-                            public void onActionSuccess() {}
-
-                            @Override
-                            public void onActionFailure(Throwable throwableError) {
-                                Log.e(TAG, Log.getStackTraceString(throwableError));
-                            }
-                        });
-                return true;
-            } else if (itemId == R.id.edit_tags) {
-                TagSettingsDialog.newInstance(Collections.singletonList(selectedFeedItem.getPreferences()))
-                        .show(getChildFragmentManager(), TagSettingsDialog.TAG);
-                return true;
-            } else if (itemId == R.id.rename_item) {
-                new RenameItemDialog(getActivity(), selectedFeedItem).show();
-                return true;
-            } else if (itemId == R.id.remove_feed) {
-                RemoveFeedDialog.show(getContext(), selectedFeedItem);
-                return true;
-            }
-            return super.onContextItemSelected(item);
+        int itemId = item.getItemId();
+        if ((itemId == R.id.remove_feed
+                || itemId == R.id.rename_folder_item
+                || itemId == R.id.remove_all_inbox_item
+                || itemId == R.id.edit_tags
+                || itemId == R.id.rename_item)
+                && selectedFeedItem != null) {
+            return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem);
         }
 
         if (selectedItem == null) {
