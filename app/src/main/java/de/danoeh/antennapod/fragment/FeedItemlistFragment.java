@@ -144,9 +144,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new FeedItemListAdapter((MainActivity) getActivity());
         adapter.setOnSelectModeListener(this);
-        adapter.setDummyViews(10);
         viewBinding.recyclerView.setAdapter(adapter);
         swipeActions = new SwipeActions(this, TAG).attachTo(viewBinding.recyclerView);
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
 
         ToolbarIconTintManager iconTintManager = new ToolbarIconTintManager(
                 getContext(), viewBinding.toolbar, viewBinding.collapsingToolbar) {
@@ -530,6 +530,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         feed = result;
                         swipeActions.setFilter(feed.getItemFilter());
                         refreshHeaderView();
+                        viewBinding.progressBar.setVisibility(View.GONE);
                         adapter.setDummyViews(0);
                         adapter.updateItems(feed.getItems());
                         updateToolbar();

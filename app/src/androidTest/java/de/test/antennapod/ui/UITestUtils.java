@@ -78,7 +78,7 @@ public class UITestUtils {
         }
     }
 
-    private String hostFeed(Feed feed) throws IOException {
+    public String hostFeed(Feed feed) throws IOException {
         File feedFile = new File(hostedFeedDir, feed.getTitle());
         FileOutputStream out = new FileOutputStream(feedFile);
         Rss2Generator generator = new Rss2Generator();

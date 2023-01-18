@@ -40,7 +40,7 @@
         android:summary="@string/pref_feed_skip_sum"
         android:title="@string/pref_feed_skip" />
 
-    <ListPreference
+    <de.danoeh.antennapod.preferences.MaterialListPreference
         android:entries="@array/spnAutoDeleteItems"
         android:entryValues="@array/spnAutoDeleteValues"
         android:icon="@drawable/ic_delete"
@@ -48,7 +48,7 @@
         android:summary="@string/feed_auto_download_global"
         android:title="@string/auto_delete_label" />
 
-    <ListPreference
+    <de.danoeh.antennapod.preferences.MaterialListPreference
         android:defaultValue="off"
         android:entries="@array/spnVolumeReductionItems"
         android:entryValues="@array/spnVolumeReductionValues"

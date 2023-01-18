@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +21,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -290,7 +288,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         }
         boolean handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);
 
-        if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
+        if (item.getItemId() == R.id.reconnect_local_folder) {
             MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -329,7 +327,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private void reconnectLocalFolder(Uri uri) {
-        if (Build.VERSION.SDK_INT < 21 || feed == null) {
+        if (feed == null) {
             return;
         }
 
@@ -353,7 +351,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @NonNull
         @Override
         public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {

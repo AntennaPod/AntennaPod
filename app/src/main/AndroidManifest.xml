@@ -131,10 +131,14 @@
         <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
             android:label="@string/settings_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+            </intent-filter>
         </activity>
 
         <activity

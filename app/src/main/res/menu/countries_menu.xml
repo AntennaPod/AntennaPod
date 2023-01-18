@@ -12,6 +12,6 @@
     <item
         android:id="@+id/discover_countries_item"
         android:enabled="true"
-        android:title="@string/country"
+        android:title="@string/select_country"
         android:visible="true" />
 </menu>

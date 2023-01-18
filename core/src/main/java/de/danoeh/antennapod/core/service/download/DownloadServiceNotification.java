@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -37,9 +36,7 @@ public class DownloadServiceNotification {
                 .setShowWhen(false)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(context))
                 .setSmallIcon(R.drawable.ic_notification_sync);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        }
+        notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         Log.d(TAG, "Notification set up");
     }
@@ -208,9 +205,7 @@ public class DownloadServiceNotification {
                    .setSmallIcon(iconId)
                    .setContentIntent(intent)
                    .setAutoCancel(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            }
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(id, builder.build());
             Log.d(TAG, "Download report notification was posted");
@@ -232,9 +227,7 @@ public class DownloadServiceNotification {
                 .setSmallIcon(R.drawable.ic_notification_key)
                 .setAutoCancel(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(context, downloadRequest));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        }
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(downloadRequest.getSource().hashCode(), builder.build());
     }

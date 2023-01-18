@@ -48,6 +48,7 @@ public class UserPreferences {
 
     // User Interface
     public static final String PREF_THEME = "prefTheme";
+    public static final String PREF_TINTED_COLORS = "prefTintedColors";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
@@ -168,6 +169,10 @@ public class UserPreferences {
             default:
                 return ThemePreference.SYSTEM;
         }
+    }
+
+    public static boolean getIsThemeColorTinted() {
+        return Build.VERSION.SDK_INT >= 31 && prefs.getBoolean(PREF_TINTED_COLORS, false);
     }
 
     public static List<String> getHiddenDrawerItems() {

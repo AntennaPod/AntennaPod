@@ -16,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -36,10 +37,13 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class FeedSettingsFragment extends Fragment {
     private static final String TAG = "FeedSettingsFragment";
@@ -255,7 +259,17 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(String username, String password) {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
-                        DBWriter.setFeedPreferences(feedPreferences);
+                        Future<?> setPreferencesFuture = DBWriter.setFeedPreferences(feedPreferences);
+
+                        new Thread(() -> {
+                            try {
+                                setPreferencesFuture.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
+
+                            DBTasks.forceRefreshFeed(requireContext(), feed, true);
+                        }, "RefreshAfterCredentialChange").start();
                     }
                 }.show();
                 return false;

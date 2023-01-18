@@ -409,7 +409,6 @@ public class PreferencesTest {
         clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
@@ -455,7 +454,6 @@ public class PreferencesTest {
         // Find next value (wrapping around to next)
         int newIndex = (currentIndex + 1) % deltas.length;
         onView(withText(deltas[newIndex] + " seconds")).perform(click());
-        onView(withText("Confirm")).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getRewindSecs() == deltas[newIndex]);
@@ -477,7 +475,6 @@ public class PreferencesTest {
             int newIndex = (currentIndex + 1) % deltas.length;
 
             onView(withText(deltas[newIndex] + " seconds")).perform(click());
-            onView(withText("Confirm")).perform(click());
 
             Awaitility.await().atMost(1000, MILLISECONDS)
                     .until(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex]);
