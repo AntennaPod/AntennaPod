@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Geschiedenis wissen</string>
   <string name="clear_playback_history_msg">Hierdoor wordt alle geschiedenis gewist. Weet je zeker dat je wilt doorgaan?</string>
+  <string name="remove_history_label">Verwijderen uit geschiedenis</string>
+  <string name="removed_history_label">Verwijderd uit geschiedenis</string>
   <!--Other-->
   <string name="confirm_label">Bevestigen</string>
   <string name="cancel_label">Annuleren</string>
@@ -408,6 +410,8 @@
   <string name="user_interface_label">Gebruikersinterface</string>
   <string name="user_interface_sum">Uiterlijk, abonnementen, vergrendelscherm</string>
   <string name="pref_set_theme_title">Thema</string>
+  <string name="pref_tinted_theme_title">Kleurtinten gebruiken</string>
+  <string name="pref_tinted_theme_message">Gebruik kleuren op basis van de achtergrondafbeelding</string>
   <string name="pref_nav_drawer_items_title">Navigatiemenu-items</string>
   <string name="pref_nav_drawer_items_sum">Kies welke items moeten worden getoond in het navigatiemenu.</string>
   <string name="pref_nav_drawer_feed_order_title">Volgorde van abonnementen</string>
@@ -590,11 +594,17 @@
   <string name="dialog_choose_sync_service_title">Kies een synchronisatiedienst</string>
   <string name="gpodnet_description">Gpodder.net is een opensource-podcastsynchronisatiedienst die je op je eigen server kunt installeren. Let op: Gpodder.net is niet verbonden aan het AntennaPod-project.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync kan als open source Nextcloud-app op een eigen server geïnstalleerd worden. De app is niet betrokken bij het AntennaPod-project.</string>
+  <string name="synchronization_host_explanation">Je kunt je eigen synchronisatieserver kiezen. Als je voorkeur voor een bepaalde server hebt, voer dan hier het adres ervan in.</string>
+  <string name="synchronization_host_label">Serveradres</string>
+  <string name="proceed_to_login_butLabel">Doorgaan met inloggen</string>
   <string name="synchronization_nextcloud_authenticate_browser">Verleen toegang in de geopende webbrowser en keer terug naar AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Inloggen</string>
+  <string name="synchronization_credentials_explanation">Voer de inloggegevens van je serveraccount in.</string>
   <string name="gpodnetauth_encryption_warning">Het wachtwoord en de gegevens zijn onversleuteld!</string>
   <string name="username_label">Gebruikersnaam</string>
   <string name="password_label">Wachtwoord</string>
+  <string name="synchronization_login_butLabel">Inloggen</string>
+  <string name="synchronization_selectDevice_explanation">Kies het op de server toegevoegde apparaat of voeg een nieuw apparaat toe.</string>
   <string name="gpodnetauth_device_name">Toestelnaam</string>
   <string name="gpodnetauth_device_name_default">AntennaPod op %1$s</string>
   <string name="gpodnetauth_existing_devices">Bestaande toestellen</string>
@@ -687,6 +697,7 @@
   <string name="discover_powered_by_itunes">Aanbevelingen van iTunes</string>
   <string name="discover_confirm">Suggesties tonen</string>
   <string name="search_powered_by">Resultaten van %1$s</string>
+  <string name="select_country">Kies een land</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lokale map toevoegen</string>
   <string name="local_folder">Lokale map</string>

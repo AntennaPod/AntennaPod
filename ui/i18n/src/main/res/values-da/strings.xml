@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Ryd historik</string>
   <string name="clear_playback_history_msg">Dette vil slette hele afspilningshistorikken. Er du sikker på, at du vil fortsætte?</string>
+  <string name="remove_history_label">Fjern fra historik</string>
+  <string name="removed_history_label">Fjernet fra historik</string>
   <!--Other-->
   <string name="confirm_label">Bekræft</string>
   <string name="cancel_label">Annuller</string>
@@ -408,6 +410,8 @@
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="user_interface_sum">Udseende, abonnementer, låseskærm</string>
   <string name="pref_set_theme_title">Vælg tema</string>
+  <string name="pref_tinted_theme_title">Brug farvetoner</string>
+  <string name="pref_tinted_theme_message">Giv appens farver en toning baseret på baggrundsbilledet</string>
   <string name="pref_nav_drawer_items_title">Vælg elementer i navigationspanelet</string>
   <string name="pref_nav_drawer_items_sum">Vælg hvilke elementer, der skal vises i navigationspanelet.</string>
   <string name="pref_nav_drawer_feed_order_title">Vælg abonnementsorden</string>
@@ -590,11 +594,17 @@
   <string name="dialog_choose_sync_service_title">Vælg synkroniseringsudbyder</string>
   <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync er en open source-app fra Nextcloud, som du nemt kan installere på din egen server. Appen er uafhængig af AntennaPod-projektet.</string>
+  <string name="synchronization_host_explanation">Du kan vælge din egen server at synkronisere med. Når du har fundet din foretrukne synkroniseringsserver, skal du indtaste dens adresse her.</string>
+  <string name="synchronization_host_label">Server-adresse</string>
+  <string name="proceed_to_login_butLabel">Fortsæt til login</string>
   <string name="synchronization_nextcloud_authenticate_browser">Giv adgang ved hjælp af den åbne internetbrowser, og vend tilbage til AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Log ind</string>
+  <string name="synchronization_credentials_explanation">Angiv legitimationsoplysningerne for din konto på synkroniseringsserveren.</string>
   <string name="gpodnetauth_encryption_warning">Adgangskode og data er ikke krypteret!</string>
   <string name="username_label">Brugernavn</string>
   <string name="password_label">Adgangskode</string>
+  <string name="synchronization_login_butLabel">Log ind</string>
+  <string name="synchronization_selectDevice_explanation">Vælg den enhed, som du har oprettet på synkroniseringsserveren, eller opret en ny enhed.</string>
   <string name="gpodnetauth_device_name">Enhedsnavn</string>
   <string name="gpodnetauth_device_name_default">AntennaPod på %1$s</string>
   <string name="gpodnetauth_existing_devices">Eksisterende enheder</string>
@@ -687,6 +697,7 @@
   <string name="discover_powered_by_itunes">iTunes forslag</string>
   <string name="discover_confirm">Vis forslag</string>
   <string name="search_powered_by">Resultater fra %1$s</string>
+  <string name="select_country">Vælg land</string>
   <!--Local feeds-->
   <string name="add_local_folder">Tilføj lokal mappe</string>
   <string name="local_folder">Lokal mappe</string>
