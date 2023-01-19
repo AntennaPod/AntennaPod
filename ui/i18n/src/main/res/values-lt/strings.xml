@@ -40,6 +40,7 @@
   <string name="statistics_reset_data_msg">Bus išvalyta visų epizodų perklausytos trukmės istorija. Ar tikrai norite tęsti?</string>
   <string name="statistics_counting_range">Atkurta tarp %1$s ir %2$s</string>
   <string name="statistics_counting_total">Iš viso atkurta</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Bendras epizodų šiame įrenginyje dydis</string>
   <!--Main activity-->
@@ -125,7 +126,6 @@
     <item quantity="many">%d epizodų</item>
     <item quantity="other">%d epizodų</item>
   </plurals>
-  <string name="loading_more">Įkeliama daugiau...</string>
   <string name="episode_notification">Epizodų pranešimai</string>
   <string name="episode_notification_summary">Rodyti pranešimą, kai išleidžiamas naujas epizodas.</string>
   <plurals name="new_episode_notification_message">
@@ -237,7 +237,6 @@
   <string name="download_pending">Laukia atsiuntimo</string>
   <string name="download_running">Atsiuntimas vyksta</string>
   <string name="download_error_details">Išsami informacija</string>
-  <string name="download_error_details_message">%1$s \n\nFailo URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Palieskite, jei norite pamatyti išsamesnę informaciją.</string>
   <string name="download_error_device_not_found">Nerastas laikmenos įrenginys</string>
   <string name="download_error_insufficient_space">Įrenginyje nėra pakankamai laisvos vietos.</string>
@@ -432,20 +431,6 @@
   <string name="pref_theme_title_dark">Tamsi</string>
   <string name="pref_theme_title_trueblack">Juoda (paruošta AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Neribojamas</string>
-  <string name="synchronization_logout">Atsijungti</string>
-  <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
-  <string name="pref_gpodnet_setlogin_information_title">Keisti prisijungimo duomenis</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
-  <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>
-  <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
-  <string name="synchronization_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> <i>%2$s</i> serveryje. <br/><br/>Atsijungę vėl galėsite pasirinkti sinchronizavimo teikėją]]></string>
-  <string name="synchronization_summary_unchoosen">Galite pasirinkti iš keleto teikėjų prenumeratų ir epizodų atkūrimo būsenai sinchronizuoti</string>
-  <string name="synchronization_summary_nextcloud">„Gpoddersync“ ir atvirojo kodo „Nextcloud“ programėlė, kurią nesunkiai galite įsidiegti savo serveryje. Ši programėlė yra nepriklausoma nuo „AntennaPod“ projekto.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Suteikite prieigą atsivėrusioje interneto naršyklėje ir sugrįžkite į „AntennaPod“.</string>
-  <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
-  <string name="synchronization_force_sync_summary">Sinchronizuoti visų prenumeratų ir epizodų būsenas iš naujo</string>
-  <string name="synchronization_sync_summary">Sinchronizuoti prenumeratų ir epizodų būsenų pokyčius</string>
-  <string name="dialog_choose_sync_service_title">Pasirinkite sinchronizavimo teikėją</string>
   <string name="pref_playback_speed_sum">Derinkite prieinamas garso atkūrimo spartas</string>
   <string name="pref_feed_playback_speed_sum">Atkūrimo sparta, naudojama pradedant šios tinklalaidės epizodų atkūrimą</string>
   <string name="pref_feed_skip">Automatinis praleidimas</string>
@@ -497,16 +482,6 @@
   <string name="media_player_switched_to_exoplayer">Perjungta į „ExoPlayer“.</string>
   <string name="pref_skip_silence_title">Praleisti tylą</string>
   <string name="behavior">Elgsena</string>
-  <string name="pref_back_button_behavior_title">Grįžimo mygtuko elgsena</string>
-  <string name="pref_back_button_behavior_sum">Keisti grįžimo mygtuko elgseną.</string>
-  <string name="back_button_default">Numatytoji</string>
-  <string name="back_button_open_drawer">Atverti naršymo stalčių</string>
-  <string name="back_button_double_tap">Palietus dukart - išeiti</string>
-  <string name="back_button_show_prompt">Patvirtinti išėjimą</string>
-  <string name="close_prompt">Ar tikrai norite užverti „AntennaPod“?</string>
-  <string name="double_tap_toast">Jei norite išeiti, dar kartą palieskite grįžimo mygtuką</string>
-  <string name="back_button_go_to_page">Eiti į puslapį…</string>
-  <string name="back_button_go_to_page_title">Pažymėti puslapį</string>
   <string name="pref_delete_removes_from_queue_title">Ištrynus pašalinti iš eilės</string>
   <string name="pref_delete_removes_from_queue_sum">Ištrynus epizodą automatiškai pašalinti jį iš eilės</string>
   <string name="pref_filter_feed_title">Prenumeratų filtras</string>
@@ -610,19 +585,31 @@
   </plurals>
   <string name="auto_enable_label">Įjungti automatiškai</string>
   <string name="sleep_timer_enabled_label">Miego laikmatis įjungtas</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
+  <string name="synchronization_summary_unchoosen">Galite pasirinkti iš keleto teikėjų prenumeratų ir epizodų atkūrimo būsenai sinchronizuoti</string>
+  <string name="dialog_choose_sync_service_title">Pasirinkite sinchronizavimo teikėją</string>
+  <string name="synchronization_summary_nextcloud">„Gpoddersync“ ir atvirojo kodo „Nextcloud“ programėlė, kurią nesunkiai galite įsidiegti savo serveryje. Ši programėlė yra nepriklausoma nuo „AntennaPod“ projekto.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Suteikite prieigą atsivėrusioje interneto naršyklėje ir sugrįžkite į „AntennaPod“.</string>
   <string name="gpodnetauth_login_butLabel">Prisijungti</string>
   <string name="gpodnetauth_encryption_warning">Slaptažodis ir duomenys nėra užšifruojami!</string>
   <string name="username_label">Vartotojo vardas</string>
   <string name="password_label">Slaptažodis</string>
-  <string name="gpodnetauth_host">Serverio adresas</string>
-  <string name="gpodnetauth_select_server">Pasirinkti serverį</string>
   <string name="gpodnetauth_device_name">Įrenginio pavadinimas</string>
   <string name="gpodnetauth_device_name_default">„AntennaPod“ %1$s įrenginyje</string>
   <string name="gpodnetauth_existing_devices">Esami įrenginiai</string>
   <string name="gpodnetauth_create_device">Sukurti įrenginį</string>
   <string name="gpodnetauth_finish_descr">Sveikiname! Jūsų „gpodder.net“ paskyra susieta su šiuo įrenginiu. Nuo šiol „AntennaPod“ automatiškai sinchronizuos prenumeratas šiame įrenginyje su Jūsų „gpodder.net“ paskyra.</string>
   <string name="gpodnetauth_finish_butsyncnow">Pradėti sinchronizavimą dabar</string>
+  <string name="pref_gpodnet_setlogin_information_title">Keisti prisijungimo duomenis</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Keisti prisijungimo prie „gpodder.net“ paskyros duomenis.</string>
+  <string name="synchronization_sync_changes_title">Sinchronizuoti dabar</string>
+  <string name="synchronization_sync_summary">Sinchronizuoti prenumeratų ir epizodų būsenų pokyčius</string>
+  <string name="synchronization_full_sync_title">Priverstinis pilnas sinchronizavimas</string>
+  <string name="synchronization_force_sync_summary">Sinchronizuoti visų prenumeratų ir epizodų būsenas iš naujo</string>
+  <string name="synchronization_logout">Atsijungti</string>
+  <string name="synchronization_login_status"><![CDATA[Prisijungta kaip <i>%1$s</i> <i>%2$s</i> serveryje. <br/><br/>Atsijungę vėl galėsite pasirinkti sinchronizavimo teikėją]]></string>
+  <string name="pref_synchronization_logout_toast">Sėkmingai atsijungta</string>
   <string name="gpodnetsync_error_title">„gpodder.net“ sinchronizavimo klaida</string>
   <string name="gpodnetsync_error_descr">Sinchronizavimo metu įvyko klaida:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Pavyko</string>
@@ -667,10 +654,6 @@
   <string name="auto_download_settings_label">Automatinio atsiuntimo nustatymai</string>
   <string name="episode_filters_label">Epizodų filtras</string>
   <string name="episode_filters_description">Žodžių ar frazių sąrašas, kuriuo remiantis sprendžiama, ar epizodas turėtų būti įtrauktas ar išbrauktas iš automatiškai atsiunčiamų epizodų</string>
-  <string name="episode_filters_include">Įtraukti</string>
-  <string name="episode_filters_exclude">Išbraukti</string>
-  <string name="episode_filters_duration">Minimali trukmė (minutėmis)</string>
-  <string name="episode_filters_hint">Pavieniai žodžiai\n\"frazės kabutėse\"</string>
   <string name="keep_updated">Pastoviai atnaujinti</string>
   <string name="keep_updated_summary">Įtraukti šią tinklalaidę į (automatinį) visų tinklalaidžių atnaujinimą</string>
   <string name="auto_download_disabled_globally">Automatinis atsiuntimas išjungtas pagrindiniuose „AntennaPod“ nustatymuose</string>

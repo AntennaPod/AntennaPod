@@ -90,6 +90,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
+    private Insets navigationBarInsets = Insets.NONE;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -116,10 +117,13 @@ public class MainActivity extends CastEnabledActivity {
         setNavDrawerSize();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
-                new WindowInsetsCompat.Builder(insets)
-                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
-                        .build());
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
+            navigationBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            updateInsets();
+            return new WindowInsetsCompat.Builder(insets)
+                    .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                    .build();
+        });
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
@@ -160,8 +164,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        sheetBehavior.setPeekHeight(playerHeight + getBottomInset());
+        updateInsets();
     }
 
     /**
@@ -253,9 +256,10 @@ public class MainActivity extends CastEnabledActivity {
         return sheetBehavior;
     }
 
-    private int getBottomInset() {
-        WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(getWindow().getDecorView());
-        return insets == null ? 0 : insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+    private void updateInsets() {
+        setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
+        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
+        sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -268,7 +272,8 @@ public class MainActivity extends CastEnabledActivity {
         FragmentContainerView mainView = findViewById(R.id.main_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        params.setMargins(0, 0, 0, getBottomInset() + (visible ? externalPlayerHeight : 0));
+        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right,
+                navigationBarInsets.bottom + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }

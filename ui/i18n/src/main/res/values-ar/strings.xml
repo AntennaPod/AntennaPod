@@ -31,6 +31,7 @@
   <string name="statistics_speed_not_counted">ملاحظة: سرعة التشغيل لن تأخذ بالاعتبار.</string>
   <string name="statistics_reset_data">صفر الاحصاءات</string>
   <string name="statistics_reset_data_msg">هذا سيمسح سجل وقت التشغيل لكل الحلقات. هل أنت متأكد؟</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">قائمة الفتح</string>
@@ -123,7 +124,6 @@
     <item quantity="many">%d حلقات</item>
     <item quantity="other">%d حلقات</item>
   </plurals>
-  <string name="loading_more">تحميل المزيد...</string>
   <string name="episode_notification">تنبيهات الحلقات</string>
   <string name="episode_notification_summary">اظهر تنبيه عند صدور حلقه جديدة</string>
   <plurals name="new_episode_notification_message">
@@ -241,7 +241,6 @@
   <string name="download_pending">التنزيل فى الانتظار</string>
   <string name="download_running">جارى التنزيل</string>
   <string name="download_error_details">تفاصيل</string>
-  <string name="download_error_details_message">%1$s \n\nURL الملف:\n%2$s</string>
   <string name="download_error_tap_for_details">إضغط لرؤية التفاصيل.</string>
   <string name="download_error_device_not_found">جهاز التخزين غير موجود</string>
   <string name="download_error_insufficient_space">لا توجد مساحة متبقية كافية في جهازك</string>
@@ -438,10 +437,6 @@
   <string name="pref_theme_title_dark">داكن</string>
   <string name="pref_theme_title_trueblack">اسود (ِلأجهزة AMOLED)</string>
   <string name="pref_episode_cache_unlimited">غير محدود</string>
-  <string name="synchronization_logout">تسجيل الخروج</string>
-  <string name="pref_synchronization_logout_toast">تم تسجيل الخروج بنجاح</string>
-  <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
-  <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
   <string name="pref_playback_speed_sum">حدد السرعات المتوفرة في التشغيل متعدد السرعات</string>
   <string name="pref_feed_playback_speed_sum">سرعة التشغيل الصوتي عند بدء تشغيل حلقات من هذا البودكاست </string>
   <string name="pref_feed_skip">تخطي تلقائي</string>
@@ -493,16 +488,6 @@
   <string name="media_player_switched_to_exoplayer">تم بالتبديل إلى ExoPlayer</string>
   <string name="pref_skip_silence_title">تخطي الصمت في الصوت</string>
   <string name="behavior">سلوك</string>
-  <string name="pref_back_button_behavior_title">سلوك زر الرجوع</string>
-  <string name="pref_back_button_behavior_sum">تغيير سلوك زر الرجوع</string>
-  <string name="back_button_default">إفتراضي</string>
-  <string name="back_button_open_drawer">أفتح درج التنقل</string>
-  <string name="back_button_double_tap">النقر مرتين للخروج</string>
-  <string name="back_button_show_prompt">التاكيد للخروج</string>
-  <string name="close_prompt">هل أنت متأكد أنك تريد غلق AntennaPod?</string>
-  <string name="double_tap_toast">انقر زر الرجوع للخروج</string>
-  <string name="back_button_go_to_page">اذهب الى صفحة...</string>
-  <string name="back_button_go_to_page_title">اختر صفحة</string>
   <string name="pref_delete_removes_from_queue_title">المسح يزيل الحلقة من لائحة الاستماع</string>
   <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من لائحة الاستماع آليا عند مسحها.</string>
   <string name="pref_filter_feed_title">مصفاة الإشتراكات</string>
@@ -608,19 +593,21 @@
   </plurals>
   <string name="auto_enable_label">مفعّل تلقائيًا</string>
   <string name="sleep_timer_enabled_label">مؤقت النوم مفعل</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
   <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
   <string name="gpodnetauth_encryption_warning">كلمة السر والبيانات غير مشفرة!</string>
   <string name="username_label">إسم المستخدم</string>
   <string name="password_label">كلمة المرور</string>
-  <string name="gpodnetauth_host">اسم المضيف</string>
-  <string name="gpodnetauth_select_server">أختر خادوم</string>
   <string name="gpodnetauth_device_name">أسم الجهاز</string>
   <string name="gpodnetauth_device_name_default">AntennaPod على %1$s</string>
   <string name="gpodnetauth_existing_devices">أجهزة موجودة</string>
   <string name="gpodnetauth_create_device">أنشئ جهاز</string>
   <string name="gpodnetauth_finish_descr">تهانينا! حسابك في gpodder.net مربوط الآن مغ جهازك. سيزامن AntennaPod من الآن وصاعدا إشتراكاتك على جهازك مع حسابك على gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">ابدأ المزامنة الآن</string>
+  <string name="pref_gpodnet_setlogin_information_title">تغيير بيانات تسجيل الدخول</string>
+  <string name="pref_gpodnet_setlogin_information_sum">قم بتغيير بيانات تسجيل الدخول لحساب gpodder.net الخاص بك.</string>
+  <string name="synchronization_logout">تسجيل الخروج</string>
+  <string name="pref_synchronization_logout_toast">تم تسجيل الخروج بنجاح</string>
   <string name="gpodnetsync_error_title">خظأ في التزامن مع gpodder.net</string>
   <string name="gpodnetsync_error_descr">حدث خطأ أثناء التزامن: \u0020</string>
   <string name="gpodnetsync_pref_report_successful">تم بنجاح</string>
@@ -661,9 +648,6 @@
   <string name="auto_download_settings_label">إعدادات التنزيل التلقائي</string>
   <string name="episode_filters_label">مصفى الحلقات</string>
   <string name="episode_filters_description">قائمة الكلمات المستخدمة لتحديد ما إذا كان يجب تضمين حلقة أو استبعادها عند التنزيل التلقائي</string>
-  <string name="episode_filters_include">تضمين</string>
-  <string name="episode_filters_exclude">استبعاد</string>
-  <string name="episode_filters_hint">كلمات مفردة \n \"كلمات متعددة\"</string>
   <string name="keep_updated">محدث بإستمرار</string>
   <string name="keep_updated_summary">قم بإضافة هذا البودكاست عند تحديث (أو التحديث التلقائي) جميع ملفات البودكاستات</string>
   <string name="auto_download_disabled_globally">التنزيل التلقائي معطل في الإعدادات الرئيسية لـ AntennaPod</string>

@@ -31,6 +31,7 @@
   <string name="statistics_speed_not_counted">Pozor: hitrost predvajanja se ne upošteva</string>
   <string name="statistics_reset_data">Ponastavi statistične podatke</string>
   <string name="statistics_reset_data_msg">To bo pobrisalo vso zgodovino pretečenega časa predvajanja  vseh epizod. Ali ste prepričani da želite nadaljevati?</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Odpri meni</string>
@@ -115,7 +116,6 @@
     <item quantity="few">%d epizode</item>
     <item quantity="other">%d epizode</item>
   </plurals>
-  <string name="loading_more">Nalagam več ...</string>
   <string name="episode_notification">Obvestilo epizode</string>
   <string name="episode_notification_summary">Pokaži obvestilo, ko je objavljena nova epizoda.</string>
   <plurals name="new_episode_notification_message">
@@ -219,7 +219,6 @@
   <string name="download_pending">Prenos v teku</string>
   <string name="download_running">Prenos poteka</string>
   <string name="download_error_details">Podrobnosti</string>
-  <string name="download_error_details_message">%1$s \n\nDatoteka URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Tapnite za prikaz podrobnosti.</string>
   <string name="download_error_device_not_found">Naprava za shranjevanje ni najdena</string>
   <string name="download_error_insufficient_space">Ni več dovolj prostora na napravi.</string>
@@ -411,17 +410,6 @@
   <string name="pref_theme_title_dark">Temno</string>
   <string name="pref_theme_title_trueblack">Črna (pripravljen za AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Neomejeno</string>
-  <string name="synchronization_logout">Odjava</string>
-  <string name="pref_synchronization_logout_toast">Odjava je bila uspešna</string>
-  <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
-  <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
-  <string name="synchronization_full_sync_title">Vsili polno sihnronizacijo</string>
-  <string name="synchronization_summary_unchoosen">Izbirate lahko med večimi ponudniki, da sinhronzirate vaše naročnine in epizode</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync je odportokodna Nextcloud aplikacija, katero lahko enostavno namestite na vaše lastni stsrežnik. Ta aplikacija je neodvisna od projekta AntennaPod.</string>
-  <string name="synchronization_choose_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
-  <string name="synchronization_force_sync_summary">Ponovno sinhronizirajte vse naročnine in epizode</string>
-  <string name="dialog_choose_sync_service_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
   <string name="pref_playback_speed_sum">Prilagodite hitrosti, ki so na voljo za predvajanje s spremenljivo hitrostjo</string>
   <string name="pref_feed_playback_speed_sum">Hitrost, ki se uporablja pri zagonu predvajanja zvoka za epizode v tem podcastu</string>
   <string name="pref_feed_skip">Samodejni preskok</string>
@@ -473,16 +461,6 @@
   <string name="media_player_switched_to_exoplayer">Preklopljeno na ExoPlayer</string>
   <string name="pref_skip_silence_title">Preskoči tišino v zvoku</string>
   <string name="behavior">Obnašanje</string>
-  <string name="pref_back_button_behavior_title">Obnašanje gumba za nazaj</string>
-  <string name="pref_back_button_behavior_sum">Spremenite obnašanje gumba za nazaj.</string>
-  <string name="back_button_default">Privzeto</string>
-  <string name="back_button_open_drawer">Odprite navigacijski predal</string>
-  <string name="back_button_double_tap">Dvakrat tapnite za izhod</string>
-  <string name="back_button_show_prompt">Potrdite za izhod</string>
-  <string name="close_prompt">Ali ste prepričani, da želite zapreti AntennaPod?</string>
-  <string name="double_tap_toast">Za izhod znova tapnite gumb za nazaj</string>
-  <string name="back_button_go_to_page">Pojdi na stran...</string>
-  <string name="back_button_go_to_page_title">Izberi stran</string>
   <string name="pref_delete_removes_from_queue_title">Izbriši odstranjene iz čakalne vrste</string>
   <string name="pref_delete_removes_from_queue_sum">Samodejno odstranite epizodo iz čakalne vrste, ko je izbrisana.</string>
   <string name="pref_filter_feed_title">Filter za naročnine</string>
@@ -584,19 +562,28 @@
   </plurals>
   <string name="auto_enable_label">Samodejno omogoči</string>
   <string name="sleep_timer_enabled_label">Časovnik za izklop je omogočen</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
+  <string name="synchronization_summary_unchoosen">Izbirate lahko med večimi ponudniki, da sinhronzirate vaše naročnine in epizode</string>
+  <string name="dialog_choose_sync_service_title">Izberite ponudnika preko katerga želite oprviti sinhronizacijo</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync je odportokodna Nextcloud aplikacija, katero lahko enostavno namestite na vaše lastni stsrežnik. Ta aplikacija je neodvisna od projekta AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Prijava</string>
   <string name="gpodnetauth_encryption_warning">Geslo in podatki niso šifrirani!</string>
   <string name="username_label">Uporabniško ime</string>
   <string name="password_label">Geslo</string>
-  <string name="gpodnetauth_host">Ime gostitelja</string>
-  <string name="gpodnetauth_select_server">Izberi server</string>
   <string name="gpodnetauth_device_name">Ime naprave</string>
   <string name="gpodnetauth_device_name_default">AntennaPod je na %1$s</string>
   <string name="gpodnetauth_existing_devices">Obstoječe naprave</string>
   <string name="gpodnetauth_create_device">Ustvari napravo</string>
   <string name="gpodnetauth_finish_descr">Čestitam! Vaš račun gpodder.net je zdaj povezan z vašo napravo. AntennaPod bo od zdaj naprej samodejno sinhroniziral naročnine na vaši napravi z vašim računom gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">Začnite sedaj sinhronizirati </string>
+  <string name="pref_gpodnet_setlogin_information_title">Spremenite podatke za prijavo</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Spremenite podatke za prijavo za svoj račun gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Sinhroniziraj takoj</string>
+  <string name="synchronization_full_sync_title">Vsili polno sihnronizacijo</string>
+  <string name="synchronization_force_sync_summary">Ponovno sinhronizirajte vse naročnine in epizode</string>
+  <string name="synchronization_logout">Odjava</string>
+  <string name="pref_synchronization_logout_toast">Odjava je bila uspešna</string>
   <string name="gpodnetsync_error_title">napaka pri sinhronizaciji gpodder.net</string>
   <string name="gpodnetsync_error_descr">Med sinhronizacijo je prišlo do napake:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Uspešno</string>
@@ -639,10 +626,6 @@
   <string name="auto_download_settings_label">Nastavitve samodejnega prenosa</string>
   <string name="episode_filters_label">Filter epizod</string>
   <string name="episode_filters_description">Seznam izrazov, ki se uporabljajo za odločitev, ali je treba epizodo vključiti ali izključiti pri samodejnem prenosu</string>
-  <string name="episode_filters_include">Vključi</string>
-  <string name="episode_filters_exclude">Izključi</string>
-  <string name="episode_filters_duration">Minimalno trajanje (v minutah)</string>
-  <string name="episode_filters_hint">Posamezne besede \n\"Več besed\"</string>
   <string name="keep_updated">Ostanite posodobljeni</string>
   <string name="keep_updated_summary">Vključite osveževanje tega podcasta pri (samodejnem) osveževanju vseh podcastov</string>
   <string name="auto_download_disabled_globally">Samodejni prenos je onemogočen v glavnih nastavitvah AntennaPod</string>

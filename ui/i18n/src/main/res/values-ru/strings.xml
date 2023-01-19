@@ -6,6 +6,7 @@
   <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Добавить подкаст</string>
   <string name="episodes_label">Выпуски</string>
+  <string name="home_label">Начало</string>
   <string name="queue_label">Очередь</string>
   <string name="inbox_label">Входящие</string>
   <string name="favorite_episodes_label">Избранное</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">Вы уверены, что хотите стереть все записи о продолжительности воспроизведения выпусков?</string>
   <string name="statistics_counting_range">Прослушанные с %1$s по %2$s</string>
   <string name="statistics_counting_total">Прослушано за всё время</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Удивите меня</string>
+  <string name="home_classics_title">Проверенное временем</string>
+  <string name="home_continue_title">Слушать дальше</string>
+  <string name="home_new_title">Новое</string>
+  <string name="home_downloads_title">Загрузки</string>
+  <string name="home_welcome_title">Приветствуем в AntennaPod!</string>
+  <string name="home_welcome_text">Вы ещё не подписаны ни на один подкаст. Внедвиньте меню сбоку, чтобы добавить подкаст.</string>
+  <string name="configure_home">Настроить начальный экран</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Общий размер выпусков на устройстве</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Сортировать по алфавиту</string>
   <string name="drawer_feed_order_last_update">Сортировать по дате</string>
   <string name="drawer_feed_order_most_played">Сортировать по количеству прослушанных выпусков</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Количество непрослушанных выпусков и выпусков во входящих</string>
   <string name="drawer_feed_counter_inbox">Количество непрослушанных выпусков во входящих</string>
   <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
   <string name="drawer_feed_counter_downloaded">Количество загруженных выпусков</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Количество загруженных и непрослушанных выпусков</string>
   <string name="drawer_feed_counter_none">Ничего</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Совместимых приложений не найдено</string>
@@ -69,6 +79,9 @@
   <string name="go_to_position_label">Перейти к этой позиции</string>
   <!--Playback history-->
   <string name="clear_history_label">Очистить историю</string>
+  <string name="clear_playback_history_msg">Вы уверены, что хотите стереть все записи о продолжительности воспроизведения выпусков?</string>
+  <string name="remove_history_label">Удалить из истории</string>
+  <string name="removed_history_label">Удалено из истории</string>
   <!--Other-->
   <string name="confirm_label">Подтвердить</string>
   <string name="cancel_label">Отмена</string>
@@ -129,7 +142,6 @@
     <item quantity="many">%d выпусков</item>
     <item quantity="other">%d выпусков</item>
   </plurals>
-  <string name="loading_more">Загружается…</string>
   <string name="episode_notification">Уведомления о новых выпусках</string>
   <string name="episode_notification_summary">Показывать уведомление при появлении новых выпусков.</string>
   <plurals name="new_episode_notification_message">
@@ -146,8 +158,8 @@
   </plurals>
   <string name="new_episode_notification_group_text">В списке Ваших подписок появились новые выпуски</string>
   <!--Actions on feeds-->
-  <string name="remove_all_inbox_label">Удалить все из входящих</string>
-  <string name="removed_all_inbox_msg">Удалены все из входящих</string>
+  <string name="remove_all_inbox_label">Убрать все из входящих</string>
+  <string name="removed_all_inbox_msg"> Все убраны из входящих</string>
   <string name="remove_all_inbox_confirmation_msg">Подтвердите, что хотите удалить все выпуски из входящих.</string>
   <string name="multi_select_mark_played_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как прослушанные.</string>
   <string name="multi_select_mark_unplayed_confirmation">Подтвердите, что хотите отметить все выбранные выпуски как непрослушанные.</string>
@@ -179,6 +191,7 @@
     <item quantity="other">%d подписок обновлено.</item>
   </plurals>
   <string name="edit_tags">Редактировать метки</string>
+  <string name="add_tag">Добавить метку</string>
   <string name="rename_tag_label">Переименовать метку</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
   <!--actions on feeditems-->
@@ -238,6 +251,12 @@
     <item quantity="many">%d выпусков удалены из очереди.</item>
     <item quantity="other">%d выпусков удалено из очереди.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d выпуск удален из входящих.</item>
+    <item quantity="few">%d выпуска удалены из входящих.</item>
+    <item quantity="many">%d выпусков удалены из входящих.</item>
+    <item quantity="other">%d выпусков удалено из входящих.</item>
+  </plurals>
   <string name="add_to_favorite_label">Добавить в избранное</string>
   <string name="remove_from_favorite_label">Удалить из избранного</string>
   <string name="visit_website_label">Посетить сайт</string>
@@ -249,7 +268,7 @@
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
   <string name="download_error_details">Подробнее</string>
-  <string name="download_error_details_message">%1$s \n\nСсылка на файл:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\nПричина: \n%2$s \n\Адрес файла:\n%3$s</string>
   <string name="download_error_tap_for_details">Подробнее...</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_insufficient_space">На устройстве не осталось места.</string>
@@ -423,6 +442,8 @@
   <string name="user_interface_label">Интерфейс</string>
   <string name="user_interface_sum">Внешний вид, подписки, экран блокировки</string>
   <string name="pref_set_theme_title">Выбрать оформление</string>
+  <string name="pref_tinted_theme_title">Окрашивать в цвета</string>
+  <string name="pref_tinted_theme_message">Окрашивать приложение в цвета фонового изображения</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
   <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
   <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
@@ -448,20 +469,6 @@
   <string name="pref_theme_title_dark">Темная</string>
   <string name="pref_theme_title_trueblack">Черная (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
-  <string name="synchronization_logout">Выход</string>
-  <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
-  <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
-  <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
-  <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
-  <string name="synchronization_summary_unchoosen">Вы можете выбрать провайдера для сихронизации ваших подписок и состояния воспроизведения выпусков</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync — приложение с открытым исходным кодом для Nextcloud, которое вы можете установить на свой сервер. Это приложение не связано с проектом AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Предоставить доступ, открыв веб-браузер, и вернуться в AntennaPod.</string>
-  <string name="synchronization_choose_title">Выберите провайдера синхронизации</string>
-  <string name="synchronization_force_sync_summary">Пересихронизировать ваши подписки и состояние выпусков</string>
-  <string name="synchronization_sync_summary">Сихронизировать ваши подписки и изменения состояния выпусков</string>
-  <string name="dialog_choose_sync_service_title">Выберите провайдера синхронизации</string>
   <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
   <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
   <string name="pref_feed_skip">Автоматический пропуск</string>
@@ -513,16 +520,9 @@
   <string name="media_player_switched_to_exoplayer">Переключено на ExoPlayer.</string>
   <string name="pref_skip_silence_title">Пропускать участки тишины</string>
   <string name="behavior">Поведение</string>
-  <string name="pref_back_button_behavior_title">Поведение кнопки «Назад»</string>
-  <string name="pref_back_button_behavior_sum">Изменить поведение кнопки «Назад»</string>
-  <string name="back_button_default">По умолчанию</string>
-  <string name="back_button_open_drawer">Открыть боковую панель</string>
-  <string name="back_button_double_tap">Выход двойным касанием</string>
-  <string name="back_button_show_prompt">Подтверджение выхода</string>
-  <string name="close_prompt">Уверены, что хотите закрыть AntennaPod?</string>
-  <string name="double_tap_toast">Нажмите кнопку «Назад» еще раз, чтобы выйти</string>
-  <string name="back_button_go_to_page">Перейти к странице…</string>
-  <string name="back_button_go_to_page_title">Выберите страницу</string>
+  <string name="pref_default_page">Страница по умолчанию</string>
+  <string name="pref_default_page_sum">Эта страница будет показана после запуска AntennaPod.</string>
+  <string name="remember_last_page">Запоминать последнюю страницу</string>
   <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
   <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
   <string name="pref_filter_feed_title">Фильтр подписок</string>
@@ -626,20 +626,38 @@
   </plurals>
   <string name="auto_enable_label">Запускать автоматически</string>
   <string name="sleep_timer_enabled_label">Таймер сна включен</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Выберите провайдера синхронизации</string>
+  <string name="synchronization_summary_unchoosen">Вы можете выбрать провайдера для сихронизации ваших подписок и состояния воспроизведения выпусков</string>
+  <string name="dialog_choose_sync_service_title">Выберите провайдера синхронизации</string>
+  <string name="gpodnet_description">Gpodder.net — сервис синхронизации подкастов с открытым исходным кодом, которое вы можете установить на свой сервер. Gpodder.net не связан с проектом AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync — приложение с открытым исходным кодом для Nextcloud, которое вы можете установить на свой сервер. Это приложение не связано с проектом AntennaPod.</string>
+  <string name="synchronization_host_explanation">Можно выбрать свой сервер для синхронизации. Опредилившись с предпочтительным сервером синхронизации, введите его адрес здесь.</string>
+  <string name="synchronization_host_label">Адрес сервера</string>
+  <string name="proceed_to_login_butLabel">Авторизация</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Предоставить доступ, открыв веб-браузер, и вернуться в AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
+  <string name="synchronization_credentials_explanation">Пожалуйста, укажите данные своей учётной записи на сервере синхронизации.</string>
   <string name="gpodnetauth_encryption_warning">Пароль и данные не зашифрованы!</string>
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
-  <string name="gpodnet_description">Gpodder.net — сервис синхронизации подкастов с открытым исходным кодом, которое вы можете установить на свой сервер. Gpodder.net не связан с проектом AntennaPod.</string>
-  <string name="gpodnetauth_host">Имя узла</string>
-  <string name="gpodnetauth_select_server">Выберите сервер</string>
+  <string name="synchronization_login_butLabel">Войти</string>
+  <string name="synchronization_selectDevice_explanation">Пожалуйста, выберите устройство с сервера синхронизации, либо создайте новое.</string>
   <string name="gpodnetauth_device_name">Название устройства</string>
   <string name="gpodnetauth_device_name_default">AntennaPod на %1$s</string>
   <string name="gpodnetauth_existing_devices">Существующие устройства</string>
   <string name="gpodnetauth_create_device">Создать устройство</string>
   <string name="gpodnetauth_finish_descr">Поздравляем! Ваша учётная запись gpodder.net связана с устройством. AntennaPod будет автоматически синхронизировать Ваши подписки с учётной записью gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">Начать синхронизацию</string>
+  <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Синхронизировать сейчас</string>
+  <string name="synchronization_sync_summary">Сихронизировать ваши подписки и изменения состояния выпусков</string>
+  <string name="synchronization_full_sync_title">Выполнить полную синхронизацию</string>
+  <string name="synchronization_force_sync_summary">Пересихронизировать ваши подписки и состояние выпусков</string>
+  <string name="synchronization_logout">Выход</string>
+  <string name="synchronization_login_status"><![CDATA[Авторизованы как <i>%1$s</i> на <i>%2$s</i>. <br/><br/>Вы сможете снова выбрать провайдера синхронизации после выхода из системы]]></string>
+  <string name="pref_synchronization_logout_toast">Выход успешно выполнен</string>
   <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
   <string name="gpodnetsync_error_descr">Произошла ошибка во время синхронизации:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успешно</string>
@@ -685,10 +703,10 @@
   <string name="auto_download_settings_label">Настройки автозагрузки</string>
   <string name="episode_filters_label">Фильтр выпусков</string>
   <string name="episode_filters_description">Перечень условий по включению или исключению выпуска из списков автоматической загрузки</string>
-  <string name="episode_filters_include">Включить</string>
-  <string name="episode_filters_exclude">Исключить</string>
-  <string name="episode_filters_duration">Минимальная продолжительность (в минутах)</string>
-  <string name="episode_filters_hint">По одному слову \n\"По фразе\"</string>
+  <string name="add_term">Добавить условие</string>
+  <string name="exclude_terms">Исключить выпуски подпадающие под любое из условий</string>
+  <string name="include_terms">Включать выпуски подпадающие под любое из условий</string>
+  <string name="exclude_episodes_shorter_than">Исключить выпуски короче чем</string>
   <string name="keep_updated">Постоянно обновлять</string>
   <string name="keep_updated_summary">Обновлять подкаст при (авто)обновлении всех подкастов</string>
   <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
@@ -698,6 +716,8 @@
   <string name="statistics_space_used">Используемое пространство:</string>
   <string name="statistics_episodes_started_total">Выпусков начато/всего:</string>
   <string name="statistics_view_all">Просмотреть все подкасты »</string>
+  <string name="edit_url_menu">Исправить ссылку на канал</string>
+  <string name="edit_url_confirmation_msg">Изменение адреса ссылки может запросто испортить состояние воспроизведения и список выпусков подкаста. Мы крайне НЕ рекомендуем его менять и НЕ сможем Вам помочь, если что-то пойдёт не так. Действие необратимо. Простым возвратом старого адреса поломку HE исправить. Советуем сперва создать резервную копию. </string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из моноприложений…</string>
   <!--Add podcast fragment-->
@@ -713,7 +733,9 @@
   <string name="discover_is_hidden">Вы выбрали скрытие предложений.</string>
   <string name="discover_more">еще »</string>
   <string name="discover_powered_by_itunes">Предложения iTunes</string>
+  <string name="discover_confirm">Показать рекомендации</string>
   <string name="search_powered_by">Результаты по %1$s</string>
+  <string name="select_country">Выбор страны</string>
   <!--Local feeds-->
   <string name="add_local_folder">Добавить локальную папку</string>
   <string name="local_folder">Локальная папка</string>
