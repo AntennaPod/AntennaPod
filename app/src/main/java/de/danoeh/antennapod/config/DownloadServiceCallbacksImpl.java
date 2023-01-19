@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.DownloadServiceCallbacks;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 
 
 public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
@@ -20,7 +21,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
+        intent.putExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
         return PendingIntent.getActivity(context,
                 R.id.pending_intent_download_service_notification, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
@@ -39,7 +40,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
+        intent.putExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
         Bundle args = new Bundle();
         args.putBoolean(CompletedDownloadsFragment.ARG_SHOW_LOGS, true);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
@@ -50,7 +51,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getAutoDownloadReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
+        intent.putExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_autodownload_report, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }

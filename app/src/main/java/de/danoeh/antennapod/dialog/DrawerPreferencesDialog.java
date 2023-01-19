@@ -32,9 +32,6 @@ public class DrawerPreferencesDialog {
         String lastNavFragment = NavDrawerFragment.getLastNavFragment(context);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-            if (hiddenDrawerItems.contains(lastNavFragment)) {
-                handleHiddenScreen(context);
-            }
             if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
                 for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
                     if (!hiddenDrawerItems.contains(tag)) {
@@ -42,6 +39,9 @@ public class DrawerPreferencesDialog {
                         break;
                     }
                 }
+            }
+            if (hiddenDrawerItems.contains(lastNavFragment)) {
+                handleHiddenScreen(context);
             }
 
             if (callback != null) {
