@@ -227,7 +227,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private void updateDuration(PlaybackPositionEvent event) {
         if (getFeedItem().getMedia() != null) {
-            // Update timer position to fix playback timer flickering issue
             getFeedItem().getMedia().setPosition(event.getPosition());
             getFeedItem().getMedia().setDuration(event.getDuration());
         }
