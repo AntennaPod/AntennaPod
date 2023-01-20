@@ -6,6 +6,7 @@
   <string name="statistics_label">統計情報</string>
   <string name="add_feed_label">フィードを追加</string>
   <string name="episodes_label">エピソード</string>
+  <string name="home_label">ホーム</string>
   <string name="queue_label">キュー</string>
   <string name="inbox_label">受信トレイ</string>
   <string name="favorite_episodes_label">お気に入り</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">これにより、すべてのエピソードから再生時間の履歴が消去されます。本当に実行しますか？</string>
   <string name="statistics_counting_range">%1$s から %2$s までの間に再生</string>
   <string name="statistics_counting_total">合計再生回数</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">発見</string>
+  <string name="home_classics_title">過去のエピソード</string>
+  <string name="home_continue_title">続きを聴く</string>
+  <string name="home_new_title">新着の確認</string>
+  <string name="home_downloads_title">ダウンロードの管理</string>
+  <string name="home_welcome_title">ようこそ、AntennaPodへ！</string>
+  <string name="home_welcome_text">現在、ポッドキャストを何も購読していません。サイドメニューを開いてポッドキャストを追加してください。</string>
+  <string name="configure_home">ホーム画面の設定</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">デバイス上のエピソードの合計サイズ</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">アルファベット順で並べ替え</string>
   <string name="drawer_feed_order_last_update">公開日で並べ替え</string>
   <string name="drawer_feed_order_most_played">再生したエピソードの数で並べ替え</string>
-  <string name="drawer_feed_counter_inbox_unplayed">未再生エピソード数と受信トレイ内のエピソード数</string>
   <string name="drawer_feed_counter_inbox">受信トレイ内のエピソード数</string>
   <string name="drawer_feed_counter_unplayed">未再生のエピソードの数</string>
   <string name="drawer_feed_counter_downloaded">ダウンロード済のエピソードの数</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">ダウンロード済と未再生のエピソードの数</string>
   <string name="drawer_feed_counter_none">なし</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">互換性のあるアプリが見つかりません</string>
@@ -69,6 +79,7 @@
   <string name="go_to_position_label">この位置に移動</string>
   <!--Playback history-->
   <string name="clear_history_label">履歴をクリア</string>
+  <string name="clear_playback_history_msg">これにより、再生履歴がすべて消去されます。本当に実行しますか？</string>
   <!--Other-->
   <string name="confirm_label">確認</string>
   <string name="cancel_label">キャンセル</string>
@@ -89,14 +100,14 @@
   <string name="episodes_suffix">\u0020エピソード</string>
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
-  <string name="auto_download_label">自動ダウンロードに含む</string>
+  <string name="auto_download_label">自動ダウンロードに含める</string>
   <string name="auto_delete_label">エピソードを自動削除</string>
   <string name="feed_volume_reduction">ボリューム削減</string>
   <string name="feed_volume_reduction_summary">このポッドキャストの音量を下げる: %1$s</string>
   <string name="feed_volume_reduction_off">オフ</string>
   <string name="feed_volume_reduction_light">ライト</string>
   <string name="feed_volume_reduction_heavy">ヘビー</string>
-  <string name="parallel_downloads">%1$d個を並列ダウンロード</string>
+  <string name="parallel_downloads">%1$d 個を並列ダウンロード</string>
   <string name="feed_auto_download_global">全般のデフォルト</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
@@ -117,7 +128,6 @@
   <plurals name="num_episodes">
     <item quantity="other">%dエピソード</item>
   </plurals>
-  <string name="loading_more">さらに読み込んでいます…</string>
   <string name="episode_notification">エピソードの通知</string>
   <string name="episode_notification_summary">新しいエピソードを通知する</string>
   <plurals name="new_episode_notification_message">
@@ -144,7 +154,7 @@
   <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
   <string name="feed_delete_confirmation_msg_batch">選択したポッドキャストとそれらすべてのエピソード（ダウンロードしたエピソードを含む）を削除することを確認してください。</string>
   <string name="feed_delete_confirmation_local_msg">ポッドキャスト「%1$s」を削除することを確認してください。ローカルのソースフォルダー内のファイルは削除されません。</string>
-  <string name="feed_remover_msg">ポッドキャストを削除しています</string>
+  <string name="feed_remover_msg">ポッドキャストを削除中</string>
   <string name="load_complete_feed">ポッドキャストをすべて更新</string>
   <string name="multi_select">複数選択</string>
   <string name="select_all_above">上のすべてを選択</string>
@@ -158,6 +168,7 @@
     <item quantity="other">%d 個の購読を更新しました。</item>
   </plurals>
   <string name="edit_tags">タグを編集</string>
+  <string name="add_tag">タグを追加</string>
   <string name="rename_tag_label">タグを削除</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">モバイルデータ接続でのポッドキャストの更新は設定で無効になっています。\n\nそれでも更新しますか？</string>
   <!--actions on feeditems-->
@@ -199,6 +210,9 @@
   <plurals name="removed_from_queue_batch_label">
     <item quantity="other">%d エピソードをキューから削除しました。</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="other">%d エピソードを受信トレイから削除しました。</item>
+  </plurals>
   <string name="add_to_favorite_label">お気に入りに追加</string>
   <string name="remove_from_favorite_label">お気に入りから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
@@ -210,7 +224,7 @@
   <string name="download_pending">ダウンロード保留中</string>
   <string name="download_running">ダウンロード実行中</string>
   <string name="download_error_details">詳細</string>
-  <string name="download_error_details_message">%1$s \n\nファイル URL:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\n技術的な理由: \n%2$s \n\nファイル URL:\n%3$s</string>
   <string name="download_error_tap_for_details">タップして詳細を表示します。</string>
   <string name="download_error_device_not_found">ストレージ デバイスが見つかりません</string>
   <string name="download_error_insufficient_space">デバイスに十分な空きスペースがありません。</string>
@@ -333,9 +347,9 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
   <string name="pref_hardware_forward_button_title">進むボタン</string>
-  <string name="pref_hardware_forward_button_summary">進むボタンの動作をカスタマイズする</string>
+  <string name="pref_hardware_forward_button_summary">進むボタンの動作をカスタマイズします</string>
   <string name="pref_hardware_previous_button_title">戻るボタン</string>
-  <string name="pref_hardware_previous_button_summary">戻るボタンの動作をカスタマイズする</string>
+  <string name="pref_hardware_previous_button_summary">戻るボタンの動作をカスタマイズします</string>
   <string name="button_action_fast_forward">早送り</string>
   <string name="button_action_rewind">巻き戻し</string>
   <string name="button_action_skip_episode">エピソードをスキップ</string>
@@ -345,16 +359,16 @@
   <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
   <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
-  <string name="pref_skip_keeps_episodes_sum">エピソードをスキップした時に残しておきます</string>
-  <string name="pref_skip_keeps_episodes_title">エピソードのスキップ時に残す</string>
-  <string name="pref_favorite_keeps_episodes_sum">エピソードをお気に入りに追加した時に残しておきます</string>
+  <string name="pref_skip_keeps_episodes_sum">スキップしたエピソードを残しておきます</string>
+  <string name="pref_skip_keeps_episodes_title">スキップしたエピソードを残す</string>
+  <string name="pref_favorite_keeps_episodes_sum">お気に入りに追加されたエピソードを残しておきます</string>
   <string name="pref_favorite_keeps_episodes_title">お気に入りのエピソードを残す</string>
   <string name="playback_pref">再生</string>
   <string name="playback_pref_sum">ヘッドフォン制御、スキップ間隔、キュー</string>
   <string name="network_pref">ネットワーク</string>
   <string name="network_pref_sum">更新間隔、ダウンロード制御、モバイル通信</string>
   <string name="feed_refresh_title">ポッドキャストの更新</string>
-  <string name="feed_refresh_sum">新しいエピソードを自動的に探す間隔や特定の時間を指定します</string>
+  <string name="feed_refresh_sum">新しいエピソードを自動的に探す間隔や時間を指定します</string>
   <string name="feed_refresh_interval">間隔</string>
   <string name="feed_refresh_time">時間</string>
   <string name="feed_refresh_never">しない</string>
@@ -364,8 +378,8 @@
   </plurals>
   <string name="pref_followQueue_title">連続再生</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ヘッドホン/Bluetoothの切断</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォンの再接続</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetoothの再接続</string>
   <string name="pref_stream_over_download_title">ストリーミングを優先する</string>
   <string name="pref_stream_over_download_sum">ダウンロードボタンの代わりにストリームボタンをリストに表示します。</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
@@ -403,20 +417,6 @@
   <string name="pref_theme_title_dark">ダーク</string>
   <string name="pref_theme_title_trueblack">ブラック (AMOLED対応)</string>
   <string name="pref_episode_cache_unlimited">無制限</string>
-  <string name="synchronization_logout">ログアウト</string>
-  <string name="pref_synchronization_logout_toast">ログアウトしました</string>
-  <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
-  <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
-  <string name="synchronization_sync_changes_title">今すぐ同期する</string>
-  <string name="synchronization_full_sync_title">完全同期を強制する</string>
-  <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> に <i>%1$s</i> としてログインしました。ログアウトすると、同期プロバイダーを再度選択できます]]></string>
-  <string name="synchronization_summary_unchoosen">複数のプロバイダーから選択して、購読とエピソードの再生状態を同期できます</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersyncは、自身のサーバーに簡単にインストールできるオープンソースのNextcloudアプリです。このアプリは、AntennaPodプロジェクトから独立しています。</string>
-  <string name="synchronization_nextcloud_authenticate_browser">開いた Web ブラウザーを使用してアクセスを許可し、AntennaPod に戻ります。</string>
-  <string name="synchronization_choose_title">同期プロバイダーを選択</string>
-  <string name="synchronization_force_sync_summary">購読とエピソードの状態をすべて再同期する</string>
-  <string name="synchronization_sync_summary">購読とエピソードの状態の変更を同期する</string>
-  <string name="dialog_choose_sync_service_title">同期プロバイダーの選択</string>
   <string name="pref_playback_speed_sum">可変速再生が可能な速度へのカスタマイズ</string>
   <string name="pref_feed_playback_speed_sum">このポッドキャストのエピソードのオーディオ再生を開始するときに使用する速度</string>
   <string name="pref_feed_skip">自動スキップ</string>
@@ -468,24 +468,17 @@
   <string name="media_player_switched_to_exoplayer">ExoPlayerに切り替えました。</string>
   <string name="pref_skip_silence_title">音声の無音をスキップ</string>
   <string name="behavior">動作</string>
-  <string name="pref_back_button_behavior_title">戻るボタンの動作</string>
-  <string name="pref_back_button_behavior_sum">戻るボタンの動作を変更します。</string>
-  <string name="back_button_default">デフォルト</string>
-  <string name="back_button_open_drawer">ナビゲーションドロワーを開く</string>
-  <string name="back_button_double_tap">ダブルタップで終了</string>
-  <string name="back_button_show_prompt">終了の確認</string>
-  <string name="close_prompt">AntennaPodを終了しますか？</string>
-  <string name="double_tap_toast">戻るボタンをもう一度押すと終了します</string>
-  <string name="back_button_go_to_page">ページ移動…</string>
-  <string name="back_button_go_to_page_title">ページの選択</string>
+  <string name="pref_default_page">既定のページ</string>
+  <string name="pref_default_page_sum">AntennaPodの起動時に表示する画面を選択します。</string>
+  <string name="remember_last_page">最後のページを記憶</string>
   <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
   <string name="pref_filter_feed_title">購読フィルター</string>
   <string name="pref_filter_feed_sum">ナビゲーションドロワーと購読画面で購読をフィルター処理します。</string>
   <string name="subscriptions_are_filtered">購読はフィルター処理されています。</string>
-  <string name="subscriptions_counter_greater_zero">カウンターが0より大きい</string>
-  <string name="auto_downloaded">自動的にダウンロードされた</string>
-  <string name="not_auto_downloaded">自動的にダウンロードされていない</string>
+  <string name="subscriptions_counter_greater_zero">count &gt; 0</string>
+  <string name="auto_downloaded">自動DL</string>
+  <string name="not_auto_downloaded">Not自動DL</string>
   <string name="kept_updated">更新あり</string>
   <string name="not_kept_updated">更新なし</string>
   <string name="new_episode_notification_enabled">通知が有効</string>
@@ -504,7 +497,7 @@
   <string name="special_thanks">スペシャルサンクス</string>
   <string name="privacy_policy">プライバシーポリシー</string>
   <string name="licenses">ライセンス</string>
-  <string name="licenses_summary">AntennaPod は他の優れたソフトウェアを使用しています</string>
+  <string name="licenses_summary">AntennaPodは他の優れたソフトウェアを使用しています</string>
   <!--Search-->
   <string name="search_status_no_results">見つかりませんでした</string>
   <string name="type_to_search">検索ワードを入力してください</string>
@@ -528,14 +521,14 @@
   <string name="opml_export_summary">購読を別のポッドキャストアプリに転送する</string>
   <string name="opml_import_summary">別のポッドキャストアプリから購読をインポートする</string>
   <string name="database_export_summary">購読、再生したエピソード、キューを別のデバイスのAntennaPodに転送する</string>
-  <string name="database_import_summary">AntennaPod データベースを別のデバイスからインポートする</string>
-  <string name="opml_import_label">OPMLインポート</string>
+  <string name="database_import_summary">AntennaPodデータベースを別のデバイスからインポートする</string>
+  <string name="opml_import_label">OPML インポート</string>
   <string name="opml_add_podcast_label">ポッドキャストリストのインポート (OPML)</string>
   <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました:</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません！</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
-  <string name="opml_export_label">OPMLエクスポート</string>
+  <string name="opml_export_label">OPML エクスポート</string>
   <string name="html_export_label">HTML エクスポート</string>
   <string name="database_export_label">データベースのエクスポート</string>
   <string name="database_import_label">データベースのインポート</string>
@@ -572,20 +565,32 @@
   </plurals>
   <string name="auto_enable_label">自動有効化</string>
   <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">同期プロバイダーを選択</string>
+  <string name="synchronization_summary_unchoosen">複数のプロバイダーから選択して、購読とエピソードの再生状態を同期できます</string>
+  <string name="dialog_choose_sync_service_title">同期プロバイダーの選択</string>
+  <string name="gpodnet_description">Gpodder.netは、自身のサーバーにインストールできるオープンソースのポッドキャスト同期サービスです。Gpodder.netは、AntennaPodプロジェクトから独立しています。</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersyncは、自身のサーバーに簡単にインストールできるオープンソースのNextcloudアプリです。このアプリは、AntennaPodプロジェクトから独立しています。</string>
+  <string name="synchronization_nextcloud_authenticate_browser">開いた Web ブラウザーを使用してアクセスを許可し、AntennaPod に戻ります。</string>
   <string name="gpodnetauth_login_butLabel">ログイン</string>
   <string name="gpodnetauth_encryption_warning">パスワードやデータは暗号化されません！</string>
   <string name="username_label">ユーザー名</string>
   <string name="password_label">パスワード</string>
-  <string name="gpodnet_description">Gpodder.netは、自身のサーバーにインストールできるオープンソースのポッドキャスト同期サービスです。Gpodder.netは、AntennaPodプロジェクトから独立しています。</string>
-  <string name="gpodnetauth_host">ホスト名</string>
-  <string name="gpodnetauth_select_server">サーバーを選択</string>
   <string name="gpodnetauth_device_name">デバイス名</string>
   <string name="gpodnetauth_device_name_default">%1$s の AntennaPod</string>
   <string name="gpodnetauth_existing_devices">既存のデバイス</string>
   <string name="gpodnetauth_create_device">デバイスの作成</string>
   <string name="gpodnetauth_finish_descr">おめでとうございます！gpodder.netアカウントが今お使いのデバイスとリンクされました。 AntennaPodは今から自動的にgpodder.netアカウントを使用してデバイスの購読を同期します。</string>
   <string name="gpodnetauth_finish_butsyncnow">今すぐ同期を開始</string>
+  <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
+  <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
+  <string name="synchronization_sync_changes_title">今すぐ同期する</string>
+  <string name="synchronization_sync_summary">購読とエピソードの状態の変更を同期する</string>
+  <string name="synchronization_full_sync_title">完全同期を強制する</string>
+  <string name="synchronization_force_sync_summary">購読とエピソードの状態をすべて再同期する</string>
+  <string name="synchronization_logout">ログアウト</string>
+  <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> に <i>%1$s</i> としてログインしました。ログアウトすると、同期プロバイダーを再度選択できます]]></string>
+  <string name="pref_synchronization_logout_toast">ログアウトしました</string>
   <string name="gpodnetsync_error_title">gpodder.net 同期エラー</string>
   <string name="gpodnetsync_error_descr">同期中にエラーが発生しました:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">成功しました</string>
@@ -631,12 +636,12 @@
   <string name="auto_download_settings_label">自動ダウンロード設定</string>
   <string name="episode_filters_label">エピソード フィルター</string>
   <string name="episode_filters_description">自動ダウンロードのときに、エピソードを含めるか除外する必要があるかを決定するために使用される条件のリスト</string>
-  <string name="episode_filters_include">含む</string>
-  <string name="episode_filters_exclude">含まない</string>
-  <string name="episode_filters_duration">最小時間 (分単位)</string>
-  <string name="episode_filters_hint">単一の単語 \n\"複数の 単語\"</string>
-  <string name="keep_updated">更新済を保持</string>
-  <string name="keep_updated_summary">すべてのポッドキャストを (自動)更新する時にこのポッドキャストを含めます</string>
+  <string name="add_term">用語を追加</string>
+  <string name="exclude_terms">以下の用語のいずれかを含むエピソードを除外する</string>
+  <string name="include_terms">以下の用語のいずれかを含むエピソードのみを含める</string>
+  <string name="exclude_episodes_shorter_than">指定時間より短いエピソードを除外する</string>
+  <string name="keep_updated">最新の状態を保つ</string>
+  <string name="keep_updated_summary">すべてのポッドキャストを (自動) 更新する時にこのポッドキャストを含めます</string>
   <string name="auto_download_disabled_globally">メインの AntennaPod 設定で自動ダウンロードが無効になっています</string>
   <string name="statistics_time_played">再生時間:</string>
   <string name="statistics_total_duration">合計再生時間 (推定):</string>
@@ -644,6 +649,8 @@
   <string name="statistics_space_used">使用スペース:</string>
   <string name="statistics_episodes_started_total">再生エピソード数/合計:</string>
   <string name="statistics_view_all">すべてのポッドキャストを表示 »</string>
+  <string name="edit_url_menu">フィードのURLを編集</string>
+  <string name="edit_url_confirmation_msg">RSSのアドレスを変更すると、ポッドキャストの再生状態とエピソードのリストが壊れてしまう可能性があります。RSSのアドレスを変更することはおすすめしません。何か問題が起きたとしてもサポートは提供されません。この変更は元に戻せません。アドレスを元に戻すだけでは壊れた購読を修復することはできません。続行する前にバックアップを作成することをおすすめします。</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <!--Add podcast fragment-->
@@ -659,6 +666,7 @@
   <string name="discover_is_hidden">提案を隠すことを選択しました</string>
   <string name="discover_more">さらに »</string>
   <string name="discover_powered_by_itunes">iTunes による提案</string>
+  <string name="discover_confirm">提案を表示</string>
   <string name="search_powered_by">%1$s による検索結果</string>
   <!--Local feeds-->
   <string name="add_local_folder">ローカルフォルダーを追加</string>
@@ -669,7 +677,7 @@
   <string name="unable_to_start_system_file_manager">システムのファイルマネージャーを起動できません</string>
   <string name="filter">フィルター</string>
   <string name="hide_is_favorite_label">お気に入り</string>
-  <string name="not_favorite">お気に入りでない</string>
+  <string name="not_favorite">お気に入り外</string>
   <string name="hide_downloaded_episodes_label">ダウンロード済</string>
   <string name="hide_not_downloaded_episodes_label">未ダウンロード</string>
   <string name="queued_label">キューに追加済</string>
@@ -677,7 +685,7 @@
   <string name="has_media">メディア有り</string>
   <string name="no_media">メディア無し</string>
   <string name="hide_paused_episodes_label">一時停止中</string>
-  <string name="not_paused">停止されていない</string>
+  <string name="not_paused">未停止</string>
   <string name="hide_played_episodes_label">再生済み</string>
   <string name="not_played">未再生</string>
   <!--Sort-->
