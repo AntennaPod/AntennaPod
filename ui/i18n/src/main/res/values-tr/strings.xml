@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
+  <string name="feed_update_receiver_name">Abonelikleri Güncelle</string>
   <string name="feeds_label">Podcast\'ler</string>
   <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Podcast ekle</string>
   <string name="episodes_label">Bölümler</string>
+  <string name="home_label">Ana Sayfa</string>
   <string name="queue_label">Kuyruk</string>
   <string name="inbox_label">Gelen kutusu</string>
   <string name="favorite_episodes_label">Favoriler</string>
@@ -42,6 +43,13 @@
   <string name="statistics_reset_data_msg">Bu işlem, tüm bölümler için oynanan süre geçmişini siler. Devam etmek istediğinizden emin misiniz?</string>
   <string name="statistics_counting_range">%1$s ile %2$s arasında çalınan</string>
   <string name="statistics_counting_total">Toplamda çalınan</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Sürprizle karşılaş</string>
+  <string name="home_continue_title">Dinlemeye devam et</string>
+  <string name="home_downloads_title">İndirmeleri yönet</string>
+  <string name="home_welcome_title">AntennaPod\'a hoşgeldin!</string>
+  <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Kenar menüyü aç ve bir podcast ekle.</string>
+  <string name="configure_home">Ana Ekranı Özelleştir</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Bu cihazdaki bölümlerin toplam büyüklüğü</string>
   <!--Main activity-->
@@ -52,10 +60,10 @@
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
   <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
   <string name="drawer_feed_order_most_played">Oynatılan bölüm sayısına göre sırala</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Gelen kutusundaki oynatılmamış ve tüm bölümlerin sayısı</string>
   <string name="drawer_feed_counter_inbox">Gelen kutusundaki bölüm sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_downloaded">İndirilen bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">İndirilen ve oynatılmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_none">Hiçbiri</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Uyumlu uygulama bulunamadı</string>
@@ -69,6 +77,7 @@
   <string name="go_to_position_label">Bu pozisyona git</string>
   <!--Playback history-->
   <string name="clear_history_label">Geçmişi temizle</string>
+  <string name="clear_playback_history_msg">Bu tüm oynatma geçmişini silecek. Devam etmek istediğinden emin misin?</string>
   <!--Other-->
   <string name="confirm_label">Onayla</string>
   <string name="cancel_label">İptal</string>
@@ -121,7 +130,6 @@
     <item quantity="one">%d bölüm</item>
     <item quantity="other">%d bölüm</item>
   </plurals>
-  <string name="loading_more">Daha fazla yükleniyor...</string>
   <string name="episode_notification">Bölüm Bildirimleri</string>
   <string name="episode_notification_summary">Yeni bölüm yayınlandığında bildirim ver.</string>
   <plurals name="new_episode_notification_message">
@@ -165,6 +173,7 @@
     <item quantity="other">%d abonelik güncellendi.</item>
   </plurals>
   <string name="edit_tags">Etiketleri düzenle</string>
+  <string name="add_tag">Etiket ekle</string>
   <string name="rename_tag_label">Etiketleri yeniden adlandır</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Mobil veri bağlantısı üzerinden Podcast\'lerin yenilenmesi ayarlarda devre dışı bırakılmıştır.\n\nYine de yenilemek istiyor musunuz?</string>
   <!--actions on feeditems-->
@@ -212,6 +221,10 @@
     <item quantity="one">%d bölüm kuyruktan silindi.</item>
     <item quantity="other">%d bölüm kuyruktan silindi.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%dbölümler gelen kutusundan kaldırıldı.</item>
+    <item quantity="other">%d bölümler gelen kutusundan kaldırıldı.</item>
+  </plurals>
   <string name="add_to_favorite_label">Favorilere Ekle</string>
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
@@ -223,7 +236,6 @@
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
   <string name="download_error_details">Ayrıntılar</string>
-  <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Ayrıntıları görüntülemek için dokunun.</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
   <string name="download_error_insufficient_space">Cihazınızda yeterli alan kalmadı.</string>
@@ -418,20 +430,6 @@
   <string name="pref_theme_title_dark">Karanlık</string>
   <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
   <string name="pref_episode_cache_unlimited">Sınırsız</string>
-  <string name="synchronization_logout">Çıkış yap</string>
-  <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
-  <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
-  <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
-  <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>
-  <string name="synchronization_full_sync_title">Tam senkronizasyona zorla</string>
-  <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> üzerinde<i>%1$s</i> olarak oturum açıldı. <br/><br/> Çıkış yaptıktan sonra senkronizasyon sağlayıcınızı tekrar seçebilirsiniz.]]></string>
-  <string name="synchronization_summary_unchoosen">Aboneliklerinizi ve bölüm oynatma durumunuzu senkronize etmek için birden fazla sağlayıcı arasından seçim yapabilirsiniz</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Uygulama AntennaPod projesinden bağımsızdır.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Açılan web tarayıcısını kullanarak erişim izni verin ve AntennaPod\'a geri dönün.</string>
-  <string name="synchronization_choose_title">Senkronizasyon sağlayıcınızı seçin</string>
-  <string name="synchronization_force_sync_summary">Bütün abonelikleri ve bölüm durumlarını tekrardan senkronize et</string>
-  <string name="synchronization_sync_summary">Abonelik ve bölüm durum değişikliklerini senkronize et</string>
-  <string name="dialog_choose_sync_service_title">Senkronizasyon sağlayıcınızı seçin</string>
   <string name="pref_playback_speed_sum">Ses dinleme hızlarını ayarlayın.</string>
   <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
   <string name="pref_feed_skip">Auto Skip</string>
@@ -483,16 +481,9 @@
   <string name="media_player_switched_to_exoplayer">ExoPlayer\'a geçildi</string>
   <string name="pref_skip_silence_title">Sesteki boşlukları atla</string>
   <string name="behavior">Davranış</string>
-  <string name="pref_back_button_behavior_title">Geri Düğmesi Davranışı</string>
-  <string name="pref_back_button_behavior_sum">Geri düğmesinin davranışını değiştir</string>
-  <string name="back_button_default">Varsayılan</string>
-  <string name="back_button_open_drawer">Çekmeceyi aç</string>
-  <string name="back_button_double_tap">Double tap to exit</string>
-  <string name="back_button_show_prompt">Confirm to exit</string>
-  <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
-  <string name="double_tap_toast">Tap back button again to exit</string>
-  <string name="back_button_go_to_page">Go to page…</string>
-  <string name="back_button_go_to_page_title">Select page</string>
+  <string name="pref_default_page">Varsayılan Sayfa</string>
+  <string name="pref_default_page_sum">AntennaPod başlatıldığında açılan ekran</string>
+  <string name="remember_last_page">Kaldığım sayfayı hatırla</string>
   <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
   <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
   <string name="pref_filter_feed_title">Subscription Filter</string>
@@ -591,20 +582,32 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   </plurals>
   <string name="auto_enable_label">Auto-enable</string>
   <string name="sleep_timer_enabled_label">Uyku zamanlayıcısı açıldı</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Senkronizasyon sağlayıcınızı seçin</string>
+  <string name="synchronization_summary_unchoosen">Aboneliklerinizi ve bölüm oynatma durumunuzu senkronize etmek için birden fazla sağlayıcı arasından seçim yapabilirsiniz</string>
+  <string name="dialog_choose_sync_service_title">Senkronizasyon sağlayıcınızı seçin</string>
+  <string name="gpodnet_description">Gpodder.net, kendi sunucunuza yükleyebileceğiniz açık kaynaklı bir podcast senkronizasyon hizmetidir. Gpodder.net, AntennaPod projesinden bağımsızdır.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Uygulama AntennaPod projesinden bağımsızdır.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Açılan web tarayıcısını kullanarak erişim izni verin ve AntennaPod\'a geri dönün.</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
   <string name="gpodnetauth_encryption_warning">Parola ve veri şifrelenmedi!</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
-  <string name="gpodnet_description">Gpodder.net, kendi sunucunuza yükleyebileceğiniz açık kaynaklı bir podcast senkronizasyon hizmetidir. Gpodder.net, AntennaPod projesinden bağımsızdır.</string>
-  <string name="gpodnetauth_host">Sunucu (Host) adresi</string>
-  <string name="gpodnetauth_select_server">Sunucu seçiniz</string>
   <string name="gpodnetauth_device_name">Cihaz ismi</string>
   <string name="gpodnetauth_device_name_default">AntennaPod\'da %1$s</string>
   <string name="gpodnetauth_existing_devices">Mevcut cihazlar</string>
   <string name="gpodnetauth_create_device">Cihaz oluştur</string>
   <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
   <string name="gpodnetauth_finish_butsyncnow">Senkronizasyonu başlat</string>
+  <string name="pref_gpodnet_setlogin_information_title">Giriş bilgisini değiştir</string>
+  <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
+  <string name="synchronization_sync_changes_title">Şimdi senkronize et</string>
+  <string name="synchronization_sync_summary">Abonelik ve bölüm durum değişikliklerini senkronize et</string>
+  <string name="synchronization_full_sync_title">Tam senkronizasyona zorla</string>
+  <string name="synchronization_force_sync_summary">Bütün abonelikleri ve bölüm durumlarını tekrardan senkronize et</string>
+  <string name="synchronization_logout">Çıkış yap</string>
+  <string name="synchronization_login_status"><![CDATA[<i>%2$s</i> üzerinde<i>%1$s</i> olarak oturum açıldı. <br/><br/> Çıkış yaptıktan sonra senkronizasyon sağlayıcınızı tekrar seçebilirsiniz.]]></string>
+  <string name="pref_synchronization_logout_toast">Çıkış başarılı</string>
   <string name="gpodnetsync_error_title">gpodder.net senkronizasyon hatası</string>
   <string name="gpodnetsync_error_descr">Senkronize edilirken bir hata oluştu:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Başarılı</string>
@@ -650,10 +653,10 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="auto_download_settings_label">Otomatik İndirme Seçenekleri</string>
   <string name="episode_filters_label">Bölüm Filtresi</string>
   <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
-  <string name="episode_filters_include">Include</string>
-  <string name="episode_filters_exclude">Exclude</string>
-  <string name="episode_filters_duration">En kısa süre (dakika)</string>
-  <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
+  <string name="add_term">Terim ekle</string>
+  <string name="exclude_terms">Aşağıdaki şartlardan herhangi birini içeren bölümleri hariç tut</string>
+  <string name="include_terms">Yalnızca aşağıdaki şartlardan herhangi birini içeren bölümleri dahil et</string>
+  <string name="exclude_episodes_shorter_than">Şundan kısa bölümleri hariç tut</string>
   <string name="keep_updated">Keep Updated</string>
   <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
   <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
@@ -663,6 +666,8 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="statistics_space_used">Kullanılan alan</string>
   <string name="statistics_episodes_started_total">Başlatılan bölüm / Toplam:</string>
   <string name="statistics_view_all">Tüm Podcastler için görüntüle»</string>
+  <string name="edit_url_menu">URL\'yi düzenle</string>
+  <string name="edit_url_confirmation_msg">RSS adresini değiştirmek podcast\'in çalma durumunu ve bölüm listelemesini kolayca bozabilir. Değiştirmeyi önermiyoruz ve herhangi bir aksilikte destek SAĞLANMAYACAK. Bu geri alınamaz. Bozuk abonelik adresi yeniden değiştirmekle DÜZELMEZ. Devam etmeden önce yedek oluşturmanı öneriyoruz.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
@@ -678,6 +683,7 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="discover_is_hidden">Tavsiyleri gizlediniz.</string>
   <string name="discover_more">daha fazla »</string>
   <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+  <string name="discover_confirm">Önerileri göster</string>
   <string name="search_powered_by">Results by %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Cihazdan yerel klasör ekle</string>

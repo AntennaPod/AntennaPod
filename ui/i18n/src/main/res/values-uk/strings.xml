@@ -31,6 +31,7 @@
   <string name="statistics_speed_not_counted">Зауваження: Швидкість відтворення не береться до уваги.</string>
   <string name="statistics_reset_data">Cкинути статистику</string>
   <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
@@ -115,7 +116,6 @@
     <item quantity="many">%d епізодів</item>
     <item quantity="other">%d епізоди</item>
   </plurals>
-  <string name="loading_more">Завантажити більше…</string>
   <string name="episode_notification">Сповіщення про епізоди</string>
   <string name="episode_notification_summary">Показувати сповіщення, коли виходить нова серія.</string>
   <plurals name="new_episode_notification_message">
@@ -225,7 +225,6 @@
   <string name="download_pending">Потрібно завантажити</string>
   <string name="download_running">Завантаження</string>
   <string name="download_error_details">Докладно</string>
-  <string name="download_error_details_message">%1$s \n\nПосилання на файл:\n%2$s</string>
   <string name="download_error_tap_for_details">Торкніться, щоб переглянути деталі.</string>
   <string name="download_error_device_not_found">Пристрій зберігання даних не знайдено</string>
   <string name="download_error_insufficient_space">На вашому пристрої недостатньо місця.</string>
@@ -416,12 +415,6 @@
   <string name="pref_theme_title_dark">Темна</string>
   <string name="pref_theme_title_trueblack">Чорна (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Без обмежень</string>
-  <string name="synchronization_logout">Вийти</string>
-  <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Синхронізувати зараз</string>
-  <string name="synchronization_choose_title">Обрати постачальника синхронізації</string>
-  <string name="dialog_choose_sync_service_title">Обрати постачальника синхронізації</string>
   <string name="pref_playback_speed_sum">Налаштування доступних швидкостей для відтворення зі зміненою швидкістю</string>
   <string name="pref_feed_playback_speed_sum">Швидкість, яку слід використовувати при запуску відтворення аудіо для епізодів у цьому подкасті</string>
   <string name="pref_feed_skip">Автоматичний пропуск</string>
@@ -473,16 +466,6 @@
   <string name="media_player_switched_to_exoplayer">Переключено на ExoPlayer.</string>
   <string name="pref_skip_silence_title">Пропуск тиші</string>
   <string name="behavior">Поведінка</string>
-  <string name="pref_back_button_behavior_title">Поведінка кнопки \"Назад\"</string>
-  <string name="pref_back_button_behavior_sum">Зміна поведінки кнопки \"Назад\".</string>
-  <string name="back_button_default">За замовчуванням</string>
-  <string name="back_button_open_drawer">Відкрити меню навігації</string>
-  <string name="back_button_double_tap">Натисніть двічі, щоб вийти</string>
-  <string name="back_button_show_prompt">Підтвердіть вихід</string>
-  <string name="close_prompt">Дійсно закрити AntennaPod?</string>
-  <string name="double_tap_toast">Натисніть кнопку назад ще раз, щоб вийти</string>
-  <string name="back_button_go_to_page">Перейти на сторінку…</string>
-  <string name="back_button_go_to_page_title">Вибрати сторінку</string>
   <string name="pref_delete_removes_from_queue_title">Видалення з черги видалених епізодів</string>
   <string name="pref_delete_removes_from_queue_sum">Автоматично видаляти епізод із черги, коли він буде видалений.</string>
   <string name="pref_filter_feed_title">Фільтр підписки</string>
@@ -584,19 +567,23 @@
   </plurals>
   <string name="auto_enable_label">Увімкнути автоматично</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Обрати постачальника синхронізації</string>
+  <string name="dialog_choose_sync_service_title">Обрати постачальника синхронізації</string>
   <string name="gpodnetauth_login_butLabel">Логін</string>
   <string name="gpodnetauth_encryption_warning">Пароль та дані не зашифровані!</string>
   <string name="username_label">Ім\'я користувача</string>
   <string name="password_label">Пароль</string>
-  <string name="gpodnetauth_host">Ім\'я хоста</string>
-  <string name="gpodnetauth_select_server">Вибрати сервер</string>
   <string name="gpodnetauth_device_name">Назва пристрою</string>
   <string name="gpodnetauth_device_name_default">AntennaPod на %1$s</string>
   <string name="gpodnetauth_existing_devices">Існуючі пристрої</string>
   <string name="gpodnetauth_create_device">Створити пристрій</string>
   <string name="gpodnetauth_finish_descr">Поздоровляємо! Ваш обліковий запис на gpodder.net зараз пов\'язаний за вашим пристроєм</string>
   <string name="gpodnetauth_finish_butsyncnow">Почати синхронізацію</string>
+  <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Синхронізувати зараз</string>
+  <string name="synchronization_logout">Вийти</string>
   <string name="gpodnetsync_error_title">gpodder.net помилка синхронізації</string>
   <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успішно</string>
@@ -639,10 +626,6 @@
   <string name="auto_download_settings_label">Налаштування автозавантаження</string>
   <string name="episode_filters_label">Фільтр епізодів</string>
   <string name="episode_filters_description">Перелік термінів, що використовуються для вирішення чи слід завантажувати епізод автоматично</string>
-  <string name="episode_filters_include">Включити</string>
-  <string name="episode_filters_exclude">Виключити</string>
-  <string name="episode_filters_duration">Найменша тривалість (у хвилинах)</string>
-  <string name="episode_filters_hint">Окремі слова \n\"Кілька слів\"</string>
   <string name="keep_updated">Підтримувати оновленим</string>
   <string name="keep_updated_summary">Включати цей подкаст під час (автоматичного) оновлення всіх подкастів</string>
   <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>

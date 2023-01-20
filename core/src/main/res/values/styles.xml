@@ -209,11 +209,16 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Splash" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">@color/icon_background_gradient_start</item>
-        <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
-        <item name="android:navigationBarColor">@color/icon_background_gradient_end</item>
+    <style name="Theme.AntennaPod.Splash" parent="Theme.SplashScreen">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
