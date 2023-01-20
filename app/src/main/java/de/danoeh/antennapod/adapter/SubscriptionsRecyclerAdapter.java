@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -16,13 +17,15 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.elevation.SurfaceColors;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
@@ -68,23 +71,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     @Override
     public SubscriptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mainActivityRef.get()).inflate(R.layout.subscription_item, parent, false);
-        TextView feedTitle = itemView.findViewById(R.id.txtvTitle);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) feedTitle.getLayoutParams();
-        int topAndBottomItemId = R.id.imgvCover;
-        int belowItemId = 0;
-
-        if (viewType == COVER_WITH_TITLE) {
-            topAndBottomItemId = 0;
-            belowItemId = R.id.imgvCover;
-            int padding = (int) convertDpToPixel(feedTitle.getContext(), 6);
-            feedTitle.setPadding(padding, padding, padding, padding);
-        }
-        params.addRule(RelativeLayout.BELOW, belowItemId);
-        params.addRule(RelativeLayout.ALIGN_TOP, topAndBottomItemId);
-        params.addRule(RelativeLayout.ALIGN_BOTTOM, topAndBottomItemId);
-        feedTitle.setLayoutParams(params);
-        feedTitle.setSingleLine(viewType == COVER_WITH_TITLE);
-        return new SubscriptionViewHolder(itemView);
+        itemView.findViewById(R.id.txtvTitle).setVisibility(viewType == COVER_WITH_TITLE
+                ? View.VISIBLE : View.GONE);
+        return new SubscriptionViewHolder(itemView, mainActivityRef.get());
     }
 
     @Override
@@ -214,23 +203,30 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public int getItemViewType(int position) {
-        return UserPreferences.shouldShowSubscriptionTitle() ? COVER_WITH_TITLE : 0;
+        return UserPreferences.shouldShowSubscriptionTitle()
+                ? COVER_WITH_TITLE : 0;
     }
 
     public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private final TextView feedTitle;
         private final ImageView imageView;
         private final TextView count;
+        private final TextView fallbackTitleView;
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
+        private final CardView card;
+        private final Activity activity;
 
-        public SubscriptionViewHolder(@NonNull View itemView) {
+        public SubscriptionViewHolder(@NonNull View itemView, @NonNull MainActivity activityRef) {
             super(itemView);
             feedTitle = itemView.findViewById(R.id.txtvTitle);
             imageView = itemView.findViewById(R.id.imgvCover);
             count = itemView.findViewById(R.id.countViewPill);
+            fallbackTitleView = itemView.findViewById(R.id.fallbackTitle);
             selectView = itemView.findViewById(R.id.selectView);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
+            card = itemView.findViewById(R.id.cardOuter);
+            activity = activityRef;
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
@@ -238,8 +234,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                     R.drawable.ic_checkbox_background);
             selectView.setBackground(drawable); // Setting this in XML crashes API <= 21
             feedTitle.setText(drawerItem.getTitle());
+            fallbackTitleView.setText(drawerItem.getTitle());
             imageView.setContentDescription(drawerItem.getTitle());
-            feedTitle.setVisibility(View.VISIBLE);
             if (drawerItem.getCounter() > 0) {
                 count.setText(NumberFormat.getInstance().format(drawerItem.getCounter()));
                 count.setVisibility(View.VISIBLE);
@@ -253,18 +249,22 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
                 new CoverLoader(mainActivityRef.get())
                         .withUri(feed.getImageUrl())
-                        .withPlaceholderView(feedTitle, textAndImageCombind)
+                        .withPlaceholderView(feedTitle, fallbackTitleView,  textAndImageCombind)
                         .withCoverView(imageView)
                         .setRoundedCorner()
                         .load();
             } else {
                 new CoverLoader(mainActivityRef.get())
                         .withResource(R.drawable.ic_tag)
-                        .withPlaceholderView(feedTitle, true)
+                        .withPlaceholderView(feedTitle, fallbackTitleView, true)
                         .withCoverView(imageView)
                         .setRoundedCorner()
                         .load();
             }
+
+            card.setAlpha(1.0f);
+            float density = activity.getResources().getDisplayMetrics().density;
+            card.setCardBackgroundColor(SurfaceColors.getColorForElevation(activity, 1 * density));
         }
     }
 

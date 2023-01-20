@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
@@ -7,46 +7,91 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="4dp"
-    android:elevation="4dp"
+    android:orientation="vertical"
     android:foreground="?attr/selectableItemBackground">
 
-    <de.danoeh.antennapod.ui.common.SquareImageView
-        android:id="@+id/imgvCover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:outlineProvider="background"
-        squareImageView:direction="width"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/txtvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:layout_below="@id/imgvCover"
-        android:padding="6dp"
-        android:textColor="?android:attr/textColorPrimary"
-        tools:text="@string/app_name" />
-
-    <TextView
-        android:id="@+id/countViewPill"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardOuter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="3"
-        android:layout_alignParentEnd="true"
-        android:textSize="12sp"
-        style="@style/TextPill"
-        app:primaryText="Test"
-        app:primaryTextColor="?attr/colorOnSecondary"
-        app:primaryTextSize="12sp" />
+        android:clickable="false"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.danoeh.antennapod.ui.common.SquareImageView
+                        android:id="@+id/imgvCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:outlineProvider="background"
+                        squareImageView:direction="width"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/countViewPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="12sp"
+                        style="@style/TextPill"
+                        app:primaryText="Test"
+                        app:primaryTextColor="?attr/colorOnSecondary"
+                        app:primaryTextSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/fallbackTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:padding="6dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        tools:text="@string/app_name" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txtvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:text="final text"
+                android:textColor="?android:attr/textColorPrimary"
+                android:lines="2"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="4dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <FrameLayout
         android:id="@+id/selectView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false">
 
         <CheckBox
             android:id="@+id/selectCheckBox"
@@ -58,4 +103,4 @@
 
     </FrameLayout>
 
-</RelativeLayout>
+</FrameLayout>

@@ -38,6 +38,7 @@ public class CoverLoader {
     private boolean textAndImageCombined;
     private MainActivity activity;
     private boolean hasRoundedCorner = false;
+    private TextView fallbackTitleView;
 
     public CoverLoader(MainActivity activity) {
         this.activity = activity;
@@ -85,19 +86,22 @@ public class CoverLoader {
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
-    public CoverLoader withPlaceholderView(@NonNull TextView placeholderView,  boolean textAndImageCombined) {
+    public CoverLoader withPlaceholderView(
+            @NonNull TextView placeholderView,
+            @NonNull TextView fallbackTitleView, boolean textAndImageCombined) {
         this.txtvPlaceholder = placeholderView;
         this.textAndImageCombined = textAndImageCombined;
+        this.fallbackTitleView = fallbackTitleView;
         return this;
     }
 
     public void load() {
-        CoverTarget coverTarget = new CoverTarget(txtvPlaceholder, imgvCover, textAndImageCombined);
+        CoverTarget coverTarget = new CoverTarget(txtvPlaceholder, fallbackTitleView, imgvCover, textAndImageCombined);
 
         if (resource != 0) {
             Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined, null);
+            CoverTarget.setTitleVisibility(txtvPlaceholder, fallbackTitleView, textAndImageCombined, null);
             return;
         }
 
@@ -129,20 +133,24 @@ public class CoverLoader {
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
         private boolean textAndImageCombined;
+        private final WeakReference<TextView> tvFallbackTitle;
 
-        public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover, boolean textAndImageCombined) {
+        public CoverTarget(TextView txtvPlaceholder,
+                           TextView tvFallbackTitle,
+                           ImageView imgvCover, boolean textAndImageCombined) {
             super(imgvCover);
-            if (txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.VISIBLE);
-            }
             placeholder = new WeakReference<>(txtvPlaceholder);
             cover = new WeakReference<>(imgvCover);
             this.textAndImageCombined = textAndImageCombined;
+            this.tvFallbackTitle = new WeakReference<>(tvFallbackTitle);
         }
 
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
-            setPlaceholderVisibility(this.placeholder.get(), true, null);
+            setTitleVisibility(
+                    this.placeholder.get(),
+                    tvFallbackTitle.get(),
+                    true, null);
         }
 
         @Override
@@ -150,38 +158,47 @@ public class CoverLoader {
                                     @Nullable Transition<? super PaletteBitmap> transition) {
             ImageView ivCover = cover.get();
             ivCover.setImageBitmap(resource.bitmap);
-            setPlaceholderVisibility(placeholder.get(), textAndImageCombined, resource.palette);
+            setTitleVisibility(placeholder.get(), tvFallbackTitle.get(),
+                    textAndImageCombined, resource.palette);
         }
 
         @Override
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
-            setPlaceholderVisibility(this.placeholder.get(), textAndImageCombined, null);
+            setTitleVisibility(this.placeholder.get(), tvFallbackTitle.get(),  textAndImageCombined, null);
         }
 
-        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined, Palette palette) {
+        static void setTitleVisibility(TextView placeholder, TextView fallbackTitle,
+                                       boolean textAndImageCombined, Palette palette) {
             boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (placeholder != null) {
-                if (textAndImageCombined || showTitle) {
-                    final Context context = placeholder.getContext();
-                    placeholder.setVisibility(View.VISIBLE);
-                    if (textAndImageCombined && !showTitle) {
-                        int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
-                        if (palette == null) {
-                            placeholder.setTextColor(ThemeUtils.getColorFromAttr(placeholder.getContext(),
-                                    android.R.attr.textColorPrimary));
-                            return;
-                        }
-                        int dominantColor = palette.getDominantColor(bgColor);
-                        int textColor = ContextCompat.getColor(context, R.color.white);
-                        if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
-                            textColor = ContextCompat.getColor(context, R.color.black);
-                        }
-                        placeholder.setTextColor(textColor);
+                placeholder.setVisibility(showTitle
+                        ? View.VISIBLE : View.GONE);
+            }
+            if (fallbackTitle != null) {
+                fallbackTitle.setVisibility(textAndImageCombined && !showTitle
+                        ? View.VISIBLE : View.GONE);
+                if (!showTitle && textAndImageCombined) {
+                    if (placeholder == null) {
+                        return;
                     }
-                } else {
-                    placeholder.setVisibility(View.GONE);
+                    final Context context = placeholder.getContext();
+                    int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
+                    if (palette == null) {
+                        fallbackTitle.setTextColor(
+                                ThemeUtils.getColorFromAttr(placeholder.getContext(),
+                                android.R.attr.textColorPrimary));
+                        return;
+                    }
+                    int dominantColor = palette.getDominantColor(bgColor);
+                    int textColor = ContextCompat.getColor(context, R.color.white);
+                    if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
+                        textColor = ContextCompat.getColor(context, R.color.black);
+                    }
+
+                    fallbackTitle.setTextColor(textColor);
+
                 }
             }
         }
