@@ -148,7 +148,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Override
     public void onUserLeaveHint() {
-        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)
+                && UserPreferences.shouldContinueVideoPlaybackOnAudioMode()) {
             compatEnterPictureInPicture();
         }
     }
