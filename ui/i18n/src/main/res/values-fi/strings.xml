@@ -40,6 +40,7 @@
   <string name="statistics_reset_data_msg">Tämä poistaa kaikkien jaksojen soiton keston historian. Haluatko varmasti jatkaa?</string>
   <string name="statistics_counting_range">Toistettu %1$s ja %2$s välillä</string>
   <string name="statistics_counting_total">Toistettu yhteensä</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Laitteella olevien jaksojen koko yhteensä</string>
   <!--Main activity-->
@@ -117,7 +118,6 @@
     <item quantity="one">%d jakso</item>
     <item quantity="other">%d jaksoa</item>
   </plurals>
-  <string name="loading_more">Ladataan lisää...</string>
   <string name="episode_notification">Jakson ilmoitukset</string>
   <string name="episode_notification_summary">Näytä ilmoitus kun uusi jakso julkaistaan.</string>
   <plurals name="new_episode_notification_message">
@@ -211,7 +211,6 @@
   <string name="download_pending">Lataus odottamassa</string>
   <string name="download_running">Lataamassa</string>
   <string name="download_error_details">Tiedot</string>
-  <string name="download_error_details_message">%1$s \n\nTiedoston URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Napauta nähdäksesi lisätiedot.</string>
   <string name="download_error_device_not_found">Tallennuslaitetta ei löytynyt</string>
   <string name="download_error_insufficient_space">Laitteella ei ole tarpeeksi vapaata tilaa.</string>
@@ -402,20 +401,6 @@
   <string name="pref_theme_title_dark">Tumma</string>
   <string name="pref_theme_title_trueblack">Musta (AMOLED valmis)</string>
   <string name="pref_episode_cache_unlimited">Ei rajoitettu</string>
-  <string name="synchronization_logout">Kirjaudu ulos</string>
-  <string name="pref_synchronization_logout_toast">Uloskirjautuminen onnistui</string>
-  <string name="pref_gpodnet_setlogin_information_title">Vaihda kirjautumistietoja</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Vaihda kirjautumistietoja gpodder.net tiliisi.</string>
-  <string name="synchronization_sync_changes_title">Synkronoi nyt</string>
-  <string name="synchronization_full_sync_title">Pakota täysi synkronointi</string>
-  <string name="synchronization_login_status"><![CDATA[Kirjauduttu sisään <i>%1$s</i> kohteessa <i>%2$s</i>. <br/><br/>Voit valita synkronointipalveluntarjoajan uudelleen kirjauduttuasi ulos]]></string>
-  <string name="synchronization_summary_unchoosen">Voit valita useista palveluntarjoajista, joiden kanssa voit synkronoida tilauksesi ja jaksojen toistotilan</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync on avoimen lähdekoodin Nextcloud-sovellus, jonka voit helposti asentaa omalle palvelimellesi. Sovellus on riippumaton AntennaPod-projektista.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Myönnä käyttöoikeus avatun verkkoselaimen avulla ja palaa AntennaPodiin.</string>
-  <string name="synchronization_choose_title">Valitse synkronointipalveluntarjoaja</string>
-  <string name="synchronization_force_sync_summary">Uudelleensynkronoi kaikki tilaukset ja jaksojen tilat</string>
-  <string name="synchronization_sync_summary">Synkronoi tilausten ja jaksojen tilojen muutokset</string>
-  <string name="dialog_choose_sync_service_title">Valitse synkronointipalveluntarjoaja</string>
   <string name="pref_playback_speed_sum">Mukauta muuttuvanopeuksisen toiston käytettävissä olevia nopeuksia </string>
   <string name="pref_feed_playback_speed_sum">Tämän podcastin jaksoja soittamaan aloitettaessa käytettävä nopeus</string>
   <string name="pref_feed_skip">Automaattinen ohitus</string>
@@ -467,16 +452,6 @@
   <string name="media_player_switched_to_exoplayer">Vaihdettu ExoPlayeriin.</string>
   <string name="pref_skip_silence_title">Skippaa tyhjät kohdat audiossa</string>
   <string name="behavior">Toiminta</string>
-  <string name="pref_back_button_behavior_title">Takaisin-painikkeen toiminta</string>
-  <string name="pref_back_button_behavior_sum">Mukauta takaisin-painikkeen toiminta.</string>
-  <string name="back_button_default">Oletus</string>
-  <string name="back_button_open_drawer">Avaa navigointivalikko</string>
-  <string name="back_button_double_tap">Tuplanaputa sulkemiseen</string>
-  <string name="back_button_show_prompt">Vahvista poistuminen</string>
-  <string name="close_prompt">Haluatko varmasti sulkea AntennaPodin?</string>
-  <string name="double_tap_toast">Napauta takaisin-painiketta sulkeaksesi</string>
-  <string name="back_button_go_to_page">Mene sivulle...</string>
-  <string name="back_button_go_to_page_title">Valitse sivu</string>
   <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
   <string name="pref_delete_removes_from_queue_sum">Poista jakso automaattisesti jonosta kun se deletoidaan.</string>
   <string name="pref_filter_feed_title">Tilaussuodin</string>
@@ -574,19 +549,31 @@
   </plurals>
   <string name="auto_enable_label">Auto-asetus</string>
   <string name="sleep_timer_enabled_label">Uniajastin asetettu</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Valitse synkronointipalveluntarjoaja</string>
+  <string name="synchronization_summary_unchoosen">Voit valita useista palveluntarjoajista, joiden kanssa voit synkronoida tilauksesi ja jaksojen toistotilan</string>
+  <string name="dialog_choose_sync_service_title">Valitse synkronointipalveluntarjoaja</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync on avoimen lähdekoodin Nextcloud-sovellus, jonka voit helposti asentaa omalle palvelimellesi. Sovellus on riippumaton AntennaPod-projektista.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Myönnä käyttöoikeus avatun verkkoselaimen avulla ja palaa AntennaPodiin.</string>
   <string name="gpodnetauth_login_butLabel">Sisäänkirjautuminen</string>
   <string name="gpodnetauth_encryption_warning">Salasanaa ja tietoja ei salata!</string>
   <string name="username_label">Käyttäjätunnus</string>
   <string name="password_label">Salasana</string>
-  <string name="gpodnetauth_host">Isäntänimi</string>
-  <string name="gpodnetauth_select_server">Valitse palvelin</string>
   <string name="gpodnetauth_device_name">Laitteen nimi</string>
   <string name="gpodnetauth_device_name_default">AntennaPod laitteella %1$s</string>
   <string name="gpodnetauth_existing_devices">Olemassaolevat laitteet</string>
   <string name="gpodnetauth_create_device">Luo laite</string>
   <string name="gpodnetauth_finish_descr">Onneksi olkoon! Sinun gpodder.net tili on liitetty laitteeseesi. AntennaPod alkaa automaattisesti synkronoimaan gpodder.net tiliisi.</string>
   <string name="gpodnetauth_finish_butsyncnow">Aloita synkrointi nyt</string>
+  <string name="pref_gpodnet_setlogin_information_title">Vaihda kirjautumistietoja</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Vaihda kirjautumistietoja gpodder.net tiliisi.</string>
+  <string name="synchronization_sync_changes_title">Synkronoi nyt</string>
+  <string name="synchronization_sync_summary">Synkronoi tilausten ja jaksojen tilojen muutokset</string>
+  <string name="synchronization_full_sync_title">Pakota täysi synkronointi</string>
+  <string name="synchronization_force_sync_summary">Uudelleensynkronoi kaikki tilaukset ja jaksojen tilat</string>
+  <string name="synchronization_logout">Kirjaudu ulos</string>
+  <string name="synchronization_login_status"><![CDATA[Kirjauduttu sisään <i>%1$s</i> kohteessa <i>%2$s</i>. <br/><br/>Voit valita synkronointipalveluntarjoajan uudelleen kirjauduttuasi ulos]]></string>
+  <string name="pref_synchronization_logout_toast">Uloskirjautuminen onnistui</string>
   <string name="gpodnetsync_error_title">gpodder.net synkrointivirhe</string>
   <string name="gpodnetsync_error_descr">Synkronointivirhe:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Onnistui</string>
@@ -631,10 +618,6 @@
   <string name="auto_download_settings_label">Automaattisen latauksen asetukset</string>
   <string name="episode_filters_label">Jaksosuodin</string>
   <string name="episode_filters_description">Lista termeistä joilla valitaan jakso automaattiseen lataukseen</string>
-  <string name="episode_filters_include">Sisällytä</string>
-  <string name="episode_filters_exclude">Poista</string>
-  <string name="episode_filters_duration">Vähimmäiskesto (minuuttia)</string>
-  <string name="episode_filters_hint">Yksittäiset sanat \n\"Monta sanaa\"</string>
   <string name="keep_updated">Pidä päivitettynä</string>
   <string name="keep_updated_summary">Sisällytä tämä podcast kun kaikki podcastit (auto)päivitetään</string>
   <string name="auto_download_disabled_globally">Automaattinen lataaminen on pysäytetty AntennaPodin asetuksissa</string>
