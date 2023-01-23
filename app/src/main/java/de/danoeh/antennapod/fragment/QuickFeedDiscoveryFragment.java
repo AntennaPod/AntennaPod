@@ -48,7 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "FeedDiscoveryFragment";
     private static final int NUM_SUGGESTIONS = 12;
-    public static final int ITUNES_LIMIT = 200;
+    public static final int NUM_LOADING_SUGGESTIONS = 25;
 
     private Disposable disposable;
     private FeedDiscoverAdapter adapter;
@@ -164,11 +164,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
 
-        int numRequesting = NUM_SUGGESTIONS + subscribedFeeds.size();
-        if (numRequesting > ITUNES_LIMIT) {
-            numRequesting = ITUNES_LIMIT;
-        }
-        disposable = loader.loadToplist(countryCode, numRequesting)
+        disposable = loader.loadToplist(countryCode, NUM_LOADING_SUGGESTIONS)
                 .subscribe(
                         podcasts -> {
                             errorView.setVisibility(View.GONE);

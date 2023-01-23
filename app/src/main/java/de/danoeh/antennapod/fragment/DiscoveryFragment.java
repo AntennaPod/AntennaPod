@@ -213,11 +213,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         }
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        int numRequesting = NUM_OF_TOP_PODCASTS + subscribedFeeds.size();
-        if (numRequesting > QuickFeedDiscoveryFragment.ITUNES_LIMIT) {
-            numRequesting = QuickFeedDiscoveryFragment.ITUNES_LIMIT;
-        }
-        disposable = loader.loadToplist(country, numRequesting).subscribe(
+        disposable = loader.loadToplist(country, NUM_OF_TOP_PODCASTS).subscribe(
                 podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     topList = QuickFeedDiscoveryFragment.removeSubscribedFromSuggested(
