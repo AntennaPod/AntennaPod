@@ -4,16 +4,27 @@ import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Collections;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.StatusListener;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -73,6 +84,38 @@ public class FeedMenuHandler {
             }
         };
         sortDialog.openDialog();
+    }
+
+    public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
+                                            @NonNull Feed selectedFeed) {
+
+        @NonNull Context context = fragment.requireContext();
+        if (menuItemId == R.id.rename_folder_item) {
+            new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
+        } else if (menuItemId == R.id.remove_all_inbox_item) {
+            DisplayConfirmationDialog.display(fragment.getActivity(), R.string.remove_all_inbox_label,
+                    R.string.remove_all_inbox_confirmation_msg,
+                    () -> DBWriter.removeFeedNewFlag(selectedFeed.getId()), new StatusListener() {
+                        @Override
+                        public void onActionSuccess() {}
+
+                        @Override
+                        public void onActionFailure(Throwable throwableError) {
+                            Log.e(TAG, Log.getStackTraceString(throwableError));
+                        }
+                    });
+        } else if (menuItemId == R.id.edit_tags) {
+            TagSettingsDialog.newInstance(Collections.singletonList(selectedFeed.getPreferences()))
+                    .show(fragment.getChildFragmentManager(), TagSettingsDialog.TAG);
+        } else if (menuItemId == R.id.rename_item) {
+            new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
+        } else if (menuItemId == R.id.remove_feed) {
+            RemoveFeedDialog.show(context, selectedFeed);
+        } else {
+            Log.d(TAG, "Unknown menuItemId: " + menuItemId);
+            return false;
+        }
+        return true;
     }
 
 }

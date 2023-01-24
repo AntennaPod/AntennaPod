@@ -20,7 +20,7 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import androidx.annotation.Nullable;
 
-public class HorizontalFeedListAdapter extends SelectableAdapter<HorizontalFeedListAdapter.Holder>
+public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder>
         implements View.OnCreateContextMenuListener  {
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<Feed> data = new ArrayList<>();
@@ -29,10 +29,7 @@ public class HorizontalFeedListAdapter extends SelectableAdapter<HorizontalFeedL
 
 
     public HorizontalFeedListAdapter(MainActivity mainActivity) {
-        super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
-        setHasStableIds(true);
-
     }
 
     public void setDummyViews(int dummyViews) {
@@ -67,6 +64,13 @@ public class HorizontalFeedListAdapter extends SelectableAdapter<HorizontalFeedL
         holder.imageView.setOnClickListener(v ->
                 mainActivityRef.get().loadChildFragment(FeedItemlistFragment.newInstance(podcast.getId())));
 
+        holder.imageView.setOnCreateContextMenuListener(this);
+        holder.imageView.setOnLongClickListener(v -> {
+            int currentItemPosition = holder.getBindingAdapterPosition();
+            longPressedItem = data.get(currentItemPosition);
+            return false;
+        });
+
         Glide.with(mainActivityRef.get())
                 .load(podcast.getImageUrl())
                 .apply(new RequestOptions()
@@ -75,12 +79,6 @@ public class HorizontalFeedListAdapter extends SelectableAdapter<HorizontalFeedL
                         .dontAnimate())
                 .into(holder.imageView);
 
-        holder.imageView.setOnCreateContextMenuListener(this);
-        holder.imageView.setOnLongClickListener(v -> {
-            int currentItemPosition = holder.getBindingAdapterPosition();
-            longPressedItem = data.get(currentItemPosition);
-            return false;
-        });
     }
 
     @Nullable

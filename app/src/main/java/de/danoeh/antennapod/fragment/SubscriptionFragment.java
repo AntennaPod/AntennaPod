@@ -25,8 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
-import de.danoeh.antennapod.core.dialog.StatusListener;
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -63,6 +61,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.StatusListener;
 
 /**
  * Fragment for displaying feed subscriptions
