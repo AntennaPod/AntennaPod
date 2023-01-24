@@ -1,11 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
 import androidx.palette.graphics.Palette;
 
 import android.view.View;
@@ -23,10 +20,8 @@ import java.lang.ref.WeakReference;
 
 import com.bumptech.glide.request.transition.Transition;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.glide.PaletteBitmap;
 
 public class CoverLoader {
@@ -179,27 +174,6 @@ public class CoverLoader {
             if (fallbackTitle != null) {
                 fallbackTitle.setVisibility(textAndImageCombined && !showTitle
                         ? View.VISIBLE : View.GONE);
-                if (!showTitle && textAndImageCombined) {
-                    if (placeholder == null) {
-                        return;
-                    }
-                    final Context context = placeholder.getContext();
-                    int bgColor = ContextCompat.getColor(context, R.color.feed_text_bg);
-                    if (palette == null) {
-                        fallbackTitle.setTextColor(
-                                ThemeUtils.getColorFromAttr(placeholder.getContext(),
-                                android.R.attr.textColorPrimary));
-                        return;
-                    }
-                    int dominantColor = palette.getDominantColor(bgColor);
-                    int textColor = ContextCompat.getColor(context, R.color.white);
-                    if (ColorUtils.calculateLuminance(dominantColor) > 0.5) {
-                        textColor = ContextCompat.getColor(context, R.color.black);
-                    }
-
-                    fallbackTitle.setTextColor(textColor);
-
-                }
             }
         }
     }

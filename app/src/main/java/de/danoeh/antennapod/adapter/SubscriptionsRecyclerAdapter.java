@@ -249,7 +249,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
                 new CoverLoader(mainActivityRef.get())
                         .withUri(feed.getImageUrl())
-                        .withPlaceholderView(feedTitle, fallbackTitleView,  textAndImageCombind)
+                        .withPlaceholderView(feedTitle, fallbackTitleView, textAndImageCombind)
                         .withCoverView(imageView)
                         .setRoundedCorner()
                         .load();
@@ -265,6 +265,17 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             card.setAlpha(1.0f);
             float density = activity.getResources().getDisplayMetrics().density;
             card.setCardBackgroundColor(SurfaceColors.getColorForElevation(activity, 1 * density));
+
+            int titlePadding = UserPreferences.getSubscriptionsColumnCount() <= 3 ? 8 : 4;
+            feedTitle.setPadding(titlePadding, 0, titlePadding, 0);
+            fallbackTitleView.setPadding(titlePadding, 0, titlePadding, 0);
+
+            int textSize = UserPreferences.getSubscriptionsColumnCount() == 2 ? 16 :
+                    UserPreferences.getSubscriptionsColumnCount() == 3 ? 15 : 14;
+            feedTitle.setTextSize(textSize);
+            fallbackTitleView.setTextSize(textSize);
+
+
         }
     }
 

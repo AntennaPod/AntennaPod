@@ -63,6 +63,9 @@ public class UserPreferences {
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
+    private static final String PREF_SUBSCRIPTION_NUM_COLUMNS = "columns";
+    private static final int PREF_SUBSCRIPTION_DEFAULT_COLUMN = 3;
+
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -935,6 +938,16 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, value.serialize())
                 .apply();
+    }
+
+    public static void setSubscriptionsColumnCount(int count) {
+        prefs.edit()
+                .putInt(PREF_SUBSCRIPTION_NUM_COLUMNS, count)
+                .apply();
+    }
+
+    public static int getSubscriptionsColumnCount() {
+        return prefs.getInt(PREF_SUBSCRIPTION_NUM_COLUMNS, PREF_SUBSCRIPTION_DEFAULT_COLUMN);
     }
 
     public static boolean shouldShowSubscriptionTitle() {
