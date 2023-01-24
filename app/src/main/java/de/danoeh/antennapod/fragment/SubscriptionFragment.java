@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -95,7 +93,6 @@ public class SubscriptionFragment extends Fragment
     private boolean displayUpArrow;
 
     private Disposable disposable;
-    private SharedPreferences prefs;
 
     private SpeedDialView speedDialView;
 
@@ -114,7 +111,6 @@ public class SubscriptionFragment extends Fragment
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
