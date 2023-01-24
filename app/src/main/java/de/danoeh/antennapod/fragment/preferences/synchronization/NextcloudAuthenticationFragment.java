@@ -39,9 +39,9 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         viewBinding = NextcloudAuthDialogBinding.inflate(getLayoutInflater());
         dialog.setView(viewBinding.getRoot());
 
-        viewBinding.loginButton.setOnClickListener(v -> {
+        viewBinding.chooseHostButton.setOnClickListener(v -> {
             viewBinding.errorText.setVisibility(View.GONE);
-            viewBinding.loginButton.setVisibility(View.GONE);
+            viewBinding.chooseHostButton.setVisibility(View.GONE);
             viewBinding.loginProgressContainer.setVisibility(View.VISIBLE);
             nextcloudLoginFlow = new NextcloudLoginFlow(AntennapodHttpClient.getHttpClient(),
                     viewBinding.serverUrlText.getText().toString(), getContext(), this);
@@ -87,6 +87,6 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         viewBinding.loginProgressContainer.setVisibility(View.GONE);
         viewBinding.errorText.setVisibility(View.VISIBLE);
         viewBinding.errorText.setText(errorMessage);
-        viewBinding.loginButton.setVisibility(View.VISIBLE);
+        viewBinding.chooseHostButton.setVisibility(View.VISIBLE);
     }
 }

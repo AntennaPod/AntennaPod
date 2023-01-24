@@ -6,6 +6,7 @@
   <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="episodes_label">Afsnit</string>
+  <string name="home_label">Hjem</string>
   <string name="queue_label">Kø</string>
   <string name="inbox_label">Indbakke</string>
   <string name="favorite_episodes_label">Favoritter</string>
@@ -42,6 +43,15 @@
   <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet for alle afsnit. Er du sikker på, at du vil fortsætte?</string>
   <string name="statistics_counting_range">Afspillet mellem %1$s og %2$s</string>
   <string name="statistics_counting_total">Afspillet i alt</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Bliv overrasket</string>
+  <string name="home_classics_title">Tjek dine klassikere</string>
+  <string name="home_continue_title">Fortsæt med at lytte</string>
+  <string name="home_new_title">Se nyheder</string>
+  <string name="home_downloads_title">Administrer overførsler</string>
+  <string name="home_welcome_title">Velkommen til AntennaPod!</string>
+  <string name="home_welcome_text">Du har endnu ikke abonneret på nogen podcasts. Åbn sidemenuen for at tilføje en podcast.</string>
+  <string name="configure_home">Konfigurer hjemmeskærm</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Samlet størrelse af afsnit på enheden</string>
   <!--Main activity-->
@@ -52,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Sorter alfabetisk</string>
   <string name="drawer_feed_order_last_update">Sorter efter udgivelsesdato</string>
   <string name="drawer_feed_order_most_played">Sorter efter antal afspillede afsnit</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Antal uafspillede afsnit og afsnit i indbakken</string>
   <string name="drawer_feed_counter_inbox">Antal afsnit i indbakken</string>
   <string name="drawer_feed_counter_unplayed">Antal uafspillede afsnit</string>
   <string name="drawer_feed_counter_downloaded">Antal overførte afsnit</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Antal overførte og uafspillede afsnit</string>
   <string name="drawer_feed_counter_none">Ingen</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ingen kompatible apper fundet.</string>
@@ -69,6 +79,9 @@
   <string name="go_to_position_label">Gå til denne position</string>
   <!--Playback history-->
   <string name="clear_history_label">Ryd historik</string>
+  <string name="clear_playback_history_msg">Dette vil slette hele afspilningshistorikken. Er du sikker på, at du vil fortsætte?</string>
+  <string name="remove_history_label">Fjern fra historik</string>
+  <string name="removed_history_label">Fjernet fra historik</string>
   <!--Other-->
   <string name="confirm_label">Bekræft</string>
   <string name="cancel_label">Annuller</string>
@@ -121,7 +134,6 @@
     <item quantity="one">%d episode</item>
     <item quantity="other">%d afsnit</item>
   </plurals>
-  <string name="loading_more">Indlæser mere ...</string>
   <string name="episode_notification">Notifikationer om afsnit</string>
   <string name="episode_notification_summary">Vis en notifikation når der er nye afsnit</string>
   <plurals name="new_episode_notification_message">
@@ -165,6 +177,7 @@
     <item quantity="other">%d abonnementer opdateret.</item>
   </plurals>
   <string name="edit_tags">Rediger etiketter</string>
+  <string name="add_tag">Tilføj etiket</string>
   <string name="rename_tag_label">Omdøb etiket</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Opdatering af podcasts via mobildataforbindelse er deaktiveret i indstillingerne.\n\nØnsker du alligevel at opdatere?</string>
   <!--actions on feeditems-->
@@ -212,9 +225,13 @@
     <item quantity="one">%d afsnit fjernet fra køen.</item>
     <item quantity="other">%d afsnit fjernet fra køen.</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%d afsnit fjernet fra indbakken.</item>
+    <item quantity="other">%d afsnit fjernet fra indbakken.</item>
+  </plurals>
   <string name="add_to_favorite_label">Føj til favoritter</string>
   <string name="remove_from_favorite_label">Fjern fra favoritter</string>
-  <string name="visit_website_label">Besøg netsted</string>
+  <string name="visit_website_label">Besøg hjemmeside</string>
   <string name="skip_episode_label">Spring afsnit over</string>
   <string name="reset_position">Nulstil afspilningsposition</string>
   <string name="no_items_selected">Intet valgte</string>
@@ -223,15 +240,15 @@
   <string name="download_pending">Afventer overførsel</string>
   <string name="download_running">Overfører</string>
   <string name="download_error_details">Detaljer</string>
-  <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\nTeknisk årsag: \n%2$s \n\nFil-URL:\n%3$s</string>
   <string name="download_error_tap_for_details">Tryk for se detaljer.</string>
   <string name="download_error_device_not_found">Kan ikke finde lagerenhed</string>
-  <string name="download_error_insufficient_space">Der er ikke nok plads tilbage på din enhed.</string>
+  <string name="download_error_insufficient_space">Der er ikke nok ledig plads på din enhed.</string>
   <string name="download_error_http_data_error">HTTP-datafejl</string>
   <string name="download_error_error_unknown">Ukendt fejl</string>
   <string name="download_error_parser_exception">Podcast-værtens server sendte et ubrugeligt podcast-feed.</string>
   <string name="download_error_unsupported_type">Feedets type er ikke understøttet</string>
-  <string name="download_error_unsupported_type_html">Podcast-værtens server sendte et netsted, ikke en podcast.</string>
+  <string name="download_error_unsupported_type_html">Podcast-værtens server sendte en hjemmeside, ikke en podcast.</string>
   <string name="download_error_not_found">Podcast-værtens server ved ikke, hvor filen skal findes. Den kan være blevet slettet.</string>
   <string name="download_error_connection_error">Forbindelsesfejl</string>
   <string name="download_error_unknown_host">Kan ikke finde serveren. Tjek om adressen er indtastet korrekt, og om du har en fungerende netværksforbindelse.</string>
@@ -333,7 +350,7 @@
   <string name="import_export_pref">Import/eksport</string>
   <string name="import_export_search_keywords">sikkerhedskopiering, sikkerhedskopi, backup, gendan, gendannelse, restore</string>
   <string name="appearance">Udseende</string>
-  <string name="external_elements">Externe elementer</string>
+  <string name="external_elements">Eksterne elementer</string>
   <string name="interruptions">Afbrydelser</string>
   <string name="playback_control">Afspilningskontrol</string>
   <string name="reassign_hardware_buttons">Omfordel de fysiske knapper</string>
@@ -385,7 +402,7 @@
   <string name="pref_stream_over_download_sum">Vis stream-knap i stedet for download-knap i lister.</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
   <string name="pref_mobileUpdate_sum">Vælg hvad der skal være tilladt via mobil dataforbindelse</string>
-  <string name="pref_mobileUpdate_refresh">Opdatere podcast</string>
+  <string name="pref_mobileUpdate_refresh">Opdatering af podcast</string>
   <string name="pref_mobileUpdate_images">Billeder</string>
   <string name="pref_mobileUpdate_auto_download">Hent automatisk</string>
   <string name="pref_mobileUpdate_episode_download">Download af afsnit</string>
@@ -393,6 +410,8 @@
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="user_interface_sum">Udseende, abonnementer, låseskærm</string>
   <string name="pref_set_theme_title">Vælg tema</string>
+  <string name="pref_tinted_theme_title">Brug farvetoner</string>
+  <string name="pref_tinted_theme_message">Giv appens farver en toning baseret på baggrundsbilledet</string>
   <string name="pref_nav_drawer_items_title">Vælg elementer i navigationspanelet</string>
   <string name="pref_nav_drawer_items_sum">Vælg hvilke elementer, der skal vises i navigationspanelet.</string>
   <string name="pref_nav_drawer_feed_order_title">Vælg abonnementsorden</string>
@@ -418,20 +437,6 @@
   <string name="pref_theme_title_dark">Mørk</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED-klar)</string>
   <string name="pref_episode_cache_unlimited">Ubegrænset</string>
-  <string name="synchronization_logout">Log ud</string>
-  <string name="pref_synchronization_logout_toast">Det er lykkedes at logge af</string>
-  <string name="pref_gpodnet_setlogin_information_title">Ændr loginoplysninger</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Ændr din gpodder.net-kontos loginoplysninger.</string>
-  <string name="synchronization_sync_changes_title">Synkroniser nu</string>
-  <string name="synchronization_full_sync_title">Fremtving fuld synkronisering</string>
-  <string name="synchronization_login_status"><![CDATA[Logget ind som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan vælge din synkroniseringsudbyder igen, når du har logget ud]]></string>
-  <string name="synchronization_summary_unchoosen">Du kan vælge mellem flere udbydere til at synkronisere dine abonnementer og afspilningsstatus for afsnit med</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync er en open source-app fra Nextcloud, som du nemt kan installere på din egen server. Appen er uafhængig af AntennaPod-projektet.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Giv adgang ved hjælp af den åbne internetbrowser, og vend tilbage til AntennaPod.</string>
-  <string name="synchronization_choose_title">Vælg synkroniseringsudbyder</string>
-  <string name="synchronization_force_sync_summary">Re-synkroniser alle abonnementer og afspilningsstatus for afsnit</string>
-  <string name="synchronization_sync_summary">Synkroniser ændringer i abonnement og afsnitstilstand</string>
-  <string name="dialog_choose_sync_service_title">Vælg synkroniseringsudbyder</string>
   <string name="pref_playback_speed_sum">Tilpas de tilgængelige hastigheder for afspilning med variabel hastighed</string>
   <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes for afsnit i denne podcast</string>
   <string name="pref_feed_skip">Overspring automatisk</string>
@@ -483,16 +488,9 @@
   <string name="media_player_switched_to_exoplayer">Skiftet til ExoPlayer.</string>
   <string name="pref_skip_silence_title">Overspring stilhed i lyd</string>
   <string name="behavior">Funktion</string>
-  <string name="pref_back_button_behavior_title">Funktion for tilbageknappen</string>
-  <string name="pref_back_button_behavior_sum">Ændr tilbageknappens funktion.</string>
-  <string name="back_button_default">Standard</string>
-  <string name="back_button_open_drawer">Åbn navigationsskuffen</string>
-  <string name="back_button_double_tap">Dobbelttryk for at afslutte</string>
-  <string name="back_button_show_prompt">Bekræft for at afslutte</string>
-  <string name="close_prompt">Er du sikker på at du vil lukke AntennaPod?</string>
-  <string name="double_tap_toast">Tryk på tilbageknappen igen for at afslutte</string>
-  <string name="back_button_go_to_page">Gå til side ...</string>
-  <string name="back_button_go_to_page_title">Vælg side</string>
+  <string name="pref_default_page">Standardside</string>
+  <string name="pref_default_page_sum">Skærm, der åbnes, når AntennaPod startes.</string>
+  <string name="remember_last_page">Husk sidste side</string>
   <string name="pref_delete_removes_from_queue_title">Slet fjerner fra kø</string>
   <string name="pref_delete_removes_from_queue_sum">Fjern automatisk afsnit fra køen, når det slettes.</string>
   <string name="pref_filter_feed_title">Abonnementsfilter</string>
@@ -590,20 +588,38 @@
   </plurals>
   <string name="auto_enable_label">Slå automatisk til</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Vælg synkroniseringsudbyder</string>
+  <string name="synchronization_summary_unchoosen">Du kan vælge mellem flere udbydere til at synkronisere dine abonnementer og afspilningsstatus for afsnit med</string>
+  <string name="dialog_choose_sync_service_title">Vælg synkroniseringsudbyder</string>
+  <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync er en open source-app fra Nextcloud, som du nemt kan installere på din egen server. Appen er uafhængig af AntennaPod-projektet.</string>
+  <string name="synchronization_host_explanation">Du kan vælge din egen server at synkronisere med. Når du har fundet din foretrukne synkroniseringsserver, skal du indtaste dens adresse her.</string>
+  <string name="synchronization_host_label">Server-adresse</string>
+  <string name="proceed_to_login_butLabel">Fortsæt til login</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Giv adgang ved hjælp af den åbne internetbrowser, og vend tilbage til AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Log ind</string>
+  <string name="synchronization_credentials_explanation">Angiv legitimationsoplysningerne for din konto på synkroniseringsserveren.</string>
   <string name="gpodnetauth_encryption_warning">Adgangskode og data er ikke krypteret!</string>
   <string name="username_label">Brugernavn</string>
   <string name="password_label">Adgangskode</string>
-  <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>
-  <string name="gpodnetauth_host">Værtsnavn</string>
-  <string name="gpodnetauth_select_server">Vælg server</string>
+  <string name="synchronization_login_butLabel">Log ind</string>
+  <string name="synchronization_selectDevice_explanation">Vælg den enhed, som du har oprettet på synkroniseringsserveren, eller opret en ny enhed.</string>
   <string name="gpodnetauth_device_name">Enhedsnavn</string>
   <string name="gpodnetauth_device_name_default">AntennaPod på %1$s</string>
   <string name="gpodnetauth_existing_devices">Eksisterende enheder</string>
   <string name="gpodnetauth_create_device">Opret ny enhed</string>
   <string name="gpodnetauth_finish_descr">Tillykke! Din gpodder.net-konto er nu forbundet med din enhed. AntennaPod vil fra nu af automatisk synkronisere dine abonnementer på din enhed med din gpodder.net-konto.</string>
   <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nu</string>
+  <string name="pref_gpodnet_setlogin_information_title">Ændr loginoplysninger</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Ændr din gpodder.net-kontos loginoplysninger.</string>
+  <string name="synchronization_sync_changes_title">Synkroniser nu</string>
+  <string name="synchronization_sync_summary">Synkroniser ændringer i abonnement og afsnitstilstand</string>
+  <string name="synchronization_full_sync_title">Fremtving fuld synkronisering</string>
+  <string name="synchronization_force_sync_summary">Re-synkroniser alle abonnementer og afspilningsstatus for afsnit</string>
+  <string name="synchronization_logout">Log ud</string>
+  <string name="synchronization_login_status"><![CDATA[Logget ind som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan vælge din synkroniseringsudbyder igen, når du har logget ud]]></string>
+  <string name="pref_synchronization_logout_toast">Det er lykkedes at logge af</string>
   <string name="gpodnetsync_error_title">gpodder.net-synkroniseringsfejl</string>
   <string name="gpodnetsync_error_descr">En fejl opstod under synkronisering:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Lykkedes</string>
@@ -649,12 +665,12 @@
   <string name="auto_download_settings_label">Indstillinger for Automatisk overførsel</string>
   <string name="episode_filters_label">Afsnitsfilter</string>
   <string name="episode_filters_description">Liste af ord, der bliver brugt til at beslutte, om et afsnit skal medtages eller udelades ved automatisk overførsel</string>
-  <string name="episode_filters_include">Medtag</string>
-  <string name="episode_filters_exclude">Udelad</string>
-  <string name="episode_filters_duration">Minimumsvarighed (i minutter)</string>
-  <string name="episode_filters_hint">Enkelte ord\n\"Flere ord\"</string>
+  <string name="add_term">Tilføj term</string>
+  <string name="exclude_terms">Medtag ikke afsnit, der indeholder en af følgende termer</string>
+  <string name="include_terms">Medtag kun afsnit, der indeholder en af nedenstående termer</string>
+  <string name="exclude_episodes_shorter_than">Medtag ikke afsnit, der er kortere end</string>
   <string name="keep_updated">Hold opdateret</string>
-  <string name="keep_updated_summary">Inkludere denne podcast når alle podcast genindlæses</string>
+  <string name="keep_updated_summary">Inkludér denne podcast når alle podcasts opdateres</string>
   <string name="auto_download_disabled_globally">Automatisk download slået fra i de generelle AntennaPod indstilinger</string>
   <string name="statistics_time_played">Afspillet tid:</string>
   <string name="statistics_total_duration">Samlet varighed (skøn):</string>
@@ -662,6 +678,8 @@
   <string name="statistics_space_used">Plads brugt:</string>
   <string name="statistics_episodes_started_total">Påbegyndte afsnit/total:</string>
   <string name="statistics_view_all">Vis for alle podcasts »</string>
+  <string name="edit_url_menu">Rediger feed-URL</string>
+  <string name="edit_url_confirmation_msg">Hvis du ændrer RSS-adressen, kan du nemt ødelægge podcastens afspilningstilstand og afsnitslisterne for podcasten. Vi anbefaler IKKE at ændre den og vil IKKE yde support, hvis noget går galt. Dette kan ikke gøres om. Det ødelagte abonnement KAN IKKE repareres ved blot at ændre adressen tilbage. Vi foreslår, at du opretter en sikkerhedskopi, før du fortsætter.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
   <!--Add podcast fragment-->
@@ -677,7 +695,9 @@
   <string name="discover_is_hidden">Du valgte at skjule forslag.</string>
   <string name="discover_more">mere »</string>
   <string name="discover_powered_by_itunes">iTunes forslag</string>
+  <string name="discover_confirm">Vis forslag</string>
   <string name="search_powered_by">Resultater fra %1$s</string>
+  <string name="select_country">Vælg land</string>
   <!--Local feeds-->
   <string name="add_local_folder">Tilføj lokal mappe</string>
   <string name="local_folder">Lokal mappe</string>
