@@ -434,7 +434,7 @@
     <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
     <string name="pref_set_theme_title">Select Theme</string>
     <string name="pref_tinted_theme_title">Use dynamic colors</string>
-    <string name="pref_tinted_theme_message">Adapt app colors based on the background image</string>
+    <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
