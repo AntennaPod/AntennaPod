@@ -52,6 +52,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
@@ -405,7 +406,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
             feedItems = DBReader.getRecentlyPublishedEpisodes(0,
                     MAX_ANDROID_AUTO_EPISODES_PER_FEED,
-                    new FeedItemFilter(FeedItemFilter.UNPLAYED));
+                    new FeedItemFilter(FeedItemFilter.UNPLAYED), SortOrder.DATE_NEW_OLD);
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));

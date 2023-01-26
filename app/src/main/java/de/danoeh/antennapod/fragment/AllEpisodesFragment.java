@@ -16,14 +16,17 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import de.danoeh.antennapod.model.feed.SortOrder;
 
 /**
  * Shows all episodes (possibly filtered by user).
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
-    private static final String PREF_NAME = "PrefAllEpisodesFragment";
+    public static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
+    public static final String PREF_SORT = "prefEpisodesSort";
+    private SharedPreferences prefs;
 
     @NonNull
     @Override
@@ -33,6 +36,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
+        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
@@ -71,13 +75,29 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             }
             onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>(filter)));
             return true;
+        } else if (item.getItemId() == R.id.episodes_sort_date_asc) {
+            saveSortOrderAndRefresh(SortOrder.DATE_OLD_NEW);
+            return true;
+        } else if (item.getItemId() == R.id.episodes_sort_date_desc) {
+            saveSortOrderAndRefresh(SortOrder.DATE_NEW_OLD);
+            return true;
+        } else if (item.getItemId() == R.id.episodes_sort_duration_asc) {
+            saveSortOrderAndRefresh(SortOrder.DURATION_SHORT_LONG);
+            return true;
+        } else if (item.getItemId() == R.id.episodes_sort_duration_desc) {
+            saveSortOrderAndRefresh(SortOrder.DURATION_LONG_SHORT);
+            return true;
         }
         return false;
     }
 
+    private void saveSortOrderAndRefresh(SortOrder type) {
+        prefs.edit().putString(PREF_SORT, type.name()).apply();
+        loadItems();
+    }
+
     @Subscribe
     public void onFilterChanged(AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent event) {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(PREF_FILTER, StringUtils.join(event.filterValues, ",")).apply();
         updateFilterUi();
         page = 1;

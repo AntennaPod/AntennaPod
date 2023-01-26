@@ -1,6 +1,10 @@
 package de.danoeh.antennapod.fragment;
 
+import static de.danoeh.antennapod.fragment.AllEpisodesFragment.PREF_SORT;
+
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,6 +48,7 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -441,14 +446,23 @@ public abstract class EpisodesListFragment extends Fragment
                         });
     }
 
+    private SortOrder getSortOrder() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(AllEpisodesFragment.PREF_NAME,
+                Context.MODE_PRIVATE);
+        String sortOrderStr = prefs.getString(PREF_SORT, "DATE_NEW_OLD");
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+    }
+
     @NonNull
     protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, getFilter());
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE,
+                getFilter(), getSortOrder());
     }
 
     @NonNull
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter());
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
+                EPISODES_PER_PAGE, getFilter(), getSortOrder());
     }
 
     protected int loadTotalItemCount() {
