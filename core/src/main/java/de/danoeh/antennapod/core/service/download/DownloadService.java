@@ -273,8 +273,8 @@ public class DownloadService extends Service {
 
         if (type == Feed.FEEDFILETYPE_FEED) {
             Log.d(TAG, "Handling completed Feed Download");
-            FeedSyncTask task = new FeedSyncTask(DownloadService.this, request);
-            boolean success = task.run();
+            FeedSyncTask feedSyncTask = new FeedSyncTask(DownloadService.this, request);
+            boolean success = feedSyncTask.run();
 
             if (success) {
                 if (request.getFeedfileId() == 0) {
@@ -283,18 +283,20 @@ public class DownloadService extends Service {
                 // we create a 'successful' download log if the feed's last refresh failed
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
-                    saveDownloadStatus(task.getDownloadStatus());
+                    saveDownloadStatus(feedSyncTask.getDownloadStatus());
                 }
                 if (!request.isInitiatedByUser()) {
                     // Was stored in the database before and not initiated manually
-                    newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
+                    newEpisodesNotification.showIfNeeded(DownloadService.this, feedSyncTask.getSavedFeed());
                 }
                 if (downloader.permanentRedirectUrl != null) {
                     DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
+                } else if (feedSyncTask.getRedirectUrl() != null) {
+                    DBWriter.updateFeedDownloadURL(request.getSource(), feedSyncTask.getRedirectUrl());
                 }
             } else {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
-                saveDownloadStatus(task.getDownloadStatus());
+                saveDownloadStatus(feedSyncTask.getDownloadStatus());
             }
         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             Log.d(TAG, "Handling completed FeedMedia Download");
