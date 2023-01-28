@@ -14,30 +14,17 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-
-import de.danoeh.antennapod.core.BuildConfig;
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -47,6 +34,15 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
@@ -77,8 +73,6 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     private boolean hidden;
     private boolean needsConfirm;
     private MaterialToolbar toolbar;
-
-    private List<Feed> subscribedFeeds;
 
     public DiscoveryFragment() {
         // Required empty public constructor
@@ -145,7 +139,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        loadUserSubscriptions();
+        loadToplist(countryCode);
         return root;
     }
 
@@ -156,23 +150,6 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
             disposable.dispose();
         }
         adapter = null;
-    }
-
-    private void loadUserSubscriptions() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        disposable = Observable.fromCallable(DBReader::getFeedList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        result -> {
-                            subscribedFeeds = result;
-                            loadToplist(countryCode);
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                            handleLoadDataErrors(error, (listener) -> loadUserSubscriptions());
-                        });
     }
 
     private void loadToplist(String country) {
@@ -213,19 +190,19 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         }
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(country, NUM_OF_TOP_PODCASTS).subscribe(
-                podcasts -> {
+        disposable = Observable.fromCallable(() ->
+                        loader.loadToplist(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
-                    topList = QuickFeedDiscoveryFragment.removeSubscribedFromSuggested(
-                            podcasts, subscribedFeeds, NUM_OF_TOP_PODCASTS);
+                    topList = podcasts;
                     updateData(topList);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    handleLoadDataErrors(error, v -> loadToplist(country));
-                });
+                }, error -> handleLoadDataErrors(error, v -> loadToplist(country)));
     }
 
     private void handleLoadDataErrors(Throwable error, View.OnClickListener listener) {
+        Log.e(TAG, Log.getStackTraceString(error));
         progressBar.setVisibility(View.GONE);
         txtvError.setText(error.getMessage());
         txtvError.setVisibility(View.VISIBLE);
