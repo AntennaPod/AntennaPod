@@ -86,6 +86,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         }
 
         adapter.updateData(dummies);
+        loadToplist();
 
         EventBus.getDefault().register(this);
         return root;
@@ -143,26 +144,25 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                         loader.loadToplist(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(podcasts -> {
-                    errorView.setVisibility(View.GONE);
-                    if (podcasts.size() == 0) {
-                        errorTextView.setText(getResources().getText(R.string.search_status_no_results));
+                .subscribe(
+                    podcasts -> {
+                        errorView.setVisibility(View.GONE);
+                        if (podcasts.size() == 0) {
+                            errorTextView.setText(getResources().getText(R.string.search_status_no_results));
+                            errorView.setVisibility(View.VISIBLE);
+                            discoverGridLayout.setVisibility(View.INVISIBLE);
+                        } else {
+                            discoverGridLayout.setVisibility(View.VISIBLE);
+                            adapter.updateData(podcasts);
+                        }
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        errorTextView.setText(error.getLocalizedMessage());
                         errorView.setVisibility(View.VISIBLE);
                         discoverGridLayout.setVisibility(View.INVISIBLE);
-                    } else {
-                        discoverGridLayout.setVisibility(View.VISIBLE);
-                        adapter.updateData(podcasts);
-                    }
-                }, error -> handleLoadDataErrors(error, v -> loadToplist()));
-    }
-
-    private void handleLoadDataErrors(Throwable error, View.OnClickListener listener) {
-        Log.e(TAG, Log.getStackTraceString(error));
-        errorTextView.setText(error.getLocalizedMessage());
-        errorView.setVisibility(View.VISIBLE);
-        discoverGridLayout.setVisibility(View.INVISIBLE);
-        errorRetry.setVisibility(View.VISIBLE);
-        errorRetry.setOnClickListener(listener);
+                        errorRetry.setVisibility(View.VISIBLE);
+                        errorRetry.setOnClickListener(v -> loadToplist());
+                    });
     }
 
     @Override
@@ -174,11 +174,5 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
         startActivity(intent);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadToplist();
     }
 }

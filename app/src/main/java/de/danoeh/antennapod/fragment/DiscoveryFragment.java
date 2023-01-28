@@ -27,7 +27,6 @@ import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
-import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import io.reactivex.Observable;
@@ -194,20 +193,19 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
                         loader.loadToplist(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(podcasts -> {
-                    progressBar.setVisibility(View.GONE);
-                    topList = podcasts;
-                    updateData(topList);
-                }, error -> handleLoadDataErrors(error, v -> loadToplist(country)));
-    }
-
-    private void handleLoadDataErrors(Throwable error, View.OnClickListener listener) {
-        Log.e(TAG, Log.getStackTraceString(error));
-        progressBar.setVisibility(View.GONE);
-        txtvError.setText(error.getMessage());
-        txtvError.setVisibility(View.VISIBLE);
-        butRetry.setOnClickListener(listener);
-        butRetry.setVisibility(View.VISIBLE);
+                .subscribe(
+                    podcasts -> {
+                        progressBar.setVisibility(View.GONE);
+                        topList = podcasts;
+                        updateData(topList);
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                        txtvError.setText(error.getMessage());
+                        txtvError.setVisibility(View.VISIBLE);
+                        butRetry.setOnClickListener(v -> loadToplist(country));
+                        butRetry.setVisibility(View.VISIBLE);
+                    });
     }
 
     @Override
