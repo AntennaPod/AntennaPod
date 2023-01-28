@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
@@ -30,7 +30,7 @@ public class NextcloudAuthenticationFragment extends DialogFragment
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(R.string.gpodnetauth_login_butLabel);
         dialog.setNegativeButton(R.string.cancel_label, null);
         dialog.setCancelable(false);
@@ -39,9 +39,9 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         viewBinding = NextcloudAuthDialogBinding.inflate(getLayoutInflater());
         dialog.setView(viewBinding.getRoot());
 
-        viewBinding.loginButton.setOnClickListener(v -> {
+        viewBinding.chooseHostButton.setOnClickListener(v -> {
             viewBinding.errorText.setVisibility(View.GONE);
-            viewBinding.loginButton.setVisibility(View.GONE);
+            viewBinding.chooseHostButton.setVisibility(View.GONE);
             viewBinding.loginProgressContainer.setVisibility(View.VISIBLE);
             nextcloudLoginFlow = new NextcloudLoginFlow(AntennapodHttpClient.getHttpClient(),
                     viewBinding.serverUrlText.getText().toString(), getContext(), this);
@@ -87,6 +87,6 @@ public class NextcloudAuthenticationFragment extends DialogFragment
         viewBinding.loginProgressContainer.setVisibility(View.GONE);
         viewBinding.errorText.setVisibility(View.VISIBLE);
         viewBinding.errorText.setText(errorMessage);
-        viewBinding.loginButton.setVisibility(View.VISIBLE);
+        viewBinding.chooseHostButton.setVisibility(View.VISIBLE);
     }
 }

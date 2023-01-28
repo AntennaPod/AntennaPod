@@ -4,6 +4,7 @@ import android.util.Log;
 import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
 public class DefaultDownloaderFactory implements DownloaderFactory {
     private static final String TAG = "DefaultDwnldrFactory";

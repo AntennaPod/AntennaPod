@@ -2,10 +2,10 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -24,7 +24,7 @@ class MobileDownloadHelper {
     }
 
     static void confirmMobileDownload(final Context context, final FeedItem item) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.confirm_mobile_download_dialog_title)
                 .setMessage(R.string.confirm_mobile_download_dialog_message)
                 .setPositiveButton(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily),
@@ -44,6 +44,6 @@ class MobileDownloadHelper {
 
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
-        DownloadService.download(context, true, DownloadRequestCreator.create(item.getMedia()).build());
+        DownloadServiceInterface.get().download(context, true, DownloadRequestCreator.create(item.getMedia()).build());
     }
 }

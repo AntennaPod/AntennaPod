@@ -11,6 +11,9 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
@@ -84,7 +87,7 @@ public class RatingDialog {
     }
 
     private static boolean shouldShow() {
-        if (rated()) {
+        if (rated() || BuildConfig.DEBUG) {
             return false;
         }
 
@@ -101,7 +104,7 @@ public class RatingDialog {
         if (context == null) {
             return null;
         }
-        return new AlertDialog.Builder(context)
+        return new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.rating_title)
                 .setMessage(R.string.rating_message)
                 .setPositiveButton(R.string.rating_now_label, (dialog, which) -> rateNow())

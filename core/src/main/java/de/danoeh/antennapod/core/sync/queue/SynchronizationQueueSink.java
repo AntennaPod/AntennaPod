@@ -3,12 +3,21 @@ package de.danoeh.antennapod.core.sync.queue;
 import android.content.Context;
 
 import de.danoeh.antennapod.core.sync.LockingAsyncExecutor;
-import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.SynchronizationSettings;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 public class SynchronizationQueueSink {
+    // To avoid a dependency loop of every class to SyncService, and from SyncService back to every class.
+    private static Runnable serviceStarterImpl = () -> { };
+
+    public static void setServiceStarterImpl(Runnable serviceStarter) {
+        serviceStarterImpl = serviceStarter;
+    }
+
+    public static void syncNow() {
+        serviceStarterImpl.run();
+    }
 
     public static void clearQueue(Context context) {
         LockingAsyncExecutor.executeLockedAsync(new SynchronizationQueueStorage(context)::clearQueue);
@@ -20,7 +29,7 @@ public class SynchronizationQueueSink {
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueFeedAdded(downloadUrl);
-            SyncService.sync(context);
+            syncNow();
         });
     }
 
@@ -30,7 +39,7 @@ public class SynchronizationQueueSink {
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueFeedRemoved(downloadUrl);
-            SyncService.sync(context);
+            syncNow();
         });
     }
 
@@ -40,7 +49,7 @@ public class SynchronizationQueueSink {
         }
         LockingAsyncExecutor.executeLockedAsync(() -> {
             new SynchronizationQueueStorage(context).enqueueEpisodeAction(action);
-            SyncService.sync(context);
+            syncNow();
         });
     }
 

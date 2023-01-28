@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class NotificationUtils {
     public static final String CHANNEL_ID_USER_ACTION = "user_action";

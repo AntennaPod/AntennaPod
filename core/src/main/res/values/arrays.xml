@@ -175,17 +175,17 @@
     </string-array>
 
     <string-array name="nav_drawer_feed_counter_options">
-        <item>@string/drawer_feed_counter_inbox_unplayed</item>
         <item>@string/drawer_feed_counter_inbox</item>
         <item>@string/drawer_feed_counter_unplayed</item>
         <item>@string/drawer_feed_counter_downloaded</item>
+        <item>@string/drawer_feed_counter_downloaded_unplayed</item>
         <item>@string/drawer_feed_counter_none</item>
     </string-array>
     <string-array name="nav_drawer_feed_counter_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>4</item>
+        <item>5</item>
         <item>3</item>
     </string-array>
 
@@ -265,35 +265,21 @@
         <item>@string/skip_episode_label</item>
     </string-array>
 
-    <string-array name="back_button_behavior_options">
-        <item>@string/back_button_default</item>
-        <item>@string/back_button_go_to_page</item>
-        <item>@string/back_button_open_drawer</item>
-        <item>@string/back_button_double_tap</item>
-        <item>@string/back_button_show_prompt</item>
+    <string-array name="default_page_values">
+        <item>HomeFragment</item>
+        <item>QueueFragment</item>
+        <item>NewEpisodesFragment</item>
+        <item>EpisodesFragment</item>
+        <item>SubscriptionFragment</item>
+        <item>remember</item>
     </string-array>
 
-    <string-array name="back_button_behavior_values">
-        <item>default</item>
-        <item>page</item>
-        <item>drawer</item>
-        <item>doubletap</item>
-        <item>prompt</item>
-    </string-array>
-
-    <string-array name="back_button_go_to_pages">
+    <string-array name="default_page_titles">
         <item>@string/home_label</item>
         <item>@string/queue_label</item>
         <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>
-    </string-array>
-
-    <string-array name="back_button_go_to_pages_tags">
-        <item>HomeFragment</item>
-        <item>QueueFragment</item>
-        <item>InboxFragment</item>
-        <item>EpisodesFragment</item>
-        <item>SubscriptionFragment</item>
+        <item>@string/remember_last_page</item>
     </string-array>
 </resources>

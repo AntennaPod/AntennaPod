@@ -3,12 +3,13 @@ package de.danoeh.antennapod.dialog;
 import android.content.Context;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * Shows the dialog that allows setting the skip time.
@@ -34,11 +35,9 @@ public class SkipPreferenceDialog {
                     "%d %s", values[i], context.getString(R.string.time_seconds));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(direction == SkipDirection.SKIP_FORWARD ? R.string.pref_fast_forward : R.string.pref_rewind);
-        builder.setSingleChoiceItems(choices, checked, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        builder.setSingleChoiceItems(choices, checked, (dialog, which) -> {
             int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
             if (choice < 0 || choice >= values.length) {
                 System.err.printf("Choice in showSkipPreference is out of bounds %d", choice);
@@ -52,9 +51,11 @@ public class SkipPreferenceDialog {
                 if (textView != null) {
                     textView.setText(NumberFormat.getInstance().format(seconds));
                 }
+                dialog.dismiss();
             }
         });
-        builder.create().show();
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 
     public enum SkipDirection {

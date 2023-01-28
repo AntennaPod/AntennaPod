@@ -40,6 +40,7 @@
   <string name="statistics_reset_data_msg">Ez törli az összes epizód lejátszási hosszát. Biztos, hogy folytatja?</string>
   <string name="statistics_counting_range">%1$s és %2$s között lejátszott</string>
   <string name="statistics_counting_total">Lejátszva összesen</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Az eszközön lévő epizódok összmérete</string>
   <!--Main activity-->
@@ -117,7 +118,6 @@
     <item quantity="one">%d epizód</item>
     <item quantity="other">%d epizód</item>
   </plurals>
-  <string name="loading_more">Továbbiak betöltése…</string>
   <string name="episode_notification">Epizódértesítések</string>
   <string name="episode_notification_summary">Értesítés megjelenítése, ha megjelenik egy új epizód.</string>
   <plurals name="new_episode_notification_message">
@@ -211,7 +211,6 @@
   <string name="download_pending">Letöltés várakozik</string>
   <string name="download_running">Letöltés fut</string>
   <string name="download_error_details">Részletek</string>
-  <string name="download_error_details_message">%1$s \n\nFájl URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Koppintson a részletek megjelenítéséhez.</string>
   <string name="download_error_device_not_found">Tárolóeszköz nem található</string>
   <string name="download_error_insufficient_space">Nincs elég szabad tárhely az eszközén.</string>
@@ -402,20 +401,6 @@
   <string name="pref_theme_title_dark">Sötét</string>
   <string name="pref_theme_title_trueblack">Fekete (AMOLED-hez alkalmas)</string>
   <string name="pref_episode_cache_unlimited">Korlátlan</string>
-  <string name="synchronization_logout">Kijelentkezés</string>
-  <string name="pref_synchronization_logout_toast">Kijelentkezés sikeres</string>
-  <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
-  <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
-  <string name="synchronization_sync_changes_title">Szinkronizálás most</string>
-  <string name="synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
-  <string name="synchronization_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, ekkor: <i>%2$s</i>. <br/><br/>Ha kijelentkezett, akkor újra kiválaszthatja a szinkronizációs szolgáltatóját]]></string>
-  <string name="synchronization_summary_unchoosen">Több szolgáltató közül választhat, melyekkel szinkronizálhatja a feliratkozásait és az epizódok lejátszási állapotait.</string>
-  <string name="synchronization_summary_nextcloud">A Gpoddersync egy nyílt forráskódú nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Adjon hozzáférés a megnyitott webböngészőben, és jöjjön vissza az AntennaPodhoz.</string>
-  <string name="synchronization_choose_title">Válasszon szinkronizálási szolgáltatót</string>
-  <string name="synchronization_force_sync_summary">Az összes feliratkozás és epizódállapot újraszinkronizálása</string>
-  <string name="synchronization_sync_summary">Feliratkozások és epizódállapot-változások szinkronizálása</string>
-  <string name="dialog_choose_sync_service_title">Válasszon szinkronizálási szolgáltatót</string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
   <string name="pref_feed_skip">Automatikus kihagyás</string>
@@ -467,16 +452,6 @@
   <string name="media_player_switched_to_exoplayer">Átváltva az ExoPlayerre.</string>
   <string name="pref_skip_silence_title">Csend kihagyása a hangokban</string>
   <string name="behavior">Viselkedés</string>
-  <string name="pref_back_button_behavior_title">Vissza gomb viselkedése</string>
-  <string name="pref_back_button_behavior_sum">A vissza gomb viselkedésének módosítása</string>
-  <string name="back_button_default">Alapértelmezett</string>
-  <string name="back_button_open_drawer">Navigációs fiók megnyitása</string>
-  <string name="back_button_double_tap">Dupla koppintás a kilépéshez</string>
-  <string name="back_button_show_prompt">Megerősítés a kilépéshez</string>
-  <string name="close_prompt">Biztos, hogy bezárja az AntennaPodot?</string>
-  <string name="double_tap_toast">A kilépéshez érintse meg újra a vissza gombot</string>
-  <string name="back_button_go_to_page">Ugrás a laphoz…</string>
-  <string name="back_button_go_to_page_title">Válasszon lapot</string>
   <string name="pref_delete_removes_from_queue_title">A törlés eltávolítja a sorból</string>
   <string name="pref_delete_removes_from_queue_sum">Törléskor az epizód automatikus eltávolítása a sorból.</string>
   <string name="pref_filter_feed_title">Feliratkozások szűrője</string>
@@ -574,19 +549,31 @@
   </plurals>
   <string name="auto_enable_label">Automatikus bekapcsolás</string>
   <string name="sleep_timer_enabled_label">Alvási időzítő bekapcsolva</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Válasszon szinkronizálási szolgáltatót</string>
+  <string name="synchronization_summary_unchoosen">Több szolgáltató közül választhat, melyekkel szinkronizálhatja a feliratkozásait és az epizódok lejátszási állapotait.</string>
+  <string name="dialog_choose_sync_service_title">Válasszon szinkronizálási szolgáltatót</string>
+  <string name="synchronization_summary_nextcloud">A Gpoddersync egy nyílt forráskódú nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Adjon hozzáférés a megnyitott webböngészőben, és jöjjön vissza az AntennaPodhoz.</string>
   <string name="gpodnetauth_login_butLabel">Bejelentkezés</string>
   <string name="gpodnetauth_encryption_warning">A jelszavak és adatok nem titkosítottak!</string>
   <string name="username_label">Felhasználónév</string>
   <string name="password_label">Jelszó</string>
-  <string name="gpodnetauth_host">Kiszolgálónév</string>
-  <string name="gpodnetauth_select_server">Válasszon kiszolgálót</string>
   <string name="gpodnetauth_device_name">Eszköz neve</string>
   <string name="gpodnetauth_device_name_default">AntennaPod ezen: %1$s</string>
   <string name="gpodnetauth_existing_devices">Létező eszközök</string>
   <string name="gpodnetauth_create_device">Eszköz létrehozása</string>
   <string name="gpodnetauth_finish_descr">Gratulálunk! A gpodder.net fiókja most már össze van kapcsolva az eszközével. Az AntennaPod automatikusan szinkronizálja az eszközén lévő feliratkozásait a gpodder.net fiókjával.</string>
   <string name="gpodnetauth_finish_butsyncnow">Szinkronizálás indítása most</string>
+  <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
+  <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
+  <string name="synchronization_sync_changes_title">Szinkronizálás most</string>
+  <string name="synchronization_sync_summary">Feliratkozások és epizódállapot-változások szinkronizálása</string>
+  <string name="synchronization_full_sync_title">Teljes szinkronizáció kényszerítése</string>
+  <string name="synchronization_force_sync_summary">Az összes feliratkozás és epizódállapot újraszinkronizálása</string>
+  <string name="synchronization_logout">Kijelentkezés</string>
+  <string name="synchronization_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, ekkor: <i>%2$s</i>. <br/><br/>Ha kijelentkezett, akkor újra kiválaszthatja a szinkronizációs szolgáltatóját]]></string>
+  <string name="pref_synchronization_logout_toast">Kijelentkezés sikeres</string>
   <string name="gpodnetsync_error_title">gpodder.net szinkronizálási hiba</string>
   <string name="gpodnetsync_error_descr">Hiba történt a szinkronizálás során:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Sikeres</string>
@@ -631,10 +618,6 @@
   <string name="auto_download_settings_label">Automatikus letöltési beállítások</string>
   <string name="episode_filters_label">Epizódszűrő</string>
   <string name="episode_filters_description">A kulcsszavak, mely alapján eldől, hogy az automatikus letöltés beleveszi-e az epizódot, vagy sem</string>
-  <string name="episode_filters_include">Belevétel</string>
-  <string name="episode_filters_exclude">Kihagyás</string>
-  <string name="episode_filters_duration">Legrövidebb hossz (perceben)</string>
-  <string name="episode_filters_hint">Különálló szavak\n„Több szó”</string>
   <string name="keep_updated">Frissítse</string>
   <string name="keep_updated_summary">Vegye bele ezt a podcastot is az összes podcast (automatikus) frissítésébe</string>
   <string name="auto_download_disabled_globally">Az automatikus letöltés ki van kapcsolva a fő AntennaPod beállításokban</string>

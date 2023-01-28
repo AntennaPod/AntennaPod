@@ -34,7 +34,7 @@ import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
@@ -162,6 +162,9 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     @Override
     public long getItemId(int position) {
+        if (position >= listItems.size()) {
+            return RecyclerView.NO_ID; // Dummy views
+        }
         return listItems.get(position).id;
     }
 
@@ -204,6 +207,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
 
     public void setItems(List<NavDrawerData.DrawerItem> listItems) {
         this.listItems = listItems;
+        notifyDataSetChanged();
     }
 
     @Override

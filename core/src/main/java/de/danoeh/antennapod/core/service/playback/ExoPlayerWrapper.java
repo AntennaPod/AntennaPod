@@ -36,12 +36,12 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpCredentialEncoder;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.model.playback.Playable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -154,7 +154,7 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public int getDuration() {
         if (exoPlayer.getDuration() == C.TIME_UNSET) {
-            return PlaybackServiceMediaPlayer.INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return (int) exoPlayer.getDuration();
     }

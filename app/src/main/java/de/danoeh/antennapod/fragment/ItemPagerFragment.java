@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -31,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays information about a list of FeedItems.
  */
-public class ItemPagerFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
     private static final String KEY_PAGER_ID = "pager_id";
@@ -56,7 +56,7 @@ public class ItemPagerFragment extends Fragment implements Toolbar.OnMenuItemCli
     private long[] feedItems;
     private FeedItem item;
     private Disposable disposable;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

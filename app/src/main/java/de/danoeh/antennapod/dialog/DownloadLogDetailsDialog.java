@@ -6,7 +6,9 @@ import android.content.Context;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -14,13 +16,12 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import org.greenrobot.eventbus.EventBus;
 
-public class DownloadLogDetailsDialog extends AlertDialog.Builder {
+public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
 
     public DownloadLogDetailsDialog(@NonNull Context context, DownloadStatus status) {
         super(context);
 
         String url = "unknown";
-        String message = context.getString(R.string.download_successful);
         if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
             if (media != null) {
@@ -33,11 +34,13 @@ public class DownloadLogDetailsDialog extends AlertDialog.Builder {
             }
         }
 
+        String message = context.getString(R.string.download_successful);
         if (!status.isSuccessful()) {
             message = status.getReasonDetailed();
         }
 
-        String messageFull = context.getString(R.string.download_error_details_message, message, url);
+        String messageFull = context.getString(R.string.download_log_details_message,
+                context.getString(DownloadErrorLabel.from(status.getReason())), message, url);
         setTitle(R.string.download_error_details);
         setMessage(messageFull);
         setPositiveButton(android.R.string.ok, null);

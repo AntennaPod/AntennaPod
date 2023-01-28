@@ -23,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -53,8 +54,8 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static void loadChapters(Playable playable, Context context) {
-        if (playable.getChapters() != null) {
+    public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {
+        if (playable.getChapters() != null && !forceRefresh) {
             // Already loaded
             return;
         }
@@ -72,7 +73,7 @@ public class ChapterUtils {
 
             if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                        feedMedia.getItem().getPodcastIndexChapterUrl());
+                        feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
             }
 
         }
@@ -120,37 +121,46 @@ public class ChapterUtils {
             if (!source.exists()) {
                 throw new IOException("Local file does not exist");
             }
-            return new CountingInputStream(new FileInputStream(source));
+            return new CountingInputStream(new BufferedInputStream(new FileInputStream(source)));
         } else if (playable.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
             Uri uri = Uri.parse(playable.getStreamUrl());
-            return new CountingInputStream(context.getContentResolver().openInputStream(uri));
+            return new CountingInputStream(new BufferedInputStream(context.getContentResolver().openInputStream(uri)));
         } else {
             Request request = new Request.Builder().url(playable.getStreamUrl()).build();
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.body() == null) {
                 throw new IOException("Body is null");
             }
-            return new CountingInputStream(response.body().byteStream());
+            return new CountingInputStream(new BufferedInputStream(response.body().byteStream()));
         }
     }
 
-    public static List<Chapter> loadChaptersFromUrl(String url) {
+    public static List<Chapter> loadChaptersFromUrl(String url, boolean forceRefresh) {
+        if (forceRefresh) {
+            return loadChaptersFromUrl(url, CacheControl.FORCE_NETWORK);
+        }
+        List<Chapter> cachedChapters = loadChaptersFromUrl(url, CacheControl.FORCE_CACHE);
+        if (cachedChapters == null || cachedChapters.size() <= 1) {
+            // Some publishers use one dummy chapter before actual chapters are available
+            return loadChaptersFromUrl(url, CacheControl.FORCE_NETWORK);
+        }
+        return cachedChapters;
+    }
+
+    private static List<Chapter> loadChaptersFromUrl(String url, CacheControl cacheControl) {
+        Response response = null;
         try {
-            Request request = new Request.Builder().url(url).cacheControl(CacheControl.FORCE_CACHE).build();
-            Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
-            if (response.isSuccessful() && response.body() != null) {
-                List<Chapter> chapters = PodcastIndexChapterParser.parse(response.body().string());
-                if (chapters != null && !chapters.isEmpty()) {
-                    return chapters;
-                }
-            }
-            request = new Request.Builder().url(url).build();
+            Request request = new Request.Builder().url(url).cacheControl(cacheControl).build();
             response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.isSuccessful() && response.body() != null) {
                 return PodcastIndexChapterParser.parse(response.body().string());
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (response != null) {
+                response.close();
+            }
         }
         return null;
     }
@@ -171,7 +181,7 @@ public class ChapterUtils {
 
     @NonNull
     private static List<Chapter> readOggChaptersFromInputStream(InputStream input) throws VorbisCommentReaderException {
-        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(input);
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(new BufferedInputStream(input));
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {

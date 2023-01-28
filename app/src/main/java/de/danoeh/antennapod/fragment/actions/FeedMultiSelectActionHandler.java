@@ -3,7 +3,7 @@ package de.danoeh.antennapod.fragment.actions;
 import android.util.Log;
 
 import androidx.annotation.PluralsRes;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -75,7 +75,7 @@ public class FeedMultiSelectActionHandler {
             viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
         });
         viewBinding.seekBar.updateSpeed(1.0f);
-        new AlertDialog.Builder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.playback_speed)
                 .setView(viewBinding.getRoot())
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {

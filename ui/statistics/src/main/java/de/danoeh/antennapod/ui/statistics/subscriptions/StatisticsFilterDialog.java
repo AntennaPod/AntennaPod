@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Pair;
 import de.danoeh.antennapod.event.StatisticsEvent;
 import de.danoeh.antennapod.ui.statistics.R;
@@ -40,7 +40,7 @@ public class StatisticsFilterDialog {
     public void show() {
         StatisticsFilterDialogBinding dialogBinding = StatisticsFilterDialogBinding.inflate(
                 LayoutInflater.from(context));
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setView(dialogBinding.getRoot());
         builder.setTitle(R.string.filter);
         dialogBinding.includeMarkedCheckbox.setOnCheckedChangeListener((compoundButton, checked) -> {

@@ -58,8 +58,13 @@ public class QueueSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override
@@ -113,13 +118,23 @@ public class QueueSection extends HomeSection {
         if (listAdapter == null) {
             return;
         }
+        boolean foundCurrentlyPlayingItem = false;
+        boolean currentlyPlayingItemIsFirst = true;
         for (int i = 0; i < listAdapter.getItemCount(); i++) {
             HorizontalItemViewHolder holder = (HorizontalItemViewHolder)
                     viewBinding.recyclerView.findViewHolderForAdapterPosition(i);
-            if (holder != null && holder.isCurrentlyPlayingItem()) {
+            if (holder == null) {
+                continue;
+            }
+            if (holder.isCurrentlyPlayingItem()) {
                 holder.notifyPlaybackPositionUpdated(event);
+                foundCurrentlyPlayingItem = true;
+                currentlyPlayingItemIsFirst = (i == 0);
                 break;
             }
+        }
+        if (!foundCurrentlyPlayingItem || !currentlyPlayingItemIsFirst) {
+            loadItems();
         }
     }
 

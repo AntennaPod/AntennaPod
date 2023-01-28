@@ -11,9 +11,9 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -35,6 +35,8 @@ public class EpisodeMultiSelectActionHandler {
             queueChecked(items);
         } else if (actionId == R.id.remove_from_queue_batch) {
             removeFromQueueChecked(items);
+        }  else if (actionId == R.id.remove_from_inbox_batch) {
+            removeFromInboxChecked(items);
         } else if (actionId == R.id.mark_read_batch) {
             markedCheckedPlayed(items);
         } else if (actionId == R.id.mark_unread_batch) {
@@ -66,6 +68,17 @@ public class EpisodeMultiSelectActionHandler {
         showMessage(R.plurals.removed_from_queue_batch_label, checkedIds.length);
     }
 
+    private void removeFromInboxChecked(List<FeedItem> items) {
+        LongList markUnplayed = new LongList();
+        for (FeedItem episode : items) {
+            if (episode.isNew()) {
+                markUnplayed.add(episode.getId());
+            }
+        }
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
+        showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
+    }
+
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
@@ -86,7 +99,7 @@ public class EpisodeMultiSelectActionHandler {
                 requests.add(DownloadRequestCreator.create(episode.getMedia()).build());
             }
         }
-        DownloadService.download(activity, true, requests.toArray(new DownloadRequest[0]));
+        DownloadServiceInterface.get().download(activity, true, requests.toArray(new DownloadRequest[0]));
         showMessage(R.plurals.downloading_batch_label, requests.size());
     }
 

@@ -10,7 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.widget.WidgetUpdaterWorker;
 
@@ -27,7 +27,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
 

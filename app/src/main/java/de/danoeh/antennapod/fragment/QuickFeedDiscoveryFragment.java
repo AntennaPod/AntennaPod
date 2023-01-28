@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import androidx.fragment.app.Fragment;
 
@@ -14,9 +15,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import org.greenrobot.eventbus.EventBus;
@@ -41,7 +42,6 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private static final String TAG = "FeedDiscoveryFragment";
     private static final int NUM_SUGGESTIONS = 12;
 
-    private ProgressBar progressBar;
     private Disposable disposable;
     private FeedDiscoverAdapter adapter;
     private GridView discoverGridLayout;
@@ -59,11 +59,9 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                 ((MainActivity) getActivity()).loadChildFragment(new DiscoveryFragment()));
 
         discoverGridLayout = root.findViewById(R.id.discover_grid);
-        progressBar = root.findViewById(R.id.discover_progress_bar);
         errorView = root.findViewById(R.id.discover_error);
         errorTextView = root.findViewById(R.id.discover_error_txtV);
         errorRetry = root.findViewById(R.id.discover_error_retry_btn);
-        errorRetry.setOnClickListener((listener) -> loadToplist());
         poweredByTextView = root.findViewById(R.id.discover_powered_by_itunes);
 
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
@@ -108,23 +106,35 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     }
 
     private void loadToplist() {
-        progressBar.setVisibility(View.VISIBLE);
-        discoverGridLayout.setVisibility(View.INVISIBLE);
         errorView.setVisibility(View.GONE);
         errorRetry.setVisibility(View.INVISIBLE);
+        errorRetry.setText(R.string.retry_label);
         poweredByTextView.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
-        if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
+        if (prefs.getBoolean(ItunesTopListLoader.PREF_KEY_HIDDEN_DISCOVERY_COUNTRY, false)) {
             errorTextView.setText(R.string.discover_is_hidden);
             errorView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
             discoverGridLayout.setVisibility(View.GONE);
             errorRetry.setVisibility(View.GONE);
             poweredByTextView.setVisibility(View.GONE);
+            return;
+        }
+        //noinspection ConstantConditions
+        if (BuildConfig.FLAVOR.equals("free") && prefs.getBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, true)) {
+            errorTextView.setText("");
+            errorView.setVisibility(View.VISIBLE);
+            discoverGridLayout.setVisibility(View.VISIBLE);
+            errorRetry.setVisibility(View.VISIBLE);
+            errorRetry.setText(R.string.discover_confirm);
+            poweredByTextView.setVisibility(View.VISIBLE);
+            errorRetry.setOnClickListener(v -> {
+                prefs.edit().putBoolean(ItunesTopListLoader.PREF_KEY_NEEDS_CONFIRM, false).apply();
+                loadToplist();
+            });
             return;
         }
 
@@ -132,29 +142,28 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                 .subscribe(
                         podcasts -> {
                             errorView.setVisibility(View.GONE);
-                            progressBar.setVisibility(View.GONE);
-                            discoverGridLayout.setVisibility(View.VISIBLE);
                             if (podcasts.size() == 0) {
                                 errorTextView.setText(getResources().getText(R.string.search_status_no_results));
                                 errorView.setVisibility(View.VISIBLE);
                                 discoverGridLayout.setVisibility(View.INVISIBLE);
                             } else {
+                                discoverGridLayout.setVisibility(View.VISIBLE);
                                 adapter.updateData(podcasts);
                             }
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
                             errorTextView.setText(error.getLocalizedMessage());
                             errorView.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
                             discoverGridLayout.setVisibility(View.INVISIBLE);
                             errorRetry.setVisibility(View.VISIBLE);
+                            errorRetry.setOnClickListener((listener) -> loadToplist());
                         });
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         PodcastSearchResult podcast = adapter.getItem(position);
-        if (podcast.feedUrl == null) {
+        if (TextUtils.isEmpty(podcast.feedUrl)) {
             return;
         }
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);

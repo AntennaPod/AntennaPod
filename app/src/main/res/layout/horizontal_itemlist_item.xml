@@ -13,19 +13,20 @@
         android:id="@+id/card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
-        app:cardCornerRadius="12dp">
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/background_elevated"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="1px"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -45,14 +46,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:outlineProvider="bounds"
-                            tools:src="@tools:sample/avatars"
-                            squareImageView:direction="width" />
+                            squareImageView:direction="width"
+                            tools:src="@tools:sample/avatars" />
 
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
-                            android:layout_margin="8dp"
+                            android:layout_margin="4dp"
                             android:padding="3dp"
                             app:srcCompat="@drawable/bg_circle" />
 
@@ -60,8 +61,8 @@
                             android:id="@+id/circularProgressBar"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_margin="8dp"
                             android:layout_gravity="bottom|end"
+                            android:layout_margin="4dp"
                             app:foregroundColor="?attr/colorOnPrimary" />
 
                         <ImageView
@@ -69,13 +70,13 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
-                            android:layout_margin="8dp"
-                            android:padding="12dp"
+                            android:layout_margin="4dp"
                             android:clickable="true"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
-                            app:tintMode="src_atop"
+                            android:padding="12dp"
+                            app:srcCompat="@drawable/ic_play_24dp"
                             app:tint="?attr/colorOnPrimary"
-                            app:srcCompat="@drawable/ic_play_24dp" />
+                            app:tintMode="src_atop" />
 
                     </FrameLayout>
 
@@ -83,8 +84,8 @@
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
-                        android:max="100"
                         android:layout_gravity="bottom"
+                        android:max="100"
                         style="?attr/progressBarTheme"
                         tools:background="@android:color/holo_blue_light" />
 
@@ -92,14 +93,20 @@
 
             </androidx.cardview.widget.CardView>
 
+            <View
+                android:id="@+id/progressBarReplacementSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/titleLabel"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingHorizontal="4dp"
                 android:layout_marginTop="4dp"
+                android:ellipsize="end"
                 android:lines="2"
+                android:paddingHorizontal="4dp"
                 android:singleLine="false"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp"
@@ -114,6 +121,7 @@
                 android:singleLine="true"
                 android:textAlignment="textStart"
                 android:textSize="14sp"
+                tools:text="@sample/episodes.json/data/published_at"
                 style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
 
         </LinearLayout>

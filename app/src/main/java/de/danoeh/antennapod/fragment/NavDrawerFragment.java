@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,10 +27,11 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.dialog.DrawerPreferencesDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
@@ -219,35 +219,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         loadData();
     }
 
-    private void showDrawerPreferencesDialog() {
-        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
-        String[] navLabels = new String[NAV_DRAWER_TAGS.length];
-        final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
-        for (int i = 0; i < NAV_DRAWER_TAGS.length; i++) {
-            String tag = NAV_DRAWER_TAGS[i];
-            navLabels[i] = navAdapter.getLabel(tag);
-            if (!hiddenDrawerItems.contains(tag)) {
-                checked[i] = true;
-            }
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.drawer_preferences);
-        builder.setMultiChoiceItems(navLabels, checked, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
-            } else {
-                hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-            navAdapter.notifyDataSetChanged(); // Update selection
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
-    }
-
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
@@ -367,7 +338,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         @Override
         public boolean onItemLongClick(int position) {
             if (position < navAdapter.getFragmentTags().size()) {
-                showDrawerPreferencesDialog();
+                DrawerPreferencesDialog.show(getContext(), () -> navAdapter.notifyDataSetChanged());
                 return true;
             } else {
                 contextPressedItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());

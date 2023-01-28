@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.os.StatFs;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.io.File;
 

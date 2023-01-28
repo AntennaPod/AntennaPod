@@ -21,7 +21,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.DownloadStatusCursorMapper;
@@ -337,33 +337,12 @@ public final class DBReader {
         }
     }
 
-    /**
-     * Loads a list of favorite items.
-     *
-     * @param offset The first episode that should be loaded.
-     * @param limit The maximum number of episodes that should be loaded.
-     * @return A list of FeedItems that are marked as favorite.
-     */
-    public static List<FeedItem> getFavoriteItemsList(int offset, int limit) {
-        Log.d(TAG, "getFavoriteItemsList() called");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try (Cursor cursor = adapter.getFavoritesCursor(offset, limit)) {
-            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
-            loadAdditionalFeedItemListData(items);
-            return items;
-        } finally {
-            adapter.close();
-        }
-    }
-
     private static LongList getFavoriteIDList() {
         Log.d(TAG, "getFavoriteIDList() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getFavoritesCursor(0, Integer.MAX_VALUE)) {
+        try (Cursor cursor = adapter.getFavoritesIdsCursor(0, Integer.MAX_VALUE)) {
             LongList favoriteIDs = new LongList(cursor.getCount());
             while (cursor.moveToNext()) {
                 favoriteIDs.add(cursor.getLong(0));

@@ -40,6 +40,7 @@
   <string name="statistics_reset_data_msg">Açò esborrarà l\'històric de la duració reproduïda per a tots els episodis. ¿Segur que vols continuar?</string>
   <string name="statistics_counting_range">Reproduït entre entre %1$s i %2$s</string>
   <string name="statistics_counting_total">Reproduït en total</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Mida total d\'episodis al dispositiu</string>
   <!--Main activity-->
@@ -117,7 +118,6 @@
     <item quantity="one">%d episodi</item>
     <item quantity="other">%d episodis</item>
   </plurals>
-  <string name="loading_more">Carregant més...</string>
   <string name="episode_notification">Notificacions d\'episodi</string>
   <string name="episode_notification_summary">Mostra una notificació quan es publiqui un episodi nou</string>
   <plurals name="new_episode_notification_message">
@@ -211,7 +211,6 @@
   <string name="download_pending">Baixada pendent</string>
   <string name="download_running">Baixada en procés</string>
   <string name="download_error_details">Detalls</string>
-  <string name="download_error_details_message">%1$s \n\nURL del fitxer:\n%2$s</string>
   <string name="download_error_tap_for_details">Toqueu per veure detalls.</string>
   <string name="download_error_device_not_found">No s\'ha trobat cap dispositiu d\'emmagatzemament</string>
   <string name="download_error_insufficient_space">No queda prou espai al dispositiu.</string>
@@ -402,20 +401,6 @@
   <string name="pref_theme_title_dark">Fosc</string>
   <string name="pref_theme_title_trueblack">Negra (per AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Sense límits</string>
-  <string name="synchronization_logout">Desconnecta</string>
-  <string name="pref_synchronization_logout_toast">Us heu desconnectat correctament.</string>
-  <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
-  <string name="synchronization_sync_changes_title">Sincronitzar ara</string>
-  <string name="synchronization_full_sync_title">Forçar sincronització completa</string>
-  <string name="synchronization_login_status"><![CDATA[Connectat com <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podeu escollir de nou el vostre proveïdor de sincronització, un cop hagueu desconnectat]]></string>
-  <string name="synchronization_summary_unchoosen">Podeu escollir entre múltiples proveïdors per sincronitzar-hi les vostres subscripcions i l\'estat de reproducció dels episodis</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync és una aplicació de codi obert de Nextcloud que podeu instal·lar fàcilment al vostre servidor. L\'aplicació és independent del projecte AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Concediu accés des de la finestra del navegador oberta i torneu a AntennaPod.</string>
-  <string name="synchronization_choose_title">Escolleix el vostre proveïdor de sincronització</string>
-  <string name="synchronization_force_sync_summary">Re-sincronitza totes les subscripcions i estats dels episodis</string>
-  <string name="synchronization_sync_summary">Sincronitza subscripció i canvis en l\'estat de l\'episodi</string>
-  <string name="dialog_choose_sync_service_title">Escolleix proveïdor de sincronització</string>
   <string name="pref_playback_speed_sum">Personalitza les velocitats disponibles per a la reproducció a velocitat variable</string>
   <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>
   <string name="pref_feed_skip">Auto Ometre</string>
@@ -467,16 +452,6 @@
   <string name="media_player_switched_to_exoplayer">Canviat a ExoPlayer</string>
   <string name="pref_skip_silence_title">Omet Silenci en Audio</string>
   <string name="behavior">Comportament</string>
-  <string name="pref_back_button_behavior_title">Comportament del botó \"endarrere\"</string>
-  <string name="pref_back_button_behavior_sum">Canvia el comportament del botó \"endarrere\"</string>
-  <string name="back_button_default">Per defecte</string>
-  <string name="back_button_open_drawer">Obri el calaix de navegació</string>
-  <string name="back_button_double_tap">Doble toc per a eixir</string>
-  <string name="back_button_show_prompt">Confema per a eixir</string>
-  <string name="close_prompt">Estàs segur que vols tancar AntennaPod?</string>
-  <string name="double_tap_toast">Toca el botó \"endarrere\" un altra vegada per a eixir</string>
-  <string name="back_button_go_to_page">Ves a la pàgina...</string>
-  <string name="back_button_go_to_page_title">Selecciona pàgina</string>
   <string name="pref_delete_removes_from_queue_title">\"Esborrar\" remou de la cua</string>
   <string name="pref_delete_removes_from_queue_sum">Remou automàticament un episodi de la cua quan siga esborrat</string>
   <string name="pref_filter_feed_title">Filtre de subscripció</string>
@@ -574,19 +549,31 @@
   </plurals>
   <string name="auto_enable_label">Autohabilita</string>
   <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Escolleix el vostre proveïdor de sincronització</string>
+  <string name="synchronization_summary_unchoosen">Podeu escollir entre múltiples proveïdors per sincronitzar-hi les vostres subscripcions i l\'estat de reproducció dels episodis</string>
+  <string name="dialog_choose_sync_service_title">Escolleix proveïdor de sincronització</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync és una aplicació de codi obert de Nextcloud que podeu instal·lar fàcilment al vostre servidor. L\'aplicació és independent del projecte AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Concediu accés des de la finestra del navegador oberta i torneu a AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
   <string name="gpodnetauth_encryption_warning">La contrasenya i les dades no estan encriptades!</string>
   <string name="username_label">Nom d\'usuari</string>
   <string name="password_label">Contrasenya</string>
-  <string name="gpodnetauth_host">Nom del servidor</string>
-  <string name="gpodnetauth_select_server">Selecciona servidor</string>
   <string name="gpodnetauth_device_name">Nom del dispositiu</string>
   <string name="gpodnetauth_device_name_default">AntennaPod a %1$s</string>
   <string name="gpodnetauth_existing_devices">Dispositius existents</string>
   <string name="gpodnetauth_create_device">Crea dispositiu</string>
   <string name="gpodnetauth_finish_descr">Felicitats! El vostre compte de gpodder.net s\'ha enllaçat amb el dispositiu. D\'ara endavant, AntennaPod sincronitzarà automàticament les subscripcions del dispositiu al vostre compte.</string>
   <string name="gpodnetauth_finish_butsyncnow">Sincronitza ara</string>
+  <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
+  <string name="synchronization_sync_changes_title">Sincronitzar ara</string>
+  <string name="synchronization_sync_summary">Sincronitza subscripció i canvis en l\'estat de l\'episodi</string>
+  <string name="synchronization_full_sync_title">Forçar sincronització completa</string>
+  <string name="synchronization_force_sync_summary">Re-sincronitza totes les subscripcions i estats dels episodis</string>
+  <string name="synchronization_logout">Desconnecta</string>
+  <string name="synchronization_login_status"><![CDATA[Connectat com <i>%1$s</i> en <i>%2$s</i>. <br/><br/>Podeu escollir de nou el vostre proveïdor de sincronització, un cop hagueu desconnectat]]></string>
+  <string name="pref_synchronization_logout_toast">Us heu desconnectat correctament.</string>
   <string name="gpodnetsync_error_title">Error de sincronització a gpodder.net</string>
   <string name="gpodnetsync_error_descr">S\'ha produït un error durant la sincronització:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Correcte</string>
@@ -631,10 +618,6 @@
   <string name="auto_download_settings_label">Opcions d\'Auto Descàrrega</string>
   <string name="episode_filters_label">Filtre d\'episodis</string>
   <string name="episode_filters_description">Llistat de termes usats per decidir si un episodi s\'ha d\'incloure o excloure en descarregar automàticament</string>
-  <string name="episode_filters_include">Inclou</string>
-  <string name="episode_filters_exclude">Exclou</string>
-  <string name="episode_filters_duration">Durada mínima (en minuts)</string>
-  <string name="episode_filters_hint">Una paraula \n\"Diverses paraules\"</string>
   <string name="keep_updated">Manté actualitzat</string>
   <string name="keep_updated_summary">Incloure aquest podcast quan (auto-)actualitzen tots els podcasts</string>
   <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>

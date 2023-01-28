@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -44,6 +45,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.core.service.QuickSettingsTileService;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -53,6 +56,7 @@ import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
 import de.danoeh.antennapod.playback.cast.CastStateListener;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -70,7 +74,6 @@ import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -80,7 +83,6 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -107,34 +109,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private static final String TAG = "PlaybackService";
 
-    public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
-    public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
-    public static final String EXTRA_ALLOW_STREAM_ALWAYS = "extra.de.danoeh.antennapod.core.service.allowStreamAlways";
-
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
-
-    public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.core.service.playerNotification";
-    public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.core.service.notificationCode";
-    public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.core.service.notificationType";
-
-    /**
-     * If the PlaybackService receives this action, it will stop playback and
-     * try to shutdown.
-     */
-    public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.core.service.actionShutdownPlaybackService";
-
-    /**
-     * If the PlaybackService receives this action, it will end playback of the
-     * current episode and load the next episode if there is one available.
-     */
-    public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
-
-    /**
-     * If the PlaybackService receives this action, it will pause playback.
-     */
-    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
 
     /**
      * Custom actions used by Android Wear, Android Auto, and Android (API 33+ only)
@@ -146,32 +123,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
 
     /**
-     * Used in NOTIFICATION_TYPE_RELOAD.
-     */
-    public static final int EXTRA_CODE_AUDIO = 1;
-    public static final int EXTRA_CODE_VIDEO = 2;
-    public static final int EXTRA_CODE_CAST = 3;
-
-    /**
-     * Receivers of this intent should update their information about the curently playing media
-     */
-    public static final int NOTIFICATION_TYPE_RELOAD = 3;
-
-    /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
      */
     public static final int MAX_ANDROID_AUTO_EPISODES_PER_FEED = 100;
-
-    /**
-     * No more episodes are going to be played.
-     */
-    public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
-
-    /**
-     * Returned by getPositionSafe() or getDurationSafe() if the playbackService
-     * is in an invalid state.
-     */
-    public static final int INVALID_TIME = -1;
 
     /**
      * Is true if service is running.
@@ -260,11 +214,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-        registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(shutdownReceiver, new IntentFilter(PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
-        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
         EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
@@ -347,8 +299,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(shutdownReceiver);
         unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
-        unregisterReceiver(skipCurrentEpisodeReceiver);
-        unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -499,7 +449,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
-        Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
+        Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stateManager.stopService();
@@ -526,9 +476,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             } else {
                 stateManager.validStartCommandWasReceived();
-                boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
-                boolean allowStreamAlways = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_ALWAYS, false);
-                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+                boolean allowStreamThisTime = intent.getBooleanExtra(
+                        PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
+                boolean allowStreamAlways = intent.getBooleanExtra(
+                        PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, false);
+                sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
@@ -582,8 +534,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
         Intent intentAllowThisTime = new Intent(originalIntent);
-        intentAllowThisTime.setAction(EXTRA_ALLOW_STREAM_THIS_TIME);
-        intentAllowThisTime.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        intentAllowThisTime.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME);
+        intentAllowThisTime.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, true);
         PendingIntent pendingIntentAllowThisTime;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             pendingIntentAllowThisTime = PendingIntent.getForegroundService(this,
@@ -596,8 +548,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
-        intentAlwaysAllow.setAction(EXTRA_ALLOW_STREAM_ALWAYS);
-        intentAlwaysAllow.putExtra(EXTRA_ALLOW_STREAM_ALWAYS, true);
+        intentAlwaysAllow.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS);
+        intentAlwaysAllow.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, true);
         PendingIntent pendingIntentAlwaysAllow;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this,
@@ -723,7 +675,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> PlayableUtils.createInstanceFromPreferences(getApplicationContext()))
+        Observable.fromCallable(() -> PlaybackPreferences.createInstanceFromPreferences(getApplicationContext()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -776,7 +728,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-            saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
+            saveCurrentPosition(true, null, Playable.INVALID_TIME);
         }
 
         @Override
@@ -787,7 +739,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onChapterLoaded(Playable media) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
         }
     };
 
@@ -828,6 +780,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
+                    saveCurrentPosition(true, null, Playable.INVALID_TIME);
                     updateNotificationAndMediaSession(newInfo.playable);
                     setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
@@ -848,6 +801,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                TileService.requestListeningState(getApplicationContext(),
+                        new ComponentName(getApplicationContext(), QuickSettingsTileService.class));
+            }
+
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
@@ -863,7 +821,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onMediaChanged(boolean reloadUI) {
             Log.d(TAG, "reloadUI callback reached");
             if (reloadUI) {
-                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+                sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD, 0);
             }
             updateNotificationAndMediaSession(getPlayable());
         }
@@ -877,7 +835,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
             taskManager.startWidgetUpdater();
-            if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
+            if (position != Playable.INVALID_TIME) {
                 playable.setPosition(position);
             } else {
                 skipIntro(playable);
@@ -890,8 +848,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
-            saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME || playable == null,
-                    playable, position);
+            saveCurrentPosition(position == Playable.INVALID_TIME || playable == null, playable, position);
             taskManager.cancelWidgetUpdater();
             if (playable != null) {
                 if (playable instanceof FeedMedia) {
@@ -1027,11 +984,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
         if (mediaType == null) {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+            sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END, 0);
         } else {
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                    isCasting ? EXTRA_CODE_CAST :
-                            (mediaType == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
+            sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD,
+                    isCasting ? PlaybackServiceInterface.EXTRA_CODE_CAST :
+                            (mediaType == MediaType.VIDEO) ? PlaybackServiceInterface.EXTRA_CODE_VIDEO :
+                                    PlaybackServiceInterface.EXTRA_CODE_AUDIO);
         }
     }
 
@@ -1130,9 +1088,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void sendNotificationBroadcast(int type, int code) {
-        Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
-        intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
-        intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
+        Intent intent = new Intent(PlaybackServiceInterface.ACTION_PLAYER_NOTIFICATION);
+        intent.putExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_TYPE, type);
+        intent.putExtra(PlaybackServiceInterface.EXTRA_NOTIFICATION_CODE, code);
         intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
@@ -1214,20 +1172,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
-        if (useSkipToPreviousForRewindInLockscreen()) {
-            // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
-            // which will be used for rewind.
-            // The workaround is used for pre Lollipop (Androidv5) devices.
-            // For Androidv5+, lockscreen widgets are really notifications (compact),
-            // with an independent codepath
-            //
-            // @see #sessionCallback in the backing callback, skipToPrevious implementation
-            //   is actually the same as rewind. So no new inconsistency is created.
-            // @see #setupNotification() for the method to create Androidv5+ lockscreen UI
-            //   with notification (compact)
-            capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
-        }
-
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
         int currentModeType = uiModeManager.getCurrentModeType();
         Log.d(TAG, "UI Mode CurrentModeType = " + currentModeType);
@@ -1278,14 +1222,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sessionState.setActions(capabilities);
 
         mediaSession.setPlaybackState(sessionState.build());
-    }
-
-    private static boolean useSkipToPreviousForRewindInLockscreen() {
-        // showRewindOnCompactNotification() corresponds to the "Set Lockscreen Buttons"
-        // Settings in UI.
-        // Hence, from user perspective, he/she is setting the buttons for Lockscreen
-        return (UserPreferences.showRewindOnCompactNotification() &&
-                (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP));
     }
 
     private void updateNotificationAndMediaSession(final Playable p) {
@@ -1405,7 +1341,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             duration = playable.getDuration();
         }
-        if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
+        if (position != Playable.INVALID_TIME && duration != Playable.INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
             PlayableUtils.saveCurrentPosition(playable, position, System.currentTimeMillis());
         }
@@ -1556,32 +1492,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+            if (TextUtils.equals(intent.getAction(), PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                 EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
                 stateManager.stopService();
             }
         }
 
-    };
-
-    private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.skip();
-            }
-        }
-    };
-
-    private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
-                mediaPlayer.pause(false, false);
-            }
-        }
     };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1643,10 +1559,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.pause(abandonAudioFocus, reinit);
     }
 
-    public void reinit() {
-        mediaPlayer.reinit();
-    }
-
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
         return mediaPlayer.getPSMPInfo();
     }
@@ -1705,7 +1617,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public int getDuration() {
         if (mediaPlayer == null) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return mediaPlayer.getDuration();
     }
@@ -1716,7 +1628,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public int getCurrentPosition() {
         if (mediaPlayer == null) {
-            return INVALID_TIME;
+            return Playable.INVALID_TIME;
         }
         return mediaPlayer.getPosition();
     }

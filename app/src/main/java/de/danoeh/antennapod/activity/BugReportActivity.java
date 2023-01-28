@@ -9,7 +9,7 @@ import android.util.Log;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -20,9 +20,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -39,7 +40,7 @@ public class BugReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(ThemeSwitcher.getTheme(this));
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.bug_report);
@@ -79,7 +80,7 @@ public class BugReportActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.export_logcat) {
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertBuilder = new MaterialAlertDialogBuilder(this);
             alertBuilder.setMessage(R.string.confirm_export_log_dialog_message);
             alertBuilder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                 exportLog();

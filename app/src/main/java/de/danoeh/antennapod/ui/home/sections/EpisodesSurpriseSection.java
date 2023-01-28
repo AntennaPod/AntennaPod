@@ -68,8 +68,13 @@ public class EpisodesSurpriseSection extends HomeSection {
         if (seed == 0) {
             seed = new Random().nextInt();
         }
-        loadItems();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

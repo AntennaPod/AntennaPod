@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.elevation.SurfaceColors;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -48,6 +50,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
     public void setDummyViews(int dummyViews) {
         this.dummyViews = dummyViews;
+        notifyDataSetChanged();
     }
 
     public void updateItems(List<FeedItem> items) {
@@ -70,7 +73,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     @Override
     public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         if (pos >= episodes.size()) {
+            beforeBindViewHolder(holder, pos);
             holder.bindDummy();
+            afterBindViewHolder(holder, pos);
+            holder.hideSeparatorIfNecessary();
             return;
         }
 
@@ -112,12 +118,14 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         });
 
         if (inActionMode()) {
-            holder.secondaryActionButton.setVisibility(View.GONE);
-            holder.selectCheckBox.setOnClickListener(v -> toggleSelection(holder.getBindingAdapterPosition()));
-            holder.selectCheckBox.setChecked(isSelected(pos));
-            holder.selectCheckBox.setVisibility(View.VISIBLE);
-        } else {
-            holder.selectCheckBox.setVisibility(View.GONE);
+            holder.secondaryActionButton.setOnClickListener(null);
+            if (isSelected(pos)) {
+                Context context = mainActivityRef.get();
+                float density = context.getResources().getDisplayMetrics().density;
+                holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 8 * density));
+            } else {
+                holder.itemView.setBackgroundResource(android.R.color.transparent);
+            }
         }
 
         afterBindViewHolder(holder, pos);

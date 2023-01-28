@@ -20,7 +20,9 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -57,8 +59,17 @@ public class DownloadsSection extends HomeSection {
         };
         adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
-        loadItems();
+
+        SwipeActions swipeActions = new SwipeActions(this, CompletedDownloadsFragment.TAG);
+        swipeActions.attachTo(viewBinding.recyclerView);
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override

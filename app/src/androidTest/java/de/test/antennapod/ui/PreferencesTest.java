@@ -21,16 +21,13 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -82,32 +79,16 @@ public class PreferencesTest {
 
     @Test
     public void testSwitchTheme() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
+        final UserPreferences.ThemePreference theme = UserPreferences.getTheme();
+        int otherThemeText;
+        if (theme == UserPreferences.ThemePreference.DARK) {
+            otherThemeText = R.string.pref_theme_title_light;
         } else {
-            otherTheme = R.string.pref_theme_title_light;
+            otherThemeText = R.string.pref_theme_title_dark;
         }
         clickPreference(R.string.user_interface_label);
         clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherTheme)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getTheme() != theme);
-    }
-
-    @Test
-    public void testSwitchThemeBack() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
-        } else {
-            otherTheme = R.string.pref_theme_title_light;
-        }
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherTheme)).perform(click());
+        onView(withText(otherThemeText)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getTheme() != theme);
     }
@@ -428,7 +409,6 @@ public class PreferencesTest {
         clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
@@ -474,7 +454,6 @@ public class PreferencesTest {
         // Find next value (wrapping around to next)
         int newIndex = (currentIndex + 1) % deltas.length;
         onView(withText(deltas[newIndex] + " seconds")).perform(click());
-        onView(withText("Confirm")).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getRewindSecs() == deltas[newIndex]);
@@ -496,40 +475,10 @@ public class PreferencesTest {
             int newIndex = (currentIndex + 1) % deltas.length;
 
             onView(withText(deltas[newIndex] + " seconds")).perform(click());
-            onView(withText("Confirm")).perform(click());
 
             Awaitility.await().atMost(1000, MILLISECONDS)
                     .until(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex]);
         }
-    }
-
-    @Test
-    public void testBackButtonBehaviorGoToPageSelector() {
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.queue_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(QueueFragment.TAG));
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.episodes_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(AllEpisodesFragment.TAG));
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.subscriptions_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(SubscriptionFragment.TAG));
     }
 
     @Test

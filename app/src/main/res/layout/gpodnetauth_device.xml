@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginBottom="16dp"
+        android:text="@string/synchronization_selectDevice_explanation" />
 
     <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/deviceName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/gpodnetauth_device_name"
-                android:lines="1"
-                android:imeOptions="actionNext|flagNoFullscreen"/>
+            android:id="@+id/deviceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/gpodnetauth_device_name"
+            android:lines="1"
+            android:imeOptions="actionNext|flagNoFullscreen" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-            android:id="@+id/createDeviceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:text="@string/gpodnetauth_create_device"/>
+        android:id="@+id/createDeviceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|end"
+        android:text="@string/gpodnetauth_create_device" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/AntennaPod.TextView.Heading"
         android:layout_marginTop="16dp"
-        android:text="@string/gpodnetauth_existing_devices"/>
+        android:text="@string/gpodnetauth_existing_devices"
+        style="@style/AntennaPod.TextView.Heading" />
 
     <TextView
         android:id="@+id/deviceSelectError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/download_failed_red"
+        android:textColor="?attr/icon_red"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone"
         tools:text="Error message"
@@ -55,7 +61,7 @@
         android:id="@+id/progbarCreateDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/download_failed_red"
+        android:textColor="?attr/icon_red"
         android:visibility="gone" />
 
 </LinearLayout>

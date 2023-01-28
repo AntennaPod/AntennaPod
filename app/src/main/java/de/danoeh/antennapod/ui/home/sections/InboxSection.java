@@ -20,9 +20,12 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.fragment.InboxFragment;
+import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import io.reactivex.Observable;
@@ -33,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 public class InboxSection extends HomeSection {
     public static final String TAG = "InboxSection";
@@ -59,8 +63,17 @@ public class InboxSection extends HomeSection {
         };
         adapter.setDummyViews(NUM_EPISODES);
         viewBinding.recyclerView.setAdapter(adapter);
-        loadItems();
+
+        SwipeActions swipeActions = new SwipeActions(this, InboxFragment.TAG);
+        swipeActions.attachTo(viewBinding.recyclerView);
+        swipeActions.setFilter(new FeedItemFilter(FeedItemFilter.NEW));
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadItems();
     }
 
     @Override
@@ -75,6 +88,11 @@ public class InboxSection extends HomeSection {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
+        loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
         loadItems();
     }
 
@@ -116,7 +134,11 @@ public class InboxSection extends HomeSection {
                     adapter.setDummyViews(0);
                     adapter.updateItems(items);
                     viewBinding.numNewItemsLabel.setVisibility(View.VISIBLE);
-                    viewBinding.numNewItemsLabel.setText(String.valueOf(data.second));
+                    if (data.second >= 100) {
+                        viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d+", 99));
+                    } else {
+                        viewBinding.numNewItemsLabel.setText(String.format(Locale.getDefault(), "%d", data.second));
+                    }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 }

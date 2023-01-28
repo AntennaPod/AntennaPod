@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +30,7 @@ import com.leinardi.android.speeddial.SpeedDialView;
 
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.view.LiftOnScrollListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -48,7 +49,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -70,7 +71,7 @@ import io.reactivex.schedulers.Schedulers;
  * Fragment for displaying feed subscriptions
  */
 public class SubscriptionFragment extends Fragment
-        implements Toolbar.OnMenuItemClickListener,
+        implements MaterialToolbar.OnMenuItemClickListener,
         SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
@@ -87,11 +88,10 @@ public class SubscriptionFragment extends Fragment
 
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
-    private FloatingActionButton subscriptionAddButton;
-    private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
+    private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
 
@@ -153,8 +153,27 @@ public class SubscriptionFragment extends Fragment
         setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
-        subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
-        progressBar = root.findViewById(R.id.progLoading);
+        subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
+        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                super.onCreateContextMenu(menu, v, menuInfo);
+                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
+            }
+        };
+        subscriptionAdapter.setOnSelectModeListener(this);
+        subscriptionRecycler.setAdapter(subscriptionAdapter);
+        setupEmptyView();
+
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        FloatingActionButton subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
+        subscriptionAddButton.setOnClickListener(view -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
+            }
+        });
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
@@ -254,26 +273,6 @@ public class SubscriptionFragment extends Fragment
     }
 
     @Override
-    public void onViewCreated(@NonNull View v, Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
-        subscriptionAdapter = new SubscriptionsRecyclerAdapter((MainActivity) getActivity()) {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
-            }
-        };
-        subscriptionAdapter.setOnSelectModeListener(this);
-        subscriptionRecycler.setAdapter(subscriptionAdapter);
-        setupEmptyView();
-        subscriptionAddButton.setOnClickListener(view -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
-            }
-        });
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -287,7 +286,6 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-
         if (subscriptionAdapter != null) {
             subscriptionAdapter.endSelectMode();
         }
@@ -319,13 +317,11 @@ public class SubscriptionFragment extends Fragment
                             subscriptionAdapter.endSelectMode();
                         }
                         listItems = result;
+                        progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
-                        subscriptionAdapter.notifyDataSetChanged();
                         emptyView.updateVisibility();
-                        progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
                     });
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
@@ -414,7 +410,6 @@ public class SubscriptionFragment extends Fragment
         speedDialView.close();
         speedDialView.setVisibility(View.GONE);
         subscriptionAdapter.setItems(listItems);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -426,6 +421,5 @@ public class SubscriptionFragment extends Fragment
             }
         }
         subscriptionAdapter.setItems(feedsOnly);
-        subscriptionAdapter.notifyDataSetChanged();
     }
 }

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.storage.DBTasks;
 
 // modified from http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
@@ -24,7 +24,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
 
         Log.d(TAG, "charging intent: " + action);
 
-        ClientConfig.initialize(context);
+        ClientConfigurator.initialize(context);
         if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
             Log.d(TAG, "charging, starting auto-download");
             // we're plugged in, this is a great time to auto-download if everything else is
@@ -37,7 +37,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
             // if we're not supposed to be auto-downloading when we're not charging, stop it
             if (!UserPreferences.isEnableAutodownloadOnBattery()) {
                 Log.d(TAG, "not charging anymore, canceling auto-download");
-                DownloadService.cancelAll(context);
+                DownloadServiceInterface.get().cancelAll(context);
             } else {
                 Log.d(TAG, "not charging anymore, but the user allows auto-download " +
                            "when on battery so we'll keep going");
