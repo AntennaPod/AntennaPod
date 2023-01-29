@@ -760,13 +760,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
                 case PAUSED:
-                    if (UserPreferences.isPersistNotify() || isCasting) {
-                        // do not remove notification on pause based on user pref
-                        // Change [Play] button to [Pause]
-                        updateNotificationAndMediaSession(newInfo.playable);
-                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
-                        // remove notification on pause
-                        stateManager.stopForeground(true);
+                    updateNotificationAndMediaSession(newInfo.playable);
+                    if (!isCasting) {
+                        stateManager.stopForeground(!UserPreferences.isPersistNotify());
                     }
                     cancelPositionObserver();
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
@@ -811,7 +807,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            updateNotificationAndMediaSession(getPlayable()); // Stops foreground if not playing
+            stateManager.stopForeground(!UserPreferences.isPersistNotify());
         }
 
         @Override
@@ -1271,7 +1267,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
-        startForegroundIfPlaying(playerStatus);
 
         if (!notificationBuilder.isIconCached()) {
             playableIconLoaderThread = new Thread(() -> {
@@ -1283,21 +1278,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             });
             playableIconLoaderThread.start();
-        }
-    }
-
-    private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
-        Log.d(TAG, "startForegroundIfPlaying: " + status);
-        if (stateManager.hasReceivedValidStartCommand()) {
-            if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
-                    || status == PlayerStatus.SEEKING) {
-                stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
-                Log.d(TAG, "foreground");
-            } else {
-                stateManager.stopForeground(false);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
-            }
         }
     }
 
