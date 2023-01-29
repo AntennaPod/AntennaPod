@@ -23,6 +23,7 @@ public class Itunes extends Namespace {
     public static final String DURATION = "duration";
     private static final String SUBTITLE = "subtitle";
     private static final String SUMMARY = "summary";
+    private static final String NEW_FEED_URL = "new-feed-url";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -76,6 +77,8 @@ public class Itunes extends Namespace {
             } else if (Rss20.CHANNEL.equals(state.getSecondTag().getName()) && state.getFeed() != null) {
                 state.getFeed().setDescription(content);
             }
+        } else if (NEW_FEED_URL.equals(localName) && content.trim().startsWith("http")) {
+            state.redirectUrl = content.trim();
         }
     }
 }
