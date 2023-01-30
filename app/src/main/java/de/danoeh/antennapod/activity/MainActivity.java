@@ -527,9 +527,6 @@ public class MainActivity extends CastEnabledActivity {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             if (tag != null) {
                 loadFragment(tag, args);
-                if (intent.hasExtra(MainActivityStarter.EXTRA_OPEN_DRAWER) && drawerLayout != null) {
-                    drawerLayout.open();
-                }
             } else if (feedId > 0) {
                 boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
                 boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
@@ -545,6 +542,10 @@ public class MainActivity extends CastEnabledActivity {
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             handleDeeplink(intent.getData());
+        }
+
+        if (intent.hasExtra(MainActivityStarter.EXTRA_OPEN_DRAWER) && drawerLayout != null) {
+            drawerLayout.open();
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

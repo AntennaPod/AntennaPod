@@ -56,6 +56,10 @@ public class MainActivityStarter {
 
     public MainActivityStarter withFragmentLoaded(String fragmentName) {
         intent.putExtra(EXTRA_FRAGMENT_TAG, fragmentName);
+        return withDrawerOpen();
+    }
+
+    private MainActivityStarter withDrawerOpen() {
         intent.putExtra(EXTRA_OPEN_DRAWER, true);
         return this;
     }

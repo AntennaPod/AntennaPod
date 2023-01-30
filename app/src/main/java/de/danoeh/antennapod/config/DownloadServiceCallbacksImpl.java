@@ -20,10 +20,10 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
 
     @Override
     public PendingIntent getNotificationContentIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
+        MainActivityStarter starter = new MainActivityStarter(context)
+                .withFragmentLoaded(CompletedDownloadsFragment.TAG);
         return PendingIntent.getActivity(context,
-                R.id.pending_intent_download_service_notification, intent,
+                R.id.pending_intent_download_service_notification, starter.getIntent(),
                 PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
     }
 
