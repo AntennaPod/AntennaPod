@@ -254,7 +254,6 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-
         FeedItem selectedItem = adapter.getLongPressedItem();
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
 
