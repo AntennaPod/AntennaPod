@@ -266,7 +266,6 @@ public class SearchFragment extends Fragment {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
