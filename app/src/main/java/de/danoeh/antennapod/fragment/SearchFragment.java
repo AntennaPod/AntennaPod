@@ -160,7 +160,6 @@ public class SearchFragment extends Fragment {
                 MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
             }
         };
-
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
