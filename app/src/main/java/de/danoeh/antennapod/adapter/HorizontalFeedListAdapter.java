@@ -78,7 +78,6 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
                         .fitCenter()
                         .dontAnimate())
                 .into(holder.imageView);
-
     }
 
     @Nullable
