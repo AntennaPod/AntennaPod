@@ -153,7 +153,6 @@ public class SearchFragment extends Fragment {
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
 
         adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
-
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view,
                                             ContextMenu.ContextMenuInfo contextMenuInfo) {
