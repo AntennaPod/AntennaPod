@@ -107,8 +107,6 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         inflater.inflate(R.menu.nav_feed_context, contextMenu);
         contextMenu.setHeaderTitle(longPressedItem.getTitle());
     }
-
-
     static class Holder extends RecyclerView.ViewHolder {
         SquareImageView imageView;
 
