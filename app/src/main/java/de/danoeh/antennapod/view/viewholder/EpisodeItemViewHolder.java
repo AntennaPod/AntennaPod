@@ -226,6 +226,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateDuration(PlaybackPositionEvent event) {
+        if (getFeedItem().getMedia() != null) {
+            getFeedItem().getMedia().setPosition(event.getPosition());
+            getFeedItem().getMedia().setDuration(event.getDuration());
+        }
         int currentPosition = event.getPosition();
         int timeDuration = event.getDuration();
         int remainingTime = Math.max(timeDuration - currentPosition, 0);
