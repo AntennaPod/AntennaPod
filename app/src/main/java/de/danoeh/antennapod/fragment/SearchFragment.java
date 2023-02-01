@@ -252,20 +252,16 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getLongPressedItem();
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
-        if (selectedFeedItem != null && FeedMenuHandler.onMenuItemClicked(this,
-                item.getItemId(), selectedFeedItem, () -> {
-                    Log.i(TAG, "Feed Item removed from Inbox");
-                }
-                )) {
+        if (selectedFeedItem != null
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
             return true;
         }
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at current position was null, ignoring selection");
-            return super.onContextItemSelected(item);
+        FeedItem selectedItem = adapter.getLongPressedItem();
+        if (selectedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)) {
+            return true;
         }
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+        return super.onContextItemSelected(item);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -117,7 +117,6 @@ public class FeedMenuHandler {
         } else if (menuItemId == R.id.remove_feed) {
             RemoveFeedDialog.show(context, selectedFeed);
         } else {
-            Log.d(TAG, "Unknown menuItemId: " + menuItemId);
             return false;
         }
         return true;
