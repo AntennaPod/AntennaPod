@@ -4,27 +4,29 @@ import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Collections;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
-import de.danoeh.antennapod.core.dialog.StatusListener;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import org.apache.commons.lang3.StringUtils;
+import android.content.DialogInterface;
+import android.annotation.SuppressLint;
+import androidx.fragment.app.Fragment;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.TagSettingsDialog;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.SortOrder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import java.util.Collections;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -87,23 +89,26 @@ public class FeedMenuHandler {
     }
 
     public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
-                                            @NonNull Feed selectedFeed) {
-
+                                            @NonNull Feed selectedFeed, Runnable callback) {
         @NonNull Context context = fragment.requireContext();
         if (menuItemId == R.id.rename_folder_item) {
             new RenameItemDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_all_inbox_item) {
-            DisplayConfirmationDialog.display(fragment.getActivity(), R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg,
-                    () -> DBWriter.removeFeedNewFlag(selectedFeed.getId()), new StatusListener() {
-                        @Override
-                        public void onActionSuccess() {}
+            ConfirmationDialog dialog = new ConfirmationDialog(fragment.getActivity(),
+                    R.string.remove_all_inbox_label,  R.string.remove_all_inbox_confirmation_msg) {
+                @Override
+                @SuppressLint("CheckResult")
+                public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+                    clickedDialog.dismiss();
+                    Observable.fromCallable((Callable<Future>) () -> DBWriter.removeFeedNewFlag(selectedFeed.getId()))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> callback.run(),
+                                    error -> Log.e(TAG, Log.getStackTraceString(error)));
+                }
+            };
+            dialog.createNewDialog().show();
 
-                        @Override
-                        public void onActionFailure(Throwable throwableError) {
-                            Log.e(TAG, Log.getStackTraceString(throwableError));
-                        }
-                    });
         } else if (menuItemId == R.id.edit_tags) {
             TagSettingsDialog.newInstance(Collections.singletonList(selectedFeed.getPreferences()))
                     .show(fragment.getChildFragmentManager(), TagSettingsDialog.TAG);

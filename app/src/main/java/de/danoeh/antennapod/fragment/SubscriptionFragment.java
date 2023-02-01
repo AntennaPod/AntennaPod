@@ -25,7 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
 import org.greenrobot.eventbus.EventBus;
@@ -33,7 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,22 +45,19 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
-import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import de.danoeh.antennapod.core.dialog.DisplayConfirmationDialog;
-import de.danoeh.antennapod.core.dialog.StatusListener;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -347,37 +342,11 @@ public class SubscriptionFragment extends Fragment
         }
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-        if (itemId == R.id.remove_all_inbox_item) {
-            DisplayConfirmationDialog.display(getActivity(), R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg,
-                    () -> DBWriter.removeFeedNewFlag(feed.getId()), new StatusListener() {
-                        @Override
-                        public void onActionSuccess() {
-                            loadSubscriptions();
-                        }
-
-                        @Override
-                        public void onActionFailure(Throwable throwableError) {
-                            Log.e(TAG, Log.getStackTraceString(throwableError));
-                        }
-
-                    });
-            return true;
-        } else if (itemId == R.id.edit_tags) {
-            TagSettingsDialog.newInstance(Collections.singletonList(feed.getPreferences()))
-                    .show(getChildFragmentManager(), TagSettingsDialog.TAG);
-            return true;
-        } else if (itemId == R.id.rename_item) {
-            new RenameItemDialog(getActivity(), feed).show();
-            return true;
-        } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed);
-            return true;
-        } else if (itemId == R.id.multi_select) {
+        if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
-        return super.onContextItemSelected(item);
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptions);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

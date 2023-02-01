@@ -136,7 +136,6 @@ public class SearchFragment extends Fragment {
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
-
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -151,7 +150,6 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-
         adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view,
@@ -256,11 +254,13 @@ public class SearchFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         FeedItem selectedItem = adapter.getLongPressedItem();
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
-
-        if (selectedFeedItem != null && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem)) {
+        if (selectedFeedItem != null && FeedMenuHandler.onMenuItemClicked(this,
+                item.getItemId(), selectedFeedItem, () -> {
+                    Log.i(TAG, "Feed Item removed from Inbox");
+                }
+                )) {
             return true;
         }
-
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
