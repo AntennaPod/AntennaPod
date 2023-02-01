@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -75,6 +77,7 @@ public class SubscriptionFragment extends Fragment
     private static final String PREFS = "SubscriptionFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
+    private static final String PREF_NUM_COLUMNS = "columns";
 
     private static final int MIN_NUM_COLUMNS = 2;
     private static final int[] COLUMN_CHECKBOX_IDS = {
@@ -95,6 +98,7 @@ public class SubscriptionFragment extends Fragment
     private Disposable disposable;
 
     private SpeedDialView speedDialView;
+    private SharedPreferences prefs;
 
     private List<NavDrawerData.DrawerItem> listItems;
 
@@ -110,6 +114,7 @@ public class SubscriptionFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 
     }
 
@@ -145,7 +150,7 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        setColumnNumber(UserPreferences.getSubscriptionsColumnCount());
+        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
@@ -210,7 +215,7 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void refreshToolbarState() {
-        int columns = UserPreferences.getSubscriptionsColumnCount();
+        int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
 
         MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
@@ -255,7 +260,7 @@ public class SubscriptionFragment extends Fragment
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 columns, RecyclerView.VERTICAL, false);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
-        UserPreferences.setSubscriptionsColumnCount(columns);
+        prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
     }
 

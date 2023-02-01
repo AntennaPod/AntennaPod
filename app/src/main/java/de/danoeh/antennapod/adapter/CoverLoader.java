@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 
@@ -28,12 +26,11 @@ public class CoverLoader {
     private int resource = 0;
     private String uri;
     private String fallbackUri;
-    private TextView txtvPlaceholder;
+    private TextView title;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private MainActivity activity;
-    private boolean hasRoundedCorner = false;
-    private TextView fallbackTitleView;
+    private TextView fallbackTitle;
 
     public CoverLoader(MainActivity activity) {
         this.activity = activity;
@@ -59,44 +56,34 @@ public class CoverLoader {
         return this;
     }
 
-    public CoverLoader withPlaceholderView(TextView placeholderView) {
-        txtvPlaceholder = placeholderView;
-        return this;
-    }
-
-    /**
-     * Set whether the cover image should have rounded corners; sharp corners by default.
-     *
-     */
-
-    public CoverLoader setRoundedCorner() {
-        hasRoundedCorner = true;
+    public CoverLoader withPlaceholderView(TextView title) {
+        this.title = title;
         return this;
     }
 
     /**
      * Set cover text and if it should be shown even if there is a cover image.
      *
-     * @param placeholderView      Cover text.
+     * @param title      Cover text.
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
     public CoverLoader withPlaceholderView(
-            @NonNull TextView placeholderView,
-            @NonNull TextView fallbackTitleView, boolean textAndImageCombined) {
-        this.txtvPlaceholder = placeholderView;
+            @NonNull TextView title,
+            @NonNull TextView fallbackTitle, boolean textAndImageCombined) {
+        this.title = title;
         this.textAndImageCombined = textAndImageCombined;
-        this.fallbackTitleView = fallbackTitleView;
+        this.fallbackTitle = fallbackTitle;
         return this;
     }
 
     public void load() {
-        CoverTarget coverTarget = new CoverTarget(txtvPlaceholder, fallbackTitleView, imgvCover, textAndImageCombined);
+        CoverTarget coverTarget = new CoverTarget(title, fallbackTitle, imgvCover, textAndImageCombined);
 
         if (resource != 0) {
             Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setTitleVisibility(txtvPlaceholder, fallbackTitleView, textAndImageCombined, null);
+            CoverTarget.setTitleVisibility(title, fallbackTitle, textAndImageCombined, null);
             return;
         }
 
@@ -104,17 +91,12 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
-        if (hasRoundedCorner) {
-            options.transform(new FitCenter(), new RoundedCorners((int)
-                    (8 * activity.getResources().getDisplayMetrics().density)));
-        }
-
         RequestBuilder<PaletteBitmap> builder = Glide.with(activity)
                 .as(PaletteBitmap.class)
                 .load(uri)
                 .apply(options);
 
-        if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
+        if (fallbackUri != null && title != null && imgvCover != null) {
             builder = builder.error(Glide.with(activity)
                     .as(PaletteBitmap.class)
                     .load(fallbackUri)
@@ -127,24 +109,24 @@ public class CoverLoader {
     static class CoverTarget extends CustomViewTarget<ImageView, PaletteBitmap> {
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
-        private boolean textAndImageCombined;
-        private final WeakReference<TextView> tvFallbackTitle;
+        private final boolean textAndImageCombined;
+        private final WeakReference<TextView> fallbackTitle;
 
-        public CoverTarget(TextView txtvPlaceholder,
-                           TextView tvFallbackTitle,
-                           ImageView imgvCover, boolean textAndImageCombined) {
-            super(imgvCover);
-            placeholder = new WeakReference<>(txtvPlaceholder);
-            cover = new WeakReference<>(imgvCover);
+        public CoverTarget(TextView title,
+                           TextView fallbackTitle,
+                           ImageView coverImage, boolean textAndImageCombined) {
+            super(coverImage);
+            placeholder = new WeakReference<>(title);
+            cover = new WeakReference<>(coverImage);
             this.textAndImageCombined = textAndImageCombined;
-            this.tvFallbackTitle = new WeakReference<>(tvFallbackTitle);
+            this.fallbackTitle = new WeakReference<>(fallbackTitle);
         }
 
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
             setTitleVisibility(
                     this.placeholder.get(),
-                    tvFallbackTitle.get(),
+                    fallbackTitle.get(),
                     true, null);
         }
 
@@ -153,7 +135,7 @@ public class CoverLoader {
                                     @Nullable Transition<? super PaletteBitmap> transition) {
             ImageView ivCover = cover.get();
             ivCover.setImageBitmap(resource.bitmap);
-            setTitleVisibility(placeholder.get(), tvFallbackTitle.get(),
+            setTitleVisibility(placeholder.get(), fallbackTitle.get(),
                     textAndImageCombined, resource.palette);
         }
 
@@ -161,19 +143,17 @@ public class CoverLoader {
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
-            setTitleVisibility(this.placeholder.get(), tvFallbackTitle.get(),  textAndImageCombined, null);
+            setTitleVisibility(this.placeholder.get(), fallbackTitle.get(),  textAndImageCombined, null);
         }
 
         static void setTitleVisibility(TextView placeholder, TextView fallbackTitle,
                                        boolean textAndImageCombined, Palette palette) {
             boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (placeholder != null) {
-                placeholder.setVisibility(showTitle
-                        ? View.VISIBLE : View.GONE);
+                placeholder.setVisibility(showTitle ? View.VISIBLE : View.GONE);
             }
             if (fallbackTitle != null) {
-                fallbackTitle.setVisibility(textAndImageCombined && !showTitle
-                        ? View.VISIBLE : View.GONE);
+                fallbackTitle.setVisibility(textAndImageCombined && !showTitle ? View.VISIBLE : View.GONE);
             }
         }
     }

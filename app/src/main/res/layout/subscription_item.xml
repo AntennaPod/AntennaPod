@@ -7,14 +7,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="4dp"
-    android:orientation="vertical"
-    android:foreground="?attr/selectableItemBackground">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardOuter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/outerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clickable="false"
+        android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp">
 
@@ -26,8 +26,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="1dp"
                 android:clickable="false"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -35,7 +36,7 @@
                     android:layout_height="wrap_content">
 
                     <de.danoeh.antennapod.ui.common.SquareImageView
-                        android:id="@+id/imgvCover"
+                        android:id="@+id/coverImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter"
@@ -50,45 +51,28 @@
                         android:text="3"
                         android:layout_alignParentEnd="true"
                         android:textSize="12sp"
-                        style="@style/TextPill"
-                        app:primaryText="Test"
-                        app:primaryTextColor="?attr/colorOnSecondary"
-                        app:primaryTextSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/fallbackTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:padding="6dp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:text="@string/app_name" />
+                        style="@style/TextPill" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/txtvTitle"
+                android:id="@+id/titleLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="start"
                 android:text="final text"
                 android:textColor="?android:attr/textColorPrimary"
-                android:lines="2"
-                android:layout_marginTop="4dp"
-                android:paddingHorizontal="4dp" />
+                android:lines="2" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
     <FrameLayout
-        android:id="@+id/selectView"
+        android:id="@+id/selectContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false">
@@ -102,5 +86,16 @@
             android:layout_margin="8dp" />
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/fallbackTitleLabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:padding="6dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:background="@drawable/bg_round"
+        tools:text="@string/app_name" />
 
 </FrameLayout>
