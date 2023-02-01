@@ -14,17 +14,25 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
+import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
+import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -35,20 +43,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
-import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
-import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
-import io.reactivex.disposables.Disposable;
-
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
  */
 public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = "ItunesSearchFragment";
+    private static final int NUM_OF_TOP_PODCASTS = 25;
     private SharedPreferences prefs;
 
     /**
@@ -188,19 +189,23 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
         }
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(country, 25).subscribe(
-                podcasts -> {
-                    progressBar.setVisibility(View.GONE);
-                    topList = podcasts;
-                    updateData(topList);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                    txtvError.setText(error.getMessage());
-                    txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> loadToplist(country));
-                    butRetry.setVisibility(View.VISIBLE);
-                });
+        disposable = Observable.fromCallable(() ->
+                        loader.loadToplist(country, NUM_OF_TOP_PODCASTS, DBReader.getFeedList()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    podcasts -> {
+                        progressBar.setVisibility(View.GONE);
+                        topList = podcasts;
+                        updateData(topList);
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                        txtvError.setText(error.getMessage());
+                        txtvError.setVisibility(View.VISIBLE);
+                        butRetry.setOnClickListener(v -> loadToplist(country));
+                        butRetry.setVisibility(View.VISIBLE);
+                    });
     }
 
     @Override
