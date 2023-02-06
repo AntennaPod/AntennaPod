@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -27,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.elevation.SurfaceColors;
-
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -52,18 +49,17 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     private List<NavDrawerData.DrawerItem> listItems;
     private NavDrawerData.DrawerItem selectedItem = null;
     int longPressedPosition = 0; // used to init actionMode
-    private final SharedPreferences prefs;
-
-    private static final String PREF_NUM_COLUMNS = "columns";
-    private final int defaultColumnCount;
+    private int columnCount = 3;
 
     public SubscriptionsRecyclerAdapter(MainActivity mainActivity) {
         super(mainActivity);
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.listItems = new ArrayList<>();
         setHasStableIds(true);
-        this.prefs = mainActivity.getSharedPreferences(PREF_NUM_COLUMNS, Context.MODE_PRIVATE);
-        defaultColumnCount = mainActivity.getResources().getInteger(R.integer.subscriptions_default_num_of_columns);
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 
     public Object getItem(int position) {
@@ -221,7 +217,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         private final FrameLayout selectView;
         private final CheckBox selectCheckbox;
         private final CardView card;
-        private final Activity activity;
 
         public SubscriptionViewHolder(@NonNull View itemView, @NonNull MainActivity activityRef) {
             super(itemView);
@@ -232,7 +227,6 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             selectView = itemView.findViewById(R.id.selectContainer);
             selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
             card = itemView.findViewById(R.id.outerContainer);
-            activity = activityRef;
         }
 
         public void bind(NavDrawerData.DrawerItem drawerItem) {
@@ -255,26 +249,26 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                         && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
                 new CoverLoader(mainActivityRef.get())
                         .withUri(feed.getImageUrl())
-                        .withPlaceholderView(title, fallbackTitle, textAndImageCombind)
+                        .withPlaceholderView(fallbackTitle, textAndImageCombind)
                         .withCoverView(coverImage)
                         .load();
             } else {
                 new CoverLoader(mainActivityRef.get())
                         .withResource(R.drawable.ic_tag)
-                        .withPlaceholderView(title, fallbackTitle, true)
+                        .withPlaceholderView(fallbackTitle, true)
                         .withCoverView(coverImage)
                         .load();
             }
 
-            float density = activity.getResources().getDisplayMetrics().density;
-            card.setCardBackgroundColor(SurfaceColors.getColorForElevation(activity, 1 * density));
+            float density = mainActivityRef.get().getResources().getDisplayMetrics().density;
+            card.setCardBackgroundColor(SurfaceColors.getColorForElevation(mainActivityRef.get(), 1 * density));
 
-            int textPadding = prefs.getInt(PREF_NUM_COLUMNS, defaultColumnCount) <= 3 ? 16 : 8;
+            int textPadding = columnCount <= 3 ? 16 : 8;
             title.setPadding(textPadding, textPadding, textPadding, textPadding);
             fallbackTitle.setPadding(textPadding, textPadding, textPadding, textPadding);
 
-            int textSize = prefs.getInt(PREF_NUM_COLUMNS, defaultColumnCount) == 2 ? 16 :
-                    prefs.getInt(PREF_NUM_COLUMNS, defaultColumnCount) == 3 ? 15 : 14;
+            int textSize = columnCount == 2 ? 16 :
+                    columnCount == 3 ? 15 : 14;
             title.setTextSize(textSize);
             fallbackTitle.setTextSize(textSize);
         }

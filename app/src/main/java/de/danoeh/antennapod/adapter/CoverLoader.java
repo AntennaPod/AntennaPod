@@ -26,7 +26,6 @@ public class CoverLoader {
     private int resource = 0;
     private String uri;
     private String fallbackUri;
-    private TextView title;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private MainActivity activity;
@@ -57,33 +56,30 @@ public class CoverLoader {
     }
 
     public CoverLoader withPlaceholderView(TextView title) {
-        this.title = title;
+        this.fallbackTitle = title;
         return this;
     }
 
     /**
      * Set cover text and if it should be shown even if there is a cover image.
-     *
-     * @param title      Cover text.
+     * @param fallbackTitle Fallback title text
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
     public CoverLoader withPlaceholderView(
-            @NonNull TextView title,
             @NonNull TextView fallbackTitle, boolean textAndImageCombined) {
-        this.title = title;
         this.textAndImageCombined = textAndImageCombined;
         this.fallbackTitle = fallbackTitle;
         return this;
     }
 
     public void load() {
-        CoverTarget coverTarget = new CoverTarget(title, fallbackTitle, imgvCover, textAndImageCombined);
+        CoverTarget coverTarget = new CoverTarget(fallbackTitle, imgvCover, textAndImageCombined);
 
         if (resource != 0) {
             Glide.with(activity).clear(coverTarget);
             imgvCover.setImageResource(resource);
-            CoverTarget.setTitleVisibility(title, fallbackTitle, textAndImageCombined, null);
+            CoverTarget.setTitleVisibility(fallbackTitle, textAndImageCombined, null);
             return;
         }
 
@@ -96,7 +92,7 @@ public class CoverLoader {
                 .load(uri)
                 .apply(options);
 
-        if (fallbackUri != null && title != null && imgvCover != null) {
+        if (fallbackUri != null && imgvCover != null) {
             builder = builder.error(Glide.with(activity)
                     .as(PaletteBitmap.class)
                     .load(fallbackUri)
@@ -107,16 +103,13 @@ public class CoverLoader {
     }
 
     static class CoverTarget extends CustomViewTarget<ImageView, PaletteBitmap> {
-        private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
         private final boolean textAndImageCombined;
         private final WeakReference<TextView> fallbackTitle;
 
-        public CoverTarget(TextView title,
-                           TextView fallbackTitle,
+        public CoverTarget(TextView fallbackTitle,
                            ImageView coverImage, boolean textAndImageCombined) {
             super(coverImage);
-            placeholder = new WeakReference<>(title);
             cover = new WeakReference<>(coverImage);
             this.textAndImageCombined = textAndImageCombined;
             this.fallbackTitle = new WeakReference<>(fallbackTitle);
@@ -125,7 +118,6 @@ public class CoverLoader {
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
             setTitleVisibility(
-                    this.placeholder.get(),
                     fallbackTitle.get(),
                     true, null);
         }
@@ -135,7 +127,7 @@ public class CoverLoader {
                                     @Nullable Transition<? super PaletteBitmap> transition) {
             ImageView ivCover = cover.get();
             ivCover.setImageBitmap(resource.bitmap);
-            setTitleVisibility(placeholder.get(), fallbackTitle.get(),
+            setTitleVisibility(fallbackTitle.get(),
                     textAndImageCombined, resource.palette);
         }
 
@@ -143,15 +135,12 @@ public class CoverLoader {
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
-            setTitleVisibility(this.placeholder.get(), fallbackTitle.get(),  textAndImageCombined, null);
+            setTitleVisibility(fallbackTitle.get(),  textAndImageCombined, null);
         }
 
-        static void setTitleVisibility(TextView placeholder, TextView fallbackTitle,
+        static void setTitleVisibility(TextView fallbackTitle,
                                        boolean textAndImageCombined, Palette palette) {
             boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
-            if (placeholder != null) {
-                placeholder.setVisibility(showTitle ? View.VISIBLE : View.GONE);
-            }
             if (fallbackTitle != null) {
                 fallbackTitle.setVisibility(textAndImageCombined && !showTitle ? View.VISIBLE : View.GONE);
             }
