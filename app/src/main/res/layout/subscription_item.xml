@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="4dp"
-    android:orientation="vertical">
+    android:padding="4dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/outerContainer"
@@ -26,7 +25,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_margin="1px"
                 android:clickable="false"
                 app:cardBackgroundColor="@color/non_square_icon_background"
                 app:cardCornerRadius="12dp"
