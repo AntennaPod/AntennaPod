@@ -128,8 +128,9 @@ public class CoverLoader {
         }
 
         static void setTitleVisibility(TextView fallbackTitle, boolean textAndImageCombined) {
+            boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (fallbackTitle != null) {
-                fallbackTitle.setVisibility(textAndImageCombined ? View.VISIBLE : View.GONE);
+                fallbackTitle.setVisibility((textAndImageCombined && !showTitle) ? View.VISIBLE : View.GONE);
             }
         }
     }

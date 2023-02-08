@@ -46,15 +46,6 @@
                         tools:src="@tools:sample/avatars" />
 
                     <TextView
-                        android:id="@+id/countViewPill"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3"
-                        android:layout_alignParentEnd="true"
-                        android:textSize="14sp"
-                        style="@style/TextPill" />
-
-                    <TextView
                         android:id="@+id/fallbackTitleLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,12 +55,21 @@
                         android:layout_alignEnd="@+id/coverImage"
                         android:layout_alignRight="@+id/coverImage"
                         android:layout_alignBottom="@+id/coverImage"
-                        android:background="@color/non_square_icon_background"
+                        android:background="@color/feed_text_bg"
                         android:gravity="center"
                         android:ellipsize="end"
                         android:padding="6dp"
-                        android:textColor="?android:attr/textColorPrimary"
+                        android:textColor="#fff"
                         tools:text="@sample/episodes.json/data/title" />
+
+                    <TextView
+                        android:id="@+id/countViewPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="14sp"
+                        style="@style/TextPill" />
 
                 </RelativeLayout>
 
