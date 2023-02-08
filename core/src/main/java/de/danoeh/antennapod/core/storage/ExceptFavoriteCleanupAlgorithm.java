@@ -74,7 +74,7 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(null);
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()

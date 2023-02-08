@@ -88,7 +88,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(null);
 
         Date mostRecentDateForDeletion = calcMostRecentDateForDeletion(new Date());
         for (FeedItem item : downloadedItems) {

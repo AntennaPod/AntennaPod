@@ -387,7 +387,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
                     DBReader.getQueue().size()));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
-                    DBReader.getDownloadedItems().size()));
+                    DBReader.getDownloadedItems(UserPreferences.getDownloadsSortedOrder()).size()));
             mediaItems.add(createBrowsableMediaItem(R.string.episodes_label, R.drawable.ic_feed_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED))));
             List<Feed> feeds = DBReader.getFeedList();
@@ -401,7 +401,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (parentId.equals(getResources().getString(R.string.queue_label))) {
             feedItems = DBReader.getQueue();
         } else if (parentId.equals(getResources().getString(R.string.downloads_label))) {
-            feedItems = DBReader.getDownloadedItems();
+            feedItems = DBReader.getDownloadedItems(UserPreferences.getDownloadsSortedOrder());
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
             feedItems = DBReader.getRecentlyPublishedEpisodes(0,
                     MAX_ANDROID_AUTO_EPISODES_PER_FEED,
