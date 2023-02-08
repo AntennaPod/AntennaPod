@@ -67,9 +67,9 @@ public class SubscriptionFragment extends Fragment
         SubscriptionsRecyclerAdapter.OnSelectModeListener {
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
+    private static final String PREF_NUM_COLUMNS = "columns";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
-    private static final String PREF_NUM_COLUMNS = "columns";
 
     private static final int MIN_NUM_COLUMNS = 2;
     private static final int[] COLUMN_CHECKBOX_IDS = {
@@ -106,6 +106,7 @@ public class SubscriptionFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
         prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
@@ -250,9 +251,7 @@ public class SubscriptionFragment extends Fragment
     private void setColumnNumber(int columns) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 columns, RecyclerView.VERTICAL, false);
-        if (subscriptionAdapter != null) {
-            subscriptionAdapter.setColumnCount(columns);
-        }
+        subscriptionAdapter.setColumnCount(columns);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();

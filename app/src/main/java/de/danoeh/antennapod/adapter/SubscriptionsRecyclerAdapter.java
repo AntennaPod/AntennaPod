@@ -74,9 +74,8 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
     @Override
     public SubscriptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mainActivityRef.get()).inflate(R.layout.subscription_item, parent, false);
-        itemView.findViewById(R.id.titleLabel).setVisibility(viewType == COVER_WITH_TITLE
-                ? View.VISIBLE : View.GONE);
-        return new SubscriptionViewHolder(itemView, mainActivityRef.get());
+        itemView.findViewById(R.id.titleLabel).setVisibility(viewType == COVER_WITH_TITLE ? View.VISIBLE : View.GONE);
+        return new SubscriptionViewHolder(itemView);
     }
 
     @Override
@@ -218,7 +217,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         private final CheckBox selectCheckbox;
         private final CardView card;
 
-        public SubscriptionViewHolder(@NonNull View itemView, @NonNull MainActivity activityRef) {
+        public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.titleLabel);
             coverImage = itemView.findViewById(R.id.coverImage);
@@ -267,8 +266,12 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             title.setPadding(textPadding, textPadding, textPadding, textPadding);
             fallbackTitle.setPadding(textPadding, textPadding, textPadding, textPadding);
 
-            int textSize = columnCount == 2 ? 16 :
-                    columnCount == 3 ? 15 : 14;
+            int textSize = 14;
+            if (columnCount == 3) {
+                textSize = 15;
+            } else if (columnCount == 2) {
+                textSize = 16;
+            }
             title.setTextSize(textSize);
             fallbackTitle.setTextSize(textSize);
         }

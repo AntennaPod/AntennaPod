@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:clickable="false"
+                app:cardBackgroundColor="@color/non_square_icon_background"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp">
 
@@ -50,8 +51,25 @@
                         android:layout_height="wrap_content"
                         android:text="3"
                         android:layout_alignParentEnd="true"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         style="@style/TextPill" />
+
+                    <TextView
+                        android:id="@+id/fallbackTitleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/coverImage"
+                        android:layout_alignLeft="@+id/coverImage"
+                        android:layout_alignTop="@+id/coverImage"
+                        android:layout_alignEnd="@+id/coverImage"
+                        android:layout_alignRight="@+id/coverImage"
+                        android:layout_alignBottom="@+id/coverImage"
+                        android:background="@color/non_square_icon_background"
+                        android:gravity="center"
+                        android:ellipsize="end"
+                        android:padding="6dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        tools:text="@sample/episodes.json/data/title" />
 
                 </RelativeLayout>
 
@@ -63,9 +81,9 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="start"
-                android:text="final text"
                 android:textColor="?android:attr/textColorPrimary"
-                android:lines="2" />
+                android:lines="2"
+                tools:text="@sample/episodes.json/data/title" />
 
         </LinearLayout>
 
@@ -86,16 +104,5 @@
             android:layout_margin="8dp" />
 
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/fallbackTitleLabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:padding="6dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:background="@drawable/bg_round"
-        tools:text="@string/app_name" />
 
 </FrameLayout>
