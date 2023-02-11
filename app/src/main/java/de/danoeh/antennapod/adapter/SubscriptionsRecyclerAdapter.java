@@ -242,22 +242,25 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 count.setVisibility(View.GONE);
             }
 
+            CoverLoader coverLoader = new CoverLoader(mainActivityRef.get());
+            boolean textAndImageCombined;
             if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
                 Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-                boolean textAndImageCombind = feed.isLocalFeed()
-                        && feed.getImageUrl() != null && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
-                new CoverLoader(mainActivityRef.get())
-                        .withUri(feed.getImageUrl())
-                        .withPlaceholderView(fallbackTitle, textAndImageCombind)
-                        .withCoverView(coverImage)
-                        .load();
+                textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
+                        && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
+                coverLoader.withUri(feed.getImageUrl());
             } else {
-                new CoverLoader(mainActivityRef.get())
-                        .withResource(R.drawable.ic_tag)
-                        .withPlaceholderView(fallbackTitle, true)
-                        .withCoverView(coverImage)
-                        .load();
+                textAndImageCombined = true;
+                coverLoader.withResource(R.drawable.ic_tag);
             }
+            if (UserPreferences.shouldShowSubscriptionTitle()) {
+                // No need for fallback title when already showing title
+                fallbackTitle.setVisibility(View.GONE);
+            } else {
+                coverLoader.withPlaceholderView(fallbackTitle, textAndImageCombined);
+            }
+            coverLoader.withCoverView(coverImage);
+            coverLoader.load();
 
             float density = mainActivityRef.get().getResources().getDisplayMetrics().density;
             card.setCardBackgroundColor(SurfaceColors.getColorForElevation(mainActivityRef.get(), 1 * density));

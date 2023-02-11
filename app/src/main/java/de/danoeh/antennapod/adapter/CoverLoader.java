@@ -12,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.lang.ref.WeakReference;
 
@@ -60,7 +59,7 @@ public class CoverLoader {
      * @param textAndImageCombined Show cover text even if there is a cover image?
      */
     @NonNull
-    public CoverLoader withPlaceholderView(@NonNull TextView fallbackTitle, boolean textAndImageCombined) {
+    public CoverLoader withPlaceholderView(TextView fallbackTitle, boolean textAndImageCombined) {
         this.fallbackTitle = fallbackTitle;
         this.textAndImageCombined = textAndImageCombined;
         return this;
@@ -85,7 +84,7 @@ public class CoverLoader {
                 .load(uri)
                 .apply(options);
 
-        if (fallbackUri != null && fallbackTitle != null && imgvCover != null) {
+        if (fallbackUri != null) {
             builder = builder.error(Glide.with(activity)
                     .as(Drawable.class)
                     .load(fallbackUri)
@@ -103,7 +102,7 @@ public class CoverLoader {
         public CoverTarget(TextView fallbackTitle, ImageView coverImage, boolean textAndImageCombined) {
             super(coverImage);
             this.fallbackTitle = new WeakReference<>(fallbackTitle);
-            cover = new WeakReference<>(coverImage);
+            this.cover = new WeakReference<>(coverImage);
             this.textAndImageCombined = textAndImageCombined;
         }
 
@@ -128,9 +127,8 @@ public class CoverLoader {
         }
 
         static void setTitleVisibility(TextView fallbackTitle, boolean textAndImageCombined) {
-            boolean showTitle = UserPreferences.shouldShowSubscriptionTitle();
             if (fallbackTitle != null) {
-                fallbackTitle.setVisibility((textAndImageCombined && !showTitle) ? View.VISIBLE : View.GONE);
+                fallbackTitle.setVisibility(textAndImageCombined ? View.VISIBLE : View.GONE);
             }
         }
     }
