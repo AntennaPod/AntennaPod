@@ -86,22 +86,22 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <FrameLayout
-        android:id="@+id/selectContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="false">
-
-        <CheckBox
-            android:id="@+id/selectCheckBox"
+        <FrameLayout
+            android:id="@+id/selectContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:layout_margin="8dp" />
+            android:clickable="false">
 
-    </FrameLayout>
+            <CheckBox
+                android:id="@+id/selectCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_margin="8dp" />
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>
