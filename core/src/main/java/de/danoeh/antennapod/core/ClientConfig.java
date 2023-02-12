@@ -11,6 +11,4 @@ public class ClientConfig {
     public static String USER_AGENT;
 
     public static ApplicationCallbacks applicationCallbacks;
-
-    public static DownloadServiceCallbacks downloadServiceCallbacks;
 }
