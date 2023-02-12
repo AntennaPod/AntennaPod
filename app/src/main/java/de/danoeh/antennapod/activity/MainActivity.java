@@ -443,6 +443,9 @@ public class MainActivity extends CastEnabledActivity {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+        if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
+            loadFragment(UserPreferences.getDefaultPage(), null);
+        }
     }
 
     @Override

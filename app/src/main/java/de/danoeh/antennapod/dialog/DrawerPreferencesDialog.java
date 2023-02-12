@@ -5,7 +5,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 
 import java.util.List;
 
@@ -29,9 +28,9 @@ public class DrawerPreferencesDialog {
                 hiddenDrawerItems.add(NavDrawerFragment.NAV_DRAWER_TAGS[which]);
             }
         });
-        String lastNavFragment = NavDrawerFragment.getLastNavFragment(context);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+
             if (hiddenDrawerItems.contains(UserPreferences.getDefaultPage())) {
                 for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
                     if (!hiddenDrawerItems.contains(tag)) {
@@ -40,24 +39,11 @@ public class DrawerPreferencesDialog {
                     }
                 }
             }
-            if (hiddenDrawerItems.contains(lastNavFragment)) {
-                handleHiddenScreen(context);
-            }
-
             if (callback != null) {
                 callback.run();
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
-    }
-
-    private static void handleHiddenScreen(Context context) {
-        String lastNavFragment = NavDrawerFragment.getLastNavFragment(context);
-        List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
-        if (hiddenDrawerItems.contains(lastNavFragment)) {
-            String defaultPage = UserPreferences.getDefaultPage();
-            new MainActivityStarter(context).withFragmentLoaded(defaultPage).start();
-        }
     }
 }

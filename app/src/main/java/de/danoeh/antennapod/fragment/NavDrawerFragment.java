@@ -40,6 +40,7 @@ import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -338,7 +339,13 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         @Override
         public boolean onItemLongClick(int position) {
             if (position < navAdapter.getFragmentTags().size()) {
-                DrawerPreferencesDialog.show(getContext(), () -> navAdapter.notifyDataSetChanged());
+                DrawerPreferencesDialog.show(getContext(), () -> {
+                    navAdapter.notifyDataSetChanged();
+                    if (UserPreferences.getHiddenDrawerItems().contains(getLastNavFragment(getContext()))) {
+                        new MainActivityStarter(getContext())
+                                .withFragmentLoaded(UserPreferences.getDefaultPage()).start();
+                    }
+                });
                 return true;
             } else {
                 contextPressedItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
