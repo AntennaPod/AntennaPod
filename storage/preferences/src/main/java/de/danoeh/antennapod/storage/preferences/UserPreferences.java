@@ -927,7 +927,6 @@ public class UserPreferences {
                 .apply();
     }
 
-
     /**
      * Returns the sort order for the downloads.
      */
@@ -945,7 +944,6 @@ public class UserPreferences {
         }
         prefs.edit().putString(PREF_DOWNLOADS_SORTED_ORDER, "" + sortOrder.code).apply();
     }
-
 
     public static SubscriptionsFilter getSubscriptionsFilter() {
         String value = prefs.getString(PREF_FILTER_FEED, "");

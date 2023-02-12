@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
@@ -88,7 +89,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(null);
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(SortOrder.DATE_NEW_OLD);
 
         Date mostRecentDateForDeletion = calcMostRecentDateForDeletion(new Date());
         for (FeedItem item : downloadedItems) {
