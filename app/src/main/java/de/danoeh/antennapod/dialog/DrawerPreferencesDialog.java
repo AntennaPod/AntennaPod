@@ -39,6 +39,7 @@ public class DrawerPreferencesDialog {
                     }
                 }
             }
+
             if (callback != null) {
                 callback.run();
             }
