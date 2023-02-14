@@ -1174,7 +1174,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
         int currentModeType = uiModeManager.getCurrentModeType();
-        Log.d(TAG, "UI Mode CurrentModeType = " + currentModeType);
 
         // Always show rewind and forward actions and add the Wear extras to them if possible
         PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
