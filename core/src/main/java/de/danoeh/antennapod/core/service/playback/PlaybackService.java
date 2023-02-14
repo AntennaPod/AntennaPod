@@ -1172,9 +1172,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
-        int currentModeType = uiModeManager.getCurrentModeType();
-
         // Always show rewind and forward actions and add the Wear extras to them if possible
         PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_REWIND,
@@ -1193,6 +1190,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sessionState.addCustomAction(fastForwardBuilder.build());
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
+
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        int currentModeType = uiModeManager.getCurrentModeType();
 
         // Workaround bug in Android Auto custom actions described at https://issuetracker.google.com/issues/207389461 by checking for API 31+
         // as well.
@@ -1831,7 +1831,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // This is the last element. Wrap instead of going over the size of the list.
                         newSpeed = selectedSpeeds.get(0);
                     } else {
-                        // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the list.
+                        // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the
+                        // list.
                         newSpeed = selectedSpeeds.get(speedPosition + 1);
                     }
                     onSetPlaybackSpeed(newSpeed);
