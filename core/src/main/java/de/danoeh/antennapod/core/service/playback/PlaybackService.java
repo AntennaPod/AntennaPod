@@ -1770,7 +1770,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                     .getSystemService(Context.UI_MODE_SERVICE);
             if (UserPreferences.getHardwareForwardButton() == KeyEvent.KEYCODE_MEDIA_NEXT
-                    || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
             } else {
@@ -1819,7 +1818,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else if (CUSTOM_ACTION_REWIND.equals(action)) {
                 onRewind();
             } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
-                onSkipToNext();
+                mediaPlayer.skip();
             } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
                 List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
                 int speedPosition = selectedSpeeds.indexOf(mediaPlayer.getPlaybackSpeed());
