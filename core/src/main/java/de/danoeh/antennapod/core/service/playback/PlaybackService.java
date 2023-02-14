@@ -1822,17 +1822,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.skip();
             } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
                 List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
-                int speedPosition = selectedSpeeds.indexOf(mediaPlayer.getPlaybackSpeed());
 
-                float newSpeed;
-                if (speedPosition == selectedSpeeds.size() - 1) {
-                    // This is the last element. Wrap instead of going over the size of the list.
-                    newSpeed = selectedSpeeds.get(0);
-                } else {
-                    // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the list.
-                    newSpeed = selectedSpeeds.get(speedPosition + 1);
+                // If the list has zero or one element, there's nothing we can do to change the playback speed.
+                if (selectedSpeeds.size() > 1) {
+                    int speedPosition = selectedSpeeds.indexOf(mediaPlayer.getPlaybackSpeed());
+                    float newSpeed;
+
+                    if (speedPosition == selectedSpeeds.size() - 1) {
+                        // This is the last element. Wrap instead of going over the size of the list.
+                        newSpeed = selectedSpeeds.get(0);
+                    } else {
+                        // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the list.
+                        newSpeed = selectedSpeeds.get(speedPosition + 1);
+                    }
+                    onSetPlaybackSpeed(newSpeed);
                 }
-                onSetPlaybackSpeed(newSpeed);
             }
         }
     };
