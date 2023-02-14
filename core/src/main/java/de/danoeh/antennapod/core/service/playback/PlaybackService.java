@@ -1572,6 +1572,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSpeed(float speed) {
+        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
+        if (currentMediaType == MediaType.VIDEO) {
+            UserPreferences.setVideoPlaybackSpeed(speed);
+        } else {
+            UserPreferences.setPlaybackSpeed(speed);
+        }
+
         mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
     }
 
@@ -1787,12 +1794,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSetPlaybackSpeed(float speed) {
             Log.d(TAG, "onSetPlaybackSpeed()");
-            PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
-            if (currentMediaType == MediaType.VIDEO) {
-                UserPreferences.setVideoPlaybackSpeed(speed);
-            } else {
-                UserPreferences.setPlaybackSpeed(speed);
-            }
             setSpeed(speed);
         }
 

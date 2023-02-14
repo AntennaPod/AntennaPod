@@ -399,13 +399,6 @@ public abstract class PlaybackController {
     }
 
     public void setPlaybackSpeed(float speed) {
-        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
-        if (getMedia() != null && getMedia().getMediaType() == MediaType.VIDEO) {
-            UserPreferences.setVideoPlaybackSpeed(speed);
-        } else {
-            UserPreferences.setPlaybackSpeed(speed);
-        }
-
         if (playbackService != null) {
             playbackService.setSpeed(speed);
         } else {
