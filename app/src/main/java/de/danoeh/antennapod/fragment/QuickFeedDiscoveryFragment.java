@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,20 +15,23 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
-import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.FeedDiscoverAdapter;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.event.DiscoveryDefaultUpdateEvent;
+import de.danoeh.antennapod.net.discovery.ItunesTopListLoader;
+import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,26 +140,29 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             return;
         }
 
-        disposable = loader.loadToplist(countryCode, NUM_SUGGESTIONS)
+        disposable = Observable.fromCallable(() ->
+                        loader.loadToplist(countryCode, NUM_SUGGESTIONS, DBReader.getFeedList()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        podcasts -> {
-                            errorView.setVisibility(View.GONE);
-                            if (podcasts.size() == 0) {
-                                errorTextView.setText(getResources().getText(R.string.search_status_no_results));
-                                errorView.setVisibility(View.VISIBLE);
-                                discoverGridLayout.setVisibility(View.INVISIBLE);
-                            } else {
-                                discoverGridLayout.setVisibility(View.VISIBLE);
-                                adapter.updateData(podcasts);
-                            }
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                            errorTextView.setText(error.getLocalizedMessage());
+                    podcasts -> {
+                        errorView.setVisibility(View.GONE);
+                        if (podcasts.size() == 0) {
+                            errorTextView.setText(getResources().getText(R.string.search_status_no_results));
                             errorView.setVisibility(View.VISIBLE);
                             discoverGridLayout.setVisibility(View.INVISIBLE);
-                            errorRetry.setVisibility(View.VISIBLE);
-                            errorRetry.setOnClickListener((listener) -> loadToplist());
-                        });
+                        } else {
+                            discoverGridLayout.setVisibility(View.VISIBLE);
+                            adapter.updateData(podcasts);
+                        }
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        errorTextView.setText(error.getLocalizedMessage());
+                        errorView.setVisibility(View.VISIBLE);
+                        discoverGridLayout.setVisibility(View.INVISIBLE);
+                        errorRetry.setVisibility(View.VISIBLE);
+                        errorRetry.setOnClickListener(v -> loadToplist());
+                    });
     }
 
     @Override

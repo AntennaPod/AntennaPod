@@ -38,6 +38,8 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
+import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
+
 import org.apache.commons.io.FileUtils;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -1100,9 +1102,11 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public Cursor getDownloadedItemsCursor() {
+    public Cursor getDownloadedItemsCursor(SortOrder sortOrder) {
+        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0";
+                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                + " ORDER BY " + sortQuery;
         return db.rawQuery(query, null);
     }
 

@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import de.danoeh.antennapod.model.feed.SortOrder;
 
 /**
  * Shows all episodes (possibly filtered by user).
@@ -75,19 +75,14 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             }
             onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>(filter)));
             return true;
-        } else if (item.getItemId() == R.id.episodes_sort_date_asc) {
-            saveSortOrderAndRefresh(SortOrder.DATE_OLD_NEW);
-            return true;
-        } else if (item.getItemId() == R.id.episodes_sort_date_desc) {
-            saveSortOrderAndRefresh(SortOrder.DATE_NEW_OLD);
-            return true;
-        } else if (item.getItemId() == R.id.episodes_sort_duration_asc) {
-            saveSortOrderAndRefresh(SortOrder.DURATION_SHORT_LONG);
-            return true;
-        } else if (item.getItemId() == R.id.episodes_sort_duration_desc) {
-            saveSortOrderAndRefresh(SortOrder.DURATION_LONG_SHORT);
-            return true;
+        } else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                saveSortOrderAndRefresh(sortOrder);
+                return true;
+            }
         }
+
         return false;
     }
 

@@ -41,10 +41,10 @@
 
                 <menu>
                     <item
-                        android:id="@+id/episodes_sort_date_asc"
+                        android:id="@+id/sort_date_asc"
                         android:title="@string/sort_old_new"/>
                     <item
-                        android:id="@+id/episodes_sort_date_desc"
+                        android:id="@+id/sort_date_desc"
                         android:title="@string/sort_new_old"/>
                 </menu>
             </item>
@@ -55,10 +55,10 @@
 
                 <menu>
                     <item
-                        android:id="@+id/episodes_sort_duration_asc"
+                        android:id="@+id/sort_duration_asc"
                         android:title="@string/sort_short_long"/>
                     <item
-                        android:id="@+id/episodes_sort_duration_desc"
+                        android:id="@+id/sort_duration_desc"
                         android:title="@string/sort_long_short"/>
                 </menu>
             </item>

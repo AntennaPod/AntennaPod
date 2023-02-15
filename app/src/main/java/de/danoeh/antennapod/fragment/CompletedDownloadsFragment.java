@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,8 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -77,6 +81,8 @@ public class CompletedDownloadsFragment extends Fragment
         MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
+        inflateSortMenu(toolbar);
+
         toolbar.setOnMenuItemClickListener(this);
         toolbar.setOnLongClickListener(v -> {
             recyclerView.scrollToPosition(5);
@@ -139,6 +145,19 @@ public class CompletedDownloadsFragment extends Fragment
         return root;
     }
 
+    private void inflateSortMenu(MaterialToolbar toolbar) {
+        Menu menu = toolbar.getMenu();
+        MenuItem downloadsItem = menu.findItem(R.id.downloads_sort);
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.sort_menu, downloadsItem.getSubMenu());
+
+        // Remove the sorting options that are not needed in this fragment
+        menu.findItem(R.id.sort_feed_title).setVisible(false);
+        menu.findItem(R.id.sort_random).setVisible(false);
+        menu.findItem(R.id.sort_smart_shuffle).setVisible(false);
+        menu.findItem(R.id.keep_sorted).setVisible(false);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
@@ -177,8 +196,19 @@ public class CompletedDownloadsFragment extends Fragment
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             return true;
+        }  else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                setSortOrder(sortOrder);
+                return true;
+            }
         }
         return false;
+    }
+
+    private void setSortOrder(SortOrder sortOrder) {
+        UserPreferences.setDownloadsSortedOrder(sortOrder);
+        loadItems();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -279,7 +309,9 @@ public class CompletedDownloadsFragment extends Fragment
         }
         emptyView.hide();
         disposable = Observable.fromCallable(() -> {
-            List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+            SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
+            List<FeedItem> downloadedItems = DBReader.getDownloadedItems(sortOrder);
+
             List<Long> mediaIds = new ArrayList<>();
             if (runningDownloads == null) {
                 return downloadedItems;

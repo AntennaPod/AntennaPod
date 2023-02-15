@@ -281,15 +281,19 @@ public final class DBReader {
      * @return A list of FeedItems whose episdoe has been downloaded.
      */
     @NonNull
-    public static List<FeedItem> getDownloadedItems() {
+    public static List<FeedItem> getDownloadedItems(@Nullable SortOrder sortOrder) {
         Log.d(TAG, "getDownloadedItems() called");
+
+        // Set a default sort order
+        if (sortOrder == null) {
+            sortOrder = SortOrder.DATE_NEW_OLD;
+        }
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getDownloadedItemsCursor()) {
+        try (Cursor cursor = adapter.getDownloadedItemsCursor(sortOrder)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
-            Collections.sort(items, new FeedItemPubdateComparator());
             return items;
         } finally {
             adapter.close();
