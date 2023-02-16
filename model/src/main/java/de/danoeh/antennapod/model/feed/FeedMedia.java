@@ -128,6 +128,9 @@ public class FeedMedia extends FeedFile implements Playable {
         if (other.size > 0) {
             size = other.size;
         }
+        if (other.duration > 0 && duration <= 0) { // Do not overwrite duration that we measured after downloading
+            duration = other.duration;
+        }
         if (other.mime_type != null) {
             mime_type = other.mime_type;
         }
@@ -143,6 +146,9 @@ public class FeedMedia extends FeedFile implements Playable {
             }
         }
         if (other.size > 0 && other.size != size) {
+            return true;
+        }
+        if (other.duration > 0 && duration <= 0) {
             return true;
         }
         return false;
