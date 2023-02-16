@@ -684,7 +684,7 @@
   <string name="sp_apps_importing_feeds_msg">Imporovať odbery z jednoúčelových aplikácií…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Hľadať podcast…</string>
-  <string name="search_itunes_label">Hľadať v iTunes</string>
+  <string name="search_apple_label">Hľadať v iTunes</string>
   <string name="search_podcastindex_label">Hľadať na Podcastindex.org</string>
   <string name="search_fyyd_label">Hľadať na fyyd</string>
   <string name="gpodnet_search_hint">Prehľadať gpodder.net</string>
@@ -694,7 +694,7 @@
   <string name="discover_hide">Skryť</string>
   <string name="discover_is_hidden">Vybrali ste skryť návrhy.</string>
   <string name="discover_more">viac »</string>
-  <string name="discover_powered_by_itunes">Návrhy od iTunes</string>
+  <string name="discover_powered_by_apple">Návrhy od iTunes</string>
   <string name="search_powered_by">Výsledky podľa %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Pridať lokálny priečinok</string>

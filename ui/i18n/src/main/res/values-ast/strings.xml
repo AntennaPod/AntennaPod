@@ -460,7 +460,7 @@
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcasts…</string>
-  <string name="search_itunes_label">Buscar n\'iTunes</string>
+  <string name="search_apple_label">Buscar n\'iTunes</string>
   <string name="search_podcastindex_label">Buscar en Podcastindex.org</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
@@ -470,7 +470,7 @@
   <string name="discover_hide">Anubrir</string>
   <string name="discover_is_hidden">Escoyesti anubrir les suxerencies.</string>
   <string name="discover_more">más »</string>
-  <string name="discover_powered_by_itunes">Suxerencies d\'iTunes</string>
+  <string name="discover_powered_by_apple">Suxerencies d\'iTunes</string>
   <string name="search_powered_by">Resultaos de %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Amestar una carpeta llocal</string>

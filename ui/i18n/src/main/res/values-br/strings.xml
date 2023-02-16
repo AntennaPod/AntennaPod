@@ -687,7 +687,7 @@
   <string name="sp_apps_importing_feeds_msg">Oc\'h enporzhiañ ar c\'houmanantoù diwar arloadoù gant un arver unel...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Klask ur podskignad...</string>
-  <string name="search_itunes_label">Klask war iTunes</string>
+  <string name="search_apple_label">Klask war iTunes</string>
   <string name="search_podcastindex_label">Klask war Podcastindex.org</string>
   <string name="search_fyyd_label">Klask war fydd</string>
   <string name="gpodnet_search_hint">Klask war gpodder.ner</string>
@@ -697,7 +697,7 @@
   <string name="discover_hide">Kuzhat</string>
   <string name="discover_is_hidden">Dibabed ho peus kuzhat an alioù.</string>
   <string name="discover_more">muioc\'h »</string>
-  <string name="discover_powered_by_itunes">Alioù gant iTunes</string>
+  <string name="discover_powered_by_apple">Alioù gant iTunes</string>
   <string name="search_powered_by">Disoc\'hioù gant %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Ouzhpennañ un teuliad lec\'hel</string>

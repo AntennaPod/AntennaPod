@@ -666,7 +666,7 @@
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">搜索播客……</string>
-  <string name="search_itunes_label">搜索 iTunes</string>
+  <string name="search_apple_label">搜索 iTunes</string>
   <string name="search_podcastindex_label">搜索 Podcastindex.org</string>
   <string name="search_fyyd_label">搜索 fyyd</string>
   <string name="gpodnet_search_hint">搜索 gpodder.net</string>
@@ -676,7 +676,7 @@
   <string name="discover_hide">隐藏</string>
   <string name="discover_is_hidden">您选择了隐藏建议</string>
   <string name="discover_more">更多</string>
-  <string name="discover_powered_by_itunes">iTunes 建议</string>
+  <string name="discover_powered_by_apple">iTunes 建议</string>
   <string name="discover_confirm">显示建议</string>
   <string name="search_powered_by">按 %1$s 显示结果</string>
   <string name="select_country">选择国家或地区</string>

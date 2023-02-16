@@ -720,7 +720,7 @@
 
     <!-- Add podcast fragment -->
     <string name="search_podcast_hint">Search podcast…</string>
-    <string name="search_itunes_label">Search iTunes</string>
+    <string name="search_apple_label">Search Apple Podcast</string>
     <string name="search_podcastindex_label">Search Podcastindex.org</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
@@ -731,7 +731,7 @@
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
-    <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_powered_by_apple">Suggestions by Apple Podcast</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
     <string name="select_country">Select country</string>

@@ -118,7 +118,7 @@
                 android:id="@+id/searchItunesButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/search_itunes_label"
+                android:text="@string/search_apple_label"
                 app:drawableStartCompat="@drawable/ic_search"
                 app:drawableLeftCompat="@drawable/ic_search"
                 style="@style/AddPodcastTextView" />

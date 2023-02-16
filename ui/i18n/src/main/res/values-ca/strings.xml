@@ -631,7 +631,7 @@
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cerca podcast…</string>
-  <string name="search_itunes_label">Cerca a iTunes</string>
+  <string name="search_apple_label">Cerca a iTunes</string>
   <string name="search_podcastindex_label">Buscar a Podcastindex.org</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
   <string name="gpodnet_search_hint">Cerca a gpodder.net</string>
@@ -641,7 +641,7 @@
   <string name="discover_hide">Amaga</string>
   <string name="discover_is_hidden">Has seleccionat amagar els suggeriments.</string>
   <string name="discover_more">més »</string>
-  <string name="discover_powered_by_itunes">Suggeriments d\'iTunes</string>
+  <string name="discover_powered_by_apple">Suggeriments d\'iTunes</string>
   <string name="search_powered_by">Resultats per %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Afegir carpeta local</string>

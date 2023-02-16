@@ -674,7 +674,7 @@
   <string name="sp_apps_importing_feeds_msg">Importando assinaturas de aplicativos de finalidade única...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Procurar podcast...</string>
-  <string name="search_itunes_label">Pesquisar no iTunes</string>
+  <string name="search_apple_label">Pesquisar no iTunes</string>
   <string name="search_podcastindex_label">Buscando em Podcastindex.org</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
   <string name="gpodnet_search_hint">Buscar no gpodder.net</string>
@@ -684,7 +684,7 @@
   <string name="discover_hide">Esconder</string>
   <string name="discover_is_hidden">Você selecionou esconder sugestões.</string>
   <string name="discover_more">mais »</string>
-  <string name="discover_powered_by_itunes">Sugestões do iTunes</string>
+  <string name="discover_powered_by_apple">Sugestões do iTunes</string>
   <string name="discover_confirm">Mostrar sugestões</string>
   <string name="search_powered_by">Resultados por %1$s</string>
   <!--Local feeds-->

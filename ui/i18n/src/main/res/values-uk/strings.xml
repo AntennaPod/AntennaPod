@@ -636,7 +636,7 @@
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Шукати подкаст...</string>
-  <string name="search_itunes_label">Пошук в iTunes</string>
+  <string name="search_apple_label">Пошук в iTunes</string>
   <string name="search_podcastindex_label">Пошук в Podcastindex.org</string>
   <string name="search_fyyd_label">Пошук в Fyyd</string>
   <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
@@ -646,7 +646,7 @@
   <string name="discover_hide">Сховати</string>
   <string name="discover_is_hidden">Ви вибрали, щоб приховати пропозиції.</string>
   <string name="discover_more">більше »</string>
-  <string name="discover_powered_by_itunes">Пропозиції iTunes</string>
+  <string name="discover_powered_by_apple">Пропозиції iTunes</string>
   <string name="search_powered_by">Результати за %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Додати локальну папку</string>

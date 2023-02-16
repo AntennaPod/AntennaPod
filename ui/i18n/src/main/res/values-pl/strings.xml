@@ -684,7 +684,7 @@
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Szukaj podcast…</string>
-  <string name="search_itunes_label">Szukaj w iTunes</string>
+  <string name="search_apple_label">Szukaj w iTunes</string>
   <string name="search_podcastindex_label">Szukaj w Podcastindex.org</string>
   <string name="search_fyyd_label">Szukaj w fyyd</string>
   <string name="gpodnet_search_hint">Szukaj na gpodder.net</string>
@@ -694,7 +694,7 @@
   <string name="discover_hide">Ukryj</string>
   <string name="discover_is_hidden">Wybrano ukrywanie \"sugerowanych\".</string>
   <string name="discover_more">więcej »</string>
-  <string name="discover_powered_by_itunes">Sugerowane przez iTunes</string>
+  <string name="discover_powered_by_apple">Sugerowane przez iTunes</string>
   <string name="search_powered_by">Wyniki z %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Dodaj lokalny folder</string>

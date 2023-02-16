@@ -723,7 +723,7 @@
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Vyhledat podcast…</string>
-  <string name="search_itunes_label">Prohledat iTunes</string>
+  <string name="search_apple_label">Prohledat iTunes</string>
   <string name="search_podcastindex_label">Prohledat Podcastindex.org</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
   <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
@@ -733,7 +733,7 @@
   <string name="discover_hide">Skrýt</string>
   <string name="discover_is_hidden">Zvolili jste skrýt doporučení.</string>
   <string name="discover_more">více »</string>
-  <string name="discover_powered_by_itunes">iTunes doporučuje</string>
+  <string name="discover_powered_by_apple">iTunes doporučuje</string>
   <string name="discover_confirm">Zobrazit návrhy</string>
   <string name="search_powered_by">Výsledky dle %1$s</string>
   <string name="select_country">Vybrat zemi</string>

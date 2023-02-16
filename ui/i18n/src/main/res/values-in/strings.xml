@@ -406,7 +406,7 @@
   <string name="sp_apps_importing_feeds_msg">Impor langganan dari aplikasi bertujuan tunggal...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cari podcast...</string>
-  <string name="search_itunes_label">Telusur iTunes</string>
+  <string name="search_apple_label">Telusur iTunes</string>
   <string name="search_fyyd_label">Cari fyyd</string>
   <string name="gpodnet_search_hint">Telusur gpodder.net</string>
   <string name="discover">Temukan</string>

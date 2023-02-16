@@ -658,7 +658,7 @@
   <string name="sp_apps_importing_feeds_msg">استيراد الاشتراكات من التطبيقات ذات الغرض الواحد ...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">أبحث عن بودكاست...</string>
-  <string name="search_itunes_label">أبحث iTunes</string>
+  <string name="search_apple_label">أبحث iTunes</string>
   <string name="search_podcastindex_label">أبحث Podcastindex.org</string>
   <string name="search_fyyd_label">أبحث fyyd</string>
   <string name="gpodnet_search_hint">أبحث gpodder.net</string>
@@ -668,7 +668,7 @@
   <string name="discover_hide">اخفاء</string>
   <string name="discover_is_hidden">لقد اخترت اخفاء الاقتراحات.</string>
   <string name="discover_more">المزيد »</string>
-  <string name="discover_powered_by_itunes">إقتراحات من iTunes</string>
+  <string name="discover_powered_by_apple">إقتراحات من iTunes</string>
   <string name="search_powered_by">النتائج من %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">أضف مجلد محلي</string>

@@ -609,7 +609,7 @@
   <string name="sp_apps_importing_feeds_msg">وارد کردن اشتراک از برنامه های تک منظوره</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">جستجوی پادکست ...</string>
-  <string name="search_itunes_label">در iTunes جستجو کن</string>
+  <string name="search_apple_label">در iTunes جستجو کن</string>
   <string name="search_podcastindex_label">در Podcastindex.org جستجو کن</string>
   <string name="search_fyyd_label">در fyyd جستجو کن</string>
   <string name="gpodnet_search_hint">جست‌وجوی gpodder.net</string>
@@ -619,7 +619,7 @@
   <string name="discover_hide">پنهان کردن</string>
   <string name="discover_is_hidden">شما مخفی کردن پیشنهادات را انتخاب کرده اید.</string>
   <string name="discover_more">بیشتر </string>
-  <string name="discover_powered_by_itunes">پیشنهادات توسط iTunes</string>
+  <string name="discover_powered_by_apple">پیشنهادات توسط iTunes</string>
   <string name="search_powered_by">نتایج توسط %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">پوشه محلی را اضافه کنید</string>

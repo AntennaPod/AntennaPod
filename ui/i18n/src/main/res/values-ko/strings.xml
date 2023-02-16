@@ -518,7 +518,7 @@
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">팟캐스트 검색…</string>
-  <string name="search_itunes_label">iTunes 검색</string>
+  <string name="search_apple_label">iTunes 검색</string>
   <string name="search_podcastindex_label">podcastindex.org 검색</string>
   <string name="search_fyyd_label">fyyd 검색</string>
   <string name="gpodnet_search_hint">gpodder.net 검색</string>
@@ -528,7 +528,7 @@
   <string name="discover_hide">숨기기</string>
   <string name="discover_is_hidden">제안 사항을 감추도록 선택했습니다.</string>
   <string name="discover_more">더 보기 »</string>
-  <string name="discover_powered_by_itunes">iTunes 추천</string>
+  <string name="discover_powered_by_apple">iTunes 추천</string>
   <string name="search_powered_by">%1$s 검색 결과</string>
   <!--Local feeds-->
   <string name="add_local_folder">로컬 폴더 추가</string>

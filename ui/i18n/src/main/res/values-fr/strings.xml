@@ -703,7 +703,7 @@
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Trouver un podcast...</string>
-  <string name="search_itunes_label">Chercher sur iTunes</string>
+  <string name="search_apple_label">Chercher sur iTunes</string>
   <string name="search_podcastindex_label">Chercher sur Podcastindex.org</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
   <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
@@ -713,7 +713,7 @@
   <string name="discover_hide">Ne pas montrer</string>
   <string name="discover_is_hidden">Vous avez choisi de cacher les suggestions.</string>
   <string name="discover_more">plus »</string>
-  <string name="discover_powered_by_itunes">Suggestions de iTunes</string>
+  <string name="discover_powered_by_apple">Suggestions de iTunes</string>
   <string name="discover_confirm">Montrer les suggestions</string>
   <string name="search_powered_by">Résultats de %1$s</string>
   <string name="select_country">Choisir un pays</string>

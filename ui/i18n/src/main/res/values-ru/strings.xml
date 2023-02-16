@@ -722,7 +722,7 @@
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из моноприложений…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Найти подкаст…</string>
-  <string name="search_itunes_label">Поиск в iTunes</string>
+  <string name="search_apple_label">Поиск в iTunes</string>
   <string name="search_podcastindex_label">Поиск на Podcastindex.org</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
   <string name="gpodnet_search_hint">Искать на gpodder.net</string>
@@ -732,7 +732,7 @@
   <string name="discover_hide">Скрыть</string>
   <string name="discover_is_hidden">Вы выбрали скрытие предложений.</string>
   <string name="discover_more">еще »</string>
-  <string name="discover_powered_by_itunes">Предложения iTunes</string>
+  <string name="discover_powered_by_apple">Предложения iTunes</string>
   <string name="discover_confirm">Показать рекомендации</string>
   <string name="search_powered_by">Результаты по %1$s</string>
   <string name="select_country">Выбор страны</string>

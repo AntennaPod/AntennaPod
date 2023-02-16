@@ -684,7 +684,7 @@
   <string name="sp_apps_importing_feeds_msg">Bezig met importeren van abonnementen uit eenmalige apps...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast zoeken...</string>
-  <string name="search_itunes_label">iTunes doorzoeken</string>
+  <string name="search_apple_label">iTunes doorzoeken</string>
   <string name="search_podcastindex_label">Podcastindex.org doorzoeken</string>
   <string name="search_fyyd_label">Fyyd doorzoeken</string>
   <string name="gpodnet_search_hint">gpodder.net doorzoeken</string>
@@ -694,7 +694,7 @@
   <string name="discover_hide">Verbergen</string>
   <string name="discover_is_hidden">Je kiest er voor aanbevelingen te verbergen.</string>
   <string name="discover_more">meer »</string>
-  <string name="discover_powered_by_itunes">Aanbevelingen van iTunes</string>
+  <string name="discover_powered_by_apple">Aanbevelingen van iTunes</string>
   <string name="discover_confirm">Suggesties tonen</string>
   <string name="search_powered_by">Resultaten van %1$s</string>
   <string name="select_country">Kies een land</string>

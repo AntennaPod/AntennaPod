@@ -515,7 +515,7 @@
   <string name="sp_apps_importing_feeds_msg">從 AntennaPodSP 匯入訂閱清單</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">搜尋 Podcast…</string>
-  <string name="search_itunes_label">搜尋 iTunes</string>
+  <string name="search_apple_label">搜尋 iTunes</string>
   <string name="search_podcastindex_label">搜尋 Podcastindex.org</string>
   <string name="search_fyyd_label">搜尋 fyyd</string>
   <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
@@ -525,7 +525,7 @@
   <string name="discover_hide">隱藏</string>
   <string name="discover_is_hidden">您已隱藏推薦項目。</string>
   <string name="discover_more">更多 »</string>
-  <string name="discover_powered_by_itunes">由 iTunes 提供的建議</string>
+  <string name="discover_powered_by_apple">由 iTunes 提供的建議</string>
   <string name="search_powered_by">來自 %1$s 的搜尋結果</string>
   <!--Local feeds-->
   <string name="add_local_folder">新增本機資料夾</string>
