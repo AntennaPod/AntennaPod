@@ -297,9 +297,9 @@ public class ItemFragment extends Fragment {
                         new RoundedCorners((int) (8 * getResources().getDisplayMetrics().density)))
                 .dontAnimate();
 
-        Glide.with(getActivity())
+        Glide.with(this)
                 .load(item.getImageLocation())
-                .error(Glide.with(getActivity())
+                .error(Glide.with(this)
                         .load(ImageResourceUtils.getFallbackImageLocation(item))
                         .apply(options))
                 .apply(options)
