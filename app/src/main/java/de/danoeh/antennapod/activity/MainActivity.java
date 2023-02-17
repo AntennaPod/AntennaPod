@@ -76,7 +76,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
@@ -444,6 +443,9 @@ public class MainActivity extends CastEnabledActivity {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+        if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
+            loadFragment(UserPreferences.getDefaultPage(), null);
+        }
     }
 
     @Override
@@ -515,9 +517,10 @@ public class MainActivity extends CastEnabledActivity {
 
     private void handleNavIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_FRAGMENT_TAG) || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
+        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)
+                || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
             Log.d(TAG, "handleNavIntent()");
-            String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
+            String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
             boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
             if (refreshOnStart) {
@@ -542,6 +545,10 @@ public class MainActivity extends CastEnabledActivity {
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             handleDeeplink(intent.getData());
+        }
+
+        if (intent.hasExtra(MainActivityStarter.EXTRA_OPEN_DRAWER) && drawerLayout != null) {
+            drawerLayout.open();
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

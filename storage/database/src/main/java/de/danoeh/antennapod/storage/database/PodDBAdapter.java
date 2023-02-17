@@ -1055,8 +1055,7 @@ public class PodDBAdapter {
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                     + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
-                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + sortQuery
-                + " LIMIT " + offset + ", " + limit;
+                + " ORDER BY " + sortQuery + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
@@ -1098,9 +1097,11 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public Cursor getDownloadedItemsCursor() {
+    public Cursor getDownloadedItemsCursor(SortOrder sortOrder) {
+        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0";
+                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
+                + " ORDER BY " + sortQuery;
         return db.rawQuery(query, null);
     }
 

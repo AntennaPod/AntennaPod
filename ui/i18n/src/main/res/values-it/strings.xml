@@ -42,6 +42,7 @@
   <string name="statistics_reset_data_msg">Verranno eliminate le statistiche sul tempo di riproduzione di tutti gli episodi. Procedo?</string>
   <string name="statistics_counting_range">Riprodotto fra %1$s e %2$s</string>
   <string name="statistics_counting_total">Riprodotto in totale</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Dimensione totale degli episodi sul dispositivo</string>
   <!--Main activity-->
@@ -52,7 +53,6 @@
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
   <string name="drawer_feed_order_most_played">Ordina per numero di episodi riprodotti</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Numero di episodi non riprodotti e nella inbox</string>
   <string name="drawer_feed_counter_inbox">Numero di episodi nella inbox</string>
   <string name="drawer_feed_counter_unplayed">Numero di episodi non riprodotti</string>
   <string name="drawer_feed_counter_downloaded">Numero di episodi scaricati</string>
@@ -125,7 +125,6 @@
     <item quantity="many">%d episodi</item>
     <item quantity="other">%d episodi</item>
   </plurals>
-  <string name="loading_more">Caricamento successivi...</string>
   <string name="episode_notification">Notifiche episodi</string>
   <string name="episode_notification_summary">Mostra una notifica quando viene pubblicato un episodio.</string>
   <plurals name="new_episode_notification_message">
@@ -236,7 +235,6 @@
   <string name="download_pending">Download in attesa</string>
   <string name="download_running">Download in corso</string>
   <string name="download_error_details">Dettagli</string>
-  <string name="download_error_details_message">%1$s \n\nURL file:\n%2$s</string>
   <string name="download_error_tap_for_details">Tocca per i dettagli.</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
   <string name="download_error_insufficient_space">Spazio libero nel dispositivo insufficiente.</string>
@@ -433,20 +431,6 @@
   <string name="pref_theme_title_dark">Scuro</string>
   <string name="pref_theme_title_trueblack">Nero (AMOLED ready)</string>
   <string name="pref_episode_cache_unlimited">Illimitato</string>
-  <string name="synchronization_logout">Logout</string>
-  <string name="pref_synchronization_logout_toast">Logout eseguito con successo</string>
-  <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
-  <string name="synchronization_sync_changes_title">Sincronizza ora</string>
-  <string name="synchronization_full_sync_title">Forza sincronizzazione completa</string>
-  <string name="synchronization_login_status"><![CDATA[Accesso come <i>%1$s</i> su <i>%2$s</i>. <br/><br/>Potrai selezionare un\'altra sincronizzazione una volta effettuato il logout]]></string>
-  <string name="synchronization_summary_unchoosen">Puoi selezionare diversi fornitori per la sincronizzazione delle iscrizioni e dello stato degli episodi con</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync è un\'app open-source per Nextcloud che puoi facilmente installare sul tuo server. L\'app è indipendente dal progetto AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Permetti l\'accesso dalla finestra del browser aperta e ritorna ad AntennaPod.</string>
-  <string name="synchronization_choose_title">Scegli provider di sincronizzazione</string>
-  <string name="synchronization_force_sync_summary">Risincronizza tutte le iscrizioni e gli stati dell\'episodio</string>
-  <string name="synchronization_sync_summary">Sincronizza l\'iscrizione e le modifiche dello stato dell\'episodio</string>
-  <string name="dialog_choose_sync_service_title">Scegli provider di sincronizzazione</string>
   <string name="pref_playback_speed_sum">Personalizzare le velocità disponibili per le varie velocità di riproduzione.</string>
   <string name="pref_feed_playback_speed_sum">Velocità da usare per la riproduzione degli episodi di questo podcast</string>
   <string name="pref_feed_skip">Salta automaticamente</string>
@@ -498,16 +482,6 @@
   <string name="media_player_switched_to_exoplayer">Passaggio ad ExoPlayer eseguito.</string>
   <string name="pref_skip_silence_title">Salta il silenzio audio</string>
   <string name="behavior">Comportamento</string>
-  <string name="pref_back_button_behavior_title">Comportamento tasto indietro</string>
-  <string name="pref_back_button_behavior_sum">Cambia il comportamento del tasto indietro</string>
-  <string name="back_button_default">Predefinito</string>
-  <string name="back_button_open_drawer">Apri menù di navigazione</string>
-  <string name="back_button_double_tap">Doppio tap per uscire</string>
-  <string name="back_button_show_prompt">Conferma l\'uscita</string>
-  <string name="close_prompt">Sei sicuro di voler chiudere AntennaPod?</string>
-  <string name="double_tap_toast">Premi nuovamente il tasto Indietro per uscire</string>
-  <string name="back_button_go_to_page">Vai alla schermata...</string>
-  <string name="back_button_go_to_page_title">Seleziona schermata</string>
   <string name="pref_delete_removes_from_queue_title">Rimuovi dalla coda gli eliminati</string>
   <string name="pref_delete_removes_from_queue_sum">Quando un episodio viene eliminato lo rimuove automaticamente dalla coda.</string>
   <string name="pref_filter_feed_title">Filtro iscrizioni</string>
@@ -608,20 +582,32 @@
   </plurals>
   <string name="auto_enable_label">Abilita automaticamente</string>
   <string name="sleep_timer_enabled_label">Timer spegnimento abilitato</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Scegli provider di sincronizzazione</string>
+  <string name="synchronization_summary_unchoosen">Puoi selezionare diversi fornitori per la sincronizzazione delle iscrizioni e dello stato degli episodi con</string>
+  <string name="dialog_choose_sync_service_title">Scegli provider di sincronizzazione</string>
+  <string name="gpodnet_description">Gpodder.net è un servizio di sincronizzazione podcast che puoi installare sul tuo server. Gpodder.net è indipendente dal progetto AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync è un\'app open-source per Nextcloud che puoi facilmente installare sul tuo server. L\'app è indipendente dal progetto AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Permetti l\'accesso dalla finestra del browser aperta e ritorna ad AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="gpodnetauth_encryption_warning">Dati e password non cifrati!</string>
   <string name="username_label">Username</string>
   <string name="password_label">Password</string>
-  <string name="gpodnet_description">Gpodder.net è un servizio di sincronizzazione podcast che puoi installare sul tuo server. Gpodder.net è indipendente dal progetto AntennaPod.</string>
-  <string name="gpodnetauth_host">Hostname</string>
-  <string name="gpodnetauth_select_server">Seleziona server</string>
   <string name="gpodnetauth_device_name">Nome dispositivo</string>
   <string name="gpodnetauth_device_name_default">AntennaPod su %1$s</string>
   <string name="gpodnetauth_existing_devices">Dispositivi esistenti</string>
   <string name="gpodnetauth_create_device">Crea dispositivo</string>
   <string name="gpodnetauth_finish_descr">Congraturazioni! Il tuo account gpodder.net è stato collegato con il dispositivo. Ora AntennaPod sincronizzerà automaticamente le sottoscrizioni sul dispositivo con il tuo account gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">Avvia la sincronizzazione</string>
+  <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Sincronizza ora</string>
+  <string name="synchronization_sync_summary">Sincronizza l\'iscrizione e le modifiche dello stato dell\'episodio</string>
+  <string name="synchronization_full_sync_title">Forza sincronizzazione completa</string>
+  <string name="synchronization_force_sync_summary">Risincronizza tutte le iscrizioni e gli stati dell\'episodio</string>
+  <string name="synchronization_logout">Logout</string>
+  <string name="synchronization_login_status"><![CDATA[Accesso come <i>%1$s</i> su <i>%2$s</i>. <br/><br/>Potrai selezionare un\'altra sincronizzazione una volta effettuato il logout]]></string>
+  <string name="pref_synchronization_logout_toast">Logout eseguito con successo</string>
   <string name="gpodnetsync_error_title">gpodder.net errore di sincronizzazione</string>
   <string name="gpodnetsync_error_descr">Rilevato un errore in fase di sincronizzazione:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Eseguito</string>
@@ -667,10 +653,6 @@
   <string name="auto_download_settings_label">Impostazioni download automatico</string>
   <string name="episode_filters_label">Filtro degli episodi</string>
   <string name="episode_filters_description">Elenco di termini per filtrare gli episodi da includere o escludere dai download automatici.</string>
-  <string name="episode_filters_include">Includi</string>
-  <string name="episode_filters_exclude">Escludi</string>
-  <string name="episode_filters_duration">Durata minima (in minuti)</string>
-  <string name="episode_filters_hint">Parole singole \n\"Parole multiple\"</string>
   <string name="keep_updated">Mantieni aggiornato</string>
   <string name="keep_updated_summary">Includi questo podcast nell\'auto-aggiornamento generale</string>
   <string name="auto_download_disabled_globally">Il download automatico è disabilitato nelle impostazioni generali.</string>

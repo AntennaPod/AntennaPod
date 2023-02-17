@@ -31,6 +31,7 @@
   <string name="statistics_speed_not_counted">Merk: Avspillingshastighet tas aldri med i betraktningen.</string>
   <string name="statistics_reset_data">Tilbakestill statistikkdata</string>
   <string name="statistics_reset_data_msg">Dette vil slette historikk om varighet som er spilt for alle episoder. Er du sikker på at du vil fortsette?</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
@@ -107,7 +108,6 @@
     <item quantity="one">%d episode</item>
     <item quantity="other">%d episoder</item>
   </plurals>
-  <string name="loading_more">Laster inn mer...</string>
   <string name="episode_notification">Episode varslinger</string>
   <string name="episode_notification_summary">Vis varsler når en nye episode har kommet ut.</string>
   <plurals name="new_episode_notification_message">
@@ -199,7 +199,6 @@
   <string name="download_pending">Nedlastning venter</string>
   <string name="download_running">Nedlasting pågår</string>
   <string name="download_error_details">Detaljer</string>
-  <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_tap_for_details">Trykk for se detaljer.</string>
   <string name="download_error_device_not_found">Lagringsenhet ikke funnet</string>
   <string name="download_error_insufficient_space">Der er ikke nok lagringsplass på enheten din.</string>
@@ -388,20 +387,6 @@
   <string name="pref_theme_title_dark">Mørkt</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Ulimitert</string>
-  <string name="synchronization_logout">Logg ut</string>
-  <string name="pref_synchronization_logout_toast">Utloggelse lyktes</string>
-  <string name="pref_gpodnet_setlogin_information_title">Endre innloggingsinformasjon</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
-  <string name="synchronization_sync_changes_title">Synkroniser nå</string>
-  <string name="synchronization_full_sync_title">Tving fram full synkronisering</string>
-  <string name="synchronization_login_status"><![CDATA[Logged på som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan velge ny provider til synkronisering med en gang du har logget deg av.]]></string>
-  <string name="synchronization_summary_unchoosen">Du kan velge mellom forskjellige provider til å synkronisere abonnementene dine og avspillings-status av episoden</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync er en åpen-kildekode app i Nextcloud som du enkelt kan installere på din egen tjener. Appen er uavhengig av AntennaPod prosjektet.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Gir tilgang med åpnet nettleseren og kommer tilbake inni AntennaPod.</string>
-  <string name="synchronization_choose_title">Velg synkroniserings-provider</string>
-  <string name="synchronization_force_sync_summary">Synkroniser alle abonnementer og status av episoder på nytt</string>
-  <string name="synchronization_sync_summary">Synkroniser endringer i abonnement og status av episoder</string>
-  <string name="dialog_choose_sync_service_title">Velg synkroniserings-provider</string>
   <string name="pref_playback_speed_sum">Definer hastighetene tilgjengelig for variabel avspillingshastighet</string>
   <string name="pref_feed_playback_speed_sum">Hastigheten som brukes når episoder av denne podkasten spilles av</string>
   <string name="pref_feed_skip">Automatisk hopp</string>
@@ -453,16 +438,6 @@
   <string name="media_player_switched_to_exoplayer">Byttet til ExoPlayer</string>
   <string name="pref_skip_silence_title">Hopp over stillhet</string>
   <string name="behavior">Oppførsel</string>
-  <string name="pref_back_button_behavior_title">Tilbake-knappens oppførsel</string>
-  <string name="pref_back_button_behavior_sum">Endrer hva tilbake-knappen gjør</string>
-  <string name="back_button_default">Standard</string>
-  <string name="back_button_open_drawer">Åpne navigasjon-skuffen</string>
-  <string name="back_button_double_tap">Dobbel-trykk for å lukke</string>
-  <string name="back_button_show_prompt">Bekreft for å lukke</string>
-  <string name="close_prompt">Er du sikker på at du vil lukke AntennaPod?</string>
-  <string name="double_tap_toast">Trykk tilbake-knappen igjen for å lukke</string>
-  <string name="back_button_go_to_page">Gå til side…</string>
-  <string name="back_button_go_to_page_title">Velg side</string>
   <string name="pref_delete_removes_from_queue_title">Sletting fjerner fra køen</string>
   <string name="pref_delete_removes_from_queue_sum">Å slette en episode fjerner den automatisk også fra køen.</string>
   <string name="pref_filter_feed_title">Abonnement filter</string>
@@ -559,19 +534,31 @@
   </plurals>
   <string name="auto_enable_label">Auto-aktiver</string>
   <string name="sleep_timer_enabled_label">Søvnnedtelling skrudd på</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Velg synkroniserings-provider</string>
+  <string name="synchronization_summary_unchoosen">Du kan velge mellom forskjellige provider til å synkronisere abonnementene dine og avspillings-status av episoden</string>
+  <string name="dialog_choose_sync_service_title">Velg synkroniserings-provider</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync er en åpen-kildekode app i Nextcloud som du enkelt kan installere på din egen tjener. Appen er uavhengig av AntennaPod prosjektet.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Gir tilgang med åpnet nettleseren og kommer tilbake inni AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Logg inn</string>
   <string name="gpodnetauth_encryption_warning">Passord og data er ikke kryptert!</string>
   <string name="username_label">Brukernavn</string>
   <string name="password_label">Passord</string>
-  <string name="gpodnetauth_host">Hostnavn</string>
-  <string name="gpodnetauth_select_server">Velg tjener</string>
   <string name="gpodnetauth_device_name">Enhetens navn</string>
   <string name="gpodnetauth_device_name_default">AntennaPod på %1$s</string>
   <string name="gpodnetauth_existing_devices">Eksisterende enheter</string>
   <string name="gpodnetauth_create_device">Lage en ny enhet</string>
   <string name="gpodnetauth_finish_descr">Gratulerer! Din gpodder.net konto er nå linket opp med din enhet. AntennaPod vil nå automatisk synkronisere abonnementer på din enhet med din gpodder.net konto.</string>
   <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nå.</string>
+  <string name="pref_gpodnet_setlogin_information_title">Endre innloggingsinformasjon</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
+  <string name="synchronization_sync_changes_title">Synkroniser nå</string>
+  <string name="synchronization_sync_summary">Synkroniser endringer i abonnement og status av episoder</string>
+  <string name="synchronization_full_sync_title">Tving fram full synkronisering</string>
+  <string name="synchronization_force_sync_summary">Synkroniser alle abonnementer og status av episoder på nytt</string>
+  <string name="synchronization_logout">Logg ut</string>
+  <string name="synchronization_login_status"><![CDATA[Logged på som <i>%1$s</i> på <i>%2$s</i>. <br/><br/>Du kan velge ny provider til synkronisering med en gang du har logget deg av.]]></string>
+  <string name="pref_synchronization_logout_toast">Utloggelse lyktes</string>
   <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfeil</string>
   <string name="gpodnetsync_error_descr">En feil oppsto under synkronisering av:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Vellykket</string>
@@ -616,10 +603,6 @@
   <string name="auto_download_settings_label">Innstillinger for automatisk nedlastning</string>
   <string name="episode_filters_label">Episodefiltrering</string>
   <string name="episode_filters_description">Nøkkelord som skal brukes for å avgjøre om en episode skal nedlastes automatisk eller ikke</string>
-  <string name="episode_filters_include">Inkluder</string>
-  <string name="episode_filters_exclude">Utelukk</string>
-  <string name="episode_filters_duration">Minimum lengde (i minutter)</string>
-  <string name="episode_filters_hint">Enkelt-ord \n\"Flere ord\"</string>
   <string name="keep_updated">Hold oppdatert</string>
   <string name="keep_updated_summary">Inkluder denne podkasten når alle podkaster oppdateres</string>
   <string name="auto_download_disabled_globally">Automatisk nedlasting er deaktivert i AntennaPod-innstillingene</string>

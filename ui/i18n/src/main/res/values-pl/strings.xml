@@ -42,6 +42,7 @@
   <string name="statistics_reset_data_msg">Operacja skasuje historię długości odtwarzania wszystkich odcinków. Czy na pewno chcesz kontynuować?</string>
   <string name="statistics_counting_range">Puść pomiędzy %1$sa %2$s</string>
   <string name="statistics_counting_total">W sumie odtwarzane</string>
+  <!--Home fragment-->
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Rozmiar wszystkich pobranych odcinków</string>
   <!--Main activity-->
@@ -52,7 +53,6 @@
   <string name="drawer_feed_order_alphabetical">Sortuj alfabetycznie</string>
   <string name="drawer_feed_order_last_update">Sortuj wg daty publikacji</string>
   <string name="drawer_feed_order_most_played">Sortuj wg liczby odtworzonych odcinków</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Liczba nieodtworzonych odcinków i odcinków w skrzynce odbiorczej</string>
   <string name="drawer_feed_counter_inbox">Liczba odcinków w skrzynce odbiorczej</string>
   <string name="drawer_feed_counter_unplayed">Liczba nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_downloaded">Liczba pobranych odcinków</string>
@@ -129,7 +129,6 @@
     <item quantity="many">%d odcinków</item>
     <item quantity="other">%d odcinków</item>
   </plurals>
-  <string name="loading_more">Ładowanie więcej...</string>
   <string name="episode_notification">Powiadomienia odcinka</string>
   <string name="episode_notification_summary">Pokaż powiadomienie gdy nowy odcinek jest udostępniony</string>
   <plurals name="new_episode_notification_message">
@@ -249,8 +248,6 @@
   <string name="download_pending">Pobieranie w toku</string>
   <string name="download_running">Pobieram</string>
   <string name="download_error_details">Szczegóły</string>
-  <string name="download_error_details_message">%1$s \n\nAdres pliku:\n%2$s
-</string>
   <string name="download_error_tap_for_details">Naciśnij, aby zobaczyć szczegóły</string>
   <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
   <string name="download_error_insufficient_space">Brak wystarczającej ilości wolnego miejsca na twoim urządzeniu.</string>
@@ -282,7 +279,7 @@
   </plurals>
   <string name="completing">Kończę...</string>
   <string name="download_notification_title">Pobieranie danych podcastu</string>
-  <string name="download_notification_title_feeds">Odświerz podcasty</string>
+  <string name="download_notification_title_feeds">Odświeżam podcasty</string>
   <string name="download_notification_title_episodes">Pobierane odcinki</string>
   <string name="download_log_title_unknown">Nieznany tytuł</string>
   <string name="download_type_feed">Kanał</string>
@@ -449,20 +446,6 @@
   <string name="pref_theme_title_dark">Ciemny</string>
   <string name="pref_theme_title_trueblack">Czarny (dla ekranów AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Nielimitowane</string>
-  <string name="synchronization_logout">Wyloguj</string>
-  <string name="pref_synchronization_logout_toast">Wylogowanie się powiodło</string>
-  <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
-  <string name="synchronization_sync_changes_title">Synchronizuj teraz</string>
-  <string name="synchronization_full_sync_title">Wymuś pełną synchronizację</string>
-  <string name="synchronization_login_status"><![CDATA[Zalogowany jako <i>%1$s</i>z pośrednictwem <i>%2$s</i><br/><br/>Po wylogowaniu się możesz ponownie wybrać dostawcę synchronizacji]]></string>
-  <string name="synchronization_summary_unchoosen">Możesz wybrać synchronizację subskrypcji i stanu odtwarzania odcinków z pomocą kilku dostawców</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync to open-source aplikacja Nextcloudu, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Zezwól na dostęp w otwartym oknie przeglądarki i wróć do aplikacji AntennaPod.</string>
-  <string name="synchronization_choose_title">Wybierz dostawcę synchronizacji</string>
-  <string name="synchronization_force_sync_summary">Ponownie zsynchronizuj stan wszystkich subskrypcji i odcinków</string>
-  <string name="synchronization_sync_summary">Zsynchronizuj zmiany stanu subskrypcji i odcinka</string>
-  <string name="dialog_choose_sync_service_title">Wybierz dostawcę synchronizacji</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania o zmiennej prędkości</string>
   <string name="pref_feed_playback_speed_sum">Prędkość używana podczas odtwarzania odcinków z tego kanału</string>
   <string name="pref_feed_skip">Automatyczne pomijanie</string>
@@ -514,16 +497,6 @@
   <string name="media_player_switched_to_exoplayer">Zmieniono na ExoPlayer</string>
   <string name="pref_skip_silence_title">Pomiń ciszę w plikach audio</string>
   <string name="behavior">Zachowanie</string>
-  <string name="pref_back_button_behavior_title">Zachowanie przycisku \'Wstecz\'</string>
-  <string name="pref_back_button_behavior_sum">Zmień funkcję przycisku \'Wstecz\'/</string>
-  <string name="back_button_default">Domyślne</string>
-  <string name="back_button_open_drawer">Otwórz panel nawigacyjny</string>
-  <string name="back_button_double_tap">Podwójne naciśnięcie wychodzi</string>
-  <string name="back_button_show_prompt">Potwierdź aby wyjść</string>
-  <string name="close_prompt">Czy na pewno chcesz zamknąć AntennaPod?</string>
-  <string name="double_tap_toast">Naciśnij ponownie przycisk \'Wstecz\' aby wyjść</string>
-  <string name="back_button_go_to_page">Idź do strony...</string>
-  <string name="back_button_go_to_page_title">Wybierz stronę</string>
   <string name="pref_delete_removes_from_queue_title">Kasowanie usuwa z kolejki</string>
   <string name="pref_delete_removes_from_queue_sum">Automatycznie usuwaj odcinek z kolejki gdy go kasujesz.</string>
   <string name="pref_filter_feed_title">Filtr subskrypcji</string>
@@ -627,20 +600,32 @@
   </plurals>
   <string name="auto_enable_label">Automaczyne włączenie</string>
   <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Wybierz dostawcę synchronizacji</string>
+  <string name="synchronization_summary_unchoosen">Możesz wybrać synchronizację subskrypcji i stanu odtwarzania odcinków z pomocą kilku dostawców</string>
+  <string name="dialog_choose_sync_service_title">Wybierz dostawcę synchronizacji</string>
+  <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync to open-source aplikacja Nextcloudu, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Zezwól na dostęp w otwartym oknie przeglądarki i wróć do aplikacji AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="gpodnetauth_encryption_warning">Hasło i dane nie są zaszyfrowane!</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
-  <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
-  <string name="gpodnetauth_host">Nazwa hosta</string>
-  <string name="gpodnetauth_select_server">Wybierz serwer</string>
   <string name="gpodnetauth_device_name">Nazwa urządzenia</string>
   <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
   <string name="gpodnetauth_existing_devices">Istniejące urządzenia</string>
   <string name="gpodnetauth_create_device">Utwórz urządzenie</string>
   <string name="gpodnetauth_finish_descr">Gratulacje! Twoje konto na gpodder.net jest połączone z urządzeniem.  AntennaPod będzie automatycznie synchronizować subskrypcje na urządzeniu z kontem na gpodder.net. </string>
   <string name="gpodnetauth_finish_butsyncnow">Rozpocznij synchronizację</string>
+  <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
+  <string name="synchronization_sync_changes_title">Synchronizuj teraz</string>
+  <string name="synchronization_sync_summary">Zsynchronizuj zmiany stanu subskrypcji i odcinka</string>
+  <string name="synchronization_full_sync_title">Wymuś pełną synchronizację</string>
+  <string name="synchronization_force_sync_summary">Ponownie zsynchronizuj stan wszystkich subskrypcji i odcinków</string>
+  <string name="synchronization_logout">Wyloguj</string>
+  <string name="synchronization_login_status"><![CDATA[Zalogowany jako <i>%1$s</i>z pośrednictwem <i>%2$s</i><br/><br/>Po wylogowaniu się możesz ponownie wybrać dostawcę synchronizacji]]></string>
+  <string name="pref_synchronization_logout_toast">Wylogowanie się powiodło</string>
   <string name="gpodnetsync_error_title">Błąd synchronizacji z gpodder.net</string>
   <string name="gpodnetsync_error_descr">Wystąpił błąd podczas synchronizacji:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Sukces</string>
@@ -686,10 +671,6 @@
   <string name="auto_download_settings_label">Ustawienia automatycznego pobierania</string>
   <string name="episode_filters_label">Filtr odcinków</string>
   <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania.</string>
-  <string name="episode_filters_include">Włączając</string>
-  <string name="episode_filters_exclude">Wyłączając</string>
-  <string name="episode_filters_duration">Minimalny czas trwania (w minutach)</string>
-  <string name="episode_filters_hint">Pojedyncze słowa \n\"Kilka słów\"</string>
   <string name="keep_updated">Utrzymuj zaktualizowane</string>
   <string name="keep_updated_summary">Uwzględnij ten podcast przy (automatycznym) odświeżaniu wszystkich kanałów</string>
   <string name="auto_download_disabled_globally">Automatyczne pobieranie jest wyłączone w globalnych ustawieniach AntennaPod</string>

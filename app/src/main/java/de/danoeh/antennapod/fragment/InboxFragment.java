@@ -41,7 +41,7 @@ public class InboxFragment extends EpisodesListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -130,7 +130,7 @@ public class InboxFragment extends EpisodesListFragment {
 
     private void removeAllFromInbox() {
         DBWriter.removeAllNewFlags();
-        ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
     }
 
     private void showRemoveAllDialog() {
