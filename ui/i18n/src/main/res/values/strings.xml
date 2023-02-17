@@ -693,7 +693,7 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
-    <string name="feed_folders_include_root">Show in main list</string>
+    <string name="feed_folders_include_root">Show this subscription in main list</string>
     <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
