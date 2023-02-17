@@ -233,6 +233,14 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (drawerLayout != null) {
+            drawerLayout.removeDrawerListener(drawerToggle);
+        }
+    }
+
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
