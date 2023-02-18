@@ -123,6 +123,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             }
             return false;
         });
+        holder.coverImage.setTransitionName("transitionSubscriptions" + drawerItem.id);
         holder.itemView.setOnClickListener(v -> {
             if (isFeed) {
                 if (inActionMode()) {
@@ -130,7 +131,15 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 } else {
                     Fragment fragment = FeedItemlistFragment
                             .newInstance(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getId());
-                    mainActivityRef.get().loadChildFragment(fragment);
+
+                    mainActivityRef.get().getSupportFragmentManager().beginTransaction()
+                            .addSharedElement(holder.coverImage, "coverImageTransition")
+                            .hide(mainActivityRef.get().getSupportFragmentManager()
+                                    .findFragmentByTag(MainActivity.MAIN_FRAGMENT_TAG))
+                            .add(R.id.main_view, fragment, MainActivity.MAIN_FRAGMENT_TAG)
+                            .addToBackStack(null)
+                            .commit();
+
                 }
             } else if (!inActionMode()) {
                 Fragment fragment = SubscriptionFragment.newInstance(drawerItem.getTitle());

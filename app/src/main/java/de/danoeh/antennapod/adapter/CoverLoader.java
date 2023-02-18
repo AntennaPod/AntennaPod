@@ -77,6 +77,7 @@ public class CoverLoader {
 
         RequestOptions options = new RequestOptions()
                 .fitCenter()
+                .override(100)
                 .dontAnimate();
 
         RequestBuilder<Drawable> builder = Glide.with(activity)

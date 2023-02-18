@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -196,7 +197,7 @@ public class SubscriptionFragment extends Fragment
                     .handleAction(actionItem.getId());
             return true;
         });
-
+        postponeEnterTransition(100, TimeUnit.MILLISECONDS);
         return root;
     }
 

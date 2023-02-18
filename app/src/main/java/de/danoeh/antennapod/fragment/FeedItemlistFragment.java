@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,8 +22,13 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -118,6 +124,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Bundle args = getArguments();
         Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
+        TransitionInflater ti = TransitionInflater.from(getContext());
+        setSharedElementReturnTransition(ti.inflateTransition(R.transition.transition_all_properties));
+        setSharedElementEnterTransition(ti.inflateTransition(R.transition.transition_all_properties));
     }
 
     @Nullable
@@ -215,6 +224,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             adapter.endSelectMode();
             return true;
         });
+        postponeEnterTransition();
         return viewBinding.getRoot();
     }
 
@@ -514,7 +524,24 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
                     .fitCenter()
+                    .override(100)
                     .dontAnimate())
+                .override(100)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e,
+                                                Object model, Target<Drawable> target, boolean isFirstResource) {
+                        startPostponedEnterTransition();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                                                   DataSource dataSource, boolean isFirstResource) {
+                        startPostponedEnterTransition();
+                        return false;
+                    }
+                })
                 .into(viewBinding.header.imgvCover);
     }
 

@@ -98,6 +98,7 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:transitionName="coverImageTransition"
                 android:layout_centerVertical="true"
                 android:importantForAccessibility="no"
                 tools:src="@tools:sample/avatars" />
