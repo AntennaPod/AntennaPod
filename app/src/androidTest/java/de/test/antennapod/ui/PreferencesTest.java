@@ -3,14 +3,22 @@ package de.test.antennapod.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,17 +26,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.test.antennapod.EspressoTestUtils;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -75,22 +72,6 @@ public class PreferencesTest {
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());
-    }
-
-    @Test
-    public void testSwitchTheme() {
-        final UserPreferences.ThemePreference theme = UserPreferences.getTheme();
-        int otherThemeText;
-        if (theme == UserPreferences.ThemePreference.DARK) {
-            otherThemeText = R.string.pref_theme_title_light;
-        } else {
-            otherThemeText = R.string.pref_theme_title_dark;
-        }
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherThemeText)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getTheme() != theme);
     }
 
     @Test

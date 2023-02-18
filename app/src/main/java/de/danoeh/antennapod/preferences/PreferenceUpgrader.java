@@ -133,5 +133,13 @@ public class PreferenceUpgrader {
                         "" + UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED).apply();
             }
         }
+        if (oldVersion < 3010000) {
+            if (prefs.getString(UserPreferences.PREF_THEME, "system").equals("2")) {
+                prefs.edit()
+                        .putString(UserPreferences.PREF_THEME, "1")
+                        .putBoolean(UserPreferences.PREF_THEME_BLACK, true)
+                        .apply();
+            }
+        }
     }
 }
