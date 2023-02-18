@@ -860,6 +860,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             executor.submit(() -> {
                 playerLock.lock();
+
+
                 if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                     Log.d(TAG, "Lost audio focus");
                     pause(true, false);

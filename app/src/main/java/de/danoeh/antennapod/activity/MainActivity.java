@@ -518,7 +518,8 @@ public class MainActivity extends CastEnabledActivity {
     private void handleNavIntent() {
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)
-                || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
+                || intent.hasExtra(EXTRA_REFRESH_ON_START)
+        ) {
             Log.d(TAG, "handleNavIntent()");
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
@@ -631,7 +632,7 @@ public class MainActivity extends CastEnabledActivity {
                 break;
         }
     }
-  
+
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {

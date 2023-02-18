@@ -315,18 +315,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void loadQueueForMediaSession() {
         Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
-                    List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-                    for (FeedItem feedItem : DBReader.getQueue()) {
-                        if (feedItem.getMedia() != null) {
-                            MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
-                            queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
-                        }
-                    }
-                    emitter.onSuccess(queueItems);
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+            for (FeedItem feedItem : DBReader.getQueue()) {
+                if (feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
+            }
+            emitter.onSuccess(queueItems);
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItem(
@@ -371,9 +371,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         result.detach();
 
         Completable.create(emitter -> {
-                    result.sendResult(loadChildrenSynchronous(parentId));
-                    emitter.onComplete();
-                })
+            result.sendResult(loadChildrenSynchronous(parentId));
+            emitter.onComplete();
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -487,13 +487,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
                 Observable.fromCallable(
-                                () -> {
-                                    if (playable instanceof FeedMedia) {
-                                        return DBReader.getFeedMedia(((FeedMedia) playable).getId());
-                                    } else {
-                                        return playable;
-                                    }
-                                })
+                        () -> {
+                            if (playable instanceof FeedMedia) {
+                                return DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                            } else {
+                                return playable;
+                            }
+                        })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
