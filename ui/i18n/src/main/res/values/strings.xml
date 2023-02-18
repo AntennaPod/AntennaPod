@@ -432,8 +432,9 @@
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
     <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
-    <string name="pref_set_theme_title">Select Theme</string>
-    <string name="pref_tinted_theme_title">Use Tinted Colors</string>
+    <string name="pref_black_theme_title">Full Black</string>
+    <string name="pref_black_theme_message">Use full black for the dark theme</string>
+    <string name="pref_tinted_theme_title">Tinted Colors</string>
     <string name="pref_tinted_theme_message">Tint app colors based on the background image</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
@@ -441,7 +442,6 @@
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
-    <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
@@ -455,10 +455,9 @@
     <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_show_remain_time_title">Show Remaining Time</string>
     <string name="pref_show_remain_time_summary">Display remaining time of episodes when checked. If unchecked, display total duration of episodes.</string>
-    <string name="pref_theme_title_use_system">Use system theme</string>
+    <string name="pref_theme_title_automatic">Automatic</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
-    <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
