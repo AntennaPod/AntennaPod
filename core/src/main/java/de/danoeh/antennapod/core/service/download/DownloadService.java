@@ -461,6 +461,9 @@ public class DownloadService extends Service {
             if (feed.getPreferences().getKeepUpdated()) {
                 DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
                 builder.withInitiatedByUser(initiatedByUser);
+                if (feed.hasLastUpdateFailed()) {
+                    builder.setForce(true);
+                }
                 addNewRequest(builder.build());
             }
         }
