@@ -15,6 +15,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.ui.appstartintent.DownloadAuthenticationActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 
@@ -153,7 +154,8 @@ public class DownloadServiceNotification {
      * user about the number of completed downloads. A report will only be
      * created if there is at least one failed download excluding images
      */
-    public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport) {
+    public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport,
+                             List<DownloadRequest> failedRequests) {
         // check if report should be created
         boolean createReport = false;
         int failedDownloads = 0;
@@ -173,48 +175,68 @@ public class DownloadServiceNotification {
             }
         }
 
-        if (createReport) {
-            Log.d(TAG, "Creating report");
-
-            // create notification object
-            String channelId;
-            int titleId;
-            int iconId;
-            int id;
-            String content;
-            PendingIntent intent;
-            if (failedDownloads == 0) {
-                // We are generating an auto-download report
-                channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
-                titleId = R.string.auto_download_report_title;
-                iconId = R.drawable.ic_notification_new;
-                intent = getAutoDownloadReportNotificationContentIntent(context);
-                id = R.id.notification_auto_download_report;
-                content = createAutoDownloadNotificationContent(reportQueue);
-            } else {
-                channelId = NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR;
-                titleId = R.string.download_report_title;
-                iconId = R.drawable.ic_notification_sync_error;
-                intent = getReportNotificationContentIntent(context);
-                id = R.id.notification_download_report;
-                content = createFailedDownloadNotificationContent(reportQueue);
-            }
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
-            builder.setTicker(context.getString(titleId))
-                   .setContentTitle(context.getString(titleId))
-                   .setContentText(content)
-                   .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
-                   .setSmallIcon(iconId)
-                   .setContentIntent(intent)
-                   .setAutoCancel(true);
-            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(id, builder.build());
-            Log.d(TAG, "Download report notification was posted");
-        } else {
+        if (!createReport) {
             Log.d(TAG, "No report is created");
+            return;
         }
+        Log.d(TAG, "Creating report");
+        if (failedDownloads == 0) {
+            createAutoDownloadReportNotification(reportQueue);
+        } else {
+            createDownloadFailedNotification(reportQueue, failedRequests);
+        }
+        Log.d(TAG, "Download report notification was posted");
+    }
+
+    private void createAutoDownloadReportNotification(List<DownloadStatus> reportQueue) {
+        PendingIntent intent = getAutoDownloadReportNotificationContentIntent(context);
+        String content = createAutoDownloadNotificationContent(reportQueue);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
+                NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD);
+        builder.setTicker(context.getString(R.string.auto_download_report_title))
+                .setContentTitle(context.getString(R.string.auto_download_report_title))
+                .setContentText(content)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
+                .setSmallIcon(R.drawable.ic_notification_new)
+                .setContentIntent(intent)
+                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.notification_auto_download_report, builder.build());
+    }
+
+    private void createDownloadFailedNotification(List<DownloadStatus> reportQueue,
+                                                  List<DownloadRequest> failedRequests) {
+        Intent retryIntent = DownloadServiceInterface.get().makeDownloadIntent(context,
+                false, failedRequests.toArray(new DownloadRequest[0]));
+        PendingIntent retryPendingIntent = null;
+        if (retryIntent != null && Build.VERSION.SDK_INT >= 26) {
+            retryPendingIntent = PendingIntent.getForegroundService(context, R.id.pending_intent_download_service_retry,
+                    retryIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else if (retryIntent != null) {
+            retryPendingIntent = PendingIntent.getService(context,
+                    R.id.pending_intent_download_service_retry, retryIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                            | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+        }
+        PendingIntent intent = getReportNotificationContentIntent(context);
+        String content = createFailedDownloadNotificationContent(reportQueue);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
+                NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR);
+        builder.setTicker(context.getString(R.string.download_report_title))
+                .setContentTitle(context.getString(R.string.download_report_title))
+                .setContentText(content)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
+                .setSmallIcon(R.drawable.ic_notification_sync_error)
+                .setContentIntent(intent)
+                .setAutoCancel(true);
+        if (retryPendingIntent != null) {
+            builder.addAction(new NotificationCompat.Action(
+                    R.drawable.ic_notification_sync, context.getString(R.string.retry_label), retryPendingIntent));
+        }
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.notification_download_report, builder.build());
     }
 
     public void postAuthenticationNotification(final DownloadRequest downloadRequest) {
