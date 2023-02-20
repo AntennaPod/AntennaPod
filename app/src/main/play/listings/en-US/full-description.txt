@@ -6,7 +6,7 @@ Made by podcast-enthusiasts, AntennaPod is free in all senses of the word: open 
 
 <b>Import, organize and play</b>
 • Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls
-• Add and import feeds via the Apple Podcasts and gPodder.net directories, OPML files and RSS or Atom links
+• Add and import feeds via the Apple Podcasts, gPodder.net, fyyd or Podcast Index directories, OPML files and RSS or Atom links
 • Enjoy listening your way with adjustable playback speed, chapter support, remembered playback position and an advanced sleep timer (shake to reset, lower volume)
 • Access password-protected feeds and episodes
 
