@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Vaciar el historial</string>
   <string name="clear_playback_history_msg">Esto borrará el historial de reproducción al completo. ¿Confirma que quiere hacerlo?</string>
+  <string name="remove_history_label">Eliminar del historial</string>
+  <string name="removed_history_label">Eliminado del historial</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
@@ -424,6 +426,8 @@
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="user_interface_sum">Apariencia, Suscripción, Pantalla de bloqueo</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
+  <string name="pref_tinted_theme_title">Usar colores claros</string>
+  <string name="pref_tinted_theme_message">Cambiar los colores según la imagen de fondo</string>
   <string name="pref_nav_drawer_items_title">Cambiar el cajón de navegación</string>
   <string name="pref_nav_drawer_items_sum">Cambiar los ítems que aparecen en el cajón de navegación</string>
   <string name="pref_nav_drawer_feed_order_title">Ajustar orden de suscripción</string>
@@ -609,11 +613,17 @@
   <string name="dialog_choose_sync_service_title">Escoge un proveedor de sincronización</string>
   <string name="gpodnet_description">Gpodder.net es un servicio de código abierto de sincronización de podcasts que puedes instalar en tu propio servidor. Gpodder.net es independiente del proyecto AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync es una aplicación libre de Nextcloud que puede instalar fácilmente en tu servidor. La aplicación es independiente del proyecto de AntennaPod.</string>
+  <string name="synchronization_host_explanation">Puedes elegir tu propio servidor de sincronización. Cuando indiques tu servidor de sincronización preferido, entra su dirección aquí.</string>
+  <string name="synchronization_host_label">Dirección del servidor</string>
+  <string name="proceed_to_login_butLabel">Proceder con el login</string>
   <string name="synchronization_nextcloud_authenticate_browser">Permitir el acceso utilizando el navegador web abierto y volver a AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Iniciar sesión</string>
+  <string name="synchronization_credentials_explanation">Por favor, indica las credenciales de tu cuenta en el servidor de sincronización.</string>
   <string name="gpodnetauth_encryption_warning">Clave de acceso y data no encriptadas.</string>
   <string name="username_label">Usuario</string>
   <string name="password_label">Contraseña</string>
+  <string name="synchronization_login_butLabel">Log in</string>
+  <string name="synchronization_selectDevice_explanation">Por favor, selecciona el dispositivo en el servidor de sincronización, o crea uno nuevo.</string>
   <string name="gpodnetauth_device_name">Nombre del dispositivo</string>
   <string name="gpodnetauth_device_name_default">AntennaPod en %1$s</string>
   <string name="gpodnetauth_existing_devices">Dispositivos existentes</string>
@@ -706,6 +716,7 @@
   <string name="discover_powered_by_itunes">Sugerencias de iTunes</string>
   <string name="discover_confirm">Mostrar sugerencias</string>
   <string name="search_powered_by">Resultados de %1$s</string>
+  <string name="select_country">Selecciona país</string>
   <!--Local feeds-->
   <string name="add_local_folder">Añadir carpeta local</string>
   <string name="local_folder">Carpeta local</string>

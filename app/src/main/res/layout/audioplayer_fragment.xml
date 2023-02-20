@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:elevation="8dp"
+        android:outlineProvider="none"
         tools:layout_height="@dimen/external_player_height" />
 
     <RelativeLayout
