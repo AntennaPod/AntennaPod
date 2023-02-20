@@ -48,6 +48,7 @@ public class UserPreferences {
 
     // User Interface
     public static final String PREF_THEME = "prefTheme";
+    public static final String PREF_THEME_BLACK = "prefThemeBlack";
     public static final String PREF_TINTED_COLORS = "prefTintedColors";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
@@ -159,17 +160,33 @@ public class UserPreferences {
         LIGHT, DARK, BLACK, SYSTEM
     }
 
+    public static void setTheme(ThemePreference theme) {
+        switch (theme) {
+            case LIGHT:
+                prefs.edit().putString(PREF_THEME, "0").apply();
+                break;
+            case DARK:
+                prefs.edit().putString(PREF_THEME, "1").apply();
+                break;
+            default:
+                prefs.edit().putString(PREF_THEME, "system").apply();
+                break;
+        }
+    }
+
     public static ThemePreference getTheme() {
         switch (prefs.getString(PREF_THEME, "system")) {
             case "0":
                 return ThemePreference.LIGHT;
             case "1":
                 return ThemePreference.DARK;
-            case "2":
-                return ThemePreference.BLACK;
             default:
                 return ThemePreference.SYSTEM;
         }
+    }
+
+    public static boolean getIsBlackTheme() {
+        return prefs.getBoolean(PREF_THEME_BLACK, false);
     }
 
     public static boolean getIsThemeColorTinted() {

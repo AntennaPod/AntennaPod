@@ -59,11 +59,14 @@ public abstract class ThemeSwitcher {
         if (theme == UserPreferences.ThemePreference.SYSTEM) {
             int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
-                return UserPreferences.ThemePreference.DARK;
+                theme = UserPreferences.ThemePreference.DARK;
             } else {
-                return UserPreferences.ThemePreference.LIGHT;
+                theme = UserPreferences.ThemePreference.LIGHT;
 
             }
+        }
+        if (theme == UserPreferences.ThemePreference.DARK && UserPreferences.getIsBlackTheme()) {
+            theme = UserPreferences.ThemePreference.BLACK;
         }
         return theme;
     }

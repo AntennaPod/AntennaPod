@@ -343,7 +343,9 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     navAdapter.notifyDataSetChanged();
                     if (UserPreferences.getHiddenDrawerItems().contains(getLastNavFragment(getContext()))) {
                         new MainActivityStarter(getContext())
-                                .withFragmentLoaded(UserPreferences.getDefaultPage()).start();
+                                .withFragmentLoaded(UserPreferences.getDefaultPage())
+                                .withDrawerOpen()
+                                .start();
                     }
                 });
                 return true;
