@@ -675,7 +675,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast suchen…</string>
-  <string name="search_apple_label">iTunes durchsuchen</string>
+  <string name="search_itunes_label">iTunes durchsuchen</string>
   <string name="search_podcastindex_label">Podcastindex.org durchsuchen</string>
   <string name="search_fyyd_label">fyyd durchsuchen</string>
   <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
@@ -685,7 +685,7 @@ Tippen, um Details anzuzeigen.</string>
   <string name="discover_hide">Ausblenden</string>
   <string name="discover_is_hidden">Du hast ausgewählt, Vorschläge auszublenden.</string>
   <string name="discover_more">mehr »</string>
-  <string name="discover_powered_by_apple">Vorschläge von iTunes</string>
+  <string name="discover_powered_by_itunes">Vorschläge von iTunes</string>
   <string name="discover_confirm">Vorschläge anzeigen</string>
   <string name="search_powered_by">Ergebnisse von %1$s</string>
   <!--Local feeds-->

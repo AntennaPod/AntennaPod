@@ -667,7 +667,7 @@
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Ieškoti tinklalaidės...</string>
-  <string name="search_apple_label">Ieškoti „iTunes“</string>
+  <string name="search_itunes_label">Ieškoti „iTunes“</string>
   <string name="search_podcastindex_label">Ieškoti „Podcastindex.org“ svetainėje</string>
   <string name="search_fyyd_label">Ieškoti „fyyd“</string>
   <string name="gpodnet_search_hint">Ieškoti „gpodder.net“ svetainėje</string>
@@ -677,7 +677,7 @@
   <string name="discover_hide">Slėpti</string>
   <string name="discover_is_hidden">Pasirinkote slėpti pasiūlymus.</string>
   <string name="discover_more">daugiau »</string>
-  <string name="discover_powered_by_apple">„iTunes“ pasiūlymai</string>
+  <string name="discover_powered_by_itunes">„iTunes“ pasiūlymai</string>
   <string name="search_powered_by">Rezultatus pateikė „%1$s“</string>
   <!--Local feeds-->
   <string name="add_local_folder">Pridėti vietinį aplanką</string>

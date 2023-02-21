@@ -693,7 +693,7 @@
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Pesquisar podcast...</string>
-  <string name="search_apple_label">Pesquisar em iTunes</string>
+  <string name="search_itunes_label">Pesquisar em iTunes</string>
   <string name="search_podcastindex_label">Pesquisar em Podcastindex.org</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
   <string name="gpodnet_search_hint">Pesquisar em gpodder.net</string>
@@ -703,7 +703,7 @@
   <string name="discover_hide">Ocultar</string>
   <string name="discover_is_hidden">Você optou por ocultar sugestões.</string>
   <string name="discover_more">mais »</string>
-  <string name="discover_powered_by_apple">Sugestões de iTunes</string>
+  <string name="discover_powered_by_itunes">Sugestões de iTunes</string>
   <string name="discover_confirm">Mostrar sugestões</string>
   <string name="search_powered_by">Resultados de %1$s</string>
   <!--Local feeds-->

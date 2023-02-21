@@ -666,7 +666,7 @@
   <string name="sp_apps_importing_feeds_msg">Importare abonamente din aplicații cu un singur scop...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Caută podcast...</string>
-  <string name="search_apple_label">Caută în iTunes</string>
+  <string name="search_itunes_label">Caută în iTunes</string>
   <string name="search_podcastindex_label">Caută în Podcastindex.org</string>
   <string name="search_fyyd_label">Caută în fyyd</string>
   <string name="gpodnet_search_hint">Caută pe gpodder.net</string>
@@ -676,7 +676,7 @@
   <string name="discover_hide">Ascunde</string>
   <string name="discover_is_hidden">Ai selectat să ascunzi sugestiile.</string>
   <string name="discover_more">mai mult »</string>
-  <string name="discover_powered_by_apple">Sugetii de la iTunes</string>
+  <string name="discover_powered_by_itunes">Sugetii de la iTunes</string>
   <string name="search_powered_by">Rezultatele %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Adaugă director local</string>

@@ -674,7 +674,7 @@
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Sök podcast...</string>
-  <string name="search_apple_label">Leta i iTunes</string>
+  <string name="search_itunes_label">Leta i iTunes</string>
   <string name="search_podcastindex_label">Sök Podcastindex.org</string>
   <string name="search_fyyd_label">Sök i fyyd</string>
   <string name="gpodnet_search_hint">Sök på gpodder.net</string>
@@ -684,7 +684,7 @@
   <string name="discover_hide">Dölj</string>
   <string name="discover_is_hidden">Du valde att dölja förslag.</string>
   <string name="discover_more">mer »</string>
-  <string name="discover_powered_by_apple">Förslag från iTuenes</string>
+  <string name="discover_powered_by_itunes">Förslag från iTuenes</string>
   <string name="discover_confirm">Visa förslag</string>
   <string name="search_powered_by">Resultat för %1$s</string>
   <!--Local feeds-->

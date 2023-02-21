@@ -639,7 +639,7 @@
   <string name="sp_apps_importing_feeds_msg">Uvažanje naročnin iz enonamenskih aplikacij …</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Išči podcast...</string>
-  <string name="search_apple_label">Poiščite po iTunes</string>
+  <string name="search_itunes_label">Poiščite po iTunes</string>
   <string name="search_podcastindex_label">Išči Podcastindex.org</string>
   <string name="search_fyyd_label">Išči fyyd</string>
   <string name="gpodnet_search_hint">Poišči na gpodder.net</string>
@@ -649,7 +649,7 @@
   <string name="discover_hide">Skrij</string>
   <string name="discover_is_hidden">Izbrali ste, da predloge skrijete.</string>
   <string name="discover_more">več »</string>
-  <string name="discover_powered_by_apple">Predlagano od iTunes</string>
+  <string name="discover_powered_by_itunes">Predlagano od iTunes</string>
   <string name="search_powered_by">Rezultati od %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Dodaj lokalno mapo</string>

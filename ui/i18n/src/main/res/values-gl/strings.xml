@@ -684,7 +684,7 @@
   <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Buscar podcast...</string>
-  <string name="search_apple_label">Buscar en iTunes</string>
+  <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="search_podcastindex_label">Buscar en Podcastindex.org</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
@@ -694,7 +694,7 @@
   <string name="discover_hide">Agochar</string>
   <string name="discover_is_hidden">Elexiches agochar as suxestións.</string>
   <string name="discover_more">máis »</string>
-  <string name="discover_powered_by_apple">Suxestións de iTunes</string>
+  <string name="discover_powered_by_itunes">Suxestións de iTunes</string>
   <string name="discover_confirm">Mostrar suxestións</string>
   <string name="search_powered_by">Resultados por %1$s</string>
   <string name="select_country">Seleccionar país</string>

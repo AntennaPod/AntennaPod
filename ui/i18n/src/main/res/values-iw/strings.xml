@@ -712,7 +712,7 @@
   <string name="sp_apps_importing_feeds_msg">מתבצע ייבוא מינויים מיישומונים ממוקדי מטרה…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">חיפוש פודקאסט…</string>
-  <string name="search_apple_label">חיפוש ב־iTunes</string>
+  <string name="search_itunes_label">חיפוש ב־iTunes</string>
   <string name="search_podcastindex_label">חיפוש ב־Podcastindex.org</string>
   <string name="search_fyyd_label">בחיפוש ב־fyyd</string>
   <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
@@ -722,7 +722,7 @@
   <string name="discover_hide">הסתרה</string>
   <string name="discover_is_hidden">בחרת להסתיר הצעות.</string>
   <string name="discover_more">עוד »</string>
-  <string name="discover_powered_by_apple">הצעות מ־iTunes</string>
+  <string name="discover_powered_by_itunes">הצעות מ־iTunes</string>
   <string name="discover_confirm">הצגת הצעות</string>
   <string name="search_powered_by">תוצאות מאת %1$s</string>
   <!--Local feeds-->

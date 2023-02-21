@@ -665,7 +665,7 @@
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">ポッドキャストの検索…</string>
-  <string name="search_apple_label">iTunes を検索</string>
+  <string name="search_itunes_label">iTunes を検索</string>
   <string name="search_podcastindex_label">Podcastindex.org を検索</string>
   <string name="search_fyyd_label">fyyd を検索</string>
   <string name="gpodnet_search_hint">gpodder.net を検索</string>
@@ -675,7 +675,7 @@
   <string name="discover_hide">隠す</string>
   <string name="discover_is_hidden">提案を隠すことを選択しました</string>
   <string name="discover_more">さらに »</string>
-  <string name="discover_powered_by_apple">iTunes による提案</string>
+  <string name="discover_powered_by_itunes">iTunes による提案</string>
   <string name="discover_confirm">提案を表示</string>
   <string name="search_powered_by">%1$s による検索結果</string>
   <string name="select_country">国の選択</string>

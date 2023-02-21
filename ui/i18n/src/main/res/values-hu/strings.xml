@@ -631,7 +631,7 @@
   <string name="sp_apps_importing_feeds_msg">Feliratkozások importálása az egycélú alkalmazásokból…</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast keresése…</string>
-  <string name="search_apple_label">Keresés az iTunes-on</string>
+  <string name="search_itunes_label">Keresés az iTunes-on</string>
   <string name="search_podcastindex_label">Keresés a Podcastindex.org-on</string>
   <string name="search_fyyd_label">Keresés a fyyden</string>
   <string name="gpodnet_search_hint">Keresés a gpodder.neten</string>
@@ -641,7 +641,7 @@
   <string name="discover_hide">Elrejtés</string>
   <string name="discover_is_hidden">A javaslatok elrejtését választotta.</string>
   <string name="discover_more">több »</string>
-  <string name="discover_powered_by_apple">iTunes javaslatok</string>
+  <string name="discover_powered_by_itunes">iTunes javaslatok</string>
   <string name="search_powered_by">%1$s javaslatok</string>
   <!--Local feeds-->
   <string name="add_local_folder">Helyi mappa hozzáadása</string>

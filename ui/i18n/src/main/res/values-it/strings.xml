@@ -666,7 +666,7 @@
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Cerca podcast...</string>
-  <string name="search_apple_label">Cerca su iTunes</string>
+  <string name="search_itunes_label">Cerca su iTunes</string>
   <string name="search_podcastindex_label">Cerca su podcastindex.org</string>
   <string name="search_fyyd_label">Cerca su fyyd</string>
   <string name="gpodnet_search_hint">Cerca su gpodder.net</string>
@@ -676,7 +676,7 @@
   <string name="discover_hide">Nascondi</string>
   <string name="discover_is_hidden">Hai scelto di nascondere i suggerimenti</string>
   <string name="discover_more">altro »</string>
-  <string name="discover_powered_by_apple">Suggerimenti di iTunes</string>
+  <string name="discover_powered_by_itunes">Suggerimenti di iTunes</string>
   <string name="search_powered_by">Risultati da %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Aggiungi cartella locale</string>

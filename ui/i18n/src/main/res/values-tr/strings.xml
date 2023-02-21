@@ -672,7 +672,7 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast ara…</string>
-  <string name="search_apple_label">iTunes\'da Arama</string>
+  <string name="search_itunes_label">iTunes\'da Arama</string>
   <string name="search_podcastindex_label">Search Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd</string>
   <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
@@ -682,7 +682,7 @@ Herkes AntennaPod\'u daha iyi hale getirmek için yardımda bulunabilir, gerek k
   <string name="discover_hide">Gizle</string>
   <string name="discover_is_hidden">Tavsiyleri gizlediniz.</string>
   <string name="discover_more">daha fazla »</string>
-  <string name="discover_powered_by_apple">Suggestions by iTunes</string>
+  <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
   <string name="discover_confirm">Önerileri göster</string>
   <string name="search_powered_by">Results by %1$s</string>
   <!--Local feeds-->

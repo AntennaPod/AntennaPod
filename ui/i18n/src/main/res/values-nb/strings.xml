@@ -616,7 +616,7 @@
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltstående applikasjoner...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Søk etter podkast...</string>
-  <string name="search_apple_label">Søk på iTunes</string>
+  <string name="search_itunes_label">Søk på iTunes</string>
   <string name="search_podcastindex_label">Søk i Podcastindex.org</string>
   <string name="search_fyyd_label">Søk med fyyd</string>
   <string name="gpodnet_search_hint">Søk på gpodder.net</string>
@@ -626,7 +626,7 @@
   <string name="discover_hide">Skjul</string>
   <string name="discover_is_hidden">Du valgte å skjule forslag</string>
   <string name="discover_more">mer »</string>
-  <string name="discover_powered_by_apple">Foreslått av iTunes</string>
+  <string name="discover_powered_by_itunes">Foreslått av iTunes</string>
   <string name="search_powered_by">Resultater fra %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Legg til lokal mappe</string>

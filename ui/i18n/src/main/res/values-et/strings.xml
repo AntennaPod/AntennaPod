@@ -570,7 +570,7 @@
   <string name="sp_apps_importing_feeds_msg">Tellimuste importimine teistest äppidest...</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Otsi taskuhäälingut...</string>
-  <string name="search_apple_label">Otsi iTunest</string>
+  <string name="search_itunes_label">Otsi iTunest</string>
   <string name="search_podcastindex_label">Otsi saidilt Podcastindex.org</string>
   <string name="search_fyyd_label">Search fyyd-ist</string>
   <string name="gpodnet_search_hint">Otsi gpodder.net-ist</string>
@@ -580,7 +580,7 @@
   <string name="discover_hide">Peida</string>
   <string name="discover_is_hidden">Valisid soovituste peitmise.</string>
   <string name="discover_more">veel »</string>
-  <string name="discover_powered_by_apple">iTunes soovitab</string>
+  <string name="discover_powered_by_itunes">iTunes soovitab</string>
   <string name="search_powered_by">Tulemused: %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lisa kohalik kaust</string>

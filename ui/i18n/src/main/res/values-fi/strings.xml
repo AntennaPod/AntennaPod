@@ -631,7 +631,7 @@
   <string name="sp_apps_importing_feeds_msg">Tuodaan tilauksia sovelluksista</string>
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Etsi podcastia...</string>
-  <string name="search_apple_label">Etsi iTunes:sta</string>
+  <string name="search_itunes_label">Etsi iTunes:sta</string>
   <string name="search_podcastindex_label">Etsi Podcastindex.org:sta</string>
   <string name="search_fyyd_label">Etsi fyyd:sta</string>
   <string name="gpodnet_search_hint">Etsi gpodder.net</string>
@@ -641,7 +641,7 @@
   <string name="discover_hide">Piilota</string>
   <string name="discover_is_hidden">Valitsit piilottaa ehdotukset.</string>
   <string name="discover_more">lisää »</string>
-  <string name="discover_powered_by_apple">Ehdotukset tarjoaa iTunes</string>
+  <string name="discover_powered_by_itunes">Ehdotukset tarjoaa iTunes</string>
   <string name="search_powered_by">Tulosten lähde %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lisää paikallinen kansio</string>
