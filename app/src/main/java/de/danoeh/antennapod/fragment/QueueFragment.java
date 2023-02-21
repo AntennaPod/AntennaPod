@@ -251,6 +251,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             recyclerAdapter.endSelectMode();
         }
         recyclerAdapter = null;
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
     }
 
     private void refreshToolbarState() {
