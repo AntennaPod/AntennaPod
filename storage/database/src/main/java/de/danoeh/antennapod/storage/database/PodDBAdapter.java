@@ -45,6 +45,8 @@ import org.apache.commons.io.FileUtils;
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.model.feed.SortOrder.toCodeString;
 
+import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
+
 /**
  * Implements methods for accessing the database
  */
@@ -1059,11 +1061,13 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit,
+                                                        FeedItemFilter filter, SortOrder sortOrder) {
+        String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
-                + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
+                + "ORDER BY " +  orderByQuery + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 

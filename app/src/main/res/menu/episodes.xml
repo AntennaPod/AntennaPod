@@ -21,7 +21,7 @@
         android:icon="@drawable/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
-        custom:showAsAction="always"/>
+        custom:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_favorites"
@@ -29,5 +29,12 @@
         android:menuCategory="container"
         android:title="@string/favorite_episodes_label"
         custom:showAsAction="always"/>
+
+    <item
+        android:id="@+id/episodes_sort"
+        android:title="@string/sort"
+        custom:showAsAction="never">
+        <menu />
+    </item>
 
 </menu>
