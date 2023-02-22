@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.dialog.AllEpisodesFilterDialog;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import org.apache.commons.lang3.StringUtils;
@@ -17,13 +19,14 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Shows all episodes (possibly filtered by user).
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
     public static final String TAG = "EpisodesFragment";
-    public static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
     public static final String PREF_SORT = "prefEpisodesSort";
     private SharedPreferences prefs;
@@ -33,6 +36,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.episodes);
+        inflateSortMenu();
         toolbar.setTitle(R.string.episodes_label);
         updateToolbar();
         updateFilterUi();
@@ -40,6 +44,36 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         txtvInformation.setOnClickListener(
                 v -> AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null));
         return root;
+    }
+
+    private void inflateSortMenu() {
+        toolbar.inflateMenu(R.menu.sort_menu);
+
+        // Remove the sorting options that are not needed in this fragment
+        toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_feed_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_random).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_smart_shuffle).setVisible(false);
+        toolbar.getMenu().findItem(R.id.keep_sorted).setVisible(false);
+    }
+
+    @NonNull
+    @Override
+    protected List<FeedItem> loadData() {
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE,
+                getFilter(), getSortOrder());
+    }
+
+    @NonNull
+    @Override
+    protected List<FeedItem> loadMoreData(int page) {
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
+                EPISODES_PER_PAGE, getFilter(), getSortOrder());
+    }
+
+    @Override
+    protected int loadTotalItemCount() {
+        return DBReader.getTotalEpisodeCount(getFilter());
     }
 
     @Override
@@ -82,12 +116,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
                 return true;
             }
         }
-
         return false;
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        prefs.edit().putString(PREF_SORT, type.name()).apply();
+        prefs.edit().putInt(PREF_SORT, type.code).apply();
         loadItems();
     }
 
@@ -110,5 +143,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         }
         toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
                 getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
+    }
+
+    private SortOrder getSortOrder() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        int sortOrderStr = prefs.getInt(PREF_SORT, SortOrder.DATE_NEW_OLD.code);
+        return SortOrder.fromCodeString(Integer.toString(sortOrderStr));
     }
 }

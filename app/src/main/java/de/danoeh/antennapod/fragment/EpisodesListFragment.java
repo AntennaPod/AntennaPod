@@ -1,10 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import static de.danoeh.antennapod.fragment.AllEpisodesFragment.PREF_SORT;
-
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,7 +31,6 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -48,7 +43,6 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -446,28 +440,13 @@ public abstract class EpisodesListFragment extends Fragment
                         });
     }
 
-    private SortOrder getSortOrder() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(AllEpisodesFragment.PREF_NAME,
-                Context.MODE_PRIVATE);
-        String sortOrderStr = prefs.getString(PREF_SORT, "DATE_NEW_OLD");
-        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
-    }
+    @NonNull
+    protected abstract List<FeedItem> loadData();
 
     @NonNull
-    protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE,
-                getFilter(), getSortOrder());
-    }
+    protected abstract List<FeedItem> loadMoreData(int page);
 
-    @NonNull
-    protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
-                EPISODES_PER_PAGE, getFilter(), getSortOrder());
-    }
-
-    protected int loadTotalItemCount() {
-        return DBReader.getTotalEpisodeCount(getFilter());
-    }
+    protected abstract int loadTotalItemCount();
 
     protected abstract FeedItemFilter getFilter();
 

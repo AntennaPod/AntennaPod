@@ -30,39 +30,4 @@
         android:title="@string/favorite_episodes_label"
         custom:showAsAction="always"/>
 
-    <item
-        android:id="@+id/episodes_sort"
-        android:title="@string/sort">
-
-        <menu>
-            <item
-                android:id="@+id/episodes_sort_date"
-                android:title="@string/date">
-
-                <menu>
-                    <item
-                        android:id="@+id/sort_date_asc"
-                        android:title="@string/sort_old_new"/>
-                    <item
-                        android:id="@+id/sort_date_desc"
-                        android:title="@string/sort_new_old"/>
-                </menu>
-            </item>
-
-            <item
-                android:id="@+id/episodes_sort_duration"
-                android:title="@string/duration">
-
-                <menu>
-                    <item
-                        android:id="@+id/sort_duration_asc"
-                        android:title="@string/sort_short_long"/>
-                    <item
-                        android:id="@+id/sort_duration_desc"
-                        android:title="@string/sort_long_short"/>
-                </menu>
-            </item>
-        </menu>
-    </item>
-
 </menu>
