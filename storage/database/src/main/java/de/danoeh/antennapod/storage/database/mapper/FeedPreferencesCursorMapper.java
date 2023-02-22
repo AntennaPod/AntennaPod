@@ -34,7 +34,7 @@ public abstract class FeedPreferencesCursorMapper {
         int indexAutoSkipIntro = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_SKIP_ENDING);
         int indexEpisodeNotification = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
-        int indexNewEpisodesAction = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_NEW_EPISODES_ACTION);
+        int indexNewEpisodesAction = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_NEW_EPISODES_ACTION);
         int indexTags = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_TAGS);
 
         long feedId = cursor.getLong(indexId);

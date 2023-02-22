@@ -116,7 +116,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
     public static final String KEY_FEED_TAGS = "tags";
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
-    public static final String KEY_FEED_NEW_EPISODES_ACTION = "feed_new_episodes_action";
+    public static final String KEY_NEW_EPISODES_ACTION = "new_episodes_action";
     public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
 
     // Table names
@@ -159,7 +159,7 @@ public class PodDBAdapter {
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0,"
-            + KEY_FEED_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0)";
+            + KEY_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY
@@ -310,7 +310,7 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING + ", "
             + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION + ", "
-            + TABLE_NAME_FEEDS + "." + KEY_FEED_NEW_EPISODES_ACTION;
+            + TABLE_NAME_FEEDS + "." + KEY_NEW_EPISODES_ACTION;
 
     private static final String JOIN_FEED_ITEM_AND_MEDIA = " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
             + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " ";
@@ -459,7 +459,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
-        values.put(KEY_FEED_NEW_EPISODES_ACTION, prefs.getNewEpisodesAction().code);
+        values.put(KEY_NEW_EPISODES_ACTION, prefs.getNewEpisodesAction().code);
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
