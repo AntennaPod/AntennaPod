@@ -47,7 +47,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void inflateSortMenu() {
-        toolbar.inflateMenu(R.menu.sort_menu);
+        MenuItem sortItem = toolbar.getMenu().findItem(R.id.episodes_sort);
+        getActivity().getMenuInflater().inflate(R.menu.sort_menu, sortItem.getSubMenu());
 
         // Remove the sorting options that are not needed in this fragment
         toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
@@ -120,7 +121,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        prefs.edit().putInt(PREF_SORT, type.code).apply();
+        prefs.edit().putString(PREF_SORT, "" + type.code).apply();
         loadItems();
     }
 
@@ -146,8 +147,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     private SortOrder getSortOrder() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        int sortOrderStr = prefs.getInt(PREF_SORT, SortOrder.DATE_NEW_OLD.code);
-        return SortOrder.fromCodeString(Integer.toString(sortOrderStr));
+        return SortOrder.fromCodeString(prefs.getString(PREF_SORT, "" + SortOrder.DATE_NEW_OLD.code));
     }
 }

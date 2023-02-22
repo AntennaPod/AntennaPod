@@ -1063,7 +1063,6 @@ public class PodDBAdapter {
 
     public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit,
                                                         FeedItemFilter filter, SortOrder sortOrder) {
-
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;

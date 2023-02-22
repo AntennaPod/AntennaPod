@@ -30,4 +30,11 @@
         android:title="@string/favorite_episodes_label"
         custom:showAsAction="always"/>
 
+    <item
+        android:id="@+id/episodes_sort"
+        android:title="@string/sort"
+        custom:showAsAction="never">
+        <menu />
+    </item>
+
 </menu>
