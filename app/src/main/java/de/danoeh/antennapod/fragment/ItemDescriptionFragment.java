@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,6 +87,10 @@ public class ItemDescriptionFragment extends Fragment {
         if (webViewLoader != null) {
             webViewLoader.dispose();
         }
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
         webViewLoader = Maybe.<String>create(emitter -> {
             Playable media = controller.getMedia();
             if (media == null) {
@@ -100,7 +105,7 @@ public class ItemDescriptionFragment extends Fragment {
                 DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
             }
             ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
-                    getActivity(), media.getDescription(), media.getDuration());
+                    context, media.getDescription(), media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());
         })
                 .subscribeOn(Schedulers.io())

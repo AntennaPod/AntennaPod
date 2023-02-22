@@ -32,6 +32,8 @@
   <string name="statistics_reset_data">Lähtesta statistika andmed</string>
   <string name="statistics_reset_data_msg">See lähtestab kõigi esitatud saadete kuulamise pikkuse ajaloo. Kas oled kindel, et tahad jätkata?</string>
   <!--Home fragment-->
+  <string name="home_new_title">Mis on uut</string>
+  <string name="home_downloads_title">Halda allalaadimisi</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
@@ -43,6 +45,7 @@
   <string name="drawer_feed_order_most_played">Sorteeri kuulatud saadete järgi</string>
   <string name="drawer_feed_counter_unplayed">Kuulamata saadete arv</string>
   <string name="drawer_feed_counter_downloaded">Allalaaditud saadete arv</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Allalaaditud kuulamata saadete arv</string>
   <string name="drawer_feed_counter_none">Pole</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Ühtegi ühilduvat rakendust ei leitud</string>
@@ -128,6 +131,7 @@
   <string name="share_label">Jaga</string>
   <string name="share_file_label">Jaga faili</string>
   <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\" ja KÕIK selle saated (ka allalaaditud saated).</string>
+  <string name="feed_delete_confirmation_msg_batch">Palun kinnita, et tahad kustutada valitud taskuhäälingud ja KÕIK nende saated (ka allalaaditud saated).</string>
   <string name="feed_delete_confirmation_local_msg">Palun kinnita, et tahad eemaldada taskuhäälingu \"%1$s\". Kohalikus kaustas olevaid saateid ei kustutata.</string>
   <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu taskuhääling</string>
@@ -151,6 +155,10 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">1 allalaaditud saade kustutatud.</item>
+    <item quantity="other">%d allalaaditud saadet kustutatud.</item>
+  </plurals>
   <string name="mark_read_label">Märgi kuulatuks</string>
   <string name="marked_as_played_label">Märgitud kuulatuks</string>
   <string name="marked_as_unplayed_label">Märgitud kui kuulamata</string>
@@ -215,6 +223,7 @@
   </plurals>
   <string name="completing">Lõpetamine…</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
+  <string name="download_notification_title_episodes">Saadete allalaadimine</string>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>

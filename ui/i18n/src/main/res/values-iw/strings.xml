@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">ניקוי היסטוריה</string>
   <string name="clear_playback_history_msg">פעולה זו תמחק את היסטוריית הנגינה. להמשיך?</string>
+  <string name="remove_history_label">הסרה מההיסטוריה</string>
+  <string name="removed_history_label">הוסר מההיסטוריה</string>
   <!--Other-->
   <string name="confirm_label">אישור</string>
   <string name="cancel_label">ביטול</string>
@@ -440,6 +442,8 @@
   <string name="user_interface_label">מנשק משתמש</string>
   <string name="user_interface_sum">מראה, מינויים, מסך נעילה</string>
   <string name="pref_set_theme_title">בחירת ערכת עיצוב</string>
+  <string name="pref_tinted_theme_title">להשתמש בצבעים אטומים</string>
+  <string name="pref_tinted_theme_message">צבעים אטומי ליישומון לפי תמונת הרקע</string>
   <string name="pref_nav_drawer_items_title">הגדרת פריטי מגירת ניווט</string>
   <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט.</string>
   <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינויים</string>
@@ -628,11 +632,17 @@
   <string name="dialog_choose_sync_service_title">בחירת ספק סנכרון</string>
   <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שניתן להתקין על שרת משלך. ל־Gpodder.net אין לו קשר למיזם אנטנה־פּוֹד.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. היישומון אינו תלוי במיזם AntennaPod.</string>
+  <string name="synchronization_host_explanation">אפשר לבחור שרת משלך להסתנכרן מולו. כשזיהית את שרת הסנכרון המועדף עליך, נא למלא את הכתובת שלו כאן.</string>
+  <string name="synchronization_host_label">כתובת שרת</string>
+  <string name="proceed_to_login_butLabel">המשך לכניסה</string>
   <string name="synchronization_nextcloud_authenticate_browser">יש להעניק גישה באמצעות הדפדפן שנפתח ולחזור ל־AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">כניסה</string>
+  <string name="synchronization_credentials_explanation">נא לספק את פרטי הגישה לחשבון שלך בשרת הסנכרון.</string>
   <string name="gpodnetauth_encryption_warning">הססמה והנתונים אינם מוצפנים!</string>
   <string name="username_label">שם משתמש</string>
   <string name="password_label">ססמה</string>
+  <string name="synchronization_login_butLabel">כניסה</string>
+  <string name="synchronization_selectDevice_explanation">נא לבחור את המכשיר שיצרת בשרת הסנכרון או ליצור אחד חדש.</string>
   <string name="gpodnetauth_device_name">שם המכשיר</string>
   <string name="gpodnetauth_device_name_default">אנטנה־פּוֹד על %1$s</string>
   <string name="gpodnetauth_existing_devices">מכשירים קיימים</string>
@@ -725,6 +735,7 @@
   <string name="discover_powered_by_itunes">הצעות מ־iTunes</string>
   <string name="discover_confirm">הצגת הצעות</string>
   <string name="search_powered_by">תוצאות מאת %1$s</string>
+  <string name="select_country">בחירת מדינה</string>
   <!--Local feeds-->
   <string name="add_local_folder">הוספת תיקייה מקומית</string>
   <string name="local_folder">תיקייה מקומית</string>

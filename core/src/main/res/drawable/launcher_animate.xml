@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:oneshot="false">
+
+    <item android:duration="1000">
+        <aapt:attr name="android:drawable">
+            <layer-list>
+                <item android:drawable="@drawable/launcher_animate_bg" />
+                <item android:drawable="@drawable/launcher_animate_wave1" />
+                <item android:drawable="@drawable/launcher_animate_wave2" />
+            </layer-list>
+        </aapt:attr>
+    </item>
+
+    <item android:duration="80">
+        <aapt:attr name="android:drawable">
+            <layer-list>
+                <item android:drawable="@drawable/launcher_animate_bg" />
+                <item android:drawable="@drawable/launcher_animate_wave1" />
+            </layer-list>
+        </aapt:attr>
+    </item>
+
+    <item android:duration="200">
+        <aapt:attr name="android:drawable">
+            <layer-list>
+                <item android:drawable="@drawable/launcher_animate_bg" />
+            </layer-list>
+        </aapt:attr>
+    </item>
+
+    <item android:duration="80">
+        <aapt:attr name="android:drawable">
+            <layer-list>
+                <item android:drawable="@drawable/launcher_animate_bg" />
+                <item android:drawable="@drawable/launcher_animate_wave1" />
+            </layer-list>
+        </aapt:attr>
+    </item>
+
+</animation-list>
+
+

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.net.download.serviceinterface;
 
 import android.content.Context;
+import android.content.Intent;
 
 public abstract class DownloadServiceInterface {
     private static DownloadServiceInterface impl;
@@ -14,6 +15,8 @@ public abstract class DownloadServiceInterface {
     }
 
     public abstract void download(Context context, boolean cleanupMedia, DownloadRequest... requests);
+
+    public abstract Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests);
 
     public abstract void refreshAllFeeds(Context context, boolean initiatedByUser);
 
