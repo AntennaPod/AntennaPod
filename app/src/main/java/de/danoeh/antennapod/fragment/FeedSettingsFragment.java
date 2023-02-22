@@ -282,13 +282,13 @@ public class FeedSettingsFragment extends Fragment {
         private void setupAutoDeletePreference() {
             findPreference(PREF_AUTO_DELETE).setOnPreferenceChangeListener((preference, newValue) -> {
                 switch ((String) newValue) {
-                    case FeedPreferences.AutoDeleteAction.GLOBAL_VALUE:
+                    case "global":
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.GLOBAL);
                         break;
-                    case FeedPreferences.AutoDeleteAction.ALWAYS_VALUE:
+                    case "always":
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.ALWAYS);
                         break;
-                    case FeedPreferences.AutoDeleteAction.NEVER_VALUE:
+                    case "never":
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
                         break;
                     default:
@@ -305,15 +305,15 @@ public class FeedSettingsFragment extends Fragment {
             switch (feedPreferences.getAutoDeleteAction()) {
                 case GLOBAL:
                     autoDeletePreference.setSummary(R.string.global_default);
-                    autoDeletePreference.setValue(FeedPreferences.AutoDeleteAction.GLOBAL_VALUE);
+                    autoDeletePreference.setValue("global");
                     break;
                 case ALWAYS:
                     autoDeletePreference.setSummary(R.string.feed_auto_download_always);
-                    autoDeletePreference.setValue(FeedPreferences.AutoDeleteAction.ALWAYS_VALUE);
+                    autoDeletePreference.setValue("always");
                     break;
                 case NEVER:
                     autoDeletePreference.setSummary(R.string.feed_auto_download_never);
-                    autoDeletePreference.setValue(FeedPreferences.AutoDeleteAction.NEVER_VALUE);
+                    autoDeletePreference.setValue("never");
                     break;
             }
         }
@@ -359,18 +359,8 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupNewEpisodesAction() {
             findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceChangeListener((preference, newValue) -> {
-                switch ((String) newValue) {
-                    case FeedPreferences.NewEpisodesAction.GLOBAL_VALUE:
-                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.GLOBAL);
-                        break;
-                    case FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE:
-                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX);
-                        break;
-                    case FeedPreferences.NewEpisodesAction.NOTHING_VALUE:
-                        feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.NOTHING);
-                        break;
-                    default:
-                }
+                int code = Integer.parseInt((String) newValue);
+                feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.fromCode(code));
                 DBWriter.setFeedPreferences(feedPreferences);
                 updateNewEpisodesAction();
                 return false;
@@ -379,19 +369,17 @@ public class FeedSettingsFragment extends Fragment {
 
         private void updateNewEpisodesAction() {
             ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
+            newEpisodesAction.setValue("" + feedPreferences.getNewEpisodesAction().code);
 
             switch (feedPreferences.getNewEpisodesAction()) {
                 case GLOBAL:
                     newEpisodesAction.setSummary(R.string.global_default);
-                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.GLOBAL_VALUE);
                     break;
                 case ADD_TO_INBOX:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_add_to_inbox);
-                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE);
                     break;
                 case NOTHING:
                     newEpisodesAction.setSummary(R.string.feed_new_episodes_action_nothing);
-                    newEpisodesAction.setValue(FeedPreferences.NewEpisodesAction.NOTHING_VALUE);
                     break;
                 default:
             }

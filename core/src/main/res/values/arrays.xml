@@ -31,8 +31,8 @@
     </string-array>
 
     <string-array name="globalNewEpisodesActionValues">
-        <item>add_to_inbox</item>
-        <item>nothing</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="feedNewEpisodesActionItems">
@@ -42,9 +42,9 @@
     </string-array>
 
     <string-array name="feedNewEpisodesActionValues">
-        <item>global</item>
-        <item>add_to_inbox</item>
-        <item>nothing</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">

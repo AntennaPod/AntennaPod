@@ -17,27 +17,45 @@ public class FeedPreferences implements Serializable {
     public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {
-        GLOBAL(AutoDeleteAction.GLOBAL_VALUE),
-        ALWAYS(AutoDeleteAction.ALWAYS_VALUE),
-        NEVER(AutoDeleteAction.NEVER_VALUE);
+        GLOBAL(0),
+        ALWAYS(1),
+        NEVER(2);
 
-        public static final String GLOBAL_VALUE = "global";
-        public static final String ALWAYS_VALUE = "always";
-        public static final String NEVER_VALUE = "never";
+        public final int code;
 
-        AutoDeleteAction(String val) {}
+        AutoDeleteAction(int code) {
+            this.code = code;
+        }
+
+        public static AutoDeleteAction fromCode(int code) {
+            for (AutoDeleteAction action : values()) {
+                if (code == action.code) {
+                    return action;
+                }
+            }
+            return NEVER;
+        }
     }
 
     public enum NewEpisodesAction {
-        GLOBAL(NewEpisodesAction.GLOBAL_VALUE),
-        ADD_TO_INBOX(NewEpisodesAction.ADD_TO_INBOX_VALUE),
-        NOTHING(NewEpisodesAction.NOTHING_VALUE);
+        GLOBAL(0),
+        ADD_TO_INBOX(1),
+        NOTHING(2);
 
-        public static final String GLOBAL_VALUE = "global";
-        public static final String ADD_TO_INBOX_VALUE = "add_to_inbox";
-        public static final String NOTHING_VALUE = "nothing";
+        public final int code;
 
-        NewEpisodesAction(String val) {}
+        NewEpisodesAction(int code) {
+            this.code = code;
+        }
+
+        public static NewEpisodesAction fromCode(int code) {
+            for (NewEpisodesAction action : values()) {
+                if (code == action.code) {
+                    return action;
+                }
+            }
+            return ADD_TO_INBOX;
+        }
     }
 
     @NonNull

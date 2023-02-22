@@ -382,31 +382,15 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    // Only send the item to the Inbox if the if the "New Episodes Action"
-                    // preference is set to "Add to Inbox", and one of the following is true:
-                    //
-                    //   1. The item was published after or at the same time as
-                    //      the most recent item
-                    //   2. The most recent date is null (i.e. no previous
-                    //      items and this is the first)
-                    //   3. The item has no pubDate
-                    //
                     FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                     if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
-                        // Feed preference is set to global, check if the globlal setting is
-                        // to add to the inbox
-                        String globalNewEpisodesAction = UserPreferences.getNewEpisodesAction();
-                        if (globalNewEpisodesAction.equals(FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE)) {
-                            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
-                        }
+                        action = UserPreferences.getNewEpisodesAction();
                     }
-                    boolean shouldAddToInbox = action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
-
-                    if (shouldAddToInbox && (
-                            item.getPubDate() == null
-                            || priorMostRecentDate == null
-                            || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate()))) {
+                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            && (item.getPubDate() == null
+                                || priorMostRecentDate == null
+                                || priorMostRecentDate.before(item.getPubDate())
+                                || priorMostRecentDate.equals(item.getPubDate()))) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();

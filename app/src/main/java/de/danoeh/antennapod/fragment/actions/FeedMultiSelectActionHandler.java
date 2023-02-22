@@ -89,28 +89,12 @@ public class FeedMultiSelectActionHandler {
 
     private void autoDeleteEpisodesPrefHandler() {
         PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                "Auto delete episodes");
+                activity.getString(R.string.auto_delete_label));
         String[] items = activity.getResources().getStringArray(R.array.spnAutoDeleteItems);
-        String[] values = activity.getResources().getStringArray(R.array.spnAutoDeleteValues);
         preferenceListDialog.openDialog(items);
         preferenceListDialog.setOnPreferenceChangedListener(which -> {
-            FeedPreferences.AutoDeleteAction autoDeleteAction = null;
-            switch (values[which]) {
-                case FeedPreferences.AutoDeleteAction.GLOBAL_VALUE:
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.GLOBAL;
-                    break;
-                case FeedPreferences.AutoDeleteAction.ALWAYS_VALUE:
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.ALWAYS;
-                    break;
-                case FeedPreferences.AutoDeleteAction.NEVER_VALUE:
-                    autoDeleteAction = FeedPreferences.AutoDeleteAction.NEVER;
-                    break;
-                default:
-            }
-            FeedPreferences.AutoDeleteAction finalAutoDeleteAction = autoDeleteAction;
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setAutoDeleteAction(finalAutoDeleteAction);
-            });
+            FeedPreferences.AutoDeleteAction autoDeleteAction = FeedPreferences.AutoDeleteAction.fromCode(which);
+            saveFeedPreferences(feedPreferences -> feedPreferences.setAutoDeleteAction(autoDeleteAction));
         });
     }
 
@@ -124,33 +108,6 @@ public class FeedMultiSelectActionHandler {
             });
         });
         preferenceSwitchDialog.openDialog();
-    }
-
-    private void newEpisodesActionPrefHandler() {
-        PreferenceListDialog preferenceListDialog = new PreferenceListDialog(activity,
-                activity.getString(R.string.pref_new_episodes_action_title));
-        String[] items = activity.getResources().getStringArray(R.array.feedNewEpisodesActionItems);
-        String[] values = activity.getResources().getStringArray(R.array.feedNewEpisodesActionValues);
-        preferenceListDialog.openDialog(items);
-        preferenceListDialog.setOnPreferenceChangedListener(which -> {
-            FeedPreferences.NewEpisodesAction newEpisodesAction = null;
-            switch (values[which]) {
-                case FeedPreferences.NewEpisodesAction.GLOBAL_VALUE:
-                    newEpisodesAction = FeedPreferences.NewEpisodesAction.GLOBAL;
-                    break;
-                case FeedPreferences.NewEpisodesAction.ADD_TO_INBOX_VALUE:
-                    newEpisodesAction = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
-                    break;
-                case FeedPreferences.NewEpisodesAction.NOTHING_VALUE:
-                    newEpisodesAction = FeedPreferences.NewEpisodesAction.NOTHING;
-                    break;
-                default:
-            }
-            FeedPreferences.NewEpisodesAction finalNewEpisodesAction = newEpisodesAction;
-            saveFeedPreferences(feedPreferences -> {
-                feedPreferences.setNewEpisodesAction(finalNewEpisodesAction);
-            });
-        });
     }
 
     private void showMessage(@PluralsRes int msgId, int numItems) {

@@ -19,7 +19,7 @@
                 android:key="prefNewEpisodesAction"
                 android:title="@string/pref_new_episodes_action_title"
                 android:summary="@string/pref_new_episodes_action_sum"
-                android:defaultValue="add_to_inbox"/>
+                android:defaultValue="1"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">

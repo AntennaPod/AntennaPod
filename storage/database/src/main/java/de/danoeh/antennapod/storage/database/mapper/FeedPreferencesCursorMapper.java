@@ -40,9 +40,8 @@ public abstract class FeedPreferencesCursorMapper {
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
         boolean autoRefresh = cursor.getInt(indexAutoRefresh) > 0;
-        int autoDeleteActionIndex = cursor.getInt(indexAutoDeleteAction);
         FeedPreferences.AutoDeleteAction autoDeleteAction =
-                FeedPreferences.AutoDeleteAction.values()[autoDeleteActionIndex];
+                FeedPreferences.AutoDeleteAction.fromCode(cursor.getInt(indexAutoDeleteAction));
         int volumeAdaptionValue = cursor.getInt(indexVolumeAdaption);
         VolumeAdaptionSetting volumeAdaptionSetting = VolumeAdaptionSetting.fromInteger(volumeAdaptionValue);
         String username = cursor.getString(indexUsername);
@@ -53,9 +52,8 @@ public abstract class FeedPreferencesCursorMapper {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
-        int feedNewEpisodesActionIndex = cursor.getInt(indexNewEpisodesAction);
         FeedPreferences.NewEpisodesAction feedNewEpisodesAction =
-                FeedPreferences.NewEpisodesAction.values()[feedNewEpisodesActionIndex];
+                FeedPreferences.NewEpisodesAction.fromCode(cursor.getInt(indexNewEpisodesAction));
         boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
         String tagsString = cursor.getString(indexTags);
         if (TextUtils.isEmpty(tagsString)) {

@@ -447,7 +447,7 @@ public class PodDBAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
-        values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().code);
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
@@ -459,7 +459,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
-        values.put(KEY_FEED_NEW_EPISODES_ACTION, prefs.getNewEpisodesAction().ordinal());
+        values.put(KEY_FEED_NEW_EPISODES_ACTION, prefs.getNewEpisodesAction().code);
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 

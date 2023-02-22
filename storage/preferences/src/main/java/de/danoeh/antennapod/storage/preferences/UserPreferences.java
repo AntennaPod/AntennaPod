@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -927,8 +928,10 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static String getNewEpisodesAction() {
-        return prefs.getString(PREF_NEW_EPISODES_ACTION, "add_to_inbox");
+    public static FeedPreferences.NewEpisodesAction getNewEpisodesAction() {
+        String str = prefs.getString(PREF_NEW_EPISODES_ACTION,
+                "" + FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.code);
+        return FeedPreferences.NewEpisodesAction.fromCode(Integer.parseInt(str));
     }
 
     public static SubscriptionsFilter getSubscriptionsFilter() {
