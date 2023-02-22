@@ -209,11 +209,16 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Splash" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">@color/icon_background_gradient_start</item>
-        <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
-        <item name="android:navigationBarColor">@color/icon_background_gradient_end</item>
+    <style name="Theme.AntennaPod.Splash" parent="Theme.SplashScreen">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
@@ -277,6 +282,15 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <style name="TextPill">
+        <item name="android:background">@drawable/bg_pill_translucent</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
     </style>
 
 </resources>

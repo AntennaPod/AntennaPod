@@ -6,6 +6,7 @@
   <string name="statistics_label">Štatistiky</string>
   <string name="add_feed_label">Pridať podcast</string>
   <string name="episodes_label">Epizódy</string>
+  <string name="home_label">Domov</string>
   <string name="queue_label">Poradie</string>
   <string name="inbox_label">Schránka</string>
   <string name="favorite_episodes_label">Obľúbené</string>
@@ -18,7 +19,7 @@
   <string name="cancel_download_label">Zrušiť sťahovanie</string>
   <string name="playback_history_label">História prehrávania</string>
   <string name="episode_cache_full_title">Vyrovnávacia pamäť epizód je plná</string>
-  <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zmeniť v Nastaveniach.</string>
+  <string name="episode_cache_full_message">Bol dosiahnutý prednastavený limit veľkosti vyrovnávacej pamäte epizód. Veľkosť vyrovnávacej pamäte môžete zvýšiť v Nastaveniach.</string>
   <string name="years_statistics_label">Roky</string>
   <string name="notification_pref_fragment">Oznámenia</string>
   <!--Google Assistant-->
@@ -31,6 +32,7 @@
   <string name="enable_swipeactions">Povoliť potiahnutia pre túto obrazovku</string>
   <string name="change_setting">Zmeniť</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Zahrnúť trvanie epizód, ktoré sú len označené ako hrané</string>
   <string name="statistics_speed_not_counted">Poznámka: Rýchlosť prehrávania sa nikdy neberie do úvahy.</string>
   <string name="statistics_from">Od</string>
   <string name="statistics_to">Do</string>
@@ -41,6 +43,15 @@
   <string name="statistics_reset_data_msg">Táto operácia vymaže časovú históriu prehrávania všetkých epizód. Ste si istý že chcete vykonať túto akciu?</string>
   <string name="statistics_counting_range">Prehrané medzi %1$s a %2$s</string>
   <string name="statistics_counting_total">Prehrané celkom</string>
+  <!--Home fragment-->
+  <string name="home_surprise_title">Nechajte sa prekvapiť</string>
+  <string name="home_classics_title">Skontrolujte Vaše klasiky</string>
+  <string name="home_continue_title">Pokračovať v počúvaní</string>
+  <string name="home_new_title">Zistiť čo je nové</string>
+  <string name="home_downloads_title">Správa sťahovania</string>
+  <string name="home_welcome_title">Vitajte v AntennaPod!</string>
+  <string name="home_welcome_text">Nie Ste ešte prihlásený na odber žiadneho podcastu. Otvorte bočné menu aby Ste pridali podcast.</string>
+  <string name="configure_home">Nastaviť domácu obrazovku</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Celková veľkosť epizód na zariadení</string>
   <!--Main activity-->
@@ -51,10 +62,10 @@
   <string name="drawer_feed_order_alphabetical">Usporiadať abecedne</string>
   <string name="drawer_feed_order_last_update">Usporiadať podľa dátumu zverejnenia</string>
   <string name="drawer_feed_order_most_played">Usporiadať podľa počtu prehraných epizód</string>
-  <string name="drawer_feed_counter_inbox_unplayed">Počet neprehraných epizód a epizód v Inboxe</string>
   <string name="drawer_feed_counter_inbox">Počet epizód v schránke</string>
   <string name="drawer_feed_counter_unplayed">Počet neprehraných epizód</string>
   <string name="drawer_feed_counter_downloaded">Počet stiahnutých epizód</string>
+  <string name="drawer_feed_counter_downloaded_unplayed">Počet stiahnutých a neprehratých epizód</string>
   <string name="drawer_feed_counter_none">Žiadne</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Žiadne kompatibilné aplikácie</string>
@@ -68,6 +79,9 @@
   <string name="go_to_position_label">Skočiť na túto pozíciu</string>
   <!--Playback history-->
   <string name="clear_history_label">Vymazať históriu</string>
+  <string name="clear_playback_history_msg">Toto vymaže celú históriu prehrávania. Ste si istý, že chcete pokračovať?</string>
+  <string name="remove_history_label">Odstrániť z histórie</string>
+  <string name="removed_history_label">Odstránené z histórie</string>
   <!--Other-->
   <string name="confirm_label">Potvrdiť</string>
   <string name="cancel_label">Zrušiť</string>
@@ -128,7 +142,6 @@
     <item quantity="many">%d epizód</item>
     <item quantity="other">%d epizód</item>
   </plurals>
-  <string name="loading_more">Načítavam viac…</string>
   <string name="episode_notification">Oznámenia o epizódach</string>
   <string name="episode_notification_summary">Pri vydaní novej epizódy zobraziť oznámenie.</string>
   <plurals name="new_episode_notification_message">
@@ -148,6 +161,8 @@
   <string name="remove_all_inbox_label">Odstrániť všetko zo schránky</string>
   <string name="removed_all_inbox_msg">Všetko zo schránky bolo odstránené</string>
   <string name="remove_all_inbox_confirmation_msg">Prosím, potvrďte, že chcete odstrániť všetko v schránke.</string>
+  <string name="multi_select_mark_played_confirmation">Prosím potvrďte, že chcete označiť všetky vybrané položky ako hrané.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Prosím potvrďte, že chcete označiť všetky vybrané položky ako nehrané.</string>
   <string name="show_info_label">Zobraziť informácie</string>
   <string name="show_feed_settings_label">Zobraziť nastavenia podcastu</string>
   <string name="feed_settings_label">Nastavenia podcastu</string>
@@ -176,6 +191,7 @@
     <item quantity="other">%d odberov aktualizovaných.</item>
   </plurals>
   <string name="edit_tags">Upraviť štítky</string>
+  <string name="add_tag">Pridať štítok</string>
   <string name="rename_tag_label">Premenovať štítok</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">Obnovovanie podcastov pri mobilnom pripojení je vypnuté v nastaveniach.\n\nChcete ich obnoviť aj tak?</string>
   <!--actions on feeditems-->
@@ -235,6 +251,12 @@
     <item quantity="many">%d epizód bolo odstránených z poradia</item>
     <item quantity="other">%d epizód bolo odstránených z poradia</item>
   </plurals>
+  <plurals name="removed_from_inbox_batch_label">
+    <item quantity="one">%depizóda bola odstránená z priečinku doručených.</item>
+    <item quantity="few">%d epizód bolo odstránených z priečinku doručených.</item>
+    <item quantity="many">%d epizód bolo odstránených z priečinku doručených.</item>
+    <item quantity="other">%d epizód bolo odstránených z priečinku doručených.</item>
+  </plurals>
   <string name="add_to_favorite_label">Pridať medzi obľúbené</string>
   <string name="remove_from_favorite_label">Odstrániť z obľúbených</string>
   <string name="visit_website_label">Navštíviť webovú stránku</string>
@@ -246,7 +268,7 @@
   <string name="download_pending">Čakajúce sťahovania</string>
   <string name="download_running">Prebieha sťahovanie</string>
   <string name="download_error_details">Podrobnosti</string>
-  <string name="download_error_details_message">%1$s \n\nURL adresa súboru:\n%2$s</string>
+  <string name="download_log_details_message">%1$s \n\ntechnický dôvod: \n %2$s \n\nsúbor URL:\n%3$s</string>
   <string name="download_error_tap_for_details">Kliknite pre zobrazenie detailov.</string>
   <string name="download_error_device_not_found">Zariadenie úložiska nebolo nájdené</string>
   <string name="download_error_insufficient_space">Vo vašom zariadení nie je dostatok miesta.</string>
@@ -343,11 +365,13 @@
   <string name="no_all_episodes_label">Keď si pridáte niektorý podcast, tak sa objaví tu.</string>
   <string name="no_all_episodes_filtered_label">Ak chcete vidieť viac epizód, skúste vypnúť filter.</string>
   <string name="no_inbox_head_label">Žiadne epizódy v schránke</string>
+  <string name="no_inbox_label">Keď prídu nové epizódy, tak sa ukážu tu. Vy sa môžete rozhodnúť, či o ne máte alebo nemáte záujem.</string>
   <string name="no_subscriptions_head_label">Žiadne odbery</string>
   <string name="no_subscriptions_label">Pre prihlásenie odberu podcastu stlačte ikonu plus nižšie.</string>
   <!--Preferences-->
   <string name="storage_pref">Úložisko</string>
   <string name="storage_sum">Automatické mazanie epizód, Import, Export</string>
+  <string name="statistics_moved">Obrazovka štatistiky bola presunutá na obrazovku odberov. Môžete ju otvoriť odtiaľ.</string>
   <string name="project_pref">Projekt</string>
   <string name="synchronization_pref">Synchronizácia</string>
   <string name="synchronization_sum">Synchronizovať s ostatnými zariadeniami</string>
@@ -418,6 +442,8 @@
   <string name="user_interface_label">Používateľské rozhranie</string>
   <string name="user_interface_sum">Vzhľad, odbery, zamknutá obrazovka</string>
   <string name="pref_set_theme_title">Vybrať motív</string>
+  <string name="pref_tinted_theme_title">Použiť tónované farby</string>
+  <string name="pref_tinted_theme_message">Tónuj farby aplikácie na základe obrázku pozadia</string>
   <string name="pref_nav_drawer_items_title">Zmeniť navigačný panel</string>
   <string name="pref_nav_drawer_items_sum">Upraviť zobrazenie položiek v navigačnom paneli.</string>
   <string name="pref_nav_drawer_feed_order_title">Nastaviť poradie odberov</string>
@@ -443,20 +469,6 @@
   <string name="pref_theme_title_dark">Tmavá</string>
   <string name="pref_theme_title_trueblack">Čierna (pre AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Bez obmedzenia</string>
-  <string name="synchronization_logout">Odhlásiť</string>
-  <string name="pref_synchronization_logout_toast">Odhlásenie bolo úspešné</string>
-  <string name="pref_gpodnet_setlogin_information_title">Zmena prihlasovacích údajov</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Zmení prihlasovacie údaje k vášmu gpodder.net účtu.</string>
-  <string name="synchronization_sync_changes_title">Synchronizovať teraz</string>
-  <string name="synchronization_full_sync_title">Vynútiť plnú synchronizáciu</string>
-  <string name="synchronization_login_status"><![CDATA[Prihlásený ako <i>%1$s</i> na <i>%2$s</i>. <br/><br/>Môžete si vybrať Vášho poskytovateľa synchronizácie opäť keď sa odhlásite]]></string>
-  <string name="synchronization_summary_unchoosen">Môžete si vybrať viacerých poskytovateľov na synchronizáciu vašich odberov a stavu prehratia epizódy</string>
-  <string name="synchronization_summary_nextcloud">Gpoddersync je open-source Nexcloud-ová aplikácia, ktorú si viete ľahko nainštalovať na Váš vlastný server. Aplikácia je nezávislá od projektu AntennaPod.</string>
-  <string name="synchronization_nextcloud_authenticate_browser">Udeľte prístup použitím otvoreného webového prehliadača a vráťte sa späť k AntennaPod.</string>
-  <string name="synchronization_choose_title">Vyberte si poskytovateľa synchronizácie</string>
-  <string name="synchronization_force_sync_summary">Znovu synchronizovať všetky odbery a stavy epizód</string>
-  <string name="synchronization_sync_summary">Synchronizovať odber a zmeny stavu epizódy</string>
-  <string name="dialog_choose_sync_service_title">Vyberte si poskytovateľa synchronizácie</string>
   <string name="pref_playback_speed_sum">Upraviť predvybrané možnosti pre prehrávanie zvuku rôznymi rýchlosťami</string>
   <string name="pref_feed_playback_speed_sum">Rýchlosť, ktorá bude použitá pri začatí prehrávania epizód tohoto podcastu</string>
   <string name="pref_feed_skip">Automatické preskočenie</string>
@@ -508,16 +520,9 @@
   <string name="media_player_switched_to_exoplayer">Prepnuté na ExoPlayer.</string>
   <string name="pref_skip_silence_title">Preskočiť ticho vo zvuku</string>
   <string name="behavior">Chovanie</string>
-  <string name="pref_back_button_behavior_title">Chovanie tlačidla späť</string>
-  <string name="pref_back_button_behavior_sum">Zmeniť chovanie tlačidla späť.</string>
-  <string name="back_button_default">Štandardné</string>
-  <string name="back_button_open_drawer">Otvoriť hamburgerové menu</string>
-  <string name="back_button_double_tap">Zatvoriť aplikáciu dvojitým dotykom</string>
-  <string name="back_button_show_prompt">Potvrdiť ukončenie aplikáce</string>
-  <string name="close_prompt">Skutočně chcete zatvoriť AntennaPod?</string>
-  <string name="double_tap_toast">Pre ukončenie aplikácie sa opäť dotknite tlačidla späť</string>
-  <string name="back_button_go_to_page">Prejsť na stránku…</string>
-  <string name="back_button_go_to_page_title">Vybrať stránku</string>
+  <string name="pref_default_page">Predvolená strana</string>
+  <string name="pref_default_page_sum">Obrazovka, ktorá sa otvorí pri spúšťaní AntennaPod.</string>
+  <string name="remember_last_page">Pamätať poslednú stranu</string>
   <string name="pref_delete_removes_from_queue_title">Mazanie tiež odstraňuje epizódy z poradia</string>
   <string name="pref_delete_removes_from_queue_sum">Po zmazaní automaticky odstráni epizódu z poradia.</string>
   <string name="pref_filter_feed_title">Filter odberov</string>
@@ -621,20 +626,38 @@
   </plurals>
   <string name="auto_enable_label">Automatické povolenie</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutia povolený</string>
-  <!--gpodder.net-->
+  <!--Synchronisation-->
+  <string name="synchronization_choose_title">Vyberte si poskytovateľa synchronizácie</string>
+  <string name="synchronization_summary_unchoosen">Môžete si vybrať viacerých poskytovateľov na synchronizáciu vašich odberov a stavu prehratia epizódy</string>
+  <string name="dialog_choose_sync_service_title">Vyberte si poskytovateľa synchronizácie</string>
+  <string name="gpodnet_description">Gpodder.net je open-source služba na synchronizáciu podcastov, ktorú si môžete nainštalovať na váš vlastný server. Gpodder.net je samostatný projekt a nezávisí na projekte AntennaPod.</string>
+  <string name="synchronization_summary_nextcloud">Gpoddersync je open-source Nexcloud-ová aplikácia, ktorú si viete ľahko nainštalovať na Váš vlastný server. Aplikácia je nezávislá od projektu AntennaPod.</string>
+  <string name="synchronization_host_explanation">Môžete si vybrať svoj vlastný server na synchronizáciu. Keď budete mať identifikovaný preferovaný server na synchronizáciu, tak prosím napíšte jeho adresu sem.</string>
+  <string name="synchronization_host_label">Adresa servera</string>
+  <string name="proceed_to_login_butLabel">Pokračujte na prihlásenie</string>
+  <string name="synchronization_nextcloud_authenticate_browser">Udeľte prístup použitím otvoreného webového prehliadača a vráťte sa späť k AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Prihlásiť sa</string>
+  <string name="synchronization_credentials_explanation">Prosím, poskytnite poverenia Vášho účtu na synchronizačnom serveri.</string>
   <string name="gpodnetauth_encryption_warning">Heslo a údaje nie sú šifrované!</string>
   <string name="username_label">Používateľské meno</string>
   <string name="password_label">Heslo</string>
-  <string name="gpodnet_description">Gpodder.net je open-source služba na synchronizáciu podcastov, ktorú si môžete nainštalovať na váš vlastný server. Gpodder.net je samostatný projekt a nezávisí na projekte AntennaPod.</string>
-  <string name="gpodnetauth_host">Názov hostiteľa</string>
-  <string name="gpodnetauth_select_server">Vybrať server</string>
+  <string name="synchronization_login_butLabel">Prihlásiť sa</string>
+  <string name="synchronization_selectDevice_explanation">Prosím, vyberte zariadenie, ktoré Ste vytvorili na synchronizačnom serveri alebo vytvorte nové.</string>
   <string name="gpodnetauth_device_name">Názov zariadenia</string>
   <string name="gpodnetauth_device_name_default">AntennaPod na %1$s</string>
   <string name="gpodnetauth_existing_devices">Existujúce zariadenia</string>
   <string name="gpodnetauth_create_device">Vytvoriť zariadenie</string>
   <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je teraz prepojený s vašim zariadením. AntennaPod bude odteraz automaticky synchronizovať odbery vo vašom zariadení s vašim gpodder.net účtom.</string>
   <string name="gpodnetauth_finish_butsyncnow">Spustiť synchronizáciu teraz</string>
+  <string name="pref_gpodnet_setlogin_information_title">Zmena prihlasovacích údajov</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Zmení prihlasovacie údaje k vášmu gpodder.net účtu.</string>
+  <string name="synchronization_sync_changes_title">Synchronizovať teraz</string>
+  <string name="synchronization_sync_summary">Synchronizovať odber a zmeny stavu epizódy</string>
+  <string name="synchronization_full_sync_title">Vynútiť plnú synchronizáciu</string>
+  <string name="synchronization_force_sync_summary">Znovu synchronizovať všetky odbery a stavy epizód</string>
+  <string name="synchronization_logout">Odhlásiť</string>
+  <string name="synchronization_login_status"><![CDATA[Prihlásený ako <i>%1$s</i> na <i>%2$s</i>. <br/><br/>Môžete si vybrať Vášho poskytovateľa synchronizácie opäť keď sa odhlásite]]></string>
+  <string name="pref_synchronization_logout_toast">Odhlásenie bolo úspešné</string>
   <string name="gpodnetsync_error_title">chyba synchronizácie s gpodder.net</string>
   <string name="gpodnetsync_error_descr">Počas synchronizácie sa vyskytla chyba:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Úspešné</string>
@@ -680,10 +703,10 @@
   <string name="auto_download_settings_label">Nastavenia automatického sťahovania</string>
   <string name="episode_filters_label">Filter epizód</string>
   <string name="episode_filters_description">Zoznam výrazov použitých na rozhodnutie, či má byť epizóda zahrnutá alebo vylúčená pri automatickom sťahovaní</string>
-  <string name="episode_filters_include">Pridať</string>
-  <string name="episode_filters_exclude">Vylúčiť</string>
-  <string name="episode_filters_duration">Minimálna dĺžka trvania (v minútach)</string>
-  <string name="episode_filters_hint">Jednotlivé slová \n„Viaceré slová“</string>
+  <string name="add_term">Pridať termín</string>
+  <string name="exclude_terms">Vynechať epizódy, ktoré obsahujú hociktoré z nižšie uvedených termínov</string>
+  <string name="include_terms">Zahrnúť epizódy, ktoré obsahujú hociktoré z nižšie uvedených termínov</string>
+  <string name="exclude_episodes_shorter_than">Vynechať epizódy kratšie ako</string>
   <string name="keep_updated">Priebežne aktualizovať</string>
   <string name="keep_updated_summary">Zahrnúť tento podcast pri (automatickej) obnove všetkých podcastov</string>
   <string name="auto_download_disabled_globally">Automatické sťahovanie je zakázané v hlavných nastaveniach AntennaPodu</string>
@@ -693,6 +716,8 @@
   <string name="statistics_space_used">Použitý priestor:</string>
   <string name="statistics_episodes_started_total">Epizódy začaté/celkovo:</string>
   <string name="statistics_view_all">Zobraziť všetky podcasty »</string>
+  <string name="edit_url_menu">Upraviť URL adresu informačného kanála</string>
+  <string name="edit_url_confirmation_msg">Zmena RSS adresy môže ľahko pokaziť štádium prehrávania a zoznam epizód podcastu. NEdoporučujeme ju meniť a ani NEbudeme poskytovať podporu v prípade, že sa niečo pokazí. Zmeny sa nedajú vrátiť. Pokazený odber sa NEDÁ opraviť jednoduchým prepísaním adresy späť. Doporučujeme vytvorenie zálohy pred pokračovaním.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Imporovať odbery z jednoúčelových aplikácií…</string>
   <!--Add podcast fragment-->
@@ -708,7 +733,9 @@
   <string name="discover_is_hidden">Vybrali ste skryť návrhy.</string>
   <string name="discover_more">viac »</string>
   <string name="discover_powered_by_itunes">Návrhy od iTunes</string>
+  <string name="discover_confirm">Ukázať návrhy</string>
   <string name="search_powered_by">Výsledky podľa %1$s</string>
+  <string name="select_country">Vybrať krajinu</string>
   <!--Local feeds-->
   <string name="add_local_folder">Pridať lokálny priečinok</string>
   <string name="local_folder">Lokálny priečinok</string>
@@ -753,6 +780,7 @@
   <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Zahrnúť pozíciu prehrávania</string>
   <string name="share_dialog_episode_website_label">Webová stránka epizódy</string>
+  <string name="share_dialog_for_social">Spoločenská správa</string>
   <string name="share_dialog_media_address">Adresa multimédia</string>
   <string name="share_dialog_media_file_label">Mediálny súbor</string>
   <string name="share_starting_position_label">Začínať od</string>
@@ -763,6 +791,7 @@
   <string name="stereo_to_mono">Downmix: Stereo na mono</string>
   <string name="sonic_only">Iba Sonic</string>
   <string name="exoplayer_only">Iba ExoPlayer</string>
+  <string name="player_switch_to_audio_only">Prepnúť len na audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Hostiteľ</string>

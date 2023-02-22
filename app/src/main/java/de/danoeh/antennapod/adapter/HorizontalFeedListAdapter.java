@@ -16,10 +16,17 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder> {
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import androidx.annotation.Nullable;
+
+public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder>
+        implements View.OnCreateContextMenuListener  {
     private final WeakReference<MainActivity> mainActivityRef;
     private final List<Feed> data = new ArrayList<>();
     private int dummyViews = 0;
+    private Feed longPressedItem;
+
 
     public HorizontalFeedListAdapter(MainActivity mainActivity) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
@@ -57,6 +64,13 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         holder.imageView.setOnClickListener(v ->
                 mainActivityRef.get().loadChildFragment(FeedItemlistFragment.newInstance(podcast.getId())));
 
+        holder.imageView.setOnCreateContextMenuListener(this);
+        holder.imageView.setOnLongClickListener(v -> {
+            int currentItemPosition = holder.getBindingAdapterPosition();
+            longPressedItem = data.get(currentItemPosition);
+            return false;
+        });
+
         Glide.with(mainActivityRef.get())
                 .load(podcast.getImageUrl())
                 .apply(new RequestOptions()
@@ -64,6 +78,11 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
                         .fitCenter()
                         .dontAnimate())
                 .into(holder.imageView);
+    }
+
+    @Nullable
+    public Feed getLongPressedItem() {
+        return longPressedItem;
     }
 
     @Override
@@ -77,6 +96,16 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
     @Override
     public int getItemCount() {
         return dummyViews + data.size();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        MenuInflater inflater = mainActivityRef.get().getMenuInflater();
+        if (longPressedItem == null) {
+            return;
+        }
+        inflater.inflate(R.menu.nav_feed_context, contextMenu);
+        contextMenu.setHeaderTitle(longPressedItem.getTitle());
     }
 
     static class Holder extends RecyclerView.ViewHolder {

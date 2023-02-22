@@ -237,7 +237,7 @@ public class DbReaderTest {
         public void testGetDownloadedItems() {
             final int numItems = 10;
             List<FeedItem> downloaded = saveDownloadedItems(numItems);
-            List<FeedItem> downloadedSaved = DBReader.getDownloadedItems();
+            List<FeedItem> downloadedSaved = DBReader.getDownloadedItems(null);
             assertNotNull(downloadedSaved);
             assertEquals(downloaded.size(), downloadedSaved.size());
             for (FeedItem item : downloadedSaved) {

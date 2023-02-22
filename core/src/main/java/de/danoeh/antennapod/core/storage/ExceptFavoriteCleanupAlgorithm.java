@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
@@ -74,7 +75,7 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(SortOrder.DATE_NEW_OLD);
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
