@@ -17,9 +17,45 @@ public class FeedPreferences implements Serializable {
     public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {
-        GLOBAL,
-        YES,
-        NO
+        GLOBAL(0),
+        ALWAYS(1),
+        NEVER(2);
+
+        public final int code;
+
+        AutoDeleteAction(int code) {
+            this.code = code;
+        }
+
+        public static AutoDeleteAction fromCode(int code) {
+            for (AutoDeleteAction action : values()) {
+                if (code == action.code) {
+                    return action;
+                }
+            }
+            return NEVER;
+        }
+    }
+
+    public enum NewEpisodesAction {
+        GLOBAL(0),
+        ADD_TO_INBOX(1),
+        NOTHING(2);
+
+        public final int code;
+
+        NewEpisodesAction(int code) {
+            this.code = code;
+        }
+
+        public static NewEpisodesAction fromCode(int code) {
+            for (NewEpisodesAction action : values()) {
+                if (code == action.code) {
+                    return action;
+                }
+            }
+            return ADD_TO_INBOX;
+        }
     }
 
     @NonNull
@@ -29,6 +65,7 @@ public class FeedPreferences implements Serializable {
     private boolean keepUpdated;
     private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
+    private NewEpisodesAction newEpisodesAction;
     private String username;
     private String password;
     private float feedPlaybackSpeed;
@@ -38,15 +75,17 @@ public class FeedPreferences implements Serializable {
     private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
-                           VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
-                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, new HashSet<>());
+                           VolumeAdaptionSetting volumeAdaptionSetting, NewEpisodesAction newEpisodesAction,
+                           String username, String password) {
+        this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
+                new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, newEpisodesAction, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
-                            String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
-                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification,
+                            String username, String password, @NonNull FeedFilter filter,
+                            float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
+                            boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
                             Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
@@ -60,6 +99,7 @@ public class FeedPreferences implements Serializable {
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
         this.showEpisodeNotification = showEpisodeNotification;
+        this.newEpisodesAction = newEpisodesAction;
         this.tags.addAll(tags);
     }
 
@@ -140,12 +180,20 @@ public class FeedPreferences implements Serializable {
         return volumeAdaptionSetting;
     }
 
+    public NewEpisodesAction getNewEpisodesAction() {
+        return newEpisodesAction;
+    }
+
     public void setAutoDeleteAction(AutoDeleteAction autoDeleteAction) {
         this.autoDeleteAction = autoDeleteAction;
     }
 
     public void setVolumeAdaptionSetting(VolumeAdaptionSetting volumeAdaptionSetting) {
         this.volumeAdaptionSetting = volumeAdaptionSetting;
+    }
+
+    public void setNewEpisodesAction(NewEpisodesAction newEpisodesAction) {
+        this.newEpisodesAction = newEpisodesAction;
     }
 
     public AutoDeleteAction getCurrentAutoDelete() {

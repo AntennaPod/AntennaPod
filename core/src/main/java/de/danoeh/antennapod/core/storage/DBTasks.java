@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 
 /**
@@ -298,13 +299,6 @@ public final class DBTasks {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
 
-            // Add a new Feed
-            // all new feeds will have the most recent item marked as unplayed
-            FeedItem mostRecent = newFeed.getMostRecentItem();
-            if (mostRecent != null) {
-                mostRecent.setNew();
-            }
-
             resultFeed = newFeed;
         } else {
             Log.d(TAG, "Feed with title " + newFeed.getTitle()
@@ -388,14 +382,15 @@ public final class DBTasks {
                         savedFeed.getItems().add(idx, item);
                     }
 
-                    // only mark the item new if it was published after or at the same time
-                    // as the most recent item
-                    // (if the most recent date is null then we can assume there are no items
-                    // and this is the first, hence 'new')
-                    // New items that do not have a pubDate set are always marked as new
-                    if (item.getPubDate() == null || priorMostRecentDate == null
-                            || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())) {
+                    FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
+                    if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
+                        action = UserPreferences.getNewEpisodesAction();
+                    }
+                    if (action == FeedPreferences.NewEpisodesAction.ADD_TO_INBOX
+                            && (item.getPubDate() == null
+                                || priorMostRecentDate == null
+                                || priorMostRecentDate.before(item.getPubDate())
+                                || priorMostRecentDate.equals(item.getPubDate()))) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
                                 + " new, prior most recent date = " + priorMostRecentDate);
                         item.setNew();

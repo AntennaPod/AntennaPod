@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="spnAutoDeleteItems">
-        <item>@string/feed_auto_download_global</item>
+        <item>@string/global_default</item>
         <item>@string/feed_auto_download_always</item>
         <item>@string/feed_auto_download_never</item>
     </string-array>
@@ -23,6 +23,28 @@
         <item>off</item>
         <item>light</item>
         <item>heavy</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionItems">
+        <item>@string/global_default</item>
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">
