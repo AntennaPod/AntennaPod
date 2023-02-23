@@ -528,7 +528,7 @@ public class AudioPlayerFragment extends Fragment implements
         float playerFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
         View player = getView().findViewById(R.id.playerFragment);
         player.setAlpha(1 - playerFadeProgress);
-        player.setVisibility(playerFadeProgress > 0.99f ? View.GONE : View.VISIBLE);
+        player.setVisibility(playerFadeProgress > 0.99f ? View.INVISIBLE : View.VISIBLE);
         float toolbarFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.6f)) / 0.2f;
         toolbar.setAlpha(toolbarFadeProgress);
         toolbar.setVisibility(toolbarFadeProgress < 0.01f ? View.INVISIBLE : View.VISIBLE);
