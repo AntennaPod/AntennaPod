@@ -3,3 +3,5 @@ fr
 nl
 it
 da
+de
+es

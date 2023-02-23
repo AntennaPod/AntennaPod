@@ -124,7 +124,7 @@ public class LocalFeedUpdater {
         feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
         feed.getPreferences().setAutoDownload(false);
-        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 

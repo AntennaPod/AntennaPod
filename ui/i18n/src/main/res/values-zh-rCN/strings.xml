@@ -176,7 +176,7 @@
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
-    <item quantity="other">正下载%d个音频节目</item>
+    <item quantity="other">正下载 %d 个音频节目</item>
   </plurals>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>

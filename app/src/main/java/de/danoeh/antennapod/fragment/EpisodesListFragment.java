@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -442,18 +441,12 @@ public abstract class EpisodesListFragment extends Fragment
     }
 
     @NonNull
-    protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, getFilter());
-    }
+    protected abstract List<FeedItem> loadData();
 
     @NonNull
-    protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter());
-    }
+    protected abstract List<FeedItem> loadMoreData(int page);
 
-    protected int loadTotalItemCount() {
-        return DBReader.getTotalEpisodeCount(getFilter());
-    }
+    protected abstract int loadTotalItemCount();
 
     protected abstract FeedItemFilter getFilter();
 

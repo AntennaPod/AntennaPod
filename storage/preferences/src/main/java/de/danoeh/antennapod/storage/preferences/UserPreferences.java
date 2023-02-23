@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -67,6 +68,7 @@ public class UserPreferences {
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
+    public static final String PREF_NEW_EPISODES_ACTION = "prefNewEpisodesAction";
     private static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadSortedOrder";
 
     // Playback
@@ -942,6 +944,12 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
                 .apply();
+    }
+
+    public static FeedPreferences.NewEpisodesAction getNewEpisodesAction() {
+        String str = prefs.getString(PREF_NEW_EPISODES_ACTION,
+                "" + FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.code);
+        return FeedPreferences.NewEpisodesAction.fromCode(Integer.parseInt(str));
     }
 
     /**

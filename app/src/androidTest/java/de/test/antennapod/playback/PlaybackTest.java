@@ -13,6 +13,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
@@ -252,7 +253,8 @@ public class PlaybackTest {
         openNavDrawer();
         onDrawerItem(withText(R.string.episodes_label)).perform(click());
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10,
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
         Matcher<View> allEpisodesMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.secondaryActionButton)));
@@ -287,7 +289,8 @@ public class PlaybackTest {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         activityTestRule.launchActivity(new Intent());
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10,
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
 
         startLocalPlayback();
         FeedMedia media = episodes.get(0).getMedia();

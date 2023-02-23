@@ -207,10 +207,7 @@ public class MainActivity extends CastEnabledActivity {
                 audioPlayer.scrollToPage(AudioPlayerFragment.POS_COVER);
             }
 
-            float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
-            audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
-            audioPlayer.getExternalPlayerHolder().setVisibility(
-                    condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+            audioPlayer.fadePlayerToToolbar(slideOffset);
         }
     };
 

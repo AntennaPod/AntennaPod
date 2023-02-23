@@ -102,6 +102,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset">Reset</string>
+    <string name="global_default">Global default</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this Podcast</string>
@@ -124,9 +125,10 @@
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads">%1$d parallel downloads</string>
-    <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
+    <string name="feed_new_episodes_action_add_to_inbox">Add to Inbox</string>
+    <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
@@ -434,8 +436,8 @@
     <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
     <string name="pref_black_theme_title">Full Black</string>
     <string name="pref_black_theme_message">Use full black for the dark theme</string>
-    <string name="pref_tinted_theme_title">Tinted Colors</string>
-    <string name="pref_tinted_theme_message">Tint app colors based on the background image</string>
+    <string name="pref_tinted_theme_title">Use dynamic colors</string>
+    <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
@@ -529,6 +531,8 @@
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show Subscription Title</string>
     <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
+    <string name="pref_new_episodes_action_title">New Episodes Action</string>
+    <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
@@ -719,8 +723,8 @@
 
     <!-- Add podcast fragment -->
     <string name="search_podcast_hint">Search podcast…</string>
-    <string name="search_itunes_label">Search iTunes</string>
-    <string name="search_podcastindex_label">Search Podcastindex.org</string>
+    <string name="search_itunes_label">Search Apple Podcasts</string>
+    <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
@@ -730,7 +734,7 @@
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
-    <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_powered_by_itunes">Suggestions by Apple Podcasts</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
     <string name="select_country">Select country</string>

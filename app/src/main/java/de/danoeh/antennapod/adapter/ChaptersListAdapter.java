@@ -86,7 +86,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
 
         if (position == currentChapterIndex) {
             float density = context.getResources().getDisplayMetrics().density;
-            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 8 * density));
+            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
             float progress = ((float) (currentChapterPosition - sc.getStart())) / duration;
             progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
             progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
