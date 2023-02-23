@@ -73,12 +73,13 @@ public class CompletedDownloadsFragment extends Fragment
     private SpeedDialView speedDialView;
     private SwipeActions swipeActions;
     private ProgressBar progressBar;
+    private MaterialToolbar toolbar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         inflateSortMenu(toolbar);
@@ -168,6 +169,10 @@ public class CompletedDownloadsFragment extends Fragment
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         adapter.endSelectMode();
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
         super.onDestroyView();
     }
 

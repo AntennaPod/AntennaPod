@@ -311,6 +311,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         mediaPlayer.shutdown();
         taskManager.shutdown();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
