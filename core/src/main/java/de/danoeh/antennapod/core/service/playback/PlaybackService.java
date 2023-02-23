@@ -1172,7 +1172,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
-        // Always show rewind and forward actions and add the Wear extras to them if possible
+        // On Android Auto, custom actions are added in the following order around the play button, if no default
+        // actions are present: Near left, near right, far left, far right, additional actions panel
         PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
                 CUSTOM_ACTION_REWIND,
                 getString(R.string.rewind_label),
@@ -1189,34 +1190,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
         sessionState.addCustomAction(fastForwardBuilder.build());
 
+        sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                        getString(R.string.playback_speed),
+                        R.drawable.ic_notification_playback_speed
+                ).build()
+        );
+        sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_SKIP_TO_NEXT,
+                        getString(R.string.skip_episode_label),
+                        R.drawable.ic_notification_skip
+                ).build()
+        );
+
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
-
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
-        int currentModeType = uiModeManager.getCurrentModeType();
-
-        // Workaround bug in Android Auto custom actions described at https://issuetracker.google.com/issues/207389461 by checking for API 31+
-        // as well.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || currentModeType == Configuration.UI_MODE_TYPE_CAR) {
-            // On Android Auto, custom actions are added in the following order around the play button, if no default
-            // actions are present: Near left, near right, far left, far right, additional actions panel
-            sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
-                            getString(R.string.playback_speed),
-                            R.drawable.ic_notification_playback_speed
-                    ).build()
-            );
-            sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_SKIP_TO_NEXT,
-                            getString(R.string.skip_episode_label),
-                            R.drawable.ic_notification_skip
-                    ).build()
-            );
-        } else {
-            // Prevent next button from showing up unless we aren't showing the custom skip action
-            capabilities |= PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
-        }
 
         sessionState.setActions(capabilities);
 
