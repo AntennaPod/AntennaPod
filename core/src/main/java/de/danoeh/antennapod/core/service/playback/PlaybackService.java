@@ -1172,6 +1172,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
+        sessionState.setActions(capabilities);
+
         // On Android Auto, custom actions are added in the following order around the play button, if no default
         // actions are present: Near left, near right, far left, far right, additional actions panel
         PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
@@ -1206,8 +1208,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         );
 
         WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
-
-        sessionState.setActions(capabilities);
 
         mediaSession.setPlaybackState(sessionState.build());
     }
