@@ -904,7 +904,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
             mediaPlayer.pause(true, false);
         }
-        PlaybackPreferences.writeNoMediaPlaying();
         stateManager.stopService();
     }
 
