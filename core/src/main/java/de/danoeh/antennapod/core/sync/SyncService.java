@@ -325,7 +325,7 @@ public class SyncService extends Worker {
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {
         Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileFeedRefresh()) {
+        if (UserPreferences.isAllowMobileSync()) {
             constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);

@@ -93,6 +93,7 @@
         <item>@string/pref_mobileUpdate_auto_download</item>
         <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
+        <item>@string/synchronization_pref</item>
     </string-array>
 
     <string-array name="mobile_update_values">
@@ -101,10 +102,12 @@
         <item>auto_download</item>
         <item>streaming</item>
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="mobile_update_default_value">
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="episode_cleanup_entries">

@@ -140,6 +140,7 @@ public class PreferenceUpgrader {
                         .putBoolean(UserPreferences.PREF_THEME_BLACK, true)
                         .apply();
             }
+            UserPreferences.setAllowMobileSync(true);
         }
     }
 }
