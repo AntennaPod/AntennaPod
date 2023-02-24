@@ -322,7 +322,7 @@ public final class DBTasks {
 
             // get the most recent date now, before we start changing the list
             FeedItem priorMostRecent = savedFeed.getMostRecentItem();
-            Date priorMostRecentDate = null;
+            Date priorMostRecentDate = new Date();
             if (priorMostRecent != null) {
                 priorMostRecentDate = priorMostRecent.getPubDate();
             }
