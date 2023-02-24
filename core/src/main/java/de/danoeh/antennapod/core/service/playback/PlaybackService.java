@@ -316,9 +316,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
                 "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
-        return new BrowserRoot(
-                getResources().getString(R.string.app_name), // Name visible in Android Auto
-                null); // Bundle of optional extras
+        if (rootHints != null && rootHints.getBoolean(BrowserRoot.EXTRA_RECENT)) {
+            Bundle extras = new Bundle();
+            extras.putBoolean(BrowserRoot.EXTRA_RECENT, true);
+            return new BrowserRoot(getResources().getString(R.string.recently_played_episodes), extras);
+        }
+
+        // Name visible in Android Auto
+        return new BrowserRoot(getResources().getString(R.string.app_name), null);
     }
 
     private void loadQueueForMediaSession() {
@@ -392,8 +397,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     });
     }
 
-    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId)
-            throws InterruptedException {
+    private List<MediaBrowserCompat.MediaItem> loadChildrenSynchronous(@NonNull String parentId) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
@@ -421,6 +425,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);
             feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+        } else if (parentId.equals(getString(R.string.recently_played_episodes))) {
+            Playable playable = PlaybackPreferences.createInstanceFromPreferences(this);
+            if (playable instanceof FeedMedia) {
+                feedItems = Collections.singletonList(((FeedMedia) playable).getItem());
+            } else {
+                return null;
+            }
         } else {
             Log.e(TAG, "Parent ID not found: " + parentId);
             return null;
