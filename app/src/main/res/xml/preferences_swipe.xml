@@ -23,6 +23,6 @@
 
     <Preference
         android:key="prefSwipeFeed"
-        android:title="@string/feeds_label"/>
+        android:title="@string/individual_subscription"/>
 
 </PreferenceScreen>

@@ -77,7 +77,7 @@ public class SwipeActionsDialog {
                         && !a.getId().equals(SwipeAction.START_DOWNLOAD)).toList();
                 break;
             case FeedItemlistFragment.TAG:
-                forFragment = context.getString(R.string.feeds_label);
+                forFragment = context.getString(R.string.individual_subscription);
                 keys = Stream.of(keys).filter(a -> !a.getId().equals(SwipeAction.REMOVE_FROM_HISTORY)).toList();
                 break;
             case QueueFragment.TAG:

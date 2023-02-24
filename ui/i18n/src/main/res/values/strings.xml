@@ -37,6 +37,7 @@
     <string name="swipe_left">Swipe Left</string>
     <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
+    <string name="individual_subscription">Individual subscription</string>
 
     <!-- Statistics fragment -->
     <string name="statistics_include_marked">Include duration of episodes that are just marked as played</string>
