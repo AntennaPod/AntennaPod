@@ -507,6 +507,10 @@ public class UserPreferences {
         return isAllowMobileFor("feed_refresh");
     }
 
+    public static boolean isAllowMobileSync() {
+        return isAllowMobileFor("sync");
+    }
+
     public static boolean isAllowMobileEpisodeDownload() {
         return isAllowMobileFor("episode_download");
     }
@@ -554,6 +558,10 @@ public class UserPreferences {
 
     public static void setAllowMobileImages(boolean allow) {
         setAllowMobileFor("images", allow);
+    }
+
+    public static void setAllowMobileSync(boolean allow) {
+        setAllowMobileFor("sync", allow);
     }
 
     public static int getParallelDownloads() {
