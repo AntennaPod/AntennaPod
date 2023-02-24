@@ -502,7 +502,9 @@ public class MainActivity extends CastEnabledActivity {
             String toPage = UserPreferences.getDefaultPage();
             if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
                     || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                super.onBackPressed();
+                //super.onBackPressed();
+                // go to back ground, to quick restart this activity.
+                moveTaskToBack(false);
             } else {
                 loadFragment(toPage, null);
             }
