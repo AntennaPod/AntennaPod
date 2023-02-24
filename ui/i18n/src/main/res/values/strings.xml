@@ -309,6 +309,7 @@
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
+    <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
