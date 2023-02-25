@@ -39,9 +39,8 @@ public class DownloadServiceNotification {
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)
                 .setContentIntent(getNotificationContentIntent(context))
-                .setSmallIcon(R.drawable.ic_notification_sync);
-        notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
+                .setSmallIcon(R.drawable.ic_notification_sync)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         Log.d(TAG, "Notification set up");
     }
 
@@ -62,18 +61,43 @@ public class DownloadServiceNotification {
         } else {
             contentTitle = context.getString(R.string.download_notification_title);
         }
-        String contentText = (downloads.size() > 0)
-                ? context.getResources().getQuantityString(R.plurals.downloads_left, downloads.size(), downloads.size())
-                : context.getString(R.string.completing);
-        String bigText = compileNotificationString(downloads);
-        if (!bigText.contains("\n")) {
-            contentText = bigText;
+
+        int numDownloads = getNumberOfRunningDownloads(downloads);
+        String contentText = context.getString(R.string.completing);
+        String bigText = context.getString(R.string.completing);
+        notificationCompatBuilder.clearActions();
+        if (numDownloads > 0) {
+            bigText = compileNotificationString(downloads);
+            if (numDownloads == 1) {
+                contentText = bigText;
+            } else {
+                contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
+                        numDownloads, numDownloads);
+            }
+
+            Intent cancelDownloadsIntent = new Intent(DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
+            cancelDownloadsIntent.setPackage(context.getPackageName());
+            PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context,
+                    R.id.pending_intent_download_cancel_all, cancelDownloadsIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                            | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+            notificationCompatBuilder.addAction(new NotificationCompat.Action(
+                    R.drawable.ic_notification_cancel, context.getString(R.string.cancel_label), cancelPendingIntent));
         }
 
         notificationCompatBuilder.setContentTitle(contentTitle);
         notificationCompatBuilder.setContentText(contentText);
         notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
         return notificationCompatBuilder.build();
+    }
+
+    private int getNumberOfRunningDownloads(List<Downloader> downloads) {
+        int running = 0;
+        for (Downloader downloader : downloads) {
+            if (!downloader.cancelled && !downloader.isFinished()) {
+                running++;
+            }
+        }
+        return running;
     }
 
     private boolean typeIsOnly(List<Downloader> downloads, int feedFileType) {
