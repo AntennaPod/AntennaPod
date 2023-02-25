@@ -26,6 +26,7 @@
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
+    <string name="recently_played_episodes">Recently played episodes</string>
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
