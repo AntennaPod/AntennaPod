@@ -63,6 +63,7 @@ public class UserPreferences {
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
     public static final String PREF_FILTER_FEED = "prefSubscriptionsFilter";
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
+    public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -867,6 +868,10 @@ public class UserPreferences {
 
     public static void setDefaultPage(String defaultPage) {
         prefs.edit().putString(PREF_DEFAULT_PAGE, defaultPage).apply();
+    }
+
+    public static boolean backButtonOpensDrawer() {
+        return prefs.getBoolean(PREF_BACK_OPENS_DRAWER, false);
     }
 
     public static boolean timeRespectsSpeed() {

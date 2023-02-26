@@ -133,5 +133,10 @@ public class PreferenceUpgrader {
                         "" + UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED).apply();
             }
         }
+        if (oldVersion < 3000007) {
+            if (prefs.getString("prefBackButtonBehavior", "").equals("drawer")) {
+                prefs.edit().putBoolean(UserPreferences.PREF_BACK_OPENS_DRAWER, true).apply();
+            }
+        }
     }
 }

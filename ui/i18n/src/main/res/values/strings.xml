@@ -514,6 +514,8 @@
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default Page</string>
     <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
+    <string name="pref_back_button_opens_drawer">Back button opens drawer</string>
+    <string name="pref_back_button_opens_drawer_summary">Pressing the back button on the default page opens the navigation drawer</string>
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
