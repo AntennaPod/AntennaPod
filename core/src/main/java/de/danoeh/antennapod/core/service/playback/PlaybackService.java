@@ -1578,14 +1578,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.getPlaybackSpeed();
     }
 
-    public boolean canDownmix() {
-        return mediaPlayer.canDownmix();
-    }
-
-    public void setDownmix(boolean enable) {
-        mediaPlayer.setDownmix(enable);
-    }
-
     public boolean isStartWhenPrepared() {
         return mediaPlayer.isStartWhenPrepared();
     }
