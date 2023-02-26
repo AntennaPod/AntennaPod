@@ -112,11 +112,8 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
-    public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
     // Mediaplayer
-    public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
-    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
@@ -125,7 +122,6 @@ public class UserPreferences {
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
 
     // Experimental
-    private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
@@ -778,32 +774,6 @@ public class UserPreferences {
         }
         // If this preference hasn't been set yet, return the default options
         return Arrays.asList(1.0f, 1.25f, 1.5f);
-    }
-
-    public static String getMediaPlayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static boolean useSonic() {
-        return getMediaPlayer().equals("sonic");
-    }
-
-    public static boolean useExoplayer() {
-        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static void enableExoplayer() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-    }
-
-    public static boolean stereoToMono() {
-        return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
-    }
-
-    public static void stereoToMono(boolean enable) {
-        prefs.edit()
-                .putBoolean(PREF_STEREO_TO_MONO, enable)
-                .apply();
     }
 
     public static int getEpisodeCleanupValue() {

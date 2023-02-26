@@ -9,7 +9,6 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import java.util.List;
-import java.util.concurrent.Future;
 
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.playback.MediaType;
@@ -158,13 +157,6 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public abstract void setVolume(float volumeLeft, float volumeRight);
 
-    /**
-     * Returns true if the mediaplayer can mix stereo down to mono
-     */
-    public abstract boolean canDownmix();
-
-    public abstract void setDownmix(boolean enable);
-
     public abstract MediaType getCurrentMediaType();
 
     public abstract boolean isStreaming();
@@ -232,8 +224,8 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @see #endPlayback(boolean, boolean, boolean, boolean)
      */
-    public Future<?> stopPlayback(boolean toStoppedState) {
-        return endPlayback(false, false, false, toStoppedState);
+    public void stopPlayback(boolean toStoppedState) {
+        endPlayback(false, false, false, toStoppedState);
     }
 
     /**
@@ -262,7 +254,7 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @return a Future, just for the purpose of tracking its execution.
      */
-    protected abstract Future<?> endPlayback(boolean hasEnded, boolean wasSkipped,
+    protected abstract void endPlayback(boolean hasEnded, boolean wasSkipped,
                                              boolean shouldContinue, boolean toStoppedState);
 
     /**
