@@ -45,6 +45,8 @@ import org.apache.commons.io.FileUtils;
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.model.feed.SortOrder.toCodeString;
 
+import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
+
 /**
  * Implements methods for accessing the database
  */
@@ -52,7 +54,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2060000;
+    public static final int VERSION = 3010000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -118,6 +120,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
     public static final String KEY_FEED_TAGS = "tags";
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
+    public static final String KEY_NEW_EPISODES_ACTION = "new_episodes_action";
     public static final String KEY_PODCASTINDEX_CHAPTER_URL = "podcastindex_chapter_url";
 
     // Table names
@@ -159,7 +162,8 @@ public class PodDBAdapter {
             + KEY_FEED_TAGS + " TEXT,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
-            + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
+            + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0,"
+            + KEY_NEW_EPISODES_ACTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY
@@ -309,7 +313,8 @@ public class PodDBAdapter {
             + TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO + ", "
             + TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING + ", "
-            + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION;
+            + TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION + ", "
+            + TABLE_NAME_FEEDS + "." + KEY_NEW_EPISODES_ACTION;
 
     private static final String JOIN_FEED_ITEM_AND_MEDIA = " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
             + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " ";
@@ -446,7 +451,7 @@ public class PodDBAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD_ENABLED, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
-        values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().code);
         values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
@@ -458,6 +463,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
+        values.put(KEY_NEW_EPISODES_ACTION, prefs.getNewEpisodesAction().code);
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1059,11 +1065,13 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit,
+                                                        FeedItemFilter filter, SortOrder sortOrder) {
+        String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
-                + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
+                + "ORDER BY " +  orderByQuery + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 

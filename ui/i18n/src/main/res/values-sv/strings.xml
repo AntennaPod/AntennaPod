@@ -62,7 +62,7 @@
   <string name="drawer_feed_order_alphabetical">Sortera alfabetiskt</string>
   <string name="drawer_feed_order_last_update">Sortera efter publiceringsdatum</string>
   <string name="drawer_feed_order_most_played">Sortera efter antal spelade episoder</string>
-  <string name="drawer_feed_counter_inbox">Antal avsnitt i inkorgen</string>
+  <string name="drawer_feed_counter_inbox">Antal episoder i inkorgen</string>
   <string name="drawer_feed_counter_unplayed">Antal ospelade episoder</string>
   <string name="drawer_feed_counter_downloaded">Antal nedladdade episoder</string>
   <string name="drawer_feed_counter_downloaded_unplayed">Antal nedladdade och ospelade avsnitt</string>
@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Rensa historiken</string>
   <string name="clear_playback_history_msg">Detta kommer att rensa hela uppspelningshistoriken. Är du säker på att du vill fortsätta?</string>
+  <string name="remove_history_label">Ta bort från historik</string>
+  <string name="removed_history_label">Borttagen från historik</string>
   <!--Other-->
   <string name="confirm_label">Bekräfta</string>
   <string name="cancel_label">Avbryt</string>
@@ -331,7 +333,7 @@
   <string name="no_history_label">Efter att du lyssnat på en episod visas den här.</string>
   <string name="no_all_episodes_head_label">Inga episoder</string>
   <string name="no_all_episodes_label">När du lagt till en episod visas den här.</string>
-  <string name="no_all_episodes_filtered_label">Testa att nollställa filtret för att se fler avsnitt.</string>
+  <string name="no_all_episodes_filtered_label">Testa att nollställa filtret för att se fler episoder.</string>
   <string name="no_inbox_head_label">Inga avsnitt i inkorgen</string>
   <string name="no_inbox_label">När nya avsnitt hämtas visas de här. Du kan sedan avgöra ifall de är intressanta eller ej.</string>
   <string name="no_subscriptions_head_label">Inga prenumerationer</string>
@@ -356,7 +358,7 @@
   <string name="preference_search_no_results">Inga resultat</string>
   <string name="preference_search_clear_history">Resnsa historiken</string>
   <string name="media_player">Mediaspelare</string>
-  <string name="pref_episode_cleanup_title">Städa avsnitt</string>
+  <string name="pref_episode_cleanup_title">Episodupprensning</string>
   <string name="pref_episode_cleanup_summary">Episoder som får tas bort om Automatisk Nedladdning behöver mer utrymme för nya episoder</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
@@ -408,6 +410,8 @@
   <string name="user_interface_label">Användargränssnitt</string>
   <string name="user_interface_sum">Utseende, Prenumerationer, Låsskärm</string>
   <string name="pref_set_theme_title">Välj tema</string>
+  <string name="pref_tinted_theme_title">Använd tonade färger</string>
+  <string name="pref_tinted_theme_message">Tona app färger baserat på backgrundsbild</string>
   <string name="pref_nav_drawer_items_title">Välj objekt i navigeringsmenyn</string>
   <string name="pref_nav_drawer_items_sum">Ändra vad som visas i navigationsmenyn.</string>
   <string name="pref_nav_drawer_feed_order_title">Välj prenumerationsordning</string>
@@ -590,11 +594,17 @@
   <string name="dialog_choose_sync_service_title">Välj synkroniseringsleverantör</string>
   <string name="gpodnet_description">Gpodder.net är en öppen källkodstjänst som du kan installera på en egen server. Gpodder.net är oberende från AntennaPod-projektet.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync är en Nexcloud-app med öppen källkod som du enkelt kan installera på din egen server. Appen är oberoende från AntennaPod-projektet.</string>
+  <string name="synchronization_host_explanation">Du kan använda din egen server att synkronisera med, när du valt en server att synkronisera med, ange dess adress här.</string>
+  <string name="synchronization_host_label">Server adress</string>
+  <string name="proceed_to_login_butLabel">Fortsätt till inloggng</string>
   <string name="synchronization_nextcloud_authenticate_browser">Get tillåtelse med webbläsaren som öppnades och kom tillbaka till AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Logga in</string>
+  <string name="synchronization_credentials_explanation">Ange inloggningsuppgifter för ditt konto på synkroniseringservern.</string>
   <string name="gpodnetauth_encryption_warning">Lösenord och data är inte krypterade!</string>
   <string name="username_label">Användarnamn</string>
   <string name="password_label">Lösenord</string>
+  <string name="synchronization_login_butLabel">Logga in</string>
+  <string name="synchronization_selectDevice_explanation">Välj en enhet från synkroniseringsservern eller skapa en ny.</string>
   <string name="gpodnetauth_device_name">Enhetsnamn</string>
   <string name="gpodnetauth_device_name_default">AntennaPod på %1$s</string>
   <string name="gpodnetauth_existing_devices">Befintliga enheter</string>
@@ -654,7 +664,7 @@
   <string name="multi_feed_common_tags_info">{fa-info-circle} Bara etiketter gemensamma med alla valda prenumerationer visas. Andra etiketter påverkas inte.</string>
   <string name="auto_download_settings_label">Inställngar för automatisk nedladdning</string>
   <string name="episode_filters_label">Episodfilter</string>
-  <string name="episode_filters_description">Beteckningslista som används för att avgöra om ett avsnitt ingår eller ej vid automatisk nedladdning</string>
+  <string name="episode_filters_description">Lista av termer som används för att avgöra om en episod ingår eller ej vid automatisk nedladdning</string>
   <string name="add_term">Lägg till term</string>
   <string name="exclude_terms">Exkludera episoder som innehåller något av termerna nedan</string>
   <string name="include_terms">Inkludera endast episoder som innehåller någon av termerna nedan</string>
@@ -669,7 +679,7 @@
   <string name="statistics_episodes_started_total">Episoder startade/totalt:</string>
   <string name="statistics_view_all">Visa för alla podcasts »</string>
   <string name="edit_url_menu">Redigera flödes-URL</string>
-  <string name="edit_url_confirmation_msg">Att ändra RSS-adressen kan enkelt bryta uppspelningsstatus och episodlistor för podcasten. Vi rekommenderar INTE att du ändrar den och kommer INTE att ge support om något går fel. Detta kan inte göras ogjort. Den trasiga prenumerationen KAN INTE repareras genom att helt enkelt byta tillbaka adressen. Vi föreslår att du skapar en säkerhetskopia innan du fortsätter.</string>
+  <string name="edit_url_confirmation_msg">Att ändra RSS-adressen kan förstöra uppspelningsstatus och episodlistor för podcasten. Det är INTE rekomenderat att du ändrar den, du kommer INTE få någon support om något går fel. Ändringen kan inte göras ogjort. Den trasiga prenumerationen KAN INTE repareras genom att helt enkelt byta tillbaka adressen. Vi föreslår att du skapar en säkerhetskopia innan du fortsätter.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
   <!--Add podcast fragment-->
@@ -687,6 +697,7 @@
   <string name="discover_powered_by_itunes">Förslag från iTuenes</string>
   <string name="discover_confirm">Visa förslag</string>
   <string name="search_powered_by">Resultat för %1$s</string>
+  <string name="select_country">Välj land</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lägg till i lokal katalog</string>
   <string name="local_folder">Lokal katalog</string>

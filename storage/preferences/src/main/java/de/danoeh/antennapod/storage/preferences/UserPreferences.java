@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -48,6 +49,7 @@ public class UserPreferences {
 
     // User Interface
     public static final String PREF_THEME = "prefTheme";
+    public static final String PREF_THEME_BLACK = "prefThemeBlack";
     public static final String PREF_TINTED_COLORS = "prefTintedColors";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
@@ -66,6 +68,7 @@ public class UserPreferences {
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
+    public static final String PREF_NEW_EPISODES_ACTION = "prefNewEpisodesAction";
     private static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadSortedOrder";
 
     // Playback
@@ -109,11 +112,8 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
-    public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
     // Mediaplayer
-    public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
-    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
@@ -122,7 +122,6 @@ public class UserPreferences {
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
 
     // Experimental
-    private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
@@ -159,17 +158,33 @@ public class UserPreferences {
         LIGHT, DARK, BLACK, SYSTEM
     }
 
+    public static void setTheme(ThemePreference theme) {
+        switch (theme) {
+            case LIGHT:
+                prefs.edit().putString(PREF_THEME, "0").apply();
+                break;
+            case DARK:
+                prefs.edit().putString(PREF_THEME, "1").apply();
+                break;
+            default:
+                prefs.edit().putString(PREF_THEME, "system").apply();
+                break;
+        }
+    }
+
     public static ThemePreference getTheme() {
         switch (prefs.getString(PREF_THEME, "system")) {
             case "0":
                 return ThemePreference.LIGHT;
             case "1":
                 return ThemePreference.DARK;
-            case "2":
-                return ThemePreference.BLACK;
             default:
                 return ThemePreference.SYSTEM;
         }
+    }
+
+    public static boolean getIsBlackTheme() {
+        return prefs.getBoolean(PREF_THEME_BLACK, false);
     }
 
     public static boolean getIsThemeColorTinted() {
@@ -488,6 +503,10 @@ public class UserPreferences {
         return isAllowMobileFor("feed_refresh");
     }
 
+    public static boolean isAllowMobileSync() {
+        return isAllowMobileFor("sync");
+    }
+
     public static boolean isAllowMobileEpisodeDownload() {
         return isAllowMobileFor("episode_download");
     }
@@ -535,6 +554,10 @@ public class UserPreferences {
 
     public static void setAllowMobileImages(boolean allow) {
         setAllowMobileFor("images", allow);
+    }
+
+    public static void setAllowMobileSync(boolean allow) {
+        setAllowMobileFor("sync", allow);
     }
 
     public static int getParallelDownloads() {
@@ -753,32 +776,6 @@ public class UserPreferences {
         return Arrays.asList(1.0f, 1.25f, 1.5f);
     }
 
-    public static String getMediaPlayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static boolean useSonic() {
-        return getMediaPlayer().equals("sonic");
-    }
-
-    public static boolean useExoplayer() {
-        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static void enableExoplayer() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-    }
-
-    public static boolean stereoToMono() {
-        return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
-    }
-
-    public static void stereoToMono(boolean enable) {
-        prefs.edit()
-                .putBoolean(PREF_STEREO_TO_MONO, enable)
-                .apply();
-    }
-
     public static int getEpisodeCleanupValue() {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL));
     }
@@ -925,6 +922,12 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
                 .apply();
+    }
+
+    public static FeedPreferences.NewEpisodesAction getNewEpisodesAction() {
+        String str = prefs.getString(PREF_NEW_EPISODES_ACTION,
+                "" + FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.code);
+        return FeedPreferences.NewEpisodesAction.fromCode(Integer.parseInt(str));
     }
 
     /**

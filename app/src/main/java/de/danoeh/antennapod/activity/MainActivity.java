@@ -76,7 +76,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
@@ -208,10 +207,7 @@ public class MainActivity extends CastEnabledActivity {
                 audioPlayer.scrollToPage(AudioPlayerFragment.POS_COVER);
             }
 
-            float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
-            audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
-            audioPlayer.getExternalPlayerHolder().setVisibility(
-                    condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+            audioPlayer.fadePlayerToToolbar(slideOffset);
         }
     };
 
@@ -231,6 +227,14 @@ public class MainActivity extends CastEnabledActivity {
         } else {
             toolbar.setNavigationIcon(ThemeUtils.getDrawableFromAttr(this, R.attr.homeAsUpIndicator));
             toolbar.setNavigationOnClickListener(v -> getSupportFragmentManager().popBackStack());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (drawerLayout != null) {
+            drawerLayout.removeDrawerListener(drawerToggle);
         }
     }
 
@@ -516,21 +520,12 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void handleNavIntent() {
+        Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)
-                || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
-            Log.d(TAG, "handleNavIntent()");
-            String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
-            Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
-            boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
-            if (refreshOnStart) {
-                AutoUpdateManager.runImmediate(this);
-            }
-
+        if (intent.hasExtra(EXTRA_FEED_ID)) {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
-            if (tag != null) {
-                loadFragment(tag, args);
-            } else if (feedId > 0) {
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (feedId > 0) {
                 boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
                 boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
                 if (startedFromSearch || addToBackStack) {
@@ -540,6 +535,13 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)) {
+            String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (tag != null) {
+                loadFragment(tag, args);
+            }
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
@@ -547,8 +549,11 @@ public class MainActivity extends CastEnabledActivity {
             handleDeeplink(intent.getData());
         }
 
-        if (intent.hasExtra(MainActivityStarter.EXTRA_OPEN_DRAWER) && drawerLayout != null) {
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DRAWER, false) && drawerLayout != null) {
             drawerLayout.open();
+        }
+        if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
+            AutoUpdateManager.runImmediate(this);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

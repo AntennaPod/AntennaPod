@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.ServiceCompat;
 
 import de.danoeh.antennapod.core.R;
@@ -82,6 +83,7 @@ public class DownloadService extends Service {
     private final ExecutorService downloadEnqueueExecutor;
 
     private final List<DownloadStatus> reportQueue = new ArrayList<>();
+    private final List<DownloadRequest> failedRequestsForReport = new ArrayList<>();
     private DownloadServiceNotification notificationManager;
     private final NewEpisodesNotification newEpisodesNotification;
     private NotificationUpdater notificationUpdater;
@@ -176,11 +178,15 @@ public class DownloadService extends Service {
         if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
             Notification notification = notificationManager.updateNotifications(downloads);
             startForeground(R.id.notification_downloading, notification);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_download_report);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_auto_download_report);
             setupNotificationUpdaterIfNecessary();
             downloadEnqueueExecutor.execute(() -> onDownloadQueued(intent));
         } else if (intent != null && intent.getBooleanExtra(EXTRA_REFRESH_ALL, false)) {
             Notification notification = notificationManager.updateNotifications(downloads);
             startForeground(R.id.notification_downloading, notification);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_download_report);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_auto_download_report);
             setupNotificationUpdaterIfNecessary();
             downloadEnqueueExecutor.execute(() -> enqueueAll(intent));
         } else if (downloads.size() == 0) {
@@ -198,8 +204,9 @@ public class DownloadService extends Service {
 
         boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
         if (UserPreferences.showDownloadReport() || showAutoDownloadReport) {
-            notificationManager.updateReport(reportQueue, showAutoDownloadReport);
+            notificationManager.updateReport(reportQueue, showAutoDownloadReport, failedRequestsForReport);
             reportQueue.clear();
+            failedRequestsForReport.clear();
         }
 
         unregisterReceiver(cancelDownloadReceiver);
@@ -283,7 +290,7 @@ public class DownloadService extends Service {
                 // we create a 'successful' download log if the feed's last refresh failed
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
-                    saveDownloadStatus(feedSyncTask.getDownloadStatus());
+                    saveDownloadStatus(feedSyncTask.getDownloadStatus(), downloader.getDownloadRequest());
                 }
                 if (!request.isInitiatedByUser()) {
                     // Was stored in the database before and not initiated manually
@@ -296,13 +303,13 @@ public class DownloadService extends Service {
                 }
             } else {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
-                saveDownloadStatus(feedSyncTask.getDownloadStatus());
+                saveDownloadStatus(feedSyncTask.getDownloadStatus(), downloader.getDownloadRequest());
             }
         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             Log.d(TAG, "Handling completed FeedMedia Download");
             MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this, status, request);
             handler.run();
-            saveDownloadStatus(handler.getUpdatedStatus());
+            saveDownloadStatus(handler.getUpdatedStatus(), downloader.getDownloadRequest());
         }
     }
 
@@ -321,7 +328,7 @@ public class DownloadService extends Service {
                 DownloadServiceInterface.get().download(this, false, downloader.getDownloadRequest());
             } else {
                 Log.e(TAG, "Download failed");
-                saveDownloadStatus(status);
+                saveDownloadStatus(status, downloader.getDownloadRequest());
                 new FailedDownloadHandler(downloader.getDownloadRequest()).run();
 
                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -461,6 +468,9 @@ public class DownloadService extends Service {
             if (feed.getPreferences().getKeepUpdated()) {
                 DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
                 builder.withInitiatedByUser(initiatedByUser);
+                if (feed.hasLastUpdateFailed()) {
+                    builder.setForce(true);
+                }
                 addNewRequest(builder.build());
             }
         }
@@ -509,8 +519,11 @@ public class DownloadService extends Service {
      *
      * @param status the download that is going to be saved
      */
-    private void saveDownloadStatus(@NonNull DownloadStatus status) {
+    private void saveDownloadStatus(@NonNull DownloadStatus status, @NonNull DownloadRequest request) {
         reportQueue.add(status);
+        if (!status.isSuccessful() && !status.isCancelled()) {
+            failedRequestsForReport.add(request);
+        }
         DBWriter.addDownloadStatus(status);
     }
 

@@ -196,7 +196,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
@@ -204,7 +204,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .fitCenter()
                         .dontAnimate())
                 .into(imgvCover);
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
