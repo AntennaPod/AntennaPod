@@ -41,7 +41,7 @@ public class InboxFragment extends EpisodesListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -49,7 +49,7 @@ public class InboxFragment extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
-        toolbar.inflateMenu(R.menu.inbox_sort);
+        inflateSortMenu();
         sortType = getSortOrder();
 
         toolbar.setTitle(R.string.inbox_label);
@@ -90,25 +90,25 @@ public class InboxFragment extends EpisodesListFragment {
                 showRemoveAllDialog();
             }
             return true;
-        } else if (item.getItemId() == R.id.inbox_sort_date_desc) {
-            saveSortOrderAndRefresh(SortOrder.DATE_NEW_OLD);
-            return true;
-        } else if (item.getItemId() == R.id.inbox_sort_date_asc) {
-            saveSortOrderAndRefresh(SortOrder.DATE_OLD_NEW);
-            return true;
+        } else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                saveSortOrderAndRefresh(sortOrder);
+                return true;
+            }
         }
         return false;
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
         sortType = type;
-        prefs.edit().putString(PREF_INBOX_SORT_ORDER, sortType.name()).apply();
+        prefs.edit().putInt(PREF_INBOX_SORT_ORDER, type.code).apply();
         loadItems();
     }
 
     private SortOrder getSortOrder() {
-        String sortOrderStr = prefs.getString(PREF_INBOX_SORT_ORDER, "use-default");
-        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+        int sortOrderStr = prefs.getInt(PREF_INBOX_SORT_ORDER, SortOrder.DATE_NEW_OLD.code);
+        return SortOrder.fromCodeString(Integer.toString(sortOrderStr));
     }
 
     @NonNull
@@ -133,12 +133,23 @@ public class InboxFragment extends EpisodesListFragment {
         ((MainActivity) requireActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
     }
 
+    private void inflateSortMenu() {
+        toolbar.inflateMenu(R.menu.sort_menu);
+
+        // Remove the sorting options that are not needed in this fragment
+        toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_feed_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_random).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_smart_shuffle).setVisible(false);
+        toolbar.getMenu().findItem(R.id.keep_sorted).setVisible(false);
+    }
+
     private void showRemoveAllDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(R.string.remove_all_inbox_label);
         builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
 
-        View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
+        View view = View.inflate(requireContext(), R.layout.checkbox_do_not_show_again, null);
         CheckBox checkNeverAskAgain = view.findViewById(R.id.checkbox_do_not_show_again);
         builder.setView(view);
 
