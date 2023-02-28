@@ -88,6 +88,11 @@
                 android:title="@string/pref_default_page"
                 android:summary="@string/pref_default_page_sum"
                 android:defaultValue="HomeFragment"/>
+        <SwitchPreferenceCompat
+                android:key="prefBackButtonOpensDrawer"
+                android:title="@string/pref_back_button_opens_drawer"
+                android:summary="@string/pref_back_button_opens_drawer_summary"
+                android:defaultValue="false"/>
         <Preference
                 android:key="prefSwipe"
                 android:summary="@string/swipeactions_summary"
