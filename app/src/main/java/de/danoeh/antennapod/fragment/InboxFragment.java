@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +118,10 @@ public class InboxFragment extends EpisodesListFragment {
     }
 
     private void inflateSortMenu() {
-        toolbar.inflateMenu(R.menu.sort_menu);
+        Menu menu = toolbar.getMenu();
+        MenuItem downloadsItem = menu.findItem(R.id.inbox_sort);
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.sort_menu, downloadsItem.getSubMenu());
 
         // Remove the sorting options that are not needed in this fragment
         toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
