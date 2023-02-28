@@ -11,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -36,23 +35,15 @@ public class InboxFragment extends EpisodesListFragment {
     public static final String PREF_INBOX_SORT_ORDER = "prefInboxSortOrder";
     private SharedPreferences prefs;
 
-    private SortOrder sortType = SortOrder.DATE_NEW_OLD;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-    }
-
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
         inflateSortMenu();
-        sortType = getSortOrder();
 
         toolbar.setTitle(R.string.inbox_label);
+        prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         updateToolbar();
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
@@ -101,7 +92,6 @@ public class InboxFragment extends EpisodesListFragment {
     }
 
     private void saveSortOrderAndRefresh(SortOrder type) {
-        sortType = type;
         prefs.edit().putInt(PREF_INBOX_SORT_ORDER, type.code).apply();
         loadItems();
     }
@@ -114,13 +104,13 @@ public class InboxFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, sortType);
+        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, getSortOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, sortType);
+        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getSortOrder());
     }
 
     @Override
@@ -130,7 +120,7 @@ public class InboxFragment extends EpisodesListFragment {
 
     private void removeAllFromInbox() {
         DBWriter.removeAllNewFlags();
-        ((MainActivity) requireActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
     }
 
     private void inflateSortMenu() {
@@ -145,11 +135,11 @@ public class InboxFragment extends EpisodesListFragment {
     }
 
     private void showRemoveAllDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.remove_all_inbox_label);
         builder.setMessage(R.string.remove_all_inbox_confirmation_msg);
 
-        View view = View.inflate(requireContext(), R.layout.checkbox_do_not_show_again, null);
+        View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
         CheckBox checkNeverAskAgain = view.findViewById(R.id.checkbox_do_not_show_again);
         builder.setView(view);
 

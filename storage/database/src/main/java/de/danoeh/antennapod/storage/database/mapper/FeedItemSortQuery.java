@@ -5,7 +5,7 @@ import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 public class FeedItemSortQuery {
     public static String generateFrom(SortOrder sortOrder) {
-        String sortQuery;
+        String sortQuery = "";
         switch (sortOrder) {
             case EPISODE_TITLE_A_Z:
                 sortQuery = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_TITLE + " " + "ASC";
