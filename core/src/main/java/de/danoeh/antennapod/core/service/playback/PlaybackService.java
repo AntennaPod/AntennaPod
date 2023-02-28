@@ -402,9 +402,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             mediaItems.add(createBrowsableMediaItem(R.string.queue_label, R.drawable.ic_playlist_play_black,
-                    DBReader.getQueue().size()));
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED))));
             mediaItems.add(createBrowsableMediaItem(R.string.downloads_label, R.drawable.ic_download_black,
-                    DBReader.getDownloadedItems(UserPreferences.getDownloadsSortedOrder()).size()));
+                    DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED))));
             mediaItems.add(createBrowsableMediaItem(R.string.episodes_label, R.drawable.ic_feed_black,
                     DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.UNPLAYED))));
             List<Feed> feeds = DBReader.getFeedList();
@@ -418,10 +418,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (parentId.equals(getResources().getString(R.string.queue_label))) {
             feedItems = DBReader.getQueue();
         } else if (parentId.equals(getResources().getString(R.string.downloads_label))) {
-            feedItems = DBReader.getDownloadedItems(UserPreferences.getDownloadsSortedOrder());
+            feedItems = DBReader.getEpisodes(0, MAX_ANDROID_AUTO_EPISODES_PER_FEED,
+                    new FeedItemFilter(FeedItemFilter.DOWNLOADED), UserPreferences.getDownloadsSortedOrder());
         } else if (parentId.equals(getResources().getString(R.string.episodes_label))) {
-            feedItems = DBReader.getRecentlyPublishedEpisodes(0,
-                    MAX_ANDROID_AUTO_EPISODES_PER_FEED,
+            feedItems = DBReader.getEpisodes(0, MAX_ANDROID_AUTO_EPISODES_PER_FEED,
                     new FeedItemFilter(FeedItemFilter.UNPLAYED), SortOrder.DATE_NEW_OLD);
         } else if (parentId.startsWith("FeedId:")) {
             long feedId = Long.parseLong(parentId.split(":")[1]);

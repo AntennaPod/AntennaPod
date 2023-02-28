@@ -45,8 +45,6 @@ import org.apache.commons.io.FileUtils;
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.model.feed.SortOrder.toCodeString;
 
-import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
-
 /**
  * Implements methods for accessing the database
  */
@@ -1049,29 +1047,20 @@ public class PodDBAdapter {
         db.execSQL(sql);
     }
 
-    /**
-     * Returns a cursor which contains all feed items that are considered new.
-     * Excludes those feeds that do not have 'Keep Updated' enabled.
-     * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
-     */
-    public final Cursor getNewItemsCursor(int offset, int limit, SortOrder sortOrder) {
-        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " INNER JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
-                    + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
-                + " ORDER BY " + sortQuery + " LIMIT " + offset + ", " + limit;
-        return db.rawQuery(query, null);
-    }
-
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit,
-                                                        FeedItemFilter filter, SortOrder sortOrder) {
+    public final Cursor getEpisodesCursor(int offset, int limit, FeedItemFilter filter, SortOrder sortOrder) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
                 + "ORDER BY " +  orderByQuery + " LIMIT " + offset + ", " + limit;
+        return db.rawQuery(query, null);
+    }
+
+    public final Cursor getEpisodeCountCursor(FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
+        final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
+                + JOIN_FEED_ITEM_AND_MEDIA + whereClause;
         return db.rawQuery(query, null);
     }
 
@@ -1095,28 +1084,6 @@ public class PodDBAdapter {
      */
     private String randomEpisodeNumber(int seed) {
         return "((" + SELECT_KEY_ITEM_ID + " * " + seed + ") % 46471)";
-    }
-
-    public final Cursor getTotalEpisodeCountCursor(FeedItemFilter filter) {
-        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
-        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
-        final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
-                + JOIN_FEED_ITEM_AND_MEDIA + whereClause;
-        return db.rawQuery(query, null);
-    }
-
-    public Cursor getDownloadedItemsCursor(SortOrder sortOrder) {
-        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " > 0"
-                + " ORDER BY " + sortQuery;
-        return db.rawQuery(query, null);
-    }
-
-    public Cursor getPlayedItemsCursor() {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.PLAYED;
-        return db.rawQuery(query, null);
     }
 
     /**
@@ -1267,25 +1234,6 @@ public class PodDBAdapter {
         return result;
     }
 
-    public final int getNumberOfNewItems() {
-        Object[] args = new String[]{
-                TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
-                TABLE_NAME_FEED_ITEMS,
-                TABLE_NAME_FEEDS,
-                TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
-                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
-                        + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
-        };
-        final String query = String.format("SELECT COUNT(%s) FROM %s INNER JOIN %s ON %s WHERE %s", args);
-        Cursor c = db.rawQuery(query, null);
-        int result = 0;
-        if (c.moveToFirst()) {
-            result = c.getInt(0);
-        }
-        c.close();
-        return result;
-    }
-
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
         String whereRead;
         switch (setting) {
@@ -1366,19 +1314,6 @@ public class PodDBAdapter {
                 long date = c.getLong(1);
                 result.put(feedId, date);
             } while (c.moveToNext());
-        }
-        c.close();
-        return result;
-    }
-
-    public final int getNumberOfDownloadedEpisodes() {
-        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_MEDIA +
-                " WHERE " + KEY_DOWNLOADED + " > 0";
-
-        Cursor c = db.rawQuery(query, null);
-        int result = 0;
-        if (c.moveToFirst()) {
-            result = c.getInt(0);
         }
         c.close();
         return result;
