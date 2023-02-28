@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class InboxFragment extends EpisodesListFragment {
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_DO_NOT_PROMPT_REMOVE_ALL_FROM_INBOX = "prefDoNotPromptRemovalAllFromInbox";
-    public static final String PREF_INBOX_SORT_ORDER = "prefInboxSortOrder";
     private SharedPreferences prefs;
 
     @NonNull
@@ -84,33 +84,25 @@ public class InboxFragment extends EpisodesListFragment {
         } else {
             SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
             if (sortOrder != null) {
-                saveSortOrderAndRefresh(sortOrder);
+                UserPreferences.setInboxSortedOrder(sortOrder);
+                loadItems();
                 return true;
             }
         }
         return false;
     }
 
-    private void saveSortOrderAndRefresh(SortOrder type) {
-        prefs.edit().putInt(PREF_INBOX_SORT_ORDER, type.code).apply();
-        loadItems();
-    }
-
-    private SortOrder getSortOrder() {
-        int sortOrderStr = prefs.getInt(PREF_INBOX_SORT_ORDER, SortOrder.DATE_NEW_OLD.code);
-        return SortOrder.fromCodeString(Integer.toString(sortOrderStr));
-    }
-
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, getSortOrder());
+        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE, UserPreferences.getInboxSortedOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getSortOrder());
+        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE,
+                UserPreferences.getInboxSortedOrder());
     }
 
     @Override
