@@ -43,7 +43,7 @@ public class FavoritesWriter implements ExportWriter {
         InputStream feedTemplateStream = context.getAssets().open(FEED_TEMPLATE);
         String feedTemplate = IOUtils.toString(feedTemplateStream, UTF_8);
 
-        List<FeedItem> allFavorites = DBReader.getRecentlyPublishedEpisodes(0, Integer.MAX_VALUE,
+        List<FeedItem> allFavorites = DBReader.getEpisodes(0, Integer.MAX_VALUE,
                 new FeedItemFilter(FeedItemFilter.IS_FAVORITE), SortOrder.DATE_NEW_OLD);
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(allFavorites);
 
