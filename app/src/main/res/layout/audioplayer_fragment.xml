@@ -104,7 +104,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp">
 
-                <TextView
+                <de.danoeh.antennapod.view.NoRelayoutTextView
                     android:id="@+id/txtvPosition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_size_micro" />
 
-                <TextView
+                <de.danoeh.antennapod.view.NoRelayoutTextView
                     android:id="@+id/txtvLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,6 +124,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
+                    android:textAlignment="textEnd"
                     android:background="?android:attr/selectableItemBackground"
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"

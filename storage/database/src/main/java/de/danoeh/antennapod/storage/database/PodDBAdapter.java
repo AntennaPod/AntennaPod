@@ -1054,14 +1054,14 @@ public class PodDBAdapter {
      * Excludes those feeds that do not have 'Keep Updated' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
-    public final Cursor getNewItemsCursor(int offset, int limit) {
+    public final Cursor getNewItemsCursor(int offset, int limit, SortOrder sortOrder) {
+        String sortQuery = FeedItemSortQuery.generateFrom(sortOrder);
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                     + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
-                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC"
-                + " LIMIT " + offset + ", " + limit;
+                + " ORDER BY " + sortQuery + " LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 

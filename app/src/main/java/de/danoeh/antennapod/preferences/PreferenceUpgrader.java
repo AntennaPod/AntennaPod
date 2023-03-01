@@ -57,9 +57,6 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
-                    UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-
             if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
                 UserPreferences.setAllowMobileAutoDownload(true);
             }
@@ -140,6 +137,7 @@ public class PreferenceUpgrader {
                         .putBoolean(UserPreferences.PREF_THEME_BLACK, true)
                         .apply();
             }
+            UserPreferences.setAllowMobileSync(true);
         }
     }
 }

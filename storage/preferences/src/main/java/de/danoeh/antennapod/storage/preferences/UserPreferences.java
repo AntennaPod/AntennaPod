@@ -70,6 +70,7 @@ public class UserPreferences {
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
     public static final String PREF_NEW_EPISODES_ACTION = "prefNewEpisodesAction";
     private static final String PREF_DOWNLOADS_SORTED_ORDER = "prefDownloadSortedOrder";
+    private static final String PREF_INBOX_SORTED_ORDER = "prefInboxSortedOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -112,11 +113,8 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
-    public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
     // Mediaplayer
-    public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
-    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
@@ -125,7 +123,6 @@ public class UserPreferences {
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
 
     // Experimental
-    private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
@@ -507,6 +504,10 @@ public class UserPreferences {
         return isAllowMobileFor("feed_refresh");
     }
 
+    public static boolean isAllowMobileSync() {
+        return isAllowMobileFor("sync");
+    }
+
     public static boolean isAllowMobileEpisodeDownload() {
         return isAllowMobileFor("episode_download");
     }
@@ -554,6 +555,10 @@ public class UserPreferences {
 
     public static void setAllowMobileImages(boolean allow) {
         setAllowMobileFor("images", allow);
+    }
+
+    public static void setAllowMobileSync(boolean allow) {
+        setAllowMobileFor("sync", allow);
     }
 
     public static int getParallelDownloads() {
@@ -772,32 +777,6 @@ public class UserPreferences {
         return Arrays.asList(1.0f, 1.25f, 1.5f);
     }
 
-    public static String getMediaPlayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static boolean useSonic() {
-        return getMediaPlayer().equals("sonic");
-    }
-
-    public static boolean useExoplayer() {
-        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
-    }
-
-    public static void enableExoplayer() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-    }
-
-    public static boolean stereoToMono() {
-        return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
-    }
-
-    public static void stereoToMono(boolean enable) {
-        prefs.edit()
-                .putBoolean(PREF_STEREO_TO_MONO, enable)
-                .apply();
-    }
-
     public static int getEpisodeCleanupValue() {
         return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL));
     }
@@ -964,10 +943,16 @@ public class UserPreferences {
      * Sets the sort order for the downloads.
      */
     public static void setDownloadsSortedOrder(SortOrder sortOrder) {
-        if (sortOrder == null) {
-            return;
-        }
         prefs.edit().putString(PREF_DOWNLOADS_SORTED_ORDER, "" + sortOrder.code).apply();
+    }
+
+    public static SortOrder getInboxSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_INBOX_SORTED_ORDER, "" + SortOrder.DATE_NEW_OLD.code);
+        return SortOrder.fromCodeString(sortOrderStr);
+    }
+
+    public static void setInboxSortedOrder(SortOrder sortOrder) {
+        prefs.edit().putString(PREF_INBOX_SORTED_ORDER, "" + sortOrder.code).apply();
     }
 
     public static SubscriptionsFilter getSubscriptionsFilter() {

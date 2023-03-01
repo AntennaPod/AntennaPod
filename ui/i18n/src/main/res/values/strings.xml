@@ -37,6 +37,7 @@
     <string name="swipe_left">Swipe Left</string>
     <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
+    <string name="individual_subscription">Individual subscription</string>
 
     <!-- Statistics fragment -->
     <string name="statistics_include_marked">Include duration of episodes that are just marked as played</string>
@@ -110,6 +111,7 @@
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
     <string name="chapters_label">Chapters</string>
+    <string name="no_chapters_label">No chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
@@ -309,6 +311,7 @@
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
+    <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
@@ -382,7 +385,6 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
-    <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
@@ -497,19 +499,12 @@
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="experimental_pref">Experimental</string>
-    <string name="pref_media_player_message">Select which media player to use to play files</string>
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_no_browser_found">No web browser found.</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
-    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
-    <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
-    <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
-    <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default Page</string>
@@ -696,7 +691,7 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
-    <string name="feed_folders_include_root">Show this subscription in main list</string>
+    <string name="feed_folders_include_root">Show this podcast in main list</string>
     <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
@@ -797,9 +792,6 @@
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
     <string name="audio_effects">Audio Effects</string>
-    <string name="stereo_to_mono">Downmix: Stereo to mono</string>
-    <string name="sonic_only">Sonic only</string>
-    <string name="exoplayer_only">ExoPlayer only</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->

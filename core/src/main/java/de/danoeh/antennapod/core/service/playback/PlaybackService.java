@@ -57,6 +57,7 @@ import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
 import de.danoeh.antennapod.playback.cast.CastStateListener;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -74,7 +75,6 @@ import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -115,10 +115,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
     /**
-     * Custom action used by Android Wear, Android Auto
+     * Custom actions used by Android Wear, Android Auto, and Android (API 33+ only)
      */
+    private static final String CUSTOM_ACTION_SKIP_TO_NEXT = "action.de.danoeh.antennapod.core.service.skipToNext";
     private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
     private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
+    private static final String CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED =
+            "action.de.danoeh.antennapod.core.service.changePlaybackSpeed";
 
     /**
      * Set a max number of episodes to load for Android Auto, otherwise there could be performance issues
@@ -901,7 +904,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
             mediaPlayer.pause(true, false);
         }
-        PlaybackPreferences.writeNoMediaPlaying();
         stateManager.stopService();
     }
 
@@ -1173,45 +1175,52 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             state = PlaybackStateCompat.STATE_NONE;
         }
+
         sessionState.setState(state, getCurrentPosition(), getCurrentPlaybackSpeed());
-        long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
+        long capabilities = PlaybackStateCompat.ACTION_PLAY
+                | PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_PAUSE
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
                 | PlaybackStateCompat.ACTION_SEEK_TO
                 | PlaybackStateCompat.ACTION_SET_PLAYBACK_SPEED;
 
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
-                .getSystemService(Context.UI_MODE_SERVICE);
-        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
-            sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_REWIND,
-                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
-                        .build());
-            sessionState.addCustomAction(
-                new PlaybackStateCompat.CustomAction.Builder(
-                        CUSTOM_ACTION_FAST_FORWARD,
-                        getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
-                        .build());
-        } else {
-            // This would give the PIP of videos a play button
-            capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
-            if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
-                WearMediaSession.sessionStateAddActionForWear(sessionState,
-                        CUSTOM_ACTION_REWIND,
-                        getString(R.string.rewind_label),
-                        android.R.drawable.ic_media_rew);
-                WearMediaSession.sessionStateAddActionForWear(sessionState,
-                        CUSTOM_ACTION_FAST_FORWARD,
-                        getString(R.string.fast_forward_label),
-                        android.R.drawable.ic_media_ff);
-                WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
-            }
-        }
-
         sessionState.setActions(capabilities);
+
+        // On Android Auto, custom actions are added in the following order around the play button, if no default
+        // actions are present: Near left, near right, far left, far right, additional actions panel
+        PlaybackStateCompat.CustomAction.Builder rewindBuilder = new PlaybackStateCompat.CustomAction.Builder(
+                CUSTOM_ACTION_REWIND,
+                getString(R.string.rewind_label),
+                R.drawable.ic_notification_fast_rewind
+        );
+        WearMediaSession.addWearExtrasToAction(rewindBuilder);
+        sessionState.addCustomAction(rewindBuilder.build());
+
+        PlaybackStateCompat.CustomAction.Builder fastForwardBuilder = new PlaybackStateCompat.CustomAction.Builder(
+                CUSTOM_ACTION_FAST_FORWARD,
+                getString(R.string.fast_forward_label),
+                R.drawable.ic_notification_fast_forward
+        );
+        WearMediaSession.addWearExtrasToAction(fastForwardBuilder);
+        sessionState.addCustomAction(fastForwardBuilder.build());
+
+        sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                        getString(R.string.playback_speed),
+                        R.drawable.ic_notification_playback_speed
+                ).build()
+        );
+        sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_SKIP_TO_NEXT,
+                        getString(R.string.skip_episode_label),
+                        R.drawable.ic_notification_skip
+                ).build()
+        );
+
+        WearMediaSession.mediaSessionSetExtraForWear(mediaSession);
 
         mediaSession.setPlaybackState(sessionState.build());
     }
@@ -1548,6 +1557,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSpeed(float speed) {
+        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
+        if (currentMediaType == MediaType.VIDEO) {
+            UserPreferences.setVideoPlaybackSpeed(speed);
+        } else {
+            UserPreferences.setPlaybackSpeed(speed);
+        }
+
         mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
     }
 
@@ -1560,14 +1576,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return 1.0f;
         }
         return mediaPlayer.getPlaybackSpeed();
-    }
-
-    public boolean canDownmix() {
-        return mediaPlayer.canDownmix();
-    }
-
-    public void setDownmix(boolean enable) {
-        mediaPlayer.setDownmix(enable);
     }
 
     public boolean isStartWhenPrepared() {
@@ -1787,6 +1795,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 onFastForward();
             } else if (CUSTOM_ACTION_REWIND.equals(action)) {
                 onRewind();
+            } else if (CUSTOM_ACTION_SKIP_TO_NEXT.equals(action)) {
+                mediaPlayer.skip();
+            } else if (CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED.equals(action)) {
+                List<Float> selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
+
+                // If the list has zero or one element, there's nothing we can do to change the playback speed.
+                if (selectedSpeeds.size() > 1) {
+                    int speedPosition = selectedSpeeds.indexOf(mediaPlayer.getPlaybackSpeed());
+                    float newSpeed;
+
+                    if (speedPosition == selectedSpeeds.size() - 1) {
+                        // This is the last element. Wrap instead of going over the size of the list.
+                        newSpeed = selectedSpeeds.get(0);
+                    } else {
+                        // If speedPosition is still -1 (the user isn't using a preset), use the first preset in the
+                        // list.
+                        newSpeed = selectedSpeeds.get(speedPosition + 1);
+                    }
+                    onSetPlaybackSpeed(newSpeed);
+                }
             }
         }
     };

@@ -27,6 +27,7 @@ import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -125,7 +126,7 @@ public class InboxSection extends HomeSection {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() ->
-                        new Pair<>(DBReader.getNewItemsList(0, NUM_EPISODES),
+                        new Pair<>(DBReader.getNewItemsList(0, NUM_EPISODES, UserPreferences.getInboxSortedOrder()),
                                 PodDBAdapter.getInstance().getNumberOfNewItems()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

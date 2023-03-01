@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -25,10 +24,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.elevation.SurfaceColors;
-import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -396,19 +395,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void mediaPlayerError(PlayerErrorEvent event) {
-        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(getContext());
-        errorDialog.setTitle(R.string.error_label);
-        errorDialog.setMessage(event.getMessage());
-        errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->
-                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
-        if (!UserPreferences.useExoplayer()) {
-            errorDialog.setNeutralButton(R.string.media_player_switch_to_exoplayer, (dialog, which) -> {
-                UserPreferences.enableExoplayer();
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                        R.string.media_player_switched_to_exoplayer, Snackbar.LENGTH_LONG);
-            });
-        }
-        errorDialog.create().show();
+        MediaPlayerErrorDialog.show(getActivity(), event);
     }
 
     @Override
@@ -528,7 +515,7 @@ public class AudioPlayerFragment extends Fragment implements
         float playerFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
         View player = getView().findViewById(R.id.playerFragment);
         player.setAlpha(1 - playerFadeProgress);
-        player.setVisibility(playerFadeProgress > 0.99f ? View.GONE : View.VISIBLE);
+        player.setVisibility(playerFadeProgress > 0.99f ? View.INVISIBLE : View.VISIBLE);
         float toolbarFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.6f)) / 0.2f;
         toolbar.setAlpha(toolbarFadeProgress);
         toolbar.setVisibility(toolbarFadeProgress < 0.01f ? View.INVISIBLE : View.VISIBLE);
