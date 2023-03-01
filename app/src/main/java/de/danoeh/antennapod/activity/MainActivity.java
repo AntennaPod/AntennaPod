@@ -41,6 +41,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -89,6 +91,7 @@ public class MainActivity extends CastEnabledActivity {
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets navigationBarInsets = Insets.NONE;
+    private WeakReference<MaterialToolbar> toolbarSubFrag;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -211,7 +214,8 @@ public class MainActivity extends CastEnabledActivity {
         }
     };
 
-    public void setupToolbarToggle(@NonNull MaterialToolbar toolbar, boolean displayUpArrow) {
+    public void setupToolbarToggle(@NonNull MaterialToolbar toolbarFrag, boolean displayUpArrow) {
+        MaterialToolbar toolbar = getWeakRefToolbar(toolbarFrag);
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             if (drawerToggle != null) {
                 drawerLayout.removeDrawerListener(drawerToggle);
@@ -230,12 +234,9 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (drawerLayout != null) {
-            drawerLayout.removeDrawerListener(drawerToggle);
-        }
+    private MaterialToolbar getWeakRefToolbar(MaterialToolbar toolbar) {
+        toolbarSubFrag = new WeakReference<>(toolbar);
+        return toolbarSubFrag.get();
     }
 
     private void checkFirstLaunch() {
@@ -502,7 +503,9 @@ public class MainActivity extends CastEnabledActivity {
             String toPage = UserPreferences.getDefaultPage();
             if (NavDrawerFragment.getLastNavFragment(this).equals(toPage)
                     || UserPreferences.DEFAULT_PAGE_REMEMBER.equals(toPage)) {
-                super.onBackPressed();
+                //super.onBackPressed();
+                // go to back ground, to quick restart this activity.
+                moveTaskToBack(false);
             } else {
                 loadFragment(toPage, null);
             }
