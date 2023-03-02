@@ -45,12 +45,13 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     callback.onDataReady(null);
                     return;
                 }
+                OutputStream outputStream = null;
                 try {
                     tempIn = File.createTempFile("resize_", null);
                     tempOut = File.createTempFile("resize_", null);
-                    OutputStream outputStream = new FileOutputStream(tempIn);
+                    outputStream = new FileOutputStream(tempIn);
                     IOUtils.copy(data, outputStream);
-                    outputStream.close();
+                    //outputStream.close();
                     IOUtils.closeQuietly(data);
 
                     if (tempIn.length() <= MAX_FILE_SIZE) {
@@ -117,6 +118,14 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     } catch (FileNotFoundException fileNotFoundException) {
                         e.printStackTrace();
                         callback.onLoadFailed(fileNotFoundException);
+                    }
+                } finally {
+                    if (outputStream != null) {
+                        try {
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
