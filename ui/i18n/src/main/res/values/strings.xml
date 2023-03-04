@@ -418,6 +418,8 @@
         <item quantity="one">Every hour</item>
         <item quantity="other">Every %d hours</item>
     </plurals>
+    <string name="battery_optimization_pref_title">Battery Optimization</string>
+    <string name="battery_optimization_pref">For more reliable automatic downloads and automatic refresh, exclude AntennaPod from battery optimization. Tap to add an exception for AntennaPod.</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>

@@ -1,9 +1,14 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.text.format.DateFormat;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -17,10 +22,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Context.POWER_SERVICE;
+
 
 public class NetworkPreferencesFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
+    private static final String PREF_BATTERY_OPTIMIZATION = "prefBatteryOptimization";
     private static final String PREF_PROXY = "prefProxy";
 
     @Override
@@ -59,6 +67,20 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat
                     new FeedRefreshIntervalDialog(getContext()).show();
                     return true;
                 });
+        if (Build.VERSION.SDK_INT >= 31) {
+            PowerManager powerManager = (PowerManager) getContext().getSystemService(POWER_SERVICE);
+            if (!powerManager.isIgnoringBatteryOptimizations(getContext().getPackageName())) {
+                findPreference(PREF_BATTERY_OPTIMIZATION).setVisible(true);
+                findPreference(PREF_BATTERY_OPTIMIZATION).setOnPreferenceClickListener(preference -> {
+                    findPreference(PREF_BATTERY_OPTIMIZATION).setVisible(false);
+                    Intent i = new Intent();
+                    i.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    i.setData(Uri.parse("package:" + getContext().getPackageName()));
+                    startActivity(i);
+                    return true;
+                });
+            }
+        }
 
         findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
                 .setOnPreferenceChangeListener(
