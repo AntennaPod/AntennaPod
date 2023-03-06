@@ -8,7 +8,7 @@
   <string name="episodes_label">Episodios</string>
   <string name="home_label">Inicio</string>
   <string name="queue_label">Cola</string>
-  <string name="inbox_label">Entrada</string>
+  <string name="inbox_label">Novidades</string>
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="settings_label">Axustes</string>
   <string name="downloads_label">Descargas</string>
@@ -62,7 +62,7 @@
   <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por data de publicación</string>
   <string name="drawer_feed_order_most_played">Ordenar por número de episodios reproducidos</string>
-  <string name="drawer_feed_counter_inbox">Número de episodios na caixa de entrada</string>
+  <string name="drawer_feed_counter_inbox">Número de novos episodios</string>
   <string name="drawer_feed_counter_unplayed">Número de episodios non reproducidos</string>
   <string name="drawer_feed_counter_downloaded">Número de episodios descargados</string>
   <string name="drawer_feed_counter_downloaded_unplayed">Número de episodios descargados e non escoitados</string>
@@ -146,9 +146,9 @@
   </plurals>
   <string name="new_episode_notification_group_text">As túas subscricións teñen novos episodios.</string>
   <!--Actions on feeds-->
-  <string name="remove_all_inbox_label">Quitar todo da caixa de entrada</string>
-  <string name="removed_all_inbox_msg">Baleirouse a caixa de entrada</string>
-  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar a caixa de entrada.</string>
+  <string name="remove_all_inbox_label">Baleirar a lista de novos episodios</string>
+  <string name="removed_all_inbox_msg">Baleirouse a lista de novos episodios</string>
+  <string name="remove_all_inbox_confirmation_msg">Confirma que desexas baleirar lista de novos episodios.</string>
   <string name="multi_select_mark_played_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como reproducidos.</string>
   <string name="multi_select_mark_unplayed_confirmation">Confirma que desexas marcar tódolos elementos seleccionados como non reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
@@ -196,8 +196,8 @@
     <item quantity="one">Eliminado 1 episodio descargado.</item>
     <item quantity="other">Eliminados %d episodios descargados.</item>
   </plurals>
-  <string name="remove_inbox_label">Retirar da caixa de entrada</string>
-  <string name="removed_inbox_label">Retirado da caixa de entrada</string>
+  <string name="remove_inbox_label">Retirar da lista de novidades</string>
+  <string name="removed_inbox_label">Retirado da lista de novidades</string>
   <string name="mark_read_label">Marcar como reproducido</string>
   <string name="toggle_played_label">Cambiar estado de reprodución</string>
   <string name="marked_as_played_label">Marcado como reproducido</string>
@@ -227,7 +227,7 @@
   </plurals>
   <plurals name="removed_from_inbox_batch_label">
     <item quantity="one">%d episodio eliminado da caixa de entrada</item>
-    <item quantity="other">%d episodios eliminados da caixa de entrada.</item>
+    <item quantity="other">%d episodios eliminados das novidades.</item>
   </plurals>
   <string name="add_to_favorite_label">Engadir a favoritos</string>
   <string name="remove_from_favorite_label">Quitar dos favoritos</string>
@@ -323,7 +323,7 @@
   <string name="preset_already_exists">%1$.2fx xa está gardado como un axuste previo.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Sen episodios na cola</string>
-  <string name="no_items_label">Engade un episodio descargándoo, ou mantén preso un episodio e escolle \"Engadir a cola\".</string>
+  <string name="no_items_label">Engade un episodio descargándoo, ou mantén premido un episodio e escolle \"Engadir a cola\".</string>
   <string name="no_shownotes_label">Este episodio non ten notas de episodio.</string>
   <string name="no_comp_downloads_head_label">Sen episodios descargados</string>
   <string name="no_comp_downloads_label">Podes descargar episodios na pantalla de detalles do podcast.</string>
@@ -334,7 +334,7 @@
   <string name="no_all_episodes_head_label">Sen episodios</string>
   <string name="no_all_episodes_label">Cando engade un podcast, os episodios mostraranse aquí.</string>
   <string name="no_all_episodes_filtered_label">Proba a eliminar o filtro para ver máis episodios.</string>
-  <string name="no_inbox_head_label">Sen episodios na caixa de entrada</string>
+  <string name="no_inbox_head_label">Sen episodios novos</string>
   <string name="no_inbox_label">Cando haxa novos episodios, apareceraán aquí. Entón poderás decidir se son do teu interese ou non.</string>
   <string name="no_subscriptions_head_label">Sen subscricións</string>
   <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
@@ -410,8 +410,8 @@
   <string name="user_interface_label">Interface de usuaria</string>
   <string name="user_interface_sum">Aparencia, Subscricións, Bloqueo de pantalla</string>
   <string name="pref_set_theme_title">Escolle o decorado</string>
-  <string name="pref_tinted_theme_title">Usar Cores Tintadas</string>
-  <string name="pref_tinted_theme_message">Cores da app co tono en función da imaxe de fondo</string>
+  <string name="pref_tinted_theme_title">Usar cores dinámicas</string>
+  <string name="pref_tinted_theme_message">As cores da app varían en función do fondo de pantalla</string>
   <string name="pref_nav_drawer_items_title">Configurar a Caixa de navegación</string>
   <string name="pref_nav_drawer_items_sum">Cambiar os elementos da Caixa de navegación.</string>
   <string name="pref_nav_drawer_feed_order_title">Indicar a orde das subscricións</string>
@@ -648,7 +648,7 @@
   <string name="status_downloading_label">Estase a descargar o episodio</string>
   <string name="in_queue_label">O episodio está na cola</string>
   <string name="is_favorite_label">Episodio marcado como favorito</string>
-  <string name="is_inbox_label">O episodio está na caixa de entrada</string>
+  <string name="is_inbox_label">O episodio está na lista de novidades</string>
   <string name="load_next_page_label">Cargar a seguinte páxina</string>
   <string name="position">Posición: %1$s</string>
   <string name="apply_action">Aplicar acción</string>

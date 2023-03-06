@@ -6,17 +6,21 @@
   <string name="statistics_label">Statistike</string>
   <string name="add_feed_label">Dodaj podkast</string>
   <string name="episodes_label">Epizode</string>
+  <string name="home_label">Domov</string>
   <string name="queue_label">Čakalna vrsta</string>
+  <string name="inbox_label">Prejeto</string>
   <string name="favorite_episodes_label">Priljubljene</string>
   <string name="settings_label">Nastavitve</string>
   <string name="downloads_label">Prenosi</string>
   <string name="open_autodownload_settings">Odpri nastavitve</string>
+  <string name="downloads_log_label">Dnevnik prenosov</string>
   <string name="subscriptions_label">Naročnine</string>
   <string name="subscriptions_list_label">Seznam naročnin</string>
   <string name="cancel_download_label">Prekliči Prenose </string>
   <string name="playback_history_label">Zgodovina predvajanja</string>
   <string name="episode_cache_full_title">Prepomnilnik epizod poln</string>
   <string name="episode_cache_full_message">Predpomnilnik epizod je poln. Predpomnilnik lahko povečate v nastavitvah.</string>
+  <string name="years_statistics_label">Leta</string>
   <string name="notification_pref_fragment">Obvestila</string>
   <!--Google Assistant-->
   <string name="app_action_not_found">\"%1$s\" ni bilo najdeno</string>
@@ -28,7 +32,13 @@
   <string name="enable_swipeactions">Omogočite dejanje vlečenja za ta zaslon</string>
   <string name="change_setting">Spremeni</string>
   <!--Statistics fragment-->
+  <string name="statistics_include_marked">Vključite trajanje epizod, ki so označene kot predvajane</string>
   <string name="statistics_speed_not_counted">Pozor: hitrost predvajanja se ne upošteva</string>
+  <string name="statistics_from">Od</string>
+  <string name="statistics_to">Do</string>
+  <string name="statistics_today">Danes</string>
+  <string name="statistics_filter_all_time">Vseh časov</string>
+  <string name="statistics_filter_past_year">Preteklo leto</string>
   <string name="statistics_reset_data">Ponastavi statistične podatke</string>
   <string name="statistics_reset_data_msg">To bo pobrisalo vso zgodovino pretečenega časa predvajanja  vseh epizod. Ali ste prepričani da želite nadaljevati?</string>
   <!--Home fragment-->

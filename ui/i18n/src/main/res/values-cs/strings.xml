@@ -443,8 +443,6 @@
   <string name="user_interface_label">Uživatelské rozhraní</string>
   <string name="user_interface_sum">Vzhled, odběry, uzamčená obrazovka</string>
   <string name="pref_set_theme_title">Vybrat motiv</string>
-  <string name="pref_tinted_theme_title">Použít tónování barev</string>
-  <string name="pref_tinted_theme_message">Tónovat barvy aplikace podle obrázku na pozadí</string>
   <string name="pref_nav_drawer_items_title">Změnit navigační panel</string>
   <string name="pref_nav_drawer_items_sum">Upravit zobrazení položek v navigačním panelu.</string>
   <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí odběrů</string>

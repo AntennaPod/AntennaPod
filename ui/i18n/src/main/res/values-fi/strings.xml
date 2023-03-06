@@ -410,8 +410,6 @@
   <string name="user_interface_label">Käyttöliittymä</string>
   <string name="user_interface_sum">Ulkoasu, tilaukset, ruudun lukitus</string>
   <string name="pref_set_theme_title">Valitse teema</string>
-  <string name="pref_tinted_theme_title">Käytä sävytettyjä värejä</string>
-  <string name="pref_tinted_theme_message">Sävytä sovelluksen värit taustakuvan mukaan</string>
   <string name="pref_nav_drawer_items_title">Navigointivalikon kohteet</string>
   <string name="pref_nav_drawer_items_sum">Valitse navigointivalikossa näytettävät toiminnot.</string>
   <string name="pref_nav_drawer_feed_order_title">Aseta tilausten järjestys</string>

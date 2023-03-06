@@ -442,8 +442,8 @@
   <string name="user_interface_label">מנשק משתמש</string>
   <string name="user_interface_sum">מראה, מינויים, מסך נעילה</string>
   <string name="pref_set_theme_title">בחירת ערכת עיצוב</string>
-  <string name="pref_tinted_theme_title">להשתמש בצבעים אטומים</string>
-  <string name="pref_tinted_theme_message">צבעים אטומי ליישומון לפי תמונת הרקע</string>
+  <string name="pref_tinted_theme_title">להשתמש בצבעים דינמיים</string>
+  <string name="pref_tinted_theme_message">להתאים את צבעי היישומון לפי הטפט</string>
   <string name="pref_nav_drawer_items_title">הגדרת פריטי מגירת ניווט</string>
   <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט.</string>
   <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינויים</string>

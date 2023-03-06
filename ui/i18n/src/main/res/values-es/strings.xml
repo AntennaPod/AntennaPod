@@ -49,9 +49,9 @@
   <string name="home_continue_title">Continuar escuchando</string>
   <string name="home_new_title">Novedades</string>
   <string name="home_downloads_title">Gestionar descargas</string>
-  <string name="home_welcome_title">¡Bienvenido a AntennaPod!</string>
-  <string name="home_welcome_text">No estás suscrito a ningún podcast. Abre el menú lateral para añadir un podcast.</string>
-  <string name="configure_home">Configurar pantalla de Inicio</string>
+  <string name="home_welcome_title">Le damos la bienvenida a AntennaPod.</string>
+  <string name="home_welcome_text">No se ha suscrito a ningún pódcast. Abra el menú lateral para añadir un pódcast.</string>
+  <string name="configure_home">Configurar pantalla de inicio</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamaño total de episodios en el dispositivo</string>
   <!--Main activity-->
@@ -68,7 +68,7 @@
   <string name="drawer_feed_counter_downloaded_unplayed">Número de episodios descargados y no reproducidos</string>
   <string name="drawer_feed_counter_none">Ninguno</string>
   <!--Bug report activity-->
-  <string name="log_file_share_exception">No se encontraro apps compatibles</string>
+  <string name="log_file_share_exception">No se encontró ninguna aplicación compatible</string>
   <string name="export_logs_menu_title">Exportar registros detallados</string>
   <string name="confirm_export_log_dialog_message">Los registros detallados pueden contener información sensible, como su lista de suscripciones</string>
   <!--Webview actions-->
@@ -89,7 +89,7 @@
   <string name="no">No</string>
   <string name="reset">Restablecer</string>
   <string name="url_label">URL</string>
-  <string name="support_funding_label">Soporte</string>
+  <string name="support_funding_label">Apoyo</string>
   <string name="support_podcast">Apoyar este pódcast</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">Se produjo un error:</string>
@@ -110,12 +110,12 @@
   <string name="feed_volume_reduction_light">Ligero</string>
   <string name="feed_volume_reduction_heavy">Fuerte</string>
   <string name="parallel_downloads">%1$d descargas paralelas</string>
-  <string name="feed_auto_download_global">Global por defecto</string>
+  <string name="feed_auto_download_global">Global predeterminado</string>
   <string name="feed_auto_download_always">Siempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="send_label">Enviar…</string>
   <string name="episode_cleanup_never">Nunca</string>
-  <string name="episode_cleanup_except_favorite_removal">Cuando no esté en favoritos</string>
+  <string name="episode_cleanup_except_favorite_removal">Cuando no esté en Favoritos</string>
   <string name="episode_cleanup_queue_removal">Cuando no esté en la cola</string>
   <string name="episode_cleanup_after_listening">Después de acabar</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -138,7 +138,7 @@
     <item quantity="many">%d episodios</item>
     <item quantity="other">%d episodios</item>
   </plurals>
-  <string name="episode_notification">Notificaciones de Episodios</string>
+  <string name="episode_notification">Notificaciones de episodios</string>
   <string name="episode_notification_summary">Mostrar una notificación cuando se estrene un nuevo episodio.</string>
   <plurals name="new_episode_notification_message">
     <item quantity="one">%2$s tiene un nuevo episodio</item>
@@ -146,31 +146,31 @@
     <item quantity="other">%2$s tiene %1$d episodios nuevos</item>
   </plurals>
   <plurals name="new_episode_notification_title">
-    <item quantity="one">Nuevo Episodio</item>
+    <item quantity="one">Episodio nuevo</item>
     <item quantity="many">Nuevos Episodios</item>
-    <item quantity="other">Nuevos Episodios</item>
+    <item quantity="other">Episodios nuevos</item>
   </plurals>
   <string name="new_episode_notification_group_text">Sus suscripciones tienen nuevos episodios.</string>
   <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Borrar todo en la bandeja de entrada</string>
   <string name="removed_all_inbox_msg">Borrado todo de la bandeja de entrada</string>
-  <string name="remove_all_inbox_confirmation_msg">Por favor confirma que quieres borrar todo de la bandeja de entrada</string>
-  <string name="multi_select_mark_played_confirmation">Por favor confirma que quieres marcar todos los elementos como reproducidos.</string>
-  <string name="multi_select_mark_unplayed_confirmation">Por favor confirma que quieres marcar todos los elementos como no reproducidos.</string>
+  <string name="remove_all_inbox_confirmation_msg">Confirme que quiere borrar todo de la bandeja de entrada.</string>
+  <string name="multi_select_mark_played_confirmation">Confirme que quiere marcar todos los elementos como reproducidos.</string>
+  <string name="multi_select_mark_unplayed_confirmation">Confirme que quiere marcar todos los elementos como no reproducidos.</string>
   <string name="show_info_label">Mostrar información</string>
-  <string name="show_feed_settings_label">Mostrar ajustes del pódcast</string>
-  <string name="feed_settings_label">Ajustes del pódcast</string>
-  <string name="rename_feed_label">Renombrar el pódcast</string>
+  <string name="show_feed_settings_label">Mostrar configuración del pódcast</string>
+  <string name="feed_settings_label">Configuración del pódcast</string>
+  <string name="rename_feed_label">Cambiar nombre del pódcast</string>
   <string name="remove_feed_label">Eliminar el pódcast</string>
   <string name="share_label">Compartir</string>
   <string name="share_file_label">Compartir el archivo</string>
   <string name="share_rss_address_label">Dirección RSS:</string>
-  <string name="feed_delete_confirmation_msg">Confirme que quiere borrar el pódcast \"%1$s\" y TODOS los episodios (incluidos los descargados).</string>
-  <string name="feed_delete_confirmation_msg_batch">Confirme que quiere borrar los pódcasts seleccionados y TODOS los episodios (incluidos los descargados).</string>
-  <string name="feed_delete_confirmation_local_msg">Confirme que quiere borrar el podcast \"%1$s\". Los archivos en la carpeta origen local no serán borrados.</string>
+  <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar el pódcast «%1$s» y TODOS los episodios (incluidos los descargados).</string>
+  <string name="feed_delete_confirmation_msg_batch">Confirme que quiere eliminar los pódcasts seleccionados y TODOS los episodios (incluidos los descargados).</string>
+  <string name="feed_delete_confirmation_local_msg">Confirme que quiere eliminar el pódcast «%1$s». Los archivos en la carpeta origen local no se eliminarán.</string>
   <string name="feed_remover_msg">Eliminando el pódcast</string>
   <string name="load_complete_feed">Actualizar el pódcast completo</string>
-  <string name="multi_select">Multi selección</string>
+  <string name="multi_select">Multiselección</string>
   <string name="select_all_above">Seleccionar todo lo anterior</string>
   <string name="select_all_below">Seleccionar todo lo siguiente</string>
   <string name="filtered_label">Filtrados</string>
@@ -426,8 +426,8 @@
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="user_interface_sum">Apariencia, Suscripción, Pantalla de bloqueo</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
-  <string name="pref_tinted_theme_title">Usar colores claros</string>
-  <string name="pref_tinted_theme_message">Cambiar los colores según la imagen de fondo</string>
+  <string name="pref_tinted_theme_title">Usar colores dinámicos</string>
+  <string name="pref_tinted_theme_message">Adaptar los colores según el fondo</string>
   <string name="pref_nav_drawer_items_title">Cambiar el cajón de navegación</string>
   <string name="pref_nav_drawer_items_sum">Cambiar los ítems que aparecen en el cajón de navegación</string>
   <string name="pref_nav_drawer_feed_order_title">Ajustar orden de suscripción</string>
