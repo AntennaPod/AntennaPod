@@ -1460,6 +1460,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (transientPause) {
             transientPause = false;
+            if (Build.VERSION.SDK_INT >= 31) {
+                stateManager.stopService();
+                return;
+            }
             if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
                 mediaPlayer.resume();
             } else if (bluetooth && UserPreferences.isUnpauseOnBluetoothReconnect()) {

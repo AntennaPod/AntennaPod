@@ -71,7 +71,7 @@ public class UserPreferences {
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
-    private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
+    public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
@@ -81,7 +81,6 @@ public class UserPreferences {
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
-    private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
@@ -613,10 +612,6 @@ public class UserPreferences {
         String username = prefs.getString(PREF_PROXY_USER, null);
         String password = prefs.getString(PREF_PROXY_PASSWORD, null);
         return new ProxyConfig(type, host, port, username, password);
-    }
-
-    public static boolean shouldResumeAfterCall() {
-        return prefs.getBoolean(PREF_RESUME_AFTER_CALL, true);
     }
 
     public static boolean isQueueLocked() {
