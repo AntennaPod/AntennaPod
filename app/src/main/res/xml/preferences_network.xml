@@ -2,8 +2,14 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:numberpicker="http://schemas.android.com/apk/de.danoeh.antennapod"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
     <PreferenceCategory android:title="@string/automation">
+        <Preference
+                android:key="prefBatteryOptimization"
+                android:title="@string/battery_optimization_pref_title"
+                android:summary="@string/battery_optimization_pref"
+                app:isPreferenceVisible="false" />
         <Preference
                 android:key="prefAutoUpdateIntervall"
                 android:summary="@string/feed_refresh_sum"
