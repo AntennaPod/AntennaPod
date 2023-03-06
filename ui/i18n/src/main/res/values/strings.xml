@@ -664,8 +664,6 @@
     <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
-    <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
-    <string name="pref_resumeAfterCall_title">Resume after Call</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
