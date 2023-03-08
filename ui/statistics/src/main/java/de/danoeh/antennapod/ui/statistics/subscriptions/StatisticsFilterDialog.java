@@ -107,6 +107,10 @@ public class StatisticsFilterDialog {
     private Pair<String[], Long[]> makeMonthlyList(long oldestDate, boolean inclusive) {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(oldestDate);
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
         date.set(Calendar.DAY_OF_MONTH, 1);
         ArrayList<String> names = new ArrayList<>();
         ArrayList<Long> timestamps = new ArrayList<>();

@@ -1226,7 +1226,7 @@ public class PodDBAdapter {
                     + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + "> 0";
         }
         final String timeFilter = lastPlayedTime + ">=" + timeFilterFrom
-                + " AND " + lastPlayedTime + "<=" + timeFilterTo;
+                + " AND " + lastPlayedTime + "<" + timeFilterTo;
         String playedTime = TABLE_NAME_FEED_MEDIA + "." + KEY_PLAYED_DURATION;
         if (includeMarkedAsPlayed) {
             playedTime = "(CASE WHEN " + playedTime + " != 0"
