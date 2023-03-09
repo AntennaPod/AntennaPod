@@ -30,17 +30,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.Nullable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.fragment.ChaptersFragment;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -515,11 +516,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMediaPlayerError(PlayerErrorEvent event) {
-        final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(VideoplayerActivity.this);
-        errorDialog.setTitle(R.string.error_label);
-        errorDialog.setMessage(event.getMessage());
-        errorDialog.setNeutralButton(android.R.string.ok, (dialog, which) -> finish());
-        errorDialog.show();
+        MediaPlayerErrorDialog.show(this, event);
     }
 
     @Override
@@ -561,16 +558,24 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
         menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders);
         menu.findItem(R.id.playback_speed).setVisible(true);
+        menu.findItem(R.id.player_show_chapters).setVisible(true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == R.id.player_switch_to_audio_only) {
+            switchToAudioOnly = true;
+            finish();
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.player_show_chapters) {
+            new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
             return true;
         }
 

@@ -66,6 +66,20 @@
     </item>
 
     <item
+        android:id="@+id/player_switch_to_audio_only"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/player_switch_to_audio_only"
+        android:visible="false">
+    </item>
+
+    <item
+        android:id="@+id/player_show_chapters"
+        custom:showAsAction="never"
+        android:title="@string/chapters_label"
+        android:visible="false">
+    </item>
+
+    <item
         android:id="@+id/share_item"
         android:menuCategory="container"
         custom:showAsAction="never"

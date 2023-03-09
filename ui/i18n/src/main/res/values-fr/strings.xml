@@ -47,6 +47,7 @@
   <string name="home_surprise_title">Soyez surpris</string>
   <string name="home_classics_title">Vos classiques</string>
   <string name="home_continue_title">Continuer d\'écouter</string>
+  <string name="home_new_title">Les nouveautés</string>
   <string name="home_downloads_title">Derniers téléchargements</string>
   <string name="home_welcome_title">Bienvenu dans AntennaPod !</string>
   <string name="home_welcome_text">Vous n\'avez pas encore d\'abonnements. Ouvrez le menu latéral pour ajouter des podcasts.</string>
@@ -79,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Effacer le journal</string>
   <string name="clear_playback_history_msg">L\'historique de lecture va être effacé. Êtes-vous sûr de vouloir continuer ?</string>
+  <string name="remove_history_label">Supprimer de l\'historique</string>
+  <string name="removed_history_label">Supprimé de l\'historique</string>
   <!--Other-->
   <string name="confirm_label">Confirmer</string>
   <string name="cancel_label">Annuler</string>
@@ -423,6 +426,8 @@
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="user_interface_sum">Apparence, abonnements, écran de verrouillage</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
+  <string name="pref_tinted_theme_title">Utiliser les couleurs dynamiques</string>
+  <string name="pref_tinted_theme_message">Colore l\'application en fonction du fonds d\'écran.</string>
   <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
   <string name="pref_nav_drawer_feed_order_title">Définir l\'ordre des abonnements</string>
@@ -608,11 +613,17 @@
   <string name="dialog_choose_sync_service_title">Choisir le service de synchronisation</string>
   <string name="gpodnet_description">Gpodder.net est un service open-source de synchronisation que vous pouvez installer facilement sur votre propre serveur. Gpodder.net est indépendant du projet AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync est une application Nextcloud open-source que vous pouvez installer facilement sur votre serveur. L\'application est indépendante du projet AntennaPod.</string>
+  <string name="synchronization_host_explanation">Vous pouvez décider du serveur à utiliser pour synchroniser vos données. Quand vous en aurez choisi un, entrer son adresse ici.</string>
+  <string name="synchronization_host_label">Adresse du serveur</string>
+  <string name="proceed_to_login_butLabel">Identification</string>
   <string name="synchronization_nextcloud_authenticate_browser">Autoriser l\'accès à l\'aide du navigateur qui a été ouvert puis revenez sur AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
+  <string name="synchronization_credentials_explanation">Merci de renseigner vos informations de connexion au serveur de synchronisation.</string>
   <string name="gpodnetauth_encryption_warning">Le mot de passe et les données ne sont pas cryptés !</string>
   <string name="username_label">Identifiant</string>
   <string name="password_label">Mot de passe</string>
+  <string name="synchronization_login_butLabel">Connexion</string>
+  <string name="synchronization_selectDevice_explanation">Sélectionner votre appareil sur le serveur de synchronisation ou créez-en un nouveau.</string>
   <string name="gpodnetauth_device_name">Nom de l\'appareil</string>
   <string name="gpodnetauth_device_name_default">AntennaPod sur %1$s</string>
   <string name="gpodnetauth_existing_devices">Appareils déjà existants</string>
@@ -705,6 +716,7 @@
   <string name="discover_powered_by_itunes">Suggestions de iTunes</string>
   <string name="discover_confirm">Montrer les suggestions</string>
   <string name="search_powered_by">Résultats de %1$s</string>
+  <string name="select_country">Choisir un pays</string>
   <!--Local feeds-->
   <string name="add_local_folder">Ajouter un dossier</string>
   <string name="local_folder">Dossier local</string>

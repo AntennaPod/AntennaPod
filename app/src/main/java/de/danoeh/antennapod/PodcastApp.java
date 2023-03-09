@@ -12,7 +12,6 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.config.ApplicationCallbacksImpl;
-import de.danoeh.antennapod.config.DownloadServiceCallbacksImpl;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.ClientConfigurator;
@@ -35,7 +34,6 @@ public class PodcastApp extends MultiDexApplication {
         super.onCreate();
         ClientConfig.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
-        ClientConfig.downloadServiceCallbacks = new DownloadServiceCallbacksImpl();
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();

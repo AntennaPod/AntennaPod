@@ -14,6 +14,7 @@ public class FeedSyncTask {
     private final Context context;
     private Feed savedFeed;
     private final FeedParserTask task;
+    private FeedHandlerResult feedHandlerResult;
 
     public FeedSyncTask(Context context, DownloadRequest request) {
         this.request = request;
@@ -22,15 +23,15 @@ public class FeedSyncTask {
     }
 
     public boolean run() {
-        FeedHandlerResult result = task.call();
+        feedHandlerResult = task.call();
         if (!task.isSuccessful()) {
             return false;
         }
 
-        savedFeed = DBTasks.updateFeed(context, result.feed, false);
+        savedFeed = DBTasks.updateFeed(context, feedHandlerResult.feed, false);
         // If loadAllPages=true, check if another page is available and queue it for download
         final boolean loadAllPages = request.getArguments().getBoolean(DownloadRequest.REQUEST_ARG_LOAD_ALL_PAGES);
-        final Feed feed = result.feed;
+        final Feed feed = feedHandlerResult.feed;
         if (loadAllPages && feed.getNextPageLink() != null) {
             feed.setId(savedFeed.getId());
             DBTasks.loadNextPageOfFeed(context, feed, true);
@@ -45,5 +46,9 @@ public class FeedSyncTask {
 
     public Feed getSavedFeed() {
         return savedFeed;
+    }
+
+    public String getRedirectUrl() {
+        return feedHandlerResult.redirectUrl;
     }
 }

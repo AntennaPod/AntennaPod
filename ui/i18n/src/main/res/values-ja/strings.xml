@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">履歴をクリア</string>
   <string name="clear_playback_history_msg">これにより、再生履歴がすべて消去されます。本当に実行しますか？</string>
+  <string name="remove_history_label">履歴から削除</string>
+  <string name="removed_history_label">履歴から削除しました</string>
   <!--Other-->
   <string name="confirm_label">確認</string>
   <string name="cancel_label">キャンセル</string>
@@ -169,7 +171,7 @@
   </plurals>
   <string name="edit_tags">タグを編集</string>
   <string name="add_tag">タグを追加</string>
-  <string name="rename_tag_label">タグを削除</string>
+  <string name="rename_tag_label">タグ名を変更</string>
   <string name="confirm_mobile_feed_refresh_dialog_message">モバイルデータ接続でのポッドキャストの更新は設定で無効になっています。\n\nそれでも更新しますか？</string>
   <!--actions on feeditems-->
   <string name="download_label">ダウンロード</string>
@@ -392,6 +394,8 @@
   <string name="user_interface_label">インターフェース</string>
   <string name="user_interface_sum">外観、購読、ロック画面</string>
   <string name="pref_set_theme_title">テーマを選択</string>
+  <string name="pref_tinted_theme_title">色を合わせる</string>
+  <string name="pref_tinted_theme_message">アプリの色を壁紙の色と合わせます</string>
   <string name="pref_nav_drawer_items_title">ナビゲーションドロワーを変更</string>
   <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーに表示するアイテムを変更します。</string>
   <string name="pref_nav_drawer_feed_order_title">購読の順序を設定</string>
@@ -571,11 +575,17 @@
   <string name="dialog_choose_sync_service_title">同期プロバイダーの選択</string>
   <string name="gpodnet_description">Gpodder.netは、自身のサーバーにインストールできるオープンソースのポッドキャスト同期サービスです。Gpodder.netは、AntennaPodプロジェクトから独立しています。</string>
   <string name="synchronization_summary_nextcloud">Gpoddersyncは、自身のサーバーに簡単にインストールできるオープンソースのNextcloudアプリです。このアプリは、AntennaPodプロジェクトから独立しています。</string>
+  <string name="synchronization_host_explanation">同期するサーバーを自分で選ぶことができます。同期したいサーバーが決まりましたら、そのアドレスをここに入力してください。</string>
+  <string name="synchronization_host_label">サーバーアドレス</string>
+  <string name="proceed_to_login_butLabel">ログインに進む</string>
   <string name="synchronization_nextcloud_authenticate_browser">開いた Web ブラウザーを使用してアクセスを許可し、AntennaPod に戻ります。</string>
   <string name="gpodnetauth_login_butLabel">ログイン</string>
+  <string name="synchronization_credentials_explanation">同期サーバー用のアカウント情報を提供してください。</string>
   <string name="gpodnetauth_encryption_warning">パスワードやデータは暗号化されません！</string>
   <string name="username_label">ユーザー名</string>
   <string name="password_label">パスワード</string>
+  <string name="synchronization_login_butLabel">ログイン</string>
+  <string name="synchronization_selectDevice_explanation">同期サーバーで作成したデバイスを選択するか、新しいデバイスを作成してください。</string>
   <string name="gpodnetauth_device_name">デバイス名</string>
   <string name="gpodnetauth_device_name_default">%1$s の AntennaPod</string>
   <string name="gpodnetauth_existing_devices">既存のデバイス</string>
@@ -668,6 +678,7 @@
   <string name="discover_powered_by_itunes">iTunes による提案</string>
   <string name="discover_confirm">提案を表示</string>
   <string name="search_powered_by">%1$s による検索結果</string>
+  <string name="select_country">国の選択</string>
   <!--Local feeds-->
   <string name="add_local_folder">ローカルフォルダーを追加</string>
   <string name="local_folder">ローカルフォルダー</string>

@@ -54,6 +54,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -132,6 +135,7 @@ public class SearchFragment extends Fragment {
 
         recyclerView = layout.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
+        registerForContextMenu(recyclerView);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity()) {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -146,7 +150,14 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity());
+        adapterFeeds = new HorizontalFeedListAdapter((MainActivity) getActivity()) {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view,
+                                            ContextMenu.ContextMenuInfo contextMenuInfo) {
+                super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+                MenuItemUtils.setOnClickListeners(contextMenu, SearchFragment.this::onContextItemSelected);
+            }
+        };
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
@@ -241,12 +252,21 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        FeedItem selectedItem = adapter.getLongPressedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at current position was null, ignoring selection");
-            return super.onContextItemSelected(item);
+        Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
+        if (selectedFeedItem != null
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
+            return true;
         }
-        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+        FeedItem selectedItem = adapter.getLongPressedItem();
+        if (selectedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem)) {
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        search();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -236,7 +236,6 @@
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
   <string name="download_error_details">Ayrıntılar</string>
-  <string name="download_log_details_message">%1$sTeknik sebep</string>
   <string name="download_error_tap_for_details">Ayrıntıları görüntülemek için dokunun.</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
   <string name="download_error_insufficient_space">Cihazınızda yeterli alan kalmadı.</string>

@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">Очистить историю</string>
   <string name="clear_playback_history_msg">Вы уверены, что хотите стереть все записи о продолжительности воспроизведения выпусков?</string>
+  <string name="remove_history_label">Удалить из истории</string>
+  <string name="removed_history_label">Удалено из истории</string>
   <!--Other-->
   <string name="confirm_label">Подтвердить</string>
   <string name="cancel_label">Отмена</string>
@@ -440,6 +442,8 @@
   <string name="user_interface_label">Интерфейс</string>
   <string name="user_interface_sum">Внешний вид, подписки, экран блокировки</string>
   <string name="pref_set_theme_title">Выбрать оформление</string>
+  <string name="pref_tinted_theme_title">Окрашивать в цвета</string>
+  <string name="pref_tinted_theme_message">Окрашивать приложение в цвета фонового изображения</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
   <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
   <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
@@ -628,11 +632,17 @@
   <string name="dialog_choose_sync_service_title">Выберите провайдера синхронизации</string>
   <string name="gpodnet_description">Gpodder.net — сервис синхронизации подкастов с открытым исходным кодом, которое вы можете установить на свой сервер. Gpodder.net не связан с проектом AntennaPod.</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync — приложение с открытым исходным кодом для Nextcloud, которое вы можете установить на свой сервер. Это приложение не связано с проектом AntennaPod.</string>
+  <string name="synchronization_host_explanation">Можно выбрать свой сервер для синхронизации. Опредилившись с предпочтительным сервером синхронизации, введите его адрес здесь.</string>
+  <string name="synchronization_host_label">Адрес сервера</string>
+  <string name="proceed_to_login_butLabel">Авторизация</string>
   <string name="synchronization_nextcloud_authenticate_browser">Предоставить доступ, открыв веб-браузер, и вернуться в AntennaPod.</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
+  <string name="synchronization_credentials_explanation">Пожалуйста, укажите данные своей учётной записи на сервере синхронизации.</string>
   <string name="gpodnetauth_encryption_warning">Пароль и данные не зашифрованы!</string>
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
+  <string name="synchronization_login_butLabel">Войти</string>
+  <string name="synchronization_selectDevice_explanation">Пожалуйста, выберите устройство с сервера синхронизации, либо создайте новое.</string>
   <string name="gpodnetauth_device_name">Название устройства</string>
   <string name="gpodnetauth_device_name_default">AntennaPod на %1$s</string>
   <string name="gpodnetauth_existing_devices">Существующие устройства</string>
@@ -725,6 +735,7 @@
   <string name="discover_powered_by_itunes">Предложения iTunes</string>
   <string name="discover_confirm">Показать рекомендации</string>
   <string name="search_powered_by">Результаты по %1$s</string>
+  <string name="select_country">Выбор страны</string>
   <!--Local feeds-->
   <string name="add_local_folder">Добавить локальную папку</string>
   <string name="local_folder">Локальная папка</string>

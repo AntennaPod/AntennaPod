@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="spnAutoDeleteItems">
-        <item>@string/feed_auto_download_global</item>
+        <item>@string/global_default</item>
         <item>@string/feed_auto_download_always</item>
         <item>@string/feed_auto_download_never</item>
     </string-array>
@@ -23,6 +23,28 @@
         <item>off</item>
         <item>light</item>
         <item>heavy</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionItems">
+        <item>@string/global_default</item>
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">
@@ -71,6 +93,7 @@
         <item>@string/pref_mobileUpdate_auto_download</item>
         <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
+        <item>@string/synchronization_pref</item>
     </string-array>
 
     <string-array name="mobile_update_values">
@@ -79,10 +102,12 @@
         <item>auto_download</item>
         <item>streaming</item>
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="mobile_update_default_value">
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="episode_cleanup_entries">
@@ -133,20 +158,6 @@
         <item>120</item>
         <item>168</item>
         <item>-2</item>
-    </string-array>
-
-    <string-array name="theme_options">
-        <item>@string/pref_theme_title_use_system</item>
-        <item>@string/pref_theme_title_light</item>
-        <item>@string/pref_theme_title_dark</item>
-        <item>@string/pref_theme_title_trueblack</item>
-    </string-array>
-
-    <string-array name="theme_values">
-        <item>system</item>
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="nav_drawer_titles">
@@ -203,18 +214,6 @@
         <item>EpisodesSurpriseSection</item>
         <item>SubscriptionsSection</item>
         <item>DownloadsSection</item>
-    </string-array>
-
-    <string-array name="media_player_options">
-        <item>@string/media_player_exoplayer_recommended</item>
-        <item>@string/media_player_builtin</item>
-        <item>@string/media_player_sonic</item>
-    </string-array>
-
-    <string-array name="media_player_values">
-        <item>exoplayer</item>
-        <item>builtin</item>
-        <item>sonic</item>
     </string-array>
 
     <!-- sort for podcast screen, not for queue -->

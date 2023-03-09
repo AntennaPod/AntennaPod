@@ -57,9 +57,6 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
-                    UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-
             if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
                 UserPreferences.setAllowMobileAutoDownload(true);
             }
@@ -132,6 +129,15 @@ public class PreferenceUpgrader {
                 prefs.edit().putString(UserPreferences.PREF_EPISODE_CACHE_SIZE,
                         "" + UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED).apply();
             }
+        }
+        if (oldVersion < 3010000) {
+            if (prefs.getString(UserPreferences.PREF_THEME, "system").equals("2")) {
+                prefs.edit()
+                        .putString(UserPreferences.PREF_THEME, "1")
+                        .putBoolean(UserPreferences.PREF_THEME_BLACK, true)
+                        .apply();
+            }
+            UserPreferences.setAllowMobileSync(true);
         }
     }
 }

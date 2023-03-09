@@ -80,6 +80,8 @@
   <!--Playback history-->
   <string name="clear_history_label">清空历史</string>
   <string name="clear_playback_history_msg">这会清除整个播放历史。你确定要继续吗？</string>
+  <string name="remove_history_label">从历史中删除</string>
+  <string name="removed_history_label">已从历史中删除</string>
   <!--Other-->
   <string name="confirm_label">确定</string>
   <string name="cancel_label">取消</string>
@@ -174,7 +176,7 @@
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
-    <item quantity="other">正下载%d个音频节目</item>
+    <item quantity="other">正下载 %d 个音频节目</item>
   </plurals>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>
@@ -392,6 +394,8 @@
   <string name="user_interface_label">界面</string>
   <string name="user_interface_sum">外观、订阅、锁屏</string>
   <string name="pref_set_theme_title">主题选择</string>
+  <string name="pref_tinted_theme_title">使用基于背景图的颜色</string>
+  <string name="pref_tinted_theme_message">基于背景图对应用进行着色</string>
   <string name="pref_nav_drawer_items_title">设置侧边栏的选项</string>
   <string name="pref_nav_drawer_items_sum">改变侧边栏中的选项</string>
   <string name="pref_nav_drawer_feed_order_title">设置订阅的排序方式</string>
@@ -572,11 +576,17 @@
   <string name="dialog_choose_sync_service_title">选择同步提供商</string>
   <string name="gpodnet_description">Gpodder.net 是一个开源的播客同步服务，你可以将其安装在自己的服务器上。Gpodder.net 独立于 AntennaPod 项目。</string>
   <string name="synchronization_summary_nextcloud">Gpoddersync 是一个开源的 Nextcloud 应用程序，你可以很容易地安装在自己的服务器上。该应用程序独立于 AntennaPod 项目。</string>
+  <string name="synchronization_host_explanation">你可以选择用自己的服务器进行同步。当你确定了偏好的同步服务器，请在此处输入其地址</string>
+  <string name="synchronization_host_label">服务器地址</string>
+  <string name="proceed_to_login_butLabel">继续登录</string>
   <string name="synchronization_nextcloud_authenticate_browser">使用打开的网页浏览器授予访问权限，然后返回到 AntennaPod。</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
+  <string name="synchronization_credentials_explanation">请提供该同步服务器上你账户的凭据</string>
   <string name="gpodnetauth_encryption_warning">密码和数据没有加密！</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>
+  <string name="synchronization_login_butLabel">登录</string>
+  <string name="synchronization_selectDevice_explanation">请选择你在同步服务器上创建的设备或新建一个</string>
   <string name="gpodnetauth_device_name">设备名</string>
   <string name="gpodnetauth_device_name_default">AntennaPod 于 %1$s</string>
   <string name="gpodnetauth_existing_devices">现有设备</string>
@@ -669,6 +679,7 @@
   <string name="discover_powered_by_itunes">iTunes 建议</string>
   <string name="discover_confirm">显示建议</string>
   <string name="search_powered_by">按 %1$s 显示结果</string>
+  <string name="select_country">选择国家或地区</string>
   <!--Local feeds-->
   <string name="add_local_folder">添加本地文件夹</string>
   <string name="local_folder">本地文件夹</string>

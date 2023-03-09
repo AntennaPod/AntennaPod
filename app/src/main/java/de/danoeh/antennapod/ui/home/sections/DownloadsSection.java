@@ -23,6 +23,8 @@ import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.home.HomeSection;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -121,7 +123,9 @@ public class DownloadsSection extends HomeSection {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(DBReader::getDownloadedItems)
+        SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
+        disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(downloads -> {

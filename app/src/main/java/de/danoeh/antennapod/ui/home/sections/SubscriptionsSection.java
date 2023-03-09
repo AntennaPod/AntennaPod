@@ -44,6 +44,8 @@ public class SubscriptionsSection extends HomeSection {
         listAdapter = new HorizontalFeedListAdapter((MainActivity) getActivity());
         listAdapter.setDummyViews(NUM_FEEDS);
         viewBinding.recyclerView.setAdapter(listAdapter);
+        int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
+        viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
         return view;
     }
 
