@@ -20,6 +20,8 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
@@ -213,7 +215,8 @@ public class SyncService extends Worker {
         List<EpisodeAction> queuedEpisodeActions = synchronizationQueueStorage.getQueuedEpisodeActions();
         if (lastSync == 0) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
-            List<FeedItem> readItems = DBReader.getPlayedItems();
+            List<FeedItem> readItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                    new FeedItemFilter(FeedItemFilter.PLAYED), SortOrder.DATE_NEW_OLD);
             Log.d(TAG, "First sync. Upload state for all " + readItems.size() + " played episodes");
             for (FeedItem item : readItems) {
                 FeedMedia media = item.getMedia();
@@ -325,7 +328,7 @@ public class SyncService extends Worker {
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {
         Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileFeedRefresh()) {
+        if (UserPreferences.isAllowMobileSync()) {
             constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);

@@ -76,8 +76,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
-    public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
@@ -90,6 +88,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
+    private Insets navigationBarInsets = Insets.NONE;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -116,10 +115,13 @@ public class MainActivity extends CastEnabledActivity {
         setNavDrawerSize();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
-                new WindowInsetsCompat.Builder(insets)
-                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
-                        .build());
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
+            navigationBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            updateInsets();
+            return new WindowInsetsCompat.Builder(insets)
+                    .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                    .build();
+        });
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
@@ -160,8 +162,7 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        sheetBehavior.setPeekHeight(playerHeight + getBottomInset());
+        updateInsets();
     }
 
     /**
@@ -206,10 +207,7 @@ public class MainActivity extends CastEnabledActivity {
                 audioPlayer.scrollToPage(AudioPlayerFragment.POS_COVER);
             }
 
-            float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
-            audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
-            audioPlayer.getExternalPlayerHolder().setVisibility(
-                    condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+            audioPlayer.fadePlayerToToolbar(slideOffset);
         }
     };
 
@@ -229,6 +227,14 @@ public class MainActivity extends CastEnabledActivity {
         } else {
             toolbar.setNavigationIcon(ThemeUtils.getDrawableFromAttr(this, R.attr.homeAsUpIndicator));
             toolbar.setNavigationOnClickListener(v -> getSupportFragmentManager().popBackStack());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (drawerLayout != null) {
+            drawerLayout.removeDrawerListener(drawerToggle);
         }
     }
 
@@ -253,9 +259,10 @@ public class MainActivity extends CastEnabledActivity {
         return sheetBehavior;
     }
 
-    private int getBottomInset() {
-        WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(getWindow().getDecorView());
-        return insets == null ? 0 : insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+    private void updateInsets() {
+        setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
+        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
+        sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -268,7 +275,8 @@ public class MainActivity extends CastEnabledActivity {
         FragmentContainerView mainView = findViewById(R.id.main_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        params.setMargins(0, 0, 0, getBottomInset() + (visible ? externalPlayerHeight : 0));
+        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right,
+                navigationBarInsets.bottom + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
@@ -440,6 +448,9 @@ public class MainActivity extends CastEnabledActivity {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+        if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
+            loadFragment(UserPreferences.getDefaultPage(), null);
+        }
     }
 
     @Override
@@ -510,20 +521,12 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void handleNavIntent() {
+        Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_FRAGMENT_TAG) || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
-            Log.d(TAG, "handleNavIntent()");
-            String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
-            Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
-            boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
-            if (refreshOnStart) {
-                AutoUpdateManager.runImmediate(this);
-            }
-
+        if (intent.hasExtra(EXTRA_FEED_ID)) {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
-            if (tag != null) {
-                loadFragment(tag, args);
-            } else if (feedId > 0) {
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (feedId > 0) {
                 boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
                 boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
                 if (startedFromSearch || addToBackStack) {
@@ -531,6 +534,13 @@ public class MainActivity extends CastEnabledActivity {
                 } else {
                     loadFeedFragmentById(feedId, args);
                 }
+            }
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)) {
+            String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (tag != null) {
+                loadFragment(tag, args);
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
@@ -544,6 +554,13 @@ public class MainActivity extends CastEnabledActivity {
             if (drawerLayout != null && drawerLayout.isOpen()) {
                 drawerLayout.open();
             }
+        }
+
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DRAWER, false) && drawerLayout != null) {
+            drawerLayout.open();
+        }
+        if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
+            AutoUpdateManager.runImmediate(this);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

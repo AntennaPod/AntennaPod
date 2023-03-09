@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -37,15 +34,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -53,16 +47,15 @@ import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
-import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -151,7 +144,6 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
@@ -162,6 +154,7 @@ public class SubscriptionFragment extends Fragment
                 MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
             }
         };
+        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionAdapter.setOnSelectModeListener(this);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
@@ -260,6 +253,7 @@ public class SubscriptionFragment extends Fragment
     private void setColumnNumber(int columns) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 columns, RecyclerView.VERTICAL, false);
+        subscriptionAdapter.setColumnCount(columns);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
@@ -351,6 +345,7 @@ public class SubscriptionFragment extends Fragment
         }
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+
         if (itemId == R.id.remove_all_inbox_item) {
             displayConfirmationDialog(
                     R.string.remove_all_inbox_label,
@@ -367,27 +362,13 @@ public class SubscriptionFragment extends Fragment
         } else if (itemId == R.id.remove_feed) {
             RemoveFeedDialog.show(getContext(), feed, this);
             return true;
-        } else if (itemId == R.id.multi_select) {
+        }
+        
+        if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
-        return super.onContextItemSelected(item);
-    }
-
-    private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {
-        ConfirmationDialog dialog = new ConfirmationDialog(getActivity(), title, message) {
-            @Override
-            @SuppressLint("CheckResult")
-            public void onConfirmButtonPressed(DialogInterface clickedDialog) {
-                clickedDialog.dismiss();
-                Observable.fromCallable(task)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
-            }
-        };
-        dialog.createNewDialog().show();
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptions);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -77,7 +77,7 @@ public class LocalFeedUpdater {
 
     @VisibleForTesting
     static void tryUpdateFeed(Feed feed, Context context, Uri folderUri,
-                              UpdaterProgressListener updaterProgressListener) {
+                              UpdaterProgressListener updaterProgressListener) throws IOException {
         if (feed.getItems() == null) {
             feed.setItems(new ArrayList<>());
         }
@@ -124,15 +124,14 @@ public class LocalFeedUpdater {
         feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
         feed.getPreferences().setAutoDownload(false);
-        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 
-        // update items, delete items without existing file;
-        // only delete items if the folder contains at least one element to avoid accidentally
-        // deleting played state or position in case the folder is temporarily unavailable.
-        boolean removeUnlistedItems = (newItems.size() >= 1);
-        DBTasks.updateFeed(context, feed, removeUnlistedItems);
+        if (newItems.isEmpty()) {
+            throw new IOException("Empty folder. Make sure that the folder is accessible and contains media files.");
+        }
+        DBTasks.updateFeed(context, feed, true);
     }
 
     /**

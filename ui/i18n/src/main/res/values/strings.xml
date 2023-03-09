@@ -37,6 +37,7 @@
     <string name="swipe_left">Swipe Left</string>
     <string name="enable_swipeactions">Enable Swipe Actions for this Screen</string>
     <string name="change_setting">Change</string>
+    <string name="individual_subscription">Individual subscription</string>
 
     <!-- Statistics fragment -->
     <string name="statistics_include_marked">Include duration of episodes that are just marked as played</string>
@@ -102,6 +103,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset">Reset</string>
+    <string name="global_default">Global default</string>
     <string name="url_label">URL</string>
     <string name="support_funding_label">Support</string>
     <string name="support_podcast">Support this Podcast</string>
@@ -109,6 +111,7 @@
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
     <string name="chapters_label">Chapters</string>
+    <string name="no_chapters_label">No chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
     <string name="description_label">Description</string>
     <string name="shownotes_label">Shownotes</string>
@@ -124,9 +127,10 @@
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads">%1$d parallel downloads</string>
-    <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
+    <string name="feed_new_episodes_action_add_to_inbox">Add to Inbox</string>
+    <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
@@ -307,6 +311,7 @@
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
+    <string name="playback_error_generic"><![CDATA[The media file could not be played.\n\n- Try deleting and re-downloading the episode.\n- Check your network connection, and make sure no VPN or login page is blocking access.\n- Try long-pressing and sharing the \"Media address\" to your web browser to see if it can be played there. If not, contact the podcast creators.]]></string>
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
@@ -380,7 +385,6 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
-    <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
@@ -432,16 +436,16 @@
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
     <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
-    <string name="pref_set_theme_title">Select Theme</string>
-    <string name="pref_tinted_theme_title">Use Tinted Colors</string>
-    <string name="pref_tinted_theme_message">Tint app colors based on the background image</string>
+    <string name="pref_black_theme_title">Full Black</string>
+    <string name="pref_black_theme_message">Use full black for the dark theme</string>
+    <string name="pref_tinted_theme_title">Use dynamic colors</string>
+    <string name="pref_tinted_theme_message">Adapt app colors based on the wallpaper</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
-    <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
@@ -455,25 +459,10 @@
     <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_show_remain_time_title">Show Remaining Time</string>
     <string name="pref_show_remain_time_summary">Display remaining time of episodes when checked. If unchecked, display total duration of episodes.</string>
-    <string name="pref_theme_title_use_system">Use system theme</string>
+    <string name="pref_theme_title_automatic">Automatic</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
-    <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
-    <string name="synchronization_logout">Logout</string>
-    <string name="pref_synchronization_logout_toast">Logout was successful</string>
-    <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
-    <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="synchronization_sync_changes_title">Synchronize now</string>
-    <string name="synchronization_full_sync_title">Force full synchronization</string>
-    <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
-    <string name="synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
-    <string name="synchronization_nextcloud_authenticate_browser">Grant access using the opened web browser and come back to AntennaPod.</string>
-    <string name="synchronization_choose_title">Choose synchronization provider</string>
-    <string name="synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
-    <string name="synchronization_sync_summary">Synchronize subscription and episode state changes</string>
-    <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto Skip</string>
@@ -510,19 +499,12 @@
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="experimental_pref">Experimental</string>
-    <string name="pref_media_player_message">Select which media player to use to play files</string>
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_no_browser_found">No web browser found.</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
-    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
-    <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
-    <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
-    <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="behavior">Behavior</string>
     <string name="pref_default_page">Default Page</string>
@@ -544,6 +526,8 @@
     <string name="pref_contribute">Contribute</string>
     <string name="pref_show_subscription_title">Show Subscription Title</string>
     <string name="pref_show_subscription_title_summary">Display the subscription title below the cover image.</string>
+    <string name="pref_new_episodes_action_title">New Episodes Action</string>
+    <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
@@ -631,21 +615,38 @@
     <string name="auto_enable_label">Auto-enable</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
-    <!-- gpodder.net -->
+    <!-- Synchronisation -->
+    <string name="synchronization_choose_title">Choose synchronization provider</string>
+    <string name="synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
+    <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
+    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
+    <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
+    <string name="synchronization_host_explanation">You can pick your own server to synchronize with. When you have identified your preferred synchronization server, please enter its address here.</string>
+    <string name="synchronization_host_label">Server address</string>
+    <string name="proceed_to_login_butLabel">Proceed to login</string>
+    <string name="synchronization_nextcloud_authenticate_browser">Grant access using the opened web browser and come back to AntennaPod.</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="synchronization_credentials_explanation">Please provide the credentials of your account on the synchronization server.</string>
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
-    <string name="gpodnetauth_host">Hostname</string>
-    <string name="gpodnetauth_select_server">Select server</string>
+    <string name="synchronization_login_butLabel">Log in</string>
+    <string name="synchronization_selectDevice_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
     <string name="gpodnetauth_device_name">Device name</string>
     <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_existing_devices">Existing devices</string>
     <string name="gpodnetauth_create_device">Create device</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
-
+    <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
+    <string name="synchronization_sync_changes_title">Synchronize now</string>
+    <string name="synchronization_sync_summary">Synchronize subscription and episode state changes</string>
+    <string name="synchronization_full_sync_title">Force full synchronization</string>
+    <string name="synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
+    <string name="synchronization_logout">Logout</string>
+    <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
+    <string name="pref_synchronization_logout_toast">Logout was successful</string>
     <string name="gpodnetsync_error_title">gpodder.net sync error</string>
     <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
     <string name="gpodnetsync_pref_report_successful">Successful</string>
@@ -690,7 +691,7 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
-    <string name="feed_folders_include_root">Show in main list</string>
+    <string name="feed_folders_include_root">Show this podcast in main list</string>
     <string name="multi_feed_common_tags_info">{fa-info-circle} Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
@@ -717,8 +718,8 @@
 
     <!-- Add podcast fragment -->
     <string name="search_podcast_hint">Search podcast…</string>
-    <string name="search_itunes_label">Search iTunes</string>
-    <string name="search_podcastindex_label">Search Podcastindex.org</string>
+    <string name="search_itunes_label">Search Apple Podcasts</string>
+    <string name="search_podcastindex_label">Search Podcast Index</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="advanced">Advanced</string>
@@ -728,7 +729,7 @@
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
     <string name="discover_more">more »</string>
-    <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="discover_powered_by_itunes">Suggestions by Apple Podcasts</string>
     <string name="discover_confirm">Show suggestions</string>
     <string name="search_powered_by">Results by %1$s</string>
     <string name="select_country">Select country</string>
@@ -791,9 +792,6 @@
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>
     <string name="audio_effects">Audio Effects</string>
-    <string name="stereo_to_mono">Downmix: Stereo to mono</string>
-    <string name="sonic_only">Sonic only</string>
-    <string name="exoplayer_only">ExoPlayer only</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
 
     <!-- proxy settings -->

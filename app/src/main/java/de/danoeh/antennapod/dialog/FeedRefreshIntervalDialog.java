@@ -7,14 +7,15 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.databinding.FeedRefreshDialogBinding;
-import org.apache.commons.lang3.ArrayUtils;
-
+import de.danoeh.antennapod.databinding.ScrollableDialogBinding;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class FeedRefreshIntervalDialog {
     private static final int[] INTERVAL_VALUES_HOURS = {1, 2, 4, 8, 12, 24, 72};
@@ -29,8 +30,10 @@ public class FeedRefreshIntervalDialog {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(R.string.feed_refresh_title);
         builder.setMessage(R.string.feed_refresh_sum);
+        ScrollableDialogBinding scrollableDialogBinding = ScrollableDialogBinding.inflate(LayoutInflater.from(context));
+        builder.setView(scrollableDialogBinding.getRoot());
         viewBinding = FeedRefreshDialogBinding.inflate(LayoutInflater.from(context));
-        builder.setView(viewBinding.getRoot());
+        scrollableDialogBinding.content.addView(viewBinding.getRoot());
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, buildSpinnerEntries());
@@ -68,7 +71,11 @@ public class FeedRefreshIntervalDialog {
 
         viewBinding.radioGroup.setOnCheckedChangeListener((radioGroup, i) -> updateVisibility());
 
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        AlertDialog dialog = builder.show();
+
+        scrollableDialogBinding.positiveButton.setText(R.string.confirm_label);
+        scrollableDialogBinding.positiveButton.setOnClickListener(v -> {
+            dialog.dismiss();
             if (viewBinding.intervalRadioButton.isChecked()) {
                 UserPreferences.setUpdateInterval(INTERVAL_VALUES_HOURS[viewBinding.spinner.getSelectedItemPosition()]);
                 AutoUpdateManager.restartUpdateAlarm(context);
@@ -89,8 +96,8 @@ public class FeedRefreshIntervalDialog {
             }
         });
 
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.show();
+        scrollableDialogBinding.negativeButton.setText(R.string.cancel_label);
+        scrollableDialogBinding.negativeButton.setOnClickListener((v) -> dialog.dismiss());
     }
 
     private String[] buildSpinnerEntries() {

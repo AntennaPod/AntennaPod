@@ -4,13 +4,13 @@
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
-        <de.danoeh.antennapod.preferences.MaterialListPreference
-                android:entryValues="@array/theme_values"
-                android:entries="@array/theme_options"
-                android:title="@string/pref_set_theme_title"
-                android:key="prefTheme"
-                android:summary="@string/pref_set_theme_sum"
-                android:defaultValue="system"/>
+        <de.danoeh.antennapod.preferences.ThemePreference
+                android:key="prefTheme" />
+        <SwitchPreferenceCompat
+                android:title="@string/pref_black_theme_title"
+                android:key="prefThemeBlack"
+                android:summary="@string/pref_black_theme_message"
+                android:defaultValue="false" />
         <SwitchPreferenceCompat
                 android:title="@string/pref_tinted_theme_title"
                 android:key="prefTintedColors"

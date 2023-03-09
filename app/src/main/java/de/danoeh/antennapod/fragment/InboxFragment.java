@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.List;
 
@@ -38,6 +42,8 @@ public class InboxFragment extends EpisodesListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
         toolbar.inflateMenu(R.menu.inbox);
+        inflateSortMenu();
+
         toolbar.setTitle(R.string.inbox_label);
         prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         updateToolbar();
@@ -77,6 +83,13 @@ public class InboxFragment extends EpisodesListFragment {
                 showRemoveAllDialog();
             }
             return true;
+        } else {
+            SortOrder sortOrder = MenuItemToSortOrderConverter.convert(item);
+            if (sortOrder != null) {
+                UserPreferences.setInboxSortedOrder(sortOrder);
+                loadItems();
+                return true;
+            }
         }
         return false;
     }
@@ -84,13 +97,15 @@ public class InboxFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getNewItemsList(0, page * EPISODES_PER_PAGE);
+        return DBReader.getEpisodes(0, page * EPISODES_PER_PAGE,
+                new FeedItemFilter(FeedItemFilter.NEW),  UserPreferences.getInboxSortedOrder());
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getNewItemsList((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return DBReader.getEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE,
+                new FeedItemFilter(FeedItemFilter.NEW), UserPreferences.getInboxSortedOrder());
     }
 
     @Override
@@ -101,6 +116,20 @@ public class InboxFragment extends EpisodesListFragment {
     private void removeAllFromInbox() {
         DBWriter.removeAllNewFlags();
         ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_all_inbox_msg, Toast.LENGTH_SHORT);
+    }
+
+    private void inflateSortMenu() {
+        Menu menu = toolbar.getMenu();
+        MenuItem downloadsItem = menu.findItem(R.id.inbox_sort);
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.sort_menu, downloadsItem.getSubMenu());
+
+        // Remove the sorting options that are not needed in this fragment
+        toolbar.getMenu().findItem(R.id.sort_episode_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_feed_title).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_random).setVisible(false);
+        toolbar.getMenu().findItem(R.id.sort_smart_shuffle).setVisible(false);
+        toolbar.getMenu().findItem(R.id.keep_sorted).setVisible(false);
     }
 
     private void showRemoveAllDialog() {

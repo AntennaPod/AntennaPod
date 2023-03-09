@@ -28,7 +28,7 @@ import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -95,9 +96,12 @@ public class OpmlImportActivity extends AppCompatActivity {
                         continue;
                     }
                     OpmlElement element = readElements.get(checked.keyAt(i));
-                    Feed feed = new Feed(element.getXmlUrl(), null, element.getText());
-                    DownloadServiceInterface.get().download(this, false, DownloadRequestCreator.create(feed).build());
+                    Feed feed = new Feed(element.getXmlUrl(), null,
+                            element.getText() != null ? element.getText() : "Unknown podcast");
+                    feed.setItems(Collections.emptyList());
+                    DBTasks.updateFeed(this, feed, false);
                 }
+                DownloadServiceInterface.get().refreshAllFeeds(this, true);
             })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +113,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }, e -> {
+                                e.printStackTrace();
                                 viewBinding.progressBar.setVisibility(View.GONE);
                                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                             });
