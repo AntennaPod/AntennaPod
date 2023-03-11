@@ -1083,6 +1083,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }
+                notifyChildrenChanged(getString(R.string.queue_label));
             }
         }
 
@@ -1675,6 +1676,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (playable instanceof FeedMedia) {
             long itemId = ((FeedMedia) playable).getItem().getId();
             DBWriter.addQueueItem(this, false, true, itemId);
+            notifyChildrenChanged(getString(R.string.queue_label));
         }
     }
 
