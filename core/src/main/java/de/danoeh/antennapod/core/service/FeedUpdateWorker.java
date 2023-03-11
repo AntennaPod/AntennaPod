@@ -1,11 +1,18 @@
 package de.danoeh.antennapod.core.service;
 
+import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.work.ForegroundInfo;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import de.danoeh.antennapod.core.ClientConfigurator;
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.service.download.DefaultDownloaderFactory;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
@@ -15,6 +22,7 @@ import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -39,16 +47,11 @@ public class FeedUpdateWorker extends Worker {
         ClientConfigurator.initialize(getApplicationContext());
         newEpisodesNotification.loadCountersBeforeRefresh();
 
-        if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
-            refreshFeeds();
-            return Result.success();
-        } else {
+        if (!NetworkUtils.networkAvailable() || !NetworkUtils.isFeedRefreshAllowed()) {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
             return Result.retry();
         }
-    }
 
-    private void refreshFeeds() {
         List<Feed> toUpdate = DBReader.getFeedList();
         Iterator<Feed> itr = toUpdate.iterator();
         while (itr.hasNext()) {
@@ -57,11 +60,35 @@ public class FeedUpdateWorker extends Worker {
                 itr.remove();
             }
         }
+        refreshFeeds(toUpdate);
+        return Result.success();
+    }
 
-        for (Feed feed : toUpdate) {
+    @NonNull
+    private ForegroundInfo createForegroundInfo(List<Feed> toUpdate) {
+        Context context = getApplicationContext();
+        String contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
+                toUpdate.size(), toUpdate.size());
+        String bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+                .setContentTitle(context.getString(R.string.download_notification_title_feeds))
+                .setContentText(contentText)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
+                .setSmallIcon(R.drawable.ic_notification_sync)
+                .setOngoing(true)
+                .addAction(R.drawable.ic_cancel, context.getString(R.string.cancel_label),
+                        WorkManager.getInstance(context).createCancelPendingIntent(getId()))
+                .build();
+        return new ForegroundInfo(R.id.notification_updating_feeds, notification);
+    }
+
+    private void refreshFeeds(List<Feed> toUpdate) {
+        while (!toUpdate.isEmpty()) {
             if (isStopped()) {
                 return;
             }
+            setForegroundAsync(createForegroundInfo(toUpdate));
+            Feed feed = toUpdate.get(0);
             try {
                 if (feed.isLocalFeed()) {
                     LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
@@ -74,6 +101,7 @@ public class FeedUpdateWorker extends Worker {
                         DownloadError.ERROR_IO_ERROR, false, e.getMessage(), true);
                 DBWriter.addDownloadStatus(status);
             }
+            toUpdate.remove(0);
         }
     }
 
@@ -90,6 +118,9 @@ public class FeedUpdateWorker extends Worker {
         downloader.call();
 
         if (!downloader.getResult().isSuccessful()) {
+            if (downloader.getResult().isCancelled()) {
+                return;
+            }
             DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             DBWriter.addDownloadStatus(downloader.getResult());
             return;
