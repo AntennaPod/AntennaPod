@@ -48,6 +48,7 @@ import de.danoeh.antennapod.dialog.RenameItemDialog;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -241,8 +242,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed.getLink() != null);
 
-        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(), R.id.refresh_item,
-                DownloadService.isRunning && DownloadService.isDownloadingFile(feed.getDownload_url()));
         FeedMenuHandler.onPrepareOptionsMenu(viewBinding.toolbar.getMenu(), feed);
     }
 
@@ -384,7 +383,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void updateUi() {
         loadItems();
-        updateSyncProgressBarVisibility();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -404,12 +402,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private void updateSyncProgressBarVisibility() {
-        updateToolbar();
-        if (!DownloadService.isDownloadingFeeds()) {
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
+        nextPageLoader.setLoadingState(event.isFeedUpdateRunning);
+        if (!event.isFeedUpdateRunning) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
         }
-        nextPageLoader.setLoadingState(DownloadService.isDownloadingFeeds());
+        MenuItemUtils.updateRefreshMenuItem(viewBinding.toolbar.getMenu(),
+                R.id.refresh_item, event.isFeedUpdateRunning);
     }
 
     private void refreshHeaderView() {
@@ -534,14 +534,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                         adapter.setDummyViews(0);
                         adapter.updateItems(feed.getItems());
                         updateToolbar();
-                        updateSyncProgressBarVisibility();
                     }, error -> {
                         feed = null;
                         refreshHeaderView();
                         adapter.setDummyViews(0);
                         adapter.updateItems(Collections.emptyList());
                         updateToolbar();
-                        updateSyncProgressBarVisibility();
                         Log.e(TAG, Log.getStackTraceString(error));
                     });
     }

@@ -13,7 +13,7 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeAction;
 import de.danoeh.antennapod.fragment.swipeactions.SwipeActions;
@@ -31,7 +31,7 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            AutoUpdateManager.restartUpdateAlarm(context);
+            FeedUpdateManager.restartUpdateAlarm(context);
             CrashReportWriter.getFile().delete();
 
             upgrade(oldVersion, context);
