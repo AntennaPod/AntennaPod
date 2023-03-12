@@ -315,7 +315,8 @@ public class CompletedDownloadsFragment extends Fragment
         emptyView.hide();
         disposable = Observable.fromCallable(() -> {
             SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
-            List<FeedItem> downloadedItems = DBReader.getDownloadedItems(sortOrder);
+            List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder);
 
             List<Long> mediaIds = new ArrayList<>();
             if (runningDownloads == null) {

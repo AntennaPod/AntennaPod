@@ -235,7 +235,7 @@ public class PlaybackTest {
         openNavDrawer();
         onDrawerItem(withText(R.string.episodes_label)).perform(click());
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10,
+        final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
                 FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
         Matcher<View> allEpisodesMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
@@ -271,7 +271,7 @@ public class PlaybackTest {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         activityTestRule.launchActivity(new Intent());
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10,
+        final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
                 FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
 
         startLocalPlayback();
