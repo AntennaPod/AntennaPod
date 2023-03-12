@@ -25,6 +25,7 @@ public class FeedUpdateManager {
     public static final String WORK_TAG_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
     private static final String WORK_ID_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
     public static final String EXTRA_FEED_ID = "feed_id";
+    public static final String EXTRA_NEXT_PAGE = "next_page";
     private static final String TAG = "AutoUpdateManager";
 
     private FeedUpdateManager() {
@@ -49,26 +50,27 @@ public class FeedUpdateManager {
     }
 
     public static void runOnce(Context context) {
-        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
-                .setConstraints(getConstraints())
-                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
-                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                .addTag(WORK_ID_FEED_UPDATE)
-                .build();
-
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE,
-                ExistingWorkPolicy.REPLACE, workRequest);
+        runOnce(context, null, false);
     }
 
     public static void runOnce(Context context, Feed feed) {
-        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
+        runOnce(context, feed, false);
+    }
+
+    public static void runOnce(Context context, Feed feed, boolean nextPage) {
+        OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setConstraints(getConstraints())
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                .addTag(WORK_ID_FEED_UPDATE)
-                .setInputData(new Data.Builder().putLong(EXTRA_FEED_ID, feed.getId()).build())
-                .build();
-        WorkManager.getInstance(context).enqueue(workRequest);
+                .addTag(WORK_ID_FEED_UPDATE);
+        if (feed != null) {
+            Data.Builder builder = new Data.Builder();
+            builder.putLong(EXTRA_FEED_ID, feed.getId());
+            builder.putBoolean(EXTRA_NEXT_PAGE, nextPage);
+            workRequest.setInputData(builder.build());
+        }
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE,
+                ExistingWorkPolicy.REPLACE, workRequest.build());
     }
 
     public static void runOnceOrAsk(@NonNull Context context) {

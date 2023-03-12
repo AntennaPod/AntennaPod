@@ -122,8 +122,16 @@ public class FeedUpdateWorker extends Worker {
     }
 
     void refreshFeed(Feed feed, boolean force) throws Exception {
+        boolean nextPage = getInputData().getBoolean(FeedUpdateManager.EXTRA_NEXT_PAGE, false)
+                && feed.getNextPageLink() != null;
+        if (nextPage) {
+            feed.setPageNr(feed.getPageNr() + 1);
+        }
         DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
         builder.setForce(force || feed.hasLastUpdateFailed());
+        if (nextPage) {
+            builder.setSource(feed.getNextPageLink());
+        }
         DownloadRequest request = builder.build();
 
         Downloader downloader = new DefaultDownloaderFactory().create(request);

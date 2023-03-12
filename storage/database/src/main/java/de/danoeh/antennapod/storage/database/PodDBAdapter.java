@@ -734,6 +734,13 @@ public class PodDBAdapter {
         }
     }
 
+    public void resetPagedFeedPage(Feed feed) {
+        final String sql = "UPDATE " + TABLE_NAME_FEEDS
+                + " SET " + KEY_NEXT_PAGE_LINK + "=" + KEY_DOWNLOAD_URL
+                + " WHERE " + KEY_ID + "=" + feed.getId();
+        db.execSQL(sql);
+    }
+
     public void setFeedLastUpdateFailed(long feedId, boolean failed) {
         final String sql = "UPDATE " + TABLE_NAME_FEEDS
                 + " SET " + KEY_LAST_UPDATE_FAILED + "=" + (failed ? "1" : "0")

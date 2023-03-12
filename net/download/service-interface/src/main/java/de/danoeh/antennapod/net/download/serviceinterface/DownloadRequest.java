@@ -263,7 +263,7 @@ public class DownloadRequest implements Parcelable {
 
     public static class Builder {
         private final String destination;
-        private final String source;
+        private String source;
         private final String title;
         private String username;
         private String password;
@@ -294,6 +294,10 @@ public class DownloadRequest implements Parcelable {
         public Builder withInitiatedByUser(boolean initiatedByUser) {
             this.initiatedByUser = initiatedByUser;
             return this;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
         }
 
         public void setForce(boolean force) {

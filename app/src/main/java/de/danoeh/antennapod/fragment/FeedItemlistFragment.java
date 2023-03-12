@@ -37,6 +37,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.databinding.MultiSelectSpeedDialBinding;
@@ -164,7 +165,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         nextPageLoader = new MoreContentListFooterUtil(viewBinding.moreContent.moreContentListFooter);
         nextPageLoader.setClickListener(() -> {
             if (feed != null) {
-                DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                FeedUpdateManager.runOnce(getContext(), feed, true);
             }
         });
         viewBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

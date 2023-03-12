@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -20,8 +19,6 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.model.EpisodeAction;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursorMapper;
@@ -96,36 +93,8 @@ public final class DBTasks {
         }
     }
 
-    /**
-     * Queues the next page of this Feed for download. The given Feed has to be a paged
-     * Feed (isPaged()=true) and must contain a nextPageLink.
-     *
-     * @param context      Used for requesting the download.
-     * @param feed         The feed whose next page should be loaded.
-     * @param loadAllPages True if any subsequent pages should also be loaded, false otherwise.
-     */
-    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) {
-        if (feed.isPaged() && feed.getNextPageLink() != null) {
-            int pageNr = feed.getPageNr() + 1;
-            Feed nextFeed = new Feed(feed.getNextPageLink(), null, feed.getTitle() + "(" + pageNr + ")");
-            nextFeed.setPageNr(pageNr);
-            nextFeed.setPaged(true);
-            nextFeed.setId(feed.getId());
-
-            DownloadRequest.Builder builder = DownloadRequestCreator.create(nextFeed);
-            builder.loadAllPages(loadAllPages);
-            DownloadServiceInterface.get().download(context, false, builder.build());
-        } else {
-            Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
-        }
-    }
-
     public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser) {
         forceRefreshFeed(context, feed, false, initiatedByUser);
-    }
-
-    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
-        forceRefreshFeed(context, feed, true, true);
     }
 
     private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
