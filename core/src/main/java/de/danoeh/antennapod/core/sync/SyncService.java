@@ -21,9 +21,9 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -193,9 +193,13 @@ public class SyncService extends Worker {
     private void waitForDownloadServiceCompleted() {
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_wait_for_downloads));
         try {
-            while (DownloadService.isRunning) {
+            while (true) {
                 //noinspection BusyWait
                 Thread.sleep(1000);
+                FeedUpdateRunningEvent event = EventBus.getDefault().getStickyEvent(FeedUpdateRunningEvent.class);
+                if (event == null || !event.isFeedUpdateRunning) {
+                    return;
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
