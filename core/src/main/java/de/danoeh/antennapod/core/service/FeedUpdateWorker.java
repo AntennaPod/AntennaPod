@@ -28,6 +28,7 @@ import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class FeedUpdateWorker extends Worker {
                 itr.remove();
             }
         }
+        Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
         refreshFeeds(toUpdate);
         return Result.success();
     }
