@@ -16,7 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -270,8 +270,7 @@ public class FeedSettingsFragment extends Fragment {
                             } catch (InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
                             }
-
-                            DBTasks.forceRefreshFeed(requireContext(), feed, true);
+                            FeedUpdateManager.runOnce(getContext(), feed);
                         }, "RefreshAfterCredentialChange").start();
                     }
                 }.show();
