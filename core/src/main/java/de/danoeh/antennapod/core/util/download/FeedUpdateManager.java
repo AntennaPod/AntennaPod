@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
@@ -15,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.FeedUpdateWorker;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class FeedUpdateManager {
     public static final String WORK_TAG_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
     private static final String WORK_ID_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
+    public static final String EXTRA_FEED_ID = "feed_id";
     private static final String TAG = "AutoUpdateManager";
 
     private FeedUpdateManager() {
@@ -46,8 +49,6 @@ public class FeedUpdateManager {
     }
 
     public static void runOnce(Context context) {
-        Log.d(TAG, "Run auto update once, as soon as OS allows.");
-
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setConstraints(getConstraints())
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
@@ -57,7 +58,17 @@ public class FeedUpdateManager {
 
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE,
                 ExistingWorkPolicy.REPLACE, workRequest);
+    }
 
+    public static void runOnce(Context context, Feed feed) {
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
+                .setConstraints(getConstraints())
+                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .addTag(WORK_ID_FEED_UPDATE)
+                .setInputData(new Data.Builder().putLong(EXTRA_FEED_ID, feed.getId()).build())
+                .build();
+        WorkManager.getInstance(context).enqueue(workRequest);
     }
 
     public static void runOnceOrAsk(@NonNull Context context) {

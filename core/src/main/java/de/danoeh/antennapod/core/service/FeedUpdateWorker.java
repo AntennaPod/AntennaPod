@@ -22,12 +22,14 @@ import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -53,16 +55,28 @@ public class FeedUpdateWorker extends Worker {
             return Result.retry();
         }
 
-        List<Feed> toUpdate = DBReader.getFeedList();
-        Iterator<Feed> itr = toUpdate.iterator();
-        while (itr.hasNext()) {
-            Feed feed = itr.next();
-            if (!feed.getPreferences().getKeepUpdated()) {
-                itr.remove();
+        List<Feed> toUpdate;
+        long feedId = getInputData().getLong(FeedUpdateManager.EXTRA_FEED_ID, -1);
+        if (feedId == -1) { // Update all
+            toUpdate = DBReader.getFeedList();
+            Iterator<Feed> itr = toUpdate.iterator();
+            while (itr.hasNext()) {
+                Feed feed = itr.next();
+                if (!feed.getPreferences().getKeepUpdated()) {
+                    itr.remove();
+                }
             }
+            Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
+            refreshFeeds(toUpdate, false);
+        } else {
+            toUpdate = new ArrayList<>();
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed == null) {
+                return Result.success();
+            }
+            toUpdate.add(feed);
+            refreshFeeds(toUpdate, true);
         }
-        Collections.shuffle(toUpdate); // If the worker gets cancelled early, every feed has a chance to be updated
-        refreshFeeds(toUpdate);
         return Result.success();
     }
 
@@ -84,7 +98,7 @@ public class FeedUpdateWorker extends Worker {
         return new ForegroundInfo(R.id.notification_updating_feeds, notification);
     }
 
-    private void refreshFeeds(List<Feed> toUpdate) {
+    private void refreshFeeds(List<Feed> toUpdate, boolean force) {
         while (!toUpdate.isEmpty()) {
             if (isStopped()) {
                 return;
@@ -95,7 +109,7 @@ public class FeedUpdateWorker extends Worker {
                 if (feed.isLocalFeed()) {
                     LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
                 } else {
-                    refreshFeed(feed);
+                    refreshFeed(feed, force);
                 }
             } catch (Exception e) {
                 DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
@@ -107,9 +121,9 @@ public class FeedUpdateWorker extends Worker {
         }
     }
 
-    void refreshFeed(Feed feed) throws Exception {
+    void refreshFeed(Feed feed, boolean force) throws Exception {
         DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-        builder.setForce(feed.hasLastUpdateFailed());
+        builder.setForce(force || feed.hasLastUpdateFailed());
         DownloadRequest request = builder.build();
 
         Downloader downloader = new DefaultDownloaderFactory().create(request);
@@ -145,10 +159,7 @@ public class FeedUpdateWorker extends Worker {
         if (log.size() > 0 && !log.get(0).isSuccessful()) {
             DBWriter.addDownloadStatus(feedSyncTask.getDownloadStatus());
         }
-        if (!request.isInitiatedByUser()) {
-            // Was stored in the database before and not initiated manually
-            newEpisodesNotification.showIfNeeded(getApplicationContext(), feedSyncTask.getSavedFeed());
-        }
+        newEpisodesNotification.showIfNeeded(getApplicationContext(), feedSyncTask.getSavedFeed());
         if (downloader.permanentRedirectUrl != null) {
             DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
         } else if (feedSyncTask.getRedirectUrl() != null) {

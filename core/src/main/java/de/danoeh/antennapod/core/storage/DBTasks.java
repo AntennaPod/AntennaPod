@@ -10,6 +10,7 @@ import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.sync.queue.SynchronizationQueueSink;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -44,9 +45,6 @@ import java.util.concurrent.FutureTask;
  */
 public final class DBTasks {
     private static final String TAG = "DBTasks";
-
-    private static final String PREF_NAME = "dbtasks";
-    private static final String PREF_LAST_REFRESH = "last_refresh";
 
     /**
      * Executor service used by the autodownloadUndownloadedEpisodes method.
@@ -131,11 +129,7 @@ public final class DBTasks {
     }
 
     private static void forceRefreshFeed(Context context, Feed feed, boolean loadAllPages, boolean initiatedByUser) {
-        DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-        builder.withInitiatedByUser(initiatedByUser);
-        builder.setForce(true);
-        builder.loadAllPages(loadAllPages);
-        DownloadServiceInterface.get().download(context, false, builder.build());
+        FeedUpdateManager.runOnce(context, feed);
     }
 
     /**
