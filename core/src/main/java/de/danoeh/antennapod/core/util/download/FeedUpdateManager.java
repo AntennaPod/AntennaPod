@@ -45,13 +45,6 @@ public class FeedUpdateManager {
         }
     }
 
-    /**
-     * Run auto feed refresh once in background, as soon as what OS scheduling allows.
-     *
-     * Callers from UI should use {@link #runOnceOrAsk(Context)}, as it will guarantee
-     * the refresh be run immediately.
-     * @param context Context
-     */
     public static void runOnce(Context context) {
         Log.d(TAG, "Run auto update once, as soon as OS allows.");
 
