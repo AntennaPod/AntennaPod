@@ -138,6 +138,9 @@ public class PreferenceUpgrader {
                         .apply();
             }
             UserPreferences.setAllowMobileSync(true);
+            if (prefs.getString(UserPreferences.PREF_UPDATE_INTERVAL, ":").contains(":")) { // Unset or "time of day"
+                prefs.edit().putString(UserPreferences.PREF_UPDATE_INTERVAL, "12").apply();
+            }
         }
     }
 }

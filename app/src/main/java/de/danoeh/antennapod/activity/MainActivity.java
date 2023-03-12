@@ -255,8 +255,6 @@ public class MainActivity extends CastEnabledActivity {
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            // for backward compatibility, we only change defaults for fresh installs
-            UserPreferences.setUpdateInterval(12);
             FeedUpdateManager.restartUpdateAlarm(this);
 
             SharedPreferences.Editor edit = prefs.edit();

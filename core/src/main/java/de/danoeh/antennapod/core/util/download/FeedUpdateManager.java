@@ -35,9 +35,9 @@ public class FeedUpdateManager {
     public static void restartUpdateAlarm(Context context) {
         if (UserPreferences.isAutoUpdateDisabled()) {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
-        } else if (UserPreferences.isAutoUpdateTimeOfDay()) {
+        } else {
             PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
-                    FeedUpdateWorker.class, UserPreferences.getUpdateInterval(), TimeUnit.MILLISECONDS)
+                    FeedUpdateWorker.class, UserPreferences.getUpdateInterval(), TimeUnit.HOURS)
                     .setConstraints(getConstraints())
                     .build();
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(

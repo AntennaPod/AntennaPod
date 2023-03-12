@@ -25,6 +25,28 @@
         <item>heavy</item>
     </string-array>
 
+    <string-array name="feed_refresh_interval_entries">
+        <item>@string/feed_refresh_never</item>
+        <item>@string/feed_every_hour</item>
+        <item>@string/feed_every_2_hours</item>
+        <item>@string/feed_every_4_hours</item>
+        <item>@string/feed_every_8_hours</item>
+        <item>@string/feed_every_12_hours</item>
+        <item>@string/feed_every_24_hours</item>
+        <item>@string/feed_every_72_hours</item>
+    </string-array>
+
+    <string-array name="feed_refresh_interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+        <item>24</item>
+        <item>72</item>
+    </string-array>
+
     <string-array name="globalNewEpisodesActionItems">
         <item>@string/feed_new_episodes_action_add_to_inbox</item>
         <item>@string/feed_new_episodes_action_nothing</item>
