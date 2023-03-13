@@ -163,13 +163,20 @@ public class MainActivity extends CastEnabledActivity {
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
                 .observe(this, workInfos -> {
                     boolean isRefreshingFeeds = false;
+                    boolean hasOneQueued = false;
                     for (WorkInfo workInfo : workInfos) {
                         if (workInfo.getState() == WorkInfo.State.RUNNING) {
                             isRefreshingFeeds = true;
-                            break;
+                            hasOneQueued = true;
+                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED) {
+                            isRefreshingFeeds = true;
+                            hasOneQueued = true;
                         }
                     }
                     EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(isRefreshingFeeds));
+                    if (UserPreferences.getUpdateInterval() != 0 && !hasOneQueued) {
+                        FeedUpdateManager.restartUpdateAlarm(this);
+                    }
                 });
     }
 
