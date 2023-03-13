@@ -59,11 +59,14 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) != ConnectionResult.SUCCESS) {
             return null;
         }
-        if (CastContext.getSharedInstance(context).getCastState() == CastState.CONNECTED) {
-            return new CastPsmp(context, callback);
-        } else {
-            return null;
+        try {
+            if (CastContext.getSharedInstance(context).getCastState() == CastState.CONNECTED) {
+                return new CastPsmp(context, callback);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public CastPsmp(@NonNull Context context, @NonNull PSMPCallback callback) {
