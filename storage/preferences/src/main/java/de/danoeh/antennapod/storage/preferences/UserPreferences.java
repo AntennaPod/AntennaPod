@@ -6,14 +6,17 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
-
+import de.danoeh.antennapod.model.download.ProxyConfig;
+import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.model.playback.MediaType;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -28,13 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.model.feed.FeedCounter;
-import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
-import de.danoeh.antennapod.model.download.ProxyConfig;
-import de.danoeh.antennapod.model.feed.SortOrder;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -463,34 +459,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, true);
     }
 
-
-    /*
-     * Returns update interval in milliseconds; value 0 means that auto update is disabled
-     * or feeds are updated at a certain time of day
-     */
     public static long getUpdateInterval() {
-        String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
-        if(!updateInterval.contains(":")) {
-            return readUpdateInterval(updateInterval);
-        } else {
-            return 0;
-        }
-    }
-
-    public static int[] getUpdateTimeOfDay() {
-        String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
-        if(datetime.length() >= 3 && datetime.contains(":")) {
-            String[] parts = datetime.split(":");
-            int hourOfDay = Integer.parseInt(parts[0]);
-            int minute = Integer.parseInt(parts[1]);
-            return new int[] { hourOfDay, minute };
-        } else {
-            return new int[0];
-        }
+        return Integer.parseInt(prefs.getString(PREF_UPDATE_INTERVAL, "12"));
     }
 
     public static boolean isAutoUpdateDisabled() {
-        return prefs.getString(PREF_UPDATE_INTERVAL, "").equals("0");
+        return getUpdateInterval() == 0;
     }
 
     private static boolean isAllowMobileFor(String type) {
@@ -696,24 +670,6 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setUpdateInterval(long hours) {
-        prefs.edit()
-             .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
-             .apply();
-    }
-
-    public static void setUpdateTimeOfDay(int hourOfDay, int minute) {
-        prefs.edit()
-             .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
-             .apply();
-    }
-
-    public static void disableAutoUpdate() {
-        prefs.edit()
-                .putString(PREF_UPDATE_INTERVAL, "0")
-                .apply();
-    }
-
     public static boolean gpodnetNotificationsEnabled() {
         if (Build.VERSION.SDK_INT >= 26) {
             return true; // System handles notification preferences
@@ -752,11 +708,6 @@ public class UserPreferences {
         prefs.edit()
              .putBoolean(PREF_QUEUE_LOCKED, locked)
              .apply();
-    }
-
-    private static long readUpdateInterval(String valueFromPrefs) {
-        int hours = Integer.parseInt(valueFromPrefs);
-        return TimeUnit.HOURS.toMillis(hours);
     }
 
     private static List<Float> readPlaybackSpeedArray(String valueFromPrefs) {
@@ -849,15 +800,6 @@ public class UserPreferences {
             }
             Log.d(TAG, ".nomedia file created");
         }
-    }
-
-    /**
-     *
-     * @return true if auto update is set to a specific time
-     *         false if auto update is set to interval
-     */
-    public static boolean isAutoUpdateTimeOfDay() {
-        return getUpdateTimeOfDay().length == 2;
     }
 
     public static String getDefaultPage() {

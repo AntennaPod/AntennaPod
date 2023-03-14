@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
-import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
@@ -25,9 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -46,7 +43,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
@@ -224,30 +220,6 @@ public class PreferencesTest {
         clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
-    }
-
-    @Test
-    public void testDisableUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withText(R.string.feed_refresh_never)).perform(click());
-        onView(withId(R.id.disableRadioButton)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == 0);
-    }
-
-    @Test
-    public void testSetUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withId(R.id.intervalRadioButton)).perform(click());
-        onView(withId(R.id.spinner)).perform(click());
-        int position = 1; // an arbitrary position
-        onData(anything()).inRoot(RootMatchers.isPlatformPopup()).atPosition(position).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == TimeUnit.HOURS.toMillis(2));
     }
 
     @Test

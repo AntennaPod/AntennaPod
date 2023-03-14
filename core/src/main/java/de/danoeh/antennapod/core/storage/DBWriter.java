@@ -665,6 +665,15 @@ public class DBWriter {
         adapter.close();
     }
 
+    public static Future<?> resetPagedFeedPage(Feed feed) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.resetPagedFeedPage(feed);
+            adapter.close();
+        });
+    }
+
     /*
      * Sets the 'read'-attribute of all specified FeedItems
      *
@@ -697,7 +706,6 @@ public class DBWriter {
             }
         });
     }
-
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.

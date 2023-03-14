@@ -412,15 +412,15 @@
     <string name="network_pref">Network</string>
     <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
     <string name="feed_refresh_title">Refresh podcasts</string>
-    <string name="feed_refresh_sum">Specify an interval or a specific time to look for new episodes automatically</string>
-    <string name="feed_refresh_interval">Interval</string>
-    <string name="feed_refresh_time">Time</string>
+    <string name="feed_refresh_sum">Specify an interval at which AntennaPod looks for new episodes automatically</string>
     <string name="feed_refresh_never">Never</string>
-    <string name="feed_refresh_interval_at">at %1$s</string>
-    <plurals name="feed_refresh_every_x_hours">
-        <item quantity="one">Every hour</item>
-        <item quantity="other">Every %d hours</item>
-    </plurals>
+    <string name="feed_every_hour">Every hour</string>
+    <string name="feed_every_2_hours">Every 2 hours</string>
+    <string name="feed_every_4_hours">Every 4 hours</string>
+    <string name="feed_every_8_hours">Every 8 hours</string>
+    <string name="feed_every_12_hours">Every 12 hours</string>
+    <string name="feed_every_24_hours">Every day</string>
+    <string name="feed_every_72_hours">Every 3 days</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
@@ -499,7 +499,6 @@
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_no_browser_found">No web browser found.</string>

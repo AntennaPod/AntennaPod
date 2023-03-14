@@ -30,11 +30,11 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -123,7 +123,7 @@ public abstract class EpisodesListFragment extends Fragment
         }
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
@@ -184,7 +184,7 @@ public abstract class EpisodesListFragment extends Fragment
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -455,9 +455,12 @@ public abstract class EpisodesListFragment extends Fragment
     protected abstract String getPrefName();
 
     protected void updateToolbar() {
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
         if (toolbar.getMenu().findItem(R.id.refresh_item) != null) {
-            MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
-                    DownloadService.isRunning && DownloadService.isDownloadingFeeds());
+            MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
         }
     }
 
