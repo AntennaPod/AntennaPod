@@ -31,7 +31,7 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            FeedUpdateManager.restartUpdateAlarm(context);
+            FeedUpdateManager.restartUpdateAlarm(context, true);
             CrashReportWriter.getFile().delete();
 
             upgrade(oldVersion, context);

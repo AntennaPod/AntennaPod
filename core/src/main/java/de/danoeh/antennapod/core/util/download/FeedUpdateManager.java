@@ -37,7 +37,7 @@ public class FeedUpdateManager {
      * Start / restart periodic auto feed refresh
      * @param context Context
      */
-    public static void restartUpdateAlarm(Context context) {
+    public static void restartUpdateAlarm(Context context, boolean replace) {
         if (UserPreferences.isAutoUpdateDisabled()) {
             WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
         } else {
@@ -45,8 +45,8 @@ public class FeedUpdateManager {
                     FeedUpdateWorker.class, UserPreferences.getUpdateInterval(), TimeUnit.HOURS)
                     .setConstraints(getConstraints())
                     .build();
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                    WORK_ID_FEED_UPDATE, ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(WORK_ID_FEED_UPDATE,
+                    replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
         }
     }
 

@@ -70,7 +70,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (UserPreferences.PREF_UPDATE_INTERVAL.equals(key)) {
-            FeedUpdateManager.restartUpdateAlarm(getContext());
+            FeedUpdateManager.restartUpdateAlarm(getContext(), true);
         }
     }
 }

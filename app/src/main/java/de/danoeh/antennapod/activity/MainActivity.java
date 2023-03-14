@@ -159,24 +159,19 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
 
+        FeedUpdateManager.restartUpdateAlarm(this, false);
         WorkManager.getInstance(this)
                 .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
                 .observe(this, workInfos -> {
                     boolean isRefreshingFeeds = false;
-                    boolean hasOneQueued = false;
                     for (WorkInfo workInfo : workInfos) {
                         if (workInfo.getState() == WorkInfo.State.RUNNING) {
                             isRefreshingFeeds = true;
-                            hasOneQueued = true;
                         } else if (workInfo.getState() == WorkInfo.State.ENQUEUED) {
                             isRefreshingFeeds = true;
-                            hasOneQueued = true;
                         }
                     }
                     EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(isRefreshingFeeds));
-                    if (UserPreferences.getUpdateInterval() != 0 && !hasOneQueued) {
-                        FeedUpdateManager.restartUpdateAlarm(this);
-                    }
                 });
     }
 
@@ -262,7 +257,7 @@ public class MainActivity extends CastEnabledActivity {
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            FeedUpdateManager.restartUpdateAlarm(this);
+            FeedUpdateManager.restartUpdateAlarm(this, true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
