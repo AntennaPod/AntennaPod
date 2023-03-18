@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,11 @@ public class SleepTimerPreferences {
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
+    private static final String PREF_AUTO_ENABLE_TIME_BASED = "AutoEnableTimeBased";
+    private static final String PREF_AUTO_ENABLE_TIME_BASED_FROM_MIN = "AutoEnableTimeBasedFromMin";
+    private static final String PREF_AUTO_ENABLE_TIME_BASED_FROM_HOUR = "AutoEnableTimeBasedFromHour";
+    private static final String PREF_AUTO_ENABLE_TIME_BASED_TO_MIN = "AutoEnableTimeBasedToMin";
+    private static final String PREF_AUTO_ENABLE_TIME_BASED_TO_HOUR = "AutoEnableTimeBasedToHour";
 
     private static final String DEFAULT_VALUE = "15";
 
@@ -69,4 +75,33 @@ public class SleepTimerPreferences {
         return prefs.getBoolean(PREF_AUTO_ENABLE, false);
     }
 
+    public static void setAutoEnableTimeBased(boolean autoEnableTimeBased) {
+        prefs.edit().putBoolean(PREF_AUTO_ENABLE_TIME_BASED, autoEnableTimeBased).apply();
+    }
+
+    public static boolean autoEnableTimeBased() {
+        return prefs.getBoolean(PREF_AUTO_ENABLE_TIME_BASED, false);
+    }
+
+    public static void setAutoEnableTimeFrom(int hourOfDay, int minute) {
+        prefs.edit().putInt(PREF_AUTO_ENABLE_TIME_BASED_FROM_MIN, minute).apply();
+        prefs.edit().putInt(PREF_AUTO_ENABLE_TIME_BASED_FROM_HOUR, hourOfDay).apply();
+    }
+
+    public static Pair<Integer, Integer> autoEnableTimeFrom() {
+        Integer minute = prefs.getInt(PREF_AUTO_ENABLE_TIME_BASED_FROM_MIN, 0);
+        Integer hourOfDay = prefs.getInt(PREF_AUTO_ENABLE_TIME_BASED_FROM_HOUR, 0);
+        return new Pair<>(hourOfDay, minute);
+    }
+
+    public static void setAutoEnableTimeTo(int hourOfDay, int minute) {
+        prefs.edit().putInt(PREF_AUTO_ENABLE_TIME_BASED_TO_MIN, minute).apply();
+        prefs.edit().putInt(PREF_AUTO_ENABLE_TIME_BASED_TO_HOUR, hourOfDay).apply();
+    }
+
+    public static Pair<Integer, Integer> autoEnableTimeTo() {
+        Integer minute = prefs.getInt(PREF_AUTO_ENABLE_TIME_BASED_TO_MIN, 0);
+        Integer hourOfDay = prefs.getInt(PREF_AUTO_ENABLE_TIME_BASED_TO_HOUR, 0);
+        return new Pair<>(hourOfDay, minute);
+    }
 }

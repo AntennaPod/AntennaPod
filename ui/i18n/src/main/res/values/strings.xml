@@ -612,6 +612,7 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="auto_enable_label">Auto-enable</string>
+    <string name="auto_enable_time_label">... but only between these times</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->

@@ -2,8 +2,10 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
@@ -99,13 +102,15 @@ public class SleepTimerDialog extends DialogFragment {
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
-        CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
-        CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
-        CheckBox chAutoEnable = content.findViewById(R.id.chAutoEnable);
+        final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
+        final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
+        final CheckBox chAutoEnable = content.findViewById(R.id.chAutoEnable);
+        final CheckBox chAutoEnableTimeBased = content.findViewById(R.id.chAutoEnableTimeBased);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
+        chAutoEnableTimeBased.setChecked(SleepTimerPreferences.autoEnableTimeBased());
 
         cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
@@ -113,6 +118,44 @@ public class SleepTimerDialog extends DialogFragment {
                 -> SleepTimerPreferences.setVibrate(isChecked));
         chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
                 -> SleepTimerPreferences.setAutoEnable(isChecked));
+        chAutoEnableTimeBased.setOnCheckedChangeListener((compoundButton, isChecked)
+                -> SleepTimerPreferences.setAutoEnableTimeBased(isChecked));
+
+        Button autoEnableTimeFrom = content.findViewById(R.id.autoEnableTimeFrom);
+        autoEnableTimeFrom.setOnClickListener(v -> {
+            Pair<Integer, Integer> currentSetting = SleepTimerPreferences.autoEnableTimeFrom();
+            new TimePickerDialog(
+                    requireContext(),
+                    (view, hourOfDay, minute) -> {
+                        SleepTimerPreferences.setAutoEnableTimeFrom(hourOfDay, minute);
+                        autoEnableTimeFrom.setText(hourOfDay + ":" + minute);
+                    },
+                    currentSetting.first,
+                    currentSetting.second,
+                    true
+            ).show();
+        });
+
+        Pair<Integer, Integer> fromTime = SleepTimerPreferences.autoEnableTimeFrom();
+        autoEnableTimeFrom.setText(fromTime.first + ":" + fromTime.second);
+
+        Button autoEnableTimeTo = content.findViewById(R.id.autoEnableTimeTo);
+        autoEnableTimeTo.setOnClickListener(v -> {
+            Pair<Integer, Integer> currentSetting = SleepTimerPreferences.autoEnableTimeTo();
+            new TimePickerDialog(
+                    requireContext(),
+                    (view, hourOfDay, minute) -> {
+                        SleepTimerPreferences.setAutoEnableTimeTo(hourOfDay, minute);
+                        autoEnableTimeTo.setText(hourOfDay + ":" + minute);
+                    },
+                    currentSetting.first,
+                    currentSetting.second,
+                    true
+            ).show();
+        });
+
+        Pair<Integer, Integer> toTime = SleepTimerPreferences.autoEnableTimeTo();
+        autoEnableTimeTo.setText(toTime.first + ":" + toTime.second);
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
         disableButton.setOnClickListener(v -> {

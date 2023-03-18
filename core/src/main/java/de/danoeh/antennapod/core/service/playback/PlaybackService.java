@@ -62,9 +62,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -799,8 +805,27 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.validStartCommandWasReceived();
                     stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                     // set sleep timer if auto-enabled
+                    boolean autoEnableByTime = true;
+                    if (SleepTimerPreferences.autoEnableTimeBased()) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        try {
+                            Calendar now = new GregorianCalendar();
+                            now.setTimeInMillis(System.currentTimeMillis());
+
+                            Date timeNow = sdf.parse(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));
+                            Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
+                            Date from = sdf.parse(fromSetting.first + ":" + fromSetting.second);
+                            Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
+                            Date to = sdf.parse(toSetting.first + ":" + toSetting.second);
+
+                            autoEnableByTime = timeNow.after(from) && timeNow.before(to);
+                        } catch (ParseException | NullPointerException e) {
+                            Log.d(TAG, "Error parsing dates", e);
+                        }
+                    }
+
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
-                            && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                            && SleepTimerPreferences.autoEnable() && autoEnableByTime && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 PlaybackService.this::disableSleepTimer));
