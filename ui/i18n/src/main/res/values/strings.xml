@@ -810,8 +810,6 @@
     <string name="subscription_num_columns">Number of columns</string>
 
     <!-- Notification channels -->
-    <string name="notification_group_errors">Errors</string>
-    <string name="notification_group_news">News</string>
     <string name="notification_channel_user_action">Action required</string>
     <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
     <string name="notification_channel_downloading">Downloading</string>
