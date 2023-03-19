@@ -55,7 +55,6 @@ public class UserPreferences {
     public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
-    public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_DEFAULT_PAGE = "prefDefaultPage";
@@ -289,15 +288,6 @@ public class UserPreferences {
      */
     public static boolean isPersistNotify() {
         return prefs.getBoolean(PREF_PERSISTENT_NOTIFICATION, true);
-    }
-
-    /**
-     * Returns true if the lockscreen background should be set to the current episode's image
-     *
-     * @return {@code true} if the lockscreen background should be set, {@code false}  otherwise
-     */
-    public static boolean setLockscreenBackground() {
-        return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, true);
     }
 
     /**

@@ -13,7 +13,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -43,7 +42,6 @@ import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
-import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.core.service.QuickSettingsTileService;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
@@ -221,9 +219,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(prefListener);
-
         recreateMediaSessionIfNeeded();
         castStateListener = new CastStateListener(this) {
             @Override
@@ -302,7 +297,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         castStateListener.destroy();
 
         cancelPositionObserver();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener);
         if (mediaSession != null) {
             mediaSession.release();
             mediaSession = null;
@@ -1244,11 +1238,25 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
         builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
 
-        if (UserPreferences.setLockscreenBackground() && notificationBuilder.isIconCached()) {
+
+        if (notificationBuilder.isIconCached()) {
             builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, notificationBuilder.getCachedIcon());
-        } else if (isCasting && !TextUtils.isEmpty(p.getImageLocation())) {
-            // In the absence of metadata art, the controller dialog takes care of creating it.
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, p.getImageLocation());
+        } else {
+            String iconUri = p.getImageLocation();
+            if (p instanceof FeedMedia) { // Don't use embedded cover etc, which Android can't load
+                FeedMedia m = (FeedMedia) p;
+                if (m.getItem() != null) {
+                    FeedItem item = m.getItem();
+                    if (item.getImageUrl() != null) {
+                        iconUri = item.getImageUrl();
+                    } else if (item.getFeed() != null) {
+                        iconUri = item.getFeed().getImageUrl();
+                    }
+                }
+            }
+            if (!TextUtils.isEmpty(iconUri)) {
+                builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, iconUri);
+            }
         }
 
         if (stateManager.hasReceivedValidStartCommand()) {
@@ -1820,11 +1828,4 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
     };
-
-    private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
-            (sharedPreferences, key) -> {
-                if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
-                    updateNotificationAndMediaSession(getPlayable());
-                }
-            };
 }
