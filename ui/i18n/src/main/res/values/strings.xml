@@ -22,7 +22,7 @@
     <string name="subscriptions_list_label">Subscriptions List</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback History</string>
-    <string name="episode_cache_full_title">Episode cache full</string>
+    <string name="episode_cache_full_title">Episode Cache Full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
@@ -52,11 +52,11 @@
     <string name="statistics_counting_total">Played in total</string>
 
     <!-- Home fragment -->
-    <string name="home_surprise_title">Get surprised</string>
-    <string name="home_classics_title">Check your classics</string>
-    <string name="home_continue_title">Continue listening</string>
-    <string name="home_new_title">See what\'s new</string>
-    <string name="home_downloads_title">Manage downloads</string>
+    <string name="home_surprise_title">Get Surprised</string>
+    <string name="home_classics_title">Check Your Classics</string>
+    <string name="home_continue_title">Continue Listening</string>
+    <string name="home_new_title">See What\'s New</string>
+    <string name="home_downloads_title">Manage Downloads</string>
     <string name="home_welcome_title">Welcome to AntennaPod!</string>
     <string name="home_welcome_text">You are not subscribed to any podcasts yet. Open the side menu to add a podcast.</string>
     <string name="configure_home">Configure Home Screen</string>
@@ -80,7 +80,7 @@
 
     <!-- Bug report activity -->
     <string name="log_file_share_exception">No compatible apps found</string>
-    <string name="export_logs_menu_title">Export detailed logs</string>
+    <string name="export_logs_menu_title">Export Detailed Logs</string>
     <string name="confirm_export_log_dialog_message">Detailed logs may contain sensitive information, such as your subscriptions list</string>
 
     <!-- Webview actions -->
@@ -276,8 +276,8 @@
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device (like a VPN or ad blocker).</string>
     <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device (like a VPN or an ad blocker) blocked the download, or that something is wrong with the server certificates.</string>
-    <string name="download_report_title">Downloads completed with error(s)</string>
-    <string name="auto_download_report_title">Auto-downloads completed</string>
+    <string name="download_report_title">Downloads Completed with Error(s)</string>
+    <string name="auto_download_report_title">Auto-Downloads Completed</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request Error</string>
     <string name="download_error_db_access">Database Access Error</string>
@@ -286,20 +286,20 @@
         <item quantity="other">%d downloads left</item>
     </plurals>
     <string name="completing">Completing…</string>
-    <string name="download_notification_title">Downloading podcast data</string>
-    <string name="download_notification_title_feeds">Refreshing podcasts</string>
-    <string name="download_notification_title_episodes">Downloading episodes</string>
+    <string name="download_notification_title">Downloading Podcast Data</string>
+    <string name="download_notification_title_feeds">Refreshing Podcasts</string>
+    <string name="download_notification_title_episodes">Downloading Episodes</string>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
     <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
     <string name="no_feed_url_podcast_found_by_search">The suggested podcast did not have an RSS link, AntennaPod found a podcast that could match</string>
-    <string name="authentication_notification_title">Authentication required</string>
+    <string name="authentication_notification_title">Authentication Required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
     <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
-    <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
+    <string name="confirm_mobile_streaming_notification_title">Confirm Mobile Streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
     <string name="confirm_mobile_streaming_button_always">Always</string>
     <string name="confirm_mobile_streaming_button_once">Once</string>
@@ -407,7 +407,7 @@
     <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
     <string name="network_pref">Network</string>
     <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
-    <string name="feed_refresh_title">Refresh podcasts</string>
+    <string name="feed_refresh_title">Refresh Podcasts</string>
     <string name="feed_refresh_sum">Specify an interval or a specific time to look for new episodes automatically</string>
     <string name="feed_refresh_interval">Interval</string>
     <string name="feed_refresh_time">Time</string>
@@ -418,7 +418,7 @@
         <item quantity="other">Every %d hours</item>
     </plurals>
     <string name="pref_followQueue_title">Continuous Playback</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth Disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_stream_over_download_title">Prefer Streaming</string>
@@ -436,7 +436,7 @@
     <string name="pref_black_theme_message">Use full black for the dark theme</string>
     <string name="pref_tinted_theme_title">Tinted Colors</string>
     <string name="pref_tinted_theme_message">Tint app colors based on the background image</string>
-    <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
+    <string name="pref_nav_drawer_items_title">Set Navigation Drawer Items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
@@ -444,9 +444,9 @@
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
-    <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
+    <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi Filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
-    <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
+    <string name="pref_automatic_download_on_battery_title">Download When Not Charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
     <string name="pref_episode_cache_title">Episode Cache</string>
@@ -467,19 +467,19 @@
     <string name="pref_feed_skip_intro">Skip first</string>
     <string name="pref_feed_skip_ending_toast">Skipped last %d seconds</string>
     <string name="pref_feed_skip_intro_toast">Skipped first %d seconds</string>
-    <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
+    <string name="pref_playback_time_respects_speed_title">Adjust Media Info to Playback Speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast Forward Skip Time</string>
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
     <string name="pref_rewind">Rewind Skip Time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
-    <string name="pref_expandNotify_title">High Notification priority</string>
+    <string name="pref_expandNotify_title">High Notification Priority</string>
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_compact_notification_buttons_title">Set Compact Notification Buttons</string>
     <string name="pref_compact_notification_buttons_sum">Change the playback buttons when the notification is collapsed. The play/pause button is always included.</string>
-    <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
+    <string name="pref_compact_notification_buttons_dialog_title">Select a Maximum of %1$d Items</string>
     <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
     <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
@@ -490,8 +490,8 @@
     <string name="enqueue_location_after_current">After current episode</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="documentation_support">Documentation &amp; Support</string>
-    <string name="visit_user_forum">User forum</string>
-    <string name="bug_report_title">Report bug</string>
+    <string name="visit_user_forum">User Forum</string>
+    <string name="bug_report_title">Report Bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -513,7 +513,7 @@
     <string name="pref_default_page">Default Page</string>
     <string name="pref_default_page_sum">Screen that is opened when starting AntennaPod.</string>
     <string name="remember_last_page">Remember last page</string>
-    <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
+    <string name="pref_delete_removes_from_queue_title">Delete Removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
     <string name="pref_filter_feed_title">Subscription Filter</string>
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
@@ -581,7 +581,7 @@
     <string name="database_import_warning">Importing a database will replace all of your current subscriptions and playing history. You should export your current database as a backup. Do you want to replace?</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="export_error_label">Export error</string>
-    <string name="export_success_title">Export successful</string>
+    <string name="export_success_title">Export Successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
     <string name="successful_import_label">Import successful</string>
@@ -617,9 +617,9 @@
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->
-    <string name="synchronization_choose_title">Choose synchronization provider</string>
+    <string name="synchronization_choose_title">Choose Synchronization Provider</string>
     <string name="synchronization_summary_unchoosen">You can choose from multiple providers to synchronize your subscriptions and episode play state with</string>
-    <string name="dialog_choose_sync_service_title">Choose synchronization provider</string>
+    <string name="dialog_choose_sync_service_title">Choose Synchronization Provider</string>
     <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that you can install on your own server. Gpodder.net is independent of the AntennaPod project.</string>
     <string name="synchronization_summary_nextcloud">Gpoddersync is an open-source Nextcloud app that you can easily install on your own server. The app is independent of the AntennaPod project.</string>
     <string name="synchronization_host_explanation">You can pick your own server to synchronize with. When you have identified your preferred synchronization server, please enter its address here.</string>
@@ -639,16 +639,16 @@
     <string name="gpodnetauth_create_device">Create device</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
-    <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
+    <string name="pref_gpodnet_setlogin_information_title">Change Login Information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="synchronization_sync_changes_title">Synchronize now</string>
+    <string name="synchronization_sync_changes_title">Synchronize Now</string>
     <string name="synchronization_sync_summary">Synchronize subscription and episode state changes</string>
-    <string name="synchronization_full_sync_title">Force full synchronization</string>
+    <string name="synchronization_full_sync_title">Force Full Synchronization</string>
     <string name="synchronization_force_sync_summary">Re-synchronize all subscriptions and episode states</string>
     <string name="synchronization_logout">Logout</string>
     <string name="synchronization_login_status"><![CDATA[Logged in as <i>%1$s</i> on <i>%2$s</i>. <br/><br/>You can choose your synchronization provider again once you have logged out]]></string>
     <string name="pref_synchronization_logout_toast">Logout was successful</string>
-    <string name="gpodnetsync_error_title">gpodder.net sync error</string>
+    <string name="gpodnetsync_error_title">gpodder.net Sync Error</string>
     <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
