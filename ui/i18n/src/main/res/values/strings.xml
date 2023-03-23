@@ -178,9 +178,9 @@
     <string name="share_label">Share</string>
     <string name="share_file_label">Share File</string>
     <string name="share_rss_address_label">RSS address:</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
-    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts and ALL their episodes (including downloaded episodes).</string>
-    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), and its statistics.</string>
+    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), and its statistics.</string>
+    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\" and its statistics. The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
