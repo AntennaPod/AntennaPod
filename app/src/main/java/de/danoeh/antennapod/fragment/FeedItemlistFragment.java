@@ -367,7 +367,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         swipeActions.detach();
         if (feed.isLocalFeed()) {
             speedDialBinding.fabSD.removeActionItemById(R.id.download_batch);
-            speedDialBinding.fabSD.removeActionItemById(R.id.delete_batch);
         }
         speedDialBinding.fabSD.removeActionItemById(R.id.remove_all_inbox_item);
         speedDialBinding.fabSD.setVisibility(View.VISIBLE);

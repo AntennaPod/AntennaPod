@@ -37,7 +37,6 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
@@ -124,7 +123,6 @@ public class LocalFeedUpdater {
         feed.setImageUrl(getImageUrl(allFiles, folderUri));
 
         feed.getPreferences().setAutoDownload(false);
-        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
         feed.setDescription(context.getString(R.string.local_feed_description));
         feed.setAuthor(context.getString(R.string.local_folder));
 

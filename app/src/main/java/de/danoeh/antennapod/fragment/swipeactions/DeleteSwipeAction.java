@@ -31,7 +31,7 @@ public class DeleteSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        if (!item.isDownloaded()) {
+        if (!item.isDownloaded() && !item.getFeed().isLocalFeed()) {
             return;
         }
         DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), item.getMedia().getId());
@@ -39,6 +39,6 @@ public class DeleteSwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter, FeedItem item) {
-        return filter.showDownloaded && item.isDownloaded();
+        return filter.showDownloaded && (item.isDownloaded() || item.getFeed().isLocalFeed());
     }
 }
