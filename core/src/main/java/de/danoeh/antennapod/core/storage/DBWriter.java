@@ -2,11 +2,13 @@ package de.danoeh.antennapod.core.storage;
 
 import android.app.backup.BackupManager;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.documentfile.provider.DocumentFile;
 
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
@@ -107,9 +109,12 @@ public class DBWriter {
     }
 
     private static boolean deleteFeedMediaSynchronous(
-            @NonNull Context context, @NonNull FeedMedia media) {
+        @NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
-                media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
+            media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
+
+        boolean deleted = false;
+
         if (media.isDownloaded()) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
@@ -118,6 +123,26 @@ public class DBWriter {
                 EventBus.getDefault().post(evt);
                 return false;
             }
+
+            deleted = true;
+        } else if (media.getFile_url().startsWith("content://")) {
+            // Local feed
+
+            DocumentFile documentFile = DocumentFile.fromSingleUri(
+                context,
+                Uri.parse(media.getFile_url())
+            );
+
+            if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
+                MessageEvent evt = new MessageEvent(context.getString(R.string.delete_local_failed));
+                EventBus.getDefault().post(evt);
+                return false;
+            }
+
+            deleted = true;
+        }
+
+        if (deleted) {
             media.setDownloaded(false);
             media.setFile_url(null);
             media.setHasEmbeddedPicture(false);
@@ -141,6 +166,7 @@ public class DBWriter {
                     .build();
             SynchronizationQueueSink.enqueueEpisodeActionIfSynchronizationIsActive(context, action);
         }
+
         EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
         return true;
     }
@@ -730,7 +756,7 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemId, mediaId,
-                    resetMediaPosition);
+                resetMediaPosition);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());

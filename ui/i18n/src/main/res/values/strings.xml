@@ -211,6 +211,7 @@
     <string name="stream_label">Stream</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
+    <string name="delete_local_failed">Unable to delete local file. You may need to re-create local feed for deleting to work.</string>
     <string name="delete_episode_label">Delete Episode</string>
     <plurals name="deleted_multi_episode_batch_label">
         <item quantity="one">1 downloaded episode deleted.</item>
