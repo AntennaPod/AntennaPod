@@ -109,9 +109,9 @@ public class DBWriter {
     }
 
     private static boolean deleteFeedMediaSynchronous(
-        @NonNull Context context, @NonNull FeedMedia media) {
+            @NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
-            media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
+                media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
 
         boolean deleted = false;
 
@@ -129,8 +129,8 @@ public class DBWriter {
             // Local feed
 
             DocumentFile documentFile = DocumentFile.fromSingleUri(
-                context,
-                Uri.parse(media.getFile_url())
+                    context,
+                    Uri.parse(media.getFile_url())
             );
 
             if (documentFile == null || !documentFile.exists() || !documentFile.delete()) {
@@ -756,7 +756,7 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemId, mediaId,
-                resetMediaPosition);
+                    resetMediaPosition);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
