@@ -345,7 +345,7 @@ public class UserPreferences {
     }
 
     public enum EnqueueLocation {
-        BACK, FRONT, AFTER_CURRENTLY_PLAYING
+        BACK, FRONT, AFTER_CURRENTLY_PLAYING, RANDOM
     }
 
     @NonNull

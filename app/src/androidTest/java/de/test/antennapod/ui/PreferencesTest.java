@@ -123,6 +123,7 @@ public class PreferencesTest {
         doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
         doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
         doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
+        doTestEnqueueLocation(R.string.enqueue_location_random, EnqueueLocation.RANDOM);
     }
 
     private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
