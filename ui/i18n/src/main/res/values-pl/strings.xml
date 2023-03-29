@@ -496,7 +496,6 @@
   <string name="enqueue_location_back">Koniec</string>
   <string name="enqueue_location_front">Początek</string>
   <string name="enqueue_location_after_current">Za bieżącym odcinkiem</string>
-  <string name="enqueue_location_random">Losowo</string>
   <string name="pref_smart_mark_as_played_disabled">Wyłączone</string>
   <string name="documentation_support">Dokumentacja &amp; Wsparcie</string>
   <string name="visit_user_forum">Forum użytkowników</string>
