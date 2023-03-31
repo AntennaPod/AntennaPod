@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.work.ForegroundInfo;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -38,10 +38,12 @@ public class FeedUpdateWorker extends Worker {
     private static final String TAG = "FeedUpdateWorker";
 
     private final NewEpisodesNotification newEpisodesNotification;
+    private final NotificationManagerCompat notificationManager;
 
     public FeedUpdateWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         newEpisodesNotification = new NewEpisodesNotification();
+        notificationManager = NotificationManagerCompat.from(context);
     }
 
     @Override
@@ -77,16 +79,17 @@ public class FeedUpdateWorker extends Worker {
             toUpdate.add(feed);
             refreshFeeds(toUpdate, true);
         }
+        notificationManager.cancel(R.id.notification_updating_feeds);
         return Result.success();
     }
 
     @NonNull
-    private ForegroundInfo createForegroundInfo(List<Feed> toUpdate) {
+    private Notification createNotification(List<Feed> toUpdate) {
         Context context = getApplicationContext();
         String contentText = context.getResources().getQuantityString(R.plurals.downloads_left,
                 toUpdate.size(), toUpdate.size());
         String bigText = Stream.of(toUpdate).map(feed -> "• " + feed.getTitle()).collect(Collectors.joining("\n"));
-        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
+        return new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setContentTitle(context.getString(R.string.download_notification_title_feeds))
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
@@ -95,7 +98,6 @@ public class FeedUpdateWorker extends Worker {
                 .addAction(R.drawable.ic_cancel, context.getString(R.string.cancel_label),
                         WorkManager.getInstance(context).createCancelPendingIntent(getId()))
                 .build();
-        return new ForegroundInfo(R.id.notification_updating_feeds, notification);
     }
 
     private void refreshFeeds(List<Feed> toUpdate, boolean force) {
@@ -103,7 +105,7 @@ public class FeedUpdateWorker extends Worker {
             if (isStopped()) {
                 return;
             }
-            setForegroundAsync(createForegroundInfo(toUpdate));
+            notificationManager.notify(R.id.notification_updating_feeds, createNotification(toUpdate));
             Feed feed = toUpdate.get(0);
             try {
                 if (feed.isLocalFeed()) {
