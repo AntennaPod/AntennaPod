@@ -999,17 +999,17 @@ public class PodDBAdapter {
     }
 
     public final Cursor getPausedQueueCursor(int limit) {
-        //playback position > 0 (paused), rank by last played, then rest of queue
+        final String hasPositionOrRecentlyPlayed = TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + " >= 1000"
+                + " OR " + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME
+                + " >= " + (System.currentTimeMillis() - 30000);
         final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
                 + " FROM " + TABLE_NAME_QUEUE
                 + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
                 +  JOIN_FEED_ITEM_AND_MEDIA
-                // In the front: Episodes that have a position >1sec, but also the episode that was just started
-                + " ORDER BY (" + TABLE_NAME_FEED_MEDIA + "."  + KEY_POSITION + " >= 1000"
-                    + " OR " + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME
-                        + " >= " + (System.currentTimeMillis() - 30000) + ") DESC , "
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + " DESC , " + TABLE_NAME_QUEUE + "." + KEY_ID
+                + " ORDER BY IIF(" + hasPositionOrRecentlyPlayed
+                    + ", " + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME + ", 0) DESC , "
+                + TABLE_NAME_QUEUE + "." + KEY_ID
                 + " LIMIT " + limit;
         return db.rawQuery(query, null);
     }
