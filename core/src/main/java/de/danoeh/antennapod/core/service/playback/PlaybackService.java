@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -540,6 +541,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     }
 
+    @SuppressLint("LaunchActivityFromNotification")
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
         Intent intentAllowThisTime = new Intent(originalIntent);
         intentAllowThisTime.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME);
