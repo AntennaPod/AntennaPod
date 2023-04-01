@@ -3,34 +3,28 @@ package de.test.antennapod.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
-import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.test.antennapod.EspressoTestUtils;
-
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -49,7 +43,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
@@ -75,22 +68,6 @@ public class PreferencesTest {
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());
-    }
-
-    @Test
-    public void testSwitchTheme() {
-        final UserPreferences.ThemePreference theme = UserPreferences.getTheme();
-        int otherThemeText;
-        if (theme == UserPreferences.ThemePreference.DARK) {
-            otherThemeText = R.string.pref_theme_title_light;
-        } else {
-            otherThemeText = R.string.pref_theme_title_dark;
-        }
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherThemeText)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getTheme() != theme);
     }
 
     @Test
@@ -146,6 +123,7 @@ public class PreferencesTest {
         doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
         doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
         doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
+        doTestEnqueueLocation(R.string.enqueue_location_random, EnqueueLocation.RANDOM);
     }
 
     private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
@@ -243,30 +221,6 @@ public class PreferencesTest {
         clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
-    }
-
-    @Test
-    public void testDisableUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withText(R.string.feed_refresh_never)).perform(click());
-        onView(withId(R.id.disableRadioButton)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == 0);
-    }
-
-    @Test
-    public void testSetUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withId(R.id.intervalRadioButton)).perform(click());
-        onView(withId(R.id.spinner)).perform(click());
-        int position = 1; // an arbitrary position
-        onData(anything()).inRoot(RootMatchers.isPlatformPopup()).atPosition(position).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == TimeUnit.HOURS.toMillis(2));
     }
 
     @Test

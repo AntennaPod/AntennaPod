@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.elevation.SurfaceColors;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.R;
@@ -64,7 +64,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView separatorIcons;
     private final View leftPadding;
     public final CardView coverHolder;
-    public final CheckBox selectCheckBox;
 
     private final MainActivity activity;
     private FeedItem item;
@@ -96,7 +95,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         coverHolder = itemView.findViewById(R.id.coverHolder);
         leftPadding = itemView.findViewById(R.id.left_padding);
         itemView.setTag(this);
-        selectCheckBox = itemView.findViewById(R.id.selectCheckBox);
     }
 
     public void bind(FeedItem item) {
@@ -141,7 +139,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
 
         if (PlaybackStatus.isCurrentlyPlaying(media)) {
-            itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
+            float density = activity.getResources().getDisplayMetrics().density;
+            itemView.setBackgroundColor(SurfaceColors.getColorForElevation(activity, 8 * density));
         } else {
             itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
@@ -227,6 +226,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateDuration(PlaybackPositionEvent event) {
+        if (getFeedItem().getMedia() != null) {
+            getFeedItem().getMedia().setPosition(event.getPosition());
+            getFeedItem().getMedia().setDuration(event.getDuration());
+        }
         int currentPosition = event.getPosition();
         int timeDuration = event.getDuration();
         int remainingTime = Math.max(timeDuration - currentPosition, 0);

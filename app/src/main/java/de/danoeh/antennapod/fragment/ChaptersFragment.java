@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -158,8 +159,9 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         if (adapter == null) {
             return;
         }
-        if (media.getChapters() != null && media.getChapters().size() <= 0) {
+        if (media.getChapters() != null && media.getChapters().size() == 0) {
             dismiss();
+            Toast.makeText(getContext(), R.string.no_chapters_label, Toast.LENGTH_LONG).show();
         } else {
             progressBar.setVisibility(View.GONE);
         }

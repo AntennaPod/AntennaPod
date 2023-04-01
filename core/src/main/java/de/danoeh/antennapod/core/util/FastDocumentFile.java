@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.provider.DocumentsContract;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,10 +20,6 @@ public class FastDocumentFile {
     private final long lastModified;
 
     public static List<FastDocumentFile> list(Context context, Uri folderUri) {
-        if (android.os.Build.VERSION.SDK_INT < 21) {
-            return Collections.emptyList();
-        }
-
         Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri,
                 DocumentsContract.getDocumentId(folderUri));
         Cursor cursor = context.getContentResolver().query(childrenUri, new String[] {

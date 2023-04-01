@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -63,9 +62,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             // Use cached resources, even if they have expired
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+        getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         getSettings().setUseWideViewPort(false);
         getSettings().setLoadWithOverviewMode(true);
         setOnLongClickListener(this);

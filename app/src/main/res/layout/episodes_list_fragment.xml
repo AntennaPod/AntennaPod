@@ -47,6 +47,16 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:indeterminateOnly="true"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        tools:background="@android:color/holo_red_light" />
+
     <include
         layout="@layout/multi_select_speed_dial" />
 

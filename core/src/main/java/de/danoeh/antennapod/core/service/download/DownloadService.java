@@ -7,22 +7,32 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.ServiceCompat;
-
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
+import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
+import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.core.util.download.ConnectionStateMonitor;
+import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,22 +49,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.util.download.ConnectionStateMonitor;
-import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
-import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
-import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
-import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.model.download.DownloadError;
-
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
  * The argument of the intent is an instance of DownloadRequest in the EXTRA_REQUESTS field of
@@ -69,7 +63,6 @@ public class DownloadService extends Service {
     public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.core.service.cancelAll";
     public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
     public static final String EXTRA_REQUESTS = "downloadRequests";
-    public static final String EXTRA_REFRESH_ALL = "refreshAll";
     public static final String EXTRA_INITIATED_BY_USER = "initiatedByUser";
     public static final String EXTRA_CLEANUP_MEDIA = "cleanupMedia";
 
@@ -83,8 +76,8 @@ public class DownloadService extends Service {
     private final ExecutorService downloadEnqueueExecutor;
 
     private final List<DownloadStatus> reportQueue = new ArrayList<>();
+    private final List<DownloadRequest> failedRequestsForReport = new ArrayList<>();
     private DownloadServiceNotification notificationManager;
-    private final NewEpisodesNotification newEpisodesNotification;
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
@@ -98,16 +91,12 @@ public class DownloadService extends Service {
     }
 
     public DownloadService() {
-        newEpisodesNotification = new NewEpisodesNotification();
 
         downloadEnqueueExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r, "EnqueueThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
-        // Must be the first runnable in syncExecutor
-        downloadEnqueueExecutor.execute(newEpisodesNotification::loadCountersBeforeRefresh);
-
         Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
         downloadHandleExecutor = Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
             r -> {
@@ -135,22 +124,8 @@ public class DownloadService extends Service {
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor = new ConnectionStateMonitor();
-            connectionMonitor.enable(getApplicationContext());
-        }
-    }
-
-    public static boolean isDownloadingFeeds() {
-        if (!isRunning) {
-            return false;
-        }
-        for (Downloader downloader : downloads) {
-            if (downloader.request.getFeedfileType() == Feed.FEEDFILETYPE_FEED && !downloader.cancelled) {
-                return true;
-            }
-        }
-        return false;
+        connectionMonitor = new ConnectionStateMonitor();
+        connectionMonitor.enable(getApplicationContext());
     }
 
     public static boolean isDownloadingFile(String downloadUrl) {
@@ -179,13 +154,10 @@ public class DownloadService extends Service {
         if (intent != null && intent.hasExtra(EXTRA_REQUESTS)) {
             Notification notification = notificationManager.updateNotifications(downloads);
             startForeground(R.id.notification_downloading, notification);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_download_report);
+            NotificationManagerCompat.from(this).cancel(R.id.notification_auto_download_report);
             setupNotificationUpdaterIfNecessary();
             downloadEnqueueExecutor.execute(() -> onDownloadQueued(intent));
-        } else if (intent != null && intent.getBooleanExtra(EXTRA_REFRESH_ALL, false)) {
-            Notification notification = notificationManager.updateNotifications(downloads);
-            startForeground(R.id.notification_downloading, notification);
-            setupNotificationUpdaterIfNecessary();
-            downloadEnqueueExecutor.execute(() -> enqueueAll(intent));
         } else if (downloads.size() == 0) {
             shutdown();
         } else {
@@ -201,14 +173,13 @@ public class DownloadService extends Service {
 
         boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
         if (UserPreferences.showDownloadReport() || showAutoDownloadReport) {
-            notificationManager.updateReport(reportQueue, showAutoDownloadReport);
+            notificationManager.updateReport(reportQueue, showAutoDownloadReport, failedRequestsForReport);
             reportQueue.clear();
+            failedRequestsForReport.clear();
         }
 
         unregisterReceiver(cancelDownloadReceiver);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionMonitor.disable(getApplicationContext());
-        }
+        connectionMonitor.disable(getApplicationContext());
 
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
         cancelNotificationUpdater();
@@ -249,63 +220,16 @@ public class DownloadService extends Service {
         });
     }
 
-    /**
-     * This method MUST NOT, in any case, throw an exception.
-     * Otherwise, it hangs up the refresh thread pool.
-     */
-    private void performLocalFeedRefresh(Downloader downloader, DownloadRequest request) {
-        try {
-            Feed feed = DBReader.getFeed(request.getFeedfileId());
-            LocalFeedUpdater.updateFeed(feed, DownloadService.this, (scanned, totalFiles) -> {
-                request.setSize(totalFiles);
-                request.setSoFar(scanned);
-                request.setProgressPercent((int) (100.0 * scanned / totalFiles));
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        downloadEnqueueExecutor.submit(() -> {
-            downloads.remove(downloader);
-            stopServiceIfEverythingDone();
-        });
-    }
-
-
     private void handleSuccessfulDownload(Downloader downloader) {
         DownloadRequest request = downloader.getDownloadRequest();
         DownloadStatus status = downloader.getResult();
         final int type = status.getFeedfileType();
 
-        if (type == Feed.FEEDFILETYPE_FEED) {
-            Log.d(TAG, "Handling completed Feed Download");
-            FeedSyncTask task = new FeedSyncTask(DownloadService.this, request);
-            boolean success = task.run();
-
-            if (success) {
-                if (request.getFeedfileId() == 0) {
-                    return; // No download logs for new subscriptions
-                }
-                // we create a 'successful' download log if the feed's last refresh failed
-                List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
-                if (log.size() > 0 && !log.get(0).isSuccessful()) {
-                    saveDownloadStatus(task.getDownloadStatus());
-                }
-                if (!request.isInitiatedByUser()) {
-                    // Was stored in the database before and not initiated manually
-                    newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
-                }
-                if (downloader.permanentRedirectUrl != null) {
-                    DBWriter.updateFeedDownloadURL(request.getSource(), downloader.permanentRedirectUrl);
-                }
-            } else {
-                DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
-                saveDownloadStatus(task.getDownloadStatus());
-            }
-        } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+        if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
             Log.d(TAG, "Handling completed FeedMedia Download");
             MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this, status, request);
             handler.run();
-            saveDownloadStatus(handler.getUpdatedStatus());
+            saveDownloadStatus(handler.getUpdatedStatus(), downloader.getDownloadRequest());
         }
     }
 
@@ -324,7 +248,7 @@ public class DownloadService extends Service {
                 DownloadServiceInterface.get().download(this, false, downloader.getDownloadRequest());
             } else {
                 Log.e(TAG, "Download failed");
-                saveDownloadStatus(status);
+                saveDownloadStatus(status, downloader.getDownloadRequest());
                 new FailedDownloadHandler(downloader.getDownloadRequest()).run();
 
                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -457,20 +381,6 @@ public class DownloadService extends Service {
         }
     }
 
-    private void enqueueAll(Intent intent) {
-        boolean initiatedByUser = intent.getBooleanExtra(EXTRA_INITIATED_BY_USER, false);
-        List<Feed> feeds = DBReader.getFeedList();
-        for (Feed feed : feeds) {
-            if (feed.getPreferences().getKeepUpdated()) {
-                DownloadRequest.Builder builder = DownloadRequestCreator.create(feed);
-                builder.withInitiatedByUser(initiatedByUser);
-                addNewRequest(builder.build());
-            }
-        }
-        postDownloaders();
-        stopServiceIfEverythingDone();
-    }
-
     private void addNewRequest(@NonNull DownloadRequest request) {
         if (isDownloadingFile(request.getSource())) {
             Log.d(TAG, "Skipped enqueueing request. Already running.");
@@ -480,17 +390,11 @@ public class DownloadService extends Service {
             return;
         }
         Log.d(TAG, "Add new request: " + request.getSource());
-        if (request.getSource().startsWith(Feed.PREFIX_LOCAL_FOLDER)) {
-            Downloader downloader = new LocalFeedStubDownloader(request);
+        writeFileUrl(request);
+        Downloader downloader = downloaderFactory.create(request);
+        if (downloader != null) {
             downloads.add(downloader);
-            downloadHandleExecutor.submit(() -> performLocalFeedRefresh(downloader, request));
-        } else {
-            writeFileUrl(request);
-            Downloader downloader = downloaderFactory.create(request);
-            if (downloader != null) {
-                downloads.add(downloader);
-                downloadHandleExecutor.submit(() -> performDownload(downloader));
-            }
+            downloadHandleExecutor.submit(() -> performDownload(downloader));
         }
     }
 
@@ -512,8 +416,11 @@ public class DownloadService extends Service {
      *
      * @param status the download that is going to be saved
      */
-    private void saveDownloadStatus(@NonNull DownloadStatus status) {
+    private void saveDownloadStatus(@NonNull DownloadStatus status, @NonNull DownloadRequest request) {
         reportQueue.add(status);
+        if (!status.isSuccessful() && !status.isCancelled()) {
+            failedRequestsForReport.add(request);
+        }
         DBWriter.addDownloadStatus(status);
     }
 

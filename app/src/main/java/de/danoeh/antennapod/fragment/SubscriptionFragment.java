@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,58 +11,49 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 import com.leinardi.android.speeddial.SpeedDialView;
-
-import de.danoeh.antennapod.dialog.TagSettingsDialog;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
+import de.danoeh.antennapod.dialog.FeedSortDialog;
+import de.danoeh.antennapod.dialog.RenameItemDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
+import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.SubscriptionsRecyclerAdapter;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
-import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.dialog.FeedSortDialog;
-import de.danoeh.antennapod.dialog.RemoveFeedDialog;
-import de.danoeh.antennapod.dialog.RenameItemDialog;
-import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
-import de.danoeh.antennapod.fragment.actions.FeedMultiSelectActionHandler;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -75,7 +64,6 @@ public class SubscriptionFragment extends Fragment
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
-    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_FOLDER = "folder";
 
@@ -91,6 +79,7 @@ public class SubscriptionFragment extends Fragment
     private EmptyViewHandler emptyView;
     private TextView feedsFilteredMsg;
     private MaterialToolbar toolbar;
+    private ProgressBar progressBar;
     private String displayedFolder = null;
     private boolean displayUpArrow;
 
@@ -149,7 +138,6 @@ public class SubscriptionFragment extends Fragment
         }
 
         subscriptionRecycler = root.findViewById(R.id.subscriptions_grid);
-        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionRecycler.addItemDecoration(new SubscriptionsRecyclerAdapter.GridDividerItemDecorator());
         registerForContextMenu(subscriptionRecycler);
         subscriptionRecycler.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
@@ -160,11 +148,13 @@ public class SubscriptionFragment extends Fragment
                 MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
             }
         };
+        setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         subscriptionAdapter.setOnSelectModeListener(this);
-        int previousEpisodes = Math.max(1, prefs.getInt(PREF_PREVIOUS_EPISODE_COUNT, 5));
-        subscriptionRecycler.postDelayed(() -> subscriptionAdapter.showDummyViewsIfNeverUpdated(previousEpisodes), 250);
         subscriptionRecycler.setAdapter(subscriptionAdapter);
         setupEmptyView();
+
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         FloatingActionButton subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         subscriptionAddButton.setOnClickListener(view -> {
@@ -179,7 +169,7 @@ public class SubscriptionFragment extends Fragment
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -215,16 +205,18 @@ public class SubscriptionFragment extends Fragment
     private void refreshToolbarState() {
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
+    }
 
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
-                DownloadService.isRunning && DownloadService.isDownloadingFeeds());
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
+        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.subscriptions_filter) {
             SubscriptionsFilterDialog.showDialog(requireContext());
@@ -257,6 +249,7 @@ public class SubscriptionFragment extends Fragment
     private void setColumnNumber(int columns) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
                 columns, RecyclerView.VERTICAL, false);
+        subscriptionAdapter.setColumnCount(columns);
         subscriptionRecycler.setLayoutManager(gridLayoutManager);
         prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
         refreshToolbarState();
@@ -284,8 +277,6 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-        prefs.edit().putInt(PREF_PREVIOUS_EPISODE_COUNT, subscriptionAdapter.getItemCount()).apply();
-
         if (subscriptionAdapter != null) {
             subscriptionAdapter.endSelectMode();
         }
@@ -317,7 +308,7 @@ public class SubscriptionFragment extends Fragment
                             subscriptionAdapter.endSelectMode();
                         }
                         listItems = result;
-                        subscriptionAdapter.setDummyViews(0);
+                        progressBar.setVisibility(View.GONE);
                         subscriptionAdapter.setItems(result);
                         emptyView.updateVisibility();
                     }, error -> {
@@ -350,43 +341,11 @@ public class SubscriptionFragment extends Fragment
         }
 
         Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
-        if (itemId == R.id.remove_all_inbox_item) {
-            displayConfirmationDialog(
-                    R.string.remove_all_inbox_label,
-                    R.string.remove_all_inbox_confirmation_msg,
-                    () -> DBWriter.removeFeedNewFlag(feed.getId()));
-            return true;
-        } else if (itemId == R.id.edit_tags) {
-            TagSettingsDialog.newInstance(Collections.singletonList(feed.getPreferences()))
-                    .show(getChildFragmentManager(), TagSettingsDialog.TAG);
-            return true;
-        } else if (itemId == R.id.rename_item) {
-            new RenameItemDialog(getActivity(), feed).show();
-            return true;
-        } else if (itemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(getContext(), feed);
-            return true;
-        } else if (itemId == R.id.multi_select) {
+        if (itemId == R.id.multi_select) {
             speedDialView.setVisibility(View.VISIBLE);
             return subscriptionAdapter.onContextItemSelected(item);
         }
-        return super.onContextItemSelected(item);
-    }
-
-    private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {
-        ConfirmationDialog dialog = new ConfirmationDialog(getActivity(), title, message) {
-            @Override
-            @SuppressLint("CheckResult")
-            public void onConfirmButtonPressed(DialogInterface clickedDialog) {
-                clickedDialog.dismiss();
-                Observable.fromCallable(task)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
-            }
-        };
-        dialog.createNewDialog().show();
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, this::loadSubscriptions);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

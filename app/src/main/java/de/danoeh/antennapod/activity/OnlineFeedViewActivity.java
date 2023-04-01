@@ -36,7 +36,7 @@ import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
 import de.danoeh.antennapod.core.feed.FeedUrlNotFoundException;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceInterface;
 import de.danoeh.antennapod.core.util.DownloadErrorLabel;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -65,6 +65,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -128,6 +129,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
+        viewBinding.card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(this, R.attr.colorSurface));
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -453,10 +455,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (feedInFeedlist()) {
                 openFeed();
             } else {
-                Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
-                DownloadServiceInterface.get().download(this, false, DownloadRequestCreator.create(f)
-                        .withAuthentication(username, password)
-                        .build());
+                DBTasks.updateFeed(this, feed, false);
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus();
             }

@@ -22,36 +22,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.appbar.MaterialToolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
-
-import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.ThemeSwitcher;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.CompletedDownloadsFragment;
-import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.fragment.InboxFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -60,10 +55,16 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.home.HomeFragment;
 import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -76,8 +77,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
-    public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
-    public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
@@ -90,6 +89,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior sheetBehavior;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
+    private Insets navigationBarInsets = Insets.NONE;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -116,10 +116,13 @@ public class MainActivity extends CastEnabledActivity {
         setNavDrawerSize();
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) ->
-                new WindowInsetsCompat.Builder(insets)
-                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
-                        .build());
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
+            navigationBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            updateInsets();
+            return new WindowInsetsCompat.Builder(insets)
+                    .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                    .build();
+        });
 
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
@@ -155,13 +158,27 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+
+        FeedUpdateManager.restartUpdateAlarm(this, false);
+        WorkManager.getInstance(this)
+                .getWorkInfosByTagLiveData(FeedUpdateManager.WORK_TAG_FEED_UPDATE)
+                .observe(this, workInfos -> {
+                    boolean isRefreshingFeeds = false;
+                    for (WorkInfo workInfo : workInfos) {
+                        if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                            isRefreshingFeeds = true;
+                        } else if (workInfo.getState() == WorkInfo.State.ENQUEUED) {
+                            isRefreshingFeeds = true;
+                        }
+                    }
+                    EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(isRefreshingFeeds));
+                });
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        sheetBehavior.setPeekHeight(playerHeight + getBottomInset());
+        updateInsets();
     }
 
     /**
@@ -206,10 +223,7 @@ public class MainActivity extends CastEnabledActivity {
                 audioPlayer.scrollToPage(AudioPlayerFragment.POS_COVER);
             }
 
-            float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
-            audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
-            audioPlayer.getExternalPlayerHolder().setVisibility(
-                    condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+            audioPlayer.fadePlayerToToolbar(slideOffset);
         }
     };
 
@@ -232,12 +246,18 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (drawerLayout != null) {
+            drawerLayout.removeDrawerListener(drawerToggle);
+        }
+    }
+
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            // for backward compatibility, we only change defaults for fresh installs
-            UserPreferences.setUpdateInterval(12);
-            AutoUpdateManager.restartUpdateAlarm(this);
+            FeedUpdateManager.restartUpdateAlarm(this, true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
@@ -253,9 +273,10 @@ public class MainActivity extends CastEnabledActivity {
         return sheetBehavior;
     }
 
-    private int getBottomInset() {
-        WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(getWindow().getDecorView());
-        return insets == null ? 0 : insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+    private void updateInsets() {
+        setPlayerVisible(findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE);
+        int playerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
+        sheetBehavior.setPeekHeight(playerHeight + navigationBarInsets.bottom);
     }
 
     public void setPlayerVisible(boolean visible) {
@@ -268,7 +289,8 @@ public class MainActivity extends CastEnabledActivity {
         FragmentContainerView mainView = findViewById(R.id.main_view);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
         int externalPlayerHeight = (int) getResources().getDimension(R.dimen.external_player_height);
-        params.setMargins(0, 0, 0, getBottomInset() + (visible ? externalPlayerHeight : 0));
+        params.setMargins(navigationBarInsets.left, 0, navigationBarInsets.right,
+                navigationBarInsets.bottom + (visible ? externalPlayerHeight : 0));
         mainView.setLayoutParams(params);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
@@ -439,6 +461,9 @@ public class MainActivity extends CastEnabledActivity {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+        if (UserPreferences.getHiddenDrawerItems().contains(NavDrawerFragment.getLastNavFragment(this))) {
+            loadFragment(UserPreferences.getDefaultPage(), null);
+        }
     }
 
     @Override
@@ -509,20 +534,12 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void handleNavIntent() {
+        Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_FRAGMENT_TAG) || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
-            Log.d(TAG, "handleNavIntent()");
-            String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
-            Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
-            boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
-            if (refreshOnStart) {
-                AutoUpdateManager.runImmediate(this);
-            }
-
+        if (intent.hasExtra(EXTRA_FEED_ID)) {
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
-            if (tag != null) {
-                loadFragment(tag, args);
-            } else if (feedId > 0) {
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (feedId > 0) {
                 boolean startedFromSearch = intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false);
                 boolean addToBackStack = intent.getBooleanExtra(EXTRA_ADD_TO_BACK_STACK, false);
                 if (startedFromSearch || addToBackStack) {
@@ -532,11 +549,25 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (intent.hasExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG)) {
+            String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
+            Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
+            if (tag != null) {
+                loadFragment(tag, args);
+            }
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             handleDeeplink(intent.getData());
+        }
+
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DRAWER, false) && drawerLayout != null) {
+            drawerLayout.open();
+        }
+        if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
+            FeedUpdateManager.runOnceOrAsk(this);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));

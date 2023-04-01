@@ -16,6 +16,12 @@
         android:icon="@drawable/ic_refresh"/>
 
     <item
+        android:id="@+id/inbox_sort"
+        android:title="@string/sort">
+        <menu></menu>
+    </item>
+
+    <item
         android:id="@+id/remove_all_inbox_item"
         android:title="@string/remove_all_inbox_label"
         android:menuCategory="container"

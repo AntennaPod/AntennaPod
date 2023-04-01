@@ -131,15 +131,25 @@
         <activity
             android:name=".activity.DownloadAuthenticationActivity"
             android:theme="@style/Theme.AntennaPod.Dark.Translucent"
-            android:launchMode="singleInstance"/>
+            android:exported="false"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.DOWNLOAD_AUTH_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
             android:label="@string/settings_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+            </intent-filter>
         </activity>
 
         <activity

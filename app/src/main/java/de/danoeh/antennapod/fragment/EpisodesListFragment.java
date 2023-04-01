@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -30,12 +30,11 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -68,7 +67,6 @@ public abstract class EpisodesListFragment extends Fragment
         implements EpisodeItemListAdapter.OnSelectModeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "EpisodesListFragment";
     private static final String KEY_UP_ARROW = "up_arrow";
-    private static final String PREF_PREVIOUS_EPISODE_COUNT = "episodeCount";
     protected static final int EPISODES_PER_PAGE = 150;
     protected int page = 1;
     protected boolean isLoadingMore = false;
@@ -81,6 +79,7 @@ public abstract class EpisodesListFragment extends Fragment
     SpeedDialView speedDialView;
     MaterialToolbar toolbar;
     SwipeActions swipeActions;
+    private ProgressBar progressBar;
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
@@ -115,9 +114,6 @@ public abstract class EpisodesListFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
-        getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE).edit()
-                .putInt(PREF_PREVIOUS_EPISODE_COUNT, episodes.size())
-                .apply();
     }
 
     @Override
@@ -127,7 +123,7 @@ public abstract class EpisodesListFragment extends Fragment
         }
         final int itemId = item.getItemId();
         if (itemId == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
@@ -188,7 +184,7 @@ public abstract class EpisodesListFragment extends Fragment
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
@@ -204,10 +200,9 @@ public abstract class EpisodesListFragment extends Fragment
             }
         };
         listAdapter.setOnSelectModeListener(this);
-        int previousEpisodesCount = getContext().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE)
-                .getInt(PREF_PREVIOUS_EPISODE_COUNT, 5);
-        recyclerView.postDelayed(() -> listAdapter.showDummyViewsIfNeverUpdated(previousEpisodesCount), 250);
         recyclerView.setAdapter(listAdapter);
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -432,6 +427,7 @@ public abstract class EpisodesListFragment extends Fragment
                         data -> {
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
+                            progressBar.setVisibility(View.GONE);
                             listAdapter.setDummyViews(0);
                             listAdapter.updateItems(episodes);
                             listAdapter.setTotalNumberOfItems(data.second);
@@ -445,18 +441,12 @@ public abstract class EpisodesListFragment extends Fragment
     }
 
     @NonNull
-    protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, getFilter());
-    }
+    protected abstract List<FeedItem> loadData();
 
     @NonNull
-    protected List<FeedItem> loadMoreData(int page) {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, getFilter());
-    }
+    protected abstract List<FeedItem> loadMoreData(int page);
 
-    protected int loadTotalItemCount() {
-        return DBReader.getTotalEpisodeCount(getFilter());
-    }
+    protected abstract int loadTotalItemCount();
 
     protected abstract FeedItemFilter getFilter();
 
@@ -465,9 +455,12 @@ public abstract class EpisodesListFragment extends Fragment
     protected abstract String getPrefName();
 
     protected void updateToolbar() {
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
         if (toolbar.getMenu().findItem(R.id.refresh_item) != null) {
-            MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item,
-                    DownloadService.isRunning && DownloadService.isDownloadingFeeds());
+            MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
         }
     }
 
