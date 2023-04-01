@@ -48,6 +48,6 @@ public class FyydPodcastSearcher implements PodcastSearcher {
 
     @Override
     public String getName() {
-        return "Fyyd";
+        return "fyyd";
     }
 }

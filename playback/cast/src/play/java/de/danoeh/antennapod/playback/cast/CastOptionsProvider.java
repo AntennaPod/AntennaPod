@@ -2,7 +2,6 @@ package de.danoeh.antennapod.playback.cast;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
@@ -15,7 +14,7 @@ public class CastOptionsProvider implements OptionsProvider {
     @NonNull
     public CastOptions getCastOptions(@NonNull Context context) {
         return new CastOptions.Builder()
-            .setReceiverApplicationId(CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID)
+            .setReceiverApplicationId("BEBC1DB1")
             .build();
     }
 

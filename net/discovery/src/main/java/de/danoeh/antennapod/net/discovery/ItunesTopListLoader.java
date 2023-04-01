@@ -58,8 +58,9 @@ public class ItunesTopListLoader {
             List<PodcastSearchResult> suggestedPodcasts, List<Feed> subscribedFeeds, int limit) {
         Set<String> subscribedPodcastsSet = new HashSet<>();
         for (Feed subscribedFeed : subscribedFeeds) {
-            String subscribedTitle = subscribedFeed.getTitle().trim() + " - " + subscribedFeed.getAuthor().trim();
-            subscribedPodcastsSet.add(subscribedTitle);
+            if (subscribedFeed.getTitle() != null && subscribedFeed.getAuthor() != null) {
+                subscribedPodcastsSet.add(subscribedFeed.getTitle().trim() + " - " + subscribedFeed.getAuthor().trim());
+            }
         }
         List<PodcastSearchResult> suggestedNotSubscribed = new ArrayList<>();
         for (PodcastSearchResult suggested : suggestedPodcasts) {

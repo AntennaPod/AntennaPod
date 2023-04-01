@@ -25,7 +25,7 @@ import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -73,12 +73,13 @@ public class CompletedDownloadsFragment extends Fragment
     private SpeedDialView speedDialView;
     private SwipeActions swipeActions;
     private ProgressBar progressBar;
+    private MaterialToolbar toolbar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        MaterialToolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads_completed);
         inflateSortMenu(toolbar);
@@ -168,6 +169,10 @@ public class CompletedDownloadsFragment extends Fragment
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         adapter.endSelectMode();
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
         super.onDestroyView();
     }
 
@@ -188,7 +193,7 @@ public class CompletedDownloadsFragment extends Fragment
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (item.getItemId() == R.id.action_download_logs) {
             new DownloadLogFragment().show(getChildFragmentManager(), null);
@@ -310,7 +315,8 @@ public class CompletedDownloadsFragment extends Fragment
         emptyView.hide();
         disposable = Observable.fromCallable(() -> {
             SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
-            List<FeedItem> downloadedItems = DBReader.getDownloadedItems(sortOrder);
+            List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), sortOrder);
 
             List<Long> mediaIds = new ArrayList<>();
             if (runningDownloads == null) {

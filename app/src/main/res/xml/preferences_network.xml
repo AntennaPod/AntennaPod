@@ -4,15 +4,25 @@
         xmlns:numberpicker="http://schemas.android.com/apk/de.danoeh.antennapod"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
     <PreferenceCategory android:title="@string/automation">
-        <Preference
+        <de.danoeh.antennapod.preferences.MaterialListPreference
+                android:entryValues="@array/feed_refresh_interval_values"
+                android:entries="@array/feed_refresh_interval_entries"
                 android:key="prefAutoUpdateIntervall"
+                android:title="@string/feed_refresh_title"
                 android:summary="@string/feed_refresh_sum"
-                android:title="@string/feed_refresh_title"/>
+                android:defaultValue="12"/>
         <Preference
                 android:summary="@string/pref_automatic_download_sum"
                 android:key="prefAutoDownloadSettings"
                 android:title="@string/pref_automatic_download_title"
                 search:ignore="true" />
+        <de.danoeh.antennapod.preferences.MaterialListPreference
+                android:entryValues="@array/globalNewEpisodesActionValues"
+                android:entries="@array/globalNewEpisodesActionItems"
+                android:key="prefNewEpisodesAction"
+                android:title="@string/pref_new_episodes_action_title"
+                android:summary="@string/pref_new_episodes_action_sum"
+                android:defaultValue="1"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">

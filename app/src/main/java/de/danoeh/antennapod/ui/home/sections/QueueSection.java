@@ -58,6 +58,8 @@ public class QueueSection extends HomeSection {
         viewBinding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         viewBinding.recyclerView.setAdapter(listAdapter);
+        int paddingHorizontal = (int) (12 * getResources().getDisplayMetrics().density);
+        viewBinding.recyclerView.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
         return view;
     }
 

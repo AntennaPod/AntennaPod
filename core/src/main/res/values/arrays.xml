@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="spnAutoDeleteItems">
-        <item>@string/feed_auto_download_global</item>
+        <item>@string/global_default</item>
         <item>@string/feed_auto_download_always</item>
         <item>@string/feed_auto_download_never</item>
     </string-array>
@@ -23,6 +23,50 @@
         <item>off</item>
         <item>light</item>
         <item>heavy</item>
+    </string-array>
+
+    <string-array name="feed_refresh_interval_entries">
+        <item>@string/feed_refresh_never</item>
+        <item>@string/feed_every_hour</item>
+        <item>@string/feed_every_2_hours</item>
+        <item>@string/feed_every_4_hours</item>
+        <item>@string/feed_every_8_hours</item>
+        <item>@string/feed_every_12_hours</item>
+        <item>@string/feed_every_24_hours</item>
+        <item>@string/feed_every_72_hours</item>
+    </string-array>
+
+    <string-array name="feed_refresh_interval_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+        <item>24</item>
+        <item>72</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionItems">
+        <item>@string/global_default</item>
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">
@@ -71,6 +115,7 @@
         <item>@string/pref_mobileUpdate_auto_download</item>
         <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
+        <item>@string/synchronization_pref</item>
     </string-array>
 
     <string-array name="mobile_update_values">
@@ -79,10 +124,12 @@
         <item>auto_download</item>
         <item>streaming</item>
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="mobile_update_default_value">
         <item>images</item>
+        <item>sync</item>
     </string-array>
 
     <string-array name="episode_cleanup_entries">
@@ -114,6 +161,7 @@
         <item>@string/enqueue_location_back</item>
         <item>@string/enqueue_location_front</item>
         <item>@string/enqueue_location_after_current</item>
+        <item>@string/enqueue_location_random</item>
     </string-array>
 
     <string-array name="enqueue_location_values">
@@ -121,6 +169,7 @@
         <item>BACK</item>
         <item>FRONT</item>
         <item>AFTER_CURRENTLY_PLAYING</item>
+        <item>RANDOM</item>
     </string-array>
 
     <string-array name="episode_cleanup_values">
@@ -189,18 +238,6 @@
         <item>EpisodesSurpriseSection</item>
         <item>SubscriptionsSection</item>
         <item>DownloadsSection</item>
-    </string-array>
-
-    <string-array name="media_player_options">
-        <item>@string/media_player_exoplayer_recommended</item>
-        <item>@string/media_player_builtin</item>
-        <item>@string/media_player_sonic</item>
-    </string-array>
-
-    <string-array name="media_player_values">
-        <item>exoplayer</item>
-        <item>builtin</item>
-        <item>sonic</item>
     </string-array>
 
     <!-- sort for podcast screen, not for queue -->

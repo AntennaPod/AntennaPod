@@ -18,13 +18,13 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.appbar.MaterialToolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
@@ -36,14 +36,13 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -54,6 +53,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.LiftOnScrollListener;
@@ -251,6 +251,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             recyclerAdapter.endSelectMode();
         }
         recyclerAdapter = null;
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
     }
 
     private void refreshToolbarState() {
@@ -259,8 +263,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         toolbar.getMenu().findItem(R.id.queue_lock).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.sort_random).setVisible(!keepSorted);
         toolbar.getMenu().findItem(R.id.keep_sorted).setChecked(keepSorted);
-        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
-                R.id.refresh_item, DownloadService.isRunning && DownloadService.isDownloadingFeeds());
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedUpdateRunningEvent event) {
+        MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(), R.id.refresh_item, event.isFeedUpdateRunning);
     }
 
     @Override
@@ -270,7 +277,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             toggleQueueLock();
             return true;
         } else if (itemId == R.id.refresh_item) {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             return true;
         } else if (itemId == R.id.clear_queue) {
             // make sure the user really wants to clear the queue
@@ -453,7 +460,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setDistanceToTriggerSync(getResources().getInteger(R.integer.swipe_refresh_distance));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AutoUpdateManager.runImmediate(requireContext());
+            FeedUpdateManager.runOnceOrAsk(requireContext());
             new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });

@@ -66,6 +66,13 @@
     </item>
 
     <item
+        android:id="@+id/player_show_chapters"
+        custom:showAsAction="never"
+        android:title="@string/chapters_label"
+        android:visible="false">
+    </item>
+
+    <item
         android:id="@+id/share_item"
         android:menuCategory="container"
         custom:showAsAction="never"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.core.content.ContextCompat;
 import com.google.android.exoplayer2.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.util.download.FeedUpdateManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadRequest;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 
@@ -16,6 +17,13 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
     private static final String TAG = "DownloadServiceInterface";
 
     public void download(Context context, boolean cleanupMedia, DownloadRequest... requests) {
+        Intent intent = makeDownloadIntent(context, cleanupMedia, requests);
+        if (intent != null) {
+            ContextCompat.startForegroundService(context, intent);
+        }
+    }
+
+    public Intent makeDownloadIntent(Context context, boolean cleanupMedia, DownloadRequest... requests) {
         ArrayList<DownloadRequest> requestsToSend = new ArrayList<>();
         for (DownloadRequest request : requests) {
             if (!isDownloadingFile(request.getSource())) {
@@ -23,7 +31,7 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
             }
         }
         if (requestsToSend.isEmpty()) {
-            return;
+            return null;
         } else if (requestsToSend.size() > 100) {
             if (BuildConfig.DEBUG) {
                 throw new IllegalArgumentException("Android silently drops intent payloads that are too large");
@@ -38,14 +46,11 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
         if (cleanupMedia) {
             launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, true);
         }
-        ContextCompat.startForegroundService(context, launchIntent);
+        return launchIntent;
     }
 
     public void refreshAllFeeds(Context context, boolean initiatedByUser) {
-        Intent launchIntent = new Intent(context, DownloadService.class);
-        launchIntent.putExtra(DownloadService.EXTRA_REFRESH_ALL, true);
-        launchIntent.putExtra(DownloadService.EXTRA_INITIATED_BY_USER, initiatedByUser);
-        ContextCompat.startForegroundService(context, launchIntent);
+        FeedUpdateManager.runOnce(context);
     }
 
     public void cancel(Context context, String url) {

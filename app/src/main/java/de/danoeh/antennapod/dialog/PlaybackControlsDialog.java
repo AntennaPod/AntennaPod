@@ -63,30 +63,11 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
-        stereoToMono.setChecked(UserPreferences.stereoToMono());
-        if (controller != null && !controller.canDownmix()) {
-            stereoToMono.setEnabled(false);
-            String sonicOnly = getString(R.string.sonic_only);
-            stereoToMono.setText(getString(R.string.stereo_to_mono) + " [" + sonicOnly + "]");
-        }
-
         final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
         skipSilence.setChecked(UserPreferences.isSkipSilence());
-        if (!UserPreferences.useExoplayer()) {
-            skipSilence.setEnabled(false);
-            String exoplayerOnly = getString(R.string.exoplayer_only);
-            skipSilence.setText(getString(R.string.pref_skip_silence_title) + " [" + exoplayerOnly + "]");
-        }
         skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
             controller.setSkipSilence(isChecked);
-        });
-        stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            UserPreferences.stereoToMono(isChecked);
-            if (controller != null) {
-                controller.setDownmix(isChecked);
-            }
         });
     }
 
