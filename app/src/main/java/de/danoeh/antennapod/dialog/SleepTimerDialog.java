@@ -113,7 +113,7 @@ public class SleepTimerDialog extends DialogFragment {
         final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
         chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        final Button changeTimesButton = content.findViewById(R.id.changeTimes);
+        final TextView changeTimesButton = content.findViewById(R.id.changeTimes);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
@@ -139,8 +139,8 @@ public class SleepTimerDialog extends DialogFragment {
                     .setHour(from.first)
                     .setMinute(from.second)
                     .setTimeFormat(timeFormat)
-                    .setTitleText(R.string.auto_enable_label_from)
-                    .setPositiveButtonText(R.string.auto_enable_label_next)
+                    .setTitleText(R.string.auto_enable_from)
+                    .setPositiveButtonText(R.string.auto_enable_next)
                     .build();
             dialogFrom.addOnPositiveButtonClickListener(dialog -> {
                 Pair<Integer, Integer> to = SleepTimerPreferences.autoEnableTimeTo();
@@ -148,7 +148,7 @@ public class SleepTimerDialog extends DialogFragment {
                         .setHour(to.first)
                         .setMinute(to.second)
                         .setTimeFormat(timeFormat)
-                        .setTitleText(R.string.auto_enable_label_to)
+                        .setTitleText(R.string.auto_enable_to)
                         .build();
                 dialogTo.addOnPositiveButtonClickListener(dialog2 -> {
                     SleepTimerPreferences.setAutoEnableTimeTo(dialogTo.getHour(), dialogTo.getMinute());
