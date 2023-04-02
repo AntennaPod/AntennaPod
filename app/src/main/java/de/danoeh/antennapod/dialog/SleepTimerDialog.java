@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,6 +19,9 @@ import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -28,12 +32,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
     private EditText etxtTime;
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
+    private CheckBox chAutoEnable;
 
     public SleepTimerDialog() {
 
@@ -104,58 +113,56 @@ public class SleepTimerDialog extends DialogFragment {
 
         final CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
         final CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
-        final CheckBox chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        final CheckBox chAutoEnableTimeBased = content.findViewById(R.id.chAutoEnableTimeBased);
+        chAutoEnable = content.findViewById(R.id.chAutoEnable);
+        final Button changeTimesButton = content.findViewById(R.id.changeTimes);
 
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
-        chAutoEnableTimeBased.setChecked(SleepTimerPreferences.autoEnableTimeBased());
+        changeTimesButton.setEnabled(chAutoEnable.isChecked());
 
         cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
         cbVibrate.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setVibrate(isChecked));
         chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
-                -> SleepTimerPreferences.setAutoEnable(isChecked));
-        chAutoEnableTimeBased.setOnCheckedChangeListener((compoundButton, isChecked)
-                -> SleepTimerPreferences.setAutoEnableTimeBased(isChecked));
-
-        Button autoEnableTimeFrom = content.findViewById(R.id.autoEnableTimeFrom);
-        autoEnableTimeFrom.setOnClickListener(v -> {
-            Pair<Integer, Integer> currentSetting = SleepTimerPreferences.autoEnableTimeFrom();
-            new TimePickerDialog(
-                    requireContext(),
-                    (view, hourOfDay, minute) -> {
-                        SleepTimerPreferences.setAutoEnableTimeFrom(hourOfDay, minute);
-                        autoEnableTimeFrom.setText(hourOfDay + ":" + minute);
-                    },
-                    currentSetting.first,
-                    currentSetting.second,
-                    true
-            ).show();
+                -> {
+            SleepTimerPreferences.setAutoEnable(isChecked);
+            changeTimesButton.setEnabled(isChecked);
         });
+        updateAutoEnableText();
 
-        Pair<Integer, Integer> fromTime = SleepTimerPreferences.autoEnableTimeFrom();
-        autoEnableTimeFrom.setText(fromTime.first + ":" + fromTime.second);
 
-        Button autoEnableTimeTo = content.findViewById(R.id.autoEnableTimeTo);
-        autoEnableTimeTo.setOnClickListener(v -> {
-            Pair<Integer, Integer> currentSetting = SleepTimerPreferences.autoEnableTimeTo();
-            new TimePickerDialog(
-                    requireContext(),
-                    (view, hourOfDay, minute) -> {
-                        SleepTimerPreferences.setAutoEnableTimeTo(hourOfDay, minute);
-                        autoEnableTimeTo.setText(hourOfDay + ":" + minute);
-                    },
-                    currentSetting.first,
-                    currentSetting.second,
-                    true
-            ).show();
+        final int timeFormat = DateFormat.is24HourFormat(getContext()) ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+        changeTimesButton.setOnClickListener(changeTimesBtn -> {
+            Pair<Integer, Integer> from = SleepTimerPreferences.autoEnableTimeFrom();
+            MaterialTimePicker dialogFrom = new MaterialTimePicker.Builder()
+                    .setHour(from.first)
+                    .setMinute(from.second)
+                    .setTimeFormat(timeFormat)
+                    .setTitleText(R.string.auto_enable_label_from)
+                    .setPositiveButtonText(R.string.auto_enable_label_next)
+                    .build();
+            dialogFrom.addOnPositiveButtonClickListener(dialog -> {
+                Pair<Integer, Integer> to = SleepTimerPreferences.autoEnableTimeTo();
+                MaterialTimePicker dialogTo = new MaterialTimePicker.Builder()
+                        .setHour(to.first)
+                        .setMinute(to.second)
+                        .setTimeFormat(timeFormat)
+                        .setTitleText(R.string.auto_enable_label_to)
+                        .build();
+                dialogTo.addOnPositiveButtonClickListener(dialog2 -> {
+                    SleepTimerPreferences.setAutoEnableTimeTo(dialogTo.getHour(), dialogTo.getMinute());
+                    updateAutoEnableText();
+                });
+                dialogTo.show(getParentFragmentManager(), "SleepTimerAutoEnableTo");
+            });
+            dialogFrom.addOnPositiveButtonClickListener(dialog -> {
+                SleepTimerPreferences.setAutoEnableTimeFrom(dialogFrom.getHour(), dialogFrom.getMinute());
+                updateAutoEnableText();
+            });
+            dialogFrom.show(getParentFragmentManager(), "SleepTimerAutoEnableFrom");
         });
-
-        Pair<Integer, Integer> toTime = SleepTimerPreferences.autoEnableTimeTo();
-        autoEnableTimeTo.setText(toTime.first + ":" + toTime.second);
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
         disableButton.setOnClickListener(v -> {
@@ -185,6 +192,29 @@ public class SleepTimerDialog extends DialogFragment {
             }
         });
         return builder.create();
+    }
+
+    private void updateAutoEnableText() {
+        String text;
+        Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
+        Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
+        if (fromSetting.equals(toSetting)) {
+            text = getString(R.string.auto_enable_label);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            try {
+                Date from = sdf.parse(fromSetting.first + ":" + fromSetting.second);
+                Date to = sdf.parse(toSetting.first + ":" + toSetting.second);
+                text = getString(
+                        R.string.auto_enable_label_with_times,
+                        SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(from),
+                        SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(to)
+                );
+            } catch (Exception e) {
+                return;
+            }
+        }
+        chAutoEnable.setText(text);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

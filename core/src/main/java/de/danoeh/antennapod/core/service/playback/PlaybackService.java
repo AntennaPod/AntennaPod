@@ -806,16 +806,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                     // set sleep timer if auto-enabled
                     boolean autoEnableByTime = true;
-                    if (SleepTimerPreferences.autoEnableTimeBased()) {
+                    Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
+                    Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
+                    if (!fromSetting.equals(toSetting)) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                         try {
                             Calendar now = new GregorianCalendar();
                             now.setTimeInMillis(System.currentTimeMillis());
 
                             Date timeNow = sdf.parse(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));
-                            Pair<Integer, Integer> fromSetting = SleepTimerPreferences.autoEnableTimeFrom();
                             Date from = sdf.parse(fromSetting.first + ":" + fromSetting.second);
-                            Pair<Integer, Integer> toSetting = SleepTimerPreferences.autoEnableTimeTo();
                             Date to = sdf.parse(toSetting.first + ":" + toSetting.second);
 
                             autoEnableByTime = timeNow.after(from) && timeNow.before(to);

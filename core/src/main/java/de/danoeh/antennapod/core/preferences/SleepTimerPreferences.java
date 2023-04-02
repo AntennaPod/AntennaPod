@@ -18,7 +18,6 @@ public class SleepTimerPreferences {
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
-    private static final String PREF_AUTO_ENABLE_TIME_BASED = "AutoEnableTimeBased";
     private static final String PREF_AUTO_ENABLE_TIME_BASED_FROM_MIN = "AutoEnableTimeBasedFromMin";
     private static final String PREF_AUTO_ENABLE_TIME_BASED_FROM_HOUR = "AutoEnableTimeBasedFromHour";
     private static final String PREF_AUTO_ENABLE_TIME_BASED_TO_MIN = "AutoEnableTimeBasedToMin";
@@ -73,14 +72,6 @@ public class SleepTimerPreferences {
 
     public static boolean autoEnable() {
         return prefs.getBoolean(PREF_AUTO_ENABLE, false);
-    }
-
-    public static void setAutoEnableTimeBased(boolean autoEnableTimeBased) {
-        prefs.edit().putBoolean(PREF_AUTO_ENABLE_TIME_BASED, autoEnableTimeBased).apply();
-    }
-
-    public static boolean autoEnableTimeBased() {
-        return prefs.getBoolean(PREF_AUTO_ENABLE_TIME_BASED, false);
     }
 
     public static void setAutoEnableTimeFrom(int hourOfDay, int minute) {

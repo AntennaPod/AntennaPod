@@ -611,8 +611,11 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="auto_enable_label">Auto-enable</string>
-    <string name="auto_enable_time_label">... but only between these times</string>
+    <string name="auto_enable_label">Automatically activate the sleep timer when pressing play</string>
+    <string name="auto_enable_label_with_times">Automatically activate the sleep timer when pressing play between %s and %s</string>
+    <string name="auto_enable_label_from">From</string>
+    <string name="auto_enable_label_to">To</string>
+    <string name="auto_enable_label_next">Next</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
 
     <!-- Synchronisation -->
