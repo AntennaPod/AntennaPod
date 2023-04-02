@@ -2,7 +2,6 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
