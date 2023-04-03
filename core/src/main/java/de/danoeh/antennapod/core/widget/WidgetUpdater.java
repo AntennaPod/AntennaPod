@@ -176,6 +176,9 @@ public abstract class WidgetUpdater {
                 views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+            } else {
+                views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.GONE);
+                views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
             }
 
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
