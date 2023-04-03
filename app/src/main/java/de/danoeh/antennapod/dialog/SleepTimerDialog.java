@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import de.danoeh.antennapod.R;
@@ -132,9 +131,12 @@ public class SleepTimerDialog extends DialogFragment {
         updateAutoEnableText();
 
 
-        final int timeFormat = DateFormat.is24HourFormat(getContext()) ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+        //final int timeFormat = DateFormat.is24HourFormat(getContext()) ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
         changeTimesButton.setOnClickListener(changeTimesBtn -> {
-            Pair<Integer, Integer> from = SleepTimerPreferences.autoEnableTimeFrom();
+            TimeRangeDialog dialog = new TimeRangeDialog(getContext());
+            dialog.show();
+
+            /*Pair<Integer, Integer> from = SleepTimerPreferences.autoEnableTimeFrom();
             MaterialTimePicker dialogFrom = new MaterialTimePicker.Builder()
                     .setHour(from.first)
                     .setMinute(from.second)
@@ -160,7 +162,7 @@ public class SleepTimerDialog extends DialogFragment {
                 SleepTimerPreferences.setAutoEnableTimeFrom(dialogFrom.getHour(), dialogFrom.getMinute());
                 updateAutoEnableText();
             });
-            dialogFrom.show(getParentFragmentManager(), "SleepTimerAutoEnableFrom");
+            dialogFrom.show(getParentFragmentManager(), "SleepTimerAutoEnableFrom");*/
         });
 
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
