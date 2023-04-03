@@ -199,48 +199,48 @@ public class LocalFeedUpdater {
         return item;
     }
 
-    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(context, file.getUri());
+    private static void loadMetadata(FeedItem item, FastDocumentFile file, Context context) throws IOException {
+        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+            mediaMetadataRetriever.setDataSource(context, file.getUri());
 
-        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
-        if (!TextUtils.isEmpty(dateStr)) {
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
-                item.setPubDate(simpleDateFormat.parse(dateStr));
-            } catch (ParseException parseException) {
-                Date date = DateUtils.parse(dateStr);
-                if (date != null) {
-                    item.setPubDate(date);
+            String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+            if (!TextUtils.isEmpty(dateStr)) {
+                try {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+                    item.setPubDate(simpleDateFormat.parse(dateStr));
+                } catch (ParseException parseException) {
+                    Date date = DateUtils.parse(dateStr);
+                    if (date != null) {
+                        item.setPubDate(date);
+                    }
                 }
             }
-        }
 
-        String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-        if (!TextUtils.isEmpty(title)) {
-            item.setTitle(title);
-        }
+            String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            if (!TextUtils.isEmpty(title)) {
+                item.setTitle(title);
+            }
 
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        item.getMedia().setDuration((int) Long.parseLong(durationStr));
+            String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
-        item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
-        mediaMetadataRetriever.close();
-
-        try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
-            Id3MetadataReader reader = new Id3MetadataReader(
-                    new CountingInputStream(new BufferedInputStream(inputStream)));
-            reader.readInputStream();
-            item.setDescriptionIfLonger(reader.getComment());
-        } catch (IOException | ID3ReaderException e) {
-            Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+            item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
 
             try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
-                VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                Id3MetadataReader reader = new Id3MetadataReader(
+                        new CountingInputStream(new BufferedInputStream(inputStream)));
                 reader.readInputStream();
-                item.setDescriptionIfLonger(reader.getDescription());
-            } catch (IOException | VorbisCommentReaderException e2) {
-                Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+                item.setDescriptionIfLonger(reader.getComment());
+            } catch (IOException | ID3ReaderException e) {
+                Log.d(TAG, "Unable to parse ID3 of " + file.getUri() + ": " + e.getMessage());
+
+                try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+                    VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+                    reader.readInputStream();
+                    item.setDescriptionIfLonger(reader.getDescription());
+                } catch (IOException | VorbisCommentReaderException e2) {
+                    Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
+                }
             }
         }
     }

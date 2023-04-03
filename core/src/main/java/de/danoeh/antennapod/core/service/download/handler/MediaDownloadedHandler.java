@@ -62,9 +62,8 @@ public class MediaDownloadedHandler implements Runnable {
             ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);
         }
         // Get duration
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         String durationStr = null;
-        try {
+        try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
             mmr.setDataSource(media.getFile_url());
             durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             media.setDuration(Integer.parseInt(durationStr));
@@ -73,8 +72,6 @@ public class MediaDownloadedHandler implements Runnable {
             Log.d(TAG, "Invalid file duration: " + durationStr);
         } catch (Exception e) {
             Log.e(TAG, "Get duration failed", e);
-        } finally {
-            mmr.release();
         }
 
         final FeedItem item = media.getItem();
