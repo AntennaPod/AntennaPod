@@ -51,7 +51,7 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     tempOut = File.createTempFile("resize_", null);
                     outputStream = new FileOutputStream(tempIn);
                     IOUtils.copy(data, outputStream);
-                    //outputStream.close();
+                    outputStream.close();
                     IOUtils.closeQuietly(data);
 
                     if (tempIn.length() <= MAX_FILE_SIZE) {
